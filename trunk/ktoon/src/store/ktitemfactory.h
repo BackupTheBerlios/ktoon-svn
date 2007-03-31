@@ -25,7 +25,7 @@
 #include <QPen>
 #include <QBrush>
 
-#include "ktxmlparserbase.h"
+#include "dcore/dxmlparserbase.h"
 
 #include "ktglobal_store.h"
 
@@ -34,7 +34,7 @@ class QGraphicsItem;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class STORE_EXPORT KTItemFactory : public KTXmlParserBase
+class STORE_EXPORT KTItemFactory : public DXmlParserBase
 {
 	public:
 		KTItemFactory();
@@ -67,15 +67,8 @@ class STORE_EXPORT KTItemFactory : public KTXmlParserBase
 		QGraphicsItem* createItem(const QString &xml);
 		
 	private:
-		QGraphicsItem *m_item;
-		QGradient *m_gradient;
-		QString m_loading;//brush or pen
-		
-		QStack<QGraphicsItem *> m_childs;
-		
-		bool m_addToGroup;
-		
-		QString m_textReaded;
+		struct Private;
+		Private *const d;
 };
 
 #endif

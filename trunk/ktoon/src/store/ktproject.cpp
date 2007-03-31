@@ -65,8 +65,6 @@ KTProject::KTProject(QObject *parent) : QObject(parent), d(new Private)
 	d->isOpen = false;
 	
 	d->library = new KTLibrary("library", this);
-	
-	loadLibrary();
 }
 
 
@@ -82,8 +80,18 @@ KTProject::~KTProject()
 /**
  * Esta funcion carga la libreria local
  */
-void KTProject::loadLibrary()
+void KTProject::loadLibrary(const QString &filename)
 {
+	QFile lfile(filename);
+	if ( lfile.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		d->library->fromXml(QString::fromLocal8Bit(lfile.readAll()));
+		lfile.close();
+	}
+	else
+	{
+		dFatal("library") << "Cannot open library from: " << filename;
+	}
 }
 
 /**
@@ -216,8 +224,6 @@ bool KTProject::moveScene(int position, int newPosition)
 	return true;
 }
 
-
-
 KTScene *KTProject::scene(int position)
 {
 	if ( position < 0 || position >= d->scenes.count() )
@@ -321,54 +327,10 @@ Scenes KTProject::scenes() const
 bool KTProject::createSymbol(int type, const QString &name, const QByteArray &data)
 {
 	KTLibraryObject *object = new KTLibraryObject(d->library);
-	
-	bool ok = true;
-	switch(type)
-	{
-		case KTLibraryObject::Item:
-		{
-			KTItemFactory factory;
-			QGraphicsItem *item = factory.create(QString::fromLocal8Bit(data));
-			
-			object->setData( QVariant::fromValue(item) );
-		};
-		break;
-		case KTLibraryObject::Image:
-		{
-			object->setData(data);
-		}
-		break;
-		case KTLibraryObject::Sound:
-		{
-			object->setData(data);
-		}
-		break;
-		case KTLibraryObject::Svg:
-		{
-			QGraphicsSvgItem *svg = new QGraphicsSvgItem;
-			svg->renderer()->load(data);
-			
-			object->setData(QVariant::fromValue(static_cast<QGraphicsItem*>(svg)));
-		}
-		break;
-		case KTLibraryObject::Text:
-		{
-			object->setData(QString::fromLocal8Bit(data));
-		}
-		break;
-		
-		default:
-		{
-			ok = false;
-		}
-		break;
-	}
-	
-	
-	if ( !ok)
-		return false;
-	
 	object->setType(KTLibraryObject::Type(type));
+	
+	if ( !object->loadData(data) )
+		return false;
 	
 	d->library->addObject( object, name);
 	
@@ -434,7 +396,7 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
 
 bool KTProject::removeSymbolFromProject(const QString &name, int scene, int layer, int frame)
 {
-	dFatal() << "Find me in ktproject.cpp";
+	dFatal("project") << "removeSymbolFromProject::Find me in ktproject.cpp";
 	
 	
 	

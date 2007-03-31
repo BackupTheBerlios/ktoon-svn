@@ -50,6 +50,8 @@ class STORE_EXPORT KTLibraryFolder : public QObject, public KTAbstractSerializab
 		virtual bool addObject(KTLibraryObject *object, const QString &id);
 		virtual bool removeObject(const QString &id);
 		
+		virtual bool addFolder(KTLibraryFolder *folder);
+		
 		bool moveObject(const QString &id, KTLibraryFolder *folder);
 		
 		KTLibraryObject *findObject(const QString &id) const;

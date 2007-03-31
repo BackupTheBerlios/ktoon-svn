@@ -32,8 +32,35 @@ struct KTGraphicLibraryItem::Private
 	QList<QGraphicsItem *> items;
 };
 
-KTGraphicLibraryItem::KTGraphicLibraryItem(KTLibraryObject *object)
- : KTProxyItem(), d(new Private)
+KTGraphicLibraryItem::KTGraphicLibraryItem() : KTProxyItem(), d(new Private)
+{
+}
+
+KTGraphicLibraryItem::KTGraphicLibraryItem(KTLibraryObject *object) : KTProxyItem(), d(new Private)
+{
+	setObject(object);
+}
+
+KTGraphicLibraryItem::~KTGraphicLibraryItem()
+{
+	qDeleteAll(d->items);
+	delete d;
+}
+
+QDomElement KTGraphicLibraryItem::toXml(QDomDocument &doc) const
+{
+	QDomElement library = doc.createElement("symbol");
+	library.setAttribute("id", d->symbolName);
+	library.appendChild( KTSerializer::properties( this, doc));
+	
+	return library;
+}
+
+void KTGraphicLibraryItem::fromXml(const QString &xml)
+{
+}
+
+void KTGraphicLibraryItem::setObject(KTLibraryObject *object)
 {
 	d->symbolName = object->symbolName();
 	switch(object->type())
@@ -70,27 +97,14 @@ KTGraphicLibraryItem::KTGraphicLibraryItem(KTLibraryObject *object)
 	}
 }
 
-
-KTGraphicLibraryItem::~KTGraphicLibraryItem()
+void KTGraphicLibraryItem::setSymbolName(const QString &name)
 {
-	qDeleteAll(d->items);
-	
-	delete d;
+	d->symbolName = name;
 }
 
-
-
-QDomElement KTGraphicLibraryItem::toXml(QDomDocument &doc) const
+QString KTGraphicLibraryItem::symbolName() const
 {
-	QDomElement library = doc.createElement("symbol");
-	library.setAttribute("id", d->symbolName);
-	library.appendChild( KTSerializer::properties( this, doc));
-	
-	return library;
-}
-
-void KTGraphicLibraryItem::fromXml(const QString &xml)
-{
+	return d->symbolName;
 }
 
 

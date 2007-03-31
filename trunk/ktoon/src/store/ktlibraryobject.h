@@ -56,6 +56,9 @@ class STORE_EXPORT KTLibraryObject : public QObject, public KTAbstractSerializab
 		void setSymbolName(const QString &name);
 		QString symbolName() const;
 		
+		
+		bool loadData(const QByteArray &data);
+		
 	public:
 		virtual void fromXml(const QString &xml );
 		virtual QDomElement toXml(QDomDocument &doc) const;

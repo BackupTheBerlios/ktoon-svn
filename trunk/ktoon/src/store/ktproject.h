@@ -80,7 +80,7 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		
 		void clear();
 		
-		void loadLibrary();
+		void loadLibrary(const QString &filename);
 		
 		KTLibrary *library() const;
 		void emitResponse(KTProjectResponse *response);

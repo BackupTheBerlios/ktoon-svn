@@ -146,6 +146,8 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
 			return false;
 		}
 		
+		project->loadLibrary(projectDir.path()+"/library.ktl");
+		
 		QStringList scenes = projectDir.entryList(QStringList() << "*.kts", QDir::Readable | QDir::Files);
 		
 		int index = 0;

@@ -20,6 +20,12 @@
 
 #include "ktlibraryobject.h"
 
+#include "ktitemfactory.h"
+
+#include <QGraphicsSvgItem>
+#include <QSvgRenderer>
+
+#include <dcore/ddebug.h>
 
 struct KTLibraryObject::Private
 {
@@ -75,11 +81,39 @@ QString KTLibraryObject::symbolName() const
 
 void KTLibraryObject::fromXml(const QString &xml )
 {
+	dDebug("library") << "Object: " << xml;
+	
+	QDomDocument document;
+	
+	if(! document.setContent(xml) )
+	{
+		return;
+	}
+	
+	QDomElement objectTag = document.documentElement();
+	
+	if( objectTag.tagName() == "object" )
+	{
+		d->symbolName = objectTag.attribute("id");
+		
+		if( d->symbolName.isEmpty() ) return;
+		
+		d->type = objectTag.attribute("type").toInt();
+		
+		QDomElement objectData = objectTag.firstChild().toElement();
+		
+		QDomDocument data;
+		data.appendChild(data.importNode(objectData, true ));
+		
+		loadData(data.toString(0).toLocal8Bit()); // FIXME: No va a funcionar para binarios!
+	}
 }
 
 QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
 {
 	QDomElement object = doc.createElement("object");
+	object.setAttribute("id", d->symbolName);
+	object.setAttribute("type", d->type);
 	
 	switch(d->type)
 	{
@@ -101,5 +135,49 @@ QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
 	return object;
 }
 
-
+bool KTLibraryObject::loadData(const QByteArray &data)
+{
+	bool ok = true;
+	switch(d->type)
+	{
+		case KTLibraryObject::Item:
+		{
+			KTItemFactory factory;
+			QGraphicsItem *item = factory.create(QString::fromLocal8Bit(data));
+			
+			setData( QVariant::fromValue(item) );
+		};
+		break;
+		case KTLibraryObject::Image:
+		{
+			setData(data);
+		}
+		break;
+		case KTLibraryObject::Sound:
+		{
+			setData(data);
+		}
+		break;
+		case KTLibraryObject::Svg:
+		{
+			QGraphicsSvgItem *svg = new QGraphicsSvgItem;
+			svg->renderer()->load(data);
+			
+			setData(QVariant::fromValue(static_cast<QGraphicsItem*>(svg)));
+		}
+		break;
+		case KTLibraryObject::Text:
+		{
+			setData(QString::fromLocal8Bit(data));
+		}
+		break;
+		default:
+		{
+			ok = false;
+		}
+		break;
+	}
+	
+	return ok;
+}
 

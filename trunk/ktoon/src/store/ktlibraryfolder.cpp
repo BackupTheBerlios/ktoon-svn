@@ -61,6 +61,11 @@ bool KTLibraryFolder::removeObject(const QString &id)
 	return c > 0;
 }
 
+bool KTLibraryFolder::addFolder(KTLibraryFolder *folder)
+{
+	d->folders << folder;
+}
+
 bool KTLibraryFolder::moveObject(const QString &id, KTLibraryFolder *folder)
 {
 	if ( d->objects.contains(id) )
@@ -133,6 +138,47 @@ LibraryObjects KTLibraryFolder::objects() const
 
 void KTLibraryFolder::fromXml(const QString &xml )
 {
+	dDebug("library") << xml;
+	QDomDocument document;
+	
+	if(! document.setContent(xml) )
+	{
+		return;
+	}
+	
+	QDomElement root = document.documentElement();
+	QDomNode n = root.firstChild();
+	
+	while( !n.isNull() )
+	{
+		QDomElement e = n.toElement();
+		
+		if(!e.isNull())
+		{
+			if( e.tagName() == "object" )
+			{
+				QDomDocument objectDocument;
+				objectDocument.appendChild(objectDocument.importNode(n, true ));
+				
+				KTLibraryObject *object = new KTLibraryObject(this);
+				object->fromXml(objectDocument.toString(0));
+				
+				addObject(object, object->symbolName() );
+			}
+			else if( e.tagName() == "folder" )
+			{
+				QDomDocument folderDocument;
+				folderDocument.appendChild(folderDocument.importNode(n, true ));
+				
+				KTLibraryFolder *folder = new KTLibraryFolder( e.attribute("id"), this);
+				folder->fromXml(folderDocument.toString(0));
+				
+				addFolder(folder);
+			}
+		}
+		
+		n = n.nextSibling();
+	}
 }
 
 QDomElement KTLibraryFolder::toXml(QDomDocument &doc) const

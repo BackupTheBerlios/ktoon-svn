@@ -20,6 +20,8 @@
 
 #include "ktlibrary.h"
 
+#include <dcore/ddebug.h>
+
 KTLibrary::KTLibrary(const QString &id, QObject *parent) : KTLibraryFolder(id, parent)
 {
 }
@@ -31,6 +33,39 @@ KTLibrary::~KTLibrary()
 
 void KTLibrary::fromXml(const QString &xml )
 {
+	dDebug("library") << "Loading library: " << xml;
+	
+	QDomDocument document;
+	
+	if(! document.setContent(xml) )
+	{
+		return;
+	}
+	
+	QDomElement root = document.documentElement();
+	QDomNode n = root.firstChild();
+	
+	while( !n.isNull() )
+	{
+		QDomElement e = n.toElement();
+		
+		if(!e.isNull())
+		{
+			if( e.tagName() == "library" )
+			{
+				
+			}
+			else if( e.tagName() == "folder" )
+			{
+				QDomDocument folder;
+				folder.appendChild(folder.importNode(n, true ));
+				
+				KTLibraryFolder::fromXml(folder.toString(0));
+			}
+		}
+		
+		n = n.nextSibling();
+	}
 }
 
 

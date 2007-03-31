@@ -104,12 +104,8 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		virtual QDomElement toXml(QDomDocument &doc) const;
 		
 	private:
-		QString m_name;
-		bool m_isLocked;
-		bool m_isVisible;
-		
-		QList<QGraphicsItem *> m_items;
-		QList<KTGraphicObject *> m_graphics;
+		struct Private;
+		Private *const d;
 };
 
 #endif

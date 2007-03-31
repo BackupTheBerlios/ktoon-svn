@@ -34,11 +34,17 @@ class KTLibraryObject;
 class STORE_EXPORT KTGraphicLibraryItem : public KTProxyItem, public KTAbstractSerializable
 {
 	public:
+		KTGraphicLibraryItem();
 		KTGraphicLibraryItem(KTLibraryObject *object);
 		~KTGraphicLibraryItem();
 		
 		QDomElement toXml(QDomDocument &doc) const;
 		void fromXml(const QString &xml);
+		
+		void setSymbolName(const QString &name);
+		QString symbolName() const;
+		
+		void setObject(KTLibraryObject *object);
 		
 	private:
 		struct Private;
