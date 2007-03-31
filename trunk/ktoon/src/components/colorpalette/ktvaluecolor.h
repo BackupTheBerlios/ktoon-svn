@@ -40,10 +40,11 @@ class KTItemValueColor : public QFrame
 		~KTItemValueColor();
 		int  value();
 		void setMax(int);
-	private:
-		QSpinBox *m_value;
 		
-				
+	private:
+		struct Private;
+		Private *const d;
+		
 	public slots:
 		void setValue ( int val );
 		
@@ -65,11 +66,8 @@ class KTValueColor : public QFrame
 		
 		
 	private:
-		KTItemValueColor *m_valueR, *m_valueG, *m_valueB, *m_valueH, *m_valueS, *m_valueV, *m_valueA;
-// 		DEditSpinBox *m_valueR, *m_valueG, *m_valueB, *m_valueH, *m_valueS, *m_valueV, *m_valueA;
-		QGridLayout *m_layout;
-		bool ok;
-		
+		struct Private;
+		Private *const d;
 		
 	private:
 		void setupForm();

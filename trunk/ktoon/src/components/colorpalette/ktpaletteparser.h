@@ -27,35 +27,31 @@
 #include <QConicalGradient>
 #include <QRadialGradient>
 
+#include <dcore/dxmlparserbase.h>
+
 /**
  * @author David Cuadrado
 */
-class KTPaletteParser : public QXmlDefaultHandler
+
+//TODO KTPaletteParser: portar a DXmlParserBase
+
+class KTPaletteParser : public DXmlParserBase
 {
 	public:
 		KTPaletteParser();
 		~KTPaletteParser();
 		
-		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
-		
-		bool endElement( const QString& ns, const QString& localname, const QString& qname);
-		
 		QList<QBrush> brushes() const;
 		QString paletteName() const;
 		bool paletteIsEditable() const;
 		
-		bool error ( const QXmlParseException & exception );
-		bool fatalError ( const QXmlParseException & exception );
+		bool startTag(const QString &tag, const QXmlAttributes &atts);
+		bool endTag(const QString &tag);
+		void text(const QString& text );
 		
 	private:
-		QString m_root,m_qname;
-		
-		QString m_paletteName;
-		bool m_isEditable;
-		QList<QBrush> m_brushes;
-		
-		QGradientStops m_gradientStops;
-		QGradient *m_gradient;
+		struct Private;
+		Private *const d;
 		
 };
 

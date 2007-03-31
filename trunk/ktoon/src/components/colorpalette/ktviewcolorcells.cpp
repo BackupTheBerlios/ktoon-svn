@@ -27,9 +27,21 @@
 
 #include <dcore/dconfig.h>
 
-KTViewColorCells::KTViewColorCells(QWidget *parent)
-	: QFrame(parent), m_numColorRecent(0)
+struct KTViewColorCells::Private
 {
+	QComboBox *chooserPalette;
+	QStackedWidget *containerPalette;
+	KTCellsColor *defaultPalette;
+	KTCellsColor *qtColorPalette;
+	KTCellsColor *customColorPalette;
+	KTCellsColor *customGradientPalette;
+	int numColorRecent;
+	QBrush currentColor;
+};
+
+KTViewColorCells::KTViewColorCells(QWidget *parent) : QFrame(parent), d(new Private)
+{
+	d->numColorRecent = 0;
 	QVBoxLayout *layout = new QVBoxLayout;
 	layout->setMargin(0);
 	layout->setSpacing(0);
@@ -43,10 +55,8 @@ KTViewColorCells::KTViewColorCells(QWidget *parent)
 
 KTViewColorCells::~KTViewColorCells()
 {
-	DEND;
-	
 	DCONFIG->beginGroup("ColorPalette");
-	DCONFIG->setValue("LastPalette", m_chooserPalette->currentIndex());;
+	DCONFIG->setValue("LastPalette", d->chooserPalette->currentIndex());;
 	
 	QDir brushesDir(CONFIG_DIR+"/palettes");
 	
@@ -57,9 +67,9 @@ KTViewColorCells::~KTViewColorCells()
 	
 	dDebug("palette") << brushesDir.path();
 	
-	for(int i = 0; i < m_containerPalette->count(); i++)
+	for(int i = 0; i < d->containerPalette->count(); i++)
 	{
-		KTCellsColor *palette = qobject_cast<KTCellsColor *>(m_containerPalette->widget(i) );
+		KTCellsColor *palette = qobject_cast<KTCellsColor *>(d->containerPalette->widget(i) );
 		if(palette)
 		{
 			if(!palette->isReadOnly())
@@ -68,54 +78,58 @@ KTViewColorCells::~KTViewColorCells()
 			}
 		}
 	}
+	
+	delete d;
+	
+	DEND;
 }
 
 void KTViewColorCells::setupForm()
 {
-	m_chooserPalette = new QComboBox(this);
+	d->chooserPalette = new QComboBox(this);
 	
 	
-	m_containerPalette = new QStackedWidget(this);
-	layout()->addWidget(m_chooserPalette);
-	layout()->addWidget(m_containerPalette);
+	d->containerPalette = new QStackedWidget(this);
+	layout()->addWidget(d->chooserPalette);
+	layout()->addWidget(d->containerPalette);
 	
 	//Default Palette
-	m_defaultPalette = new  KTCellsColor(m_containerPalette);
-	m_defaultPalette->setName( tr("Default Palette") );
-	m_defaultPalette->setReadOnly( true);
+	d->defaultPalette = new  KTCellsColor(d->containerPalette);
+	d->defaultPalette->setName( tr("Default Palette") );
+	d->defaultPalette->setReadOnly( true);
 	
 	fillDefaultColors();
-	addPalette(m_defaultPalette);
+	addPalette(d->defaultPalette);
 	
 	
 	//Named Colors
-	m_qtColorPalette = new  KTCellsColor(m_containerPalette);
-	m_qtColorPalette->setReadOnly( true );
-	m_qtColorPalette->setName( tr("Named Colors") );
-	addPalette(m_qtColorPalette);
+	d->qtColorPalette = new  KTCellsColor(d->containerPalette);
+	d->qtColorPalette->setReadOnly( true );
+	d->qtColorPalette->setName( tr("Named Colors") );
+	addPalette(d->qtColorPalette);
 	
 	fillNamedColor();
 		
 	//Custom Color Palette
-	m_customColorPalette = new  KTCellsColor(m_containerPalette);
-	m_customColorPalette->setName( tr("Custom Color Palette"));
-	addPalette( m_customColorPalette );
+	d->customColorPalette = new  KTCellsColor(d->containerPalette);
+	d->customColorPalette->setName( tr("Custom Color Palette"));
+	addPalette( d->customColorPalette );
 	
 	//Custom Gradient Palette
-	m_customGradientPalette = new  KTCellsColor(m_containerPalette);
-	m_customGradientPalette->setName( tr("Custom Gradient Palette"));
-	m_customGradientPalette->setType( KTCellsColor::Gradient);
-	addPalette( m_customGradientPalette );
+	d->customGradientPalette = new  KTCellsColor(d->containerPalette);
+	d->customGradientPalette->setName( tr("Custom Gradient Palette"));
+	d->customGradientPalette->setType( KTCellsColor::Gradient);
+	addPalette( d->customGradientPalette );
 	
-	connect(m_chooserPalette, SIGNAL(activated ( int  )), m_containerPalette, SLOT(setCurrentIndex ( int )));
+	connect(d->chooserPalette, SIGNAL(activated ( int  )), d->containerPalette, SLOT(setCurrentIndex ( int )));
 	
 	DCONFIG->beginGroup("ColorPalette");
 	int lastIndex = DCONFIG->value("LastPalette").toInt();
 	
 	if ( lastIndex > 0 )
 	{
-		m_chooserPalette->setCurrentIndex(lastIndex);
-		m_containerPalette->setCurrentIndex(lastIndex);
+		d->chooserPalette->setCurrentIndex(lastIndex);
+		d->containerPalette->setCurrentIndex(lastIndex);
 	}
 	
 	readPalettes(HOME_DIR+"/data/palettes"); // Pre-installed
@@ -142,53 +156,46 @@ void KTViewColorCells::readPalettes(const QString &paletteDir)
 
 void KTViewColorCells::readPaletteFile(const QString &file)
 {
-	KTPaletteParser *parser = new KTPaletteParser();
-	QXmlSimpleReader reader;
-	reader.setContentHandler(parser);
-	reader.setErrorHandler(parser);
-	
+	KTPaletteParser parser;
 	QFile f(file);
-	QXmlInputSource xmlsource(&f);
-			
-	if ( reader.parse(&xmlsource) )
+	if(parser.parse(&f))
 	{
-		QList<QBrush> brushes = parser->brushes();
-		QString name = parser->paletteName();
-		bool editable = parser->paletteIsEditable();
+		QList<QBrush> brushes = parser.brushes();
+		QString name = parser.paletteName();
+		bool editable = parser.paletteIsEditable();
 		addPalette(name,brushes,editable );
 	}
 	else
 	{
 		dError() << "Error while parse palette file: " << file;
 	}
-	delete parser;
 }
 
 void KTViewColorCells::addPalette(const QString & name, const QList<QBrush> & brushes, bool editable )
 {
-	if( name == m_customColorPalette->name())
+	if( name == d->customColorPalette->name())
 	{
 		QList<QBrush>::ConstIterator it = brushes.begin();
 		
 		while(it != brushes.end())
 		{
-			m_customColorPalette->addItem( *it);
+			d->customColorPalette->addItem( *it);
 			++it;
 		}
 	}
-	else if(name == m_customGradientPalette->name())
+	else if(name == d->customGradientPalette->name())
 	{
 		QList<QBrush>::ConstIterator it = brushes.begin();
 		
 		while(it != brushes.end())
 		{
-			m_customGradientPalette->addItem( *it);
+			d->customGradientPalette->addItem( *it);
 			++it;
 		}
 	}
 	else
 	{
-		KTCellsColor *palette = new  KTCellsColor(m_containerPalette);
+		KTCellsColor *palette = new  KTCellsColor(d->containerPalette);
 		QList<QBrush>::ConstIterator it = brushes.begin();
 		
 		while(it != brushes.end())
@@ -207,8 +214,8 @@ void KTViewColorCells::addPalette(KTCellsColor *palette)
 {
 	connect(palette, SIGNAL(itemEntered(QTableWidgetItem *)), this, SLOT(changeColor(QTableWidgetItem *)));
 	connect(palette, SIGNAL(itemPressed(QTableWidgetItem *)), this, SLOT(changeColor(QTableWidgetItem *)));
-	m_chooserPalette->addItem(palette->name());
-	m_containerPalette->addWidget(palette);
+	d->chooserPalette->addItem(palette->name());
+	d->containerPalette->addWidget(palette);
 }
 
 
@@ -228,22 +235,22 @@ void KTViewColorCells::fillDefaultColors()
     //First column, first 6 rows, a gray scale
 	for ( i = 0; i <= 5; i++ )
 	{
-		m_defaultPalette->addItem(QColor( i * 51, i * 51, i * 51 ));
+		d->defaultPalette->addItem(QColor( i * 51, i * 51, i * 51 ));
 	}
     //First column, last 6 rows, basic colors
-	m_defaultPalette->addItem(QColor( 255, 0, 0 ));
-	m_defaultPalette->addItem(QColor( 0, 255, 0 ));
-	m_defaultPalette->addItem(QColor( 0, 0, 255 ));
-	m_defaultPalette->addItem(QColor( 255, 255, 0 ));
-	m_defaultPalette->addItem(QColor( 0, 255, 255 ));
-	m_defaultPalette->addItem(QColor( 255, 0, 255 ));
+	d->defaultPalette->addItem(QColor( 255, 0, 0 ));
+	d->defaultPalette->addItem(QColor( 0, 255, 0 ));
+	d->defaultPalette->addItem(QColor( 0, 0, 255 ));
+	d->defaultPalette->addItem(QColor( 255, 255, 0 ));
+	d->defaultPalette->addItem(QColor( 0, 255, 255 ));
+	d->defaultPalette->addItem(QColor( 255, 0, 255 ));
 
     //Segment from column 1 to 6 and row 0 to 5
 	for ( i = 0; i <= 5; i++ )
 	{
 		for ( j = 1; j <= 6; j++ )
 		{
-			m_defaultPalette->addItem(QColor( 0, ( j - 1 ) * 51, i * 51 ));
+			d->defaultPalette->addItem(QColor( 0, ( j - 1 ) * 51, i * 51 ));
 		}
 	}
 
@@ -252,7 +259,7 @@ void KTViewColorCells::fillDefaultColors()
 	{
 		for ( j = 1; j <= 6; j++ )
 		{
-			m_defaultPalette->addItem(QColor( 153, ( j - 1 ) * 51, ( i - 6 ) * 51 ));
+			d->defaultPalette->addItem(QColor( 153, ( j - 1 ) * 51, ( i - 6 ) * 51 ));
 		}
 	}
 
@@ -261,7 +268,7 @@ void KTViewColorCells::fillDefaultColors()
 	{
 		for ( j = 7; j <= 12; j++ )
 		{
-			m_defaultPalette->addItem(QColor( 51, ( j - 7 ) * 51, i * 51 ));
+			d->defaultPalette->addItem(QColor( 51, ( j - 7 ) * 51, i * 51 ));
 		}
 	}
 
@@ -270,7 +277,7 @@ void KTViewColorCells::fillDefaultColors()
 	{
 		for ( j = 7; j <= 12; j++ )
 		{
-			m_defaultPalette->addItem(QColor( 204, ( j - 7 ) * 51, ( i - 6 ) * 51 ));
+			d->defaultPalette->addItem(QColor( 204, ( j - 7 ) * 51, ( i - 6 ) * 51 ));
 		}
 	}
 
@@ -279,7 +286,7 @@ void KTViewColorCells::fillDefaultColors()
 	{
 		for ( j = 13; j <= 18; j++ )
 		{
-			m_defaultPalette->addItem(QColor( 102, ( j - 13 ) * 51, i * 51 ));
+			d->defaultPalette->addItem(QColor( 102, ( j - 13 ) * 51, i * 51 ));
 		}
 	}
 
@@ -288,7 +295,7 @@ void KTViewColorCells::fillDefaultColors()
 	{
 		for ( j = 13; j <= 18; j++ )
 		{
-			m_defaultPalette->addItem(QColor( 255, ( j - 13 ) * 51, ( i - 6 ) * 51 ));
+			d->defaultPalette->addItem(QColor( 255, ( j - 13 ) * 51, ( i - 6 ) * 51 ));
 		}
 	}
 	
@@ -301,47 +308,47 @@ void KTViewColorCells::fillNamedColor()
 	
 	while(it != strColors.end() )
 	{
-		m_qtColorPalette->addItem( QColor(*it) );
+		d->qtColorPalette->addItem( QColor(*it) );
 		++it;
 	}
 	
-	m_qtColorPalette->addItem(QColor(0,0,0,0));
-	m_qtColorPalette->addItem(QColor(0,0,0,50));
+	d->qtColorPalette->addItem(QColor(0,0,0,0));
+	d->qtColorPalette->addItem(QColor(0,0,0,50));
 }
 
 void KTViewColorCells::addCurrentColor()
 {
-	KTCellsColor *palette = qobject_cast<KTCellsColor*>(m_containerPalette->currentWidget());
+	KTCellsColor *palette = qobject_cast<KTCellsColor*>(d->containerPalette->currentWidget());
 	
 	if(palette)
 	{
 		if( palette->isReadOnly()
-		|| (m_currentColor.gradient()  && palette->type() == KTCellsColor::Color )
-		|| m_currentColor.color().isValid() && palette->type() == KTCellsColor::Gradient )
+		|| (d->currentColor.gradient()  && palette->type() == KTCellsColor::Color )
+		|| d->currentColor.color().isValid() && palette->type() == KTCellsColor::Gradient )
 		{
-			if( 15 <= m_currentColor.style() && m_currentColor.style() < 18  )
+			if( 15 <= d->currentColor.style() && d->currentColor.style() < 18  )
 			{
-				palette = m_customGradientPalette;
-				m_chooserPalette->setCurrentIndex( m_chooserPalette->findText ( m_customGradientPalette->name()));
-				m_containerPalette->setCurrentWidget ( m_customGradientPalette );
+				palette = d->customGradientPalette;
+				d->chooserPalette->setCurrentIndex( d->chooserPalette->findText ( d->customGradientPalette->name()));
+				d->containerPalette->setCurrentWidget ( d->customGradientPalette );
 			}
 			else
 			{
-				palette = m_customColorPalette;
-				m_chooserPalette->setCurrentIndex( m_chooserPalette->findText ( m_customColorPalette->name()));
-				m_containerPalette->setCurrentWidget ( m_customColorPalette );
+				palette = d->customColorPalette;
+				d->chooserPalette->setCurrentIndex( d->chooserPalette->findText ( d->customColorPalette->name()));
+				d->containerPalette->setCurrentWidget ( d->customColorPalette );
 			}
 		}
-		palette->addItem(m_currentColor);
+		palette->addItem(d->currentColor);
 	}
 }
 
 void KTViewColorCells::removeCurrentColor()
 {
-	DCellView *palette = qobject_cast<DCellView *>(m_containerPalette->currentWidget());
+	DCellView *palette = qobject_cast<DCellView *>(d->containerPalette->currentWidget());
 	if(palette)
 	{
-		if( m_defaultPalette != palette)
+		if( d->defaultPalette != palette)
 		{
 			//TODO: implementar en DCellView removeItem
 		}
@@ -357,35 +364,23 @@ void KTViewColorCells::setupButtons()
 	
 	containerButtons->setLayout(bLayout);
 	
-	DImageButton *m_addItem = new DImageButton( QPixmap(THEME_DIR  + "/icons/plussign.png" ) , 22/*, containerButtons*/);
-	connect( m_addItem, SIGNAL( clicked() ), SLOT( addCurrentColor() ));
-	m_addItem->setToolTip(tr( "Add Color" ));
-	bLayout->addWidget(m_addItem);
+	DImageButton *addItem = new DImageButton( QPixmap(THEME_DIR  + "/icons/plussign.png" ) , 22);
+	connect( addItem, SIGNAL( clicked() ), SLOT( addCurrentColor() ));
+	addItem->setToolTip(tr( "Add Color" ));
+	bLayout->addWidget(addItem);
 	
-	DImageButton *m_removeColor = new DImageButton( QPixmap( THEME_DIR + "/icons/minussign.png"), 22/*, containerButtons*/);
+	DImageButton *removeColor = new DImageButton( QPixmap( THEME_DIR + "/icons/minussign.png"), 22);
 	
-	connect( m_removeColor, SIGNAL( clicked() ), SLOT( removeCurrentColor() ) );
-	m_removeColor->setToolTip(tr( "Remove Color" ));
-	bLayout->addWidget(m_removeColor);
+	connect( removeColor, SIGNAL( clicked() ), SLOT( removeCurrentColor() ) );
+	removeColor->setToolTip(tr( "Remove Color" ));
+	bLayout->addWidget(removeColor);
 	
-#if 0
-	DImageButton *m_addPalette = new DImageButton( QPixmap(THEME_DIR + "/icons/plussign.png" ), 22, containerButtons);
-	connect( m_addPalette, SIGNAL( clicked() ), SLOT( addPalette() ) );
-	m_addPalette->setToolTip(tr( "Add Color" ));
-	bLayout->addWidget(m_addPalette);
-	
-	DImageButton *m_removePalette = new DImageButton(QPixmap( THEME_DIR+ "/icons/minussign.png"), 22, containerButtons);
-	
-	connect( m_removePalette, SIGNAL( clicked() ), SLOT( removeColor() ) );
-	m_removePalette->setToolTip(tr( "Add Color" ));
-	bLayout->addWidget(m_removePalette);
-#endif
 	layout()->addWidget(containerButtons);
 }
 
 void KTViewColorCells::setColor(const QBrush& b)
 {
-	m_currentColor = b;
+	d->currentColor = b;
 }
 
 

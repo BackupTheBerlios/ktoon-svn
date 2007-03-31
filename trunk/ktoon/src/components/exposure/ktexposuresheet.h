@@ -36,6 +36,7 @@
 #include <dgui/dimagebutton.h>
 
 #include "ktprojectactionbar.h"
+
 /**
 * @author Jorge Cuadrado
 */
@@ -48,9 +49,8 @@ class KTExposureSheet : public KTModuleWidgetBase
 		~KTExposureSheet();
 		
 	private:
-		DTabWidget *m_scenes;
-		KTExposureTable *m_currentTable;
-		KTProjectActionBar *m_actionBar;
+		struct Private;
+		Private * const d;
 		
 	protected:
 		virtual void sceneResponse(KTSceneResponse *e);

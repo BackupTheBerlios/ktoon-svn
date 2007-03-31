@@ -44,14 +44,9 @@ class KTViewColorCells : public QFrame
 		void setColor(const QBrush & b);
 		
 	private:
-		QComboBox *m_chooserPalette;
-		QStackedWidget *m_containerPalette;
-		KTCellsColor *m_defaultPalette;
-		KTCellsColor *m_qtColorPalette;
-		KTCellsColor *m_customColorPalette;
-		KTCellsColor *m_customGradientPalette;
-		int m_numColorRecent;
-		QBrush m_currentColor;
+		struct Private;
+		Private *const d;
+		
 		
 	private:
 		void setupForm();

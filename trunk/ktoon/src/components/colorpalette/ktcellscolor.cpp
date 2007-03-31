@@ -30,54 +30,63 @@
 #include <QApplication>
 #include <QPainter>
 
+struct KTCellsColor::Private
+{
+	KTCellsColor::Type type;
+	QString name;
+	bool readOnly;
+	QPoint startDragPosition;
+};
 
 KTCellsColor::KTCellsColor(QWidget *parent, Type type)
-	: DCellView(16, parent), m_type(type), m_readOnly(false)
+	: DCellView(16, parent), d(new Private)
 {
+	d->type = type;
+	d->readOnly = false;
 	setAcceptDrops(true);
 }
 
 
 KTCellsColor::~KTCellsColor()
 {
-	
+	delete d;
 }
 
 
 void KTCellsColor::setReadOnly(bool enable)
 {
-	m_readOnly = enable;
+	d->readOnly = enable;
 }
 
 bool KTCellsColor::isReadOnly()
 {
-	return m_readOnly;
+	return d->readOnly;
 }
 
 void KTCellsColor::setType(Type type)
 {
-	m_type = type;
+	d->type = type;
 }
 
 int KTCellsColor::type()
 {
-	return m_type;
+	return d->type;
 }
 
 QString KTCellsColor::name() const
 {
-	return m_name;
+	return d->name;
 }
 
 void KTCellsColor::setName(const QString& name)
 {
-	m_name = name;
+	d->name = name;
 }
 
 void KTCellsColor::save( const QString &path)
 {
 	QFile save(path);
-	KTPaletteDocument document(m_name, true);
+	KTPaletteDocument document(d->name, true);
 	
 	for(int i = 0; i < columnCount() ; i++)
 	{
@@ -133,7 +142,7 @@ void KTCellsColor::dropEvent( QDropEvent *event )
 	{
 		QColor color = qvariant_cast<QColor>(event->mimeData()->colorData());
 		
-		// TODO: crear item
+		// TODO: crear item in ktcellscolor.cpp
 		
 		if (event->source() == this) 
 		{
@@ -154,7 +163,7 @@ void KTCellsColor::dropEvent( QDropEvent *event )
 void KTCellsColor::mousePressEvent(QMouseEvent* e)
 {
 	DCellView::mousePressEvent(e);
-	m_startDragPosition = e->pos();
+	d->startDragPosition = e->pos();
 	
 }
 
@@ -162,7 +171,7 @@ void KTCellsColor::mouseMoveEvent(QMouseEvent* e)
 {
 	DCellView::mouseMoveEvent(e);
 	
-	if ((e->pos() - m_startDragPosition).manhattanLength() <  QApplication::startDragDistance() || !currentItem() )
+	if ((e->pos() - d->startDragPosition).manhattanLength() <  QApplication::startDragDistance() || !currentItem() )
 		return;
 
 	QDrag *drag = new QDrag( this );
@@ -180,7 +189,7 @@ void KTCellsColor::mouseMoveEvent(QMouseEvent* e)
 	drag->setMimeData(mimeData);
 	drag->setPixmap( pix );
 		
-	Qt::DropAction dropAction = drag->start(Qt::MoveAction);
+	/*Qt::DropAction dropAction = */drag->start(Qt::MoveAction);
 
 }
 

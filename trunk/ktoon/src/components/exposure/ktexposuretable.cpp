@@ -107,7 +107,10 @@ void KTExposureHeader::emitVisiblityChanged(int section)
 
 void KTExposureHeader::setVisibilityChanged(int logicalndex, bool visibility)
 {
-	m_layers[logicalndex].isVisible = !m_layers[logicalndex].isVisible;
+// 	Q_UNUSED(visibility);
+	//FIXME: in ktexpousertable.cpp visibility or !m_layers[logicalndex].isVisible
+// 	m_layers[logicalndex].isVisible = !m_layers[logicalndex].isVisible;
+	m_layers[logicalndex].isVisible = visibility;
 	updateSection(logicalndex);
 }
 
@@ -156,14 +159,12 @@ bool KTExposureHeader::signalMovedBlocked()
 
 void KTExposureHeader::setLockLayer(int logicalndex, bool lock)
 {
-// 	dDebug() << "KTExposureHeader::setLockLayer( " <<  logicalndex << "," << lock << ")" ;
 	m_layers[logicalndex].isLocked = lock;
 	updateSection(logicalndex);
 }
 
 void KTExposureHeader::moveLayer(int position, int newPosition)
 {
-// 	dDebug() << "moveLayer(" << position << "," << newPosition << ")";
 	m_blockSectionMoved = true;
 	moveSection ( position, newPosition );
 	m_blockSectionMoved = false;
@@ -309,8 +310,12 @@ void KTExposureItemDelegate::paint( QPainter *painter, const QStyleOptionViewIte
 
 ////////////////////////
 
+struct KTExposureTable::Private
+{
+	KTExposureHeader *header;
+};
 
-KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent)
+KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), d(new Private)
 {
 	
 	setItemDelegate(new KTExposureItemDelegate(this));
@@ -325,15 +330,15 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent)
 	
 	setRowCount( 100 );
 	
-	m_header = new KTExposureHeader(this);
-	connect(m_header, SIGNAL(visiblityChanged ( int, bool )), this, SIGNAL(requestChangeVisiblityLayer( int, bool )));
-	connect(m_header, SIGNAL(changedName ( int, const QString & )), this, SIGNAL(requestRenameLayer( int, const QString & )));
+	d->header = new KTExposureHeader(this);
+	connect(d->header, SIGNAL(visiblityChanged ( int, bool )), this, SIGNAL(requestChangeVisiblityLayer( int, bool )));
+	connect(d->header, SIGNAL(changedName ( int, const QString & )), this, SIGNAL(requestRenameLayer( int, const QString & )));
 	
 	
-	connect(m_header, SIGNAL(sectionMoved ( int , int , int  )), this, SLOT(emitRequestMoveLayer( int, int , int )));
+	connect(d->header, SIGNAL(sectionMoved ( int , int , int  )), this, SLOT(emitRequestMoveLayer( int, int , int )));
 	
 	
-	setHorizontalHeader( m_header);
+	setHorizontalHeader( d->header);
 	
 	connect(this, SIGNAL(cellClicked ( int, int )), this, SLOT(emitRequestSetUsedFrame(int, int)));
 	connect(this, SIGNAL( currentCellChanged ( int , int , int , int  )), this, SLOT( emitRequestSelectFrame(  int , int , int , int  )));
@@ -358,9 +363,9 @@ void KTExposureTable::emitRequestSelectFrame(  int currentRow_, int currentColum
 
 void KTExposureTable::emitRequestMoveLayer( int , int oldVisualIndex, int newVisualIndex  )
 {
-	if(! m_header->signalMovedBlocked())
+	if(! d->header->signalMovedBlocked())
 	{
-		m_header->moveLayer( newVisualIndex, oldVisualIndex);
+		d->header->moveLayer( newVisualIndex, oldVisualIndex);
 		emit requestMoveLayer( oldVisualIndex,  newVisualIndex );
 	}
 }
@@ -369,6 +374,7 @@ void KTExposureTable::emitRequestMoveLayer( int , int oldVisualIndex, int newVis
 
 KTExposureTable::~KTExposureTable()
 {
+	delete d;
 }
 
 void KTExposureTable::setFrameName(int indexLayer, int indexFrame,const QString & name)
@@ -385,7 +391,7 @@ void KTExposureTable::setFrameName(int indexLayer, int indexFrame,const QString 
 
 void KTExposureTable::setLayerName(int indexLayer, const QString & name)
 {
-	m_header->setLayerName( m_header->logicalIndex(indexLayer), name);
+	d->header->setLayerName( d->header->logicalIndex(indexLayer), name);
 }
 
 bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
@@ -405,13 +411,13 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
 
 void KTExposureTable::selectFrame( int indexLayer, int indexFrame)
 {
-	setCurrentCell(indexFrame,  m_header->logicalIndex(indexLayer));
+	setCurrentCell(indexFrame,  d->header->logicalIndex(indexLayer));
 }
 
 int KTExposureTable::currentLayer() const
 {
 	D_FUNCINFO;
-	return m_header->visualIndex(currentColumn());
+	return d->header->visualIndex(currentColumn());
 }
 
 int KTExposureTable::currentFrame() const
@@ -434,7 +440,7 @@ int KTExposureTable::currentFrame() const
 void KTExposureTable::insertLayer(int index, const QString & name)
 {
 	insertColumn( index );
-	m_header->insertLayer( index, name );
+	d->header->insertLayer( index, name );
 }
 
 void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString & name)
@@ -446,27 +452,27 @@ void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString 
 	frame->setData(IsUsed, true);
 	frame->setTextAlignment(Qt::AlignCenter);
 	
-	int logicalIndex = m_header->logicalIndex( indexLayer);
+	int logicalIndex = d->header->logicalIndex( indexLayer);
 	
-	m_header->setLastFrame( logicalIndex, m_header->lastFrame(logicalIndex)+1 );
+	d->header->setLastFrame( logicalIndex, d->header->lastFrame(logicalIndex)+1 );
 	
-	setItem(m_header->lastFrame(logicalIndex)-1, logicalIndex, frame);
+	setItem(d->header->lastFrame(logicalIndex)-1, logicalIndex, frame);
 	
-	for(int i = m_header->lastFrame(logicalIndex)-1; i > indexFrame; i--)
+	for(int i = d->header->lastFrame(logicalIndex)-1; i > indexFrame; i--)
 	{
 		moveFrame(  indexLayer, i , indexLayer, i-1);
 	}
 	
-	if(m_header->lastFrame(logicalIndex)  == rowCount ())
+	if(d->header->lastFrame(logicalIndex)  == rowCount ())
 	{
-		setRowCount( m_header->lastFrame(logicalIndex) + 50 );
+		setRowCount( d->header->lastFrame(logicalIndex) + 50 );
 	}
 }
 
 void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
 {
 	
-	int logicalIndex = m_header->logicalIndex ( indexLayer);
+	int logicalIndex = d->header->logicalIndex ( indexLayer);
 	QTableWidgetItem * frame = item(indexFrame, logicalIndex);
 	if(frame)
 	{
@@ -487,20 +493,20 @@ void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
 
 void KTExposureTable::setLockLayer(int indexLayer,  bool locked)
 {
-	m_header->setLockLayer ( indexLayer, locked);
+	d->header->setLockLayer ( indexLayer, locked);
 }
 
 
 void KTExposureTable::setVisibilityChanged(int visualIndex, bool visibility)
 {
-	m_header->setVisibilityChanged(m_header->logicalIndex(visualIndex), visibility);
+	d->header->setVisibilityChanged(d->header->logicalIndex(visualIndex), visibility);
 }
 
 void KTExposureTable::removeLayer(int indexLayer )
 {
 	
-	int logicalIndex = m_header->logicalIndex(indexLayer);
-	m_header->removeLayer(logicalIndex);
+	int logicalIndex = d->header->logicalIndex(indexLayer);
+	d->header->removeLayer(logicalIndex);
 	removeColumn ( logicalIndex );
 }
 
@@ -510,7 +516,7 @@ void KTExposureTable::removeFrame(int indexLayer, int indexFrame)
 	QTableWidgetItem *i  = takeItem (  indexFrame, indexLayer );
 	if(i)
 	{
-		for(int index = indexFrame+1; index < m_header->lastFrame(indexLayer); index++ )
+		for(int index = indexFrame+1; index < d->header->lastFrame(indexLayer); index++ )
 		{
 			QTableWidgetItem * idx  = takeItem (  index, indexLayer );
 			if(idx)
@@ -518,7 +524,7 @@ void KTExposureTable::removeFrame(int indexLayer, int indexFrame)
 				setItem(index-1, indexLayer, idx);
 			}
 		}
-		m_header->setLastFrame( indexLayer, m_header->lastFrame(indexLayer)-1 );
+		d->header->setLastFrame( indexLayer, d->header->lastFrame(indexLayer)-1 );
 	}
 	setUpdatesEnabled(true);
 }
@@ -537,15 +543,15 @@ void KTExposureTable::moveFrame(  int oldPosLayer, int oldPosFrame, int newPosLa
 
 void KTExposureTable::moveLayer( int oldPosLayer, int newPosLayer )
 {
-	m_header->moveLayer( oldPosLayer, newPosLayer );
+	d->header->moveLayer( oldPosLayer, newPosLayer );
 }
 
 
 void KTExposureTable::emitRequestSetUsedFrame( int indexFrame,  int indexLayer)
 {
-	int visualIndex = m_header->visualIndex ( indexLayer);
+	int visualIndex = d->header->visualIndex ( indexLayer);
 	
-	if(indexFrame == m_header->lastFrame(indexLayer))
+	if(indexFrame == d->header->lastFrame(indexLayer))
 	{
 		emit requestSetUsedFrame(visualIndex, indexFrame);
 		emit requestSelectFrame( visualIndex, indexFrame);
@@ -554,7 +560,7 @@ void KTExposureTable::emitRequestSetUsedFrame( int indexFrame,  int indexLayer)
 
 int KTExposureTable::numUsed() const
 {
-	return m_header->lastFrame( currentColumn() );
+	return d->header->lastFrame( currentColumn() );
 }
 
 bool KTExposureTable::edit( const QModelIndex & index, EditTrigger trigger, QEvent *event )

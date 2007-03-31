@@ -29,14 +29,13 @@ class KTLuminancePicker : public QWidget
 
 	private:
 		enum { foff = 3, coff = 4 }; //frame and contents offset
-		int val;
-		int hue;
-		int sat;
-
+		
+		struct Private;
+		Private *const d;
+		
 		int y2val(int y);
 		int val2y(int val);
 
-		QPixmap *pix;
 };
 
 #endif

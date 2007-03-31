@@ -57,21 +57,8 @@ class KTColorPalette : public KTModuleWidgetBase
 		void parsePaletteFile(const QString &file);
 
 	private:
-		DToolBox *m_centralWidget;
-		
-		KTViewColorCells *m_containerPalette;
-		
-		KTValueColor *m_displayValueColor;
-		KTColorPicker *m_colorPicker;
-		KTLuminancePicker *m_luminancePicker;
-		KTGradientCreator *m_gradientManager;
-		QLineEdit *m_nameColor;
-		DDualColorButton *m_outlineAndFillColors;
-		QBrush m_currentOutlineColor, m_currentFillColor;
-		QComboBox *m_labelType;
-		QSplitter *m_splitter;
-		bool m_flagGradient;
-		TypeBrush m_type;
+		struct Private;
+		Private *const d;
 		
 	private:
 		void setupButtons();

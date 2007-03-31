@@ -45,20 +45,14 @@ Q_OBJECT
 		void save( const QString& path);
 		
 	private:
-		Type m_type;
-		QString m_name;
-		
-		bool m_readOnly;
-		
+		struct Private;
+		Private *const d;
 		
 	protected:
 		void mousePressEvent(QMouseEvent* e);
 		void mouseMoveEvent(QMouseEvent* e);
 		void dragEnterEvent(QDragEnterEvent* e);
 		void dropEvent(QDropEvent* e);
-		
-	private:
-		QPoint m_startDragPosition;
 };
 
 #endif

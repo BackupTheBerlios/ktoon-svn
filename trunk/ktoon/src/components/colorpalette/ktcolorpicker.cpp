@@ -17,10 +17,22 @@ static int pWidth = 100;
 static int pHeight = 80;
 // static int pWidth = 150;
 // static int pHeight = 130;
+
+struct KTColorPicker::Private
+{
+	int hue;
+	int sat;
+	QPixmap *pix;
+	~Private()
+	{
+		delete pix;
+	};
+};
+
+
 QPoint KTColorPicker::colPt()
 { 
-	return QPoint((360-m_hue)*(pWidth-1)/360, (255-m_sat)*(pHeight-1)/255); 
-
+	return QPoint((360-d->hue)*(pWidth-1)/360, (255-d->sat)*(pHeight-1)/255); 
 }
 int KTColorPicker::huePt(const QPoint &pt)
 { 
@@ -37,9 +49,10 @@ void KTColorPicker::setCol(const QPoint &pt)
 	setCol(huePt(pt), satPt(pt)); 
 }
 
-KTColorPicker::KTColorPicker(QWidget* parent) : QFrame(parent)
+KTColorPicker::KTColorPicker(QWidget* parent) : QFrame(parent), d( new Private)
 {
-	m_hue = 0; m_sat = 0;
+	d->hue = 0;
+	d->sat = 0;
 	setCol(150, 255);
 
 	QImage img(pWidth, pHeight, QImage::Format_RGB32);
@@ -55,7 +68,7 @@ KTColorPicker::KTColorPicker(QWidget* parent) : QFrame(parent)
 		}
 	}
     
-	m_pix = new QPixmap(QPixmap::fromImage(img));
+	d->pix = new QPixmap(QPixmap::fromImage(img));
 	setAttribute(Qt::WA_NoSystemBackground);
 	setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed) );
 
@@ -63,8 +76,7 @@ KTColorPicker::KTColorPicker(QWidget* parent) : QFrame(parent)
 
 KTColorPicker::~KTColorPicker()
 {
-	
-	delete m_pix;
+	delete d;
 	DEND;
 }
 
@@ -77,10 +89,10 @@ void KTColorPicker::setCol(int h, int s)
 {
 	int nhue = qMin(qMax(0,h), 359);
 	int nsat = qMin(qMax(0,s), 255);
-	if (nhue == m_hue && nsat == m_sat)
+	if (nhue == d->hue && nsat == d->sat)
 		return;
 	QRect r(colPt(), QSize(20,20));
-	m_hue = nhue; m_sat = nsat;
+	d->hue = nhue; d->sat = nsat;
 	r = r.unite(QRect(colPt(), QSize(20,20)));
 	r.translate(contentsRect().x()-9, contentsRect().y()-9);
     //    update(r);
@@ -90,10 +102,10 @@ void KTColorPicker::setCol(int h, int s)
 void KTColorPicker::setH(int h)
 {
 	int nhue = qMin(qMax(0,h), 359);
-	if (nhue == m_hue )
+	if (nhue == d->hue )
 		return;
 	QRect r(colPt(), QSize(20,20));
-	m_hue = nhue;
+	d->hue = nhue;
 	r = r.unite(QRect(colPt(), QSize(20,20)));
 	r.translate(contentsRect().x()-9, contentsRect().y()-9);
 	repaint(r);
@@ -103,10 +115,10 @@ void KTColorPicker::setH(int h)
 void KTColorPicker::setS(int s)
 {
 	int nsat = qMin(qMax(0,s), 255);
-	if ( nsat == m_sat)
+	if ( nsat == d->sat)
 		return;
 	QRect r(colPt(), QSize(20,20));
-	m_sat = nsat;
+	d->sat = nsat;
 	r = r.unite(QRect(colPt(), QSize(20,20)));
 	r.translate(contentsRect().x()-9, contentsRect().y()-9);
     //    update(r);
@@ -118,14 +130,14 @@ void KTColorPicker::mouseMoveEvent(QMouseEvent *m)
 {
 	QPoint p = m->pos() - contentsRect().topLeft();
 	setCol(p);
-	emit newCol(m_hue, m_sat);
+	emit newCol(d->hue, d->sat);
 }
 
 void KTColorPicker::mousePressEvent(QMouseEvent *m)
 {
 	QPoint p = m->pos() - contentsRect().topLeft();
 	setCol(p);
-	emit newCol(m_hue, m_sat);
+	emit newCol(d->hue, d->sat);
 }
 
 void KTColorPicker::paintEvent(QPaintEvent* )
@@ -134,7 +146,7 @@ void KTColorPicker::paintEvent(QPaintEvent* )
 	drawFrame(&p);
 	QRect r = contentsRect();
 
-	p.drawPixmap(r.topLeft(), *m_pix);
+	p.drawPixmap(r.topLeft(), *d->pix);
 	QPoint pt = colPt() + r.topLeft();
 	p.setPen(Qt::black);
 
@@ -144,10 +156,10 @@ void KTColorPicker::paintEvent(QPaintEvent* )
 
 int KTColorPicker::hue()
 {
-	return m_hue;
+	return d->hue;
 }
 
 int KTColorPicker::sat()
 {
-	return m_sat;
+	return d->sat;
 }

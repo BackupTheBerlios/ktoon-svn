@@ -28,15 +28,15 @@ class KTColorPicker : public QFrame
 		void mousePressEvent(QMouseEvent *);
 
 	private:
-		int m_hue;
-		int m_sat;
-
+		struct Private;
+		Private *const d;
+		
 		QPoint colPt();
 		int huePt(const QPoint &pt);
 		int satPt(const QPoint &pt);
 		void setCol(const QPoint &pt);
 
-		QPixmap *m_pix;
+
 };
 
 #endif

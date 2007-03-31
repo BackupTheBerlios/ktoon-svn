@@ -66,7 +66,8 @@ class KTExposureTable : public QTableWidget
 		void selectFrame( int indexLayer, int indexFrame);
 		
 	private:
-		KTExposureHeader *m_header;
+		struct Private;
+		Private *const d;
 		
 	private slots:
 		void emitRequestSetUsedFrame(int indexFrame,  int indexLayer);
