@@ -57,7 +57,7 @@ class D_GUI_EXPORT DRulerBase : public QFrame
 // 			SC_C           = 5
 // 		};
 		
-		DRulerBase(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0, const char *name = 0);
+		DRulerBase(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0);
 		virtual ~DRulerBase();
 		
 // 		const double unitGetRatioFromIndex(const int index);
@@ -66,26 +66,21 @@ class D_GUI_EXPORT DRulerBase : public QFrame
 		virtual void drawScale(QPainter *painter);
 		Qt::Orientation orientation();
 		
-		QPointF zero() const ;
+		int separation() const;
+		double scaleFactor() const;
+		QPointF zero() const;
+		
+		void translateArrow(double dx, double dy);
 		
 	public slots:
 		void setZeroAt(const QPointF & pos);
+		void scale(double factor);
 		
 	private:
-		int m_position;
-		Qt::Orientation m_orientation;
-		bool m_drawPointer;
-		
-		int m_separation;
-		QMenu *m_menu;
 		enum { ChangeScaleToFive, ChangeScaleToTen  };
 		
-		int m_width, m_height;
-		
-		QPointF m_zero;
-
-	protected:
-		QPolygonF m_pArrow;
+		struct Private;
+		Private *const d;
 		
 	signals:
 		void displayMenu(DRulerBase *, QPoint pos);
