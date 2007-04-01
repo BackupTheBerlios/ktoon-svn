@@ -28,7 +28,7 @@ struct KTDocumentRuler::Private
 	QPoint dragStartPosition;
 };
 
-KTDocumentRuler::KTDocumentRuler(Qt::Orientation orientation, QWidget *parent, const char *name) : DRulerBase(orientation, parent, name), d( new Private)
+KTDocumentRuler::KTDocumentRuler(Qt::Orientation orientation, QWidget *parent) : DRulerBase(orientation, parent), d( new Private)
 {
 	d->oldPos = QPointF(0.0,0.0);
 	setDrawPointer(true);
@@ -37,7 +37,7 @@ KTDocumentRuler::KTDocumentRuler(Qt::Orientation orientation, QWidget *parent, c
 
 KTDocumentRuler::~KTDocumentRuler()
 {
-
+	delete d;
 }
 
 void KTDocumentRuler::mousePressEvent(QMouseEvent *event)
@@ -48,7 +48,6 @@ void KTDocumentRuler::mousePressEvent(QMouseEvent *event)
 
 void KTDocumentRuler::mouseMoveEvent(QMouseEvent *event)
 {
-	
 	if (!(event->buttons() & Qt::LeftButton))
 	{
 		return;
@@ -81,17 +80,20 @@ void KTDocumentRuler::mouseMoveEvent(QMouseEvent *event)
 
 void KTDocumentRuler::movePointers(const QPointF &pos)
 {
+	// FIXME
 	if(orientation() == Qt::Horizontal)
 	{
-		m_pArrow.translate(-d->oldPos.x(), 0);
-		m_pArrow.translate(zero().x() + pos.x(), 0);
+		translateArrow(-d->oldPos.x(), 0);
+		translateArrow(zero().x() + pos.x(), 0);
 	}
 	else if(orientation() == Qt::Vertical)
 	{
-		
-		m_pArrow.translate(0, -d->oldPos.y());
-		m_pArrow.translate(0,zero().y() + pos.y());
+		translateArrow(0, -d->oldPos.y());
+		translateArrow(0,zero().y() + pos.y());
 	}
+	
 	d->oldPos = zero() + pos;
 	repaint();
 }
+
+

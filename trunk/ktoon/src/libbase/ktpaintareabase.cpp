@@ -38,7 +38,7 @@
 #include "ktinputdeviceinformation.h"
 #include "kttextitem.h"
 #include "ktpaintarearotator.h"
-#include "ktscene.h"
+
 #include "ktgraphicsscene.h"
 
 #include <dcore/dconfig.h>
@@ -390,7 +390,7 @@ void KTPaintAreaBase::drawForeground( QPainter *painter, const QRectF &rect )
 
 bool KTPaintAreaBase::canPaint() const
 {
-	return scene() != 0;
+	return d->scene->currentFrame() != 0;
 }
 
 void KTPaintAreaBase::centerDrawingArea()
@@ -433,6 +433,7 @@ void KTPaintAreaBase::scaleView(qreal scaleFactor)
 
 	scale(scaleFactor, scaleFactor);
 	
+	emit scaled(scaleFactor);
 }
 
 void KTPaintAreaBase::setRotationAngle(int angle)

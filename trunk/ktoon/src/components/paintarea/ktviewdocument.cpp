@@ -59,13 +59,15 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	QFrame *frame = new QFrame(this);
 	QGridLayout *layout = new QGridLayout(frame);
 	
-	
 	m_paintArea = new KTPaintArea(project, frame);
+	connect(m_paintArea, SIGNAL(scaled(double)), this, SLOT(scaleRuler(double)));
+	
 	setCentralWidget( frame );
 	
 	layout->addWidget(m_paintArea, 1,1);
 	m_horizontalRuler = new KTDocumentRuler(Qt::Horizontal);
 	m_verticalRuler = new KTDocumentRuler(Qt::Vertical);
+	
 	layout->addWidget(m_horizontalRuler, 0, 1);
 	layout->addWidget(m_verticalRuler, 1, 0);
 	
@@ -96,9 +98,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	
 	connect(m_paintArea, SIGNAL(cursorPosition(const QPointF &)), m_horizontalRuler, SLOT(movePointers(const QPointF&)));
 	
-	connect(m_paintArea, SIGNAL(changedZero(const QPointF&)), m_horizontalRuler, SLOT(setZeroAt(const QPointF&)));
-	
-	connect(m_paintArea, SIGNAL(changedZero(const QPointF&)), m_verticalRuler, SLOT(setZeroAt(const QPointF&)));
+	connect(m_paintArea, SIGNAL(changedZero(const QPointF&)), this, SLOT(changeRulerOrigin(const QPointF&)));
 	
 	connect(m_paintArea, SIGNAL(requestTriggered(const KTProjectRequest* )), this, SIGNAL(requestTriggered(const KTProjectRequest *)));
 	
@@ -907,6 +907,21 @@ void KTViewDocument::setZoomFactor(int /*percent*/)
 	m_zoomFactorSpin->blockSignals(true);
 // 	m_paintArea->setZoomFactor((float) porcent/100);
 	m_zoomFactorSpin->blockSignals(false);
+}
+
+void KTViewDocument::scaleRuler(double factor)
+{
+	double sep = factor * m_verticalRuler->scaleFactor();
+	
+	
+	m_verticalRuler->scale(sep);
+	m_horizontalRuler->scale(sep);
+}
+
+void KTViewDocument::changeRulerOrigin(const QPointF &zero)
+{
+	m_verticalRuler->setZeroAt(zero);
+	m_horizontalRuler->setZeroAt(zero);
 }
 
 // void KTViewDocument::configure()

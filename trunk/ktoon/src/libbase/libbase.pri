@@ -3,5 +3,6 @@ INCLUDEPATH += $$LIBBASE_DIR
 
 LIBS += -L$$LIBBASE_DIR -lktbase
 
-DEPENDPATH += $$LIBBASE_DIR
-
+linux-g++ {
+	TARGETDEPS += $$LIBBASE_DIR/libktbase.so
+}

@@ -138,7 +138,6 @@ LibraryObjects KTLibraryFolder::objects() const
 
 void KTLibraryFolder::fromXml(const QString &xml )
 {
-	dDebug("library") << xml;
 	QDomDocument document;
 	
 	if(! document.setContent(xml) )

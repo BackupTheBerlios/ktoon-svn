@@ -280,7 +280,7 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
 	
 	d->scene = scene;
 	
-// 	drawCurrentPhotogram();
+	drawCurrentPhotogram();
 }
 
 void KTGraphicsScene::setLayerVisible(int layerIndex, bool visible)

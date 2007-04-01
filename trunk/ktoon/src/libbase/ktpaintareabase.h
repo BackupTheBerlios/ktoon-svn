@@ -78,6 +78,7 @@ class KTPaintAreaBase : public QGraphicsView
 		void cursorPosition(const QPointF &pos);
 		void requestTriggered(const KTProjectRequest *event);
 		void changedZero(const QPointF &zero);
+		void scaled(double factor);
 		
 	private:
 		QMouseEvent *mapToArea(QMouseEvent *event) const;

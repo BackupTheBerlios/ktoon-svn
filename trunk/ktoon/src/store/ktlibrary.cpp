@@ -20,9 +20,11 @@
 
 #include "ktlibrary.h"
 
+#include "ktproject.h"
+
 #include <dcore/ddebug.h>
 
-KTLibrary::KTLibrary(const QString &id, QObject *parent) : KTLibraryFolder(id, parent)
+KTLibrary::KTLibrary(const QString &id, KTProject *parent) : KTLibraryFolder(id, parent)
 {
 }
 
@@ -33,8 +35,6 @@ KTLibrary::~KTLibrary()
 
 void KTLibrary::fromXml(const QString &xml )
 {
-	dDebug("library") << "Loading library: " << xml;
-	
 	QDomDocument document;
 	
 	if(! document.setContent(xml) )

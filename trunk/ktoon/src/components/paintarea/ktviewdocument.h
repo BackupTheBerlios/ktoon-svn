@@ -94,6 +94,8 @@ class KTViewDocument : public QMainWindow
 // 		void setScene(KTScene* scene);
 		
 		void setZoomFactor(int porcent);
+		void scaleRuler(double factor);
+		void changeRulerOrigin(const QPointF &zero);
 		
 	private:
 		QActionGroup *m_gridGroup, *m_editGroup, *m_viewNextGroup, *m_viewZoomGroup, *m_viewPreviousGroup;

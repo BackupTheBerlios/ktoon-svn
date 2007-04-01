@@ -81,8 +81,6 @@ QString KTLibraryObject::symbolName() const
 
 void KTLibraryObject::fromXml(const QString &xml )
 {
-	dDebug("library") << "Object: " << xml;
-	
 	QDomDocument document;
 	
 	if(! document.setContent(xml) )

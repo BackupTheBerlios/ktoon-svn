@@ -26,6 +26,8 @@
 #include "ktglobal_store.h"
 #include "ktlibraryfolder.h"
 
+class KTProject;
+
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
@@ -39,7 +41,7 @@ class STORE_EXPORT KTLibrary : public KTLibraryFolder
 			Symbol = 0x01,
 			Folder
 		};
-		KTLibrary(const QString &id, QObject *parent = 0);
+		KTLibrary(const QString &id, KTProject *parent = 0);
 		~KTLibrary();
 		
 	public:

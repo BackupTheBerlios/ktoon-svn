@@ -30,7 +30,7 @@ class KTDocumentRuler : public DRulerBase
 {
 	Q_OBJECT
 	public:
-		KTDocumentRuler(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0, const char *name = 0);
+		KTDocumentRuler(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0);
 		~KTDocumentRuler();
 		
 		
