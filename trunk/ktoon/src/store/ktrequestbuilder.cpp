@@ -241,6 +241,11 @@ KTProjectRequest KTRequestBuilder::fromResponse(KTProjectResponse *response)
 			request = KTRequestBuilder::createSceneRequest( static_cast<KTSceneResponse*> ( response)->sceneIndex(), response->action(), response->arg().toString(), response->data());
 		}
 		break;
+		case KTProjectRequest::Library:
+		{
+			request = KTRequestBuilder::createLibraryRequest( response->action(), response->arg().toString(), response->data(), static_cast<KTLibraryResponse*>(response)->symtype(), static_cast<KTLibraryResponse*>(response)->sceneIndex(), static_cast<KTLibraryResponse*>(response)->layerIndex(), static_cast<KTLibraryResponse*>(response)->frameIndex() );
+		}
+		break;
 		default:
 		{
 			dWarning() << "Unknown response";

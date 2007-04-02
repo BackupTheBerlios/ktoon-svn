@@ -21,8 +21,7 @@
 #include "ktgradientcreator.h"
 
 #include <dcore/ddebug.h>
-#include "dgui/dapplication.h"
-#include "dgui/dvhbox.h"
+#include <dgui/dapplication.h>
 
 #include <QBoxLayout>
 

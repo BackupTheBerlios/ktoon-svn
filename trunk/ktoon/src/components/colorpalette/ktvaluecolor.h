@@ -25,7 +25,6 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QSpinBox>
-#include <dgui/deditspinbox.h>
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>

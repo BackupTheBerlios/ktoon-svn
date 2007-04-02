@@ -21,10 +21,10 @@
 #ifndef KTVIEWCAMERA_H
 #define KTVIEWCAMERA_H
 
-#include <dgui/dmdiwindow.h>
 #include <dgui/dcirclebuttonbar.h>
 #include <dgui/dvhbox.h>
 
+#include <QMainWindow>
 #include "ktanimationarea.h"
 #include "ktcamerabar.h"
 

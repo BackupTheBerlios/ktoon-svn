@@ -14,7 +14,6 @@ HEADERS += ktgraphicalgorithm.h \
            ktgradientcreator.h \
            ktgradientselector.h \
            ktgradientviewer.h \
-           ktgraphicelement.h \
            ktpackagehandler.h \
            ktprojectactionbar.h \
            ktbrushmanager.h \
@@ -30,7 +29,6 @@ SOURCES += ktgraphicalgorithm.cpp \
            ktgradientcreator.cpp \
            ktgradientselector.cpp \
            ktgradientviewer.cpp \
-           ktgraphicelement.cpp \
            ktpackagehandler.cpp \
            ktprojectactionbar.cpp \
            ktbrushmanager.cpp \
@@ -41,8 +39,6 @@ SOURCES += ktgraphicalgorithm.cpp \
            ktsocketbase.cpp \
            ktxmlparserbase.cpp \
            ktproxyitem.cpp
-
-
 DLIB_DIR = "../../src/dlib"
 
 include($$DLIB_DIR/dlib.pri)

@@ -26,10 +26,9 @@
 #include "ktgradientselector.h"
 #include "ktgradientviewer.h"
 
-#include "dgui/deditspinbox.h"
-#include "dgui/dimagebutton.h"
-#include "dgui/dcirclebutton.h"
-#include "dgui/dxyspinbox.h"
+#include <dgui/dimagebutton.h>
+#include <dgui/dcirclebutton.h>
+#include <dgui/dxyspinbox.h>
 
 #include <QFrame>
 

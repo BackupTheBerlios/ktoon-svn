@@ -28,7 +28,6 @@
 #include "ktgraphicsscene.h"
 
 #include <dcore/ddebug.h>
-#include <dcore/dgradientadjuster.h>
 
 struct KTAnimationArea::Private
 {

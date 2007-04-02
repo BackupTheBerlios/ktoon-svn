@@ -22,7 +22,6 @@
 #include <QPainter>
 #include <dcore/ddebug.h>
 
-#include "dcore/dgradientadjuster.h"
 #include <QMouseEvent>
 #include <QRectF>
 

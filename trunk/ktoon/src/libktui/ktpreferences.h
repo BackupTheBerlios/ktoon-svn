@@ -33,7 +33,6 @@
 #include <dgui/dfontchooser.h>
 #include <dgui/dtabdialog.h>
 #include <dgui/dconfigurationdialog.h>
-#include <dgui/dflatbutton.h>
 
 #include "ktthemeselector.h"
 #include "ktglobal.h"

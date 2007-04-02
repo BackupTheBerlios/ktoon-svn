@@ -26,7 +26,6 @@
 
 
 #include <dcore/dglobal.h>
-#include <dcore/dgradientadjuster.h>
 #include <dcore/ddebug.h>
 
 #include "ktrectitem.h"
