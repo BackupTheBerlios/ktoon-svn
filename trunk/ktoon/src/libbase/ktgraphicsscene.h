@@ -23,6 +23,8 @@
 
 #include <QGraphicsScene>
 
+#include "ktglobal.h"
+
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
 */
@@ -34,7 +36,7 @@ class KTBrushManager;
 class QMouseEvent;
 class KTItemResponse;
 
-class KTGraphicsScene : public QGraphicsScene
+class KTOON_EXPORT KTGraphicsScene : public QGraphicsScene
 {
 	public:
 		KTGraphicsScene();

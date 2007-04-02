@@ -26,6 +26,7 @@
 #include <QGraphicsView>
 #include <kttoolplugin.h>
 
+#include "ktglobal.h"
 
 class QGraphicsRectItem;
 class KTBrushManager;
@@ -37,7 +38,7 @@ class KTPaintAreaRotator;
  * Esta clase provee un area para realizar diferentes trazos
  * @author Jorge Cuadrado \<kuadrosx@toonka.com\> - David Cuadrado \<krawek@toonka.com\>
 */
-class KTPaintAreaBase : public QGraphicsView
+class KTOON_EXPORT KTPaintAreaBase : public QGraphicsView
 {
 	Q_OBJECT;
 	public:

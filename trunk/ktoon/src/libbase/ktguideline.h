@@ -22,12 +22,12 @@
 #define KTLINEGUIDE_H
 
 #include <QGraphicsItem>
-
+#include "ktglobal.h"
 
 /**
  * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
 */
-class KTLineGuide : public QGraphicsItem
+class KTOON_EXPORT KTLineGuide : public QGraphicsItem
 {
 	public:
 		KTLineGuide(Qt::Orientation o, QGraphicsScene *scene);

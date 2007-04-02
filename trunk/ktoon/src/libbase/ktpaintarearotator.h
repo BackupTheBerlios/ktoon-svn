@@ -22,13 +22,14 @@
 #define KTPAINTAREAROTATOR_H
 
 #include <QObject>
+#include "ktglobal.h"
 
 class KTPaintAreaBase;
 
 /**
 	@author David Cuadrado <krawek@gmail.com>
 */
-class KTPaintAreaRotator : public QObject
+class KTOON_EXPORT KTPaintAreaRotator : public QObject
 {
 	Q_OBJECT;
 	public:

@@ -282,8 +282,6 @@ void Select::itemResponse(const KTItemResponse *event)
 
 void Select::syncNodes()
 {
-	D_FUNCINFOX("tools");
-	
 	foreach(NodeManager* node, m_nodeManagers)
 	{
 		if(node)

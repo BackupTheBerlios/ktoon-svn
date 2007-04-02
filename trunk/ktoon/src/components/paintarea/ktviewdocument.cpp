@@ -102,7 +102,6 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	
 	connect(m_paintArea, SIGNAL(requestTriggered(const KTProjectRequest* )), this, SIGNAL(requestTriggered(const KTProjectRequest *)));
 	
-	QTimer::singleShot(0, this, SLOT(loadPlugins()));
 	createActions();
 	setupEditActions();
 	setupViewActions();
@@ -120,6 +119,8 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	connect(m_paintArea->brushManager(), SIGNAL(brushChanged( const QBrush& )), status, SLOT(setBrush(const QBrush &)));
 	
 	connect(m_paintArea->brushManager(), SIGNAL(penChanged( const QPen& )), status, SLOT(setPen(const QPen &)));
+	
+	QTimer::singleShot(1000, this, SLOT(loadPlugins()));
 }
 
 KTViewDocument::~KTViewDocument()
@@ -911,11 +912,11 @@ void KTViewDocument::setZoomFactor(int /*percent*/)
 
 void KTViewDocument::scaleRuler(double factor)
 {
+#if 0
 	double sep = factor * m_verticalRuler->scaleFactor();
-	
-	
 	m_verticalRuler->scale(sep);
 	m_horizontalRuler->scale(sep);
+#endif
 }
 
 void KTViewDocument::changeRulerOrigin(const QPointF &zero)

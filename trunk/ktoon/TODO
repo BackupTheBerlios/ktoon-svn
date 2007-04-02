@@ -7,7 +7,7 @@
 		- Normal(flip)
 	
 	* de Trazo
-		- Polyline
+		- Polyline +
 		- Trazado de Bitmaps(seguir patrones, por ejemplo de color)
 
 - Filtros >Despues<
@@ -16,10 +16,10 @@
 - Componentes GUI -
 	* Sonido
 	* PaintArea
-		- Reglas
-		- Lineas de ayuda
+		- Reglas +
+		- Lineas de ayuda +
 	* Tweening
-	* Library(No olvidar soporte para red)
+	* Library(No olvidar soporte para red) +
 
 
 - Store -
