@@ -29,7 +29,6 @@
 #include <QTimer>
 
 #include "ddebug.h"
-#include "dgradientadjuster.h"
 
 
 ////////// DCellViewItemDelegate ///////////
@@ -77,8 +76,13 @@ void DCellViewItemDelegate::paint ( QPainter * painter, const QStyleOptionViewIt
 		
 		if ( brush.gradient() )
 		{
-			QGradient newGradient = DGradientAdjuster::adjustGradient( brush.gradient(), option.rect);
-			painter->fillRect(option.rect, QBrush(newGradient));
+			QMatrix m;
+			m.translate(option.rect.topLeft().x(), option.rect.topLeft().y());
+			m.scale((float)(option.rect.width())/100.0 , (float)(option.rect.height())/100.0 );
+			
+			brush.setMatrix(m);
+			
+			painter->fillRect(option.rect, brush);
 		}
 		else
 		{

@@ -13,7 +13,6 @@ HEADERS += danimwidget.h \
            dcellview.h \
            dcolorbutton.h \
            dconfigurationdialog.h \
-           ddisplaypath.h \
            deditspinbox.h \
            delabel.h \
            dflatbutton.h \
@@ -34,7 +33,6 @@ HEADERS += danimwidget.h \
            daction.h \
            dactionmanager.h \
            dmainwindow.h \
-           dmdiwindow.h \
            ddatepicker.h \
            ddatetable.h \
            dthemedocument.h \
@@ -70,13 +68,14 @@ HEADERS += danimwidget.h \
            dstackedmainwindow.h \
            dworkspacemainwindow.h \
            dcontrolnode.h \
-           dnodegroup.h  
+           dnodegroup.h   \
+           dpathhandler.h \
+           dimageeffect.h
 SOURCES += danimwidget.cpp \
            dapplication.cpp \
            dcellview.cpp \
            dcolorbutton.cpp \
            dconfigurationdialog.cpp \
-           ddisplaypath.cpp \
            deditspinbox.cpp \
            delabel.cpp \
            dflatbutton.cpp \
@@ -98,7 +97,6 @@ SOURCES += danimwidget.cpp \
            daction.cpp \
            dactionmanager.cpp \
            dmainwindow.cpp \
-           dmdiwindow.cpp \
            ddatepicker.cpp \
            ddatetable.cpp \
            dthemedocument.cpp \
@@ -123,7 +121,6 @@ SOURCES += danimwidget.cpp \
            dterm.cpp \
            dtermtab.cpp \
            dflashwidget.cpp \
-           ddualcolorbutton.cpp \
            dbuttonbar.cpp \
            dtabbedmainwindow.cpp \
            dtoolview.cpp \
@@ -133,7 +130,10 @@ SOURCES += danimwidget.cpp \
            dstackedmainwindow.cpp \
            dworkspacemainwindow.cpp \
            dcontrolnode.cpp \
-           dnodegroup.cpp  
+           dnodegroup.cpp   \
+           dpathhandler.cpp \
+           dimageeffect.cpp \
+           ddualcolorbutton.cpp
 DEFINES += DLIB_GUI
 RESOURCES += dgui_images.qrc
 QT += xml

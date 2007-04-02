@@ -12,37 +12,29 @@ include.files += *.h
 include.path = /include/dcore 
 
 HEADERS += dalgorithm.h \
-           dbrushadjuster.h \
            dconfig.h \
            ddebug.h \
            dmd5hash.h \
            dapplicationproperties.h \
            dglobal.h \
-           dgradientadjuster.h \
            dtipdatabase.h \
            daspellchecker.h \
            dspellinterface.h \
            dcpuinfo.h \
-           dimageeffect.h \
            dspeller.h \
            dspellhighlighter.h \
-           dpathhandler.h \
            dfortunegenerator.h \
            dxmlparserbase.h
 SOURCES += dalgorithm.cpp \
-           dbrushadjuster.cpp \
            dconfig.cpp \
            ddebug.cpp \
-           dgradientadjuster.cpp \
            dmd5hash.cpp \
            dapplicationproperties.cpp \
            dtipdatabase.cpp \
            daspellchecker.cpp \
            dcpuinfo.cpp \
-           dimageeffect.cpp \
            dspeller.cpp \
            dspellhighlighter.cpp \
-           dpathhandler.cpp \
            dfortunegenerator.cpp \
            dxmlparserbase.cpp
 DEFINES += DLIB_CORE

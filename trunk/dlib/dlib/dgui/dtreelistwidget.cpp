@@ -102,7 +102,7 @@ void DTreeListWidget::addItems(const QStringList &items)
 QList<QTreeWidgetItem *> DTreeListWidget::topLevelItems()
 {
 	QList<QTreeWidgetItem *> items;
-	for ( uint i = 0; i < topLevelItemCount (); i++ )
+	for ( int i = 0; i < topLevelItemCount (); i++ )
 	{
 		items << topLevelItem(i);
 	}

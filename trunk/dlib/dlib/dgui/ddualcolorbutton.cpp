@@ -35,7 +35,6 @@
 #include <QApplication>
 
 #include "ddebug.h"
-#include "dbrushadjuster.h"
 
 DDualColorButton::DDualColorButton( QWidget *parent ) : QWidget( parent )
 {
@@ -159,9 +158,20 @@ void DDualColorButton::paintEvent(QPaintEvent *)
 	metrics(fgRect, bgRect);
 	QBrush defBrush = pal.color(QPalette::Button);
 	
+	QBrush bgAdjusted = bg;
+	QBrush fgAdjusted = fg;
 	
-	qDrawShadeRect(&p, bgRect, pal, curColor == Background, 2, 0, isEnabled() ? &DBrushAdjuster::adjustBrush(bg, bgRect) : &defBrush);
-	qDrawShadeRect(&p, fgRect,  pal, curColor == Foreground, 2, 0, isEnabled() ? &DBrushAdjuster::adjustBrush(fg, fgRect) : &defBrush);
+	QMatrix m;
+	m.scale( (float)(bgRect.width()) / 100.0, (float)(bgRect.height()) / 100.0);
+	bgAdjusted.setMatrix(m);
+	
+	m.reset();
+	m.scale( (float)(fgRect.width()) / 100.0, (float)(fgRect.height()) / 100.0);
+	fgAdjusted.setMatrix(m);
+	
+	
+	qDrawShadeRect(&p, bgRect, pal, curColor == Background, 2, 0, isEnabled() ? & bgAdjusted: &defBrush);
+	qDrawShadeRect(&p, fgRect,  pal, curColor == Foreground, 2, 0, isEnabled() ? &fgAdjusted : &defBrush);
 	p.setPen(QPen(palette().shadow().color()));
 	
 	p.drawPixmap(fgRect.right()+2, 0, *arrowBitmap);
@@ -280,7 +290,7 @@ void DDualColorButton::mouseMoveEvent(QMouseEvent* ev)
 	drag->setMimeData(mimeData);
 	drag->setPixmap( pix );
 	
-	Qt::DropAction dropAction = drag->start(Qt::MoveAction);
+	/*Qt::DropAction dropAction = */drag->start(Qt::MoveAction);
 }
 
 

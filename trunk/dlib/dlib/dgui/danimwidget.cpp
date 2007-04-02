@@ -107,13 +107,13 @@ void DAnimWidget::hideEvent ( QHideEvent *e)
 	QWidget::hideEvent ( e);
 }
 
-void DAnimWidget::timerEvent(QTimerEvent *e)
+void DAnimWidget::timerEvent(QTimerEvent *)
 {
 	switch(m_type)
 	{
 		case AnimText:
 		{
-			int yPos = m_textRect.y() - 1;
+			int yPos = (int)( m_textRect.y() - 1);
 			m_textRect.setY( yPos );
 		}
 		break;

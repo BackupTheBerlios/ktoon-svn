@@ -95,7 +95,7 @@ void DThemeDocument::addTextEffect(ThemeKey tk)
 	QDomElement general = createElement("TextEffects");
 	QStringList keys = tk.keys();
 	QStringList values = tk.values();
-	for(uint i = 0; i < keys.count(); i++)
+	for(int i = 0; i < keys.count(); i++)
 	{
 		QDomElement e = createElement(keys[i]);
 		e.setAttribute("color", values[i]);

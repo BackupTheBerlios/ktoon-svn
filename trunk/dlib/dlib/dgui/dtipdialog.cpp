@@ -20,7 +20,6 @@
 
 #include "dtipdialog.h"
 
-#include "dalgorithm.h"
 
 #include <QVBoxLayout>
 

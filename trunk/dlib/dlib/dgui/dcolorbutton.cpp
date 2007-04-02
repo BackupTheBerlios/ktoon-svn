@@ -93,7 +93,7 @@ QSize DColorButton::minimumSizeHint() const
 /*
  * Draws the button.
  */
-void DColorButton::paintEvent(QPaintEvent *e)
+void DColorButton::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
 	
@@ -164,7 +164,7 @@ void DColorButton::mouseMoveEvent(QMouseEvent* e)
 	drag->setMimeData(mimeData);
 	drag->setPixmap( pix );
 		
-	Qt::DropAction dropAction = drag->start(Qt::MoveAction);
+	/*Qt::DropAction dropAction = */drag->start(Qt::MoveAction);
 
 }
 

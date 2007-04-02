@@ -37,7 +37,7 @@ DFlatButton::~DFlatButton()
 {
 }
 
-void DFlatButton::paintEvent(QPaintEvent *e)
+void DFlatButton::paintEvent(QPaintEvent *)
 {
 	QRect rect = contentsRect();
 	
