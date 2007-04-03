@@ -21,7 +21,12 @@
 #include "ktvaluecolor.h"
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QCheckBox>
+#include <QDoubleSpinBox>
+
 #include <dcore/ddebug.h>
+
+#include <cmath>
 
 struct KTItemValueColor::Private
 {
@@ -47,6 +52,7 @@ KTItemValueColor::KTItemValueColor( const QString &text, QWidget *parent ) :QFra
 // 	d->value->setSizePolicy ( QSizePolicy::Fixed,  QSizePolicy::Fixed);
 	connect(d->value, SIGNAL(valueChanged( int)) , this, SIGNAL(valueChanged( int)));
 	connect(d->value, SIGNAL(valueChanged( const QString &)) , this, SIGNAL(valueChanged( const QString &)));
+	connect(d->value, SIGNAL(editingFinished()), this, SIGNAL(editingFinished()));
 	layout->addWidget(labelText);
 	layout->addWidget(d->value);
 }
@@ -71,11 +77,23 @@ void KTItemValueColor::setMax(int max)
 	d->value->setMaximum( max );
 }
 
+
+
+void KTItemValueColor::setRange(int minimum, int maximum)
+{
+	d->value->setRange( minimum, maximum );
+}
+
+void KTItemValueColor::setSuffix(const QString &suffix )
+{
+	d->value->setSuffix(suffix);
+}
+
 struct KTValueColor::Private
 {
-	KTItemValueColor *valueR, *valueG, *valueB, *valueH, *valueS, *valueV, *valueA;
+	KTItemValueColor *valueR, *valueG, *valueB, *valueH, *valueS, *valueV; QDoubleSpinBox *valueA;
 	QGridLayout *layout;
-	bool ok;
+	bool ok, percent;
 };
 
 KTValueColor::KTValueColor(QWidget *parent) : QFrame(parent), d(new Private)
@@ -83,9 +101,9 @@ KTValueColor::KTValueColor(QWidget *parent) : QFrame(parent), d(new Private)
 	DINIT;
 	d->ok = true;
 	d->layout = new QGridLayout;
-	d->layout->setSpacing(5);
-	d->layout->setMargin(10);
 	setLayout(d->layout);
+// 	d->layout->setSizeConstraint(QLayout::SetFixedSize);
+	d->layout->setSizeConstraint(QLayout::SetNoConstraint);
 	setupForm();
 }
 
@@ -99,19 +117,18 @@ void KTValueColor::setupForm()
 {
 	d->valueR = new KTItemValueColor("R", this);
 // 	d->valueR = new DEditSpinBox(0, 0, 255, 1, "R", this);
-	connect(d->valueR, SIGNAL(valueChanged(int)), this, SLOT(syncValuesRgb(int)));
+	connect(d->valueR, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
 	
 	d->valueG = new KTItemValueColor("G", this);
 // 	d->valueG = new DEditSpinBox(0, 0, 255, 1,"G", this);
-	connect(d->valueG, SIGNAL(valueChanged(int)), this, SLOT(syncValuesRgb(int)));
+	connect(d->valueG, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
 	
 	d->valueB = new KTItemValueColor("B", this);
 // 	d->valueB = new DEditSpinBox(0, 0, 255, 1,"B", this);
-	connect(d->valueB, SIGNAL(valueChanged(int)), this, SLOT(syncValuesRgb(int)));
+	connect(d->valueB, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
 	
 	d->valueH = new KTItemValueColor("H", this);
 // 	d->valueH = new DEditSpinBox(0, 0, 359, 1,"H", this);
-	
 	d->valueH->setMax(359);
 	connect(d->valueH, SIGNAL(valueChanged(int)), this, SIGNAL(hueChanged(int)));
 	
@@ -123,32 +140,74 @@ void KTValueColor::setupForm()
 // 	d->valueV = new DEditSpinBox(0, 0, 255, 1,"V", this);
 	connect(d->valueV, SIGNAL(valueChanged(int)), this, SIGNAL(valueChanged( int)));
 	
-	d->valueA = new KTItemValueColor("A", this);
-// 	d->valueA = new DEditSpinBox(0, 0, 255, 1,"A", this);
-	connect(d->valueA, SIGNAL(valueChanged(int)), this, SLOT(syncValuesRgb( int)));
+	QHBoxLayout *layout = new QHBoxLayout;
 	
-// 	d->layout->setSizeConstraint(QLayout::SetFixedSize);
+	d->valueA = new QDoubleSpinBox(/*"A",*/ this);
+	d->valueA->setDecimals(0);
+	d->valueA->setRange(0, 255.0);
+	d->valueA->setValue(255.0);
+	layout->addWidget(new QLabel("A"));
+	layout->addWidget(d->valueA);
+	
+// 	d->valueA->setValue(255);
+// 	d->valueA = new DEditSpinBox(0, 0, 255, 1,"A", this);
+	connect(d->valueA, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
+// 	editingFinished ()
+	QCheckBox *show = new QCheckBox(tr("percent"));
+	
 	d->layout->addWidget(d->valueR, 0, 0,Qt::AlignTop | Qt::AlignLeft);
 	d->layout->addWidget(d->valueG, 1, 0,Qt::AlignTop | Qt::AlignLeft);
 	d->layout->addWidget(d->valueB, 2, 0,Qt::AlignTop | Qt::AlignLeft);
 	d->layout->addWidget(d->valueH, 0, 1,Qt::AlignTop | Qt::AlignLeft);
 	d->layout->addWidget(d->valueS, 1, 1,Qt::AlignTop | Qt::AlignLeft);
 	d->layout->addWidget(d->valueV, 2, 1,Qt::AlignTop | Qt::AlignLeft);
-	d->layout->addWidget(d->valueA, 3, 0,Qt::AlignTop | Qt::AlignLeft);
+	d->layout->addLayout(layout, 3, 0,Qt::AlignTop | Qt::AlignLeft);
+	d->layout->addWidget(show, 3,1 ,Qt::AlignTop | Qt::AlignLeft);
+	connect(show, SIGNAL(toggled( bool )), this, SLOT(setAlfaValuePercent( bool )));
+	
 }
 
 void KTValueColor::setColor(const QBrush &brush)
 {
 	QColor color = brush.color();
 	d->ok = false;
-	d->valueR->setValue( color.red());
-	d->valueG->setValue( color.green());
-	d->valueB->setValue( color.blue());
-	d->valueH->setValue( color.hue ());
-	d->valueS->setValue( color.saturation());
-	d->valueV->setValue( color.value ());
-	d->valueA->setValue( color.alpha ());
+	d->valueR->setValue(color.red());
+	d->valueG->setValue(color.green());
+	d->valueB->setValue(color.blue());
+	d->valueH->setValue(color.hue ());
+	d->valueS->setValue(color.saturation());
+	d->valueV->setValue(color.value ());
+	
+	if(d->percent)
+	{
+		d->valueA->setValue( ::ceil((color.alpha()/255.0)*100) );
+	}
+	else
+	{
+		d->valueA->setValue( color.alpha());
+	}
+	
 	d->ok = true;
+}
+
+
+void KTValueColor::setAlfaValuePercent(bool enable)
+{
+	d->percent = enable;
+	if(enable)
+	{
+		d->valueA->setDecimals(2);
+		d->valueA->setValue( ((d->valueA->value()/255.0)*100) );
+		d->valueA->setRange( 0.0, 100.0 );
+		d->valueA->adjustSize();
+		adjustSize();
+	}
+	else
+	{
+		d->valueA->setRange ( 0.0, 255.0 );
+		d->valueA->setValue((d->valueA->value()*255.0)/100);
+		d->valueA->setDecimals(0);
+	}
 }
 
 void KTValueColor::syncValuesRgb(int)
@@ -158,8 +217,15 @@ void KTValueColor::syncValuesRgb(int)
 		int r = d->valueR->value();
 		int g = d->valueG->value();
 		int b = d->valueB->value();
-		int a = d->valueA->value();
-		
+		int a = 0;
+		if(d->percent)
+		{
+			a = (int) ((d->valueA->value()*255.0)/100);
+		}
+		else
+		{
+			a = (int) d->valueA->value();
+		}
 		QColor tmp = QColor::fromRgb(r,g,b,a);
 		d->valueH->setValue( tmp.hue ());
 		d->valueS->setValue( tmp.saturation());
@@ -185,5 +251,9 @@ int KTValueColor::value()
 
 int KTValueColor::alpha()
 {
-	return d->valueA->value();
+	if(d->percent)
+	{
+		return (int) ((d->valueA->value()*255.0)/100);
+	}
+	return (int)d->valueA->value();
 }

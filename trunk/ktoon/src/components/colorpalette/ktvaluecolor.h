@@ -39,6 +39,8 @@ class KTItemValueColor : public QFrame
 		~KTItemValueColor();
 		int  value();
 		void setMax(int);
+		void setRange(int minimum, int maximum);
+		void setSuffix(const QString &suffix );
 		
 	private:
 		struct Private;
@@ -50,6 +52,7 @@ class KTItemValueColor : public QFrame
 	signals:
 		void valueChanged ( int i );
 		void valueChanged ( const QString & text );
+		void editingFinished();
 };
 
 class KTValueColor : public QFrame
@@ -73,9 +76,10 @@ class KTValueColor : public QFrame
 		
 	public slots:
 		void setColor(const QBrush & brush);
+		void setAlfaValuePercent(bool enable);
 		
 	private slots:
-		void syncValuesRgb(int value);
+		void syncValuesRgb(int value = 0);
 		
 	signals:
 		void brushChanged(const QBrush &);
