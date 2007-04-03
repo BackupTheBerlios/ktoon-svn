@@ -18,55 +18,53 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTITEMTWEENER_H
-#define KTITEMTWEENER_H
+#ifndef KTTWEENERSTEP_H
+#define KTTWEENERSTEP_H
 
-#include <QObject>
-#include <QMatrix>
+#include <ktabstractserializable.h>
 #include <QPointF>
 
-#include "kttweenerstep.h"
 #include "ktglobal_store.h"
 
-class QGraphicsItem;
-
 /**
- * @todo - setColorAt, setZAt
  * @author David Cuadrado \<krawek@gmail.com\>
 */
-
-class STORE_EXPORT KTItemTweener : public QObject
+class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
 {
 	public:
-		KTItemTweener(int frames, QObject *parent = 0);
-		~KTItemTweener();
+		enum Type {
+			None = 0x0,
+			Position = 0x01,
+			Translation = 0x02,
+			Rotation = 0x04,
+			Shear = 0x8,
+			Scale = 0x10
+		};
 		
-		double horizontalScaleAt( int step ) const;
-		double horizontalShearAt( int step ) const;
+		KTTweenerStep(int n);
+		~KTTweenerStep();
 		
-		void setItem( QGraphicsItem * item );
-		void setPosAt( int step, const QPointF & point );
-		void setRotationAt( int step, double angle );
-		void setScaleAt( int step, double sx, double sy );
-		void setShearAt( int step, double sh, double sv );
-		void setTranslationAt( int step, double dx, double dy );
+		void setPosition(const QPointF &pos);
+		void setTranslation(double dx, double dy);
+		void setRotation(double angle);
+		void setShear(double sh, double sv);
+		void setScale(double sx, double sy);
 		
-		QMatrix matrixAt( int step ) const;
-		QPointF posAt( int step ) const;
-		double rotationAt( int step ) const;
-		double verticalScaleAt( int step ) const;
-		double verticalShearAt( int step ) const;
-		double xTranslationAt( int step ) const;
-		double yTranslationAt( int step ) const;
+		QPointF position() const;
+		double horizontalScale() const;
+		double verticalScale() const;
+		double horizontalShear() const;
+		double verticalShear() const;
+		double rotation() const;
+		double xTranslation() const;
+		double yTranslation() const;
 		
-		void setStep(const KTTweenerStep &step);
 		
-		QGraphicsItem *item() const;
-		
-		void setFrames(int frames);
-		int frames() const;
-		
-		void setStep( int step );
+		bool has(Type type) const;
+		int n() const;
+	
+		virtual QDomElement toXml(QDomDocument& doc) const;
+		virtual void fromXml(const QString& xml);
 		
 	private:
 		struct Private;
@@ -74,5 +72,3 @@ class STORE_EXPORT KTItemTweener : public QObject
 };
 
 #endif
-
-

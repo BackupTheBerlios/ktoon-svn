@@ -55,6 +55,11 @@ KTGraphicObject::~KTGraphicObject()
 		scene->removeItem(d->item);
 	}
 	
+	if(d->tweener)
+	{
+		d->frame->scene()->removeTweeningObject(this);
+	}
+	
 	delete d->item;
 	delete d;
 }

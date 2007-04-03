@@ -46,7 +46,8 @@ HEADERS += ktlayer.h \
            ktprojectloader.h \
            kthandlerlocalrequest.h \
            ktgraphiclibraryitem.h \
-           ktitemtweener.h
+           ktitemtweener.h \
+           kttweenerstep.h
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -87,7 +88,8 @@ SOURCES += ktlayer.cpp \
            ktprojectloader.cpp \
            kthandlerlocalrequest.cpp \
            ktgraphiclibraryitem.cpp \
-           ktitemtweener.cpp
+           ktitemtweener.cpp \
+           kttweenerstep.cpp
 STORE_DIR = ../../src/store
 
 LIBKTOON_DIR = ../../src/libktoon

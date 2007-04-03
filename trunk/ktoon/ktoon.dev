@@ -9,9 +9,9 @@ export QT_NO_GLIB=1
 if [ "$1" == "-g" ]
 then
 	shift 1
-	$BASE/bin/ktoon.bin $*
-else
 	gdb -ex run -ex bt --batch --args $BASE/bin/ktoon.bin "$*"
+else
+	$BASE/bin/ktoon.bin $*
 fi
 
 

@@ -265,7 +265,7 @@ void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )
 	{
 		setUpdatesEnabled(false);
 		
-		setDragMode (QGraphicsView::NoDrag);
+		setDragMode(QGraphicsView::NoDrag);
 		
 		QPointF p1 = event->pos();
 		QPointF p2 = d->drawingRect.center();
