@@ -42,6 +42,7 @@ class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
 		};
 		
 		KTTweenerStep(int n);
+		
 		~KTTweenerStep();
 		
 		void setPosition(const QPointF &pos);

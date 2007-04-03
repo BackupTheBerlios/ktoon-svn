@@ -34,6 +34,9 @@
 #include "ktitemfactory.h"
 #include "ktprojectresponse.h"
 #include "ktproxyitem.h"
+#include "kttweenerstep.h"
+#include "ktitemtweener.h"
+#include "ktgraphicobject.h"
 
 #include <dcore/ddebug.h>
 
@@ -477,4 +480,78 @@ bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 	}
 	return false;
 }
+
+
+bool KTCommandExecutor::createTweening(KTItemResponse *response)
+{
+	response->setAction(KTProjectRequest::Tweening);
+	
+	int scenePosition = response->sceneIndex();
+	int layerPosition = response->layerIndex();
+	int framePosition = response->frameIndex();
+	int position = response->itemIndex();
+	
+	QString xml = response->arg().toString();
+	
+	KTScene *scene = m_project->scene(scenePosition);
+	
+	if ( scene )
+	{
+		KTLayer *layer = scene->layer( layerPosition );
+		if ( layer )
+		{
+			KTFrame *frame = layer->frame( framePosition );
+			if ( frame )
+			{
+				KTGraphicObject *object = frame->graphic(position);
+				
+				QDomDocument doc;
+				if( doc.setContent(xml) )
+				{
+					QVector<KTTweenerStep *> steps;
+					
+					QDomElement root = doc.documentElement();
+					
+					QDomNode n = root.firstChild();
+					
+					while( !n.isNull() )
+					{
+						QDomElement e = n.toElement();
+						
+						if(!e.isNull())
+						{
+							if( e.tagName() == "step" )
+							{
+								QDomDocument stepDoc;
+								stepDoc.appendChild(stepDoc.importNode(n, true));
+								
+								KTTweenerStep *step = new KTTweenerStep(0);
+								step->fromXml(stepDoc.toString(0));
+								
+								steps << step;
+							}
+						}
+					}
+					
+					KTItemTweener *tweener = new KTItemTweener(steps.count(), object);
+					
+					foreach(KTTweenerStep *step, steps)
+					{
+						tweener->addStep(*step);
+					}
+					
+					object->setTweener(tweener);
+					
+					qDeleteAll(steps);
+					steps.clear();
+					
+					return true;
+				}
+			}
+		}
+	}
+	
+	return false;
+}
+
 

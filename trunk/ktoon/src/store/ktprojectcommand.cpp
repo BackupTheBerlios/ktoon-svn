@@ -592,6 +592,11 @@ void KTProjectCommand::itemCommand(bool redo)
 				d->executor->ungroupItems(response);
 			}
 			break;
+			case KTProjectRequest::Tweening:
+			{
+				d->executor->createTweening(response);
+			}
+			break;
 			default: break;
 		}
 	}

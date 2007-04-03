@@ -92,6 +92,8 @@ class KTCommandExecutor : public QObject
 		bool addSymbolToProject(KTLibraryResponse *response);
 		bool removeSymbolFromProject(KTLibraryResponse *response);
 		
+		bool createTweening(KTItemResponse *response);
+		
 	signals:
 		void responsed(KTProjectResponse *response);
 		

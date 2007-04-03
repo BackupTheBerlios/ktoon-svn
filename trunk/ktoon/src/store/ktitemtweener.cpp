@@ -146,7 +146,7 @@ double KTItemTweener::yTranslationAt( int step ) const
 	return d->animation->yTranslationAt(step / (double)d->frames);
 }
 
-void KTItemTweener::setStep(const KTTweenerStep &step)
+void KTItemTweener::addStep(const KTTweenerStep &step)
 {
 	int n = step.n();
 	
@@ -176,7 +176,6 @@ void KTItemTweener::setStep(const KTTweenerStep &step)
 	{
 		setRotationAt(n, step.rotation());
 	}
-	
 }
 
 

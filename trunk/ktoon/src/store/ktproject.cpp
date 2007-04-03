@@ -167,7 +167,7 @@ QString KTProject::description() const
 KTScene *KTProject::createScene(int position, bool loaded )
 {
 	dDebug("project") << "Creating scene " << position;
-	if ( position < 0 || position > d->scenes.count() )
+	if( position < 0 || position > d->scenes.count() )
 	{
 		return 0;
 	}
@@ -185,8 +185,6 @@ KTScene *KTProject::createScene(int position, bool loaded )
 	
 	return scene;
 }
-
-
 
 bool KTProject::removeScene(int position)
 {
@@ -226,7 +224,7 @@ bool KTProject::moveScene(int position, int newPosition)
 
 KTScene *KTProject::scene(int position)
 {
-	if ( position < 0 || position >= d->scenes.count() )
+	if( position < 0 || position >= d->scenes.count() )
 	{
 		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
 		return 0;

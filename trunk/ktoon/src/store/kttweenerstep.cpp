@@ -41,7 +41,6 @@ KTTweenerStep::KTTweenerStep(int n)
 	d->flags = None;
 }
 
-
 KTTweenerStep::~KTTweenerStep()
 {
 	delete d;
@@ -148,7 +147,7 @@ QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
 	
 	if(this->has(KTTweenerStep::Scale) )
 	{
-		QDomElement e = doc.createElement("position");
+		QDomElement e = doc.createElement("scale");
 		e.setAttribute("sx", d->scale.x);
 		e.setAttribute("sy", d->scale.y);
 		
@@ -157,7 +156,7 @@ QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
 	
 	if(this->has(KTTweenerStep::Translation) )
 	{
-		QDomElement e = doc.createElement("position");
+		QDomElement e = doc.createElement("translation");
 		e.setAttribute("dx", d->translation.x);
 		e.setAttribute("dy", d->translation.y);
 		
@@ -166,7 +165,7 @@ QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
 	
 	if(this->has(KTTweenerStep::Shear) )
 	{
-		QDomElement e = doc.createElement("position");
+		QDomElement e = doc.createElement("shear");
 		e.setAttribute("sh", d->shear.x);
 		e.setAttribute("sv", d->shear.y);
 		
@@ -187,6 +186,45 @@ QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
 
 void KTTweenerStep::fromXml(const QString& xml)
 {
+	QDomDocument doc;
 	
+	if( doc.setContent(xml ) )
+	{
+		QDomElement root = doc.documentElement();
+		
+		QDomNode n = root.firstChild();
+		
+		d->n = root.attribute("value").toInt();
+		
+		while(!n.isNull())
+		{
+			QDomElement e = n.toElement();
+			if(!e.isNull())
+			{
+				if( e.tagName() == "rotation" )
+				{
+					setRotation(e.attribute("angle").toDouble());
+				}
+				else if( e.tagName() == "shear" )
+				{
+					setShear(e.attribute("sh").toDouble(), e.attribute("sv").toDouble());
+				}
+				else if( e.tagName() == "position" )
+				{
+					setPosition(QPointF(e.attribute("sh").toDouble(), e.attribute("sv").toDouble()));
+				}
+				else if( e.tagName() == "scale" )
+				{
+					setScale(e.attribute("sx").toDouble(), e.attribute("sy").toDouble());
+				}
+				else if( e.tagName() == "translation" )
+				{
+					setTranslation(e.attribute("dx").toDouble(), e.attribute("dy").toDouble());
+				}
+				
+			}
+			n = n.nextSibling();
+		}
+	}
 }
 

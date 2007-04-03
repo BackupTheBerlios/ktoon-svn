@@ -59,7 +59,7 @@ class STORE_EXPORT KTItemTweener : public QObject
 		double xTranslationAt( int step ) const;
 		double yTranslationAt( int step ) const;
 		
-		void setStep(const KTTweenerStep &step);
+		void addStep(const KTTweenerStep &step);
 		
 		QGraphicsItem *item() const;
 		
