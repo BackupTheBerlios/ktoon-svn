@@ -18,52 +18,45 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTGRAPHICOBJECT_H
-#define KTGRAPHICOBJECT_H
+#include "ktitemtweener.h"
 
-#include <QObject>
-#include "ktabstractserializable.h"
-#include "ktframe.h"
+#include <QGraphicsItem>
 
-#include "ktglobal_store.h"
-
-class QGraphicsItem;
-class KTItemTweener;
-
-/**
- * @author David Cuadrado \<krawek@gmail.com\>
-*/
-class STORE_EXPORT KTGraphicObject : public QObject, public KTAbstractSerializable
+struct KTItemTweener::Private
 {
-	public:
-		enum Transformations{ ScaleX = 1, ScaleY, Rotate, TranslateX, TranslateY };
-		
-		KTGraphicObject(QGraphicsItem *item, KTFrame *parent);
-		~KTGraphicObject();
-		
-		void setItem(QGraphicsItem *item);
-		QGraphicsItem *item() const;
-		
-		void setObjectName(const QString &name);
-		QString objectName() const;
-		
-		void setTweener(KTItemTweener *tweener);
-		KTItemTweener *tweener() const;
-		
-		KTFrame *frame() const;
-		int index() const;
-		
-	public:
-		virtual void fromXml(const QString &xml );
-		virtual QDomElement toXml(QDomDocument &doc)  const;
-		
-	private:
-		void initItemData();
-		
-		struct Private;
-		Private *const d;
-		
+	Private() : frames(0) {}
+	
+	int frames;
 };
 
-#endif
+KTItemTweener::KTItemTweener(QObject *parent) : QGraphicsItemAnimation(parent), d(new Private)
+{
+}
+
+
+KTItemTweener::~KTItemTweener()
+{
+	delete d;
+}
+
+void KTItemTweener::afterAnimationStep( qreal step )
+{
+	QGraphicsItem *item = this->item();
+	if( item && step > 0 )
+	{
+		item->setFlag(QGraphicsItem::ItemIsMovable, false);
+		item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+		item->setFlag(QGraphicsItem::ItemIsFocusable, false);
+	}
+}
+
+void KTItemTweener::setFrames(int frames)
+{
+	d->frames = frames;
+}
+
+int KTItemTweener::frames() const
+{
+	return d->frames;
+}
 

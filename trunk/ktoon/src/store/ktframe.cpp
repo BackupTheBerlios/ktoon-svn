@@ -150,7 +150,6 @@ void KTFrame::addItem(QGraphicsItem *item)
 		}
 	}
 	
-	
 	KTGraphicObject *object = new KTGraphicObject(item, this);
 	d->graphics << object;
 }

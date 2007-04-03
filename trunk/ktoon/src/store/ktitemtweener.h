@@ -18,52 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTGRAPHICOBJECT_H
-#define KTGRAPHICOBJECT_H
+#ifndef KTITEMTWEENER_H
+#define KTITEMTWEENER_H
 
-#include <QObject>
-#include "ktabstractserializable.h"
-#include "ktframe.h"
-
-#include "ktglobal_store.h"
-
-class QGraphicsItem;
-class KTItemTweener;
+#include <QGraphicsItemAnimation>
 
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
 */
-class STORE_EXPORT KTGraphicObject : public QObject, public KTAbstractSerializable
+
+class KTItemTweener : public QGraphicsItemAnimation
 {
 	public:
-		enum Transformations{ ScaleX = 1, ScaleY, Rotate, TranslateX, TranslateY };
+		KTItemTweener(QObject *parent = 0);
+		~KTItemTweener();
 		
-		KTGraphicObject(QGraphicsItem *item, KTFrame *parent);
-		~KTGraphicObject();
+		void setFrames(int frames);
+		int frames() const;
 		
-		void setItem(QGraphicsItem *item);
-		QGraphicsItem *item() const;
-		
-		void setObjectName(const QString &name);
-		QString objectName() const;
-		
-		void setTweener(KTItemTweener *tweener);
-		KTItemTweener *tweener() const;
-		
-		KTFrame *frame() const;
-		int index() const;
-		
-	public:
-		virtual void fromXml(const QString &xml );
-		virtual QDomElement toXml(QDomDocument &doc)  const;
+		virtual void afterAnimationStep(qreal step);
 		
 	private:
-		void initItemData();
-		
 		struct Private;
 		Private *const d;
-		
 };
 
 #endif
+
 

@@ -111,12 +111,8 @@ class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 		virtual QDomElement toXml(QDomDocument &doc) const;
 		
 	private:
-		Frames m_frames;
-		bool m_isVisible;
-		QString m_name;
-		int m_framesCount;
-		
-		bool m_isLocked;
+		struct Private;
+		Private *const d;
 };
 
 #endif

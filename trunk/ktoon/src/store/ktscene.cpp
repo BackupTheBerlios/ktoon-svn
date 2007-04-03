@@ -32,8 +32,20 @@
 #include "ktprojectloader.h"
 #include "ktitemfactory.h"
 
-KTScene::KTScene(KTProject *parent) : QObject(parent), m_isLocked(false),  m_layerCount(0), m_isVisible(true)
+struct KTScene::Private
 {
+	Layers layers;
+	QString name;
+	bool isLocked;
+	int layerCount;
+	bool isVisible;
+};
+
+KTScene::KTScene(KTProject *parent) : QObject(parent), d(new Private)
+{
+	d->isLocked = false;
+	d->layerCount = 0;
+	d->isVisible = true;
 }
 
 
@@ -41,43 +53,45 @@ KTScene::~KTScene()
 {
 	DEND;
 	
-	qDeleteAll(m_layers);
-	m_layers.clear();
+	qDeleteAll(d->layers);
+	d->layers.clear();
+	
+	delete d;
 }
 
 void KTScene::setSceneName(const QString &name)
 {
-	m_name = name;
+	d->name = name;
 }
 
 void KTScene::setLocked(bool isLocked)
 {
-	m_isLocked = isLocked;
+	d->isLocked = isLocked;
 }
 
 QString KTScene::sceneName() const
 {
-	return m_name;
+	return d->name;
 }
 
 bool KTScene::isLocked() const
 {
-	return m_isLocked;
+	return d->isLocked;
 }
 
 void KTScene::setVisible(bool isVisible)
 {
-	m_isVisible = isVisible;
+	d->isVisible = isVisible;
 }
 
 bool KTScene::isVisible() const
 {
-	return m_isVisible;
+	return d->isVisible;
 }
 
 Layers KTScene::layers() const
 {
-	return m_layers;
+	return d->layers;
 }
 
 /**
@@ -85,14 +99,14 @@ Layers KTScene::layers() const
  */
 void KTScene::setLayers(const Layers &layers)
 {
-	m_layers = layers;
+	d->layers = layers;
 }
 
 KTLayer *KTScene::createLayer(int position, bool loaded)
 {
 	D_FUNCINFO << position;
 	
-	if ( position < 0 || position > m_layers.count() )
+	if ( position < 0 || position > d->layers.count() )
 	{
 		dDebug() << "Error in createLayer";
 		return 0;
@@ -100,11 +114,11 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
 	
 	KTLayer *layer = new KTLayer(this);
 	
-	m_layerCount++;
+	d->layerCount++;
 	
-	layer->setLayerName(tr("Layer %1").arg(m_layerCount));
+	layer->setLayerName(tr("Layer %1").arg(d->layerCount));
 	
-	m_layers.insert( position, layer);
+	d->layers.insert( position, layer);
 	
 	if ( loaded )
 	{
@@ -120,7 +134,7 @@ bool KTScene::removeLayer( int position)
 	KTLayer *layer = this->layer(position);
 	if ( layer )
 	{
-		m_layers.remove(position);
+		d->layers.remove(position);
 		delete layer;
 		
 		return true;
@@ -137,13 +151,13 @@ bool KTScene::removeLayer( int position)
  */
 KTLayer *KTScene::layer(int position)
 {
-	if ( position < 0 || position >= m_layers.count() )
+	if ( position < 0 || position >= d->layers.count() )
 	{
 		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
 		return 0;
 	}
 	
-	return m_layers[position];
+	return d->layers[position];
 }
 
 void KTScene::fromXml(const QString &xml )
@@ -169,7 +183,7 @@ void KTScene::fromXml(const QString &xml )
 		{
 			if ( e.tagName() == "layer" )
 			{
-				int pos = m_layers.count();
+				int pos = d->layers.count();
 				KTLayer *layer = createLayer( pos, true );
 				
 				if ( layer )
@@ -191,13 +205,13 @@ void KTScene::fromXml(const QString &xml )
 QDomElement KTScene::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("scene");
-	root.setAttribute("name", m_name );
+	root.setAttribute("name", d->name );
 	doc.appendChild(root);
 	
-	Layers::ConstIterator iterator = m_layers.begin();
+	Layers::ConstIterator iterator = d->layers.begin();
 	
 	
-	while ( iterator != m_layers.end() )
+	while ( iterator != d->layers.end() )
 	{
 		root.appendChild( (*iterator)->toXml(doc) );
 		++iterator;
@@ -209,16 +223,16 @@ QDomElement KTScene::toXml(QDomDocument &doc) const
 
 bool KTScene::moveLayer(int from, int to)
 {
-	if ( from < 0 || from >= m_layers.count() || to < 0 || to >= m_layers.count() )
+	if ( from < 0 || from >= d->layers.count() || to < 0 || to >= d->layers.count() )
 	{
 		return false;
 	}
 	
-	KTLayer *layer = m_layers[from];
+	KTLayer *layer = d->layers[from];
 	
-	m_layers.insert(to, layer);
+	d->layers.insert(to, layer);
 	
-	m_layers.remove(from);
+	d->layers.remove(from);
 	
 	return true;
 }
@@ -235,7 +249,7 @@ int KTScene::index() const
 
 int KTScene::indexOf(KTLayer *layer) const
 {
-	return m_layers.indexOf(layer);
+	return d->layers.indexOf(layer);
 }
 
 KTProject *KTScene::project() const

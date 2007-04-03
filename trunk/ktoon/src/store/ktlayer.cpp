@@ -25,73 +25,87 @@
 
 #include "ktprojectloader.h"
 
-KTLayer::KTLayer(KTScene *parent) : QObject(parent), m_isVisible(true), m_name(tr("Layer")), m_framesCount(0), m_isLocked(false)
+struct KTLayer::Private
 {
+	Frames frames;
+	bool isVisible;
+	QString name;
+	int framesCount;
+	bool isLocked;
+};
+
+KTLayer::KTLayer(KTScene *parent) : QObject(parent), d(new Private)
+{
+	d->isVisible = true;
+	d->name = tr("Layer");
+	d->framesCount = 0;
+	d->isLocked = false;
 }
 
 KTLayer::~KTLayer()
 {
-	qDeleteAll(m_frames);
-	m_frames.clear();
+	qDeleteAll(d->frames);
+	d->frames.clear();
 	
+	delete d;
 }
 
 Frames KTLayer::frames()
 {
-	return m_frames;
+	return d->frames;
 }
 
 void KTLayer::setFrames(const Frames &frames)
 {
-	m_frames = frames;
-	m_framesCount = frames.count();
+	d->frames = frames;
+	d->framesCount = frames.count();
 }
 
 void KTLayer::setLayerName(const QString &name)
 {
-	m_name = name;
+	d->name = name;
 }
 
 void KTLayer::setLocked(bool isLocked)
 {
-	m_isLocked = isLocked;
+	d->isLocked = isLocked;
 }
 
 bool KTLayer::isLocked() const
 {
-	return m_isLocked;
+	return d->isLocked;
 }
 
 void KTLayer::setVisible(bool isVisible)
 {
-	m_isVisible = isVisible;
+	d->isVisible = isVisible;
 // 	emit visibilityChanged(isVisible);
 }
 
 QString KTLayer::layerName() const
 {
-	return m_name;
+	return d->name;
 }
 
 bool KTLayer::isVisible() const
 {
-	return m_isVisible;
+	return d->isVisible;
 }
 
 KTFrame *KTLayer::createFrame(int position, bool loaded)
 {
-	if ( position < 0 || position > m_frames.count() )
+	if ( position < 0 || position > d->frames.count() )
 	{
 		return 0;
 	}
 	
 	KTFrame *frame = new KTFrame(this);
 	
-	m_framesCount++;
+	d->framesCount++;
 	
-	frame->setFrameName(tr("Drawing %1").arg(m_framesCount));
+	frame->setFrameName(tr("Drawing %1").arg(d->framesCount));
 	
-	m_frames.insert(position, frame);
+	d->frames.insert(position, frame);
 	
 	if ( loaded )
 	{
@@ -106,7 +120,7 @@ bool KTLayer::removeFrame(int position)
 	KTFrame *toRemove = frame(position);
 	if ( toRemove )
 	{
-		m_frames.removeAt(position);
+		d->frames.removeAt(position);
 		delete toRemove;
 		
 		return true;
@@ -117,14 +131,14 @@ bool KTLayer::removeFrame(int position)
 
 bool KTLayer::moveFrame(int from, int to)
 {
-	if ( from < 0 || from >= m_frames.count() || to < 0 || to >= m_frames.count() )
+	if ( from < 0 || from >= d->frames.count() || to < 0 || to >= d->frames.count() )
 	{
 		return false;
 	}
 	
-	KTFrame *frame = m_frames.takeAt(from);
+	KTFrame *frame = d->frames.takeAt(from);
 	
-	m_frames.insert(to, frame);
+	d->frames.insert(to, frame);
 	
 	return true;
 }
@@ -133,13 +147,13 @@ bool KTLayer::moveFrame(int from, int to)
 
 KTFrame *KTLayer::frame(int position)
 {
-	if ( position < 0 || position >= m_frames.count() )
+	if ( position < 0 || position >= d->frames.count() )
 	{
 		D_FUNCINFO << " FATAL ERROR: index out of bound";
 		return 0;
 	}
 	
-	return m_frames[position];
+	return d->frames[position];
 }
 
 
@@ -166,7 +180,7 @@ void KTLayer::fromXml(const QString &xml )
 		{
 			if ( e.tagName() == "frame" )
 			{
-				KTFrame *frame = createFrame( m_frames.count(), true );
+				KTFrame *frame = createFrame( d->frames.count(), true );
 				
 				if ( frame )
 				{
@@ -184,12 +198,12 @@ void KTLayer::fromXml(const QString &xml )
 QDomElement KTLayer::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("layer");
-	root.setAttribute("name", m_name );
+	root.setAttribute("name", d->name );
 	doc.appendChild(root);
 	
-	Frames::ConstIterator iterator = m_frames.begin();
+	Frames::ConstIterator iterator = d->frames.begin();
 	
-	while ( iterator != m_frames.end() )
+	while ( iterator != d->frames.end() )
 	{
 		root.appendChild( (*iterator)->toXml(doc) );
 		++iterator;
@@ -210,7 +224,7 @@ KTProject *KTLayer::project() const
 
 int KTLayer::indexOf(KTFrame *frame) const
 {
-	return m_frames.indexOf(frame);
+	return d->frames.indexOf(frame);
 }
 
 int KTLayer::index() const

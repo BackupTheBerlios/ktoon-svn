@@ -380,7 +380,6 @@ void KTGraphicsScene::mouseReleased(QGraphicsSceneMouseEvent *event)
 	if ( d->tool && d->isDrawing )
 	{
 		d->tool->release(d->inputInformation, d->brushManager, this );
-		
 		d->tool->end();
 	}
 	

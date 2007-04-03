@@ -24,22 +24,38 @@
 #include <QGraphicsItem>
 
 #include "ktframe.h"
+#include "ktitemtweener.h"
+
+struct KTGraphicObject::Private
+{
+	QString name;
+	QGraphicsItem *item;
+	
+	KTItemTweener *tweener;
+	
+	KTFrame *frame;
+};
 
 KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
-	: QObject(parent), m_item(item)
+	: QObject(parent), d(new Private)
 {
+	d->item = item;
+	d->tweener = 0;
+	d->frame = parent;
+	
 	initItemData();
 }
 
 
 KTGraphicObject::~KTGraphicObject()
 {
-	if ( QGraphicsScene *scene = m_item->scene() )
+	if ( QGraphicsScene *scene = d->item->scene() )
 	{
-		scene->removeItem(m_item);
+		scene->removeItem(d->item);
 	}
 	
-	delete m_item;
+	delete d->item;
+	delete d;
 }
 
 void KTGraphicObject::fromXml(const QString &xml )
@@ -48,7 +64,7 @@ void KTGraphicObject::fromXml(const QString &xml )
 
 QDomElement KTGraphicObject::toXml(QDomDocument &doc) const
 {
-	if ( KTAbstractSerializable *is = dynamic_cast<KTAbstractSerializable *>(m_item) )
+	if ( KTAbstractSerializable *is = dynamic_cast<KTAbstractSerializable *>(d->item) )
 	{
 		return is->toXml(doc);
 	}
@@ -59,46 +75,68 @@ QDomElement KTGraphicObject::toXml(QDomDocument &doc) const
 
 void KTGraphicObject::setItem(QGraphicsItem *item)
 {
-	m_item = item;
+	d->item = item;
 	initItemData();
 }
 
 QGraphicsItem *KTGraphicObject::item() const
 {
-	return m_item;
+	return d->item;
 }
 
 void KTGraphicObject::setObjectName(const QString &name)
 {
-	m_name = name;
+	d->name = name;
 }
 
 QString KTGraphicObject::objectName() const
 {
-	return m_name;
+	return d->name;
 }
 
 void KTGraphicObject::initItemData()
 {
 	
-	if(! m_item->data(ScaleX).isValid())
+	if(! d->item->data(ScaleX).isValid())
 	{
-		m_item->setData(ScaleX, 1.0);
+		d->item->setData(ScaleX, 1.0);
 	}
-	if(! m_item->data(ScaleY).isValid())
+	if(! d->item->data(ScaleY).isValid())
 	{
-		m_item->setData(ScaleY, 1.0);
+		d->item->setData(ScaleY, 1.0);
 	}
-	if(! m_item->data(Rotate).isValid())
+	if(! d->item->data(Rotate).isValid())
 	{
-		m_item->setData(Rotate, 0.0);
+		d->item->setData(Rotate, 0.0);
 	}
-	if(! m_item->data(TranslateX).isValid())
+	if(! d->item->data(TranslateX).isValid())
 	{
-		m_item->setData(TranslateX, 0.0);
+		d->item->setData(TranslateX, 0.0);
 	}
-	if(! m_item->data(TranslateY).isValid())
+	if(! d->item->data(TranslateY).isValid())
 	{
-		m_item->setData(TranslateY, 0.0);
+		d->item->setData(TranslateY, 0.0);
 	}
 }
+
+
+void KTGraphicObject::setTweener(KTItemTweener *tweener)
+{
+	d->tweener = tweener;
+}
+
+KTItemTweener *KTGraphicObject::tweener() const
+{
+	return d->tweener;
+}
+
+KTFrame *KTGraphicObject::frame() const
+{
+	return d->frame;
+}
+
+int KTGraphicObject::index() const
+{
+	return d->frame->indexOf(const_cast<KTGraphicObject *>(this));
+}
+

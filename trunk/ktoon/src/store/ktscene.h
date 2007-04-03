@@ -116,11 +116,8 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
 		virtual QDomElement toXml(QDomDocument &doc) const;
 		
 	private:
-		Layers m_layers;
-		QString m_name;
-		bool m_isLocked;
-		int m_layerCount;
-		bool m_isVisible;
+		struct Private;
+		Private *const d;
 };
 
 #endif
