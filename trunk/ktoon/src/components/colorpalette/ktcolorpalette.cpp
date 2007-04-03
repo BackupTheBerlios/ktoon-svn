@@ -31,12 +31,26 @@
 #include <dcore/dconfig.h>
 
 #include "ktpaintareaevent.h"
+#include "ktcolorvalue.h"
+#include "ktviewcolorcells.h"
+
+#include "ktcolorpicker.h"
+#include "ktluminancepicker.h"
+#include "ktgradientcreator.h"
+
+#include <QComboBox>
+#include <QGroupBox>
+#include <QSplitter>
+#include <QMenu>
+
+#include <dgui/dtoolbox.h>
+#include <dgui/dvhbox.h>
 
 struct KTColorPalette::Private
 {
 		DToolBox *centralWidget;
 		KTViewColorCells *containerPalette;
-		KTValueColor *displayValueColor;
+		KTColorValue *displayColorValue;
 		KTColorPicker *colorPicker;
 		KTLuminancePicker *luminancePicker;
 		KTGradientCreator *gradientManager;
@@ -52,7 +66,7 @@ struct KTColorPalette::Private
 		{
 // 			delete centralWidget;
 // 			delete containerPalette;
-// 			delete displayValueColor;
+// 			delete displayColorValue;
 // 			delete colorPicker;
 // 			delete luminancePicker;
 // 			delete gradientManager;
@@ -111,14 +125,14 @@ void KTColorPalette::setupChooserTypeColor()
 	colorMixer->setFrameStyle(QFrame::Box | QFrame::Sunken );
 	
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
-	layout->setMargin(1);
-	layout->setSpacing(1);
+// 	layout->setMargin(1);
+// 	layout->setSpacing(1);
 	
 	colorMixer->setLayout(layout);
 
 // 	layout->setSizeConstraint(QLayout::SetFixedSize);
 	
-	d->displayValueColor = new KTValueColor(colorMixer);
+	d->displayColorValue = new KTColorValue(colorMixer);
 	
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::LeftToRight);
 	layoutContainer->setMargin(0);
@@ -127,8 +141,8 @@ void KTColorPalette::setupChooserTypeColor()
 	
 	d->colorPicker = new KTColorPicker(colorMixer);
 	connect( d->colorPicker, SIGNAL(newCol(int, int)), this, SLOT(setHS(int, int)));
-	connect(d->displayValueColor, SIGNAL(hueChanged(int)), d->colorPicker, SLOT(setH(int)));
-	connect(d->displayValueColor, SIGNAL(saturationChanged(int)), d->colorPicker, SLOT(setS(int)));
+	connect(d->displayColorValue, SIGNAL(hueChanged(int)), d->colorPicker, SLOT(setH(int)));
+	connect(d->displayColorValue, SIGNAL(saturationChanged(int)), d->colorPicker, SLOT(setS(int)));
 	
 	layoutContainer->addWidget(d->colorPicker, 0, Qt::AlignLeft);
 	
@@ -137,16 +151,16 @@ void KTColorPalette::setupChooserTypeColor()
 
 	d->luminancePicker->setMaximumWidth(15);
 	d->luminancePicker->setMinimumWidth(15);
-	connect(d->displayValueColor, SIGNAL(valueChanged(int)), d->luminancePicker, SLOT(setVal( int )));
+	connect(d->displayColorValue, SIGNAL(valueChanged(int)), d->luminancePicker, SLOT(setVal( int )));
 	layoutContainer->addWidget(d->luminancePicker, 0, Qt::AlignLeft);
 	layoutContainer->setSpacing(3);
 	
 	layoutContainer->addStretch(2);
 	
 	layout->addLayout(layoutContainer);
-	layout->addWidget(d->displayValueColor, 0, Qt::AlignCenter);
+	layout->addWidget(d->displayColorValue, 0, Qt::AlignCenter);
 	this->layout()->setAlignment( colorMixer, Qt::AlignTop);
-	connect(d->displayValueColor, SIGNAL(brushChanged(const QBrush&)), this, SLOT(setColor(const QBrush &)));
+	connect(d->displayColorValue, SIGNAL(brushChanged(const QBrush&)), this, SLOT(setColor(const QBrush &)));
 	
 	d->centralWidget->addPage(colorMixer, tr("Color Mixer"));
 }
@@ -230,7 +244,7 @@ void KTColorPalette::setColor(const QBrush& brush)
 		{
 			d->gradientManager->setCurrentColor(color);
 		}
-		if(d->displayValueColor && d->outlineAndFillColors && d->colorPicker && d->nameColor && d->luminancePicker)
+		if(d->displayColorValue && d->outlineAndFillColors && d->colorPicker && d->nameColor && d->luminancePicker)
 		{
 			
 			
@@ -242,7 +256,7 @@ void KTColorPalette::setColor(const QBrush& brush)
 			d->nameColor->setText(color.name ());
 			d->luminancePicker->setCol(color.hue(), color.saturation(), color.value());
 			d->containerPalette->setColor( brush );
-			d->displayValueColor->setColor(color);
+			d->displayColorValue->setColor(color);
 		}
 		
 	}
@@ -340,7 +354,7 @@ void KTColorPalette::setHS(int h , int s)
 void KTColorPalette::updateColor()
 {
 	QColor tmpColor(d->nameColor->text());
-	tmpColor.setAlpha(d->displayValueColor->alpha());
+	tmpColor.setAlpha(d->displayColorValue->alpha());
 	setColor(tmpColor);
 }
 

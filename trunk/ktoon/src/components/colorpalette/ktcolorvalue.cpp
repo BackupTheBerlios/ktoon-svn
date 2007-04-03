@@ -18,17 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktvaluecolor.h"
+#include "ktcolorvalue.h"
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QCheckBox>
 #include <QDoubleSpinBox>
+#include <QGridLayout>
+#include <QSpinBox>
+#include <QLineEdit>
 
 #include <dcore/ddebug.h>
+#include <dgui/ddoublecombobox.h>
 
 #include <cmath>
 
-struct KTItemValueColor::Private
+struct KTItemColorValue::Private
 {
 	QSpinBox *value;
 	~Private()
@@ -37,7 +41,7 @@ struct KTItemValueColor::Private
 	};
 };
 
-KTItemValueColor::KTItemValueColor( const QString &text, QWidget *parent ) :QFrame(parent), d(new Private)
+KTItemColorValue::KTItemColorValue( const QString &text, QWidget *parent ) :QFrame(parent), d(new Private)
 {
 	QHBoxLayout * layout = new QHBoxLayout;
 	layout->setSpacing(0);
@@ -45,114 +49,104 @@ KTItemValueColor::KTItemValueColor( const QString &text, QWidget *parent ) :QFra
 	
 	setLayout(layout);
 	QLabel *labelText = new QLabel( text, this);
-// 	d->text->setSizePolicy ( QSizePolicy::Fixed,  QSizePolicy::Fixed);
+	labelText->setSizePolicy ( QSizePolicy::Fixed,  QSizePolicy::Fixed);
 	d->value = new QSpinBox(this);
 	d->value->setMaximum ( 255 );
 	d->value->setMinimum ( 0 );
-// 	d->value->setSizePolicy ( QSizePolicy::Fixed,  QSizePolicy::Fixed);
+	d->value->setSizePolicy ( QSizePolicy::Fixed,  QSizePolicy::Fixed);
 	connect(d->value, SIGNAL(valueChanged( int)) , this, SIGNAL(valueChanged( int)));
-	connect(d->value, SIGNAL(valueChanged( const QString &)) , this, SIGNAL(valueChanged( const QString &)));
+	connect(d->value, SIGNAL(valueChanged( const QString &)), this, SIGNAL(valueChanged( const QString &)));
 	connect(d->value, SIGNAL(editingFinished()), this, SIGNAL(editingFinished()));
 	layout->addWidget(labelText);
 	layout->addWidget(d->value);
 }
 
-KTItemValueColor::~KTItemValueColor()
+KTItemColorValue::~KTItemColorValue()
 {
 	delete d;
 }
 
-void KTItemValueColor::setValue( int val)
+void KTItemColorValue::setValue( int val)
 {
 	d->value->setValue(val);
 }
 
-int  KTItemValueColor::value()
+int  KTItemColorValue::value()
 {
 	return d->value->value();
 }
 
-void KTItemValueColor::setMax(int max)
+void KTItemColorValue::setMax(int max)
 {
 	d->value->setMaximum( max );
 }
 
-
-
-void KTItemValueColor::setRange(int minimum, int maximum)
+void KTItemColorValue::setRange(int minimum, int maximum)
 {
 	d->value->setRange( minimum, maximum );
 }
 
-void KTItemValueColor::setSuffix(const QString &suffix )
+void KTItemColorValue::setSuffix(const QString &suffix )
 {
 	d->value->setSuffix(suffix);
 }
 
-struct KTValueColor::Private
+struct KTColorValue::Private
 {
-	KTItemValueColor *valueR, *valueG, *valueB, *valueH, *valueS, *valueV; QDoubleSpinBox *valueA;
+	KTItemColorValue *valueR, *valueG, *valueB, *valueH, *valueS, *valueV; 
+	DDoubleComboBox *valueA;
 	QGridLayout *layout;
 	bool ok, percent;
 };
 
-KTValueColor::KTValueColor(QWidget *parent) : QFrame(parent), d(new Private)
+KTColorValue::KTColorValue(QWidget *parent) : QFrame(parent), d(new Private)
 {
 	DINIT;
 	d->ok = true;
 	d->layout = new QGridLayout;
 	setLayout(d->layout);
-// 	d->layout->setSizeConstraint(QLayout::SetFixedSize);
-	d->layout->setSizeConstraint(QLayout::SetNoConstraint);
 	setupForm();
 }
 
 
-KTValueColor::~KTValueColor()
+KTColorValue::~KTColorValue()
 {
 	DEND;
 }
 
-void KTValueColor::setupForm()
+void KTColorValue::setupForm()
 {
-	d->valueR = new KTItemValueColor("R", this);
-// 	d->valueR = new DEditSpinBox(0, 0, 255, 1, "R", this);
+	d->valueR = new KTItemColorValue("R", this);
 	connect(d->valueR, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
 	
-	d->valueG = new KTItemValueColor("G", this);
-// 	d->valueG = new DEditSpinBox(0, 0, 255, 1,"G", this);
+	d->valueG = new KTItemColorValue("G", this);
 	connect(d->valueG, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
 	
-	d->valueB = new KTItemValueColor("B", this);
-// 	d->valueB = new DEditSpinBox(0, 0, 255, 1,"B", this);
+	d->valueB = new KTItemColorValue("B", this);
 	connect(d->valueB, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
 	
-	d->valueH = new KTItemValueColor("H", this);
-// 	d->valueH = new DEditSpinBox(0, 0, 359, 1,"H", this);
+	d->valueH = new KTItemColorValue("H", this);
 	d->valueH->setMax(359);
 	connect(d->valueH, SIGNAL(valueChanged(int)), this, SIGNAL(hueChanged(int)));
 	
-	d->valueS = new KTItemValueColor("S", this);
-// 	d->valueS = new DEditSpinBox(0, 0, 255, 1,"S", this);
+	d->valueS = new KTItemColorValue("S", this);
 	connect(d->valueS, SIGNAL(valueChanged(int)), this, SIGNAL(saturationChanged( int)));
 	
-	d->valueV = new KTItemValueColor("V", this);
-// 	d->valueV = new DEditSpinBox(0, 0, 255, 1,"V", this);
+	d->valueV = new KTItemColorValue("V", this);
 	connect(d->valueV, SIGNAL(valueChanged(int)), this, SIGNAL(valueChanged( int)));
 	
 	QHBoxLayout *layout = new QHBoxLayout;
 	
-	d->valueA = new QDoubleSpinBox(/*"A",*/ this);
-	d->valueA->setDecimals(0);
-	d->valueA->setRange(0, 255.0);
-	d->valueA->setValue(255.0);
+	d->valueA = new DDoubleComboBox(0, 255, this);
 	layout->addWidget(new QLabel("A"));
 	layout->addWidget(d->valueA);
 	
-// 	d->valueA->setValue(255);
-// 	d->valueA = new DEditSpinBox(0, 0, 255, 1,"A", this);
+	for(int i = 255; i > 0; i -= 25)
+	{
+		d->valueA->addValue(i);
+	}
+	
 	connect(d->valueA, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
-// 	editingFinished ()
 	QCheckBox *show = new QCheckBox(tr("percent"));
 	
 	d->layout->addWidget(d->valueR, 0, 0,Qt::AlignTop | Qt::AlignLeft);
@@ -167,7 +161,7 @@ void KTValueColor::setupForm()
 	
 }
 
-void KTValueColor::setColor(const QBrush &brush)
+void KTColorValue::setColor(const QBrush &brush)
 {
 	QColor color = brush.color();
 	d->ok = false;
@@ -178,82 +172,60 @@ void KTValueColor::setColor(const QBrush &brush)
 	d->valueS->setValue(color.saturation());
 	d->valueV->setValue(color.value ());
 	
-	if(d->percent)
-	{
-		d->valueA->setValue( ::ceil((color.alpha()/255.0)*100) );
-	}
-	else
-	{
-		d->valueA->setValue( color.alpha());
-	}
+	d->valueA->setValue( d->valueA->currentIndex(), color.alpha());
 	
 	d->ok = true;
 }
 
 
-void KTValueColor::setAlfaValuePercent(bool enable)
+void KTColorValue::setAlfaValuePercent(bool enable)
 {
-	d->percent = enable;
+	d->valueA->setShowAsPercent(enable);
 	if(enable)
 	{
-		d->valueA->setDecimals(2);
-		d->valueA->setValue( ((d->valueA->value()/255.0)*100) );
-		d->valueA->setRange( 0.0, 100.0 );
-		d->valueA->adjustSize();
-		adjustSize();
+		d->valueA->lineEdit()->setInputMask("009.99 %");
 	}
 	else
 	{
-		d->valueA->setRange ( 0.0, 255.0 );
-		d->valueA->setValue((d->valueA->value()*255.0)/100);
-		d->valueA->setDecimals(0);
+		d->valueA->lineEdit()->setInputMask("009");
 	}
+	
+	d->percent = enable;
 }
 
-void KTValueColor::syncValuesRgb(int)
+void KTColorValue::syncValuesRgb(int)
 {
 	if(d->ok)
 	{
 		int r = d->valueR->value();
 		int g = d->valueG->value();
 		int b = d->valueB->value();
-		int a = 0;
-		if(d->percent)
-		{
-			a = (int) ((d->valueA->value()*255.0)/100);
-		}
-		else
-		{
-			a = (int) d->valueA->value();
-		}
+		int a = d->valueA->value();
+		
 		QColor tmp = QColor::fromRgb(r,g,b,a);
 		d->valueH->setValue( tmp.hue ());
 		d->valueS->setValue( tmp.saturation());
 		d->valueV->setValue( tmp.value ());
-		emit brushChanged(QColor::fromRgb(r,g,b,a)) ;
+		emit brushChanged(QColor::fromRgb(r,g,b,a));
 	}
 }
 
-int KTValueColor::hue()
+int KTColorValue::hue()
 {
 	return d->valueH->value();
 }
 
-int KTValueColor::saturation()
+int KTColorValue::saturation()
 {
 	return d->valueS->value();
 }
 
-int KTValueColor::value()
+int KTColorValue::value()
 {
 	return d->valueV->value();
 }
 
-int KTValueColor::alpha()
+int KTColorValue::alpha()
 {
-	if(d->percent)
-	{
-		return (int) ((d->valueA->value()*255.0)/100);
-	}
-	return (int)d->valueA->value();
+	return d->valueA->value();
 }

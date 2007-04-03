@@ -212,6 +212,7 @@ void KTGradientSelector::mousePressEvent( QMouseEvent *e )
 	if(m_arrows.count() > 2 && e->button() == Qt::RightButton )
 	{
 		m_arrows.removeAt(m_currentArrowIndex);
+		m_currentArrowIndex = 0;
 		repaint();
 	}
 	else if(!select)

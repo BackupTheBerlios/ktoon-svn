@@ -9,18 +9,18 @@ palettes.files += palettes/*.ktpl
 palettes.path = /data/palettes/ 
 HEADERS += ktcolorpicker.h \
            ktcolorpalette.h \
-           ktvaluecolor.h \
            ktviewcolorcells.h \
            ktluminancepicker.h \
            ktcellscolor.h \
-           ktpaletteparser.h 
+           ktpaletteparser.h \
+           ktcolorvalue.h
 SOURCES += ktcolorpicker.cpp \
            ktcolorpalette.cpp \
-           ktvaluecolor.cpp \
            ktviewcolorcells.cpp \
            ktluminancepicker.cpp \
            ktcellscolor.cpp \
-           ktpaletteparser.cpp 
+           ktpaletteparser.cpp \
+           ktcolorvalue.cpp
 KDEV_QTVER = 4
 
 

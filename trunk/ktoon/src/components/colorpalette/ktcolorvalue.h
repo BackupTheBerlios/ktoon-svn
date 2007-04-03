@@ -22,21 +22,17 @@
 #define KTVALUECOLOR_H
 
 #include <QFrame>
-#include <QGridLayout>
-#include <QLabel>
-#include <QSpinBox>
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
- * @todo: Rename from ValueColor to ColorValue
 */
 
-class KTItemValueColor : public QFrame
+class KTItemColorValue : public QFrame
 {
 	Q_OBJECT
 	public:
-		KTItemValueColor( const QString &text = QString::null, QWidget *parent = 0);
-		~KTItemValueColor();
+		KTItemColorValue( const QString &text = QString::null, QWidget *parent = 0);
+		~KTItemColorValue();
 		int  value();
 		void setMax(int);
 		void setRange(int minimum, int maximum);
@@ -55,12 +51,12 @@ class KTItemValueColor : public QFrame
 		void editingFinished();
 };
 
-class KTValueColor : public QFrame
+class KTColorValue : public QFrame
 {
 	Q_OBJECT
 	public:
-		KTValueColor(QWidget *parent = 0);
-		~KTValueColor();
+		KTColorValue(QWidget *parent = 0);
+		~KTColorValue();
 		int hue();
 		int saturation();
 		int value();
