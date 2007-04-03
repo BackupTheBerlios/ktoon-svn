@@ -70,7 +70,8 @@ HEADERS += danimwidget.h \
            dcontrolnode.h \
            dnodegroup.h   \
            dpathhandler.h \
-           dimageeffect.h
+           dimageeffect.h \
+           ddoublecombobox.h
 SOURCES += danimwidget.cpp \
            dapplication.cpp \
            dcellview.cpp \
@@ -133,7 +134,8 @@ SOURCES += danimwidget.cpp \
            dnodegroup.cpp   \
            dpathhandler.cpp \
            dimageeffect.cpp \
-           ddualcolorbutton.cpp
+           ddualcolorbutton.cpp \
+           ddoublecombobox.cpp
 DEFINES += DLIB_GUI
 RESOURCES += dgui_images.qrc
 QT += xml
