@@ -3,13 +3,16 @@ require 'qonf/test'
 require 'qonf/config'
 require 'qonf/info'
 require 'qonf/qonfexception'
+require 'qonf/makefile'
 
 module RQonf
 
 class Configure
-	attr_reader :qmake
+	attr_reader :qmake, :statusFile
 	
 	def initialize(args)
+		@statusFile = Dir.getwd+"/configure.status"
+		
 		@tests = []
 		@testsDir = Dir.getwd
 		
@@ -17,6 +20,26 @@ class Configure
 		parseArgs(args)
 		
 		@qmake = QMake.new
+		
+		@destdir = ""
+		
+		if @options['prefix'].nil?
+			@destdir = case RQonf::DetectOS.whatOS
+				when 1 # Windows
+					"/" # FIXME
+				else
+					"/usr/local"
+			end
+		else
+			@destdir = File.expand_path(@options['prefix'])
+		end
+		
+		File.open(@statusFile, "w" ) { |file|
+			file << %@
+require 'qonf/makefile'
+RQonf::Makefile::override( ARGV[0].to_s, "#{@destdir}", "#{@statusFile}" )
+@
+		}
 	end
 
 	def hasArgument?(arg)
@@ -59,42 +82,13 @@ class Configure
 		Info.info << "Creating makefiles..." << $endl
 		@qmake.run("", true)
 		
-		destdir = ""
-		
-		if @options['prefix'].nil?
-			destdir = case RQonf::DetectOS.whatOS
-				when 1 # Windows
-					"/" # FIXME
-				else
-					"/usr/local"
-			end
-		else
-			destdir = File.expand_path(@options['prefix'])
-		end
-		
 		Info.info << "Updating makefiles..." << $endl
 		
 		
-		@makefiles = []
-		findMakefiles(Dir.getwd)
+		@makefiles = Makefile::findMakefiles(Dir.getwd)
 		
 		@makefiles.each { |makefile|
-			overrideDestdir(makefile, destdir)
-		}
-	end
-	
-	def overrideDestdir(makefile, destdir)
-		newmakefile = ""
-		File.open(makefile, "r") { |f|
-			lines = f.readlines
-			
-			lines.each { |line|
-				newmakefile += "#{line.gsub( /\$\(INSTALL_ROOT\)/, destdir )}"
-			}
-		}
-		
-		File.open(makefile, "w") { |f|
-			f << newmakefile
+			Makefile::override(makefile, @destdir, @statusFile)
 		}
 	end
 	
@@ -142,20 +136,6 @@ class Configure
 				end
 			elsif file =~ /.qonf$/
 				@tests << Test.new(file, @qmake)
-			end
-		}
-	end
-	
-	def findMakefiles(path)
-		Dir.foreach(path) { |f|
-			file = "#{path}/#{f}"
-			
-			if File.stat(file).directory?
-				if not f =~ /^\./
-					findMakefiles(file)
-				end
-			elsif f.downcase == "makefile"
-				@makefiles << file
 			end
 		}
 	end

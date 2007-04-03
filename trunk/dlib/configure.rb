@@ -55,7 +55,7 @@ qonf.path += #{Config::CONFIG['sitelibdir']}/qonf\n@
 	conf.createMakefiles
 	
 	conf.qmake.run
-	conf.overrideDestdir("#{Dir.getwd}/Makefile", "")
+	RQonf::Makefile::override("#{Dir.getwd}/Makefile", "", conf.statusFile)
 	
 rescue => err
 	Info.error << "Configure failed. error was: #{err.message}\n"
