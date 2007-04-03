@@ -156,8 +156,6 @@ void DMingPaintEngine::drawPath(const QPainterPath & path)
 	{
 		QPainterPath::Element e = path.elementAt(i);
 		
-		qDebug() << e;
-		
 		switch(e.type)
 		{
 			case QPainterPath::MoveToElement:
