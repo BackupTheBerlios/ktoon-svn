@@ -11,7 +11,7 @@ SOURCES += ktviewcamera.cpp \
            ktcamerabar.cpp \
            ktanimationarea.cpp \
            ktcamerawidget.cpp 
-KDEV_QTVER = 4
+
 include(../components_config.pri)
 CONFIG += static
 TEMPLATE = lib

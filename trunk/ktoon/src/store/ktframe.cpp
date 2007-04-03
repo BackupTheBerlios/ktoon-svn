@@ -153,15 +153,16 @@ void KTFrame::addItem(QGraphicsItem *item)
 	
 	KTGraphicObject *object = new KTGraphicObject(item, this);
 	
-// 	KTItemTweener *tweener = new KTItemTweener(object);
-// 	
-// 	tweener->setFrames(10);
-// 	for(int i = 0; i < 10; i++)
-// 	{
-// 		tweener->setRotationAt(i/10.0, i*30);
-// 	}
-// 	
-// 	object->setTweener(tweener);
+	KTItemTweener *tweener = new KTItemTweener(30, object);
+	
+	for(int step = 0; step < tweener->frames(); step++)
+	{
+// 		tweener->setRotationAt(step, i*30);
+		tweener->setScaleAt(step, 0.1*(step+1), 1.0);
+		tweener->setTranslationAt(step, step*10, 0.0);
+	}
+	
+	object->setTweener(tweener);
 	
 	d->graphics << object;
 }

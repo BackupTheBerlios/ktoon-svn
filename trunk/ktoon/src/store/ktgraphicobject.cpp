@@ -131,7 +131,7 @@ void KTGraphicObject::setTweener(KTItemTweener *tweener)
 	}
 	else
 	{
-// 		d->frame->scene()->removeTweeningObject(this); // TODO
+		d->frame->scene()->removeTweeningObject(this);
 	}
 }
 

@@ -27,16 +27,33 @@
  * @author David Cuadrado \<krawek@gmail.com\>
 */
 
-class KTItemTweener : public QGraphicsItemAnimation
+class KTItemTweener : public QObject
 {
 	public:
-		KTItemTweener(QObject *parent = 0);
+		KTItemTweener(int frames, QObject *parent = 0);
 		~KTItemTweener();
+		
+		double horizontalScaleAt( int step ) const;
+		double horizontalShearAt( int step ) const;
+		QGraphicsItem *item() const;
+		QMatrix matrixAt( int step ) const;
+		QPointF posAt( int step ) const;
+		double rotationAt( int step ) const;
+		void setItem( QGraphicsItem * item );
+		void setPosAt( int step, const QPointF & point );
+		void setRotationAt( int step, double angle );
+		void setScaleAt( int step, double sx, double sy );
+		void setShearAt( int step, double sh, double sv );
+		void setTranslationAt( int step, double dx, double dy );
+		double verticalScaleAt( int step ) const;
+		double verticalShearAt( int step ) const;
+		double xTranslationAt( int step ) const;
+		double yTranslationAt( int step ) const;
 		
 		void setFrames(int frames);
 		int frames() const;
 		
-		virtual void afterAnimationStep(qreal step);
+		void setStep( int step );
 		
 	private:
 		struct Private;

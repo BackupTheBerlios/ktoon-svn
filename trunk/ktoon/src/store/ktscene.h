@@ -112,6 +112,7 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
 		KTProject *project() const;
 		
 		void addTweeningObject(KTGraphicObject *object);
+		void removeTweeningObject(KTGraphicObject *object);
 		QList<KTGraphicObject *> tweeningObjects() const;
 		
 	public:

@@ -161,17 +161,13 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 			
 			if( origin < photogram && photogram < origin+tweener->frames() )
 			{
-				double step = (photogram - origin) / (double)tweener->frames();
+				int step = photogram - origin;
 				tweener->setStep(step);
 				
 				if(object->frame()->layer()->isVisible() )
 				{
 					addItem(object->item()); // FIXME
 				}
-			}
-			else
-			{
-				tweener->reset();
 			}
 		}
 	}

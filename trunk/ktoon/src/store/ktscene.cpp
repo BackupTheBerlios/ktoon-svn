@@ -264,6 +264,11 @@ void KTScene::addTweeningObject(KTGraphicObject *object)
 	d->tweeningObjects << object;
 }
 
+void KTScene::removeTweeningObject(KTGraphicObject *object)
+{
+	d->tweeningObjects.removeAll(object);
+}
+
 QList<KTGraphicObject *> KTScene::tweeningObjects() const
 {
 	return d->tweeningObjects;

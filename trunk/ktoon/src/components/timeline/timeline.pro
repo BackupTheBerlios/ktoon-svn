@@ -12,8 +12,6 @@ SOURCES += kttimeline.cpp \
            kttlruler.cpp \
            ktframestable.cpp 
 
-KDEV_QTVER = 4
-
 CONFIG += static
 
 TEMPLATE = lib

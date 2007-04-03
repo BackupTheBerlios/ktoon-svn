@@ -8,7 +8,6 @@ HEADERS += ktexposuresheet.h \
 SOURCES += ktexposuresheet.cpp \
            ktexposuretable.cpp 
 
-KDEV_QTVER = 4
 include(../components_config.pri)
 
 CONFIG += static
