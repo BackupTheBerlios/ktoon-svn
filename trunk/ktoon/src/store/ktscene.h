@@ -111,6 +111,9 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
 		
 		KTProject *project() const;
 		
+		void addTweeningObject(KTGraphicObject *object);
+		QList<KTGraphicObject *> tweeningObjects() const;
+		
 	public:
 		virtual void fromXml(const QString &xml );
 		virtual QDomElement toXml(QDomDocument &doc) const;

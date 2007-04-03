@@ -31,6 +31,7 @@
 #include "ktlibrary.h"
 
 #include "ktitemgroup.h"
+#include "ktitemtweener.h"
 
 #include "ktprojectloader.h"
 
@@ -151,6 +152,17 @@ void KTFrame::addItem(QGraphicsItem *item)
 	}
 	
 	KTGraphicObject *object = new KTGraphicObject(item, this);
+	
+// 	KTItemTweener *tweener = new KTItemTweener(object);
+// 	
+// 	tweener->setFrames(10);
+// 	for(int i = 0; i < 10; i++)
+// 	{
+// 		tweener->setRotationAt(i/10.0, i*30);
+// 	}
+// 	
+// 	object->setTweener(tweener);
+	
 	d->graphics << object;
 }
 

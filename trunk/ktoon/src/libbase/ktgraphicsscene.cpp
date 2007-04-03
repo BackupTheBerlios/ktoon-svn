@@ -36,6 +36,7 @@
 #include "ktinputdeviceinformation.h"
 #include "ktbrushmanager.h"
 #include "ktframe.h"
+#include "ktitemtweener.h"
 
 #include "ktprojectresponse.h"
 
@@ -149,6 +150,31 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 	if ( photogram < 0 ) return;
 	
 	clean();
+	
+	foreach(KTGraphicObject *object, d->scene->tweeningObjects())
+	{
+		int origin = object->index();
+		
+		if( KTItemTweener *tweener = object->tweener() )
+		{
+			tweener->setStep(0);
+			
+			if( origin < photogram && photogram < origin+tweener->frames() )
+			{
+				double step = (photogram - origin) / (double)tweener->frames();
+				tweener->setStep(step);
+				
+				if(object->frame()->layer()->isVisible() )
+				{
+					addItem(object->item()); // FIXME
+				}
+			}
+			else
+			{
+				tweener->reset();
+			}
+		}
+	}
 	
 	foreach(KTLayer *layer, d->scene->layers())
 	{

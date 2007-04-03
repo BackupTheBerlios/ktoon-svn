@@ -226,11 +226,8 @@ void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
 		menu->addSeparator();
 		
 		QAction *cut = menu->addAction(tr("Cut"), this, SLOT(cutItems()));
-		
 		QAction *copy = menu->addAction(tr("Copy"), this, SLOT(copyItems()));
-		
 		QAction *paste = menu->addAction(tr("Paste"), this, SLOT(pasteItems()));
-		
 		menu->addSeparator();
 		QAction *del = menu->addAction(tr("Delete"), this, SLOT(deleteItems()));
 		
@@ -259,7 +256,7 @@ void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
 	}
 }
 
-void KTPaintAreaBase::mouseMoveEvent ( QMouseEvent * event )
+void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )
 {
 	if ( !canPaint()) return;
 	

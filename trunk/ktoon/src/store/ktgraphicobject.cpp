@@ -24,6 +24,7 @@
 #include <QGraphicsItem>
 
 #include "ktframe.h"
+#include "ktscene.h"
 #include "ktitemtweener.h"
 
 struct KTGraphicObject::Private
@@ -119,10 +120,19 @@ void KTGraphicObject::initItemData()
 	}
 }
 
-
 void KTGraphicObject::setTweener(KTItemTweener *tweener)
 {
 	d->tweener = tweener;
+	
+	if( d->tweener )
+	{
+		d->tweener->setItem(d->item);
+		d->frame->scene()->addTweeningObject(this);
+	}
+	else
+	{
+// 		d->frame->scene()->removeTweeningObject(this); // TODO
+	}
 }
 
 KTItemTweener *KTGraphicObject::tweener() const

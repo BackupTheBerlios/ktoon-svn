@@ -39,6 +39,8 @@ struct KTScene::Private
 	bool isLocked;
 	int layerCount;
 	bool isVisible;
+	
+	QList<KTGraphicObject *> tweeningObjects;
 };
 
 KTScene::KTScene(KTProject *parent) : QObject(parent), d(new Private)
@@ -255,5 +257,15 @@ int KTScene::indexOf(KTLayer *layer) const
 KTProject *KTScene::project() const
 {
 	return static_cast<KTProject *>(parent());
+}
+
+void KTScene::addTweeningObject(KTGraphicObject *object)
+{
+	d->tweeningObjects << object;
+}
+
+QList<KTGraphicObject *> KTScene::tweeningObjects() const
+{
+	return d->tweeningObjects;
 }
 
