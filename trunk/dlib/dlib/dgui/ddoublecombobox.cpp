@@ -38,22 +38,27 @@ struct DDoubleComboBox::Private
 DDoubleComboBox::DDoubleComboBox(double min, double max, QWidget *parent)
  : QComboBox(parent), d(new Private)
 {
-	d->validator = new QDoubleValidator(this);
-	setValidator(d->validator);
 	
+	d->validator = new QDoubleValidator(this);
 	d->editor = new QLineEdit;
+	d->editor->setValidator(d->validator);
 	setLineEdit(d->editor);
 	
+	setValidator(d->validator);
+	setMinimum(min);
+	setMaximum(max);
+
 	setDuplicatesEnabled(false);
+	setInsertPolicy(QComboBox::InsertAlphabetically);
 	
 	connect(this, SIGNAL(activated( int )), this, SLOT(emitActivated(int)));
 	connect(this, SIGNAL(highlighted( int )), this, SLOT(emitHighlighted(int)));
 	connect(this, SIGNAL(currentIndexChanged( int )), this, SLOT(emitCurrentIndexChanged(int)));
 	
+	connect(d->editor, SIGNAL(editingFinished()), this, SIGNAL(editingFinished())) ;
+	
 	d->showAsPercent = false;
 	
-	setMinimum(min);
-	setMaximum(max);
 	setDecimals(2);
 }
 
@@ -77,7 +82,15 @@ void DDoubleComboBox::setShowAsPercent(bool p)
 		}
 		else
 		{
-			setItemText(index, QString::number(VALUE(itemText(index).remove("%").toDouble())));
+			double value = ::ceil(VALUE(itemText(index).remove("%").toDouble()));
+			if(minimum() < value && value < maximum())
+			{
+				setItemText(index, QString::number(value));
+			}
+			else
+			{
+				removeItem(index);
+			}
 		}
 	}
 }
@@ -119,25 +132,31 @@ double DDoubleComboBox::minimum() const
 
 void DDoubleComboBox::addValue(double v)
 {
-	if(d->showAsPercent)
+	if(currentText().toDouble() != v && (minimum() < v && v < maximum()))
 	{
-		addItem(QString::number(PERCENT(v)) + " %");
-	}
-	else
-	{
-		addItem(QString::number(v));
+		if(d->showAsPercent)
+		{
+			addItem(QString::number(PERCENT(v)) + "%");
+		}
+		else
+		{
+			addItem(QString::number(v));
+		}
 	}
 }
 
 void DDoubleComboBox::addPercent(double p)
 {
-	if(d->showAsPercent)
+	if(currentText().toDouble() != p)
 	{
-		addItem(QString::number(p)+ " %");
-	}
-	else
-	{
-		addItem(QString::number(VALUE(p)));
+		if(d->showAsPercent )
+		{
+			addItem(QString::number(p)+ "%");
+		}
+		else
+		{
+			addItem(QString::number(VALUE(p)));
+		}
 	}
 }
 
@@ -154,4 +173,48 @@ void DDoubleComboBox::emitActivated(int index)
 void DDoubleComboBox::emitCurrentIndexChanged(int index)
 {
 	emit currentIndexChanged( itemText(index).toDouble());
+}
+
+double DDoubleComboBox::value()
+{
+	if( d->showAsPercent )
+	{
+		return (VALUE(currentText().remove("%").toDouble()));
+	}
+	
+	return currentText().toDouble();
+}
+
+void DDoubleComboBox::setValue(int index, double v)
+{
+	if( d->showAsPercent )
+	{
+		setItemText(index, QString::number(PERCENT(v)));
+	}
+	else
+	{
+		setItemText(index, QString::number(v));
+	}
+}
+
+void DDoubleComboBox::setPercent(int index, double p)
+{
+	if( d->showAsPercent )
+	{
+		setItemText(index, QString::number(p)+ "%");
+	}
+	else
+	{
+		setItemText(index, QString::number(VALUE(p))+ "%");
+	}
+}
+
+double DDoubleComboBox::percent()
+{
+	if( d->showAsPercent )
+	{
+		return currentText().remove("%").toDouble();
+	}
+	
+	return PERCENT(currentText().toDouble());
 }

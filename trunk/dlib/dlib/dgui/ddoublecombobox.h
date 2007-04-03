@@ -48,6 +48,13 @@ class DDoubleComboBox : public QComboBox
 		void addValue(double v);
 		void addPercent(double p);
 		
+		double value();
+		void setValue(int index, double v);
+		
+		double percent();
+		void setPercent(int index, double p);
+		
+		
 	public slots:
 		void setShowAsPercent(bool p);
 		
@@ -60,7 +67,8 @@ class DDoubleComboBox : public QComboBox
 		void highlighted(double v);
 		void activated(double v);
 		void currentIndexChanged(double v);
-		
+		void editingFinished();
+	
 	private:
 		struct Private;
 		Private *const d;
