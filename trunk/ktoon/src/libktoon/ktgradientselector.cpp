@@ -23,8 +23,8 @@
 #include <QPolygon>
 #include <qdrawutil.h>
 
-#include "dcore/dimageeffect.h"
 #include <dcore/ddebug.h>
+#include <dgui/dimageeffect.h>
 
 #include <QMatrix>
 
