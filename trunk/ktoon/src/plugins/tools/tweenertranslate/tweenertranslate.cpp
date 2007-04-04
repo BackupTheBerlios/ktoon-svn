@@ -1,14 +1,23 @@
-//
-// C++ Implementation: tweenertranslate
-//
-// Description: 
-//
-//
-// Author: Jorge Cuadrado <kuadrosx@toonka.com>, (C) 2007
-//
-// Copyright: See COPYING file that comes with this distribution
-//
-//
+/***************************************************************************
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+ 
 #include "tweenertranslate.h"
 #include "configurator.h"
 
@@ -20,7 +29,7 @@
 #include <QGraphicsLineItem>
 #include <QGraphicsView>
 #include <QDomDocument>
-
+#include <QGraphicsPathItem>
 
 #include <dgui/daction.h>
 #include <dcore/dalgorithm.h>
@@ -41,10 +50,10 @@
 struct TweenerTranslate::Private
 {
 	QMap<QString, DAction *> actions;
-	QPointF first, end;
 	Configurator *configurator;
 	KTGraphicsScene *scene;
 	bool creatingPath, selecting;
+	QGraphicsPathItem *path;
 };
 
 TweenerTranslate::TweenerTranslate() : KTToolPlugin(), d(new Private)
@@ -64,6 +73,7 @@ TweenerTranslate::~TweenerTranslate()
 void TweenerTranslate::init(KTGraphicsScene *scene)
 {
 	d->scene = scene;
+	d->path = 0;
 	setCreatePath();
 }
 
@@ -74,9 +84,24 @@ QStringList TweenerTranslate::keys() const
 
 void TweenerTranslate::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+	
 	if(d->creatingPath)
 	{
-		d->end = input->pos();
+		if(!d->path)
+		{
+			d->path = new QGraphicsPathItem;
+			QPainterPath path;
+			path.moveTo(input->pos());
+			d->path->setPath(path);
+			scene->addItem(d->path);
+		}
+		else
+		{
+			QPainterPath path = d->path->path();
+			path.lineTo(input->pos());
+			d->path->setPath(path);
+			scene->addItem(d->path);
+		}
 	}
 }
 
@@ -140,8 +165,11 @@ void TweenerTranslate::setCreatePath()
 		view->setDragMode (QGraphicsView::NoDrag);
 		foreach(QGraphicsItem *item, view->scene()->items() )
 		{
-			item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-			item->setFlag(QGraphicsItem::ItemIsMovable, false);
+			if(item != d->path)
+			{
+				item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+				item->setFlag(QGraphicsItem::ItemIsMovable, false);
+			}
 		}
 	}
 }
@@ -155,43 +183,40 @@ void TweenerTranslate::setSelect()
 		view->setDragMode (QGraphicsView::RubberBandDrag);
 		foreach(QGraphicsItem *item, view->scene()->items() )
 		{
-			item->setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
+			if(item != d->path)
+			{
+				item->setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
+			}
 		}
 	}
 }
 
 void TweenerTranslate::applyTweener()
 {
-	QPainterPath path;
-	path.lineTo(d->end);
-	
-	
-	
-	QDomDocument doc;
-	QDomElement root = doc.createElement("steps");
-	doc.appendChild(root);
-	
-	int count = 0;
-	foreach(QPointF pos, path.toFillPolygon())
+	if(d->path)
 	{
-		KTTweenerStep step(count);
-		step.setPosition(pos);
-		root.appendChild(step.toXml(doc));
-		count++;
+		QVector<KTTweenerStep *> steps;
+		int count = 0;
+		foreach(QPointF pos, d->path->path().toFillPolygon())
+		{
+			KTTweenerStep *step = new  KTTweenerStep(count);
+			step->setPosition(pos);
+			steps << step;
+			count+=10;
+		}
+		
+		foreach(QGraphicsItem *item, d->scene->selectedItems())
+		{
+			KTProjectRequest request = KTRequestBuilder::createItemRequest(
+					d->scene->currentSceneIndex(),
+					d->scene->currentLayerIndex(),
+					d->scene->currentFrameIndex(),
+					d->scene->currentFrame()->indexOf(item),
+					KTProjectRequest::Tweening,
+					KTTweenerStep::createXml(count*2, steps).toString());
+			emit requested(&request);
+		}
 	}
-	
-	foreach(QGraphicsItem *item, d->scene->selectedItems())
-	{
-		KTProjectRequest request = KTRequestBuilder::createItemRequest(
-				d->scene->currentSceneIndex(),
-				d->scene->currentLayerIndex(),
-				d->scene->currentFrameIndex(),
-				d->scene->currentFrame()->indexOf(item),
-				KTProjectRequest::Tweening,
-				doc.toString() );
-		emit requested(&request);
-	}
-	
 	
 }
 
