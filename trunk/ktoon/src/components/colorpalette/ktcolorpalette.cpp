@@ -135,7 +135,7 @@ void KTColorPalette::setupChooserTypeColor()
 	d->displayColorValue = new KTColorValue(colorMixer);
 	
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::LeftToRight);
-	layoutContainer->setMargin(0);
+// 	layoutContainer->setMargin(0);
 	
 	layoutContainer->addStretch(2);
 	
@@ -158,8 +158,11 @@ void KTColorPalette::setupChooserTypeColor()
 	layoutContainer->addStretch(2);
 	
 	layout->addLayout(layoutContainer);
-	layout->addWidget(d->displayColorValue, 0, Qt::AlignCenter);
-	this->layout()->setAlignment( colorMixer, Qt::AlignTop);
+	
+	layout->addWidget(d->displayColorValue/*, 0, Qt::AlignCenter*/);
+// 	d->displayColorValue->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+	d->displayColorValue->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+// 	this->layout()->setAlignment( colorMixer, Qt::AlignTop);
 	connect(d->displayColorValue, SIGNAL(brushChanged(const QBrush&)), this, SLOT(setColor(const QBrush &)));
 	
 	d->centralWidget->addPage(colorMixer, tr("Color Mixer"));

@@ -95,7 +95,7 @@ struct KTColorValue::Private
 {
 	KTItemColorValue *valueR, *valueG, *valueB, *valueH, *valueS, *valueV; 
 	DDoubleComboBox *valueA;
-	QGridLayout *layout;
+// 	QGridLayout *layout;
 	bool ok, percent;
 };
 
@@ -103,8 +103,11 @@ KTColorValue::KTColorValue(QWidget *parent) : QFrame(parent), d(new Private)
 {
 	DINIT;
 	d->ok = true;
-	d->layout = new QGridLayout;
-	setLayout(d->layout);
+	
+	setLayout(new QVBoxLayout());
+// 	d->layout = new QGridLayout;
+// 	setLayout(d->layout);
+	
 	setupForm();
 }
 
@@ -116,7 +119,9 @@ KTColorValue::~KTColorValue()
 
 void KTColorValue::setupForm()
 {
-	d->valueR = new KTItemColorValue("R", this);
+	QGridLayout *gridLayout = new QGridLayout;
+	
+	d->valueR = new KTItemColorValue("R");
 	connect(d->valueR, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
 	
 	d->valueG = new KTItemColorValue("G", this);
@@ -135,13 +140,17 @@ void KTColorValue::setupForm()
 	d->valueV = new KTItemColorValue("V", this);
 	connect(d->valueV, SIGNAL(valueChanged(int)), this, SIGNAL(valueChanged( int)));
 	
-	QHBoxLayout *layout = new QHBoxLayout;
+	QHBoxLayout *boxLayout = new QHBoxLayout;
+	boxLayout->setSpacing(1);
 	
 	d->valueA = new DDoubleComboBox(0, 255, this);
-	layout->addWidget(new QLabel("A"));
-	layout->addWidget(d->valueA);
+	QLabel * label = new QLabel("A");
+	label->setSizePolicy ( QSizePolicy::Fixed,  QSizePolicy::Fixed);
+	boxLayout->addWidget(label);
 	
-	for(int i = 255; i > 0; i -= 25)
+	boxLayout->addWidget(d->valueA);
+	
+	for(int i = 0; i < 255; i += 25)
 	{
 		d->valueA->addValue(i);
 	}
@@ -149,14 +158,19 @@ void KTColorValue::setupForm()
 	connect(d->valueA, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
 	QCheckBox *show = new QCheckBox(tr("percent"));
 	
-	d->layout->addWidget(d->valueR, 0, 0,Qt::AlignTop | Qt::AlignLeft);
-	d->layout->addWidget(d->valueG, 1, 0,Qt::AlignTop | Qt::AlignLeft);
-	d->layout->addWidget(d->valueB, 2, 0,Qt::AlignTop | Qt::AlignLeft);
-	d->layout->addWidget(d->valueH, 0, 1,Qt::AlignTop | Qt::AlignLeft);
-	d->layout->addWidget(d->valueS, 1, 1,Qt::AlignTop | Qt::AlignLeft);
-	d->layout->addWidget(d->valueV, 2, 1,Qt::AlignTop | Qt::AlignLeft);
-	d->layout->addLayout(layout, 3, 0,Qt::AlignTop | Qt::AlignLeft);
-	d->layout->addWidget(show, 3,1 ,Qt::AlignTop | Qt::AlignLeft);
+	gridLayout->addWidget(d->valueR, 0, 0,Qt::AlignTop | Qt::AlignLeft);
+	gridLayout->addWidget(d->valueG, 1, 0,Qt::AlignTop | Qt::AlignLeft);
+	gridLayout->addWidget(d->valueB, 2, 0,Qt::AlignTop | Qt::AlignLeft);
+	gridLayout->addWidget(d->valueH, 0, 1,Qt::AlignTop | Qt::AlignLeft);
+	gridLayout->addWidget(d->valueS, 1, 1,Qt::AlignTop | Qt::AlignLeft);
+	gridLayout->addWidget(d->valueV, 2, 1,Qt::AlignTop | Qt::AlignLeft);
+	
+	
+	boxLayout->addWidget(show);
+	
+	static_cast<QHBoxLayout*>(layout())->addLayout(gridLayout);
+	static_cast<QHBoxLayout*>(layout())->addLayout(boxLayout);
+	
 	connect(show, SIGNAL(toggled( bool )), this, SLOT(setAlfaValuePercent( bool )));
 	
 }
@@ -181,15 +195,6 @@ void KTColorValue::setColor(const QBrush &brush)
 void KTColorValue::setAlfaValuePercent(bool enable)
 {
 	d->valueA->setShowAsPercent(enable);
-	if(enable)
-	{
-		d->valueA->lineEdit()->setInputMask("009.99 %");
-	}
-	else
-	{
-		d->valueA->lineEdit()->setInputMask("009");
-	}
-	
 	d->percent = enable;
 }
 
@@ -200,7 +205,7 @@ void KTColorValue::syncValuesRgb(int)
 		int r = d->valueR->value();
 		int g = d->valueG->value();
 		int b = d->valueB->value();
-		int a = d->valueA->value();
+		int a = (int) ::ceil(d->valueA->value());
 		
 		QColor tmp = QColor::fromRgb(r,g,b,a);
 		d->valueH->setValue( tmp.hue ());
@@ -227,5 +232,5 @@ int KTColorValue::value()
 
 int KTColorValue::alpha()
 {
-	return d->valueA->value();
+	return (int) ::ceil(d->valueA->value());
 }
