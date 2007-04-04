@@ -55,9 +55,8 @@ class KTOON_EXPORT KTBrushManager : public QObject
 		void brushChanged(const QBrush &brush);
 		
 	private:
-		QPen m_pen;
-		QBrush m_brush;
-		
+		struct Private;
+		Private *const d;
 
 };
 

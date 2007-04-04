@@ -187,7 +187,15 @@ void KTLayerManagerItemDelegate::paint ( QPainter *painter, const QStyleOptionVi
 
 ////////////////////////////////
 
-KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), m_allSelected(false), m_allVisible(true), m_allLock(false), m_rowHeight(20)
+struct KTLayerManager::Private
+{
+	Private() : allSelected(false), allVisible(true), allLock(false), rowHeight(20) {}
+	
+	bool allSelected, allVisible, allLock;
+	int rowHeight;
+};
+
+KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), d(new Private)
 {
 	DINIT;
 	
@@ -211,6 +219,7 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), m_
 KTLayerManager::~KTLayerManager()
 {
 	DEND;
+	delete d;
 }
 
 
@@ -285,20 +294,20 @@ void KTLayerManager::fixSize()
 	
 	int width = this->width() - offset;
 		
-	horizontalHeader()->resizeSection(0, width-(m_rowHeight*2)-8 );
-	horizontalHeader()->resizeSection(1, m_rowHeight );
-	horizontalHeader()->resizeSection(2, m_rowHeight );
+	horizontalHeader()->resizeSection(0, width-(d->rowHeight*2)-8 );
+	horizontalHeader()->resizeSection(1, d->rowHeight );
+	horizontalHeader()->resizeSection(2, d->rowHeight );
 	
 	for(int row = 0; row < rowCount(); row++)
 	{
-		verticalHeader()->resizeSection(row, m_rowHeight);
+		verticalHeader()->resizeSection(row, d->rowHeight);
 	}
 }
 
 
 void KTLayerManager::setRowHeight(int rowHeight)
 {
-	m_rowHeight = rowHeight;
+	d->rowHeight = rowHeight;
 }
 
 

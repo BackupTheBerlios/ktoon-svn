@@ -34,31 +34,43 @@
 
 #include "ktrequestbuilder.h"
 
+struct KTTimeLine::Private
+{
+	Private() : container(0), actionBar(0) {}
+	
+	DTabWidget *container;
+	KTProjectActionBar *actionBar;
+};
 
-KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine"), m_actionBar(0)
+KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine"), d(new Private)
 {
 	DINIT;
 	
 	setWindowTitle(tr("&Time Line"));
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/time_line.png"));
 	
-	m_actionBar = new KTProjectActionBar(KTProjectActionBar::AllActions );
+	d->actionBar = new KTProjectActionBar(KTProjectActionBar::AllActions );
 	
-	m_actionBar->insertSeparator( 4 );
-	m_actionBar->insertSeparator( 9 );
+	d->actionBar->insertSeparator( 4 );
+	d->actionBar->insertSeparator( 9 );
 	
-	addChild( m_actionBar, Qt::AlignCenter );
+	addChild( d->actionBar, Qt::AlignCenter );
 	
-	m_container = new DTabWidget(this);
-	addChild(m_container);
+	d->container = new DTabWidget(this);
+	addChild(d->container);
 	
-	connect(m_actionBar, SIGNAL(actionSelected( int )), this, SLOT(requestCommand(int)));
-	
+	connect(d->actionBar, SIGNAL(actionSelected( int )), this, SLOT(requestCommand(int)));
+}
+
+KTTimeLine::~KTTimeLine()
+{
+	DEND;
+	delete d;
 }
 
 KTLayerManager *KTTimeLine::layerManager(int sceneIndex)
 {
-	QSplitter *splitter = qobject_cast<QSplitter *>(m_container->widget(sceneIndex));
+	QSplitter *splitter = qobject_cast<QSplitter *>(d->container->widget(sceneIndex));
 	if ( splitter )
 	{
 		return qobject_cast<KTLayerManager *>(splitter->widget(0));
@@ -69,7 +81,7 @@ KTLayerManager *KTTimeLine::layerManager(int sceneIndex)
 
 KTFramesTable *KTTimeLine::framesTable(int sceneIndex)
 {
-	QSplitter *splitter = qobject_cast<QSplitter *>(m_container->widget(sceneIndex));
+	QSplitter *splitter = qobject_cast<QSplitter *>(d->container->widget(sceneIndex));
 	
 	if ( splitter )
 	{
@@ -81,58 +93,52 @@ KTFramesTable *KTTimeLine::framesTable(int sceneIndex)
 
 void KTTimeLine::insertScene(int position, const QString &name)
 {
-	if ( position < 0 || position > m_container->count() )
+	if ( position < 0 || position > d->container->count() )
 	{
 		return;
 	}
 	
-	QSplitter *m_splitter = new QSplitter( m_container );
+	QSplitter *splitter = new QSplitter( d->container );
 	
-	KTLayerManager *m_layerManager = new KTLayerManager( m_splitter );
+	KTLayerManager *layerManager = new KTLayerManager( splitter );
 	
-	m_layerManager->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+	layerManager->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 	
-	m_splitter->addWidget(m_layerManager);
+	splitter->addWidget(layerManager);
 
-	KTFramesTable *m_framesTable = new KTFramesTable(m_splitter);
-	m_splitter->addWidget(m_framesTable);
+	KTFramesTable *framesTable = new KTFramesTable(splitter);
+	splitter->addWidget(framesTable);
 	
-	m_framesTable->setItemSize( 10, 20);
-	m_layerManager->setRowHeight( 20 );
+	framesTable->setItemSize( 10, 20);
+	layerManager->setRowHeight( 20 );
 	
-	connect(m_framesTable, SIGNAL(frameRequest(int, int, int, int, const QVariant&)), this, SLOT(requestFrameAction(int, int, int, int, const QVariant&)));
+	connect(framesTable, SIGNAL(frameRequest(int, int, int, int, const QVariant&)), this, SLOT(requestFrameAction(int, int, int, int, const QVariant&)));
 	
-	connect(m_layerManager->verticalScrollBar(), SIGNAL(valueChanged (int)), m_framesTable->verticalScrollBar(), SLOT(setValue(int)));
-	connect(m_framesTable->verticalScrollBar(), SIGNAL(valueChanged (int)), m_layerManager->verticalScrollBar(), SLOT(setValue(int)));
+	connect(layerManager->verticalScrollBar(), SIGNAL(valueChanged (int)), framesTable->verticalScrollBar(), SLOT(setValue(int)));
+	connect(framesTable->verticalScrollBar(), SIGNAL(valueChanged (int)), layerManager->verticalScrollBar(), SLOT(setValue(int)));
 	
-	connect(m_layerManager, SIGNAL(requestRenameEvent( int, const QString& )), this, SLOT(emitRequestRenameLayer(int, const QString &))); // FIXME
+	connect(layerManager, SIGNAL(requestRenameEvent( int, const QString& )), this, SLOT(emitRequestRenameLayer(int, const QString &))); // FIXME
 	
-	m_container->insertTab(position, m_splitter, name );
+	d->container->insertTab(position, splitter, name );
 }
 
 void KTTimeLine::removeScene(int position)
 {
-	if ( position >= 0 && position < m_container->count() )
+	if ( position >= 0 && position < d->container->count() )
 	{
-		QWidget *w = m_container->widget(position);
-// 		m_container->removeWidget(w);
-		m_container->removeTab(position);
+		QWidget *w = d->container->widget(position);
+// 		d->container->removeWidget(w);
+		d->container->removeTab(position);
 		
 		delete w;
 	}
 }
 
-
-KTTimeLine::~KTTimeLine()
-{
-	DEND;
-}
-
 void KTTimeLine::closeAllScenes()
 {
-	while(m_container->currentWidget())
+	while(d->container->currentWidget())
 	{
-		delete m_container->currentWidget();
+		delete d->container->currentWidget();
 	}
 }
 
@@ -292,7 +298,7 @@ void KTTimeLine::frameResponse(KTFrameResponse *e)
 
 void KTTimeLine::requestCommand(int action)
 {
-	int scenePos = m_container->currentIndex();
+	int scenePos = d->container->currentIndex();
 	int layerPos = -1;
 	int framePos = -1;
 	
@@ -320,7 +326,7 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
 {
 	if ( scenePos < 0 )
 	{
-		scenePos = m_container->currentIndex();
+		scenePos = d->container->currentIndex();
 	}
 	
 	if ( scenePos >= 0 )
@@ -388,7 +394,7 @@ bool KTTimeLine::requestLayerAction(int action, int layerPos, int scenePos, cons
 {
 	if ( scenePos < 0 )
 	{
-		scenePos = m_container->currentIndex();
+		scenePos = d->container->currentIndex();
 	}
 	
 	if ( scenePos >= 0 )
@@ -439,7 +445,7 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
 {
 	if ( scenePos < 0 )
 	{
-		scenePos = m_container->currentIndex();
+		scenePos = d->container->currentIndex();
 	}
 	
 	switch(action)
@@ -484,7 +490,7 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
 void KTTimeLine::emitRequestRenameLayer(int layer, const QString &name)
 {
 	D_FUNCINFO << name;
-	int scenePos = m_container->currentIndex();
+	int scenePos = d->container->currentIndex();
 	
 	KTProjectRequest event = KTRequestBuilder::createLayerRequest( scenePos, layer, KTProjectRequest::Rename, name );
 	

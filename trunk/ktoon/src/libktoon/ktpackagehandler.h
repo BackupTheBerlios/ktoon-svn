@@ -47,7 +47,8 @@ class KTOON_EXPORT KTPackageHandler
 		bool createPath(const QString &filePath);
 		
 	private:
-		QString m_importedProjectPath;
+		struct Private;
+		Private *const d;
 };
 
 #endif

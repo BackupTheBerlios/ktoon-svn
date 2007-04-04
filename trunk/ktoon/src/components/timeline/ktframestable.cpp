@@ -574,6 +574,7 @@ QSize KTFramesTableItemDelegate::sizeHint ( const QStyleOptionViewItem & option,
 
 
 ////////// KTFramesTableItem ////////
+
 KTFramesTableItem::KTFramesTableItem()
 	:  m_view(0), m_model(0), m_itemFlags(Qt::ItemIsEditable
 		|Qt::ItemIsSelectable

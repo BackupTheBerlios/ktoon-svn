@@ -68,9 +68,8 @@ class KTTimeLine : public KTModuleWidgetBase
 		void emitRequestRenameLayer(int layer, const QString &name);
 		
 	private:
-		DTabWidget *m_container;
-		
-		KTProjectActionBar *m_actionBar;
+		struct Private;
+		Private *const d;
 };
 
 #endif

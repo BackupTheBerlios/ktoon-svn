@@ -31,9 +31,22 @@
 #include <dgui/doptionaldialog.h>
 #include <dgui/dimagebutton.h>
 
-KTProjectActionBar::KTProjectActionBar(Actions actions, Qt::Orientation orientation, QWidget *parent) : QWidget(parent ), m_orientation(orientation), m_isAnimated(true)
+struct KTProjectActionBar::Private
 {
-	connect(&m_actions, SIGNAL(buttonClicked(int)), this, SLOT(emitActionSelected(int)));
+	Private(Qt::Orientation orientation) : orientation(orientation), isAnimated(true) {}
+	Qt::Orientation orientation;
+	
+	int fixedSize;
+	QButtonGroup actions;
+	
+	QBoxLayout *buttonLayout;
+	
+	bool isAnimated;
+};
+
+KTProjectActionBar::KTProjectActionBar(Actions actions, Qt::Orientation orientation, QWidget *parent) : QWidget(parent ), d(new Private(orientation) )
+{
+	connect(&d->actions, SIGNAL(buttonClicked(int)), this, SLOT(emitActionSelected(int)));
 	
 	setup(actions);
 	
@@ -48,9 +61,9 @@ KTProjectActionBar::~KTProjectActionBar()
 
 void KTProjectActionBar::setFixedSize(int s)
 {
-	m_fixedSize = s;
+	d->fixedSize = s;
 	
-// 	switch(m_orientation )
+// 	switch(d->orientation )
 // 	{
 // 		case Qt::Horizontal:
 // 		{
@@ -64,9 +77,9 @@ void KTProjectActionBar::setFixedSize(int s)
 // 		break;
 // 	}
 	
-// 	foreach( QAbstractButton *button, m_actions.buttons() )
+// 	foreach( QAbstractButton *button, d->actions.buttons() )
 // 	{
-// 		button->setIconSize(QSize(m_fixedSize, m_fixedSize));
+// 		button->setIconSize(QSize(d->fixedSize, d->fixedSize));
 // 	}
 }
 
@@ -75,19 +88,19 @@ void KTProjectActionBar::setup(Actions actions)
 {
 	QBoxLayout *mainLayout = 0;
 	
-	switch(m_orientation)
+	switch(d->orientation)
 	{
 		case Qt::Vertical:
 		{
 			mainLayout = new QBoxLayout(QBoxLayout::LeftToRight, this);
-			m_buttonLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+			d->buttonLayout = new QBoxLayout(QBoxLayout::TopToBottom);
 
 		}
 		break;
 		case Qt::Horizontal:
 		{
 			mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
-			m_buttonLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+			d->buttonLayout = new QBoxLayout(QBoxLayout::LeftToRight);
 			
 		}
 		break;
@@ -96,10 +109,10 @@ void KTProjectActionBar::setup(Actions actions)
 	mainLayout->setSpacing( 0);
 	mainLayout->setMargin( 1);
 	
-	m_buttonLayout->setSpacing(1  );
-	m_buttonLayout->setMargin( 1);
+	d->buttonLayout->setSpacing(1  );
+	d->buttonLayout->setMargin( 1);
 	
-	m_buttonLayout->addStretch();
+	d->buttonLayout->addStretch();
 	
 	int size = 16;
 	
@@ -110,11 +123,11 @@ void KTProjectActionBar::setup(Actions actions)
 		
 		button->setShortcut(QKeySequence(Qt::Key_Plus));
 		
-		m_actions.addButton(button, InsertFrame);
+		d->actions.addButton(button, InsertFrame);
 		
-		m_buttonLayout->addWidget( button );
+		d->buttonLayout->addWidget( button );
 		
-		button->setAnimated(m_isAnimated);
+		button->setAnimated(d->isAnimated);
 	}
 	
 	if ( actions & RemoveFrame )
@@ -122,13 +135,13 @@ void KTProjectActionBar::setup(Actions actions)
 		DImageButton *button = new DImageButton(QIcon(THEME_DIR+"/icons/remove_frame.png"), size);
 		button->setToolTip(tr("Remove the frame"));
 		
-		m_actions.addButton(button, RemoveFrame);
+		d->actions.addButton(button, RemoveFrame);
 		
 		button->setShortcut(QKeySequence(Qt::Key_Minus));
 		
-		m_buttonLayout->addWidget( button );
+		d->buttonLayout->addWidget( button );
 		
-		button->setAnimated(m_isAnimated);
+		button->setAnimated(d->isAnimated);
 	}
 	 
 	if ( actions & MoveFrameUp )
@@ -136,11 +149,11 @@ void KTProjectActionBar::setup(Actions actions)
 		DImageButton *button = new DImageButton(QIcon(THEME_DIR+"/icons/move_frame_up.png"), size);
 		button->setToolTip( tr("Move frame up"));
 		
-		m_actions.addButton(button, MoveFrameUp);
+		d->actions.addButton(button, MoveFrameUp);
 		
-		m_buttonLayout->addWidget( button );
+		d->buttonLayout->addWidget( button );
 		
-		button->setAnimated(m_isAnimated);
+		button->setAnimated(d->isAnimated);
 	}
 	
 	if ( actions & MoveFrameDown )
@@ -148,11 +161,11 @@ void KTProjectActionBar::setup(Actions actions)
 		DImageButton *button = new DImageButton(QIcon(THEME_DIR+"/icons/move_frame_down.png"), size);
 		button->setToolTip(tr("Move frame down") );
 		
-		m_actions.addButton( button, MoveFrameDown);
+		d->actions.addButton( button, MoveFrameDown);
 		
-		m_buttonLayout->addWidget( button );
+		d->buttonLayout->addWidget( button );
 		
-		button->setAnimated(m_isAnimated);
+		button->setAnimated(d->isAnimated);
 	}
 	
 	if ( actions & LockFrame )
@@ -160,10 +173,10 @@ void KTProjectActionBar::setup(Actions actions)
 		DImageButton *button = new DImageButton(QIcon(HOME_DIR+"/themes/default/icons/kilit_pic.png"), size);
 		button->setToolTip(tr("Lock frame") );
 		
-		m_actions.addButton( button, LockFrame);
+		d->actions.addButton( button, LockFrame);
 		
-		m_buttonLayout->addWidget( button );
-		button->setAnimated(m_isAnimated);
+		d->buttonLayout->addWidget( button );
+		button->setAnimated(d->isAnimated);
 	}
 	
 	if ( actions & InsertLayer )
@@ -171,10 +184,10 @@ void KTProjectActionBar::setup(Actions actions)
 		DImageButton *button = new DImageButton(QIcon(HOME_DIR+"/themes/default/icons/add_layer.png"), size);
 		button->setToolTip(tr("Insert a layer"));
 		
-		m_actions.addButton(button, InsertLayer);
+		d->actions.addButton(button, InsertLayer);
 		
-		m_buttonLayout->addWidget( button );
-		button->setAnimated(m_isAnimated);
+		d->buttonLayout->addWidget( button );
+		button->setAnimated(d->isAnimated);
 	}
 	 
 	if ( actions & RemoveLayer )
@@ -182,10 +195,10 @@ void KTProjectActionBar::setup(Actions actions)
 		DImageButton *button = new DImageButton(QIcon( HOME_DIR+"/themes/default/icons/remove_layer.png"), size);
 		button->setToolTip(tr("Remove the layer"));
 		
-		m_actions.addButton(button, RemoveLayer);
+		d->actions.addButton(button, RemoveLayer);
 		
-		m_buttonLayout->addWidget( button );
-		button->setAnimated(m_isAnimated);
+		d->buttonLayout->addWidget( button );
+		button->setAnimated(d->isAnimated);
 		
 	}
 	 
@@ -195,9 +208,9 @@ void KTProjectActionBar::setup(Actions actions)
 		
 		button->setToolTip(tr("Move layer up")  );
 		
-		m_actions.addButton(button, MoveLayerUp);
+		d->actions.addButton(button, MoveLayerUp);
 		
-		m_buttonLayout->addWidget( button );
+		d->buttonLayout->addWidget( button );
 		button->setAnimated(true);
 	}
 	 
@@ -207,10 +220,10 @@ void KTProjectActionBar::setup(Actions actions)
 		
 		button->setToolTip( tr("Move layer down"));
 		
-		m_actions.addButton(button, MoveLayerDown);
+		d->actions.addButton(button, MoveLayerDown);
 		
-		m_buttonLayout->addWidget( button );
-		button->setAnimated(m_isAnimated);
+		d->buttonLayout->addWidget( button );
+		button->setAnimated(d->isAnimated);
 	}
 	
 	if ( actions & LockLayer )
@@ -218,10 +231,10 @@ void KTProjectActionBar::setup(Actions actions)
 		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/move_layer_down.png" ), 22);
 		button->setToolTip(tr("Lock layer") );
 		
-		m_actions.addButton( button, LockLayer );
+		d->actions.addButton( button, LockLayer );
 		
-		m_buttonLayout->addWidget( button );
-		button->setAnimated(m_isAnimated);
+		d->buttonLayout->addWidget( button );
+		button->setAnimated(d->isAnimated);
 	}
 	
 	if ( actions & InsertScene )
@@ -230,10 +243,10 @@ void KTProjectActionBar::setup(Actions actions)
 		
 		button->setToolTip(tr("Insert a scene"));
 		
-		m_actions.addButton(button, InsertScene);
+		d->actions.addButton(button, InsertScene);
 		
-		m_buttonLayout->addWidget( button );
-		button->setAnimated(m_isAnimated);
+		d->buttonLayout->addWidget( button );
+		button->setAnimated(d->isAnimated);
 	}
 	 
 	if ( actions & RemoveScene )
@@ -241,10 +254,10 @@ void KTProjectActionBar::setup(Actions actions)
 		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/remove_scene.png" ), size);  // TODO
 		
 		button->setToolTip(tr("Remove the scene"));
-		m_actions.addButton(button, RemoveScene);
+		d->actions.addButton(button, RemoveScene);
 		
-		m_buttonLayout->addWidget( button );
-		button->setAnimated(m_isAnimated);
+		d->buttonLayout->addWidget( button );
+		button->setAnimated(d->isAnimated);
 	}
 	 
 	if ( actions & MoveSceneUp )
@@ -253,10 +266,10 @@ void KTProjectActionBar::setup(Actions actions)
 		
 		button->setToolTip(tr("Move scene up")  );
 		
-		m_actions.addButton(button, MoveSceneUp);
+		d->actions.addButton(button, MoveSceneUp);
 		
-		m_buttonLayout->addWidget( button );
-		button->setAnimated(m_isAnimated);
+		d->buttonLayout->addWidget( button );
+		button->setAnimated(d->isAnimated);
 	}
 	 
 	if ( actions & MoveSceneDown )
@@ -265,10 +278,10 @@ void KTProjectActionBar::setup(Actions actions)
 		
 		button->setToolTip( tr("Move scene down"));
 		
-		m_actions.addButton(button, MoveSceneDown);
+		d->actions.addButton(button, MoveSceneDown);
 		
-		m_buttonLayout->addWidget( button );
-		button->setAnimated(m_isAnimated);
+		d->buttonLayout->addWidget( button );
+		button->setAnimated(d->isAnimated);
 	}
 	
 	if ( actions & LockScene )
@@ -276,17 +289,17 @@ void KTProjectActionBar::setup(Actions actions)
 		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/lock_scene.png"), size);
 		button->setToolTip(tr("Lock scene") );
 		
-		m_actions.addButton( button, LockScene );
+		d->actions.addButton( button, LockScene );
 		
-		m_buttonLayout->addWidget( button );
-		button->setAnimated(m_isAnimated);
+		d->buttonLayout->addWidget( button );
+		button->setAnimated(d->isAnimated);
 	}
 	
-	m_buttonLayout->addStretch();
+	d->buttonLayout->addStretch();
 	
 	mainLayout->addWidget( new DSeparator(Qt::Horizontal));
 	
-	mainLayout->addLayout( m_buttonLayout );
+	mainLayout->addLayout( d->buttonLayout );
 	mainLayout->addWidget( new DSeparator(Qt::Horizontal));
 	
 }
@@ -296,7 +309,7 @@ void KTProjectActionBar::insertSeparator(int position)
 {
 	Qt::Orientation sepOrientation = Qt::Vertical;
 	
-	switch(m_orientation)
+	switch(d->orientation)
 	{
 		case Qt::Vertical:
 		{
@@ -310,13 +323,13 @@ void KTProjectActionBar::insertSeparator(int position)
 		break;
 	}
 	
-	m_buttonLayout->insertWidget(position+1, new DSeparator(sepOrientation), 1, Qt::AlignCenter);
+	d->buttonLayout->insertWidget(position+1, new DSeparator(sepOrientation), 1, Qt::AlignCenter);
 }
 
 
 DImageButton *KTProjectActionBar::button(Action action)
 {
-	return qobject_cast<DImageButton *>(m_actions.button(action));
+	return qobject_cast<DImageButton *>(d->actions.button(action));
 }
 
 void KTProjectActionBar::emitActionSelected(int action)

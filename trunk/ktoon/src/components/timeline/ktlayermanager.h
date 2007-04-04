@@ -84,9 +84,8 @@ class KTLayerManager : public QTableWidget
 		void requestRenameEvent(int layerPosition, const QString &newName);
 		
 	private:
-		bool m_allSelected, m_allVisible, m_allLock;
-		
-		int m_rowHeight;
+		struct Private;
+		Private *const d;
 };
 
 #endif

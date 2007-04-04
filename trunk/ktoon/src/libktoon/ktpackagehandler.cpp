@@ -31,13 +31,19 @@
 #include "quazip.h"
 #include "quazipfile.h"
 
-KTPackageHandler::KTPackageHandler()
+struct KTPackageHandler::Private
+{
+	QString importedProjectPath;
+};
+
+KTPackageHandler::KTPackageHandler() : d(new Private)
 {
 }
 
 
 KTPackageHandler::~KTPackageHandler()
 {
+	delete d;
 }
 
 bool KTPackageHandler::makePackage(const QString &projectPath, const QString &packagePath)
@@ -171,7 +177,7 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 		
 // 		if( name.endsWith(".ktp") )
 		{
-			m_importedProjectPath = QFileInfo(name).path();
+			d->importedProjectPath = QFileInfo(name).path();
 		}
 		
 		if(file.getZipError() != UNZ_OK)
@@ -237,6 +243,6 @@ bool KTPackageHandler::createPath(const QString &filePath)
 
 QString KTPackageHandler::importedProjectPath() const
 {
-	return m_importedProjectPath;
+	return d->importedProjectPath;
 }
 

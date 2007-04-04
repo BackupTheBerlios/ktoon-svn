@@ -85,14 +85,8 @@ class KTOON_EXPORT KTProjectActionBar : public QWidget
 		void setup(Actions actions);
 		
 	private:
-		Qt::Orientation m_orientation;
-		
-		int m_fixedSize;
-		QButtonGroup m_actions;
-		
-		QBoxLayout *m_buttonLayout;
-		
-		bool m_isAnimated;
+		struct Private;
+		Private *const d;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(KTProjectActionBar::Actions);
