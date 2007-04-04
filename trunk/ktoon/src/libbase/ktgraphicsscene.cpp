@@ -198,7 +198,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 	
 	foreach(KTGraphicObject *object, d->scene->tweeningObjects())
 	{
-		int origin = object->index();
+		int origin = object->frame()->index();
 		
 		if( KTItemTweener *tweener = object->tweener() )
 		{
@@ -207,11 +207,16 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 			if( origin < photogram && photogram < origin+tweener->frames() )
 			{
 				int step = photogram - origin;
+				
+				dDebug("items") << "DRAWING STEP: " << step;
+				SHOW_VAR(origin);
+				SHOW_VAR(photogram);
+				
 				tweener->setStep(step);
 				
 				if(object->frame()->layer()->isVisible() )
 				{
-					addItem(object->item()); // FIXME
+					addItem(object->item());
 				}
 			}
 		}
