@@ -34,7 +34,7 @@ function findQMake
 
 KT_CONFIG=ktconfig.pri
 
-EMAIL='krawek@toonka.com'
+EMAIL='ktoon@toonka.com'
 
 MAKE=`which make`
 QMAKE=$(findQMake qmake-qt4 qmake4 qmake)
