@@ -27,7 +27,7 @@
 
 #include <cmath> //abs
 
-#include <dcore/dimageeffect.h>
+#include <dgui/dimageeffect.h>
 
 #include <dcore/ddebug.h>
 #include <dcore/dglobal.h>

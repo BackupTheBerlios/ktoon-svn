@@ -151,26 +151,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 	
 	clean();
 	
-	foreach(KTGraphicObject *object, d->scene->tweeningObjects())
-	{
-		int origin = object->index();
-		
-		if( KTItemTweener *tweener = object->tweener() )
-		{
-			tweener->setStep(0);
-			
-			if( origin < photogram && photogram < origin+tweener->frames() )
-			{
-				int step = photogram - origin + 1;
-				tweener->setStep(step);
-				
-				if(object->frame()->layer()->isVisible() )
-				{
-					addItem(object->item()); // FIXME
-				}
-			}
-		}
-	}
+	bool valid = false;
 	
 	foreach(KTLayer *layer, d->scene->layers())
 	{
@@ -203,7 +184,36 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 				}
 			}
 			
-			addFrame(layer->frame( photogram ));
+			KTFrame *frame = layer->frame( photogram );
+			
+			if( frame )
+			{
+				valid = true;
+				addFrame(frame);
+			}
+		}
+	}
+	
+	if( !valid ) return;
+	
+	foreach(KTGraphicObject *object, d->scene->tweeningObjects())
+	{
+		int origin = object->index();
+		
+		if( KTItemTweener *tweener = object->tweener() )
+		{
+			tweener->setStep(0);
+			
+			if( origin < photogram && photogram < origin+tweener->frames() )
+			{
+				int step = photogram - origin;
+				tweener->setStep(step);
+				
+				if(object->frame()->layer()->isVisible() )
+				{
+					addItem(object->item()); // FIXME
+				}
+			}
 		}
 	}
 	

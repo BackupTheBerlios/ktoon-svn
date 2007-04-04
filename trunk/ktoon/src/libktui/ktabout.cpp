@@ -30,7 +30,7 @@
 
 #include "ktabout.h"
 #include <dcore/dglobal.h>
-#include <dcore/dimageeffect.h>
+#include <dgui/dimageeffect.h>
 
 #include <dcore/ddebug.h>
 

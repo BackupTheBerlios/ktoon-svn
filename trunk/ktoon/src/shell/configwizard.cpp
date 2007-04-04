@@ -31,7 +31,7 @@
 #include "wizard2.xpm"
 
 #include <dcore/ddebug.h>
-#include <dcore/dimageeffect.h>
+#include <dgui/dimageeffect.h>
 
 #include <dcore/dglobal.h>
 

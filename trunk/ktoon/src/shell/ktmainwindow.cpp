@@ -34,7 +34,7 @@
 
 #include <dgui/dtipdialog.h>
 #include <dcore/ddebug.h>
-#include <dcore/dimageeffect.h>
+#include <dgui/dimageeffect.h>
 
 #include "ktapplication.h"
 #include "ktpluginmanager.h"
