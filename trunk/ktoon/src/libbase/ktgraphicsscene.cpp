@@ -161,7 +161,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 			
 			if( origin < photogram && photogram < origin+tweener->frames() )
 			{
-				int step = photogram - origin;
+				int step = photogram - origin + 1;
 				tweener->setStep(step);
 				
 				if(object->frame()->layer()->isVisible() )

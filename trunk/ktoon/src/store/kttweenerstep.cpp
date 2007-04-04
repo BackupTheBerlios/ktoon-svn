@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "kttweenerstep.h"
+#include <QVector>
 
 struct KTTweenerStep::Private
 {
@@ -226,5 +227,22 @@ void KTTweenerStep::fromXml(const QString& xml)
 			n = n.nextSibling();
 		}
 	}
+}
+
+QDomDocument KTTweenerStep::createXml(int frames, const QVector<KTTweenerStep *> &steps)
+{
+	QDomDocument doc;
+	
+	QDomElement root = doc.createElement("steps");
+	root.setAttribute("frames", frames);
+	
+	foreach(KTTweenerStep *step, steps)
+	{
+		root.appendChild(step->toXml(doc));
+	}
+	
+	doc.appendChild(root);
+	
+	return doc;
 }
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
