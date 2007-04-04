@@ -211,7 +211,7 @@ void KTTweenerStep::fromXml(const QString& xml)
 				}
 				else if( e.tagName() == "position" )
 				{
-					setPosition(QPointF(e.attribute("sh").toDouble(), e.attribute("sv").toDouble()));
+					setPosition(QPointF(e.attribute("x").toDouble(), e.attribute("y").toDouble()));
 				}
 				else if( e.tagName() == "scale" )
 				{

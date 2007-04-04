@@ -55,7 +55,8 @@ class KTOON_EXPORT KTToolInterface
 			Brush,
 			Fill,
 			Selection,
-			View
+			View,
+			Tweener
 		};
 		
 		virtual ~KTToolInterface() {};

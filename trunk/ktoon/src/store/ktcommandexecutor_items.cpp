@@ -484,6 +484,7 @@ bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 
 bool KTCommandExecutor::createTweening(KTItemResponse *response)
 {
+	D_FUNCINFOX("items");
 	response->setAction(KTProjectRequest::Tweening);
 	
 	int scenePosition = response->sceneIndex();
@@ -524,19 +525,21 @@ bool KTCommandExecutor::createTweening(KTItemResponse *response)
 							{
 								QDomDocument stepDoc;
 								stepDoc.appendChild(stepDoc.importNode(n, true));
-								
 								KTTweenerStep *step = new KTTweenerStep(0);
 								step->fromXml(stepDoc.toString(0));
 								
 								steps << step;
 							}
 						}
+						
+						n = n.nextSibling();
 					}
 					
 					KTItemTweener *tweener = new KTItemTweener(steps.count(), object);
 					
 					foreach(KTTweenerStep *step, steps)
 					{
+						dDebug() << step->n() << " " << step->position();
 						tweener->addStep(*step);
 					}
 					

@@ -11,7 +11,8 @@ SUBDIRS += brush \
            viewtool \
            filltool \
            erasertool  \
-           polyline
+           polyline \
+           tweenertranslate
 KDEV_QTVER = 4
 CONFIG += release \
 warn_on
