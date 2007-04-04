@@ -535,7 +535,14 @@ bool KTCommandExecutor::createTweening(KTItemResponse *response)
 						n = n.nextSibling();
 					}
 					
-					KTItemTweener *tweener = new KTItemTweener(root.attribute("frames").toInt(), object);
+					int frames = root.attribute("frames").toInt();
+					
+					if( frames < steps.count() )
+					{
+						frames = steps.count();
+					}
+					
+					KTItemTweener *tweener = new KTItemTweener( frames, object);
 					
 					foreach(KTTweenerStep *step, steps)
 					{

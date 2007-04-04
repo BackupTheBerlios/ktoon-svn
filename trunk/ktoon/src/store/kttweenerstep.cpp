@@ -231,11 +231,6 @@ void KTTweenerStep::fromXml(const QString& xml)
 
 QDomDocument KTTweenerStep::createXml(int frames, const QVector<KTTweenerStep *> &steps)
 {
-	if( frames < steps.count() )
-	{
-		frames = steps.count();
-	}
-	
 	QDomDocument doc;
 	
 	QDomElement root = doc.createElement("steps");
