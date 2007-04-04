@@ -208,10 +208,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 			{
 				int step = photogram - origin;
 				
-				dDebug("items") << "DRAWING STEP: " << step;
-				SHOW_VAR(origin);
-				SHOW_VAR(photogram);
-				
 				tweener->setStep(step);
 				
 				if(object->frame()->layer()->isVisible() )

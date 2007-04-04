@@ -25,6 +25,50 @@
 
 #include <dcore/ddebug.h>
 
+class Animator : public QGraphicsItemAnimation
+{
+	public:
+		Animator(KTItemTweener *parent);
+		~Animator();
+		
+		void afterAnimationStep( qreal step );
+		
+#if QT_VERSION < 0x040300
+		void holdPosition(qreal step, const QPointF &pos);
+	private:
+		QMap<qreal, QPointF > positionForStep;
+#endif
+		
+	private:
+		KTItemTweener *m_tweener;
+};
+
+Animator::Animator(KTItemTweener *parent) : QGraphicsItemAnimation(parent), m_tweener(parent)
+{
+	
+}
+
+Animator::~Animator()
+{
+}
+
+void Animator::afterAnimationStep( qreal step )
+{
+#if QT_VERSION < 0x040300
+	if(item() && positionForStep.contains(step))
+	{
+		item()->setPos(positionForStep[step]);
+	}
+#endif
+}
+
+#if QT_VERSION < 0x040300
+void Animator::holdPosition(qreal step, const QPointF &pos)
+{
+	positionForStep[step] = pos;
+}
+#endif
+
 #define VERIFY_STEP(s) if( s > d->frames || d->frames == 0) { \
                          dWarning("items") << "Invalid step " << s << " for tweening, maximun step is " << d->frames << "; In " << __FUNCTION__; \
                          return; }
@@ -37,12 +81,12 @@ struct KTItemTweener::Private
 	
 	int frames;
 	
-	QGraphicsItemAnimation *animation;
+	Animator *animator;
 };
 
 KTItemTweener::KTItemTweener(int frames, QObject *parent) : QObject(parent), d(new Private)
 {
-	d->animation = new QGraphicsItemAnimation(this);
+	d->animator = new Animator(this);
 	d->frames = frames;
 }
 
@@ -65,87 +109,92 @@ KTItemTweener::~KTItemTweener()
 
 double KTItemTweener::horizontalScaleAt( int step ) const
 {
-	return d->animation->horizontalScaleAt( STEP(step) );
+	return d->animator->horizontalScaleAt( STEP(step) );
 }
 
 double KTItemTweener::horizontalShearAt( int step ) const
 {
-	return d->animation->horizontalShearAt(STEP(step));
+	return d->animator->horizontalShearAt(STEP(step));
 }
 
 QGraphicsItem *KTItemTweener::item() const
 {
-	return d->animation->item();
+	return d->animator->item();
 }
 
 QMatrix KTItemTweener::matrixAt( int step ) const
 {
-	return d->animation->matrixAt(STEP(step));
+	return d->animator->matrixAt(STEP(step));
 }
 
 QPointF KTItemTweener::posAt( int step ) const
 {
-	return d->animation->posAt(STEP(step));
+	return d->animator->posAt(STEP(step));
 }
 
 double KTItemTweener::rotationAt( int step ) const
 {
-	return d->animation->rotationAt(STEP(step));
+	return d->animator->rotationAt(STEP(step));
 }
 
 void KTItemTweener::setItem( QGraphicsItem * item )
 {
-	d->animation->setItem(item);
+	d->animator->setItem(item);
 }
 
 void KTItemTweener::setPosAt( int step, const QPointF & point )
 {
 	VERIFY_STEP(step);
-	d->animation->setPosAt(STEP(step), point);
+	
+	d->animator->setPosAt(STEP(step), point);
+	
+#if QT_VERSION < 0x040300
+	d->animator->holdPosition(STEP(step), point);
+#endif
 }
 
 void KTItemTweener::setRotationAt( int step, double angle )
 {
 	VERIFY_STEP(step);
-	d->animation->setRotationAt(STEP(step), angle);
+	d->animator->setRotationAt(STEP(step), angle);
 }
 
 void KTItemTweener::setScaleAt( int step, double sx, double sy )
 {
 	VERIFY_STEP(step);
-	d->animation->setScaleAt(STEP(step), sx, sy);
+	d->animator->setScaleAt(STEP(step), sx, sy);
 }
 
 void KTItemTweener::setShearAt( int step, double sh, double sv )
 {
 	VERIFY_STEP(step);
-	d->animation->setShearAt(STEP(step), sh, sv);
+	d->animator->setShearAt(STEP(step), sh, sv);
 }
 
 void KTItemTweener::setTranslationAt( int step, double dx, double dy )
 {
 	VERIFY_STEP(step);
-	d->animation->setTranslationAt(STEP(step), dx, dy);
+	d->animator->setTranslationAt(STEP(step), dx, dy);
 }
 
 double KTItemTweener::verticalScaleAt( int step ) const
 {
-	return d->animation->verticalScaleAt(STEP(step));
+	return d->animator->verticalScaleAt(STEP(step));
 }
 
 double KTItemTweener::verticalShearAt( int step ) const
 {
-	return d->animation->verticalShearAt(STEP(step));
+	return d->animator->verticalShearAt(STEP(step));
 }
 
 double KTItemTweener::xTranslationAt( int step ) const
 {
-	return d->animation->xTranslationAt(STEP(step));
+	return d->animator->xTranslationAt(STEP(step));
 }
 
 double KTItemTweener::yTranslationAt( int step ) const
 {
-	return d->animation->yTranslationAt(STEP(step));
+	return d->animator->yTranslationAt(STEP(step));
 }
 
 void KTItemTweener::addStep(const KTTweenerStep &step)
@@ -194,6 +243,6 @@ int KTItemTweener::frames() const
 void KTItemTweener::setStep( int step )
 {
 	VERIFY_STEP(step);
-	d->animation->setStep(STEP(step));
+	d->animator->setStep(STEP(step));
 }
 
