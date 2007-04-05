@@ -78,19 +78,12 @@ void DDoubleComboBox::setShowAsPercent(bool p)
 	{
 		if( d->showAsPercent )
 		{
-			setItemText(index, QString::number(PERCENT(itemText(index).toDouble())) + " %");
+			setItemText(index, QString::number(PERCENT(itemText(index).toDouble())));
 		}
 		else
 		{
-			double value = ::ceil(VALUE(itemText(index).remove("%").toDouble()));
-			if(minimum() < value && value < maximum())
-			{
-				setItemText(index, QString::number(value));
-			}
-			else
-			{
-				removeItem(index);
-			}
+			double value = VALUE(itemText(index).toDouble());
+			setItemText(index, QString::number(value));
 		}
 	}
 }
@@ -132,11 +125,11 @@ double DDoubleComboBox::minimum() const
 
 void DDoubleComboBox::addValue(double v)
 {
-	if(currentText().toDouble() != v && (minimum() < v && v < maximum()))
+	if(minimum() < v && v < maximum() )
 	{
 		if(d->showAsPercent)
 		{
-			addItem(QString::number(PERCENT(v)) + "%");
+			addItem(QString::number(PERCENT(v)));
 		}
 		else
 		{
@@ -147,11 +140,11 @@ void DDoubleComboBox::addValue(double v)
 
 void DDoubleComboBox::addPercent(double p)
 {
-	if(currentText().toDouble() != p)
+	if(p >= 0 && p <= 100)
 	{
 		if(d->showAsPercent )
 		{
-			addItem(QString::number(p)+ "%");
+			addItem(QString::number(p));
 		}
 		else
 		{
@@ -179,7 +172,7 @@ double DDoubleComboBox::value()
 {
 	if( d->showAsPercent )
 	{
-		return (VALUE(currentText().remove("%").toDouble()));
+		return (VALUE(currentText().toDouble()));
 	}
 	
 	return currentText().toDouble();
@@ -201,11 +194,11 @@ void DDoubleComboBox::setPercent(int index, double p)
 {
 	if( d->showAsPercent )
 	{
-		setItemText(index, QString::number(p)+ "%");
+		setItemText(index, QString::number(p));
 	}
 	else
 	{
-		setItemText(index, QString::number(VALUE(p))+ "%");
+		setItemText(index, QString::number(VALUE(p)));
 	}
 }
 
@@ -213,7 +206,7 @@ double DDoubleComboBox::percent()
 {
 	if( d->showAsPercent )
 	{
-		return currentText().remove("%").toDouble();
+		return currentText().toDouble();
 	}
 	
 	return PERCENT(currentText().toDouble());
