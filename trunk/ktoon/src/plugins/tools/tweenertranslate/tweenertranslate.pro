@@ -17,7 +17,11 @@ include(../../../../ktconfig.pri)
 TEMPLATE = lib 
 HEADERS +=  \
 tweenertranslate.h \
-configurator.h
+configurator.h \
+stepsviewer.h \
+spinboxdelegate.h
 SOURCES +=  \
 tweenertranslate.cpp \
-configurator.cpp
+configurator.cpp \
+stepsviewer.cpp \
+spinboxdelegate.cpp

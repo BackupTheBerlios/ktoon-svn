@@ -22,7 +22,7 @@
 #define CONFIGURATOR_H
 
 #include <QFrame>
-
+class QGraphicsPathItem;
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
@@ -32,6 +32,10 @@ class Configurator : public QFrame
 	public:
 		Configurator(QWidget *parent = 0);
 		~Configurator();
+		
+		void updateSteps(const QGraphicsPathItem *path);
+		QString steps();
+		
 		
 	private slots:
 		void emitOptionChanged(int option);

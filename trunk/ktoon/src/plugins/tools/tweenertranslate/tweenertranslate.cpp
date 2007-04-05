@@ -35,6 +35,7 @@
 #include <dcore/dalgorithm.h>
 #include <dcore/dglobal.h>
 #include <dcore/ddebug.h>
+#include <dgui/dnodegroup.h>
 
 
 
@@ -45,7 +46,8 @@
 #include "ktrequestbuilder.h"
 #include "ktprojectrequest.h"
 
-#include "kttweenerstep.h"
+
+
 
 struct TweenerTranslate::Private
 {
@@ -54,6 +56,7 @@ struct TweenerTranslate::Private
 	KTGraphicsScene *scene;
 	bool creatingPath, selecting;
 	QGraphicsPathItem *path;
+	DNodeGroup *group;
 };
 
 TweenerTranslate::TweenerTranslate() : KTToolPlugin(), d(new Private)
@@ -74,6 +77,7 @@ void TweenerTranslate::init(KTGraphicsScene *scene)
 {
 	d->scene = scene;
 	d->path = 0;
+	d->group = 0;
 	setCreatePath();
 }
 
@@ -84,12 +88,14 @@ QStringList TweenerTranslate::keys() const
 
 void TweenerTranslate::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	
 	if(d->creatingPath)
 	{
 		if(!d->path)
 		{
 			d->path = new QGraphicsPathItem;
+			QColor pen = Qt::black;
+			pen.setAlpha(125);
+			d->path->setPen(QPen(QBrush(pen),1, Qt::DotLine));
 			QPainterPath path;
 			path.moveTo(input->pos());
 			d->path->setPath(path);
@@ -98,21 +104,25 @@ void TweenerTranslate::press(const KTInputDeviceInformation *input, KTBrushManag
 		else
 		{
 			QPainterPath path = d->path->path();
-			path.lineTo(input->pos());
+// 			path.lineTo(input->pos());
+			path.cubicTo(input->pos(), input->pos(), input->pos());
 			d->path->setPath(path);
-			scene->addItem(d->path);
 		}
 	}
 }
 
 void TweenerTranslate::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	
 }
 
 void TweenerTranslate::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	
+	if(d->creatingPath)
+	{
+		delete d->group;
+		d->group = new DNodeGroup(d->path, scene);
+		d->configurator->updateSteps(d->path);
+	}
 }
 
 QMap<QString, DAction *> TweenerTranslate::actions() const
@@ -135,7 +145,6 @@ QWidget *TweenerTranslate::configurator()
 		connect(d->configurator, SIGNAL(clikedSelect()), this, SLOT(setSelect()));
 		connect(d->configurator, SIGNAL(clikedApplyTweener()), this, SLOT(applyTweener()));
 	}
-	
 	return d->configurator;
 }
 
@@ -158,6 +167,10 @@ void TweenerTranslate::setupActions()
 
 void TweenerTranslate::setCreatePath()
 {
+	if(d->path)
+	{
+		d->scene->addItem(d->path);
+	}
 	d->creatingPath = true;
 	d->selecting = false;
 	foreach(QGraphicsView * view, d->scene->views())
@@ -168,7 +181,6 @@ void TweenerTranslate::setCreatePath()
 			if(item != d->path)
 			{
 				item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-				item->setFlag(QGraphicsItem::ItemIsMovable, false);
 			}
 		}
 	}
@@ -178,6 +190,11 @@ void TweenerTranslate::setSelect()
 {
 	d->creatingPath = false;
 	d->selecting = true;
+	if(d->path)
+	{
+		delete d->group;
+		d->group = 0;
+	}
 	foreach(QGraphicsView * view, d->scene->views())
 	{
 		view->setDragMode (QGraphicsView::RubberBandDrag);
@@ -185,7 +202,7 @@ void TweenerTranslate::setSelect()
 		{
 			if(item != d->path)
 			{
-				item->setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
+				item->setFlags (QGraphicsItem::ItemIsSelectable);
 			}
 		}
 	}
@@ -195,15 +212,6 @@ void TweenerTranslate::applyTweener()
 {
 	if(d->path)
 	{
-		QVector<KTTweenerStep *> steps;
-		int count = 0;
-		foreach(QPointF pos, d->path->path().toFillPolygon())
-		{
-			KTTweenerStep *step = new  KTTweenerStep(count);
-			step->setPosition(pos);
-			steps << step;
-			count+=10;
-		}
 		
 		foreach(QGraphicsItem *item, d->scene->selectedItems())
 		{
@@ -212,12 +220,11 @@ void TweenerTranslate::applyTweener()
 					d->scene->currentLayerIndex(),
 					d->scene->currentFrameIndex(),
 					d->scene->currentFrame()->indexOf(item),
-					KTProjectRequest::Tweening,
-					KTTweenerStep::createXml(count*2, steps).toString());
+					KTProjectRequest::Tweening, d->configurator->steps()
+					);
 			emit requested(&request);
 		}
 	}
-	
 }
 
 Q_EXPORT_PLUGIN2(kt_tweenertranslate, TweenerTranslate );

@@ -17,73 +17,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#include "configurator.h"
 
-#include <dgui/dradiobuttongroup.h>
+#ifndef STEPSVIEWER_H
+#define STEPSVIEWER_H
 
-#include <QVBoxLayout>
-#include <QPushButton>
-#include <QHeaderView>
-#include <QGraphicsPathItem>
-#include "stepsviewer.h"
-#include "kttweenerstep.h"
+#include <QTableWidget>
 
-struct Configurator::Private
+class QGraphicsPathItem;
+class KTTweenerStep;
+
+
+/**
+ * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
+*/
+class StepsViewer : public QTableWidget
 {
-	DRadioButtonGroup *options;
-	StepsViewer *stepViewer;
+	Q_OBJECT
+	public:
+		StepsViewer(QWidget *parent = 0);
+		~StepsViewer();
+		void setPath(const QGraphicsPathItem *path);
+		
+		QVector<KTTweenerStep *> steps();
+		int totalSteps();
+		
+	private:
+		struct Private;
+		Private *const d;
 };
 
-Configurator::Configurator(QWidget *parent)
-	: QFrame(parent), d(new Private)
-{
-	
-	d->options = new DRadioButtonGroup(tr("options"), Qt::Vertical);
-	d->options->addItems(QStringList() << tr("Create path"));
-	d->options->addItems(QStringList() << tr("Select object"));
-	connect(d->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
-	
-	QPushButton *button = new QPushButton(tr("apply"));
-	connect(button, SIGNAL(clicked()), this, SIGNAL(clikedApplyTweener()));
-	
-	d->stepViewer = new StepsViewer;
-	QVBoxLayout *layout = new QVBoxLayout;
-	layout->addWidget(d->options);
-	layout->addWidget(d->stepViewer);
-	layout->addWidget(button);
-	setLayout(layout);
-}
-
-Configurator::~Configurator()
-{
-	delete d;
-}
-
-void Configurator::updateSteps(const QGraphicsPathItem *path)
-{
-	d->stepViewer->setPath(path);
-}
-
-void Configurator::emitOptionChanged(int option)
-{
-	switch(option)
-	{
-		case 0:
-		{
-			emit clikedCreatePath();
-		}
-		break;
-		case 1:
-		{
-			emit clikedSelect();
-		}
-	}
-}
-
-
-QString Configurator::steps()
-{
-	return KTTweenerStep::createXml(d->stepViewer->totalSteps(), d->stepViewer->steps()).toString();
-}
-
+#endif

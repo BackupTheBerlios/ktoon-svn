@@ -506,6 +506,8 @@ bool KTCommandExecutor::createTweening(KTItemResponse *response)
 			{
 				KTGraphicObject *object = frame->graphic(position);
 				
+				if( object == 0 ) return false;
+				
 				QDomDocument doc;
 				if( doc.setContent(xml) )
 				{

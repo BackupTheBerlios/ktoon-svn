@@ -47,8 +47,6 @@ struct PolyLine::Private
 	QPointF mirror;
 	
 	DNodeGroup *nodegroup;
-	DControlNode *node;
-	
 	QPainterPath path;
 	
 	QMap<QString, DAction *> actions;
@@ -65,7 +63,6 @@ PolyLine::PolyLine(): d(new Private)
 {
 	d->begin = false;
 	d->nodegroup = 0;
-	d->node = 0;
 	d->item = 0;
 	
 	d->line1 = new QGraphicsLineItem(0,0,0,0);
