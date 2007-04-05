@@ -72,7 +72,6 @@ class KTColorValue : public QFrame
 		
 	public slots:
 		void setColor(const QBrush & brush);
-		void setAlfaValuePercent(bool enable);
 		
 	private slots:
 		void syncValuesRgb(int value = 0);
