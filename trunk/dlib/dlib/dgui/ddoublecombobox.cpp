@@ -55,7 +55,9 @@ DDoubleComboBox::DDoubleComboBox(double min, double max, QWidget *parent)
 	connect(this, SIGNAL(highlighted( int )), this, SLOT(emitHighlighted(int)));
 	connect(this, SIGNAL(currentIndexChanged( int )), this, SLOT(emitCurrentIndexChanged(int)));
 	
-	connect(d->editor, SIGNAL(editingFinished()), this, SIGNAL(editingFinished())) ;
+	connect(d->editor, SIGNAL(editingFinished()), this, SIGNAL(editingFinished()));
+	connect(d->editor, SIGNAL(returnPressed()), this, SIGNAL(editingFinished()));
+	
 	
 	d->showAsPercent = false;
 	
