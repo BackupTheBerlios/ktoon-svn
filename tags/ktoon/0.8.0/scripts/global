@@ -6,7 +6,7 @@ APPVER="0.8.0"
 
 KT_CONFIG=ktconfig.pri
 
-EMAIL='krawek@toonka.com'
+EMAIL='ktoon@toonka.com'
 
 MAKE=`which make`
 QMAKE=`which qmake`
