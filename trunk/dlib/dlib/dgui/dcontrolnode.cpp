@@ -218,7 +218,6 @@ QVariant DControlNode::itemChange(GraphicsItemChange change, const QVariant &val
 
 void DControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-// 	update();
 	if(m_nodeParent)
 	{
 		setSelected(true);
@@ -278,8 +277,6 @@ void DControlNode::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	setPos(event->scenePos());
 	
 	event->accept();
-	
-// 	update();
 }
 
 

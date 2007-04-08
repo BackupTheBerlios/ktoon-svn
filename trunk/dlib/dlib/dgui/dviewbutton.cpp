@@ -444,7 +444,21 @@ void DViewButton::toggleView()
 		mw->setUpdatesEnabled( false );
 	}
 	
+	if( m_area == Qt::LeftToolBarArea || m_area == Qt::RightToolBarArea  )
+	{
+		m_toolView->setSizePolicy(QSizePolicy::Preferred , QSizePolicy::Expanding);
+	}
+	else
+	{
+		m_toolView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+	}
+	
 	m_toolView->toggleViewAction()->trigger();
+	
+#if QT_VERSION > 0x040201 && QT_VERSION < 0x040300
+	m_toolView->adjustSize();
+#endif
+	
 	setChecked( m_toolView->isVisible() );
 	
 	
