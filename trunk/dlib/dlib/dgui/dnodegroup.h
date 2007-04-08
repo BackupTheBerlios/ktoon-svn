@@ -36,14 +36,17 @@ class DNodeGroup : public QObject
 		
 		void addControlNode(DControlNode* node);
 		
+		void createNodes(QGraphicsPathItem *nodes);
+		void emitNodeClicked();
 		
 	private:
-		QList<DControlNode*> m_nodes;
-		QGraphicsItem *m_parentItem;
-		QPainterPath m_path;
-		QPointF m_pos;
-		QHash<int, QPointF > m_changedNodes;
-		QGraphicsScene *m_scene;
+		struct Private;
+		Private *const d;
+		
+	signals:
+		void itemChanged(QGraphicsItem *item );
+		void nodeClicked();
+		
 };
 
 #endif

@@ -253,10 +253,11 @@ void DControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void DControlNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+	m_nodeGroup->emitNodeClicked();
 	QGraphicsItem::mouseReleaseEvent(event);
 }
 
-void DControlNode::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
+void DControlNode::mouseMoveEvent( QGraphicsSceneMouseEvent * event )
 {
 	foreach(QGraphicsItem *item, scene()->selectedItems())
 	{
@@ -362,7 +363,7 @@ void DControlNode::repaint()
 	update();
 }
 
-void  DControlNode::setParentI(QGraphicsItem *newParent)
+void DControlNode::setParentI(QGraphicsItem *newParent)
 {
 	m_parent = newParent;
 }

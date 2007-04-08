@@ -80,6 +80,7 @@ class DControlNode : public QObject, public QGraphicsItem
 		void requestUpdateParent();
 		void showBrothers(bool show);
 		
+		
 	private:
 		int m_index;
 		QGraphicsItem * m_parent;
