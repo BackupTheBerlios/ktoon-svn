@@ -212,7 +212,6 @@ void TweenerTranslate::applyTweener()
 {
 	if(d->path)
 	{
-		
 		foreach(QGraphicsItem *item, d->scene->selectedItems())
 		{
 			KTProjectRequest request = KTRequestBuilder::createItemRequest(

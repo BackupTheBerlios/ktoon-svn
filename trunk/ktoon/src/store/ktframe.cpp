@@ -114,10 +114,35 @@ void KTFrame::fromXml(const QString &xml )
 		
 		if(!e.isNull())
 		{
-			QDomDocument newDoc;
-			newDoc.appendChild(newDoc.importNode(n, true ));
-			
-			createItem(d->items.count(), newDoc.toString(0));
+			if( e.tagName() == "object" )
+			{
+				QDomNode n2 = e.firstChild();
+				
+				while(!n2.isNull())
+				{
+					QDomElement e2 = n2.toElement();
+					
+					if( e2.tagName() == "tweening" )
+					{
+						KTItemTweener *tweener = new KTItemTweener(0, d->graphics.last());
+						
+						QDomDocument newDoc;
+						newDoc.appendChild(newDoc.importNode(n2, true ));
+						
+						tweener->fromXml(newDoc.toString(0));
+						
+						d->graphics.last()->setTweener(tweener);
+					}
+					else
+					{
+						QDomDocument newDoc;
+						newDoc.appendChild(newDoc.importNode(n2, true ));
+						
+						createItem(d->items.count(), newDoc.toString(0));
+					}
+					n2 = n2.nextSibling();
+				}
+			}
 		}
 		
 		n = n.nextSibling();

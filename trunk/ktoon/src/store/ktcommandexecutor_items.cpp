@@ -508,57 +508,10 @@ bool KTCommandExecutor::createTweening(KTItemResponse *response)
 				
 				if( object == 0 ) return false;
 				
-				QDomDocument doc;
-				if( doc.setContent(xml) )
-				{
-					QVector<KTTweenerStep *> steps;
-					
-					QDomElement root = doc.documentElement();
-					
-					QDomNode n = root.firstChild();
-					
-					while( !n.isNull() )
-					{
-						QDomElement e = n.toElement();
-						
-						if(!e.isNull())
-						{
-							if( e.tagName() == "step" )
-							{
-								QDomDocument stepDoc;
-								stepDoc.appendChild(stepDoc.importNode(n, true));
-								KTTweenerStep *step = new KTTweenerStep(0);
-								step->fromXml(stepDoc.toString(0));
-								
-								steps << step;
-							}
-						}
-						
-						n = n.nextSibling();
-					}
-					
-					int frames = root.attribute("frames").toInt();
-					
-					if( frames < steps.count() )
-					{
-						frames = steps.count();
-					}
-					
-					KTItemTweener *tweener = new KTItemTweener( frames, object);
-					
-					foreach(KTTweenerStep *step, steps)
-					{
-						dDebug() << step->n() << " " << step->position();
-						tweener->addStep(*step);
-					}
-					
-					object->setTweener(tweener);
-					
-					qDeleteAll(steps);
-					steps.clear();
-					
-					return true;
-				}
+				KTItemTweener *tweener = new KTItemTweener( 0, object);
+				tweener->fromXml(xml);
+				
+				object->setTweener(tweener);
 			}
 		}
 	}

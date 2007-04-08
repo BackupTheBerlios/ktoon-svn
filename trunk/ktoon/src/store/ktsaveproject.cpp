@@ -27,6 +27,8 @@
 #include "ktlibrary.h"
 #include "ktpackagehandler.h"
 
+#include <dcore/dalgorithm.h>
+
 #include <dcore/ddebug.h>
 
 KTSaveProject::KTSaveProject() : QObject()
@@ -40,18 +42,25 @@ KTSaveProject::~KTSaveProject()
 
 bool KTSaveProject::save(const QString &fileName, const KTProject *project)
 {
+	QString projectName = project->projectName();
+	
+	if( projectName.isEmpty() )
+	{
+		projectName = DAlgorithm::randomString(10);
+	}
+	
 	QDir projectDir = QDir::temp();
 	
-	if ( !projectDir.exists(project->projectName()) )
+	if ( !projectDir.exists(projectName) )
 	{
-		if ( ! projectDir.mkdir(project->projectName()) )
+		if ( ! projectDir.mkdir(projectName) )
 		{
 			dFatal() <<("Can't create");
 			return false;
 		}
 	}
 	
-	projectDir.cd(project->projectName());
+	projectDir.cd(projectName);
 	
 	{
 		// Save project

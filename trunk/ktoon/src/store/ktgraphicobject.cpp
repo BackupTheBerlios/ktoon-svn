@@ -70,12 +70,18 @@ void KTGraphicObject::fromXml(const QString &xml )
 
 QDomElement KTGraphicObject::toXml(QDomDocument &doc) const
 {
+	QDomElement object = doc.createElement("object");
 	if ( KTAbstractSerializable *is = dynamic_cast<KTAbstractSerializable *>(d->item) )
 	{
-		return is->toXml(doc);
+		object.appendChild(is->toXml(doc));
 	}
 	
-	return QDomElement();
+	if(d->tweener)
+	{
+		object.appendChild(d->tweener->toXml(doc));
+	}
+	
+	return object;
 }
 
 

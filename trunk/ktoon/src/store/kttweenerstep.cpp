@@ -233,7 +233,7 @@ QDomDocument KTTweenerStep::createXml(int frames, const QVector<KTTweenerStep *>
 {
 	QDomDocument doc;
 	
-	QDomElement root = doc.createElement("steps");
+	QDomElement root = doc.createElement("tweening");
 	root.setAttribute("frames", frames);
 	
 	foreach(KTTweenerStep *step, steps)

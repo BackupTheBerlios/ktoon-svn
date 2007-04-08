@@ -35,7 +35,7 @@ class QGraphicsItem;
  * @author David Cuadrado \<krawek@gmail.com\>
 */
 
-class STORE_EXPORT KTItemTweener : public QObject
+class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
 {
 	public:
 		KTItemTweener(int frames, QObject *parent = 0);
@@ -67,6 +67,10 @@ class STORE_EXPORT KTItemTweener : public QObject
 		int frames() const;
 		
 		void setStep( int step );
+		
+		
+		void fromXml(const QString &xml);
+		QDomElement toXml(QDomDocument &doc) const;
 		
 	private:
 		struct Private;

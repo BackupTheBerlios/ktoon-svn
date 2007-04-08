@@ -84,6 +84,6 @@ void Configurator::emitOptionChanged(int option)
 
 QString Configurator::steps()
 {
-	return KTTweenerStep::createXml(d->stepViewer->totalSteps(), d->stepViewer->steps()).toString();
+	return KTTweenerStep::createXml(d->stepViewer->totalSteps(), d->stepViewer->steps()).toString(); // FIXME: no usar createXml, usar KTItemTweener::toXml
 }
 
