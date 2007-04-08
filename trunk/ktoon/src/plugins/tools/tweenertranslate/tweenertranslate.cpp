@@ -45,7 +45,7 @@
 #include "ktgraphicsscene.h"
 #include "ktrequestbuilder.h"
 #include "ktprojectrequest.h"
-
+#include "ktscene.h"
 
 
 
@@ -119,8 +119,16 @@ void TweenerTranslate::release(const KTInputDeviceInformation *input, KTBrushMan
 {
 	if(d->creatingPath)
 	{
-		delete d->group;
-		d->group = new DNodeGroup(d->path, scene);
+		if(!d->group)
+		{
+			d->group = new DNodeGroup(d->path, scene);
+			connect(d->group, SIGNAL(nodeClicked()), SLOT(updatePath()));
+			d->group->clearChangesNodes();
+		}
+		else
+		{
+			d->group->createNodes(d->path);
+		}
 		d->configurator->updateSteps(d->path);
 	}
 }
@@ -214,6 +222,7 @@ void TweenerTranslate::applyTweener()
 	{
 		foreach(QGraphicsItem *item, d->scene->selectedItems())
 		{
+			
 			KTProjectRequest request = KTRequestBuilder::createItemRequest(
 					d->scene->currentSceneIndex(),
 					d->scene->currentLayerIndex(),
@@ -222,8 +231,25 @@ void TweenerTranslate::applyTweener()
 					KTProjectRequest::Tweening, d->configurator->steps()
 					);
 			emit requested(&request);
+			
+			int frames = d->scene->scene()->layer(d->scene->currentLayerIndex())->frames().count();
+			
+			int newFrames = d->configurator->totalSteps() + d->scene->currentFrameIndex() - frames;
+			 
+			for(int i = frames; i < newFrames; i++)
+			{
+				KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(d->scene->currentSceneIndex(), d->scene->currentLayerIndex(), i, KTProjectRequest::Add);
+				emit requested(&requestFrame);
+			}
+			
+			
 		}
 	}
+}
+
+void TweenerTranslate::updatePath()
+{
+	d->configurator->updateSteps(d->path);
 }
 
 Q_EXPORT_PLUGIN2(kt_tweenertranslate, TweenerTranslate );

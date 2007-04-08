@@ -87,3 +87,8 @@ QString Configurator::steps()
 	return KTTweenerStep::createXml(d->stepViewer->totalSteps(), d->stepViewer->steps()).toString(); // FIXME: no usar createXml, usar KTItemTweener::toXml
 }
 
+
+int Configurator::totalSteps()
+{
+	return d->stepViewer->totalSteps();
+}

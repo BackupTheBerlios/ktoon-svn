@@ -63,6 +63,7 @@ class TweenerTranslate : public KTToolPlugin
 		void setCreatePath();
 		void setSelect();
 		void applyTweener();
+		void updatePath();
 		
 };
 

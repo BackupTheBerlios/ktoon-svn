@@ -35,6 +35,7 @@ class Configurator : public QFrame
 		
 		void updateSteps(const QGraphicsPathItem *path);
 		QString steps();
+		int totalSteps();
 		
 		
 	private slots:
