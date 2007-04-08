@@ -50,13 +50,13 @@ class STORE_EXPORT KTProjectCommand : public QUndoCommand
 		virtual void redo();
 		virtual void undo();
 		
-		void frameCommand(bool redo);
-		void layerCommand(bool redo);
-		void sceneCommand(bool redo);
-		void itemCommand(bool redo);
+		void frameCommand();
+		void layerCommand();
+		void sceneCommand();
+		void itemCommand();
 		
-		void libraryCommand(bool redo);
-		void paintAreaCommand(bool redo);
+		void libraryCommand();
+		void paintAreaCommand();
 		
 	private:
 		QString actionString(int action);

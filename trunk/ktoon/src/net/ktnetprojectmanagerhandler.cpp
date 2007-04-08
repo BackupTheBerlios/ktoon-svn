@@ -136,35 +136,7 @@ bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 		return true;
 	}
 	
-	bool inverted = false;
-	if( response->mode() == KTProjectResponse::Undo )
-	{
-		switch(response->action())
-		{
-			case KTProjectRequest::Add:
-			case KTProjectRequest::Remove:
-			{
-				response->setAction(-response->action());
-				inverted = true;
-			}
-			break;
-			case KTProjectRequest::Ungroup:
-			case KTProjectRequest::Group:
-			{
-				response->setAction(-response->action());
-				inverted = true;
-			}
-			break;
-		}
-	}
-	
 	KTProjectRequest request = KTRequestBuilder::fromResponse(response);
-	
-	if( inverted )
-	{
-		response->setAction(-response->action());
-	}
-	
 	handleProjectRequest( &request );
 	
 	d->doAction = false;

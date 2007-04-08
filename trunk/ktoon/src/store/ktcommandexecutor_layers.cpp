@@ -30,7 +30,6 @@
 
 bool KTCommandExecutor::createLayer(KTLayerResponse *response)
 {
-	response->setAction(KTProjectRequest::Add);
 	int scenePosition = response->sceneIndex();
 	int position = response->layerIndex();
 	QString name = response->arg().toString();
@@ -67,7 +66,6 @@ bool KTCommandExecutor::createLayer(KTLayerResponse *response)
 
 bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
 {
-	response->setAction(KTProjectRequest::Remove);
 	int scenePos = response->sceneIndex();
 	int position = response->layerIndex();
 	
@@ -98,7 +96,6 @@ bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
 
 bool KTCommandExecutor::moveLayer(KTLayerResponse *response)
 {
-	response->setAction(KTProjectRequest::Move);
 	int scenePos = response->sceneIndex();
 	int position = response->layerIndex();
 	int newPosition = response->arg().toInt();
@@ -128,7 +125,6 @@ bool KTCommandExecutor::moveLayer(KTLayerResponse *response)
 
 bool KTCommandExecutor::lockLayer(KTLayerResponse *response)
 {
-	response->setAction(KTProjectRequest::Lock);
 	int scenePos = response->sceneIndex();
 	int position = response->layerIndex();
 	bool lock = response->arg().toBool();
@@ -156,8 +152,6 @@ bool KTCommandExecutor::lockLayer(KTLayerResponse *response)
 
 bool KTCommandExecutor::renameLayer(KTLayerResponse *response)
 {
-	response->setAction(KTProjectRequest::Rename);
-	
 	int scenePos = response->sceneIndex();
 	int position = response->layerIndex();
 	QString newName = response->arg().toString();
@@ -194,7 +188,6 @@ bool KTCommandExecutor::renameLayer(KTLayerResponse *response)
 
 bool KTCommandExecutor::selectLayer(KTLayerResponse *response)
 {
-	response->setAction(KTProjectRequest::Select);
 	emit responsed(response);
 	return true;
 }
@@ -202,7 +195,6 @@ bool KTCommandExecutor::selectLayer(KTLayerResponse *response)
 
 bool KTCommandExecutor::setLayerVisibility(KTLayerResponse *response)
 {
-	response->setAction(KTProjectRequest::View);
 	int scenePos = response->sceneIndex();
 	int position = response->layerIndex();
 	bool view = response->arg().toBool();

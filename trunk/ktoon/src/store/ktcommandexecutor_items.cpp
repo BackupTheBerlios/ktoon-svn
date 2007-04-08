@@ -140,8 +140,6 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
 bool KTCommandExecutor::removeItems(KTItemResponse *response) // FIXME: no es estandar.
 {
 	D_FUNCINFOX("items");
-	
-	response->setAction(KTProjectRequest::Remove);
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -337,9 +335,6 @@ static QGraphicsItem * convert(QGraphicsItem *item, int toType)
 bool KTCommandExecutor::convertItem(KTItemResponse *response)
 {
 	D_FUNCINFOX("items");
-	
-	response->setAction(KTProjectRequest::Convert);
-	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -389,8 +384,6 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 bool KTCommandExecutor::transformItem(KTItemResponse *response)
 {
 	D_FUNCINFOX("items");
-	response->setAction(KTProjectRequest::Transform);
-	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -435,7 +428,6 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
 bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 {
 	D_FUNCINFOX("items");
-	response->setAction(KTProjectRequest::EditNodes);
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -485,8 +477,6 @@ bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 bool KTCommandExecutor::createTweening(KTItemResponse *response)
 {
 	D_FUNCINFOX("items");
-	response->setAction(KTProjectRequest::Tweening);
-	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();

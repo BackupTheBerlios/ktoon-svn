@@ -45,9 +45,10 @@ class STORE_EXPORT KTProjectResponse
 		int part() const;
 		int action() const;
 		
+		int originalAction() const;
+		
 		void setArg(const QString &value);
 		void setData(const QByteArray &data);
-		void setAction(int action);
 		void setMode(Mode mode);
 		
 		Mode mode() const;

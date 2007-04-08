@@ -50,12 +50,84 @@ int KTProjectResponse::part() const
 
 int KTProjectResponse::action() const
 {
+	if( d->mode == Undo )
+	{
+		switch(d->action)
+		{
+			case KTProjectRequest::Add:
+			{
+				return KTProjectRequest::Remove;
+			}
+			break;
+			case KTProjectRequest::AddSymbolToProject:
+			{
+			}
+			break;
+			case KTProjectRequest::EditNodes:
+			{
+			}
+			break;
+			case KTProjectRequest::View:
+			{
+			}
+			break;
+			case KTProjectRequest::Select:
+			{
+			}
+			break;
+			case KTProjectRequest::Transform:
+			{
+			}
+			break;
+			case KTProjectRequest::Tweening:
+			{
+			}
+			break;
+			case KTProjectRequest::Lock:
+			{
+			}
+			break;
+			case KTProjectRequest::Ungroup:
+			{
+				return KTProjectRequest::Group;
+			}
+			break;
+			case KTProjectRequest::Rename:
+			{
+			}
+			break;
+			case KTProjectRequest::Move:
+			{
+			}
+			break;
+			case KTProjectRequest::Convert:
+			{
+			}
+			break;
+			case KTProjectRequest::Remove:
+			{
+				return KTProjectRequest::Add;
+			}
+			break;
+			case KTProjectRequest::Group:
+			{
+				return KTProjectRequest::Ungroup;
+			}
+			break;
+			default:
+			{
+				qFatal("Unhandled action");
+			}
+			break;
+		}
+	}
+	
 	return d->action;
 }
 
-void KTProjectResponse::setAction(int action)
+int KTProjectResponse::originalAction() const
 {
-	d->action = action;
+	return d->action;
 }
 
 void KTProjectResponse::setMode(Mode mode)

@@ -43,8 +43,6 @@ bool KTCommandExecutor::createScene(KTSceneResponse *response)
 {
 	D_FUNCINFO;
 	
-	response->setAction(KTProjectRequest::Add);
-	
 	int position = response->sceneIndex();
 	QString name = response->arg().toString();
 	
@@ -82,8 +80,6 @@ bool KTCommandExecutor::removeScene(KTSceneResponse *response)
 {
 	D_FUNCINFO;
 	
-	response->setAction(KTProjectRequest::Remove);
-	
 	int position = response->sceneIndex();
 	
 	KTScene *toRemove = m_project->scene(position);
@@ -111,8 +107,6 @@ bool KTCommandExecutor::removeScene(KTSceneResponse *response)
 
 bool KTCommandExecutor::moveScene(KTSceneResponse *response)
 {
-	response->setAction(KTProjectRequest::Move);
-	
 	int position = response->sceneIndex();
 	int newPosition = response->arg().toInt();
 	if ( m_project->moveScene( position, newPosition ) )
@@ -129,7 +123,6 @@ bool KTCommandExecutor::moveScene(KTSceneResponse *response)
 
 bool KTCommandExecutor::lockScene(KTSceneResponse *response)
 {
-	response->setAction(KTProjectRequest::Lock);
 	int position = response->sceneIndex();
 	bool lock = response->arg().toBool();
 	dWarning() << "Lock scene: " << lock;
@@ -150,7 +143,6 @@ bool KTCommandExecutor::lockScene(KTSceneResponse *response)
 
 bool KTCommandExecutor::renameScene(KTSceneResponse *response)
 {
-	response->setAction(KTProjectRequest::Rename);
 	int position = response->sceneIndex();
 	QString newName = response->arg().toString();
 	KTScene *scene = m_project->scene(position);
@@ -171,14 +163,12 @@ bool KTCommandExecutor::renameScene(KTSceneResponse *response)
 
 void KTCommandExecutor::selectScene(KTSceneResponse *response)
 {
-	response->setAction(KTProjectRequest::Select);
 	emit responsed(response);
 }
 
 
 bool KTCommandExecutor::setSceneVisibility(KTSceneResponse *response)
 {
-	response->setAction(KTProjectRequest::View);
 	int position = response->sceneIndex();
 	bool view = response->arg().toBool();
 	

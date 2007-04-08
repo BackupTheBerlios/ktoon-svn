@@ -31,7 +31,6 @@
 
 bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 {
-	response->setAction(KTProjectRequest::Add);
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int position = response->frameIndex();
@@ -80,7 +79,6 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::removeFrame(KTFrameResponse *response)
 {
-	response->setAction(KTProjectRequest::Remove);
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
@@ -116,8 +114,6 @@ bool KTCommandExecutor::removeFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
 {
-	response->setAction(KTProjectRequest::Move);
-	
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
@@ -151,8 +147,6 @@ bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::lockFrame(KTFrameResponse *response)
 {
-	response->setAction(KTProjectRequest::Lock);
-	
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
@@ -184,8 +178,6 @@ bool KTCommandExecutor::lockFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::renameFrame(KTFrameResponse *response)
 {
-	response->setAction(KTProjectRequest::Rename);
-	
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
@@ -222,8 +214,6 @@ bool KTCommandExecutor::renameFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::selectFrame(KTFrameResponse *response)
 {
-	response->setAction(KTProjectRequest::Select);
-	
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
@@ -254,7 +244,6 @@ bool KTCommandExecutor::selectFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::setFrameVisibility(KTFrameResponse *response)
 {
-	response->setAction(KTProjectRequest::View);
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
