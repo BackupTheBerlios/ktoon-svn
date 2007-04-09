@@ -28,6 +28,7 @@
 #include <QItemDelegate>
 #include <QLineEdit>
 #include <QMouseEvent>
+#include <QMenu>
 
 #include <dcore/ddebug.h>
 #include <ktglobal.h>
@@ -313,6 +314,7 @@ void KTExposureItemDelegate::paint( QPainter *painter, const QStyleOptionViewIte
 struct KTExposureTable::Private
 {
 	KTExposureHeader *header;
+	QMenu *menu;
 };
 
 KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), d(new Private)
@@ -345,6 +347,8 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), d(new
 	
 	setSelectionBehavior (QAbstractItemView::SelectItems);
 	setSelectionMode(QAbstractItemView::SingleSelection);
+	
+	d->menu = 0;
 }
 
 void KTExposureTable::emitRequestRenameFrame( QTableWidgetItem * item )
@@ -412,6 +416,12 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
 void KTExposureTable::selectFrame( int indexLayer, int indexFrame)
 {
 	setCurrentCell(indexFrame,  d->header->logicalIndex(indexLayer));
+}
+
+
+void KTExposureTable::setMenu(QMenu *menu)
+{
+	d->menu = menu;
 }
 
 int KTExposureTable::currentLayer() const
@@ -580,6 +590,19 @@ bool KTExposureTable::edit( const QModelIndex & index, EditTrigger trigger, QEve
 	}
 	
 	return false;
+}
+
+void KTExposureTable::mousePressEvent(QMouseEvent * event)
+{
+	
+	QTableWidget::mousePressEvent(event);
+	if(event->button() == Qt::RightButton)
+	{
+		if(d->menu)
+		{
+			d->menu->exec(event->globalPos());
+		}
+	}
 }
 
 void KTExposureTable::commitData ( QWidget *editor )

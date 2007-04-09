@@ -158,6 +158,10 @@ QWidget *TweenerTranslate::configurator()
 
 void TweenerTranslate::aboutToChangeTool()
 {
+	delete d->group;
+	d->group = 0;
+	delete d->path;
+	d->path = 0;
 	setCreatePath();
 }
 
@@ -210,7 +214,7 @@ void TweenerTranslate::setSelect()
 		{
 			if(item != d->path)
 			{
-				item->setFlags (QGraphicsItem::ItemIsSelectable);
+				item->setFlags(QGraphicsItem::ItemIsSelectable);
 			}
 		}
 	}
@@ -241,8 +245,6 @@ void TweenerTranslate::applyTweener()
 				KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(d->scene->currentSceneIndex(), d->scene->currentLayerIndex(), i, KTProjectRequest::Add);
 				emit requested(&requestFrame);
 			}
-			
-			
 		}
 	}
 }

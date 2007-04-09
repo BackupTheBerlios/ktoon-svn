@@ -22,10 +22,9 @@
 #define KTEXPOSURETABLE_H
 
 #include<QTableWidget>
-#include <QList>
 
 class KTExposureHeader;
-
+class QMenu;
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
@@ -65,6 +64,8 @@ class KTExposureTable : public QTableWidget
 		bool frameIsLocked(int indexLayer, int indexFrame);
 		void selectFrame( int indexLayer, int indexFrame);
 		
+		void setMenu(QMenu *menu);
+		
 	private:
 		struct Private;
 		Private *const d;
@@ -77,9 +78,11 @@ class KTExposureTable : public QTableWidget
 
 	protected:
 		bool edit ( const QModelIndex & index, EditTrigger trigger, QEvent * event );
+		void mousePressEvent(QMouseEvent * event);
 		
 	protected slots:
 		void commitData ( QWidget * editor );
+		
 		
 	signals:
 		void requestSetUsedFrame(int indexLayer, int indexFrame);
@@ -89,6 +92,7 @@ class KTExposureTable : public QTableWidget
 		void requestRenameLayer(int indexLayer, const QString & name);
 		void requestMoveLayer( int oldIndex, int newIndex  );
 		void requestChangeVisiblityLayer(int visualIndexLayer, bool visibility);
+		
 };
 
 #endif

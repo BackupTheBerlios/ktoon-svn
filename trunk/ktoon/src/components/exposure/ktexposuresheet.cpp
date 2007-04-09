@@ -28,6 +28,7 @@
 #include <QPixmap>
 #include <QHBoxLayout>
 #include <QList>
+#include <QMenu>
 
 #include "ktprojectrequest.h"
 #include "ktrequestbuilder.h"
@@ -37,6 +38,7 @@ struct KTExposureSheet::Private
 	DTabWidget *scenes;
 	KTExposureTable *currentTable;
 	KTProjectActionBar *actionBar;
+	QMenu *menu;
 };
 
 KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet"), d(new Private)
@@ -60,6 +62,8 @@ KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, 
 	d->scenes = new DTabWidget(this);
 	connect( d->scenes , SIGNAL(currentChanged ( int )), this, SLOT(emitRequestChangeScene( int ) ));
 	addChild(d->scenes);
+	
+	createMenu();
 }
 
 KTExposureSheet::~KTExposureSheet()
@@ -68,11 +72,24 @@ KTExposureSheet::~KTExposureSheet()
 	DEND;
 }
 
+
+void KTExposureSheet::createMenu()
+{
+	d->menu = new QMenu(tr("actions"));
+	d->menu->addAction( tr("Insert layer"))->setData(KTProjectActionBar::InsertLayer);
+	d->menu->addAction( tr("Remove layer") )->setData(KTProjectActionBar::RemoveLayer);
+	d->menu->addAction(tr("Insert frame"))->setData(KTProjectActionBar::InsertFrame);
+	d->menu->addAction( tr("Remove frame"))->setData(KTProjectActionBar::RemoveFrame);
+	d->menu->addAction( tr("Lock frame"))->setData(KTProjectActionBar::LockFrame);
+	
+	connect(d->menu,  SIGNAL(triggered( QAction * )), this, SLOT(actionTiggered(QAction*)));
+}
+
 void KTExposureSheet::addScene(int index, const QString &name)
 {
 	D_FUNCINFO << " index: " << index << " name: " << name;
 	KTExposureTable *newScene = new KTExposureTable;
-	
+	newScene->setMenu(d->menu);
 	d->scenes->insertTab(index, newScene, name);
 	
 	connect(newScene, SIGNAL(requestSetUsedFrame(int, int)), this, SLOT(insertItem( int, int )));
@@ -227,6 +244,11 @@ void KTExposureSheet::moveLayer(int oldIndex, int newIndex)
 {
 	KTProjectRequest event = KTRequestBuilder::createLayerRequest(d->scenes->currentIndex(), oldIndex, KTProjectRequest::Move, newIndex);
 	emit requestTriggered( &event );
+}
+
+void KTExposureSheet::actionTiggered(QAction *action)
+{
+	applyAction(action->data().toInt());
 }
 
 void KTExposureSheet::closeAllScenes()

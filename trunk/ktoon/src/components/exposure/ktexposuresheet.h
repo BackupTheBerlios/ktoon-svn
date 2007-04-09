@@ -52,6 +52,8 @@ class KTExposureSheet : public KTModuleWidgetBase
 		struct Private;
 		Private * const d;
 		
+		void createMenu();
+		
 	protected:
 		virtual void sceneResponse(KTSceneResponse *e);
 		virtual void layerResponse(KTLayerResponse *e);
@@ -72,6 +74,8 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void selectFrame(int indexLayer, int indexFrame);
 		void renameLayer(int indexLayer, const QString & name);
 		void moveLayer(int oldIndex, int newIndex);
+		void actionTiggered(QAction *action);
+		
 };
 
 #endif
