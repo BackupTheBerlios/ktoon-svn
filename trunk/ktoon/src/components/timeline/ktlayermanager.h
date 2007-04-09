@@ -64,6 +64,7 @@ class KTLayerManager : public QTableWidget
 		~KTLayerManager();
 		
 		void insertLayer(int position, const QString &name);
+		void insertSoundLayer(int position, const QString &name);
 		void removeLayer(int position);
 		void renameLayer(int position, const QString &name);
 		

@@ -225,13 +225,11 @@ KTLayerManager::~KTLayerManager()
 
 void KTLayerManager::insertLayer(int position, const QString &name)
 {
-	QTableWidgetItem *newLayer = new QTableWidgetItem(name);
-	newLayer->setTextAlignment(Qt::AlignCenter);
-	
-// 	position = verticalHeader()->logicalIndex(position);
-	
 	if (  position >= 0 && position <= rowCount())
 	{
+		QTableWidgetItem *newLayer = new QTableWidgetItem(name);
+		newLayer->setTextAlignment(Qt::AlignCenter);
+		
 		newLayer->setBackgroundColor( palette().background().color() );
 		newLayer->setTextColor(palette().foreground().color() );
 		
@@ -252,11 +250,34 @@ void KTLayerManager::insertLayer(int position, const QString &name)
 		viewItem->setCheckState( Qt::Checked);
 		
 		setItem(position, 2, viewItem);
-
 	}
-	else
+}
+
+void KTLayerManager::insertSoundLayer(int position, const QString &name)
+{
+	if (  position >= 0 && position <= rowCount() )
 	{
-		delete newLayer;
+		QTableWidgetItem *newLayer = new QTableWidgetItem(name);
+		newLayer->setTextAlignment(Qt::AlignCenter);
+		
+		newLayer->setBackgroundColor( palette().background().color() );
+		newLayer->setTextColor(palette().foreground().color() );
+		
+		insertRow(position);
+		setItem(position, 0, newLayer);
+		fixSize();
+		
+// 		QTableWidgetItem *lockItem = new QTableWidgetItem;
+// 		lockItem->setFlags(Qt::ItemIsUserCheckable  | Qt::ItemIsEnabled);
+// 		lockItem->setCheckState( Qt::Unchecked);
+		
+// 		setItem(position, 1, lockItem);
+		
+// 		QTableWidgetItem *viewItem = new QTableWidgetItem;
+// 		viewItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+// 		viewItem->setCheckState( Qt::Checked);
+		
+// 		setItem(position, 2, viewItem);
 	}
 }
 
