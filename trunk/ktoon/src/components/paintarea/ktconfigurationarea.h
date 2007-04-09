@@ -22,7 +22,6 @@
 #define DCONFIGURATIONAREA_H
 
 #include <QDockWidget>
-#include <QTimer>
 
 class QPushButton;
 
@@ -56,11 +55,8 @@ class KTConfigurationArea : public QDockWidget
 		void paintEvent (QPaintEvent *e);
 		
 	private:
-		QTimer m_locker;
-		QTimer m_shower;
-		bool m_toolTipShowed;
-		
-		QPoint m_mousePos;
+		struct Private;
+		Private *const d;
 };
 
 #endif

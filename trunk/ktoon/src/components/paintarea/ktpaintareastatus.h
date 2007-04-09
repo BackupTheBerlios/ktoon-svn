@@ -23,10 +23,7 @@
 
 #include <qstatusbar.h>
 
-class QComboBox;
 class KTViewDocument;
-class BrushStatus;
-class QPushButton;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -48,12 +45,8 @@ class KTPaintAreaStatus : public QStatusBar
 		void applyRotationFromItem(const QString & text);
 		
 	private:
-		KTViewDocument *m_viewDocument;
-		QPushButton *m_antialiasHint;
-		QComboBox *m_renderer;
-		BrushStatus *m_brushStatus;
-		
-		QComboBox *m_rotation;
+		struct Private;
+		Private *const d;
 };
 
 #endif

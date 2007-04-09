@@ -31,15 +31,25 @@
 #include <QPainterPath>
 #include <QStyle>
 #include <QStyleOptionButton>
+#include <QTimer>
 
 #include <dcore/ddebug.h>
 
-KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent), m_toolTipShowed(false)
+struct KTConfigurationArea::Private
 {
+	QTimer locker;
+	QTimer shower;
+	bool toolTipShowed;
+	QPoint mousePos;
+};
+
+KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent), d(new Private)
+{
+	d->toolTipShowed = false;
 	setAllowedAreas ( Qt::RightDockWidgetArea );
 	
-// 	connect(&m_locker, SIGNAL(timeout()), this, SLOT(toggleLock()));
-	connect(&m_shower, SIGNAL(timeout()), this, SLOT(showConfigurator()));
+// 	connect(&d->locker, SIGNAL(timeout()), this, SLOT(toggleLock()));
+	connect(&d->shower, SIGNAL(timeout()), this, SLOT(showConfigurator()));
 }
 
 KTConfigurationArea::~KTConfigurationArea()
@@ -49,6 +59,7 @@ KTConfigurationArea::~KTConfigurationArea()
 		widget()->hide();
 		widget()->setParent(0);
 	}
+	delete d;
 }
 
 QSize  KTConfigurationArea::sizeHint() const
@@ -79,7 +90,7 @@ void KTConfigurationArea::setConfigurator(QWidget *w)
 
 void KTConfigurationArea::toggleLock()
 {
-	m_locker.stop();
+	d->locker.stop();
 	hideConfigurator();
 }
 
@@ -102,19 +113,19 @@ void KTConfigurationArea::shrink()
 	
 	int wOffset = 0, hOffset= 0;
 	
-	Qt::DockWidgetArea m_position = mainWindow->dockWidgetArea(this);
+	Qt::DockWidgetArea position = mainWindow->dockWidgetArea(this);
 	
-	if ( m_position == Qt::BottomDockWidgetArea )
+	if ( position == Qt::BottomDockWidgetArea )
 	{
 		wOffset = 20;
 		hOffset = -(y() * 2 + pm - 1); // FIXME FIXME FIXME
 	}
-	else if ( m_position == Qt::LeftDockWidgetArea )
+	else if ( position == Qt::LeftDockWidgetArea )
 	{
 		wOffset = width()+(pm/2)+1;
 		hOffset = height() / 2;
 	}
-	else if (m_position == Qt::RightDockWidgetArea )
+	else if (position == Qt::RightDockWidgetArea )
 	{
 		wOffset = -(pm/2)+1;
 		hOffset = height() / 2;
@@ -134,7 +145,7 @@ void KTConfigurationArea::shrink()
 	int df = 0;
 	int x1 = 0, x2= 0, y1= 0, y2= 0, xRelease= 0, yRelease= 0;
 	
-	if ( m_position == Qt::BottomDockWidgetArea )
+	if ( position == Qt::BottomDockWidgetArea )
 	{
 		df = widget()->height();
 		x1 = press.pos().x();
@@ -146,7 +157,7 @@ void KTConfigurationArea::shrink()
 		xRelease = this->x();
 		yRelease = 10;
 	}
-	else if ( m_position == Qt::LeftDockWidgetArea )
+	else if ( position == Qt::LeftDockWidgetArea )
 	{
 		df = widget()->width();
 		x1 = press.pos().x() - df;
@@ -158,7 +169,7 @@ void KTConfigurationArea::shrink()
 		xRelease = 10;
 		yRelease = this->y();
 	}
-	else if (m_position == Qt::RightDockWidgetArea )
+	else if (position == Qt::RightDockWidgetArea )
 	{
 		df = widget()->width();
 		x1 = press.pos().x() + df;
@@ -196,26 +207,26 @@ void KTConfigurationArea::shrink()
 
 void KTConfigurationArea::enterEvent(QEvent *)
 {
-	if ( m_locker.isActive()) m_locker.stop();
+	if ( d->locker.isActive()) d->locker.stop();
 	
-	if ( m_shower.isActive() )
+	if ( d->shower.isActive() )
 	{
 		return;
 	}
 	
-	m_shower.start(300);
+	d->shower.start(300);
 }
 
 void KTConfigurationArea::leaveEvent(QEvent *)
 {
-	if ( m_shower.isActive()) m_shower.stop();
+	if ( d->shower.isActive()) d->shower.stop();
 	
-	if ( m_locker.isActive() || rect().contains(mapFromGlobal(QCursor::pos())) || hasFocus() )
+	if ( d->locker.isActive() || rect().contains(mapFromGlobal(QCursor::pos())) || hasFocus() )
 	{
 		return;
 	}
 	
-	m_locker.start(1000);
+	d->locker.start(1000);
 }
 
 void KTConfigurationArea::showConfigurator()
@@ -237,9 +248,9 @@ void KTConfigurationArea::showConfigurator()
 		
 	}
 	
-	m_shower.stop();
+	d->shower.stop();
 	
-	m_mousePos = QCursor::pos();
+	d->mousePos = QCursor::pos();
 }
 
 void KTConfigurationArea::hideConfigurator()
@@ -268,14 +279,14 @@ void KTConfigurationArea::hideConfigurator()
 		shrink();
 		
 		
-		if ( !m_toolTipShowed )
+		if ( !d->toolTipShowed )
 		{
-			QToolTip::showText (m_mousePos, tr("Cursor here for expand"), this );
-			m_toolTipShowed = true;
+			QToolTip::showText (d->mousePos, tr("Cursor here for expand"), this );
+			d->toolTipShowed = true;
 		}
 	}
 	
-	m_mousePos = QCursor::pos();
+	d->mousePos = QCursor::pos();
 }
 
 void KTConfigurationArea::paintEvent (QPaintEvent *e)

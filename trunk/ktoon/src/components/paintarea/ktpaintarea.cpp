@@ -88,6 +88,7 @@ KTPaintArea::~KTPaintArea()
 
 void KTPaintArea::setCurrentScene(int index)
 {
+	D_FUNCINFOX("paintarea") << index;
 	KTScene *sscene = d->project->scene(index);
 	if ( sscene )
 	{
@@ -160,6 +161,7 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
 
 void KTPaintArea::sceneResponse(KTSceneResponse *event)
 {
+	D_FUNCINFOX("paintarea");
 	switch(event->action())
 	{
 		case KTProjectRequest::Select:
@@ -171,7 +173,10 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 		{
 			if ( event->sceneIndex() == d->currentSceneIndex )
 			{
-				setCurrentScene( d->currentSceneIndex-1 );
+				if(d->currentSceneIndex != 0)
+				{
+					setCurrentScene( d->currentSceneIndex-1 );
+				}
 			}
 		}
 		break;

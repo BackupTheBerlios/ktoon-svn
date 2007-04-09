@@ -29,17 +29,26 @@
 
 #include "ktitempreview.h"
 #include <dgui/dformfactory.h>
+#include <QMap>
+
+
+struct LibraryDialog::Private
+{
+		QToolBox *toolBox;
+		QMap<QGraphicsItem *, QLineEdit *> symbolNames;
+		QMap<int, QLineEdit *> tabs;
+};
 
 LibraryDialog::LibraryDialog()
-	: QDialog()
+	: QDialog(), d(new Private)
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	
 	
-	m_toolBox = new QToolBox;
+	d->toolBox = new QToolBox;
 	
 	
-	layout->addWidget(m_toolBox);
+	layout->addWidget(d->toolBox);
 	
 	QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Help | QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal );
 	
@@ -53,6 +62,7 @@ LibraryDialog::LibraryDialog()
 
 LibraryDialog::~LibraryDialog()
 {
+	delete d;
 }
 
 void LibraryDialog::addItem(QGraphicsItem *item)
@@ -73,25 +83,25 @@ void LibraryDialog::addItem(QGraphicsItem *item)
 	
 	layout->addLayout(grid);
 	
-	int index = m_toolBox->addItem(container, tr("Item %1").arg(m_toolBox->count()+1));
+	int index = d->toolBox->addItem(container, tr("Item %1").arg(d->toolBox->count()+1));
 	
-	m_symbolNames.insert(item, name);
-	m_tabs.insert(index, name);
+	d->symbolNames.insert(item, name);
+	d->tabs.insert(index, name);
 }
 
 QString LibraryDialog::symbolName(QGraphicsItem *item) const
 {
-	return m_symbolNames[item]->text();
+	return d->symbolNames[item]->text();
 }
 
 void LibraryDialog::checkNames()
 {
-	for(int i = 0; i < m_toolBox->count(); i++)
+	for(int i = 0; i < d->toolBox->count(); i++)
 	{
-		if ( m_tabs[i]->text().isEmpty())
+		if ( d->tabs[i]->text().isEmpty())
 		{
-			m_toolBox->setCurrentIndex (i);
-			m_tabs[i]->setFocus();
+			d->toolBox->setCurrentIndex (i);
+			d->tabs[i]->setFocus();
 			return;
 		}
 	}

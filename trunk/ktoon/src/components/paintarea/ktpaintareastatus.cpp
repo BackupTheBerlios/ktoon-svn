@@ -115,10 +115,19 @@ void BrushStatus::setBackground(const QBrush &brush)
 
 ////////////////
 
-KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent), m_viewDocument(parent)
+struct KTPaintAreaStatus::Private
+{
+	KTViewDocument *viewDocument;
+	QPushButton *antialiasHint;
+	QComboBox *renderer;
+	BrushStatus *brushStatus;
+	QComboBox *rotation;
+};
+
+KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent), d( new Private)
 {
 	setSizeGripEnabled(false);
-	
+	d->viewDocument = parent;
 	QWidget *rotContainer = new QWidget;
 	QHBoxLayout *rotLayout = new QHBoxLayout(rotContainer);
 	rotLayout->setSpacing(3);
@@ -126,23 +135,23 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 	
 	rotLayout->addWidget(new QLabel(tr("Rotate")));
 	
-	m_rotation = new QComboBox();
-	m_rotation->setDuplicatesEnabled(false);
-	m_rotation->setEditable(true);
+	d->rotation = new QComboBox();
+	d->rotation->setDuplicatesEnabled(false);
+	d->rotation->setEditable(true);
 	
 	
 	for(int i = 0; i < 360; i+=30)
 	{
-		m_rotation->addItem(QString::number(i), i);
+		d->rotation->addItem(QString::number(i), i);
 	}
 	
-	m_rotation->setValidator(new QIntValidator(-360, 360,this));
+	d->rotation->setValidator(new QIntValidator(-360, 360,this));
 	
-	rotLayout->addWidget( m_rotation);
+	rotLayout->addWidget( d->rotation);
 	
 	addPermanentWidget(rotContainer);
 	
-	connect(m_rotation, SIGNAL(activated(const QString &)), this, SLOT(applyRotationFromItem(const QString &)));
+	connect(d->rotation, SIGNAL(activated(const QString &)), this, SLOT(applyRotationFromItem(const QString &)));
 	
 	
 	
@@ -150,72 +159,73 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 	
 	///////
 	
-	m_antialiasHint = new QPushButton;
-	m_antialiasHint->setFocusPolicy( Qt::NoFocus);
+	d->antialiasHint = new QPushButton;
+	d->antialiasHint->setFocusPolicy( Qt::NoFocus);
 	
-	m_antialiasHint->setText(tr("Antialiasing"));
-	m_antialiasHint->setCheckable(true);
+	d->antialiasHint->setText(tr("Antialiasing"));
+	d->antialiasHint->setCheckable(true);
 	
-	m_antialiasHint->setChecked( parent->renderHints() & QPainter::Antialiasing );
+	d->antialiasHint->setChecked( parent->renderHints() & QPainter::Antialiasing );
 	
-	addPermanentWidget(m_antialiasHint/*,1*/);
+	addPermanentWidget(d->antialiasHint/*,1*/);
 	
 	
-	m_renderer = new QComboBox;
+	d->renderer = new QComboBox;
 #ifdef QT_OPENGL_LIB
-	m_renderer->addItem(tr("OpenGL"), KToon::OpenGL );
+	d->renderer->addItem(tr("OpenGL"), KToon::OpenGL );
 #endif
-	m_renderer->addItem(tr("Native"), KToon::Native );
+	d->renderer->addItem(tr("Native"), KToon::Native );
 	
-	m_renderer->setCurrentIndex(1);
+	d->renderer->setCurrentIndex(1);
 	
-	addPermanentWidget(m_renderer/*,1*/);
+	addPermanentWidget(d->renderer/*,1*/);
 	
 	
-	m_brushStatus = new BrushStatus;
-	addPermanentWidget(m_brushStatus);
+	d->brushStatus = new BrushStatus;
+	addPermanentWidget(d->brushStatus);
 	
-	connect(m_antialiasHint, SIGNAL(toggled(bool)), this, SLOT(selectAntialiasingHint(bool) ));
-	connect(m_renderer, SIGNAL(activated(int)), this, SLOT(selectRenderer(int)));
+	connect(d->antialiasHint, SIGNAL(toggled(bool)), this, SLOT(selectAntialiasingHint(bool) ));
+	connect(d->renderer, SIGNAL(activated(int)), this, SLOT(selectRenderer(int)));
 	
-	m_brushStatus->setBackground( m_viewDocument->brushManager()->brush() );
-	m_brushStatus->setForeground( m_viewDocument->brushManager()->pen() );
+	d->brushStatus->setBackground( d->viewDocument->brushManager()->brush() );
+	d->brushStatus->setForeground( d->viewDocument->brushManager()->pen() );
 }
 
 
 KTPaintAreaStatus::~KTPaintAreaStatus()
 {
+	delete d;
 }
 
 
 void KTPaintAreaStatus::selectAntialiasingHint(bool use)
 {
-	m_viewDocument->setAntialiasing( use ); 
+	d->viewDocument->setAntialiasing( use ); 
 }
 
 void KTPaintAreaStatus::selectRenderer(int id)
 {
-	KToon::RenderType type = KToon::RenderType(m_renderer->itemData(id ).toInt());
+	KToon::RenderType type = KToon::RenderType(d->renderer->itemData(id ).toInt());
 	
 	if ( type == KToon::OpenGL )
 	{
-		m_viewDocument->setOpenGL( true );
+		d->viewDocument->setOpenGL( true );
 	}
 	else
 	{
-		m_viewDocument->setOpenGL( false );
+		d->viewDocument->setOpenGL( false );
 	}
 }
 
 
 void KTPaintAreaStatus::setBrush(const QBrush &brush)
 {
-	m_brushStatus->setBackground( brush );
+	d->brushStatus->setBackground( brush );
 }
 
 void KTPaintAreaStatus::setPen(const QPen &pen)
 {
-	m_brushStatus->setForeground( pen );
+	d->brushStatus->setForeground( pen );
 }
 
 
@@ -228,7 +238,7 @@ void KTPaintAreaStatus::applyRotationFromItem(const QString & text)
 		angle += 360;
 	}
 	
-	m_viewDocument->setRotationAngle(angle);
+	d->viewDocument->setRotationAngle(angle);
 }
 
 

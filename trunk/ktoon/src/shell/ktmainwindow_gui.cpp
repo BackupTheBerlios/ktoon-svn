@@ -28,6 +28,7 @@
 
 #include <QKeySequence>
 #include <QTextBrowser>
+#include <QToolBar>
 
 void KTMainWindow::createGUI()
 {

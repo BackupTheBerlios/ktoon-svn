@@ -294,18 +294,25 @@ void KTGraphicsScene::setPreviousOnionSkinCount(int n)
 
 KTFrame *KTGraphicsScene::currentFrame()
 {
-	KTLayer *layer = d->scene->layer( d->framePosition.layer );
-	if ( layer )
+	D_FUNCINFOX("scene") << d->framePosition.layer;
+	if(d->scene)
 	{
-		return layer->frame(d->framePosition.frame );
+		KTLayer *layer = d->scene->layer( d->framePosition.layer );
+		if ( layer )
+		{
+			if(!layer->frames().isEmpty())
+			{
+				return layer->frame(d->framePosition.frame );
+			}
+		}
 	}
-	
 	return 0;
 }
 
 
 void KTGraphicsScene::setCurrentScene(KTScene *scene)
 {
+	Q_CHECK_PTR(scene);
 	qDeleteAll(d->lines);
 	d->lines.clear();
 	
@@ -376,12 +383,14 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	else if (d->tool )
 	{
 		if( d->tool->toolType() == KTToolPlugin::Brush && event->isAccepted() ) return;
-		
-		if ( event->buttons() == Qt::LeftButton && !currentFrame()->isLocked() )
+		if(currentFrame())
 		{
-			d->tool->begin();
-			d->isDrawing = true;
-			d->tool->press(d->inputInformation, d->brushManager, this );
+			if ( event->buttons() == Qt::LeftButton && !currentFrame()->isLocked() )
+			{
+				d->tool->begin();
+				d->isDrawing = true;
+				d->tool->press(d->inputInformation, d->brushManager, this );
+			}
 		}
 	}
 }
@@ -449,11 +458,11 @@ void KTGraphicsScene::keyPressEvent(QKeyEvent *event)
 
 void KTGraphicsScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
 {
-	if (event->mimeData()->hasFormat("text/plain"))
+	if (event->mimeData()->hasFormat("ktoon-ruler"))
 		event->acceptProposedAction();
 	
 	KTLineGuide *line = 0;
-	if(event->mimeData()->text() == "verticalLine")
+	if(event->mimeData()->data("ktoon-ruler") == "verticalLine")
 	{
 		line  = new KTLineGuide(Qt::Vertical, this);
 		line->setPos(event->scenePos());

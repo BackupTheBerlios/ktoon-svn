@@ -22,11 +22,7 @@
 #define LIBRARYDIALOG_H
 
 #include <QDialog>
-#include <QMap>
-
-class QToolBox;
 class QGraphicsItem;
-class QLineEdit;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -45,9 +41,8 @@ class LibraryDialog : public QDialog
 		void checkNames();
 		
 	private:
-		QToolBox *m_toolBox;
-		QMap<QGraphicsItem *, QLineEdit *> m_symbolNames;
-		QMap<int, QLineEdit *> m_tabs;
+		struct Private;
+		Private *const d;
 };
 
 #endif

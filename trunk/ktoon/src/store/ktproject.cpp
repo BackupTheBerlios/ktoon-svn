@@ -224,12 +224,12 @@ bool KTProject::moveScene(int position, int newPosition)
 
 KTScene *KTProject::scene(int position)
 {
+	D_FUNCINFOX("project")<< position;
 	if( position < 0 || position >= d->scenes.count() )
 	{
 		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
 		return 0;
 	}
-	
 	return d->scenes[position];
 }
 

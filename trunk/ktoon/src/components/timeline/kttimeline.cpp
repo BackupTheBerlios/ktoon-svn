@@ -145,6 +145,7 @@ void KTTimeLine::closeAllScenes()
 
 void KTTimeLine::sceneResponse(KTSceneResponse *e)
 {
+	D_FUNCINFOX("timeline");
 	switch(e->action())
 	{
 		case KTProjectRequest::Add:

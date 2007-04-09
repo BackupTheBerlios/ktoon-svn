@@ -40,6 +40,7 @@
 #include "ktpaintarearotator.h"
 
 #include "ktgraphicsscene.h"
+#include "ktgraphicalgorithm.h"
 
 #include <dcore/dconfig.h>
 #include <dcore/ddebug.h>
@@ -270,18 +271,7 @@ void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )
 		QPointF p1 = event->pos();
 		QPointF p2 = d->drawingRect.center();
 		
-		QPointF dp = p1 - p2;
-		
-		if(dp.x() != 0)
-		{
-			double a =  atan(dp.y() / dp.x())*(180/M_PI);
-			if(dp.x() < 0)
-			{
-				a += 180;
-			}
-			d->rotator->rotateTo( (int)a );
-		}
-		
+		d->rotator->rotateTo( (int)(-(180*KTGraphicalAlgorithm::angleForPos(p1,p2))/M_PI) );
 		setUpdatesEnabled(true);
 	}
 	else
@@ -370,6 +360,7 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 
 void KTPaintAreaBase::drawForeground( QPainter *painter, const QRectF &rect )
 {
+	D_FUNCINFOX("paintarea");
 	if ( KTFrame *frame = d->scene->currentFrame() )
 	{
 		if ( frame->isLocked() )
@@ -387,6 +378,7 @@ void KTPaintAreaBase::drawForeground( QPainter *painter, const QRectF &rect )
 
 bool KTPaintAreaBase::canPaint() const
 {
+	D_FUNCINFOX("paintarea");
 	return d->scene->currentFrame() != 0;
 }
 

@@ -265,6 +265,7 @@ void KTExposureSheet::closeAllScenes()
 
 void KTExposureSheet::sceneResponse(KTSceneResponse *e)
 {
+	D_FUNCINFOX("exposure");
 	switch(e->action() )
 	{
 		case KTProjectRequest::Add:

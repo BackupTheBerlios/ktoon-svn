@@ -70,7 +70,8 @@ void KTDocumentRuler::mouseMoveEvent(QMouseEvent *event)
 	{
 		data = "horizontalLine";
 	}
-	mimeData->setData("text/plain", data.toAscii () );
+	
+	mimeData->setData("ktoon-ruler", data.toAscii () );
 	drag->setMimeData(mimeData);
 
 	Qt::DropAction dropAction = drag->start(Qt::CopyAction | Qt::MoveAction);

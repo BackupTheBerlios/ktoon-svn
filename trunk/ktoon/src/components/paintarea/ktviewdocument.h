@@ -22,14 +22,6 @@
 #define KTVIEWAREA_H
 
 #include "ktdocumentruler.h"
-#include <QCursor>
-#include <QAction>
-#include <QActionGroup>
-#include <QToolBar>
-#include <QMenu>
-#include <QDir>
-#include <QPluginLoader>
-#include <QSpinBox>
 #include <QMainWindow>
 
 #include <dgui/dactionmanager.h>
@@ -40,9 +32,6 @@
 #include "ktconfigurationarea.h"
 #include "ktglobal.h"
 
-
-
-class KTPaintArea;
 class KTProjectRequest;
 class KTProject;
 class KTBrushManager;
@@ -98,16 +87,8 @@ class KTViewDocument : public QMainWindow
 		void changeRulerOrigin(const QPointF &zero);
 		
 	private:
-		QActionGroup *m_gridGroup, *m_editGroup, *m_viewNextGroup, *m_viewZoomGroup, *m_viewPreviousGroup;
-		QMenu *m_brushesMenu, *m_selectionMenu, *m_fillMenu, *m_filterMenu, *m_viewToolMenu;
-		QMenu *m_toolsMenu, *m_editMenu, *m_viewMenu, *m_orderMenu;
-		QAction *m_aUndo, *m_aRedo, *m_aClose;
-		QToolBar *m_barGrid, *m_toolbar;
-		QDoubleSpinBox *m_zoomFactorSpin;
-		
-		KTPaintArea *m_paintArea;
-		
-		KTDocumentRuler *m_verticalRuler, *m_horizontalRuler;
+		struct Private;
+		Private *const d;
 		
 	private:
 		void createActions();
@@ -123,11 +104,6 @@ class KTViewDocument : public QMainWindow
 	private slots: 
 		// Plugins
 		void loadPlugins();
-		
-	private:
-		DActionManager *m_actionManager;
-		KTConfigurationArea *m_configurationArea;
-		
 		
 	private slots:
 		void showPos(const QPointF &p);	

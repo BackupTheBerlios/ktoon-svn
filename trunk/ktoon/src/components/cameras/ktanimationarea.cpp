@@ -183,6 +183,7 @@ void KTAnimationArea::layerResponse(KTLayerResponse *)
 
 void KTAnimationArea::sceneResponse(KTSceneResponse *event)
 {
+	D_FUNCINFOX("animation");
 	switch(event->action())
 	{
 		case KTProjectRequest::Select:
@@ -194,7 +195,10 @@ void KTAnimationArea::sceneResponse(KTSceneResponse *event)
 		{
 			if ( event->sceneIndex() == d->currentSceneIndex )
 			{
-				setCurrentScene( d->currentSceneIndex-1 );
+				if(d->currentSceneIndex != 0)
+				{
+					setCurrentScene( d->currentSceneIndex-1 );
+				}
 			}
 		}
 		break;

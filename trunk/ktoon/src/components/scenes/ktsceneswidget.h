@@ -49,9 +49,8 @@ class KTScenesWidget : public KTModuleWidgetBase
 		void closeAllScenes();
 		
 	private:
-// 		QGroupBox *m_buttonsPanel;
-		QButtonGroup *m_buttonGroup;
-		KTScenesList *m_tableScenes;
+		struct Private;
+		Private *const d;
 
 	private:
 		void setupButtons();

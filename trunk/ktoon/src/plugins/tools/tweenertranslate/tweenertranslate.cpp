@@ -236,14 +236,18 @@ void TweenerTranslate::applyTweener()
 					);
 			emit requested(&request);
 			
-			int frames = d->scene->scene()->layer(d->scene->currentLayerIndex())->frames().count();
-			
-			int newFrames = d->configurator->totalSteps() + d->scene->currentFrameIndex() - frames;
-			 
-			for(int i = frames; i < newFrames; i++)
+			if(KTLayer *layer = d->scene->scene()->layer(d->scene->currentLayerIndex()))
 			{
-				KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(d->scene->currentSceneIndex(), d->scene->currentLayerIndex(), i, KTProjectRequest::Add);
-				emit requested(&requestFrame);
+				int frames = layer->frames().count();
+			
+			
+				int newFrames = d->configurator->totalSteps() + d->scene->currentFrameIndex() - frames;
+			 
+				for(int i = frames; i < newFrames; i++)
+				{
+					KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(d->scene->currentSceneIndex(), d->scene->currentLayerIndex(), i, KTProjectRequest::Add);
+					emit requested(&requestFrame);
+				}
 			}
 		}
 	}

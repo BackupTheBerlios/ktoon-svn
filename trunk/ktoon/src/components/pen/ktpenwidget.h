@@ -45,10 +45,8 @@ class KTPenWidget : public KTModuleWidgetBase
 		void emitPenChanged();
 		
 	private:
-		DEditSpinBox *m_thickness;
-		QComboBox *m_capStyle;
-		QComboBox *m_joinStyle;
-		QComboBox *m_style;
+		struct Private;
+		Private *const d;
 		
 	public slots:
 		void reset();
@@ -62,9 +60,6 @@ class KTPenWidget : public KTModuleWidgetBase
 	signals:
 		void penChanged(const QPen &pen);
 		void paintAreaEventTriggered(const KTPaintAreaEvent *e);
-		
-	private:
-		QPen m_pen;
 
 };
 

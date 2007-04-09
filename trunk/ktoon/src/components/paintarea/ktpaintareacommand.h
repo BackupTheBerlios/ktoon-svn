@@ -22,7 +22,6 @@
 #define KTPAINTAREACOMMAND_H
 
 #include <QUndoCommand>
-#include <QVariant>
 
 class KTPaintArea;
 class KTPaintAreaEvent;
@@ -41,9 +40,8 @@ class KTPaintAreaCommand : public QUndoCommand
 		void redo();
 		
 	private:
-		KTPaintArea *m_paintArea;
-		KTPaintAreaEvent *m_event;
-		QVariant m_oldData;
+		struct Private;
+		Private *const d;
 };
 
 #endif
