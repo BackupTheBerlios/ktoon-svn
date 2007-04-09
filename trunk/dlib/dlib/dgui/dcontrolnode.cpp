@@ -66,7 +66,7 @@ void DControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 		painter->save();
 		painter->setPen(QPen(Qt::gray) );
 		
-		paintLinesToChilds(painter);
+// 		paintLinesToChilds(painter);
 		painter->restore();
 		
 		if ( QAbstractGraphicsShapeItem *it = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_parent))
@@ -125,10 +125,10 @@ void DControlNode::paintLinesToChilds(QPainter * painter)
 		if(m_left->isVisible())
 		painter->drawLine(inverted.map(pos()), inverted.map(m_left->pos()));
 	}
-	if(m_nodeParent)
-	{
-		emit requestUpdateParent();
-	}
+// 	if(m_nodeParent)
+// 	{
+// 		emit requestUpdateParent();
+// 	}
 	painter->restore();
 }
 
@@ -291,7 +291,7 @@ void DControlNode::setLeft( DControlNode *left)
 	m_left->setVisible(false);
 	m_left->setNodeParent(this);
 	m_left->setZValue(zValue()+1);
-	connect( m_left, SIGNAL(requestUpdateParent()), this, SLOT(repaint()));
+// 	connect( m_left, SIGNAL(requestUpdateParent()), this, SLOT(repaint()));
 }
 
 void DControlNode::setRight( DControlNode *right)
@@ -304,7 +304,7 @@ void DControlNode::setRight( DControlNode *right)
 	m_right->setVisible(false);
 	m_right->setNodeParent(this);
 	m_right->setZValue(zValue()+2);
-	connect( m_right, SIGNAL(requestUpdateParent()), this, SLOT(repaint()));
+// 	connect( m_right, SIGNAL(requestUpdateParent()), this, SLOT(repaint()));
 }
 
 void DControlNode::setNodeParent( DControlNode *nodeParent)
@@ -358,10 +358,10 @@ int DControlNode::index() const
 	return m_index;
 }
 
-void DControlNode::repaint()
-{
-	update();
-}
+// void DControlNode::repaint()
+// {
+// 	update();
+// }
 
 void DControlNode::setParentI(QGraphicsItem *newParent)
 {
