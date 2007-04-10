@@ -21,27 +21,32 @@
 #include "ktitemgroup.h"
 #include <dcore/ddebug.h>
 
-KTItemGroup::KTItemGroup(QGraphicsItem *parent , QGraphicsScene *scene) : QGraphicsItemGroup(parent, scene)
+struct KTItemGroup::Private
+{
+	QList<QGraphicsItem *> childs;
+};
+
+KTItemGroup::KTItemGroup(QGraphicsItem *parent , QGraphicsScene *scene) : QGraphicsItemGroup(parent, scene), d(new Private)
 {
 }
 
 
 KTItemGroup::~KTItemGroup()
 {
-	
+	delete d;
 }
 
 QVariant KTItemGroup::itemChange ( GraphicsItemChange change, const QVariant & value )
 {
 	if ( change == QGraphicsItem::ItemChildRemovedChange )
 	{
-// 		m_childs.removeAll( qvariant_cast<QGraphicsItem *>(value) );
+// 		d->childs.removeAll( qvariant_cast<QGraphicsItem *>(value) );
 	}
 	else if ( change == QGraphicsItem::ItemChildAddedChange )
 	{
-		if(!m_childs.contains(qvariant_cast<QGraphicsItem *>(value)))
+		if(!d->childs.contains(qvariant_cast<QGraphicsItem *>(value)))
 		{
-			m_childs << qvariant_cast<QGraphicsItem *>(value);
+			d->childs << qvariant_cast<QGraphicsItem *>(value);
 		}
 	}
 	
@@ -51,11 +56,10 @@ QVariant KTItemGroup::itemChange ( GraphicsItemChange change, const QVariant & v
 
 void KTItemGroup::recoverChilds()
 {
-	foreach(QGraphicsItem *item, m_childs )
+	foreach(QGraphicsItem *item, d->childs )
 	{
 		if ( item->parentItem() != this )
 		{
-// 			addToGroup(item);
 			item->setParentItem(this);
 		}
 	}
@@ -63,7 +67,7 @@ void KTItemGroup::recoverChilds()
 
 QList<QGraphicsItem *> KTItemGroup::childs()
 {
-	return m_childs;
+	return d->childs;
 }
 
 void KTItemGroup::fromXml(const QString &xml)

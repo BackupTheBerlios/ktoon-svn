@@ -198,21 +198,21 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 	
 	foreach(KTGraphicObject *object, d->scene->tweeningObjects())
 	{
-		int origin = object->frame()->index();
-		
-		if( KTItemTweener *tweener = object->tweener() )
+		if(object->frame()->layer()->isVisible() )
 		{
-			tweener->setStep(0);
+			int origin = object->frame()->index();
 			
-			if( origin < photogram && photogram < origin+tweener->frames() )
+			if( KTItemTweener *tweener = object->tweener() )
 			{
-				int step = photogram - origin;
+				tweener->setStep(0);
 				
-				tweener->setStep(step);
-				
-				if(object->frame()->layer()->isVisible() )
+				if( origin < photogram && photogram < origin+tweener->frames() )
 				{
-					addItem(object->item());
+					int step = photogram - origin;
+					
+					tweener->setStep(step);
+					
+					addGraphicObject(object);
 				}
 			}
 		}
@@ -228,21 +228,25 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity )
 	{
 		foreach(KTGraphicObject *object, frame->graphics() )
 		{
-			QGraphicsItem *item = object->item();
-			d->onionSkin.opacityMap.insert(item, opacity);
-			
-			if( ! qgraphicsitem_cast<KTItemGroup *>(item->parentItem()))
-			{
-				item->setSelected(false);
-				addItem(item);
-			}
-			
-			
-			if ( KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item) )
-			{
-				group->recoverChilds();
-			}
+			addGraphicObject(object, opacity);
 		}
+	}
+}
+
+void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
+{
+	QGraphicsItem *item = object->item();
+	d->onionSkin.opacityMap.insert(item, opacity);
+	
+	if ( KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item) )
+	{
+		group->recoverChilds();
+	}
+	
+	if( ! qgraphicsitem_cast<KTItemGroup *>(item->parentItem()))
+	{
+		item->setSelected(false);
+		addItem(item);
 	}
 }
 

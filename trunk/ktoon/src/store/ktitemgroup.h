@@ -43,7 +43,8 @@ class STORE_EXPORT KTItemGroup: public KTAbstractSerializable, public QGraphicsI
 		QVariant itemChange ( GraphicsItemChange change, const QVariant & value );
 		
 	private:
-		QList<QGraphicsItem *> m_childs;
+		struct Private;
+		Private *const d;
 };
 
 #endif

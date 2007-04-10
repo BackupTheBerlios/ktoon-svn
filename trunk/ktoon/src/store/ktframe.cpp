@@ -212,6 +212,7 @@ QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group 
 		g->addToGroup( item );
 		count++;
 	}
+	
 	addItem( g );
 	return g;
 }

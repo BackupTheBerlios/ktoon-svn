@@ -30,6 +30,7 @@
 */
 
 class KTFrame;
+class KTGraphicObject;
 class KTScene;
 class KTToolPlugin;
 class KTBrushManager;
@@ -51,6 +52,8 @@ class KTOON_EXPORT KTGraphicsScene : public QGraphicsScene
 		
 		void drawPhotogram(int photogram);
 		void addFrame(KTFrame *frame, double opacity = 1.0);
+		void addGraphicObject(KTGraphicObject *object, double opacity = 1.0);
+		
 		void clean();
 		int currentFrameIndex() const;
 		int currentLayerIndex() const;

@@ -243,11 +243,6 @@ void KTMainWindow::setupMenu()
 	group->addAction(animationPerspective);
 	animationPerspective->setData(Animation);
 	
-	
-	QAction *netPerspective = new QAction(tr("Network"), this);
-	group->addAction(netPerspective);
-	netPerspective->setData(Net);
-	
 	perspectiveMenu->addActions(group->actions());
 	
 	connect(group, SIGNAL(triggered(QAction *)), this, SLOT(changePerspective(QAction *)));
@@ -468,16 +463,7 @@ void KTMainWindow::showWidgetPage()
 void KTMainWindow::changePerspective(QAction *a)
 {
 	int perspective = a->data().toInt();
-	
-	if ( perspective == Net )
-	{
-		
-	}
-	else
-	{
-		setCurrentPerspective(perspective);
-	}
-	
+	setCurrentPerspective(perspective);
 	a->setChecked(true);
 }
 
