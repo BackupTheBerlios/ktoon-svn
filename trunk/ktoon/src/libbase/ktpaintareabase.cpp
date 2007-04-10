@@ -360,7 +360,6 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 
 void KTPaintAreaBase::drawForeground( QPainter *painter, const QRectF &rect )
 {
-	D_FUNCINFOX("paintarea");
 	if ( KTFrame *frame = d->scene->currentFrame() )
 	{
 		if ( frame->isLocked() )

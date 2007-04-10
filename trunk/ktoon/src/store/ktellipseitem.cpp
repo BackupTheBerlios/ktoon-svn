@@ -73,7 +73,7 @@ QDomElement KTEllipseItem::toXml(QDomDocument &doc) const
 
 bool KTEllipseItem::contains ( const QPointF & point ) const
 {
-// 	D_FUNCINFO;
+#if 0
 	int thickness = pen().width();
 	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
 	
@@ -98,8 +98,9 @@ bool KTEllipseItem::contains ( const QPointF & point ) const
 		++it2;
 	}
 	return false;
-	
-	
+#else
+	return QGraphicsEllipseItem::contains(point);
+#endif
 }
 
 void KTEllipseItem::dragEnterEvent(QGraphicsSceneDragDropEvent *event)

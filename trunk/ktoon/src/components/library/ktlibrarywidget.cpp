@@ -40,6 +40,8 @@
 #include "ktlibraryobject.h"
 #include "ktsymboleditor.h"
 
+#include <dgui/dosd.h>
+
 struct KTLibraryWidget::Private
 {
 	Private()
@@ -370,19 +372,36 @@ void KTLibraryWidget::importBitmap()
 {
 	QString image = QFileDialog::getOpenFileName ( this, tr("Import an image..."), QDir::homePath(),  tr("Images")+" (*.png *.xpm *.jpg)" );
 	
-	addBitmap( image );
+	QString symName = image; // FIXME
+	
+	QFile f(image);
+	
+	if( f.open(QIODevice::ReadOnly))
+	{
+		QByteArray data = f.readAll();
+		f.close();
+		
+		KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName, data, KTLibraryObject::Image);
+		
+		emit requestTriggered(&request);
+	}
+	else
+	{
+		DOsd::self()->display(tr("Cannot open file: %1").arg(image));
+	}
 }
 
 void KTLibraryWidget::addBitmap(const QString &bitmap)
 {
-// 	QPixmap toImport(bitmap);
-// 	
-// 	if ( ! toImport.isNull() )
-// 	{
-// 		KTGraphicComponent *imageComponent = new KTGraphicComponent;
-// 		
-// 		QFile file(bitmap);
-// 		QFileInfo finfo(file);
+	QPixmap toImport(bitmap);
+	
+	if ( ! toImport.isNull() )
+	{
+// 		KTPixmapItem *pixmapItem = new KTPixmapItem;
+		
+		
+		QFile file(bitmap);
+		QFileInfo finfo(file);
 // 		
 // 		imageComponent->setComponentName( finfo.baseName() );
 // 		
@@ -392,12 +411,16 @@ void KTLibraryWidget::addBitmap(const QString &bitmap)
 // 		
 // 		if ( !file.copy(d->libraryDir.path()+"/resources/"+ imageComponent->graphics()[0]->pixmapHash() ) )
 // 		{
-// 			emit sendToOSD(tr("Cannot import ")+finfo.fileName(), 2);
+// 			DOsd::self()->display(tr("Cannot import bitmap"));
 // 			return;
 // 		}
 // 		
 // 		addGraphic( imageComponent );
-// 	}
+	}
+	else
+	{
+		DOsd::self()->display(tr("Cannot import bitmap"));
+	}
 }
 
 void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)

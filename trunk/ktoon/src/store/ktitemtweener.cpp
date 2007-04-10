@@ -24,8 +24,6 @@
 #include <QGraphicsItem>
 #include <QHash>
 
-#include "ktitemgroup.h"
-
 #include <dcore/ddebug.h>
 
 class Animator : public QGraphicsItemAnimation
@@ -63,11 +61,6 @@ void Animator::afterAnimationStep( qreal step )
 		item()->setPos(positionForStep[step]);
 	}
 #endif
-	
-// 	if( KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item() ) )
-// 	{
-// 		group->recoverChilds();
-// 	}
 }
 
 #if QT_VERSION < 0x040300

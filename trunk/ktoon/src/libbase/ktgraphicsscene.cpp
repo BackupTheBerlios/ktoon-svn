@@ -223,7 +223,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
 void KTGraphicsScene::addFrame(KTFrame *frame, double opacity )
 {
-	D_FUNCINFO;
 	if ( frame )
 	{
 		foreach(KTGraphicObject *object, frame->graphics() )

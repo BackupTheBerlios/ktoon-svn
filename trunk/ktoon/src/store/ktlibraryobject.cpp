@@ -148,6 +148,13 @@ bool KTLibraryObject::loadData(const QByteArray &data)
 		break;
 		case KTLibraryObject::Image:
 		{
+// 			QFile tmp("/tmp/datos_borrar.png");
+// 			if( tmp.open(QIODevice::WriteOnly) )
+// 			{
+// 				tmp.write(data);
+// 				tmp.close();
+// 			}
+			
 			setData(data);
 		}
 		break;

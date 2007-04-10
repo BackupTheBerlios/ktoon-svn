@@ -94,7 +94,7 @@ bool KTRequestParser::endTag(const QString& qname)
 	return true;
 }
 
-void KTRequestParser::text( const QString & ch )
+void KTRequestParser::text( const QString &ch )
 {
 	if ( currentTag() == "data" )
 	{

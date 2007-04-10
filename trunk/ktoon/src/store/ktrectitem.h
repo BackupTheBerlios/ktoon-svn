@@ -37,8 +37,6 @@ class STORE_EXPORT KTRectItem : public QGraphicsRectItem, public KTAbstractSeria
 		~KTRectItem();
 		bool contains ( const QPointF & point ) const;
 		
-// 		QPainterPath opaqueArea () const;
-		
 		virtual void fromXml(const QString &xml);
 		virtual QDomElement toXml(QDomDocument &doc) const;
 		

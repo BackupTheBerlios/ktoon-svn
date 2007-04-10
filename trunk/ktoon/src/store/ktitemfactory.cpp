@@ -43,7 +43,8 @@ struct KTItemFactory::Private
 	QGradient *gradient;
 	QString loading;//brush or pen
 	
-	QStack<QGraphicsItem *> childs;
+	QStack<KTItemGroup *> groups;
+	QStack<QGraphicsItem *> objects;
 	
 	bool addToGroup;
 	
@@ -112,44 +113,72 @@ bool KTItemFactory::startTag( const QString& qname, const QXmlAttributes& atts)
 		if ( !d->item )
 		{
 			d->item = createItem( qname );
+			qgraphicsitem_cast<KTPathItem *>(d->item)->setPath(path);
+			
+			d->objects.push(d->item);
 		}
-// 		else if ( d->addToGroup )
-// 		{
-// 			QGraphicsItem *item = createItem(qname);
-// 			qgraphicsitem_cast<KTPathItem *>(item)->setPath(path);
-// 			
-// 			qgraphicsitem_cast<QGraphicsItemGroup *>(d->item)->addToGroup(item );
-// 		}
-		
-		qgraphicsitem_cast<KTPathItem *>(d->item)->setPath(path);
+		else if ( d->addToGroup )
+		{
+			QGraphicsItem *item = createItem(qname);
+			qgraphicsitem_cast<KTPathItem *>(item)->setPath(path);
+			
+			d->groups.last()->addToGroup(item );
+			
+			d->objects.push(item);
+		}
 	}
 	else if ( qname == "rect" )
 	{
+		QRectF rect(atts.value("x").toDouble(), atts.value("y").toDouble(), atts.value("width").toDouble(), atts.value("height").toDouble() );
+		
 		if ( !d->item )
 		{
 			d->item = createItem( qname );
+			qgraphicsitem_cast<KTRectItem *>(d->item)->setRect(rect);
+			
+			d->objects.push(d->item);
 		}
-		
-		QRectF rect(atts.value("x").toDouble(), atts.value("y").toDouble(), atts.value("width").toDouble(), atts.value("height").toDouble() );
-		
-		qgraphicsitem_cast<KTRectItem *>(d->item)->setRect(rect);
-		
+		else if( d->addToGroup )
+		{
+			KTRectItem *item = qgraphicsitem_cast<KTRectItem *>(createItem(qname));
+			item->setRect(rect);
+			
+			d->groups.last()->addToGroup(item );
+			
+			d->objects.push(item);
+		}
 	}
 	else if ( qname == "ellipse" )
 	{
+		QRectF rect(QPointF(0, 0), QSizeF(2 * atts.value("rx").toDouble(), 2 * atts.value("ry").toDouble() ));
+		
 		if ( !d->item )
 		{
 			d->item = createItem( qname );
+			qgraphicsitem_cast<KTEllipseItem *>(d->item)->setRect(rect);
+			
+			d->objects.push(d->item);
 		}
-		
-		QRectF rect(QPointF(0, 0), QSizeF(2 * atts.value("rx").toDouble(), 2 * atts.value("ry").toDouble() ));
-		qgraphicsitem_cast<KTEllipseItem *>(d->item)->setRect(rect);
+		else if( d->addToGroup )
+		{
+			KTEllipseItem *item = qgraphicsitem_cast<KTEllipseItem *>(createItem(qname));
+			item->setRect(rect);
+			
+			d->groups.last()->addToGroup(item );
+			d->objects.push(item);
+		}
 	}
 	else if ( qname == "button" )
 	{
 		if ( !d->item )
 		{
 			d->item = createItem( qname );
+			d->objects.push(d->item);
+		}
+		
+		if( d->addToGroup )
+		{
+			d->groups.last()->addToGroup( createItem( qname ) );
 		}
 	}
 	else if ( qname == "text" )
@@ -157,28 +186,53 @@ bool KTItemFactory::startTag( const QString& qname, const QXmlAttributes& atts)
 		if ( !d->item )
 		{
 			d->item = createItem( qname );
+			d->objects.push(d->item);
+		}
+		
+		if( d->addToGroup )
+		{
+			d->groups.last()->addToGroup( createItem( qname ) );
 		}
 		
 		setReadText(true);
 		d->textReaded = "";
-		
 	}
 	else if ( qname == "line" )
 	{
+		QLineF line(atts.value("x1").toDouble(), atts.value("y1").toDouble(), atts.value("x2").toDouble(), atts.value("y2").toDouble());
+		
 		if ( !d->item )
 		{
 			d->item = createItem( qname );
+			qgraphicsitem_cast<KTLineItem *>(d->item)->setLine(line);
+			d->objects.push(d->item);
 		}
-		
-		QLineF line(atts.value("x1").toDouble(), atts.value("y1").toDouble(), atts.value("x2").toDouble(), atts.value("y2").toDouble());
-		
-		qgraphicsitem_cast<KTLineItem *>(d->item)->setLine(line);
+		else if( d->addToGroup )
+		{
+			KTLineItem *item = qgraphicsitem_cast<KTLineItem *>(createItem(qname));
+			item->setLine(line);
+			
+			d->groups.last()->addToGroup( item );
+			d->objects.push(item);
+		}
 	}
 	else if ( qname == "g" )
 	{
 		if ( !d->item )
 		{
 			d->item = createItem( qname );
+			d->groups.push(qgraphicsitem_cast<KTItemGroup *>(d->item));
+			
+			d->objects.push(d->item);
+		}
+		else if( d->addToGroup )
+		{
+			KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>( createItem(qname) );
+			
+			d->groups.last()->addToGroup(group);
+			d->groups.push(group);
+			
+			d->objects.push(group);
 		}
 		
 		d->addToGroup = true;
@@ -188,16 +242,25 @@ bool KTItemFactory::startTag( const QString& qname, const QXmlAttributes& atts)
 		if( !d->item)
 		{
 			d->item = createItem(qname);
+			qgraphicsitem_cast<KTGraphicLibraryItem *>(d->item)->setSymbolName(atts.value("id"));
+			
+			d->objects.push(d->item);
 		}
-		
-		qgraphicsitem_cast<KTGraphicLibraryItem *>(d->item)->setSymbolName(atts.value("id"));
+		else if( d->addToGroup )
+		{
+			QGraphicsItem *item = createItem( qname );
+			qgraphicsitem_cast<KTGraphicLibraryItem *>(item)->setSymbolName(atts.value("id"));
+			
+			d->groups.last()->addToGroup( item );
+			d->objects.push(item);
+		}
 	}
 	
 	//////////
 	
-	if ( qname == "properties" && d->item )
+	if ( qname == "properties" && !d->objects.isEmpty() )
 	{
-		KTSerializer::loadProperties( d->item, atts);
+		KTSerializer::loadProperties( d->objects.last(), atts);
 	}
 	else if ( qname == "brush" )
 	{
@@ -231,9 +294,9 @@ bool KTItemFactory::startTag( const QString& qname, const QXmlAttributes& atts)
 		
 		KTSerializer::loadFont( font, atts);
 		
-		if ( root() == "text" )
+		if ( KTTextItem *text = qgraphicsitem_cast<KTTextItem *>(d->objects.last()) )
 		{
-			qgraphicsitem_cast<KTTextItem *>(d->item)->setFont(font);
+			text->setFont(font);
 		}
 	}
 	else if(qname == "stop")
@@ -262,23 +325,39 @@ bool KTItemFactory::endTag(const QString& qname)
 {
 	if ( qname == "path" )
 	{
-		
+		d->objects.pop();
 	}
 	else if ( qname == "rect" )
 	{
-		
+		d->objects.pop();
+	}
+	else if ( qname == "ellipse" )
+	{
+		d->objects.pop();
+	}
+	else if( qname == "symbol" )
+	{
+		d->objects.pop();
+	}
+	else if( qname == "line" )
+	{
+		d->objects.pop();
 	}
 	else if ( qname == "button" )
 	{
-		
+		d->objects.pop();
 	}
 	else if ( qname == "text" )
 	{
-		qgraphicsitem_cast<KTTextItem *>(d->item)->setHtml(d->textReaded);
+		qgraphicsitem_cast<KTTextItem *>(d->objects.last())->setHtml(d->textReaded);
+		d->objects.pop();
 	}
 	else if ( qname == "g" )
 	{
-		d->addToGroup = false;
+		d->groups.pop();
+		
+		d->addToGroup = !d->groups.isEmpty();
+		d->objects.pop();
 	}
 	else if( qname == "gradient")
 	{
@@ -291,27 +370,31 @@ bool KTItemFactory::endTag(const QString& qname)
 			setItemGradient(*d->gradient, false);
 		}
 	}
+	else
+	{
+		dWarning("items") << "Unhandled: " << qname;
+	}
 	
 	return true;
 }
 
 void KTItemFactory::setItemPen(const QPen &pen)
 {
-	if ( root() == "path" || root() == "rect" || root() == "ellipse" )
+	if ( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->objects.last() ) )
 	{
-		qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->item)->setPen(pen);
+		shape->setPen(pen);
 	}
-	else if(root() == "line")
+	else if(QGraphicsLineItem *line = qgraphicsitem_cast<QGraphicsLineItem *>(d->objects.last()) )
 	{
-		qgraphicsitem_cast<QGraphicsLineItem *>(d->item)->setPen(pen);
+		line->setPen(pen);
 	}
 }
 
 void KTItemFactory::setItemBrush(const QBrush &brush)
 {
-	if ( root() == "path" || root() == "rect" || root() == "ellipse" )
+	if ( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->objects.last() ) )
 	{
-		qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->item)->setBrush(brush);
+		shape->setBrush(brush);
 	}
 
 }
@@ -320,51 +403,48 @@ void  KTItemFactory::setItemGradient(const QGradient& gradient, bool brush)
 {
 	
 	QBrush gBrush(gradient);
-	if ( root() == "path" || root() == "rect" || root() == "ellipse" )
+	if ( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->objects.last() ) )
 	{
-		QAbstractGraphicsShapeItem * tmp = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->item);
-		
 		if(brush)
 		{
-			gBrush.setMatrix(tmp->brush().matrix());
-			tmp->setBrush( gBrush );
+			gBrush.setMatrix(shape->brush().matrix());
+			shape->setBrush( gBrush );
 		}
 		else
 		{
-			gBrush.setMatrix(tmp->pen().brush().matrix());
-			QPen pen = tmp->pen();
+			gBrush.setMatrix(shape->pen().brush().matrix());
+			QPen pen = shape->pen();
 			pen.setBrush(gBrush);
-			tmp->setPen(pen);
+			shape->setPen(pen);
 		}
 	}
-	else if(root() == "line")
+	else if(QGraphicsLineItem *line = qgraphicsitem_cast<QGraphicsLineItem *>(d->objects.last()) )
 	{
-		QGraphicsLineItem * tmp = qgraphicsitem_cast<QGraphicsLineItem *>(d->item);
-		gBrush.setMatrix(tmp->pen().brush().matrix());
-		QPen pen = tmp->pen();
+		gBrush.setMatrix(line->pen().brush().matrix());
+		QPen pen = line->pen();
 		pen.setBrush(gBrush);
-		tmp->setPen(pen);
+		line->setPen(pen);
 	}
 }
 
 QPen KTItemFactory::itemPen() const
 {
-	if ( root() == "path" || root() == "rect" || root() == "ellipse" )
+	if ( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->objects.last() ) )
 	{
-		return qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->item)->pen();
+		return shape->pen();
 	}
-	else if(root() == "line")
+	else if(QGraphicsLineItem *line = qgraphicsitem_cast<QGraphicsLineItem *>(d->objects.last()) )
 	{
-		return qgraphicsitem_cast<QGraphicsLineItem *>(d->item)->pen();
+		return line->pen();
 	}
 	return QPen(Qt::transparent, 0);
 }
 
 QBrush KTItemFactory::itemBrush() const
 {
-	if ( root() == "path" || root() == "rect" || root() == "ellipse" )
+	if ( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->objects.last() ) )
 	{
-		return qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->item)->brush();
+		shape->brush();
 	}
 	
 	return Qt::transparent;

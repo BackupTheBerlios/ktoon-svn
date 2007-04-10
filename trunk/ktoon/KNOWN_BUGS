@@ -1,0 +1,14 @@
+- existe un crash en polyline dibujando lineas, cambiando de frames, seleccionando otra vez herramienta de polyline
+- Las reglas cambian el inicio cuando se dibuja la cuadricula
+- Implementar enviar atras, enviar adelante
+- Cuando el item se mueva, no poner nodos de rotar
+- Crash copiando y pegando items agrupados
+- Cargar grupo
+
+
+- Revisar operaciones con componentes agrupados: library
+- El servidor no crea un usuario por defecto y tampoco crea la estructura basica de la base de datos de usuarios
+- Revisar herramienta de lapiz +
+- Crash cuando se remueve una escena o se crea mas de una + 
+- Revisar operaciones con componentes agrupados: tweening +
+

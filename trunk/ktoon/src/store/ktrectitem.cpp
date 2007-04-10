@@ -106,9 +106,9 @@ void KTRectItem::dropEvent(QGraphicsSceneDragDropEvent *event)
 	update();
 }
 
-bool KTRectItem::contains ( const QPointF & point ) const
+bool KTRectItem::contains( const QPointF & point ) const
 {
-#if 1
+#if 0
 	double thickness = pen().widthF()+2;
 	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
 	
@@ -143,9 +143,4 @@ bool KTRectItem::contains ( const QPointF & point ) const
 	return QGraphicsRectItem::contains(point);
 #endif
 }
-
-// QPainterPath KTRectItem::opaqueArea() const
-// {
-// 	return shape();
-// }
 

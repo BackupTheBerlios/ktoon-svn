@@ -21,6 +21,8 @@
 #include "ktitemgroup.h"
 #include <dcore/ddebug.h>
 
+#include "ktserializer.h"
+
 struct KTItemGroup::Private
 {
 	QList<QGraphicsItem *> childs;
@@ -78,6 +80,8 @@ void KTItemGroup::fromXml(const QString &xml)
 QDomElement KTItemGroup::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("g");
+	
+	root.appendChild( KTSerializer::properties( this, doc));
 	
 	foreach(QGraphicsItem *item, children())
 	{

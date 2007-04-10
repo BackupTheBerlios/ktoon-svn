@@ -43,8 +43,6 @@ struct KTFrame::Private
 	QString name;
 	bool isLocked;
 	bool isVisible;
-	
-	QList<QGraphicsItem *> items;
 	QList<KTGraphicObject *> graphics;
 };
 
@@ -138,7 +136,7 @@ void KTFrame::fromXml(const QString &xml )
 						QDomDocument newDoc;
 						newDoc.appendChild(newDoc.importNode(n2, true ));
 						
-						createItem(d->items.count(), newDoc.toString(0));
+						createItem(d->graphics.count(), newDoc.toString(0));
 					}
 					n2 = n2.nextSibling();
 				}
@@ -178,19 +176,6 @@ void KTFrame::addItem(QGraphicsItem *item)
 	
 	KTGraphicObject *object = new KTGraphicObject(item, this);
 	
-#if 0
-	KTItemTweener *tweener = new KTItemTweener(50, object);
-	
-	for(int step = 0; step < tweener->frames(); step++)
-	{
-// 		tweener->setRotationAt(step, i*30);
-// 		tweener->setScaleAt(step, 0.1*(step+1), 1.0);
-		tweener->setTranslationAt(step, step*10, step);
-	}
-	
-	object->setTweener(tweener);
-#endif 
-	
 	d->graphics << object;
 }
 
@@ -198,16 +183,19 @@ QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group 
 {
 	D_FUNCINFO;
 	
-	int count = 0;
-	
 	qSort(group.begin(), group.end());
 	
 	
 	KTItemGroup *g = new KTItemGroup(0);
+	int count = 0;
 	
-	foreach( qreal pos, group )
+	foreach( qreal p, group )
 	{
-		QGraphicsItem *item = this->item((int)pos);
+		int pos = p - count;
+		
+		QGraphicsItem *item = this->item(pos);
+		
+		removeGraphicAt(pos);
 		
 		g->addToGroup( item );
 		count++;
@@ -222,12 +210,14 @@ QList<QGraphicsItem *> KTFrame::destroyItemGroup(int position)
 	QList<QGraphicsItem *> items;
 	if ( KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item(position)) )
 	{
+		removeGraphicAt(position);
+		
 		items = group->childs();
 		foreach(QGraphicsItem *child, group->childs())
 		{
 			group->removeFromGroup(child);
+			addItem(child);
 		}
-		removeGraphicAt(position);
 	}
 	return items;
 }
