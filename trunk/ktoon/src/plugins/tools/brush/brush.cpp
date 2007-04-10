@@ -106,18 +106,8 @@ void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushMan
 	path.moveTo( m_oldPos);
 	path.lineTo( input->pos() );
 	
-	m_path.closeSubpath();
-	
 	m_path.addPath(path);
-	
 	m_item->setPath(m_path);
-	
-// 	QPoint first(DAlgorithm::random() % view->width(), DAlgorithm::random() % view->height());
-// 	QPoint sec(DAlgorithm::random() % view->width(), DAlgorithm::random() % view->height());
-// 	
-// 	QGraphicsLineItem *item = new QGraphicsLineItem(QLineF(first, sec) );
-// 	scene->addItem(item);
-	
 	m_oldPos = input->pos();
 }
 
