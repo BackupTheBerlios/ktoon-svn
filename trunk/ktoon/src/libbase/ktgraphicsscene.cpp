@@ -147,7 +147,7 @@ void KTGraphicsScene::drawItems(QPainter *painter, int numItems, QGraphicsItem *
 
 void KTGraphicsScene::drawPhotogram(int photogram)
 {
-	if ( photogram < 0 ) return;
+	if ( photogram < 0 || !d->scene ) return;
 	
 	clean();
 	
@@ -276,6 +276,8 @@ int KTGraphicsScene::currentLayerIndex() const
 
 int KTGraphicsScene::currentSceneIndex() const
 {
+	if( !d->scene ) return -1;
+	
 	return d->scene->index();
 }
 
@@ -325,6 +327,8 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
 
 void KTGraphicsScene::setLayerVisible(int layerIndex, bool visible)
 {
+	if( !d->scene ) return;
+	
 	if( KTLayer *layer = d->scene->layer(layerIndex) )
 	{
 		layer->setVisible(visible);

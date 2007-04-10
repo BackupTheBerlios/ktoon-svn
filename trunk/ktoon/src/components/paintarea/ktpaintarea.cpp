@@ -75,7 +75,7 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase
 	d->currentSceneIndex = 0;
 	
 	setCurrentScene( 0 );
-	if ( scene() )
+	if ( graphicsScene()->scene() )
 	{
 		graphicsScene()->setCurrentFrame( 0, 0 );
 	}
@@ -98,6 +98,8 @@ void KTPaintArea::setCurrentScene(int index)
 	else
 	{
 		setDragMode(QGraphicsView::NoDrag);
+		d->currentSceneIndex = -1;
+		graphicsScene()->setCurrentScene(0);
 	}
 }
 
@@ -109,9 +111,9 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 		{
 			setCurrentScene( event->sceneIndex() );
 			
-			if ( !scene() ) return;
-			
 			KTGraphicsScene *sscene = graphicsScene();
+			
+			if( !sscene->scene() ) return;
 			
 			sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
 			sscene->drawPhotogram(event->frameIndex());
@@ -127,6 +129,8 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 		case KTProjectRequest::Lock:
 		{
 			KTGraphicsScene *sscene = graphicsScene();
+			
+			if( !sscene->scene() ) return;
 			
 			if ( sscene->currentFrameIndex() == event->frameIndex() )
 			{
@@ -144,9 +148,10 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 
 void KTPaintArea::layerResponse(KTLayerResponse *event)
 {
-	if ( !scene() ) return;
-	
 	KTGraphicsScene *sscene = graphicsScene();
+	
+	if( !sscene->scene() ) return;
+	
 	if( event->action() == KTProjectRequest::View)
 	{
 		sscene->setLayerVisible(event->layerIndex(), event->arg().toBool());
@@ -173,10 +178,7 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 		{
 			if ( event->sceneIndex() == d->currentSceneIndex )
 			{
-				if(d->currentSceneIndex != 0)
-				{
-					setCurrentScene( d->currentSceneIndex-1 );
-				}
+				setCurrentScene( d->currentSceneIndex-1 );
 			}
 		}
 		break;
@@ -233,9 +235,9 @@ void KTPaintArea::libraryResponse(KTLibraryResponse *request)
 
 bool KTPaintArea::canPaint() const
 {
-	if ( ! scene() ) return false;
-	
-	if ( KTGraphicsScene *sscene = graphicsScene() )
+	KTGraphicsScene *sscene = graphicsScene();
+			
+	if( sscene->scene() )
 	{
 		if (sscene->currentFrameIndex() >= 0 && sscene->currentLayerIndex() >= 0) return true;
 	}
