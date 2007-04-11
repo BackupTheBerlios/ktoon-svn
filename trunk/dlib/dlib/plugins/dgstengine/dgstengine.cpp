@@ -24,6 +24,7 @@
 #include <QTimer>
 #include <QFile>
 
+#include <dcore/dalgorithm.h>
 #include <dcore/ddebug.h>
 
 DGstEngine *DGstEngine::s_instance = 0;
@@ -39,19 +40,22 @@ GstBusSyncReply DGstEngine::bus_cb(GstBus*, GstMessage* msg, gpointer pinfo) // 
 		{
 			GError* error;
 			gchar* debugs;
-          
+			
 			gst_message_parse_error(msg,&error,&debugs);
 			qDebug() << "ERROR RECEIVED IN BUS_CB <" << error->message << ">";
 			
-			instance()->destroyPlayInfo( playInfo );
+			playInfo->engine->destroyPlayInfo( playInfo );
 			
+			delete playInfo;
 		}
 		break;
 		case GST_MESSAGE_EOS:
 		{
 			qDebug() << "FINISHED ";
 			
-			instance()->destroyPlayInfo( playInfo );
+			playInfo->engine->destroyPlayInfo( playInfo );
+			
+			delete playInfo;
 		}
 		break;
 		default: ;
@@ -66,6 +70,7 @@ DGstEngine *DGstEngine::instance()
 {
 	if ( !s_instance )
 	{
+		qDebug("CREATING INSTANCE");
 		s_instance = new DGstEngine;
 	}
 	
@@ -79,7 +84,7 @@ DGstEngine::DGstEngine() : m_currentPlayer(0)
 
 DGstEngine::~DGstEngine()
 {
-	QMapIterator<int, PlayInfo> i(m_players);
+	QHashIterator<int, PlayInfo> i(m_players);
 	while (i.hasNext())
 	{
 		i.next();
@@ -103,7 +108,7 @@ int DGstEngine::load( const QUrl &url, int id )
 		path.setScheme("file");
 	}
 	
-	qDebug() << "LOAD: " << path.toString();
+	qDebug() << "LOAD: " << path.toString() << " " << m_currentPlayer;
 	
 	if ( !QFile::exists(url.path()) )
 	{
@@ -116,6 +121,10 @@ int DGstEngine::load( const QUrl &url, int id )
 	if ( id < 0 )
 	{
 		id = m_players.count();
+		if( m_players.contains(id) )
+		{
+			id = DAlgorithm::random();
+		}
 	}
 	
 	m_players.insert(id, createPlayInfo(path));
@@ -131,7 +140,6 @@ int DGstEngine::load( const QUrl &url, int id )
 
 bool DGstEngine::init()
 {
-	qDebug() << "INIT";
 	GError *err;
 	if ( !gst_init_check( NULL, NULL, &err ) )
 	{
@@ -154,7 +162,7 @@ bool DGstEngine::init()
 
 bool DGstEngine::play(int offset)
 {
-	qDebug() << "PLAY ";
+	qDebug() << "PLAY " << m_currentPlayer;
 	
 	if ( m_currentPlayer < 0 )
 	{
@@ -175,28 +183,38 @@ bool DGstEngine::play(int offset)
 
 void DGstEngine::stop()
 {
-	qDebug() << "STOP";
-	gst_element_set_state (m_players[m_currentPlayer].player, GST_STATE_NULL);
+	qDebug() << "STOP " << m_currentPlayer;
+	if( m_players.contains(m_currentPlayer) )
+	{
+		qDebug("STOPPING");
+		gst_element_set_state (m_players[m_currentPlayer].player, GST_STATE_NULL);
+	}
 }
 
 void DGstEngine::pause()
 {
 	qDebug("PAUSE");
-	gst_element_set_state (m_players[m_currentPlayer].player, GST_STATE_PAUSED);
+	if( m_players.contains(m_currentPlayer) )
+	{
+		gst_element_set_state (m_players[m_currentPlayer].player, GST_STATE_PAUSED);
+	}
 }
 
 void DGstEngine::seek( uint ms )
 {
 	qDebug() << "SEEKING "<< ms;
 	
-	gst_element_get_state(m_players[m_currentPlayer].player, NULL, NULL, 100*GST_MSECOND);
-	
-	if (!gst_element_seek (m_players[m_currentPlayer].player, 1.0, GST_FORMAT_TIME, GST_SEEK_FLAG_FLUSH, GST_SEEK_TYPE_SET, ms*GST_MSECOND, GST_SEEK_TYPE_NONE, GST_CLOCK_TIME_NONE))
+	if( m_players.contains(m_currentPlayer) )
 	{
-		qDebug("Can't seek");
+		gst_element_get_state(m_players[m_currentPlayer].player, NULL, NULL, 100*GST_MSECOND);
+		
+		if (!gst_element_seek (m_players[m_currentPlayer].player, 1.0, GST_FORMAT_TIME, GST_SEEK_FLAG_FLUSH, GST_SEEK_TYPE_SET, ms*GST_MSECOND, GST_SEEK_TYPE_NONE, GST_CLOCK_TIME_NONE))
+		{
+			qDebug("Can't seek");
+		}
+		
+	// 	gst_element_get_state(m_players[m_currentPlayer].player, NULL, NULL, 100*GST_MSECOND);
 	}
-	
-// 	gst_element_get_state(m_players[m_currentPlayer].player, NULL, NULL, 100*GST_MSECOND);
 }
 
 DGstEngine::PlayInfo DGstEngine::createPlayInfo(const QUrl &url)
@@ -204,6 +222,7 @@ DGstEngine::PlayInfo DGstEngine::createPlayInfo(const QUrl &url)
 	qDebug("Create play Info");
 	
 	PlayInfo playInfo;
+	playInfo.engine = this;
 	playInfo.player = gst_element_factory_make("playbin", "play");
 	playInfo.url = url;
 	
@@ -223,12 +242,11 @@ bool DGstEngine::setCurrentPlayer(int id)
 
 void DGstEngine::destroyPlayInfo(const PlayInfo *playInfo)
 {
-	qDebug() << "Destroy play info" << playInfo->id;
+	qDebug() << "Destroy play info" << playInfo->id << " players: " << m_players.count();
 	
 	m_players.remove(playInfo->id);
 	gst_element_set_state( playInfo->player, GST_STATE_NULL );
 	gst_object_unref( GST_OBJECT( playInfo->player ) );
-	
 }
 
 void DGstEngine::setVolume(int percent)

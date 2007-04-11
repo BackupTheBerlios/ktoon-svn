@@ -22,7 +22,7 @@
 #define DGSTENGINE_H
 
 #include <QObject>
-#include <QMap>
+#include <QHash>
 
 #include <dsound/daudioengineiface.h>
 
@@ -64,12 +64,13 @@ class DGstEngine : public QObject, public DAudioEngineIface
 		
 		struct PlayInfo
 		{
+			DGstEngine *engine;
 			GstElement *player;
 			QUrl url;
 			int id;
 		};
 		
-		QMap<int, PlayInfo> m_players;
+		QHash<int, PlayInfo> m_players;
 		
 		int m_currentPlayer;
 		

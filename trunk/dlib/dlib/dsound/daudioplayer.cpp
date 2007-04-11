@@ -25,6 +25,8 @@
 #include <dcore/dglobal.h>
 #include <dcore/ddebug.h>
 
+#define PLUGIN_DIR QString(DLIB_PREFIX)+"/lib/dlib/plugins"
+
 DAudioPlayer *DAudioPlayer::s_instance = 0;
 
 
@@ -49,9 +51,9 @@ DAudioPlayer *DAudioPlayer::instance()
 
 void DAudioPlayer::loadEngine(const QString &engineKey)
 {
-	dDebug("audio engine") << "Loading engine: " << engineKey;
+	dDebug("audio engine") << "Loading engine: " << engineKey << " from: " << PLUGIN_DIR;
 	
-	QDir m_pluginDirectory = QDir(HOME_DIR+"/plugins/");
+	QDir m_pluginDirectory = QDir(PLUGIN_DIR);
 	
 	foreach (QString fileName, m_pluginDirectory.entryList(QDir::Files))
 	{

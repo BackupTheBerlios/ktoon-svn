@@ -37,6 +37,8 @@ _EOH_
 		config.addDefine("D_NODEBUG")
 		config.addOption("silent")
 	end
+
+	config.addDefine(%@DLIB_PREFIX='\\\\"'#{conf.destdir}'\\\\"'@)
 	
 	unix = config.addScope("unix")
 	unix.addVariable("MOC_DIR", ".moc")

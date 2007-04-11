@@ -8,7 +8,7 @@ require 'qonf/makefile'
 module RQonf
 
 class Configure
-	attr_reader :qmake, :statusFile
+	attr_reader :qmake, :statusFile, :destdir
 	
 	def initialize(args)
 		@statusFile = Dir.getwd+"/configure.status"
