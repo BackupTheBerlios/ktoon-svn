@@ -250,6 +250,8 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 		
 		switch (object->type() )
 		{
+			case KTLibraryObject::Svg:
+			case KTLibraryObject::Image:
 			case KTLibraryObject::Item:
 			{
 				if ( object->data().canConvert<QGraphicsItem *>() )
@@ -441,7 +443,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 				{
 					case KTLibraryObject::Item:
 					{
-						qvariant_cast<QGraphicsItem *>(obj->data());
+// 						qvariant_cast<QGraphicsItem *>(obj->data());
 					}
 					break;
 					

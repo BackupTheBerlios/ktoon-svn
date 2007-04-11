@@ -65,22 +65,9 @@ void KTGraphicLibraryItem::setObject(KTLibraryObject *object)
 	d->symbolName = object->symbolName();
 	switch(object->type())
 	{
-		case KTLibraryObject::Image:
-		{
-			QPixmap pixmap((const char **)object->data().toByteArray().data()); // FIXME
-			
-			QGraphicsPixmapItem *item = new QGraphicsPixmapItem( pixmap );
-			setItem(item);
-			
-			d->items << item;
-		}
-		break;
 		case KTLibraryObject::Item:
-		{
-			setItem( qvariant_cast<QGraphicsItem *>(object->data()) );
-		}
-		break;
 		case KTLibraryObject::Svg:
+		case KTLibraryObject::Image:
 		{
 			setItem( qvariant_cast<QGraphicsItem *>(object->data()) );
 		}

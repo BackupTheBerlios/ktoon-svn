@@ -364,18 +364,11 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
 		switch(object->type())
 		{
 			case KTLibraryObject::Image:
-			{
-				
-			}
-			break;
+			case KTLibraryObject::Svg:
 			case KTLibraryObject::Item:
 			{
 				KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
 				target->addItem(libraryItem);
-			}
-			break;
-			case KTLibraryObject::Svg:
-			{
 			}
 			break;
 			case KTLibraryObject::Text:

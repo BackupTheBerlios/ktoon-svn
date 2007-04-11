@@ -21,6 +21,7 @@
 #include "ktlibraryobject.h"
 
 #include "ktitemfactory.h"
+#include "ktpixmapitem.h"
 
 #include <QGraphicsSvgItem>
 #include <QSvgRenderer>
@@ -148,14 +149,13 @@ bool KTLibraryObject::loadData(const QByteArray &data)
 		break;
 		case KTLibraryObject::Image:
 		{
-// 			QFile tmp("/tmp/datos_borrar.png");
-// 			if( tmp.open(QIODevice::WriteOnly) )
-// 			{
-// 				tmp.write(data);
-// 				tmp.close();
-// 			}
+			QPixmap pixmap;
+			pixmap.loadFromData(data);
 			
-			setData(data);
+			KTPixmapItem *item = new KTPixmapItem;
+			item->setPixmap(pixmap);
+			
+			setData(QVariant::fromValue(static_cast<QGraphicsItem *>(item)));
 		}
 		break;
 		case KTLibraryObject::Sound:

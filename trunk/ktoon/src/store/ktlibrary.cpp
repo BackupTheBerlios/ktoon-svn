@@ -57,10 +57,13 @@ void KTLibrary::fromXml(const QString &xml )
 			}
 			else if( e.tagName() == "folder" )
 			{
-				QDomDocument folder;
-				folder.appendChild(folder.importNode(n, true ));
+				QString doc;
+				{
+					QTextStream ts(&doc);
+					ts << n;
+				}
 				
-				KTLibraryFolder::fromXml(folder.toString(0));
+				KTLibraryFolder::fromXml(doc);
 			}
 		}
 		
