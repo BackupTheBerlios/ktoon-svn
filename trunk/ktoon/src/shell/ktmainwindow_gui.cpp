@@ -20,11 +20,12 @@
 
 #include "ktmainwindow.h"
 
-#include <dcore/ddebug.h>
 #include "ktapplication.h"
-#include <dgui/dcommandhistory.h>
 
+#include <dgui/dcommandhistory.h>
 #include <dgui/dtoolview.h>
+#include <dsound/daudioplayer.h>
+#include <dcore/ddebug.h>
 
 #include <QKeySequence>
 #include <QTextBrowser>
@@ -66,6 +67,7 @@ void KTMainWindow::createGUI()
 	connectToDisplays(m_libraryWidget);
 	
 	new DAction( QPixmap(), tr( "Import bitmap..." ), QKeySequence(), m_libraryWidget, SLOT(importBitmap()), m_actionManager, "importbitmap");
+	new DAction( QPixmap(), tr( "Import audio file..." ), QKeySequence(), m_libraryWidget, SLOT(importSound()), m_actionManager, "importaudiofile");
 	
 	ui4project( m_libraryWidget );
 	ui4localRequest(m_libraryWidget);
@@ -208,6 +210,7 @@ void KTMainWindow::setupMenu()
 	m_insertMenu->addSeparator();
 	
 	m_insertMenu->addAction(m_actionManager->find("importbitmap"));
+	m_insertMenu->addAction(m_actionManager->find("importaudiofile"));
 	
 	// Setup the window menu
 	setupWindowActions();

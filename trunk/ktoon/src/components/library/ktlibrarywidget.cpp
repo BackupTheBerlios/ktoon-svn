@@ -41,6 +41,7 @@
 #include "ktsymboleditor.h"
 
 #include <dgui/dosd.h>
+#include <dsound/daudioplayer.h>
 
 struct KTLibraryWidget::Private
 {
@@ -54,6 +55,8 @@ struct KTLibraryWidget::Private
 	KTGCTable *libraryTree;
 	int childCount;
 	QDir libraryDir;
+	
+	int currentPlayerId;
 	
 	struct Frame
 	{
@@ -266,6 +269,15 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 				}
 			}
 			break;
+			case KTLibraryObject::Sound:
+			{
+				DAudioPlayer::instance()->setCurrentPlayer(d->currentPlayerId);
+				DAudioPlayer::instance()->stop();
+				
+				d->currentPlayerId = DAudioPlayer::instance()->load(object->data().toString());
+				DAudioPlayer::instance()->play(0);
+			}
+			break;
 			default:
 			{
 				dDebug("library") << "Unknown symbol id: " << object->type();
@@ -374,6 +386,8 @@ void KTLibraryWidget::importBitmap()
 {
 	QString image = QFileDialog::getOpenFileName ( this, tr("Import an image..."), QDir::homePath(),  tr("Images")+" (*.png *.xpm *.jpg)" );
 	
+	if( image.isEmpty() ) return;
+	
 	QString symName = image; // FIXME
 	
 	QFile f(image);
@@ -393,37 +407,31 @@ void KTLibraryWidget::importBitmap()
 	}
 }
 
-void KTLibraryWidget::addBitmap(const QString &bitmap)
+void KTLibraryWidget::importSound()
 {
-	QPixmap toImport(bitmap);
+	QString sound = QFileDialog::getOpenFileName ( this, tr("Import an audio file..."), QDir::homePath(),  tr("Sound file")+" (*.ogg *.wav *.mp3)" );
 	
-	if ( ! toImport.isNull() )
+	if( sound.isEmpty() ) return;
+	
+	QString symName = sound; // FIXME
+	
+	QFile f(sound);
+	
+	if( f.open(QIODevice::ReadOnly))
 	{
-// 		KTPixmapItem *pixmapItem = new KTPixmapItem;
+		QByteArray data = f.readAll();
+		f.close();
 		
+		KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName, data, KTLibraryObject::Sound);
 		
-		QFile file(bitmap);
-		QFileInfo finfo(file);
-// 		
-// 		imageComponent->setComponentName( finfo.baseName() );
-// 		
-// 		QPainterPath path;
-// 		path.addRect(toImport.rect());
-// 		imageComponent->addGraphic(path , Qt::NoPen, Qt::NoBrush,toImport);
-// 		
-// 		if ( !file.copy(d->libraryDir.path()+"/resources/"+ imageComponent->graphics()[0]->pixmapHash() ) )
-// 		{
-// 			DOsd::self()->display(tr("Cannot import bitmap"));
-// 			return;
-// 		}
-// 		
-// 		addGraphic( imageComponent );
+		emit requestTriggered(&request);
 	}
 	else
 	{
-		DOsd::self()->display(tr("Cannot import bitmap"));
+		DOsd::self()->display(tr("Cannot open file: %1").arg(sound));
 	}
 }
+
 
 void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 {
@@ -443,7 +451,12 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 				{
 					case KTLibraryObject::Item:
 					{
-// 						qvariant_cast<QGraphicsItem *>(obj->data());
+						item->setIcon(1, QIcon(THEME_DIR+"/icons/shape_brush.png"));
+					}
+					break;
+					case KTLibraryObject::Sound:
+					{
+						item->setIcon(1, QIcon(THEME_DIR+"/icons/sound_widget.png"));
 					}
 					break;
 					

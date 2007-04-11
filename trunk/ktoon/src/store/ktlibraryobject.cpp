@@ -25,7 +25,10 @@
 
 #include <QGraphicsSvgItem>
 #include <QSvgRenderer>
+#include <QTemporaryFile>
+#include <QDir>
 
+#include <dsound/daudioplayer.h>
 #include <dcore/ddebug.h>
 
 struct KTLibraryObject::Private
@@ -160,7 +163,16 @@ bool KTLibraryObject::loadData(const QByteArray &data)
 		break;
 		case KTLibraryObject::Sound:
 		{
-			setData(data);
+			QTemporaryFile soundFile(QDir::tempPath()+"/ktoon_sound_file_XXXXXX");
+			soundFile.setAutoRemove(false);
+			
+			if( soundFile.open() )
+			{
+				soundFile.write(data);
+				setData(soundFile.fileName());
+				
+				soundFile.close();
+			}
 		}
 		break;
 		case KTLibraryObject::Svg:

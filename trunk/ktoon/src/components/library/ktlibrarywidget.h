@@ -44,7 +44,6 @@ class KTLibraryWidget : public KTModuleWidgetBase
 	public:
 		KTLibraryWidget(const KTLibrary *library, QWidget *parent = 0);
 		~KTLibraryWidget();
-		void addBitmap(const QString &path);
 		
 	private:
 		void setup();
@@ -63,6 +62,7 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		
 	public slots:
 		void importBitmap();
+		void importSound();
 		
 	signals:
 		void requestCurrentGraphic();

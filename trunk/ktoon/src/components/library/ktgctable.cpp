@@ -20,11 +20,15 @@
 
 #include "ktgctable.h"
 
+#include <QHeaderView>
+
 #include <dcore/dglobal.h>
 
 KTGCTable::KTGCTable(QWidget *parent)
 	: DTreeListWidget(parent), m_currentFolder(0)
 {
+	setHeaderLabels(QStringList() << "" << "" );
+	header()->setResizeMode(QHeaderView::ResizeToContents);
 }
 
 
