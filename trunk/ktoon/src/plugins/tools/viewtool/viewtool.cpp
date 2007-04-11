@@ -71,6 +71,7 @@ void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 // 	if(input->buttons() == Qt::LeftButton)
 	{
 		m_rect = new QGraphicsRectItem(QRectF(input->pos(), QSize(0,0)));
+		m_rect->setPen(QPen(Qt::red, 2, Qt::DashLine));
 		scene->addItem(m_rect);
 	}
 }
@@ -95,6 +96,16 @@ void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
 		QRectF rect = m_rect->rect();
 		rect.setBottomLeft(input->pos());
 		m_rect->setRect(rect);
+		
+		rect = rect.normalized (); 
+		if(rect.height() > 10 && rect.width() > 10 )
+		{
+			m_rect->setPen(QPen(Qt::black, 2, Qt::DashLine));
+		}
+		else
+		{
+			m_rect->setPen(QPen(Qt::red, 2, Qt::DashLine));
+		}
 	}
 	else if( currentTool() == tr("Hand"))
 	{
@@ -113,7 +124,10 @@ void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 			QRectF rect = m_rect->rect();
 			if ( input->button() == Qt::LeftButton )
 			{
-				view->fitInView( rect, Qt::KeepAspectRatio);
+				if(rect.normalized().height() > 10 && rect.normalized().width() > 10 )
+				{
+					view->fitInView( rect, Qt::KeepAspectRatio);
+				}
 			}
 			else 
 			{
@@ -140,6 +154,10 @@ int ViewTool::toolType() const
 QWidget *ViewTool::configurator()
 {
 	return  0;
+}
+
+void ViewTool::aboutToChangeScene(KTGraphicsScene *)
+{
 }
 
 void ViewTool::aboutToChangeTool()

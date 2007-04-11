@@ -56,6 +56,9 @@ class NodeManager
 		
 		void toggleAction();
 		
+		void setActionNode(Node::ActionNode action);
+		
+		
 		void setVisible(bool visible);
 		
 		double rotation();

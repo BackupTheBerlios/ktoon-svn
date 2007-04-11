@@ -105,6 +105,7 @@ QStringList PolyLine::keys() const
 void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	D_FUNCINFOX("tools");
+	
 	if(!d->item)
 	{
 		d->path = QPainterPath();
@@ -116,6 +117,11 @@ void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 	}
 	else
 	{
+		if(!scene->items().contains(d->item))
+		{
+			scene->addItem( d->item );
+		}
+		
 		d->begin = false;
 		d->path = d->item->path();
 		d->path.cubicTo(d->rigth, d->mirror, input->pos());
@@ -123,6 +129,15 @@ void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 	
 	d->center = input->pos();
 	d->item->setPen( brushManager->pen() );
+	
+	if(!scene->items().contains(d->line1))
+	{
+		scene->addItem( d->line1 );
+	}
+	if(!scene->items().contains(d->line2))
+	{
+		scene->addItem( d->line2 );
+	}
 }
 
 void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -159,7 +174,10 @@ void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brush
 	}
 	
 	Q_CHECK_PTR(d->item);
-	d->item->setPath(d->path);
+	if(d->item)
+	{
+		d->item->setPath(d->path);
+	}
 	
 	d->line1->setLine(QLineF(d->mirror, d->center));
 	d->line2->setLine(QLineF(d->rigth, d->center));
@@ -172,10 +190,14 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
 	
 	d->scene = scene;
 	
-	delete d->nodegroup;
-	d->nodegroup = new DNodeGroup(d->item, scene);
-	
-	// Add KTProjectRequest
+	if(!d->nodegroup)
+	{
+		d->nodegroup = new DNodeGroup(d->item, scene);
+	}
+	else
+	{
+		d->nodegroup->createNodes(d->item);
+	}
 	
 }
 
@@ -207,6 +229,9 @@ void PolyLine::endItem()
 		d->path = QPainterPath();
 		delete d->item;
 		d->item = 0;
+		delete d->nodegroup;
+		d->nodegroup = 0;
+		
 	}
 	
 }
@@ -236,13 +261,18 @@ QWidget *PolyLine::configurator()
 {
 	return 0;
 }
-		
-bool PolyLine::isComplete() const
+
+
+void PolyLine::aboutToChangeScene(KTGraphicsScene *scene)
 {
-	return true;
+	d->path = QPainterPath();
+	delete d->item;
+	d->item = 0;
+	delete d->nodegroup;
+	d->nodegroup = 0;
 }
 
-void PolyLine::aboutToChangeTool() 
+void PolyLine::aboutToChangeTool()
 {
 	endItem();
 }

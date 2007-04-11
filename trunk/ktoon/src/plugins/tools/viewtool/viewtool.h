@@ -49,6 +49,7 @@ class ViewTool: public KTToolPlugin
 		int toolType() const;
 		
 		virtual QWidget *configurator();
+		void aboutToChangeScene(KTGraphicsScene *scene);
 		virtual void aboutToChangeTool();
 		
 	private:

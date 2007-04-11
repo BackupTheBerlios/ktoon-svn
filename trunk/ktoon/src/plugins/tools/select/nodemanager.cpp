@@ -228,6 +228,15 @@ void NodeManager::toggleAction()
 	}
 }
 
+
+void NodeManager::setActionNode(Node::ActionNode action)
+{
+	foreach(Node *node, m_nodes)
+	{
+		node->setAction( action);
+	}
+}
+
 void NodeManager::setVisible(bool visible)
 {
 	foreach(Node *node, m_nodes)

@@ -48,6 +48,8 @@ class TweenerTranslate : public KTToolPlugin
 
 		virtual QWidget *configurator();
 
+		void aboutToChangeScene(KTGraphicsScene *scene);
+		
 		virtual void aboutToChangeTool();
 		
 		bool isComplete() const;

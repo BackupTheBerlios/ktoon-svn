@@ -132,6 +132,11 @@ QWidget  *FillTool::configurator()
 	return  0;
 }
 
+
+void FillTool::aboutToChangeScene(KTGraphicsScene *)
+{
+}
+
 void FillTool::aboutToChangeTool() 
 {
 	

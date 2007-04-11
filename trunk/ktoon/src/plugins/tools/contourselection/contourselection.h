@@ -59,7 +59,7 @@ class ContourSelection : public KTToolPlugin
 		
 		virtual QWidget *configurator();
 		
-		virtual bool isComplete() const;
+		void aboutToChangeScene(KTGraphicsScene *scene);
 		virtual void aboutToChangeTool();
 		
 		

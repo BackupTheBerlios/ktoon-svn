@@ -326,6 +326,11 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
 	d->scene = scene;
 	
 	drawCurrentPhotogram();
+	
+	if(d->tool)
+	{
+		d->tool->aboutToChangeScene(this);
+	}
 }
 
 void KTGraphicsScene::setLayerVisible(int layerIndex, bool visible)

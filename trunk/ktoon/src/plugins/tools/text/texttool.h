@@ -51,6 +51,7 @@ class TextTool : public KTToolPlugin
 		
 		virtual QWidget *configurator();
 		
+		void aboutToChangeScene(KTGraphicsScene *scene);
 		void aboutToChangeTool();
 		
 	private:

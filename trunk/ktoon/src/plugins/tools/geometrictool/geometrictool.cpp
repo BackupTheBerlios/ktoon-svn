@@ -212,6 +212,11 @@ QWidget  *GeometricTool::configurator()
 	return  0;
 }
 
+void GeometricTool::aboutToChangeScene(KTGraphicsScene *scene)
+{
+	
+}
+
 void GeometricTool::aboutToChangeTool() 
 {
 

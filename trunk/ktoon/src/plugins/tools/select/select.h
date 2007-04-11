@@ -55,8 +55,8 @@ class Select : public KTToolPlugin
 		
 		virtual QWidget *configurator();
 		
-		virtual bool isComplete() const;
 		virtual void aboutToChangeTool();
+		void aboutToChangeScene(KTGraphicsScene *scene);
 		
 		virtual void itemResponse(const KTItemResponse *event);
 		
@@ -65,10 +65,8 @@ class Select : public KTToolPlugin
 		
 		
 	private:
-		QMap<QString, DAction *> m_actions;
-		QList<NodeManager*> m_nodeManagers;
-		QGraphicsView *m_view;
-		KTProject *m_project;
+		struct Private;
+		Private *const d;
 		
 	private slots:
 		void syncNodes();

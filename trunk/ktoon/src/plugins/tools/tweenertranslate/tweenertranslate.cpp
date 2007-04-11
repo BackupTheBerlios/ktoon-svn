@@ -156,6 +156,10 @@ QWidget *TweenerTranslate::configurator()
 	return d->configurator;
 }
 
+void TweenerTranslate::aboutToChangeScene(KTGraphicsScene *)
+{
+}
+
 void TweenerTranslate::aboutToChangeTool()
 {
 	delete d->group;

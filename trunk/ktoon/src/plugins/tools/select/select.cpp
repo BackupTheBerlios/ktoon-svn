@@ -45,15 +45,26 @@
 
 #include <QTimer>
 
-Select::Select()
+struct Select::Private
 {
+	QMap<QString, DAction *> actions;
+	QList<NodeManager*> nodeManagers;
+	QGraphicsView *view;
+	KTProject *project;
+	NodeManager* managerChanged;
+	
+};
+
+Select::Select(): d(new Private)
+{
+	d->managerChanged = 0;
 	setupActions();
 }
 
 
 Select::~Select()
 {
-	
+	delete d;
 }
 
 void Select::init(KTGraphicsScene *scene)
@@ -89,32 +100,39 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 	
 	if ( input->keyModifiers() != Qt::ControlModifier )
 	{
-		foreach(NodeManager *nodeManager, m_nodeManagers)
+		foreach(NodeManager *nodeManager, d->nodeManagers)
 		{
 			if(scene->mouseGrabberItem() == nodeManager->parentItem())
 			{
 				nodeManager->toggleAction();
+				d->managerChanged = nodeManager;
+				break;
 			}
 			else if(!nodeManager->isPress())
 			{
 				nodeManager->parentItem()->setSelected(false);
-				m_nodeManagers.removeAll(nodeManager);
+				d->nodeManagers.removeAll(nodeManager);
 				delete nodeManager;
 			}
 		}
 	}
 	
-	m_project = scene->scene()->project();
+	d->project = scene->scene()->project();
 }
 
 void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+// 	D_FUNCINFOX("tools");
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
 	
-	static int s = 0;
-	s++;
+	if(d->managerChanged)
+	{
+		d->managerChanged->toggleAction();
+		d->managerChanged = 0;
+	}
+	
 	if(input->buttons() == Qt::LeftButton && scene->selectedItems().count() > 0)
 	{
 		QTimer::singleShot ( 0, this, SLOT(syncNodes()));;
@@ -131,8 +149,8 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 	if(scene->selectedItems().count() > 0)
 	{
 		QList<QGraphicsItem *> selecteds = scene->selectedItems();
-		QList<NodeManager *>::iterator it = m_nodeManagers.begin();
-		QList<NodeManager *>::iterator itEnd = m_nodeManagers.end();
+		QList<NodeManager *>::iterator it = d->nodeManagers.begin();
+		QList<NodeManager *>::iterator itEnd = d->nodeManagers.end();
 		while(it != itEnd)
 		{
 			int parentIndex = scene->selectedItems().indexOf((*it)->parentItem() );
@@ -143,7 +161,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 			}
 			else
 			{
-				delete m_nodeManagers.takeAt(m_nodeManagers.indexOf((*it)));
+				delete d->nodeManagers.takeAt(d->nodeManagers.indexOf((*it)));
 			}
 			++it;
 		}
@@ -153,11 +171,11 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 			if(item && dynamic_cast<KTAbstractSerializable* > (item) )
 			{
 				NodeManager *manager = new NodeManager(item, scene);
-				m_nodeManagers << manager;
+				d->nodeManagers << manager;
 			}
 		}
 		
-		foreach(NodeManager *manager, m_nodeManagers)
+		foreach(NodeManager *manager, d->nodeManagers)
 		{
 			if(manager->isModified())
 			{
@@ -172,8 +190,6 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 					
 					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::Transform, doc.toString() );
 					emit requested(&event);
-					
-					
 				}
 				else
 				{
@@ -184,8 +200,8 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 	}
 	else
 	{
-		qDeleteAll(m_nodeManagers);
-		m_nodeManagers.clear();
+		qDeleteAll(d->nodeManagers);
+		d->nodeManagers.clear();
 	}
 }
 
@@ -197,12 +213,12 @@ void Select::setupActions()
 // 	QPixmap pix(THEME_DIR+"/cursors/pencil.png");
 // 	select->setCursor( QCursor(pix, 0, pix.height()) );
 	
-	m_actions.insert( tr("Select"), select );
+	d->actions.insert( tr("Select"), select );
 }
 
 QMap<QString, DAction *> Select::actions() const
 {
-	return m_actions;
+	return d->actions;
 }
 
 int Select::toolType() const
@@ -214,17 +230,17 @@ QWidget *Select::configurator()
 {
 	return 0;
 }
-		
-bool Select::isComplete() const
+
+void Select::aboutToChangeScene(KTGraphicsScene *)
 {
-	return true;
 }
 
 void Select::aboutToChangeTool()
 {
-	qDeleteAll(m_nodeManagers);
-	m_nodeManagers.clear();
+	qDeleteAll(d->nodeManagers);
+	d->nodeManagers.clear();
 }
+
 
 void Select::itemResponse(const KTItemResponse *event)
 {
@@ -234,9 +250,9 @@ void Select::itemResponse(const KTItemResponse *event)
 	KTScene *scene = 0;
 	KTLayer *layer = 0;
 	KTFrame *frame = 0;
-	if(m_project)
+	if(d->project)
 	{
-		scene = m_project->scene(event->sceneIndex());
+		scene = d->project->scene(event->sceneIndex());
 		if ( scene )
 		{
 			layer = scene->layer( event->layerIndex() );
@@ -265,7 +281,7 @@ void Select::itemResponse(const KTItemResponse *event)
 		{
 			if ( item )
 			{
-				foreach(NodeManager* node, m_nodeManagers)
+				foreach(NodeManager* node, d->nodeManagers)
 				{
 					node->show();
 					node->syncNodesFromParent();
@@ -282,7 +298,7 @@ void Select::itemResponse(const KTItemResponse *event)
 
 void Select::syncNodes()
 {
-	foreach(NodeManager* node, m_nodeManagers)
+	foreach(NodeManager* node, d->nodeManagers)
 	{
 		if(node)
 		{

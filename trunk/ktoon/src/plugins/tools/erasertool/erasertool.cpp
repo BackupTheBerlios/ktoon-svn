@@ -120,6 +120,12 @@ QWidget  *EraserTool::configurator()
 	return  0;
 }
 
+
+void EraserTool::aboutToChangeScene(KTGraphicsScene *scene)
+{
+	
+}
+
 void EraserTool::aboutToChangeTool() 
 {
 	

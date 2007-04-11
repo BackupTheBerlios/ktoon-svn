@@ -152,6 +152,10 @@ void TextTool::aboutToChangeTool()
 {
 }
 
+void TextTool::aboutToChangeScene(KTGraphicsScene *scene)
+{
+}
+
 void TextTool::setupActions()
 {
 	DAction *pencil = new DAction( QIcon(THEME_DIR+"/icons/text.png"), tr("Text"), this);

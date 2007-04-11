@@ -285,10 +285,11 @@ QWidget *ContourSelection::configurator()
 {
 	return 0;
 }
-		
-bool ContourSelection::isComplete() const
+
+
+void ContourSelection::aboutToChangeScene(KTGraphicsScene *)
 {
-	return true;
+	
 }
 
 void ContourSelection::aboutToChangeTool()

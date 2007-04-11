@@ -1,7 +1,7 @@
-- existe un crash en polyline dibujando lineas, cambiando de frames, seleccionando otra vez herramienta de polyline
+- existe un crash en polyline dibujando lineas, cambiando de frames, seleccionando otra vez herramienta de polyline +(sin probar)
 - Las reglas cambian el inicio cuando se dibuja la cuadricula
 - Implementar enviar atras, enviar adelante
-- Cuando el item se mueva, no poner nodos de rotar
+- Cuando el item se mueva, no poner nodos de rotar +
 - Revisar operaciones con componentes agrupados: library
 
 

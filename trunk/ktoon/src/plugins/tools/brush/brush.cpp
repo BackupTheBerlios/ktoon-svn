@@ -203,16 +203,16 @@ QWidget *Brush::configurator()
 	
 	return m_configurator;
 }
-		
-bool Brush::isComplete() const
-{
-	return true;
-}
+
 
 void Brush::aboutToChangeTool() 
 {
 }
 
+void Brush::aboutToChangeScene(KTGraphicsScene *)
+{
+	
+}
 
 Q_EXPORT_PLUGIN2(kt_brush, Brush );
 
