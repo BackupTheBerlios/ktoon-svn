@@ -104,10 +104,13 @@ void KTLibraryObject::fromXml(const QString &xml )
 		
 		QDomElement objectData = objectTag.firstChild().toElement();
 		
-		QDomDocument data;
-		data.appendChild(data.importNode(objectData, true ));
+		QString data;
+		{
+			QTextStream ts(&data);
+			ts << objectData;
+		}
 		
-		loadData(data.toString(0).toLocal8Bit()); // FIXME: No va a funcionar para binarios!
+		loadData(data.toLocal8Bit()); // FIXME: No va a funcionar para binarios!
 	}
 }
 

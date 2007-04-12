@@ -184,9 +184,14 @@ void KTLayer::fromXml(const QString &xml )
 				
 				if ( frame )
 				{
-					QDomDocument newDoc;
-					newDoc.appendChild(newDoc.importNode(n, true ));
-					frame->fromXml( newDoc.toString(0) );
+					QString newDoc;
+					
+					{
+						QTextStream ts(&newDoc);
+						ts << n;
+					}
+					
+					frame->fromXml( newDoc );
 				}
 			}
 		}

@@ -290,10 +290,15 @@ void KTItemTweener::fromXml(const QString &xml)
 			{
 				if( e.tagName() == "step" )
 				{
-					QDomDocument stepDoc;
-					stepDoc.appendChild(stepDoc.importNode(n, true));
+					QString stepDoc;
+					
+					{
+						QTextStream ts(&stepDoc);
+						ts << n;
+					}
+					
 					KTTweenerStep *step = new KTTweenerStep(0);
-					step->fromXml(stepDoc.toString(0));
+					step->fromXml(stepDoc);
 					
 					addStep(*step);
 					

@@ -190,10 +190,14 @@ void KTScene::fromXml(const QString &xml )
 				
 				if ( layer )
 				{
-					QDomDocument newDoc;
-					newDoc.appendChild(newDoc.importNode(n, true ));
+					QString newDoc;
 					
-					layer->fromXml( newDoc.toString(0) );
+					{
+						QTextStream ts(&newDoc);
+						ts << n;
+					}
+					
+					layer->fromXml( newDoc );
 				}
 				
 				
