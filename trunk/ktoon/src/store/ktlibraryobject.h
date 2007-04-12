@@ -58,6 +58,7 @@ class STORE_EXPORT KTLibraryObject : public QObject, public KTAbstractSerializab
 		
 		
 		bool loadData(const QByteArray &data);
+		void saveData(const QString &dataDir);
 		
 	public:
 		virtual void fromXml(const QString &xml );

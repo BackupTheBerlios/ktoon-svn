@@ -46,6 +46,7 @@ struct KTProject::Private
 {
 	Scenes scenes;
 	QString name;
+	QString dataDir;
 	
 	int sceneCounter;
 	KTLibrary *library;
@@ -113,7 +114,6 @@ void KTProject::setProjectName(const QString &name)
 	d->name = name;
 }
 
-
 /**
  * Pone el autor del proyecto
  */
@@ -143,7 +143,6 @@ QString KTProject::projectName() const
 {
 	return d->name;
 }
-
 
 /**
  * retorna el autor del proyecto
@@ -327,7 +326,7 @@ bool KTProject::createSymbol(int type, const QString &name, const QByteArray &da
 	KTLibraryObject *object = new KTLibraryObject(d->library);
 	object->setType(KTLibraryObject::Type(type));
 	
-	if ( !object->loadData(data) )
+	if ( !object->loadData(data ) )
 		return false;
 	
 	d->library->addObject( object, name);
@@ -363,16 +362,13 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
 	{
 		switch(object->type())
 		{
+			case KTLibraryObject::Text:
 			case KTLibraryObject::Image:
 			case KTLibraryObject::Svg:
 			case KTLibraryObject::Item:
 			{
 				KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
 				target->addItem(libraryItem);
-			}
-			break;
-			case KTLibraryObject::Text:
-			{
 			}
 			break;
 			case KTLibraryObject::Sound:
@@ -413,3 +409,12 @@ bool KTProject::isOpen()
 {
 	return d->isOpen;
 }
+
+
+QString KTProject::dataDir() const
+{
+	return CACHE_DIR + "/"+ d->name;
+}
+
+
+

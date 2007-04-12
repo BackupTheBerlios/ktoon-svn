@@ -83,6 +83,7 @@ bool KTPackageHandler::makePackage(const QString &projectPath, const QString &pa
 
 bool KTPackageHandler::compress(QuaZip *zip, const QString &path)
 {
+	dDebug() << "COMPRESSING: " << path;
 	QFile inFile;
 	QuaZipFile outFile(zip);
 	char c;
@@ -93,7 +94,6 @@ bool KTPackageHandler::compress(QuaZip *zip, const QString &path)
 	{
 		QString filePath = path+"/"+file.fileName();
 		
-		
 		if ( file.fileName().startsWith(".") ) continue;
 		
 		if ( file.isDir() )
@@ -102,15 +102,15 @@ bool KTPackageHandler::compress(QuaZip *zip, const QString &path)
 			continue;
 		}
 		
-		inFile.setFileName(filePath);
-		if(!inFile.open(QIODevice::ReadOnly)) 
+		if(!outFile.open(QIODevice::WriteOnly, QuaZipNewInfo(stripRepositoryFromPath(filePath), stripRepositoryFromPath(filePath) ))) 
 		{
-			dError() << "Error opening file " << inFile.fileName() << " : " << inFile.errorString();
 			return false;
 		}
 		
-		if(!outFile.open(QIODevice::WriteOnly, QuaZipNewInfo(stripRepositoryFromPath(filePath), stripRepositoryFromPath(filePath) ))) 
+		inFile.setFileName(filePath);
+		if(!inFile.open(QIODevice::ReadOnly))
 		{
+			dError() << "Error opening file " << inFile.fileName() << " : " << inFile.errorString();
 			return false;
 		}
 		while(inFile.getChar(&c) && outFile.putChar(c));
@@ -174,6 +174,10 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 		}
 		
 		name = CACHE_DIR+"/"+file.getActualFileName();
+		if( name.endsWith( QDir::separator() ) )
+		{
+			name.remove(name.count()-1, 1);
+		}
 		
 // 		if( name.endsWith(".ktp") )
 		{

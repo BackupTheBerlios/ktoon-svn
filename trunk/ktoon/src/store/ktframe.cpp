@@ -199,7 +199,7 @@ QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group 
 	
 	foreach( qreal p, group )
 	{
-		int pos = p - count;
+		int pos = (int)p - count;
 		
 		QGraphicsItem *item = this->item(pos);
 		

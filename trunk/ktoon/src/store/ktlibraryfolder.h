@@ -27,6 +27,7 @@
 #include "ktabstractserializable.h"
 #include "ktglobal_store.h"
 
+class KTProject;
 class KTLibraryFolder;
 class KTLibraryObject;
 
@@ -41,7 +42,7 @@ class STORE_EXPORT KTLibraryFolder : public QObject, public KTAbstractSerializab
 	Q_OBJECT;
 	
 	public:
-		KTLibraryFolder(const QString &id, QObject *parent = 0);
+		KTLibraryFolder(const QString &id, KTProject *project, QObject *parent = 0);
 		~KTLibraryFolder();
 		
 		void setId(const QString &id);
@@ -50,7 +51,7 @@ class STORE_EXPORT KTLibraryFolder : public QObject, public KTAbstractSerializab
 		virtual bool addObject(KTLibraryObject *object, const QString &id);
 		virtual bool removeObject(const QString &id);
 		
-		virtual bool addFolder(KTLibraryFolder *folder);
+		virtual void addFolder(KTLibraryFolder *folder);
 		
 		bool moveObject(const QString &id, KTLibraryFolder *folder);
 		
@@ -61,6 +62,8 @@ class STORE_EXPORT KTLibraryFolder : public QObject, public KTAbstractSerializab
 		
 		int objectsCount() const;
 		int foldersCount() const;
+		
+		KTProject *project() const;
 		
 	public:
 		virtual void fromXml(const QString &xml );

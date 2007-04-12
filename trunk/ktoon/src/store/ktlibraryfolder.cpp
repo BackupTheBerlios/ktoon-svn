@@ -23,16 +23,21 @@
 
 #include <dcore/ddebug.h>
 
+#include "ktproject.h"
+
 struct KTLibraryFolder::Private
 {
 	QString id;
 	Folders folders;
 	LibraryObjects objects;
+	
+	KTProject *project;
 };
 
-KTLibraryFolder::KTLibraryFolder(const QString &id, QObject *parent) : QObject(parent), d(new Private)
+KTLibraryFolder::KTLibraryFolder(const QString &id, KTProject *project, QObject *parent) : QObject(parent), d(new Private)
 {
 	d->id = id;
+	d->project = project;
 }
 
 
@@ -61,7 +66,7 @@ bool KTLibraryFolder::removeObject(const QString &id)
 	return c > 0;
 }
 
-bool KTLibraryFolder::addFolder(KTLibraryFolder *folder)
+void KTLibraryFolder::addFolder(KTLibraryFolder *folder)
 {
 	d->folders << folder;
 }
@@ -126,6 +131,11 @@ int KTLibraryFolder::foldersCount() const
 	return d->folders.count();
 }
 
+KTProject *KTLibraryFolder::project() const
+{
+	return d->project;
+}
+
 Folders KTLibraryFolder::folders() const
 {
 	return d->folders;
@@ -169,7 +179,7 @@ void KTLibraryFolder::fromXml(const QString &xml )
 				QDomDocument folderDocument;
 				folderDocument.appendChild(folderDocument.importNode(n, true ));
 				
-				KTLibraryFolder *folder = new KTLibraryFolder( e.attribute("id"), this);
+				KTLibraryFolder *folder = new KTLibraryFolder( e.attribute("id"), d->project, this);
 				folder->fromXml(folderDocument.toString(0));
 				
 				addFolder(folder);

@@ -63,6 +63,8 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		QString author() const;
 		QString description() const;
 		
+		QString dataDir() const;
+		
 		KTScene *scene(int position);
 		int indexOf(KTScene *scene) const;
 		

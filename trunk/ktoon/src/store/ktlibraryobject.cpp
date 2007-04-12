@@ -110,7 +110,7 @@ void KTLibraryObject::fromXml(const QString &xml )
 			ts << objectData;
 		}
 		
-		loadData(data.toLocal8Bit()); // FIXME: No va a funcionar para binarios!
+		loadData(data.toLocal8Bit());
 	}
 }
 
@@ -122,6 +122,9 @@ QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
 	
 	switch(d->type)
 	{
+		case Svg:
+		case Image:
+		case Text:
 		case Item:
 		{
 			QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(d->data);
@@ -133,6 +136,11 @@ QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
 					object.appendChild(serializable->toXml(doc));
 				}
 			}
+		}
+		break;
+		case Sound:
+		{
+			
 		}
 		break;
 	}
@@ -201,3 +209,7 @@ bool KTLibraryObject::loadData(const QByteArray &data)
 	return ok;
 }
 
+void KTLibraryObject::saveData(const QString &dataDir)
+{
+	
+}

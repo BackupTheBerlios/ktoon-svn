@@ -64,6 +64,9 @@ class STORE_EXPORT KTProjectManager : public QObject
 		
 		bool isValid() const;
 		
+	private:
+		void setupProjectDir();
+		
 	protected slots:
 		virtual void handleProjectRequest(const KTProjectRequest *event);
 		virtual void createCommand(const KTProjectRequest *event, bool addToStack);

@@ -42,25 +42,16 @@ KTSaveProject::~KTSaveProject()
 
 bool KTSaveProject::save(const QString &fileName, const KTProject *project)
 {
-	QString projectName = project->projectName();
+	QDir projectDir = CACHE_DIR + "/" + project->projectName();
 	
-	if( projectName.isEmpty() )
+	if ( !projectDir.exists() )
 	{
-		projectName = DAlgorithm::randomString(10);
-	}
-	
-	QDir projectDir = QDir::temp();
-	
-	if ( !projectDir.exists(projectName) )
-	{
-		if ( ! projectDir.mkdir(projectName) )
+		if ( ! projectDir.mkdir(projectDir.path()) )
 		{
 			dFatal() <<("Can't create");
 			return false;
 		}
 	}
-	
-	projectDir.cd(projectName);
 	
 	{
 		// Save project

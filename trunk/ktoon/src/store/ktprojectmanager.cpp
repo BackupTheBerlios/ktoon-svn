@@ -21,6 +21,7 @@
 #include "ktprojectmanager.h"
 
 #include <QUndoStack>
+#include <QDir>
 
 #include "ktproject.h"
 #include "ktprojectrequest.h"
@@ -35,6 +36,7 @@
 #include "ktrequestbuilder.h"
 #include "ktrequestparser.h"
 
+#include <dcore/dalgorithm.h>
 #include <dcore/ddebug.h>
 
 
@@ -83,6 +85,9 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), d(new Pri
 KTProjectManager::~KTProjectManager()
 {
 	DEND;
+	
+	// TODO: delete all project data, BE CAREFUL
+	
 	delete d;
 }
 
@@ -136,6 +141,7 @@ void KTProjectManager::setupNewProject()
 	
 	d->project->setProjectName( d->params->projectName() );
 	d->project->setAuthor( d->params->author() );
+	
 	if ( ! d->handler->setupNewProject(d->params) )
 	{
 		qDebug("ERROR WHILE SETUP PROJECT");
@@ -143,6 +149,7 @@ void KTProjectManager::setupNewProject()
 	}
 	
 	d->project->setOpen(true);
+	setupProjectDir();
 	
 	KTProjectRequest request = KTRequestBuilder::createSceneRequest(0, KTProjectRequest::Add, QString());
 	
@@ -228,6 +235,26 @@ bool KTProjectManager::isValid() const
 	return d->handler->isValid();
 }
 
+void KTProjectManager::setupProjectDir()
+{
+	QString dataDir = CACHE_DIR + "/" + (d->project->projectName().isEmpty() ? DAlgorithm::randomString(6) : d->project->projectName());
+	
+	QDir project = dataDir;
+	
+	if( !project.exists() )
+	{
+		if( project.mkpath(project.absolutePath()) )
+		{
+			QStringList dirs;
+			dirs << "audio" << "images" << "video";
+			
+			foreach(QString dir, dirs)
+			{
+				project.mkdir(dir);
+			}
+		}
+	}
+}
 
 /**
  * Esta función es ejecutada cuando un evento es disparado por el proyecto.
