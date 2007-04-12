@@ -278,15 +278,18 @@ void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )
 	{
 		QGraphicsView::mouseMoveEvent(event);
 		
-		QGraphicsSceneMouseEvent *newevent = new QGraphicsSceneMouseEvent(QEvent::GraphicsSceneMouseMove);
-		
-		newevent->setScenePos(mapToScene(event->pos()));
-		newevent->setButton(event->button());
-		newevent->setButtons(event->buttons());
-		
-		d->scene->mouseMoved(newevent);
-		
-		delete newevent;
+		if( ! d->scene->mouseGrabberItem() ) // HACK
+		{
+			QGraphicsSceneMouseEvent mouseEvent(QEvent::GraphicsSceneMouseMove);
+			mouseEvent.setWidget(viewport());
+			mouseEvent.setScenePos(mapToScene(event->pos()));
+			mouseEvent.setScreenPos(event->globalPos());
+			mouseEvent.setButtons(event->buttons());
+			mouseEvent.setButton(event->button());
+			mouseEvent.setModifiers(event->modifiers());
+			mouseEvent.setAccepted(false);
+			QApplication::sendEvent(d->scene, &mouseEvent);
+		}
 	}
 	
 	emit cursorPosition( mapToScene( event->pos() ) );
@@ -296,15 +299,18 @@ void KTPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
 {
 	QGraphicsView::mouseReleaseEvent(event);
 	
-	QGraphicsSceneMouseEvent *newevent = new QGraphicsSceneMouseEvent(QEvent::GraphicsSceneMouseMove);
-	
-	newevent->setScenePos(mapToScene(event->pos()));
-	newevent->setButton(event->button());
-	newevent->setButtons(event->buttons());
-	
-	d->scene->mouseReleased(newevent);
-	
-	delete newevent;
+	if( ! d->scene->mouseGrabberItem() ) // HACK
+	{
+		QGraphicsSceneMouseEvent mouseEvent(QEvent::GraphicsSceneMouseRelease);
+		mouseEvent.setWidget(viewport());
+		mouseEvent.setScenePos(mapToScene(event->pos()));
+		mouseEvent.setScreenPos(event->globalPos());
+		mouseEvent.setButtons(event->buttons());
+		mouseEvent.setButton(event->button());
+		mouseEvent.setModifiers(event->modifiers());
+		mouseEvent.setAccepted(false);
+		QApplication::sendEvent(d->scene, &mouseEvent);
+	}
 }
 
 void KTPaintAreaBase::tabletEvent( QTabletEvent * event )

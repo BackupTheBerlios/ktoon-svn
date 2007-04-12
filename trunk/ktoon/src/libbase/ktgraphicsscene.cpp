@@ -409,6 +409,7 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void KTGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsScene::mouseMoveEvent(event);
+	mouseMoved(event);
 }
 
 void KTGraphicsScene::mouseMoved(QGraphicsSceneMouseEvent *event)
@@ -424,6 +425,7 @@ void KTGraphicsScene::mouseMoved(QGraphicsSceneMouseEvent *event)
 void KTGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsScene::mouseReleaseEvent(event);
+	mouseReleased(event);
 }
 
 void KTGraphicsScene::mouseReleased(QGraphicsSceneMouseEvent *event)

@@ -75,8 +75,6 @@ QStringList Brush::keys() const
 
 void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	// TODO: seria interesante que si el item presionado es un pixmap tratar de seguir un patron!
-	
 	m_firstPoint = input->pos();
 	
 	m_path = QPainterPath();
@@ -89,26 +87,28 @@ void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	m_item->setPen( brushManager->pen() );
 	
 	scene->addItem( m_item );
-// 	move(event, brushManager, scene, view);
 }
 
 void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	Q_UNUSED(brushManager);
+	
+	QPointF lastPoint = input->pos();
+	
 	foreach(QGraphicsView * view, scene->views())
 	{
 		view->setDragMode (QGraphicsView::NoDrag);
 	}
 	
-	QPainterPath path;
-	path.setFillRule ( Qt::WindingFill );
+// 	QPainterPath path;
+// 	path.setFillRule ( Qt::WindingFill );
 	
-	path.moveTo( m_oldPos);
-	path.lineTo( input->pos() );
+	m_path.moveTo( m_oldPos);
+	m_path.lineTo( lastPoint );
 	
-	m_path.addPath(path);
+// 	m_path.addPath(path);
 	m_item->setPath(m_path);
-	m_oldPos = input->pos();
+	m_oldPos = lastPoint;
 }
 
 void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
