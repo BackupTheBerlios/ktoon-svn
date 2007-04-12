@@ -1,11 +1,13 @@
-- existe un crash en polyline dibujando lineas, cambiando de frames, seleccionando otra vez herramienta de polyline +(sin probar)
 - Las reglas cambian el inicio cuando se dibuja la cuadricula
 - Implementar enviar atras, enviar adelante
-- Cuando el item se mueva, no poner nodos de rotar +
 - Revisar operaciones con componentes agrupados: library
+- Mover un objeto con la herramienta de seleccion sin seleccionarlo primero, no crea la accion => no se puede deshacer
+- La herramienta de nodos no edita lineTo
 
 
+- Cuando el item se mueva, no poner nodos de rotar +
 - El servidor no crea un usuario por defecto y tampoco crea la estructura basica de la base de datos de usuarios
+- existe un crash en polyline dibujando lineas, cambiando de frames, seleccionando otra vez herramienta de polyline +
 - Revisar herramienta de lapiz +
 - Crash cuando se remueve una escena o se crea mas de una + 
 - Revisar operaciones con componentes agrupados: tweening +

@@ -80,6 +80,11 @@ void KTToolPlugin::doubleClick(const KTInputDeviceInformation *, KTGraphicsScene
 {
 }
 
+void KTToolPlugin::aboutToChangeScene(KTGraphicsScene *scene)
+{
+	Q_UNUSED(scene);
+}
+
 void KTToolPlugin::keyPressEvent(QKeyEvent *event)
 {
 	Q_UNUSED(event);
