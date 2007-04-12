@@ -26,6 +26,8 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
 
+#include <dcore/ddebug.h>
+
 struct KTGraphicLibraryItem::Private
 {
 	QString symbolName;
@@ -62,6 +64,14 @@ void KTGraphicLibraryItem::fromXml(const QString &xml)
 
 void KTGraphicLibraryItem::setObject(KTLibraryObject *object)
 {
+	if( !object)
+	{
+		dWarning("library") << "Setting null library object";
+		return;
+	}
+	
+	D_FUNCINFOX("library") << object->symbolName();
+	
 	d->symbolName = object->symbolName();
 	switch(object->type())
 	{

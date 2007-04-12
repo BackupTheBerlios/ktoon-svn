@@ -33,6 +33,7 @@
 #include "ktlineitem.h"
 #include "ktitemgroup.h"
 #include "ktgraphiclibraryitem.h"
+#include "ktlibrary.h"
 
 #include "ktgraphicalgorithm.h"
 #include "ktserializer.h"
@@ -46,9 +47,11 @@ struct KTItemFactory::Private
 	QStack<KTItemGroup *> groups;
 	QStack<QGraphicsItem *> objects;
 	
-	bool addToGroup;
+	bool addToGroup, isLoading;
 	
 	QString textReaded;
+	
+	const KTLibrary *library;
 };
 
 
@@ -56,12 +59,19 @@ KTItemFactory::KTItemFactory() : DXmlParserBase(), d(new Private)
 {
 	d->item = 0;
 	d->addToGroup = false;
+	d->isLoading = false;
+	d->library = 0;
 }
 
 
 KTItemFactory::~KTItemFactory()
 {
 	delete d;
+}
+
+void KTItemFactory::setLibrary(const KTLibrary *library)
+{
+	d->library = library;
 }
 
 QGraphicsItem* KTItemFactory::createItem(const QString &root)
@@ -91,7 +101,7 @@ QGraphicsItem* KTItemFactory::createItem(const QString &root)
 	{
 		item = new KTLineItem;
 	}
-	else if ( root == "g" )
+	else if ( root == "group" )
 	{
 		item = new KTItemGroup;
 	}
@@ -105,68 +115,71 @@ QGraphicsItem* KTItemFactory::createItem(const QString &root)
 
 bool KTItemFactory::startTag( const QString& qname, const QXmlAttributes& atts)
 {
+	D_FUNCINFOX("items") << qname;
 	if ( qname == "path" )
 	{
 		QPainterPath path;
 		KTSvg2Qt::svgpath2qtpath( atts.value("d"), path );
 		
-		if ( !d->item )
-		{
-			d->item = createItem( qname );
-			qgraphicsitem_cast<KTPathItem *>(d->item)->setPath(path);
-			
-			d->objects.push(d->item);
-		}
-		else if ( d->addToGroup )
+		if ( d->addToGroup )
 		{
 			QGraphicsItem *item = createItem(qname);
 			qgraphicsitem_cast<KTPathItem *>(item)->setPath(path);
 			
-			d->groups.last()->addToGroup(item );
-			
 			d->objects.push(item);
+		}
+		else
+		{
+			if ( !d->item )
+				d->item = createItem( qname );
+			
+			qgraphicsitem_cast<KTPathItem *>(d->item)->setPath(path);
+			
+			d->objects.push(d->item);
 		}
 	}
 	else if ( qname == "rect" )
 	{
 		QRectF rect(atts.value("x").toDouble(), atts.value("y").toDouble(), atts.value("width").toDouble(), atts.value("height").toDouble() );
 		
-		if ( !d->item )
-		{
-			d->item = createItem( qname );
-			qgraphicsitem_cast<KTRectItem *>(d->item)->setRect(rect);
-			
-			d->objects.push(d->item);
-		}
-		else if( d->addToGroup )
+		if( d->addToGroup )
 		{
 			KTRectItem *item = qgraphicsitem_cast<KTRectItem *>(createItem(qname));
 			item->setRect(rect);
 			
-			d->groups.last()->addToGroup(item );
 			
 			d->objects.push(item);
+		}
+		else
+		{
+			if ( !d->item )
+				d->item = createItem( qname );
+			qgraphicsitem_cast<KTRectItem *>(d->item)->setRect(rect);
+			
+			d->objects.push(d->item);
 		}
 	}
 	else if ( qname == "ellipse" )
 	{
 		QRectF rect(QPointF(0, 0), QSizeF(2 * atts.value("rx").toDouble(), 2 * atts.value("ry").toDouble() ));
 		
-		if ( !d->item )
-		{
-			d->item = createItem( qname );
-			qgraphicsitem_cast<KTEllipseItem *>(d->item)->setRect(rect);
-			
-			d->objects.push(d->item);
-		}
-		else if( d->addToGroup )
+		if( d->addToGroup )
 		{
 			KTEllipseItem *item = qgraphicsitem_cast<KTEllipseItem *>(createItem(qname));
 			item->setRect(rect);
 			
-			d->groups.last()->addToGroup(item );
 			d->objects.push(item);
 		}
+		else
+		{
+			if ( !d->item )
+				d->item = createItem( qname );
+			
+			qgraphicsitem_cast<KTEllipseItem *>(d->item)->setRect(rect);
+			
+			d->objects.push(d->item);
+		}
+		
 	}
 	else if ( qname == "button" )
 	{
@@ -178,21 +191,24 @@ bool KTItemFactory::startTag( const QString& qname, const QXmlAttributes& atts)
 		
 		if( d->addToGroup )
 		{
-			d->groups.last()->addToGroup( createItem( qname ) );
+// 			d->groups.last()->addToGroup( createItem( qname ) );
 		}
 	}
 	else if ( qname == "text" )
 	{
-		if ( !d->item )
+		if( d->addToGroup )
 		{
-			d->item = createItem( qname );
+			KTTextItem *item = qgraphicsitem_cast<KTTextItem *>(createItem( qname ));
+			d->objects.push(item);
+		}
+		else
+		{
+			if ( !d->item )
+				d->item = createItem( qname );
+			
 			d->objects.push(d->item);
 		}
 		
-		if( d->addToGroup )
-		{
-			d->groups.last()->addToGroup( createItem( qname ) );
-		}
 		
 		setReadText(true);
 		d->textReaded = "";
@@ -201,58 +217,69 @@ bool KTItemFactory::startTag( const QString& qname, const QXmlAttributes& atts)
 	{
 		QLineF line(atts.value("x1").toDouble(), atts.value("y1").toDouble(), atts.value("x2").toDouble(), atts.value("y2").toDouble());
 		
-		if ( !d->item )
-		{
-			d->item = createItem( qname );
-			qgraphicsitem_cast<KTLineItem *>(d->item)->setLine(line);
-			d->objects.push(d->item);
-		}
-		else if( d->addToGroup )
+		if( d->addToGroup )
 		{
 			KTLineItem *item = qgraphicsitem_cast<KTLineItem *>(createItem(qname));
 			item->setLine(line);
 			
-			d->groups.last()->addToGroup( item );
 			d->objects.push(item);
 		}
-	}
-	else if ( qname == "g" )
-	{
-		if ( !d->item )
+		else
 		{
-			d->item = createItem( qname );
-			d->groups.push(qgraphicsitem_cast<KTItemGroup *>(d->item));
+			if ( !d->item )
+				d->item = createItem( qname );
 			
+			qgraphicsitem_cast<KTLineItem *>(d->item)->setLine(line);
 			d->objects.push(d->item);
 		}
-		else if( d->addToGroup )
+	}
+	else if ( qname == "group" )
+	{
+		if( d->addToGroup )
 		{
 			KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>( createItem(qname) );
 			
-			d->groups.last()->addToGroup(group);
 			d->groups.push(group);
-			
 			d->objects.push(group);
+		}
+		else
+		{
+			if ( !d->item )
+				d->item = createItem( qname );
+			d->groups.push(qgraphicsitem_cast<KTItemGroup *>(d->item));
+			d->objects.push(d->item);
 		}
 		
 		d->addToGroup = true;
 	}
 	else if ( qname == "symbol" )
 	{
-		if( !d->item)
+		if( d->addToGroup )
 		{
-			d->item = createItem(qname);
-			qgraphicsitem_cast<KTGraphicLibraryItem *>(d->item)->setSymbolName(atts.value("id"));
+			KTGraphicLibraryItem *item = qgraphicsitem_cast<KTGraphicLibraryItem *>(createItem( qname ));
+			
+			QString id = atts.value("id");
+			
+			item->setSymbolName(id);
+			
+			if( d->library )
+				item->setObject(d->library->findObject(id));
+			
+			d->objects.push(item);
+		}
+		else
+		{
+			if( !d->item)
+				d->item = createItem(qname);
+			
+			QString id = atts.value("id");
+			
+			qgraphicsitem_cast<KTGraphicLibraryItem *>(d->item)->setSymbolName(id);
+			
+			if( d->library )
+				qgraphicsitem_cast<KTGraphicLibraryItem *>(d->item)->setObject(d->library->findObject(id));
 			
 			d->objects.push(d->item);
-		}
-		else if( d->addToGroup )
-		{
-			QGraphicsItem *item = createItem( qname );
-			qgraphicsitem_cast<KTGraphicLibraryItem *>(item)->setSymbolName(atts.value("id"));
-			
-			d->groups.last()->addToGroup( item );
-			d->objects.push(item);
 		}
 	}
 	
@@ -266,7 +293,6 @@ bool KTItemFactory::startTag( const QString& qname, const QXmlAttributes& atts)
 	{
 		QBrush brush;
 		KTSerializer::loadBrush( brush, atts);
-		
 		
 		if ( currentTag() == "pen" )
 		{
@@ -323,40 +349,78 @@ void KTItemFactory::text ( const QString & ch )
 
 bool KTItemFactory::endTag(const QString& qname)
 {
+	D_FUNCINFOX("items") << qname;
 	if ( qname == "path" )
 	{
+		if(d->addToGroup)
+		{
+			d->groups.last()->addToGroup(d->objects.last());
+		}
 		d->objects.pop();
 	}
 	else if ( qname == "rect" )
 	{
+		if(d->addToGroup)
+		{
+			d->groups.last()->addToGroup(d->objects.last());
+		}
 		d->objects.pop();
 	}
 	else if ( qname == "ellipse" )
 	{
+		if(d->addToGroup)
+		{
+			d->groups.last()->addToGroup(d->objects.last());
+		}
 		d->objects.pop();
 	}
 	else if( qname == "symbol" )
 	{
+		if(d->addToGroup)
+		{
+			d->groups.last()->addToGroup(d->objects.last());
+		}
 		d->objects.pop();
 	}
 	else if( qname == "line" )
 	{
+		if(d->addToGroup)
+		{
+			d->groups.last()->addToGroup(d->objects.last());
+		}
 		d->objects.pop();
 	}
 	else if ( qname == "button" )
 	{
+		if(d->addToGroup)
+		{
+			d->groups.last()->addToGroup(d->objects.last());
+		}
 		d->objects.pop();
 	}
 	else if ( qname == "text" )
 	{
-		qgraphicsitem_cast<KTTextItem *>(d->objects.last())->setHtml(d->textReaded);
+		if(d->addToGroup)
+		{
+			d->groups.last()->addToGroup(d->objects.last());
+		}
+		
+		if(KTTextItem *text = qgraphicsitem_cast<KTTextItem *>(d->objects.last()) )
+		{
+			text->setHtml(d->textReaded);
+		}
 		d->objects.pop();
 	}
-	else if ( qname == "g" )
+	else if ( qname == "group" )
 	{
 		d->groups.pop();
-		
 		d->addToGroup = !d->groups.isEmpty();
+		
+		if(d->addToGroup)
+		{
+			d->groups.last()->addToGroup(d->objects.last());
+		}
+		
 		d->objects.pop();
 	}
 	else if( qname == "gradient")
@@ -380,18 +444,22 @@ bool KTItemFactory::endTag(const QString& qname)
 
 void KTItemFactory::setItemPen(const QPen &pen)
 {
-	if ( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->objects.last() ) )
-	{
-		shape->setPen(pen);
-	}
-	else if(QGraphicsLineItem *line = qgraphicsitem_cast<QGraphicsLineItem *>(d->objects.last()) )
+	if(d->objects.isEmpty() ) return;
+	
+	if(QGraphicsLineItem *line = qgraphicsitem_cast<QGraphicsLineItem *>(d->objects.last()) )
 	{
 		line->setPen(pen);
+	}
+	else if ( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->objects.last() ) )
+	{
+		shape->setPen(pen);
 	}
 }
 
 void KTItemFactory::setItemBrush(const QBrush &brush)
 {
+	if(d->objects.isEmpty() ) return;
+	
 	if ( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->objects.last() ) )
 	{
 		shape->setBrush(brush);
@@ -401,6 +469,7 @@ void KTItemFactory::setItemBrush(const QBrush &brush)
 
 void  KTItemFactory::setItemGradient(const QGradient& gradient, bool brush)
 {
+	if(d->objects.isEmpty() ) return;
 	
 	QBrush gBrush(gradient);
 	if ( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->objects.last() ) )
@@ -429,32 +498,41 @@ void  KTItemFactory::setItemGradient(const QGradient& gradient, bool brush)
 
 QPen KTItemFactory::itemPen() const
 {
-	if ( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->objects.last() ) )
+	if( ! d->objects.isEmpty() )
 	{
-		return shape->pen();
+		if(QGraphicsLineItem *line = qgraphicsitem_cast<QGraphicsLineItem *>(d->objects.last()) )
+		{
+			return line->pen();
+		}
+		else if ( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->objects.last() ) )
+		{
+			return shape->pen();
+		}
 	}
-	else if(QGraphicsLineItem *line = qgraphicsitem_cast<QGraphicsLineItem *>(d->objects.last()) )
-	{
-		return line->pen();
-	}
-	return QPen(Qt::transparent, 0);
+	return QPen(Qt::transparent, 1);
 }
 
 QBrush KTItemFactory::itemBrush() const
 {
-	if ( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->objects.last() ) )
+	if( ! d->objects.isEmpty() )
 	{
-		shape->brush();
+		if ( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->objects.last() ) )
+		{
+			return shape->brush();
+		}
 	}
-	
 	return Qt::transparent;
 }
 
 bool KTItemFactory::loadItem(QGraphicsItem *item, const QString &xml)
 {
 	d->item = item;
+	
+	d->isLoading = true;
+	
 	bool ok = parse(xml);
-// 	QAbstractGraphicsShapeItem *tmp =  qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(d->item);
+	
+	d->isLoading = false;
 	return ok;
 }
 

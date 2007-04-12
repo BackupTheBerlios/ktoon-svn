@@ -153,7 +153,6 @@ bool KTScene::removeLayer( int position)
  */
 KTLayer *KTScene::layer(int position)
 {
-	D_FUNCINFOX("scene")<< position;
 	if ( position < 0 || position >= d->layers.count() )
 	{
 		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;

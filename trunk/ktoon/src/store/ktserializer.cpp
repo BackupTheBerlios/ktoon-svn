@@ -51,8 +51,7 @@ QDomElement KTSerializer::properties(const QGraphicsItem *item, QDomDocument &do
 	strMatrix += QString::number(a) + "," +QString::number(b) + "," + QString::number(c) + "," + QString::number(d) + "," + QString::number(e) + "," + QString::number(f) + ")" ; 
 	
 	properties.setAttribute( "transform", strMatrix);
-	
-	
+		
 	properties.setAttribute( "pos", "(" + QString::number(item->pos().x()) + "," + QString::number(item->pos().y()) + ")"  );
 	
 	properties.setAttribute( "enabled", item->isEnabled());

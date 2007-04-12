@@ -60,6 +60,11 @@ void KTItemGroup::recoverChilds()
 {
 	foreach(QGraphicsItem *item, d->childs )
 	{
+		if ( KTItemGroup *child = qgraphicsitem_cast<KTItemGroup *>(item) )
+		{
+			child->recoverChilds();
+		}
+		
 		if ( item->parentItem() != this )
 		{
 			item->setParentItem(this);
@@ -72,14 +77,14 @@ QList<QGraphicsItem *> KTItemGroup::childs()
 	return d->childs;
 }
 
-void KTItemGroup::fromXml(const QString &xml)
+void KTItemGroup::fromXml(const QString &)
 {
 }
 
 
 QDomElement KTItemGroup::toXml(QDomDocument &doc) const
 {
-	QDomElement root = doc.createElement("g");
+	QDomElement root = doc.createElement("group");
 	
 	root.appendChild( KTSerializer::properties( this, doc));
 	

@@ -263,17 +263,12 @@ bool KTFrame::removeGraphicAt(int position)
 QGraphicsItem *KTFrame::createItem(int position, const QString &xml, bool loaded)
 {
 	KTItemFactory itemFactory;
+	itemFactory.setLibrary(project()->library());
 	
 	QGraphicsItem *item = itemFactory.create( xml );
 	if( item )
 	{
 		addItem( item );
-		
-		if( KTGraphicLibraryItem *symbol = qgraphicsitem_cast<KTGraphicLibraryItem *>(item) )
-		{
-			KTLibrary *library = project()->library();
-			symbol->setObject(library->findObject(symbol->symbolName()));
-		}
 	}
 	
 	if( loaded )

@@ -30,6 +30,7 @@
 #include "ktglobal_store.h"
 
 class QGraphicsItem;
+class KTLibrary;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -39,6 +40,8 @@ class STORE_EXPORT KTItemFactory : public DXmlParserBase
 	public:
 		KTItemFactory();
 		~KTItemFactory();
+		
+		void setLibrary(const KTLibrary *library);
 		
 		/**
 		 * Analiza etiquetas de apertura del documento XML
