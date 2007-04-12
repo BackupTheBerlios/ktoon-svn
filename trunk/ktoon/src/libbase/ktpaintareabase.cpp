@@ -278,7 +278,7 @@ void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )
 	{
 		QGraphicsView::mouseMoveEvent(event);
 		
-		if( ! d->scene->mouseGrabberItem() ) // HACK
+		if( !d->scene->mouseGrabberItem() && d->scene->isDrawing() ) // HACK
 		{
 			QGraphicsSceneMouseEvent mouseEvent(QEvent::GraphicsSceneMouseMove);
 			mouseEvent.setWidget(viewport());
@@ -288,7 +288,8 @@ void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )
 			mouseEvent.setButton(event->button());
 			mouseEvent.setModifiers(event->modifiers());
 			mouseEvent.setAccepted(false);
-			QApplication::sendEvent(d->scene, &mouseEvent);
+// 			QApplication::sendEvent(d->scene, &mouseEvent);
+			d->scene->mouseMoved(&mouseEvent);
 		}
 	}
 	
@@ -299,7 +300,7 @@ void KTPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
 {
 	QGraphicsView::mouseReleaseEvent(event);
 	
-	if( ! d->scene->mouseGrabberItem() ) // HACK
+	if( ! d->scene->mouseGrabberItem() && d->scene->isDrawing() ) // HACK
 	{
 		QGraphicsSceneMouseEvent mouseEvent(QEvent::GraphicsSceneMouseRelease);
 		mouseEvent.setWidget(viewport());
@@ -309,21 +310,14 @@ void KTPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
 		mouseEvent.setButton(event->button());
 		mouseEvent.setModifiers(event->modifiers());
 		mouseEvent.setAccepted(false);
-		QApplication::sendEvent(d->scene, &mouseEvent);
+// 		QApplication::sendEvent(d->scene, &mouseEvent);
+		d->scene->mouseReleased(&mouseEvent);
 	}
 }
 
 void KTPaintAreaBase::tabletEvent( QTabletEvent * event )
 {
 	QGraphicsView::tabletEvent(event );
-}
-
-
-QMouseEvent *KTPaintAreaBase::mapToArea(QMouseEvent *event) const
-{
-	QMouseEvent *e = new QMouseEvent(event->type(), this->mapToScene(event->pos()).toPoint(), this->mapToScene( event->globalPos() ).toPoint(), event->button(), event->buttons(), event->modifiers () );
-	
-	return e;
 }
 
 void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)

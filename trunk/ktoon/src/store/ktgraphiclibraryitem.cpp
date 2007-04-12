@@ -78,16 +78,9 @@ void KTGraphicLibraryItem::setObject(KTLibraryObject *object)
 		case KTLibraryObject::Item:
 		case KTLibraryObject::Svg:
 		case KTLibraryObject::Image:
-		{
-			setItem( qvariant_cast<QGraphicsItem *>(object->data()) );
-		}
-		break;
 		case KTLibraryObject::Text:
 		{
-			QGraphicsTextItem *item = new QGraphicsTextItem(object->data().toString());
-			setItem(item);
-			
-			d->items << item;
+			setItem( qvariant_cast<QGraphicsItem *>(object->data()) );
 		}
 		break;
 		default: break;

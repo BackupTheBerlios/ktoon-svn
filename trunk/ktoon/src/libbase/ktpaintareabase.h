@@ -81,9 +81,6 @@ class KTOON_EXPORT KTPaintAreaBase : public QGraphicsView
 		void changedZero(const QPointF &zero);
 		void scaled(double factor);
 		
-	private:
-		QMouseEvent *mapToArea(QMouseEvent *event) const;
-		
 	public slots:
 		void centerDrawingArea();
 		
