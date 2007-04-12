@@ -213,7 +213,7 @@ void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
 {
 	if ( !canPaint() ) return;
 	
-	if ( event->buttons() == Qt::LeftButton && !d->scene->currentFrame()->isLocked() )
+	if ( event->buttons() == Qt::LeftButton )
 	{
 		QGraphicsView::mousePressEvent(event);
 	}
@@ -383,8 +383,17 @@ void KTPaintAreaBase::drawForeground( QPainter *painter, const QRectF &rect )
 
 bool KTPaintAreaBase::canPaint() const
 {
-	D_FUNCINFOX("paintarea");
-	return d->scene->currentFrame() != 0;
+	if( d->scene )
+	{
+		KTFrame *frame = d->scene->currentFrame();
+		
+		if( frame )
+		{
+			return !frame->isLocked();
+		}
+	}
+	
+	return false;
 }
 
 void KTPaintAreaBase::centerDrawingArea()
