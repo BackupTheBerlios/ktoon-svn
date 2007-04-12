@@ -94,7 +94,7 @@ KTGraphicsScene::~KTGraphicsScene()
 	clearFocus();
 	clearSelection();
 	
-	foreach ( QGraphicsView *view, this->views() )
+	foreach( QGraphicsView *view, this->views() )
 	{
 		view->setScene(0);
 	}

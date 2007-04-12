@@ -27,6 +27,8 @@
 #include "ktscene.h"
 #include "ktitemtweener.h"
 
+#include <dcore/ddebug.h>
+
 struct KTGraphicObject::Private
 {
 	QString name;
@@ -40,6 +42,8 @@ struct KTGraphicObject::Private
 KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
 	: QObject(parent), d(new Private)
 {
+	DINIT;
+	
 	d->item = item;
 	d->tweener = 0;
 	d->frame = parent;
@@ -50,17 +54,20 @@ KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
 
 KTGraphicObject::~KTGraphicObject()
 {
-	if ( QGraphicsScene *scene = d->item->scene() )
+	DEND;
+	if( d->item )
 	{
-		scene->removeItem(d->item);
+// 		if ( QGraphicsScene *scene = d->item->scene() )
+// 		{
+// 			scene->removeItem(d->item);
+// 		}
+		delete d->item;
 	}
 	
-	if(d->tweener)
+	if(d->tweener && d->frame->scene())
 	{
 		d->frame->scene()->removeTweeningObject(this);
 	}
-	
-	delete d->item;
 	delete d;
 }
 

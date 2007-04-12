@@ -195,9 +195,15 @@ QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group 
 		
 		QGraphicsItem *item = this->item(pos);
 		
+		KTGraphicObject *object = this->graphic(pos);
+		object->setItem(0);
+		
 		removeGraphicAt(pos);
 		
 		g->addToGroup( item );
+		
+		delete object;
+		
 		count++;
 	}
 	
