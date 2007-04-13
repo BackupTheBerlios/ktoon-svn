@@ -70,9 +70,8 @@ class ContourSelection : public KTToolPlugin
 		void setupActions();
 		
 	private:
-		QMap<QString, DAction *> m_actions;
-		QList<DNodeGroup*> m_nodeGroups; 
-		KTGraphicsScene *m_scene;
+		struct Private;
+		Private *const d;
 		
 	private slots:
 		void syncNodes();

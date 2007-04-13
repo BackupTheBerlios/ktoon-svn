@@ -53,7 +53,7 @@ class PolyLine : public KTToolPlugin
 		
 		void aboutToChangeScene(KTGraphicsScene *scene);
 		virtual void aboutToChangeTool();
-		
+		void itemResponse(const KTItemResponse *response);
 		
 	private:
 		void setupActions();
