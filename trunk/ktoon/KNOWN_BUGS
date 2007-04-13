@@ -1,14 +1,18 @@
 - Las reglas cambian el inicio cuando se dibuja la cuadricula
 - Implementar enviar atras, enviar adelante
 - Revisar operaciones con componentes agrupados: library
+- No se puede deshacer en el polyline
+
+- El servidor no crea un usuario por defecto y tampoco crea la estructura basica de la base de datos de usuarios
+- Se crean dos areas de dibujo cuando se crea un proyecto en red
+
+
 - Mover un objeto con la herramienta de seleccion sin seleccionarlo primero, no crea la accion => no se puede deshacer +
 - La herramienta de nodos no edita lineTo +
-- No se puede deshacer en el polyline
 - En la herramienta de contornos, se necesita mover un nodo para que se dibujen los hijos +
-
-
 - Cuando el item se mueva, no poner nodos de rotar +
-- El servidor no crea un usuario por defecto y tampoco crea la estructura basica de la base de datos de usuarios
+
+
 - existe un crash en polyline dibujando lineas, cambiando de frames, seleccionando otra vez herramienta de polyline +
 - Revisar herramienta de lapiz +
 - Crash cuando se remueve una escena o se crea mas de una + 

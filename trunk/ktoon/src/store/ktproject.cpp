@@ -330,6 +330,8 @@ bool KTProject::createSymbol(int type, const QString &name, const QByteArray &da
 		return false;
 	
 	d->library->addObject( object, name);
+	object->saveData(this->dataDir());
+	
 	
 	return true;
 }

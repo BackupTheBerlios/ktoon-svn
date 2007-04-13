@@ -21,18 +21,12 @@
 #define KTNEWPROYECT_H
 
 
-#include <QComboBox>
-#include <QSpinBox>
-#include <QLineEdit>
-
 #include <dgui/dosd.h>
 #include <dgui/dtabdialog.h>
 #include <dgui/dwizard.h>
 #include <dgui/dxyspinbox.h>
 
 class KTProjectManagerParams;
-
-
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
@@ -52,6 +46,9 @@ class KTNewProject : public DTabDialog
 		
 		bool useNetwork() const;
 		
+	public slots:
+		void ok();
+		
 	private:
 		void setupNetOptions();
 		
@@ -59,21 +56,9 @@ class KTNewProject : public DTabDialog
 		void activateNetOptions(bool no);
 	
 	private:
-		QLineEdit *m_projectName;
-		QLineEdit *m_authorName;
-		QSpinBox *m_fps;
+		struct Private;
+		Private *const d;
 		
-		DXYSpinBox *m_size;
-		
-		
-		bool m_useNetwork;
-		
-		QGroupBox *m_netOptions;
-		
-		QLineEdit *m_server;
-		QSpinBox *m_port;
-		QLineEdit *m_login;
-		QLineEdit *m_password;
 };
 #if 0
 class KTNewProject : public DWizard

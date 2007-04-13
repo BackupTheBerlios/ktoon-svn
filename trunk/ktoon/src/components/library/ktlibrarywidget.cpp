@@ -388,9 +388,10 @@ void KTLibraryWidget::importBitmap()
 	
 	if( image.isEmpty() ) return;
 	
-	QString symName = image; // FIXME
-	
 	QFile f(image);
+	QFileInfo finfo(f);
+	
+	QString symName = finfo.baseName();
 	
 	if( f.open(QIODevice::ReadOnly))
 	{
@@ -413,9 +414,10 @@ void KTLibraryWidget::importSound()
 	
 	if( sound.isEmpty() ) return;
 	
-	QString symName = sound; // FIXME
-	
 	QFile f(sound);
+	
+	QFileInfo finfo(f);
+	QString symName = finfo.baseName();
 	
 	if( f.open(QIODevice::ReadOnly))
 	{

@@ -76,6 +76,7 @@ int KTLibraryObject::type() const
 void KTLibraryObject::setSymbolName(const QString &name)
 {
 	d->symbolName = name;
+	d->symbolName.replace(QDir::separator(), "-");
 }
 
 QString KTLibraryObject::symbolName() const
@@ -96,7 +97,7 @@ void KTLibraryObject::fromXml(const QString &xml )
 	
 	if( objectTag.tagName() == "object" )
 	{
-		d->symbolName = objectTag.attribute("id");
+		setSymbolName(objectTag.attribute("id"));
 		
 		if( d->symbolName.isEmpty() ) return;
 		
@@ -211,5 +212,41 @@ bool KTLibraryObject::loadData(const QByteArray &data)
 
 void KTLibraryObject::saveData(const QString &dataDir)
 {
-	
+	switch( d->type )
+	{
+		case KTLibraryObject::Sound:
+		{
+			QString saved = dataDir + "/audio/";
+			
+			if( ! QFile::exists(saved) )
+			{
+				QDir dir;
+				dir.mkpath(saved);
+			}
+			
+			QFile::copy(QString(d->data.toString()), saved+d->symbolName);
+			d->data = saved;
+		}
+		break;
+		case KTLibraryObject::Svg:
+		{
+		}
+		break;
+		case KTLibraryObject::Image:
+		{
+			QString dest = dataDir+"/images/";
+			
+			if( ! QFile::exists(dest) )
+			{
+				QDir dir;
+				dir.mkpath(dest);
+			}
+			
+			qgraphicsitem_cast<KTPixmapItem *>(qvariant_cast<QGraphicsItem *>(d->data))->pixmap().save(dest+d->symbolName, "PNG");
+		}
+		break;
+		default: break;
+	}
 }
+
+
