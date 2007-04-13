@@ -396,3 +396,4 @@ void DControlNode::setNotChange(bool notChange)
 {
 	d->notChange = notChange;
 }
+

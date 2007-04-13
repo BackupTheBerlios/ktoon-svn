@@ -25,6 +25,7 @@ class DNodeGroup : public QObject
 		void syncNodesFromParent();
 		
 		void setParentItem(QGraphicsItem *);
+		
 		void moveElementTo(int index, const QPointF& pos );
 		QHash<int, QPointF > changedNodes();
 		void clearChangesNodes();
@@ -38,6 +39,9 @@ class DNodeGroup : public QObject
 		
 		void createNodes(QGraphicsPathItem *nodes);
 		void emitNodeClicked();
+		
+		void expandAllNodes();
+		bool isSelected();
 		
 	private:
 		struct Private;

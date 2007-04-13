@@ -53,8 +53,11 @@ void DNodeGroup::syncNodes(const QPainterPath & path)
 	}
 	foreach(DControlNode *node, d->nodes)
 	{
-		node->setNotChange(true);
-		node->setPos(path.elementAt(node->index()));
+		if(node)
+		{
+			node->setNotChange(true);
+			node->setPos(path.elementAt(node->index()));
+		}
 	}
 }
 
@@ -83,7 +86,6 @@ void DNodeGroup::setParentItem(QGraphicsItem *newParent)
 		}
 	}
 }
-
 
 void DNodeGroup::moveElementTo(int index, const QPointF& pos )
 {
@@ -253,5 +255,26 @@ void DNodeGroup::addControlNode(DControlNode* )
 void DNodeGroup::emitNodeClicked()
 {
 	emit nodeClicked();
+}
+
+
+void DNodeGroup::expandAllNodes()
+{
+	foreach(DControlNode *node, d->nodes )
+	{
+		node->setVisibleChilds(true);
+	}
+}
+
+bool DNodeGroup::isSelected()
+{
+	foreach(DControlNode *node, d->nodes )
+        {
+		if(node->isSelected())
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
