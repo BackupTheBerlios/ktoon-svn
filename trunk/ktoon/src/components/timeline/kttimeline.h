@@ -52,6 +52,7 @@ class KTTimeLine : public KTModuleWidgetBase
 		void sceneResponse(KTSceneResponse *e);
 		void layerResponse(KTLayerResponse *e);
 		void frameResponse(KTFrameResponse *e);
+		void libraryResponse(KTLibraryResponse *response);
 		
 	public slots:
 		void insertScene(int position, const QString &name);

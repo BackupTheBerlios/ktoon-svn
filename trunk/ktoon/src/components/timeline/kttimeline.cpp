@@ -143,19 +143,19 @@ void KTTimeLine::closeAllScenes()
 }
 
 
-void KTTimeLine::sceneResponse(KTSceneResponse *e)
+void KTTimeLine::sceneResponse(KTSceneResponse *response)
 {
 	D_FUNCINFOX("timeline");
-	switch(e->action())
+	switch(response->action())
 	{
 		case KTProjectRequest::Add:
 		{
-			insertScene( e->sceneIndex(), e->arg().toString() );
+			insertScene( response->sceneIndex(), response->arg().toString() );
 		}
 		break;
 		case KTProjectRequest::Remove:
 		{
-			removeScene(e->sceneIndex());
+			removeScene(response->sceneIndex());
 		}
 		break;
 		case KTProjectRequest::Move:
@@ -178,75 +178,75 @@ void KTTimeLine::sceneResponse(KTSceneResponse *e)
 }
 
 
-void KTTimeLine::layerResponse(KTLayerResponse *e)
+void KTTimeLine::layerResponse(KTLayerResponse *response)
 {
-	switch(e->action())
+	switch(response->action())
 	{
 		case KTProjectRequest::Add:
 		{
-			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
+			KTLayerManager *layerManager = this->layerManager( response->sceneIndex() );
 			if ( layerManager )
 			{
-				layerManager->insertLayer( e->layerIndex(), e->arg().toString() );
+				layerManager->insertLayer( response->layerIndex(), response->arg().toString() );
 			}
 			
-			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
+			KTFramesTable *framesTable = this->framesTable( response->sceneIndex() );
 			if ( framesTable )
 			{
-				framesTable->insertLayer(e->layerIndex(), e->arg().toString() );
+				framesTable->insertLayer(response->layerIndex(), response->arg().toString() );
 			}
 		}
 		break;
 		case KTProjectRequest::Remove:
 		{
-			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
+			KTLayerManager *layerManager = this->layerManager( response->sceneIndex() );
 			
 			if ( layerManager )
 			{
-				layerManager->removeLayer( e->layerIndex());
+				layerManager->removeLayer( response->layerIndex());
 			}
 			
-			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
+			KTFramesTable *framesTable = this->framesTable( response->sceneIndex() );
 			if ( framesTable )
 			{
-				framesTable->removeLayer(e->layerIndex() );
+				framesTable->removeLayer(response->layerIndex() );
 			}
 		}
 		break;
 		
 		case KTProjectRequest::Move:
 		{
-			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
+			KTLayerManager *layerManager = this->layerManager( response->sceneIndex() );
 			
 			if ( layerManager )
 			{
-				layerManager->moveLayer( e->layerIndex(), e->arg().toInt() );
+				layerManager->moveLayer( response->layerIndex(), response->arg().toInt() );
 			}
 			
-			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
+			KTFramesTable *framesTable = this->framesTable( response->sceneIndex() );
 			if ( framesTable )
 			{
-				framesTable->moveLayer(e->layerIndex(), e->arg().toInt() );
+				framesTable->moveLayer(response->layerIndex(), response->arg().toInt() );
 			}
 		}
 		break;
 		case KTProjectRequest::Lock:
 		{
-			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
+			KTLayerManager *layerManager = this->layerManager( response->sceneIndex() );
 			
 			if ( layerManager )
 			{
-				layerManager->lockLayer( e->layerIndex(), e->arg().toBool() );
+				layerManager->lockLayer( response->layerIndex(), response->arg().toBool() );
 			}
 		}
 		break;
 		case KTProjectRequest::Rename:
 		{
-			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
+			KTLayerManager *layerManager = this->layerManager( response->sceneIndex() );
 			
 			if ( layerManager )
 			{
-				layerManager->renameLayer( e->layerIndex(), e->arg().toString() );
+				layerManager->renameLayer( response->layerIndex(), response->arg().toString() );
 			}
 		}
 		break;
@@ -254,26 +254,26 @@ void KTTimeLine::layerResponse(KTLayerResponse *e)
 }
 
 
-void KTTimeLine::frameResponse(KTFrameResponse *e)
+void KTTimeLine::frameResponse(KTFrameResponse *response)
 {
-	switch(e->action())
+	switch(response->action())
 	{
 		case KTProjectRequest::Add:
 		{
-			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
+			KTFramesTable *framesTable = this->framesTable( response->sceneIndex() );
 			if ( framesTable )
 			{
-				framesTable->insertFrame( e->layerIndex(), e->arg().toString() );
+				framesTable->insertFrame( response->layerIndex(), response->arg().toString() );
 			}
 		}
 		break;
 		case KTProjectRequest::Remove:
 		{
-			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
+			KTFramesTable *framesTable = this->framesTable( response->sceneIndex() );
 			
 			if ( framesTable )
 			{
-				framesTable->removeFrame( e->layerIndex(), e->frameIndex() );
+				framesTable->removeFrame( response->layerIndex(), response->frameIndex() );
 			}
 		}
 		break;
@@ -283,10 +283,10 @@ void KTTimeLine::frameResponse(KTFrameResponse *e)
 		break;
 		case KTProjectRequest::Lock:
 		{
-			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
+			KTFramesTable *framesTable = this->framesTable( response->sceneIndex() );
 			if ( framesTable )
 			{
-				framesTable->lockFrame(e->layerIndex(), e->frameIndex(), e->arg().toBool() );
+				framesTable->lockFrame(response->layerIndex(), response->frameIndex(), response->arg().toBool() );
 			}
 		}
 		break;
@@ -295,6 +295,38 @@ void KTTimeLine::frameResponse(KTFrameResponse *e)
 		}
 		break;
 	}
+}
+
+
+void KTTimeLine::libraryResponse(KTLibraryResponse *response)
+{
+	D_FUNCINFOX("timeline") << response->symtype();
+	
+	if(response->action() == KTProjectRequest::AddSymbolToProject )
+	{
+		switch(response->symtype())
+		{
+			case 0:
+			{
+				KTLayerManager *layerManager = this->layerManager(response->sceneIndex());
+				if(layerManager)
+				{
+					layerManager->insertSoundLayer(response->layerIndex()+1, response->arg().toString() );
+					
+					
+					KTFramesTable *framesTable = this->framesTable( response->sceneIndex() );
+					if( framesTable )
+					{
+						framesTable->insertLayer(response->layerIndex()+1, response->arg().toString() );
+						framesTable->insertFrame( response->layerIndex()+1,"" );
+					}
+				}
+			}
+			break;
+		};
+	}
+	
+	
 }
 
 void KTTimeLine::requestCommand(int action)

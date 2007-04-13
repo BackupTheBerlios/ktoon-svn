@@ -59,9 +59,10 @@ class PolyLine : public KTToolPlugin
 		void setupActions();
 		void endItem();
 		
+	private slots:
+		void nodeChanged();
 		
 	private:
-		
 		struct Private;
 		Private * const d;
 };

@@ -43,7 +43,7 @@
 
 struct PolyLine::Private
 {
-	bool begin;
+	bool begin, ok;
 	QPointF center;
 	QPointF rigth;
 	QPointF mirror;
@@ -64,6 +64,8 @@ struct PolyLine::Private
 PolyLine::PolyLine(): d(new Private)
 {
 	d->begin = false;
+	d->ok = false;
+	
 	d->nodegroup = 0;
 	d->item = 0;
 	
@@ -107,6 +109,8 @@ QStringList PolyLine::keys() const
 void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	D_FUNCINFOX("tools");
+	scene->clearSelection();
+	
 	
 	if(!d->item)
 	{
@@ -195,13 +199,15 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
 	if(!d->nodegroup)
 	{
 		d->nodegroup = new DNodeGroup(d->item, scene);
+		connect(d->nodegroup, SIGNAL(nodeClicked()), this, SLOT(nodeChanged()));
 	}
-// 	else
-// 	{
-// 		d->nodegroup->createNodes(d->item);
-// 	}
+	else
+	{
+		d->nodegroup->createNodes(d->item);
+	}
 	
 	QDomDocument doc;
+	SHOW_VAR(d->nodegroup->isSelected());
 	if(d->begin)
 	{
 		doc.appendChild(d->item->toXml( doc ));
@@ -209,7 +215,7 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
 		
 		emit requested(&request);
 	}
-	else /*if(!d->nodegroup->changedNodes().isEmpty())*/
+	else if(!d->nodegroup->isSelected())
 	{
 		int position  = scene->currentFrame()->indexOf(d->nodegroup->parentItem());
 		if(position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(d->nodegroup->parentItem()))
@@ -293,7 +299,10 @@ void PolyLine::itemResponse(const KTItemResponse *response)
 					d->item = qgraphicsitem_cast<KTPathItem *>(item);
 					d->nodegroup->setParentItem(item);
 				}
+				
 				d->nodegroup->createNodes(d->item);
+				d->nodegroup->saveParentProperties();
+				d->nodegroup->expandAllNodes();
 			}
 		}
 		break;
@@ -328,13 +337,33 @@ void PolyLine::endItem()
 	}
 }
 
+void PolyLine::nodeChanged()
+{
+	D_FUNCINFO;
+	if(d->nodegroup)
+	{
+		SHOW_VAR(!d->nodegroup->changedNodes().isEmpty());
+		if(!d->nodegroup->changedNodes().isEmpty())
+		{
+			d->ok = true;
+			QDomDocument doc;
+			int position  = d->scene->currentFrame()->indexOf(d->nodegroup->parentItem());
+			if(position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(d->nodegroup->parentItem()))
+			{
+				doc.appendChild(qgraphicsitem_cast<KTPathItem *>(d->nodegroup->parentItem())->toXml(doc));
+				
+				KTProjectRequest event = KTRequestBuilder::createItemRequest( d->scene->currentSceneIndex(), d->scene->currentLayerIndex(), d->scene->currentFrameIndex(), position, KTProjectRequest::EditNodes, doc.toString() );
+				d->nodegroup->restoreItem();
+				emit requested(&event);
+			}
+		}
+	}
+}
+
 void PolyLine::setupActions()
 {
 	DAction *pencil = new DAction( QIcon(), tr("Poly line"), this);
 	pencil->setShortcut( QKeySequence(tr("")) );
-	
-// QPixmap pix();
-// pencil->setCursor( QCursor(pix, 0, pix.height()) );
 	
 	d->actions.insert( tr("PolyLine"), pencil );
 }
