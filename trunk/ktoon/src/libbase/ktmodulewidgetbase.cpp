@@ -29,14 +29,20 @@
 
 #include <qobject.h>
 
-KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), KTAbstractProjectResponseHandler()
+struct KTModuleWidgetBase::Private
+{
+	QBoxLayout *container;
+	QObjectList childs;
+};
+
+KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), KTAbstractProjectResponseHandler(), d( new Private )
 {
 	setObjectName(name);
 
-	m_container = new QVBoxLayout(this);
+	d->container = new QVBoxLayout(this);
 	
-	m_container->setMargin(5);
-	m_container->setSpacing(1);
+	d->container->setMargin(5);
+	d->container->setSpacing(1);
 	
 	adjustSize();
 	hide();
@@ -45,14 +51,15 @@ KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWid
 
 KTModuleWidgetBase::~KTModuleWidgetBase()
 {
+	delete d;
 }
 
 void KTModuleWidgetBase::addChild(QWidget* child, Qt::Alignment alignment)
 {
-	m_childs.append(child);
+	d->childs.append(child);
 	
-	m_container->invalidate();
-	m_container->addWidget(child, 0,alignment);
+	d->container->invalidate();
+	d->container->addWidget(child, 0,alignment);
 }
 
 void KTModuleWidgetBase::setFont( const QFont &f)
@@ -87,7 +94,7 @@ void KTModuleWidgetBase::leaveEvent(QEvent *e)
 
 QBoxLayout *KTModuleWidgetBase::boxLayout()
 {
-	return m_container;
+	return d->container;
 }
 
 bool KTModuleWidgetBase::handleProjectResponse(KTProjectResponse *response)

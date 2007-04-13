@@ -25,6 +25,7 @@
 
 #include "ktpathitem.h"
 #include "ktrectitem.h"
+#include "ktlineitem.h"
 #include "ktellipseitem.h"
 #include "ktitemconverter.h"
 #include "ktsvg2qt.h"
@@ -299,20 +300,20 @@ static QGraphicsItem * convert(QGraphicsItem *item, int toType)
 {
 	switch(toType)
 	{
-		case 2: // Path
+		case KTPathItem::Type: // Path
 		{
 			KTPathItem *path = KTItemConverter::convertToPath( item );
 			return path;
 		}
 		break;
-		case 3: // Rect
+		case KTRectItem::Type: // Rect
 		{
 			KTRectItem *rect = KTItemConverter::convertToRect( item );
 
 			return rect;
 		}
 		break;
-		case 4: // Ellipse
+		case KTEllipseItem::Type: // Ellipse
 		{
 			KTEllipseItem *ellipse = KTItemConverter::convertToEllipse( item );
 			return ellipse;
@@ -321,6 +322,11 @@ static QGraphicsItem * convert(QGraphicsItem *item, int toType)
 		case KTProxyItem::Type:
 		{
 			return new KTProxyItem( item );
+		}
+		break;
+		case KTLineItem::Type:
+		{
+			KTLineItem *line = KTItemConverter::convertToLine( item );
 		}
 		break;
 		default:
@@ -353,11 +359,7 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 				QGraphicsItem *item = frame->item(position);
 				if ( item )
 				{
-// 					QDomDocument doc;
-// 					if ( ! doc.setContent( xml ) ) return false;
-// 					int toType = doc.documentElement().attribute( "type").toInt();
-					
-					dFatal() << KTProxyItem::Type << "==" << item->type();
+					dDebug("items") << item->type();
 					
 					if ( toType == item->type() ) return false;
 					

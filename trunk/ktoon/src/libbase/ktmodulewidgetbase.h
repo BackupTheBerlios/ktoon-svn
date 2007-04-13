@@ -52,8 +52,8 @@ class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProject
 		QBoxLayout *boxLayout();
 		
 	private:
-		QBoxLayout *m_container;
-		QObjectList m_childs;
+		struct Private;
+		Private *const d;
 		
 	protected:
 		virtual bool event( QEvent * e );

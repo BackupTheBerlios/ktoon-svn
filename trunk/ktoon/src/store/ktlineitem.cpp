@@ -22,7 +22,7 @@
 #include "ktserializer.h"
 #include <dcore/ddebug.h>
 
-KTLineItem::KTLineItem() : QGraphicsLineItem()
+KTLineItem::KTLineItem(QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsLineItem(parent, scene)
 {
 }
 

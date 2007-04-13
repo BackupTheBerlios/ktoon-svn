@@ -31,7 +31,7 @@
 class STORE_EXPORT KTLineItem : public QGraphicsLineItem, public KTAbstractSerializable
 {
 	public:
-		KTLineItem();
+		KTLineItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
 		~KTLineItem();
 		
 		virtual void fromXml(const QString &xml);

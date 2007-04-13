@@ -51,13 +51,12 @@ struct Select::Private
 	QList<NodeManager*> nodeManagers;
 	QGraphicsView *view;
 	KTProject *project;
-	NodeManager* managerChanged;
-	
+	NodeManager* changedManager;
 };
 
 Select::Select(): d(new Private)
 {
-	d->managerChanged = 0;
+	d->changedManager = 0;
 	setupActions();
 }
 
@@ -105,7 +104,7 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 			if(scene->mouseGrabberItem() == nodeManager->parentItem())
 			{
 				nodeManager->toggleAction();
-				d->managerChanged = nodeManager;
+				d->changedManager = nodeManager;
 				break;
 			}
 			else if(!nodeManager->isPress())
@@ -127,10 +126,10 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
 	
-	if(d->managerChanged)
+	if(d->changedManager)
 	{
-		d->managerChanged->toggleAction();
-		d->managerChanged = 0;
+		d->changedManager->toggleAction();
+		d->changedManager = 0;
 	}
 	
 	if(input->buttons() == Qt::LeftButton && scene->selectedItems().count() > 0)

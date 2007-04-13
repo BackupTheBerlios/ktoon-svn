@@ -124,7 +124,7 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
-	
+	Q_UNUSED(scene);
 	
 	if (currentTool() == tr("Rectangle") )
 	{
@@ -213,7 +213,7 @@ QWidget *GeometricTool::configurator()
 
 void GeometricTool::aboutToChangeScene(KTGraphicsScene *scene)
 {
-	
+	Q_UNUSED(scene);
 }
 
 void GeometricTool::aboutToChangeTool() 

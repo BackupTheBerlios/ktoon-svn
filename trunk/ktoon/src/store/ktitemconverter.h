@@ -25,6 +25,8 @@
 class KTPathItem;
 class KTEllipseItem;
 class KTRectItem;
+class KTLineItem;
+
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -42,7 +44,7 @@ class KTItemConverter
 		static KTPathItem *convertToPath(QGraphicsItem *item);
 		static KTEllipseItem *convertToEllipse(QGraphicsItem *item);
 		static KTRectItem *convertToRect(QGraphicsItem *item);
-		
+		static KTLineItem *convertToLine(QGraphicsItem *item);
 };
 
 #endif
