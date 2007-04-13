@@ -116,6 +116,31 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 		}
 	}
 	
+	QList<QGraphicsItem *> selecteds = scene->selectedItems();
+	selecteds << scene->mouseGrabberItem();
+	
+	foreach(QGraphicsItem *item, selecteds)
+	{
+		if(item && dynamic_cast<KTAbstractSerializable* > (item) )
+		{
+			bool finded = false;
+			foreach(NodeManager *nodeManager, d->nodeManagers)
+			{
+				if(nodeManager->parentItem() == nodeManager->parentItem())
+				{
+					finded = true;
+					break;
+				}
+			}
+			
+			if(!finded )
+			{
+				NodeManager *manager = new NodeManager(item, scene);
+				d->nodeManagers << manager;
+			}
+		}
+	}
+	
 	d->project = scene->scene()->project();
 }
 
@@ -136,6 +161,7 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	{
 		QTimer::singleShot ( 0, this, SLOT(syncNodes()));;
 	}
+	
 }
 
 void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
