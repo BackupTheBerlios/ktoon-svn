@@ -20,6 +20,8 @@
 
 #include "ktproject.h"
 
+#include <QDir>
+
 #include <dcore/ddebug.h>
 
 #include "ktscene.h"
@@ -75,6 +77,9 @@ KTProject::KTProject(QObject *parent) : QObject(parent), d(new Private)
 KTProject::~KTProject()
 {
 	DEND;
+	
+	deleteDataDir();
+	
 	delete d;
 }
 
@@ -104,6 +109,8 @@ void KTProject::clear()
 	d->scenes.clear();
 	
 	d->sceneCounter = 0;
+	
+	deleteDataDir();
 }
 
 /**
@@ -412,6 +419,47 @@ bool KTProject::isOpen()
 	return d->isOpen;
 }
 
+
+bool KTProject::deleteDataDir()
+{
+	if(QFile::exists( dataDir() ) && !d->name.isEmpty() )
+	{
+		QDir dir(dataDir() );
+		
+		dDebug("project") << "Removing " << dir.absolutePath() << "...";
+		
+		if( dir.exists("audio") && dir.exists("video") && dir.exists("images") || dir.exists("project.ktp") )
+		{
+			foreach(QString file, dir.entryList() )
+			{
+				QString absolute = dir.absolutePath() + "/" + file;
+				
+				if( !file.startsWith(".") )
+				{
+					QFileInfo finfo(absolute);
+					
+					if( finfo.isFile() )
+					{
+						QFile::remove(absolute);
+					}
+				}
+			}
+			
+			foreach(QString subdir, dir.entryList() )
+			{
+				if( !subdir.startsWith(".") )
+				{
+					dir.rmdir(subdir);
+				}
+			}
+			
+			dir.rmdir(dir.absolutePath());
+		}
+		return true;
+	}
+	
+	return false;
+}
 
 QString KTProject::dataDir() const
 {
