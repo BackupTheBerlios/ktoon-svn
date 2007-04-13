@@ -72,22 +72,15 @@ class DControlNode : public QObject, public QGraphicsItem
 		void paintLinesToChilds(QPainter * painter);
 		
 	public slots:
-// 		void repaint();
 		void setVisibleChilds(bool visible);
 		void setSeletedChilds(bool select);
 		
 	signals:
-// 		void requestUpdateParent();
 		void showBrothers(bool show);
 		
 	private:
-		int m_index;
-		QGraphicsItem * m_parent;
-		
-		DControlNode *m_left, *m_right, *m_nodeParent;
-		bool m_notChange;
-		DNodeGroup *m_nodeGroup;
-		QGraphicsScene *m_scene;
+		struct Private;
+		Private *const d;
 };
 
 #endif

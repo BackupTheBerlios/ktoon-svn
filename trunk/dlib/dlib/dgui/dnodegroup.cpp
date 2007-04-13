@@ -211,17 +211,29 @@ void DNodeGroup::createNodes(QGraphicsPathItem *pathItem)
 			}
 			else if( (e.type == QPainterPath::LineToElement || e.type == QPainterPath::MoveToElement ) )
 			{
+				DControlNode *node;
 				if(index+1 < path.elementCount())
 				{
+					
 					if( path.elementAt(index+1).type == QPainterPath::CurveToElement )
 					{
-						DControlNode *node = new DControlNode(index, this, path.elementAt(index), pathItem, d->scene);
+						node = new DControlNode(index, this, path.elementAt(index), pathItem, d->scene);
 						node->setRight(new DControlNode(index+1,this, path.elementAt(index+1), pathItem, d->scene));
 						
 						index++;
 						d->nodes << node;
 						d->nodes << node->right();
 					}
+					else
+					{
+						node = new DControlNode(index, this, path.elementAt(index), pathItem, d->scene);
+						d->nodes << node;
+					}
+				}
+				else
+				{
+					node = new DControlNode(index, this, path.elementAt(index), pathItem, d->scene);
+					d->nodes << node;
 				}
 			}
 			index++;
@@ -233,7 +245,7 @@ void DNodeGroup::createNodes(QGraphicsPathItem *pathItem)
 	}
 }
 
-void DNodeGroup::addControlNode(DControlNode* node)
+void DNodeGroup::addControlNode(DControlNode* )
 {
 	
 }
