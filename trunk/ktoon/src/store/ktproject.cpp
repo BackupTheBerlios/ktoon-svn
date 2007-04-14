@@ -438,9 +438,9 @@ bool KTProject::deleteDataDir()
 			dir.remove("project.ktp");
 			dir.remove("library.ktl");
 			
-			foreach(QString scene, dir.entryList(QStringList() << "*.kts" ))
+			foreach(QString scene, dir.entryList(QStringList() << "scene*.kts", QDir::Files ))
 			{
-				QFile::remove(scene);
+				dir.remove(scene);
 			}
 			
 			foreach( QString subdir, QStringList() << "audio" << "video" << "images" )
