@@ -55,30 +55,52 @@ void KTFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionVi
 {
 	Q_ASSERT(index.isValid());
 	
+	KTFramesTable *table = qobject_cast<KTFramesTable *>(index.model()->parent());
+	KTFramesTableItem *item = dynamic_cast<KTFramesTableItem *>(table->itemFromIndex(index));
+	
 	QVariant value;
-
 	QStyleOptionViewItem opt = option;
 	
 	// draw the background color
 	value = index.data( Qt::BackgroundColorRole );
+	
 	if (value.isValid())
 	{
 		painter->save();
-		painter->fillRect(option.rect, value.value<QColor>() );
+		
+		bool sound = table->isSoundLayer(index.row());
+		
+		if( !sound )
+		{
+			painter->fillRect(option.rect, value.value<QColor>() );
+		}
+		else
+		{
+		}
+		
 		painter->restore();
 	}
 	else
 	{
 		painter->save();
 		
-		if ( index.column() % 5 == 0 )
+		bool sound = table->isSoundLayer(index.row());
+		
+		if( !sound )
 		{
-			painter->fillRect(option.rect, Qt::lightGray );
+			if ( index.column() % 5 == 0 )
+			{
+				painter->fillRect(option.rect, Qt::lightGray );
+			}
+			else
+			{
+				painter->fillRect(option.rect, Qt::white );
+			}
 		}
 		else
 		{
-			painter->fillRect(option.rect, Qt::white );
 		}
+		
 		painter->restore();
 	}
 	
@@ -95,13 +117,9 @@ void KTFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionVi
 	
 	// Draw attributes
 	
-	KTFramesTable *table = qobject_cast<KTFramesTable *>(index.model()->parent());
-	
-	KTFramesTableItem *item = dynamic_cast<KTFramesTableItem *>(table->itemFromIndex(index));
-	
 	int offset = option.rect.width() - 2;
 	
-	if ( item )
+	if ( item && index.isValid() )
 	{
 		if(item->isUsed() )
 		{
@@ -131,10 +149,6 @@ void KTFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionVi
 			painter->restore();
 		}
 	}
-	
-// 	painter->drawRect( option.rect.left(), option.rect.bottom() - offset, offset, offset );
-	
-// 	painter->fillRect( option.rect.left(), option.rect.bottom() - offset, offset, offset, Qt::black );
 }
 
 QSize KTFramesTableItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
@@ -270,6 +284,14 @@ void KTFramesTable::setItemSize(int w, int h)
 	d->rectWidth = w;
 	
 	fixSize();
+}
+
+bool KTFramesTable::isSoundLayer(int row)
+{
+	if( row < 0 && row >= d->layers.count() )
+		return false;
+	
+	return d->layers[row].sound;
 }
 
 void KTFramesTable::insertLayer(int pos, const QString &name)

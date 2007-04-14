@@ -61,6 +61,8 @@ class KTFramesTable : public QTableWidget
 		KTFramesTable(QWidget *parent = 0);
 		~KTFramesTable();
 		
+		bool isSoundLayer(int row);
+		
 	public slots:
 		// Layers
 		void insertLayer(int layerPos, const QString &name);
