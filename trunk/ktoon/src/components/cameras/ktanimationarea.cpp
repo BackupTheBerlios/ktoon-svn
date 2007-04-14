@@ -27,6 +27,8 @@
 #include "ktgraphicobject.h"
 #include "ktgraphicsscene.h"
 
+#include "ktsoundlayer.h"
+
 #include <dcore/ddebug.h>
 
 struct KTAnimationArea::Private
@@ -48,6 +50,8 @@ struct KTAnimationArea::Private
 	int currentSceneIndex;
 	
 	int fps;
+	
+	QList<KTSoundLayer *> sounds;
 };
 
 KTAnimationArea::KTAnimationArea(KTProject *project, QWidget *parent) : QFrame(parent), d( new Private )
@@ -125,6 +129,12 @@ void KTAnimationArea::stop()
 {
 	dDebug("camera") << "Stopping";
 	d->timer->stop();
+	
+	foreach(KTSoundLayer *sound, d->sounds)
+	{
+		sound->stop();
+	}
+	
 // 	d->draw = false;
 	d->currentFramePosition = 0;
 // 	d->currentFrame = 0;
@@ -161,8 +171,17 @@ void KTAnimationArea::advance()
 			d->currentFramePosition = 0;
 		}
 		
+		if( d->currentFramePosition == 0 )
+		{
+			foreach(KTSoundLayer *sound, d->sounds)
+			{
+				sound->play();
+			}
+		}
+		
 		if ( d->currentFramePosition < d->photograms.count() )
 		{
+			
 			repaint();
 			d->currentFramePosition++;
 		}
@@ -223,6 +242,13 @@ void KTAnimationArea::render() // TODO: Extend to scenes
 	KTScene *scene = d->project->scene( d->currentSceneIndex );
 	
 	if (!scene) return;
+	
+	d->sounds.clear();
+	
+	foreach(KTSoundLayer *layer, scene->soundLayers() )
+	{
+		d->sounds << layer;
+	}
 	
 	int totalPhotograms = photogramsCount();
 	

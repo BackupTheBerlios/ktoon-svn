@@ -27,6 +27,7 @@
 #include <QStyleOptionGraphicsItem>
 
 #include "ktgraphicobject.h"
+#include "ktsoundlayer.h"
 
 #include "ktitemgroup.h"
 #include "ktprojectloader.h"
@@ -35,6 +36,7 @@
 struct KTScene::Private
 {
 	Layers layers;
+	SoundLayers soundLayers;
 	QString name;
 	bool isLocked;
 	int layerCount;
@@ -96,6 +98,11 @@ Layers KTScene::layers() const
 	return d->layers;
 }
 
+SoundLayers KTScene::soundLayers() const
+{
+	return d->soundLayers;
+}
+
 /**
  * Pone la lista de layers, esta funcion sobreescribe los layers anteriores
  */
@@ -130,6 +137,31 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
 	return layer;
 }
 
+KTSoundLayer *KTScene::createSoundLayer(int position, bool loaded)
+{
+	D_FUNCINFO << position;
+	
+	if ( position < 0 || position > d->soundLayers.count() )
+	{
+		dDebug() << "Error in createLayer";
+		return 0;
+	}
+	
+	KTSoundLayer *layer = new KTSoundLayer(this);
+	
+	d->layerCount++;
+	
+	layer->setLayerName(tr("Sound layer %1").arg(d->layerCount));
+	
+	d->soundLayers.insert( position, layer);
+	
+	if ( loaded )
+	{
+		KTProjectLoader::createSoundLayer( index(), position, layer->layerName(), project() );
+	}
+	
+	return layer;
+}
 
 bool KTScene::removeLayer( int position)
 {
@@ -161,6 +193,18 @@ KTLayer *KTScene::layer(int position)
 	
 	return d->layers[position];
 }
+
+KTSoundLayer *KTScene::soundLayer(int position)
+{
+	if ( position < 0 || position >= d->soundLayers.count() )
+	{
+		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+		return 0;
+	}
+	
+	return d->soundLayers[position];
+}
+
 
 void KTScene::fromXml(const QString &xml )
 {

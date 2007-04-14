@@ -21,6 +21,7 @@
 #include "ktcommandexecutor.h"
 
 #include "ktscene.h"
+#include "ktlayer.h"
 
 #include "ktprojectrequest.h"
 #include "ktrequestbuilder.h"

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,58 +17,30 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTSOUNDLAYER_H
+#define KTSOUNDLAYER_H
 
-#ifndef KTLIBRARYWIDGET_H
-#define KTLIBRARYWIDGET_H
-
-#include <ktmodulewidgetbase.h>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
-#include <QMap>
-#include <QDir>
-
-#include "ktitempreview.h"
-#include <dgui/dimagebutton.h>
-
-#include "ktgctable.h"
-
-class KTLibrary;
+#include <ktlayer.h>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+	@author David Cuadrado <krawek@gmail.com>
 */
-
-class KTLibraryWidget : public KTModuleWidgetBase
+class KTSoundLayer : public KTLayer
 {
-	Q_OBJECT
 	public:
-		KTLibraryWidget(QWidget *parent = 0);
-		~KTLibraryWidget();
+		KTSoundLayer(KTScene *parent);
+		~KTSoundLayer();
 		
-		void setLibrary(const KTLibrary *library);
+		void setFilePath(const QString &filePath);
+		QString filePath() const;
 		
-	protected:
-		virtual void libraryResponse(KTLibraryResponse *response);
-		virtual void frameResponse(KTFrameResponse *response);
+		void play();
+		void stop();
 		
-	private slots:
-		void addFolder(const QString &name);
-		void previewItem(QTreeWidgetItem *, int);
-		void emitSelectedComponent();
-		void removeCurrentGraphic();
-		void renameObject( QTreeWidgetItem* item);
-		
-		
-	public slots:
-		void importBitmap();
-		void importSound();
-		
-	signals:
-		void requestCurrentGraphic();
-	
 	private:
 		struct Private;
 		Private *const d;
+
 };
 
 #endif

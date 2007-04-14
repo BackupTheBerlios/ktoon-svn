@@ -35,7 +35,6 @@ void KTMainWindow::createGUI()
 {
 // 	setDockOptions(QMainWindow::ForceTabbedDocks /*| QMainWindow::AnimatedDocks*/);
 	
-	// TODO: put setWindowIcon in each class
 	m_colorPalette = new KTColorPalette;
 	DToolView *view = addToolView( m_colorPalette, Qt::LeftDockWidgetArea, Drawing );
 	
@@ -57,7 +56,8 @@ void KTMainWindow::createGUI()
 	ui4paintArea( m_penWidget );
 	
 	////////////////////
-	m_libraryWidget = new KTLibraryWidget( m_projectManager->project()->library() );
+	m_libraryWidget = new KTLibraryWidget();
+	m_libraryWidget->setLibrary(m_projectManager->project()->library());
 	
 	view = addToolView( m_libraryWidget, Qt::LeftDockWidgetArea, Drawing );
 	
@@ -110,6 +110,7 @@ void KTMainWindow::createGUI()
 	
 	//////////////////////
 	m_timeLine = new KTTimeLine;
+	m_timeLine->setLibrary(m_projectManager->project()->library());
 	
 	view = addToolView( m_timeLine, Qt::BottomDockWidgetArea, Drawing );
 	

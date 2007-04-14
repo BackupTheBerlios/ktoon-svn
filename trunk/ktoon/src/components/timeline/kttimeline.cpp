@@ -37,6 +37,8 @@
 
 #include "ktlibrary.h"
 
+#define RETURN_IF_NOT_LIBRARY if( !d->library ) return;
+
 struct KTTimeLine::Private
 {
 	Private() : container(0), actionBar(0), library(0) {}

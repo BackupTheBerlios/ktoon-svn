@@ -26,6 +26,7 @@
 
 #include "ktscene.h"
 #include "ktlayer.h"
+#include "ktsoundlayer.h"
 #include "ktframe.h"
 
 #include "ktlibrary.h"
@@ -384,6 +385,8 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
 			break;
 			case KTLibraryObject::Sound:
 			{
+				KTSoundLayer *sound = scene->createSoundLayer(scene->soundLayers().count());
+				sound->setFilePath(object->data().toString());
 			}
 			break;
 		}

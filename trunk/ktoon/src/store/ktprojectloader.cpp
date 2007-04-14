@@ -22,6 +22,7 @@
 #include "ktproject.h"
 
 #include "ktprojectresponse.h"
+#include "ktlibraryobject.h"
 
 KTProjectLoader::KTProjectLoader()
 {
@@ -71,7 +72,17 @@ void KTProjectLoader::createLayer(int scenePosition, int layerPosition, const QS
 	project->emitResponse(&response);
 }
 
-
+void KTProjectLoader::createSoundLayer(int scenePosition, int layerPosition, const QString &name, KTProject *project)
+{
+	KTLibraryResponse response(KTProjectRequest::Library, KTProjectRequest::AddSymbolToProject);
+	
+	response.setSceneIndex(scenePosition);
+	response.setLayerIndex(layerPosition);
+	response.setArg(name);
+	response.setSymbolType(KTLibraryObject::Sound);
+	
+	project->emitResponse(&response);
+}
 
 void KTProjectLoader::createScene(int scenePosition, const QString &name, KTProject *project)
 {

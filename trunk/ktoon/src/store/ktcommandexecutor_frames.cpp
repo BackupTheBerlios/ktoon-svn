@@ -24,6 +24,8 @@
 #include "ktscene.h"
 #include "ktprojectrequest.h"
 #include "ktrequestbuilder.h"
+#include "ktlayer.h"
+#include "ktframe.h"
 
 #include "ktprojectresponse.h"
 

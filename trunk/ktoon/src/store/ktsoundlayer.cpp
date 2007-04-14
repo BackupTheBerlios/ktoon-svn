@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,57 +18,49 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTLIBRARYWIDGET_H
-#define KTLIBRARYWIDGET_H
+#include "ktsoundlayer.h"
 
-#include <ktmodulewidgetbase.h>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
-#include <QMap>
-#include <QDir>
+#include <dsound/daudioplayer.h>
 
-#include "ktitempreview.h"
-#include <dgui/dimagebutton.h>
-
-#include "ktgctable.h"
-
-class KTLibrary;
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class KTLibraryWidget : public KTModuleWidgetBase
+struct KTSoundLayer::Private
 {
-	Q_OBJECT
-	public:
-		KTLibraryWidget(QWidget *parent = 0);
-		~KTLibraryWidget();
-		
-		void setLibrary(const KTLibrary *library);
-		
-	protected:
-		virtual void libraryResponse(KTLibraryResponse *response);
-		virtual void frameResponse(KTFrameResponse *response);
-		
-	private slots:
-		void addFolder(const QString &name);
-		void previewItem(QTreeWidgetItem *, int);
-		void emitSelectedComponent();
-		void removeCurrentGraphic();
-		void renameObject( QTreeWidgetItem* item);
-		
-		
-	public slots:
-		void importBitmap();
-		void importSound();
-		
-	signals:
-		void requestCurrentGraphic();
+	QString filePath;
 	
-	private:
-		struct Private;
-		Private *const d;
+	int playerId;
 };
 
-#endif
+KTSoundLayer::KTSoundLayer(KTScene *parent)
+ : KTLayer(parent), d(new Private)
+{
+}
+
+
+KTSoundLayer::~KTSoundLayer()
+{
+	delete d;
+}
+
+void KTSoundLayer::setFilePath(const QString &filePath)
+{
+	d->filePath = filePath;
+	
+	d->playerId = DAudioPlayer::instance()->load(filePath);
+}
+
+QString KTSoundLayer::filePath() const
+{
+	return d->filePath;
+}
+
+void KTSoundLayer::play()
+{
+	DAudioPlayer::instance()->setCurrentPlayer(d->playerId);
+	DAudioPlayer::instance()->play();
+}
+
+void KTSoundLayer::stop()
+{
+	DAudioPlayer::instance()->setCurrentPlayer(d->playerId);
+	DAudioPlayer::instance()->stop();
+}
+

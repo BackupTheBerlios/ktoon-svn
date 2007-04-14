@@ -22,7 +22,6 @@
 #define KTSCENEMANAGER_H
 
 #include "ktabstractserializable.h"
-#include "ktlayer.h"
 #include "ktproject.h"
 
 #include <QDomDocument>
@@ -35,8 +34,12 @@
 class QGraphicsItem;
 class QPainter;
 class QStyleOptionGraphicsItem;
+class KTLayer;
+class KTSoundLayer;
+class KTGraphicObject;
 
 typedef QVector<KTLayer *> Layers;
+typedef QVector<KTSoundLayer *> SoundLayers;
 
 /**
  * @brief Esta clase representa una escena
@@ -86,8 +89,12 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
 		 */
 		Layers layers() const;
 		
+		SoundLayers soundLayers() const;
+		
 		
 		KTLayer *layer(int position);
+		
+		KTSoundLayer *soundLayer(int position);
 		
 		void setLayers(const Layers &);
 		
@@ -100,6 +107,8 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
 		 * Crea una layer, si addToEnd es verdadero el layer se creara al final, sino se creara despues del layer actual
 		 */
 		KTLayer *createLayer(int position, bool loaded = false);
+		
+		KTSoundLayer *createSoundLayer(int position, bool loaded = false);
 		
 		/**
 		 * Mueve el layer a la posicicion indicada
@@ -125,3 +134,4 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
 };
 
 #endif
+

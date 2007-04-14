@@ -38,6 +38,7 @@
 #include "kttweenerstep.h"
 #include "ktitemtweener.h"
 #include "ktgraphicobject.h"
+#include "ktlayer.h"
 
 #include <dcore/ddebug.h>
 
