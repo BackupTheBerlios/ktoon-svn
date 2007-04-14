@@ -23,6 +23,8 @@
 
 #include <QString>
 
+#include "ktlibraryobject.h"
+
 class KTProject;
 
 /**
@@ -40,6 +42,8 @@ class KTProjectLoader
 		static void createSoundLayer(int scenePosition, int layerPosition, const QString &name, KTProject *project);
 		
 		static void createScene(int scenePosition, const QString &name, KTProject *project);
+		
+		static void createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, KTProject *project);
 };
 
 #endif

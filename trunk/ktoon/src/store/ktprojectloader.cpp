@@ -93,5 +93,15 @@ void KTProjectLoader::createScene(int scenePosition, const QString &name, KTProj
 	project->emitResponse(&response);
 }
 
+void KTProjectLoader::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, KTProject *project)
+{
+	KTLibraryResponse response(KTProjectRequest::Library, KTProjectRequest::Add);
+	
+	response.setArg(name);
+	response.setData(data);
+	response.setSymbolType(type);
+	
+	project->emitResponse(&response);
+}
 
 

@@ -23,8 +23,10 @@
 
 #include <QObject>
 #include <QHash>
+#include <QByteArray>
 
 #include "ktabstractserializable.h"
+#include "ktlibraryobject.h"
 #include "ktglobal_store.h"
 
 class KTProject;
@@ -47,6 +49,8 @@ class STORE_EXPORT KTLibraryFolder : public QObject, public KTAbstractSerializab
 		
 		void setId(const QString &id);
 		QString id() const;
+		
+		KTLibraryObject *createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, bool loaded = false);
 		
 		virtual bool addObject(KTLibraryObject *object, const QString &id);
 		virtual bool removeObject(const QString &id);

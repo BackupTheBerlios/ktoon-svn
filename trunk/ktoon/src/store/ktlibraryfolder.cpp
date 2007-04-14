@@ -23,6 +23,7 @@
 
 #include <dcore/ddebug.h>
 
+#include "ktprojectloader.h"
 #include "ktproject.h"
 
 struct KTLibraryFolder::Private
@@ -44,6 +45,28 @@ KTLibraryFolder::KTLibraryFolder(const QString &id, KTProject *project, QObject 
 KTLibraryFolder::~KTLibraryFolder()
 {
 	delete d;
+}
+
+KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, bool loaded)
+{
+	KTLibraryObject *object = new KTLibraryObject(this);
+	object->setType(type);
+	
+	if(!object->loadData(data))
+	{
+		delete object;
+		return 0;
+	}
+	
+	bool ret = addObject( object, name);
+	object->saveData(d->project->dataDir());
+	
+	if( loaded && ret )
+	{
+		KTProjectLoader::createSymbol(type, name, data, d->project);
+	}
+	
+	return object;
 }
 
 bool KTLibraryFolder::addObject(KTLibraryObject *object, const QString &id)
@@ -174,6 +197,17 @@ void KTLibraryFolder::fromXml(const QString &xml )
 				object->loadDataFromPath(d->project->dataDir());
 				
 				addObject(object, object->symbolName() );
+				
+				QDomElement objectData = objectDocument.documentElement().firstChild().toElement();
+				
+				QString data;
+				if( !objectData.isNull())
+				{
+					QTextStream ts(&data);
+					ts << objectData;
+				}
+				
+				KTProjectLoader::createSymbol(KTLibraryObject::Type(object->type()), object->symbolName(), data.toLocal8Bit(), d->project);
 			}
 			else if( e.tagName() == "folder" )
 			{

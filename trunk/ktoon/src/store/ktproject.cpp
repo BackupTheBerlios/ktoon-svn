@@ -333,17 +333,7 @@ bool KTProject::createSymbol(int type, const QString &name, const QByteArray &da
 {
 	if( !d->isOpen ) return false;
 	
-	KTLibraryObject *object = new KTLibraryObject(d->library);
-	object->setType(KTLibraryObject::Type(type));
-	
-	if ( !object->loadData(data ) )
-		return false;
-	
-	d->library->addObject( object, name);
-	object->saveData(this->dataDir());
-	
-	
-	return true;
+	return d->library->createSymbol(KTLibraryObject::Type(type), name, data) != 0;
 }
 
 bool KTProject::removeSymbol(const QString &name)
