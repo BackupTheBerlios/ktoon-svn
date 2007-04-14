@@ -330,6 +330,8 @@ Scenes KTProject::scenes() const
 
 bool KTProject::createSymbol(int type, const QString &name, const QByteArray &data)
 {
+	if( !d->isOpen ) return false;
+	
 	KTLibraryObject *object = new KTLibraryObject(d->library);
 	object->setType(KTLibraryObject::Type(type));
 	
@@ -426,34 +428,46 @@ bool KTProject::deleteDataDir()
 	{
 		QDir dir(dataDir() );
 		
-		dDebug("project") << "Removing " << dir.absolutePath() << "...";
-		
 		if( dir.exists("audio") && dir.exists("video") && dir.exists("images") || dir.exists("project.ktp") )
 		{
-			foreach(QString file, dir.entryList() )
+			dDebug("project") << "Removing " << dir.absolutePath() << "...";
+			
+			dir.remove("project.ktp");
+			dir.remove("library.ktl");
+			
+			foreach(QString scene, dir.entryList(QStringList() << "*.kts" ))
 			{
-				QString absolute = dir.absolutePath() + "/" + file;
-				
-				if( !file.startsWith(".") )
-				{
-					QFileInfo finfo(absolute);
-					
-					if( finfo.isFile() )
-					{
-						QFile::remove(absolute);
-					}
-				}
+				QFile::remove(scene);
 			}
 			
-			foreach(QString subdir, dir.entryList() )
+			foreach( QString subdir, QStringList() << "audio" << "video" << "images" )
 			{
-				if( !subdir.startsWith(".") )
+				if( dir.exists(subdir) )
 				{
+					dir.cd(subdir);
+					foreach(QString file, dir.entryList() )
+					{
+						QString absolute = dir.absolutePath() + "/" + file;
+						
+						if( !file.startsWith(".") )
+						{
+							QFileInfo finfo(absolute);
+							
+							if( finfo.isFile() )
+							{
+								QFile::remove(absolute);
+							}
+						}
+					}
+					dir.cdUp();
 					dir.rmdir(subdir);
 				}
 			}
 			
-			dir.rmdir(dir.absolutePath());
+			if( ! dir.rmdir(dir.absolutePath()) )
+			{
+				dError("project") << "Cannot remove project data directory!";
+			}
 		}
 		return true;
 	}

@@ -27,7 +27,7 @@
 
 bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 {
-	if ( m_project->createSymbol( response->symtype(), response->arg().toString(), response->data() ) )
+	if ( m_project->createSymbol( response->symbolType(), response->arg().toString(), response->data() ) )
 	{
 		emit responsed(response);
 		

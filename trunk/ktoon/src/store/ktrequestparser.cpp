@@ -78,7 +78,7 @@ bool KTRequestParser::startTag(const QString& qname, const QXmlAttributes& atts)
 	}
 	else if ( qname == "symbol" )
 	{
-		static_cast<KTLibraryResponse*>(d->response)->setSymtype(atts.value("type").toInt());
+		static_cast<KTLibraryResponse*>(d->response)->setSymbolType(atts.value("type").toInt());
 	}
 	else if ( qname == "action" )
 	{

@@ -116,11 +116,11 @@ class KTLibraryResponse : public KTFrameResponse
 		KTLibraryResponse(int part, int action);
 		~KTLibraryResponse();
 		
-		void setSymtype(int symtype);
-		int symtype() const;
+		void setSymbolType(int symtype);
+		int symbolType() const;
 		
 	private:
-		int m_symtype;
+		int m_symbolType;
 };
 
 class KTProjectResponseFactory

@@ -31,6 +31,7 @@ class KTLayerManager;
 class KTFramesTable;
 class KTProjectActionBar;
 class KTFramesTableItem;
+class KTLibrary;
 
 /**
  * @author David Cuadrado \<krawek@toonka.com\>
@@ -43,6 +44,8 @@ class KTTimeLine : public KTModuleWidgetBase
 		KTTimeLine(QWidget *parent = 0);
 		~KTTimeLine();
 		void closeAllScenes();
+		
+		void setLibrary(const KTLibrary *library);
 		
 	private:
 		KTLayerManager *layerManager(int sceneIndex);

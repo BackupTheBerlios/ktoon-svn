@@ -47,7 +47,9 @@ struct KTLibraryWidget::Private
 {
 	Private()
 	{
-		currentFrame.frame = -1;
+		currentFrame.frame = 0;
+		currentFrame.layer = 0;
+		currentFrame.scene = 0;
 	}
 	
 	const KTLibrary *library;
@@ -293,7 +295,7 @@ void KTLibraryWidget::emitSelectedComponent()
 	
 	QString symKey = d->libraryTree->currentItem()->text(0);
 	
-	KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::AddSymbolToProject, symKey, 0, 0, d->currentFrame.scene, d->currentFrame.layer, d->currentFrame.frame);
+	KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::AddSymbolToProject, symKey, KTLibraryObject::Type(d->libraryTree->currentItem()->data(0, 3216).toInt()), 0, d->currentFrame.scene, d->currentFrame.layer, d->currentFrame.frame);
 	
 	emit requestTriggered( &request);
 }
@@ -303,7 +305,7 @@ void KTLibraryWidget::removeCurrentGraphic()
 	if ( !d->libraryTree->currentItem() ) return;
 	QString symKey = d->libraryTree->currentItem()->text(0);
 	
-	KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Remove, symKey, 0, 0 );
+	KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Remove, symKey, KTLibraryObject::Type(d->libraryTree->currentItem()->data(0, 3216).toInt()), 0 );
 	
 	emit requestTriggered( &request );
 	
@@ -398,7 +400,7 @@ void KTLibraryWidget::importBitmap()
 		QByteArray data = f.readAll();
 		f.close();
 		
-		KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName, data, KTLibraryObject::Image);
+		KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName, KTLibraryObject::Image, data);
 		
 		emit requestTriggered(&request);
 	}
@@ -424,7 +426,7 @@ void KTLibraryWidget::importSound()
 		QByteArray data = f.readAll();
 		f.close();
 		
-		KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName, data, KTLibraryObject::Sound);
+		KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName, KTLibraryObject::Sound, data);
 		
 		emit requestTriggered(&request);
 	}
@@ -446,6 +448,8 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 			
 			QTreeWidgetItem *item = new QTreeWidgetItem(d->libraryTree);
 			item->setText(0, key);
+			
+			item->setData(0, 3216, obj->type());
 			
 			if( obj )
 			{

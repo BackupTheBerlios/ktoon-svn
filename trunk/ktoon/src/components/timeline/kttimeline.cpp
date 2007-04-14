@@ -26,6 +26,7 @@
 #include <dcore/ddebug.h>
 
 #include "ktprojectrequest.h"
+#include "ktlibraryobject.h"
 
 #include "ktframestable.h"
 #include "ktlayermanager.h"
@@ -34,12 +35,16 @@
 
 #include "ktrequestbuilder.h"
 
+#include "ktlibrary.h"
+
 struct KTTimeLine::Private
 {
-	Private() : container(0), actionBar(0) {}
+	Private() : container(0), actionBar(0), library(0) {}
 	
 	DTabWidget *container;
 	KTProjectActionBar *actionBar;
+	
+	const KTLibrary *library;
 };
 
 KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine"), d(new Private)
@@ -142,6 +147,10 @@ void KTTimeLine::closeAllScenes()
 	}
 }
 
+void KTTimeLine::setLibrary(const KTLibrary *library)
+{
+	d->library = library;
+}
 
 void KTTimeLine::sceneResponse(KTSceneResponse *response)
 {
@@ -300,13 +309,13 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
 
 void KTTimeLine::libraryResponse(KTLibraryResponse *response)
 {
-	D_FUNCINFOX("timeline") << response->symtype();
+	D_FUNCINFOX("timeline") << response->symbolType();
 	
 	if(response->action() == KTProjectRequest::AddSymbolToProject )
 	{
-		switch(response->symtype())
+		switch(response->symbolType())
 		{
-			case 0:
+			case KTLibraryObject::Sound:
 			{
 				KTLayerManager *layerManager = this->layerManager(response->sceneIndex());
 				if(layerManager)
@@ -317,7 +326,7 @@ void KTTimeLine::libraryResponse(KTLibraryResponse *response)
 					KTFramesTable *framesTable = this->framesTable( response->sceneIndex() );
 					if( framesTable )
 					{
-						framesTable->insertLayer(response->layerIndex()+1, response->arg().toString() );
+						framesTable->insertSoundLayer(response->layerIndex()+1, response->arg().toString() );
 						framesTable->insertFrame( response->layerIndex()+1,"" );
 					}
 				}
@@ -325,8 +334,6 @@ void KTTimeLine::libraryResponse(KTLibraryResponse *response)
 			break;
 		};
 	}
-	
-	
 }
 
 void KTTimeLine::requestCommand(int action)

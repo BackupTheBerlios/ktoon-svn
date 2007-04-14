@@ -225,6 +225,8 @@ void KTLibraryObject::saveData(const QString &dataDir)
 			}
 			
 			QFile::copy(QString(d->data.toString()), saved+d->symbolName);
+			QFile::remove(QString(d->data.toString()));
+			
 			d->data = saved+d->symbolName;
 		}
 		break;

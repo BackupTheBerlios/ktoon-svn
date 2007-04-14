@@ -25,6 +25,8 @@
 #include <QDomDocument>
 #include <QVariant>
 
+#include "ktlibraryobject.h"
+
 #include "ktglobal_store.h"
 
 class KTProjectRequest;
@@ -48,7 +50,7 @@ class STORE_EXPORT KTRequestBuilder
 		
 		static KTProjectRequest createSceneRequest(int sceneIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
 		
-		static KTProjectRequest createLibraryRequest(int actionId, const QVariant &arg, const QByteArray &data = QByteArray(), int type = 0, int scene = -1, int layer = -1, int frame = -1  );
+		static KTProjectRequest createLibraryRequest(int actionId, const QVariant &arg, KTLibraryObject::Type type, const QByteArray &data, int scene = -1, int layer = -1, int frame = -1  );
 		
 		static KTProjectRequest fromResponse(KTProjectResponse *response);
 		

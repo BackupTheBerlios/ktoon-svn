@@ -255,7 +255,7 @@ void KTItemResponse::setItemIndex(int index)
 	m_itemIndex = index;
 }
 
-KTLibraryResponse::KTLibraryResponse(int part, int action) : KTFrameResponse(part, action), m_symtype(-1)
+KTLibraryResponse::KTLibraryResponse(int part, int action) : KTFrameResponse(part, action), m_symbolType(-1)
 {
 }
 
@@ -263,14 +263,14 @@ KTLibraryResponse::~KTLibraryResponse()
 {
 }
 
-void KTLibraryResponse::setSymtype(int symtype)
+void KTLibraryResponse::setSymbolType(int symtype)
 {
-	m_symtype = symtype;
+	m_symbolType = symtype;
 }
 
-int KTLibraryResponse::symtype() const
+int KTLibraryResponse::symbolType() const
 {
-	return m_symtype;
+	return m_symbolType;
 }
 
 

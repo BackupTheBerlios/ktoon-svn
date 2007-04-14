@@ -108,14 +108,14 @@ void KTFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionVi
 			painter->save();
 			painter->setBrush(Qt::black);
 			
-			if( item->isSound() )
+			if( !item->isSound() )
 			{
 				painter->drawEllipse( option.rect.left(), option.rect.bottom() - offset, offset, offset);
 			}
 			else
 			{
 				painter->setBrush(Qt::blue);
-				painter->drawEllipse( option.rect.left(), option.rect.bottom() - offset, offset, offset);
+				painter->drawRect( option.rect.left(), option.rect.bottom() - offset, offset, offset);
 			}
 			
 			painter->restore();
@@ -180,7 +180,13 @@ bool KTFramesTableItem::isLocked()
 
 bool KTFramesTableItem::isSound()
 {
-	return data(IsSound).toBool();
+	QVariant data = this->data(IsSound);
+	
+	if( data.canConvert<bool>() )
+	{
+		return data.toBool();
+	}
+	return false;
 }
 
 //// KTFramesTable
@@ -189,7 +195,7 @@ struct KTFramesTable::Private
 {
 	struct LayerItem
 	{
-		LayerItem() : lastItem(-1) {};
+		LayerItem() : lastItem(-1), sound(false) {};
 		int lastItem;
 		bool sound;
 	};
@@ -271,6 +277,7 @@ void KTFramesTable::insertLayer(int pos, const QString &name)
 	insertRow( pos );
 	
 	Private::LayerItem layer;
+	layer.sound = false;
 	d->layers.insert(pos, layer);
 	
 // 	selectCell( pos, 0 );
@@ -367,12 +374,7 @@ void KTFramesTable::insertFrame(int layerPos, const QString &name)
 	}
 	
 	setAttribute( layerPos, d->layers[layerPos].lastItem, KTFramesTableItem::IsUsed, true);
-	if( d->layers[layerPos].sound )
-	{
-		setAttribute( layerPos, d->layers[layerPos].lastItem, KTFramesTableItem::IsSound, true);
-	}
-	
-	
+	setAttribute( layerPos, d->layers[layerPos].lastItem, KTFramesTableItem::IsSound, d->layers[layerPos].sound);
 	
 	viewport()->update();
 }

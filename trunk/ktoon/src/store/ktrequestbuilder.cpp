@@ -160,7 +160,7 @@ KTProjectRequest KTRequestBuilder::createSceneRequest(int sceneIndex, int action
 	return KTProjectRequest(doc.toString(0));
 }
 
-KTProjectRequest KTRequestBuilder::createLibraryRequest(int actionId, const QVariant &arg, const QByteArray &data, int type, int sceneIndex, int layerIndex, int frameIndex)
+KTProjectRequest KTRequestBuilder::createLibraryRequest(int actionId, const QVariant &arg, KTLibraryObject::Type type, const QByteArray &data, int sceneIndex, int layerIndex, int frameIndex)
 {
 	QDomDocument doc;
 	
@@ -243,7 +243,7 @@ KTProjectRequest KTRequestBuilder::fromResponse(KTProjectResponse *response)
 		break;
 		case KTProjectRequest::Library:
 		{
-			request = KTRequestBuilder::createLibraryRequest( response->action(), response->arg().toString(), response->data(), static_cast<KTLibraryResponse*>(response)->symtype(), static_cast<KTLibraryResponse*>(response)->sceneIndex(), static_cast<KTLibraryResponse*>(response)->layerIndex(), static_cast<KTLibraryResponse*>(response)->frameIndex() );
+			request = KTRequestBuilder::createLibraryRequest( response->action(), response->arg().toString(), KTLibraryObject::Type(static_cast<KTLibraryResponse*>(response)->symbolType()), response->data(), static_cast<KTLibraryResponse*>(response)->sceneIndex(), static_cast<KTLibraryResponse*>(response)->layerIndex(), static_cast<KTLibraryResponse*>(response)->frameIndex() );
 		}
 		break;
 		default:

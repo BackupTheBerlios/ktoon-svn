@@ -469,7 +469,7 @@ void KTPaintArea::addSelectedItemsToLibrary()
 			QDomDocument doc;
 			doc.appendChild(itemSerializable->toXml(doc));
 			
-			KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,  doc.toString().toLocal8Bit(), KTLibraryObject::Item);
+			KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName, KTLibraryObject::Item, doc.toString().toLocal8Bit());
 			
 			emit requestTriggered(&request);
 		}
