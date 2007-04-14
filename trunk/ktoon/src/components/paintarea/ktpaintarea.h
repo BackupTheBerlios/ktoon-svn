@@ -44,7 +44,7 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
 {
 	Q_OBJECT;
 	public:
-		KTPaintArea(KTProject *project, QWidget * parent = 0);
+		KTPaintArea(const KTProject *project, QWidget * parent = 0);
 		~KTPaintArea();
 		
 		void setCurrentScene(int index);

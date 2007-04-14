@@ -36,7 +36,7 @@ struct KTAnimationArea::Private
 	QFrame *container;
 	QImage renderCamera;
 	
-	KTProject *project;
+	const KTProject *project;
 	
 	bool draw, ciclicAnimation;
 	
@@ -54,7 +54,7 @@ struct KTAnimationArea::Private
 	QList<KTSoundLayer *> sounds;
 };
 
-KTAnimationArea::KTAnimationArea(KTProject *project, QWidget *parent) : QFrame(parent), d( new Private )
+KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QFrame(parent), d( new Private )
 {
 	d->project = project;
 	

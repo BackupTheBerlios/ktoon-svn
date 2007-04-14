@@ -27,6 +27,8 @@
 
 #include <cstdio>
 
+#include "ktlayer.h"
+
 #ifdef HAVE_MING
 #include <mingpp.h>
 #endif

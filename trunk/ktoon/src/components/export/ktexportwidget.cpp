@@ -36,7 +36,7 @@
 #include <dcore/ddebug.h>
 
 
-KTExportWidget::KTExportWidget(const KTProject *manager, QWidget *parent) : KTModuleWidgetBase(parent), m_manager(manager), m_currentExporter(0), m_currentFormat(KTExportInterface::NONE)
+KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KTModuleWidgetBase(parent), m_project(project), m_currentExporter(0), m_currentFormat(KTExportInterface::NONE)
 {
 	DINIT;
 	setWindowTitle(tr("E&xport"));
@@ -293,7 +293,7 @@ void KTExportWidget::exportIt()
 // 		
 // 		if ( scenes.count() > 0)
 // 		{
-// 			m_currentExporter->exportToFormat( file, scenes, m_currentFormat, m_manager->documentSize() );
+// 			m_currentExporter->exportToFormat( file, scenes, m_currentFormat, m_project->documentSize() );
 // 		}
 	}
 	else
@@ -304,7 +304,7 @@ void KTExportWidget::exportIt()
 
 // // QList<KTScene *> KTExportWidget::scenesToExport()
 // // {
-// // 	KTDocument *currentDocument = m_manager->currentDocument();
+// // 	KTDocument *currentDocument = m_project->currentDocument();
 // // 	
 // // 	if (!currentDocument) return QList<KTScene *>();
 // // 	

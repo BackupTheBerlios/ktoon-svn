@@ -26,12 +26,13 @@
 #include "ffmpegmanager.h"
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado \<krawek@toonka.com\>
 */
 class FFMpegPlugin : public KTExportPluginObject, public KTExportInterface
 {
 	Q_OBJECT;
 	Q_INTERFACES(KTExportInterface);
+	
 	public:
 		FFMpegPlugin();
 		virtual ~FFMpegPlugin();

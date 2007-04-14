@@ -27,6 +27,7 @@
 #include <QMatrix>
 
 #include "ktscene.h"
+#include "ktlayer.h"
 #include "ktrequestbuilder.h"
 
 #include <dcore/ddebug.h>

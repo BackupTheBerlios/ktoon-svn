@@ -27,6 +27,7 @@
 #include <QKeyEvent>
 
 #include <ktscene.h>
+#include <ktlayer.h>
 
 #include "ktgraphicobject.h"
 #include "ktitemgroup.h"

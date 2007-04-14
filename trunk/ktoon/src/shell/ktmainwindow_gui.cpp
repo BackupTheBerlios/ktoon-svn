@@ -130,16 +130,11 @@ void KTMainWindow::createGUI()
 	
 	//////////////
 	
-#if 0
-	// FIXME FIXME FIXME
-	KTExportWidget *m_exportWidget = new KTExportWidget(m_projectManager, this);
+// 	KTExportWidget *m_exportWidget = new KTExportWidget(m_projectManager->project(), this);
+// 	addToolView(m_exportWidget, Qt::BottomDockWidgetArea, Drawing );
+// 	connectToDisplays(m_exportWidget);
 	
-	toolWindow(DiDockWidget::Bottom)->addWidget(tr("Export"), m_exportWidget);
-	
-	connectToDisplays(m_exportWidget);
-#endif
 	//////////////
-	
 	
 	/////////////////////
 	

@@ -40,7 +40,7 @@ class KTExportWidget : public KTModuleWidgetBase
 {
 	Q_OBJECT
 	public:
-		KTExportWidget(const KTProject *manager, QWidget *parent = 0);
+		KTExportWidget(const KTProject *project, QWidget *parent = 0);
 		~KTExportWidget();
 		void addFormats(KTExportInterface::Formats formats);
 		
@@ -75,7 +75,7 @@ class KTExportWidget : public KTModuleWidgetBase
 	private:
 		QButtonGroup *m_buttons;
 		
-		const KTProject *m_manager;
+		const KTProject *m_project;
 		
 		QListWidget *m_exporterList;
 		QListWidget *m_formatList;

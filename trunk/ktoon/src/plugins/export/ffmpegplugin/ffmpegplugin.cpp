@@ -28,6 +28,8 @@
 
 #include <cstdio>
 
+#include "ktlayer.h"
+
 FFMpegPlugin::FFMpegPlugin()
 {
 }

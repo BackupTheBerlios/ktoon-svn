@@ -46,7 +46,7 @@
 #include "ktrequestbuilder.h"
 #include "ktprojectrequest.h"
 #include "ktscene.h"
-
+#include "ktlayer.h"
 
 
 struct TweenerTranslate::Private

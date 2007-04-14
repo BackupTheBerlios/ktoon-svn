@@ -62,14 +62,14 @@
 
 struct KTPaintArea::Private
 {
-	KTProject *project;
+	const KTProject *project;
 	int currentSceneIndex;
 	QStringList copiesXml;
 };
 
 
 
-KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), d(new Private)
+KTPaintArea::KTPaintArea(const KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), d(new Private)
 {
 	d->project = project;
 	d->currentSceneIndex = 0;

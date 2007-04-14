@@ -38,7 +38,7 @@ class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectResp
 {
 	Q_OBJECT
 	public:
-		KTAnimationArea(KTProject *project, QWidget *parent = 0);
+		KTAnimationArea(const KTProject *project, QWidget *parent = 0);
 		~KTAnimationArea();
 		
 		QSize sizeHint() const;

@@ -26,6 +26,8 @@
 #include <QImage>
 #include <QPainter>
 
+#include "ktlayer.h"
+
 SmilExportPlugin::SmilExportPlugin()
 {
 }

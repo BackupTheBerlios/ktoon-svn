@@ -31,6 +31,7 @@
 
 #include "ktgraphicalgorithm.h"
 #include "ktscene.h"
+#include "ktlayer.h"
 
 #include <QGraphicsView>
 #include "ktinputdeviceinformation.h"
@@ -38,7 +39,6 @@
 
 #include "nodemanager.h"
 #include "ktserializer.h"
-
 
 #include "ktrequestbuilder.h"
 #include "ktprojectresponse.h"

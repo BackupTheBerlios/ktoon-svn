@@ -30,6 +30,7 @@
 
 #include "ktgraphicalgorithm.h"
 #include "ktscene.h"
+#include "ktlayer.h"
 #include "ktserializer.h"
 
 #include <QGraphicsView>

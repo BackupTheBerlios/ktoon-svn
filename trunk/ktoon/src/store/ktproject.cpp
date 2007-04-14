@@ -229,7 +229,7 @@ bool KTProject::moveScene(int position, int newPosition)
 	return true;
 }
 
-KTScene *KTProject::scene(int position)
+KTScene *KTProject::scene(int position) const
 {
 	D_FUNCINFOX("project")<< position;
 	if( position < 0 || position >= d->scenes.count() )
