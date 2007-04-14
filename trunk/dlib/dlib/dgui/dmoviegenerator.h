@@ -18,36 +18,47 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DSWFGENERATOR_H
-#define DSWFGENERATOR_H
+#ifndef DMOVIEGENERATOR_H
+#define DMOVIEGENERATOR_H
 
-#include <QPaintDevice>
+#include <QImage>
 
 #include "dgui/dmoviegeneratorinterface.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DSwfGenerator : public QPaintDevice, public DMovieGeneratorInterface
+class DMovieGenerator : public QImage, public DMovieGeneratorInterface
 {
 	public:
-		DSwfGenerator();
-		virtual ~DSwfGenerator();
+		enum Format
+		{
+			NONE = 0,
+			SWF = 1<<0,
+			MPEG = 1<<1,
+			AVI = 1<<2,
+			RM = 1 << 3,
+			ASF = 1 << 5,
+			MOV = 1 << 6,
+			GIF = 1 << 7,
+			PNG = 1 << 8,
+			JPEG = 1 << 9,
+			SMIL = 1 << 10
+		};
+		DMovieGenerator( int width, int height);
+		virtual ~DMovieGenerator();
 		
-		QPaintEngine *paintEngine() const;
 		void nextFrame();
-		
-		void reset();
+		virtual void reset();
 		
 	protected:
-		bool begin();
-		void end();
+		virtual bool begin();
+		virtual void end();
 		
-		void __saveMovie(const QString &filename);
+		virtual void handle(const QImage &image) = 0;
 		
-	private:
-		struct Private;
-		Private *const d;
 };
 
 #endif
+
+

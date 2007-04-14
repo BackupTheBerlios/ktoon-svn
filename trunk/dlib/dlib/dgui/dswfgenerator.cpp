@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
+ *   Copyright (C) 2007 by David Cuadrado   *
  *   krawek@gmail.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -46,6 +46,7 @@ class DMingPaintEngine : public QPaintEngine
 		
 	public:
 		void nextFrame();
+		void clearFrame();
 		SWFDisplayItem *addToFrame(SWFBlock *item);
 		void save(const QString &filePath);
 		
@@ -233,7 +234,10 @@ SWFDisplayItem *DMingPaintEngine::addToFrame(SWFBlock *shape)
 void DMingPaintEngine::nextFrame()
 {
 	m_movie->nextFrame();
-	
+}
+
+void DMingPaintEngine::clearFrame()
+{
 	foreach(SWFDisplayItem *item, m_currentFrame)
 	{
 		m_movie->remove(item);
@@ -293,7 +297,7 @@ DSwfGenerator::DSwfGenerator()
 {
 	d->paintEngine = new DMingPaintEngine;
 	
-	nextFrame();
+	begin();
 }
 
 
@@ -308,12 +312,27 @@ QPaintEngine *DSwfGenerator::paintEngine() const
 	return d->paintEngine;
 }
 
+bool DSwfGenerator::begin()
+{
+	nextFrame();
+	return true;
+}
+
+void DSwfGenerator::reset()
+{
+	d->paintEngine->clearFrame();
+}
+
+void DSwfGenerator::end()
+{
+}
+
 void DSwfGenerator::nextFrame()
 {
 	d->paintEngine->nextFrame();
 }
 
-void DSwfGenerator::save(const QString &filename)
+void DSwfGenerator::__saveMovie(const QString &filename)
 {
 	d->paintEngine->save(filename);
 }

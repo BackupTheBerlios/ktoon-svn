@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,3 +17,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#ifndef DMOVIEGENERATORINTERFACE_H
+#define DMOVIEGENERATORINTERFACE_H
+
+/**
+ * @author David Cuadrado \<krawek@gmail.com\>
+*/
+class DMovieGeneratorInterface
+{
+	public:
+		virtual ~DMovieGeneratorInterface() {}
+		
+		virtual void nextFrame() = 0;
+		virtual void reset() = 0;
+		
+		void saveMovie(const QString &filename)
+		{
+			end();
+			__saveMovie(filename);
+		};
+		
+	protected:
+		virtual void __saveMovie(const QString &filename) = 0;
+		virtual bool begin() = 0;
+		virtual void end() = 0;
+};
+
+#endif
+
+

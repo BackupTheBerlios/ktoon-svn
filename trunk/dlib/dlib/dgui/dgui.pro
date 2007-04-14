@@ -71,7 +71,9 @@ HEADERS += danimwidget.h \
            dnodegroup.h   \
            dpathhandler.h \
            dimageeffect.h \
-           ddoublecombobox.h
+           ddoublecombobox.h \
+           dmoviegenerator.h \
+           dmoviegeneratorinterface.h 
 SOURCES += danimwidget.cpp \
            dapplication.cpp \
            dcellview.cpp \
@@ -135,7 +137,8 @@ SOURCES += danimwidget.cpp \
            dpathhandler.cpp \
            dimageeffect.cpp \
            ddualcolorbutton.cpp \
-           ddoublecombobox.cpp
+           ddoublecombobox.cpp \
+           dmoviegenerator.cpp 
 DEFINES += DLIB_GUI
 RESOURCES += dgui_images.qrc
 QT += xml
@@ -162,10 +165,14 @@ linux-g{
     TARGETDEPS += ../dcore/libdcore.so
 }
 
+contains(DEFINES, HAVE_FFMPEG) {
+	HEADERS += dffmpegmoviegenerator.h
+	SOURCES += dffmpegmoviegenerator.cpp
+}
 
 contains(DEFINES, HAVE_MING){
-    HEADERS += dswfgenerator.h
-    SOURCES += dswfgenerator.cpp
+    HEADERS += dswfgenerator.h 
+    SOURCES += dswfgenerator.cpp 
 }
 
 

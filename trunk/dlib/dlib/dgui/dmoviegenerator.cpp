@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,3 +17,39 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include "dmoviegenerator.h"
+
+DMovieGenerator::DMovieGenerator( int width, int height )
+ : QImage(width, height, QImage::Format_RGB32)
+{
+	reset();
+}
+
+DMovieGenerator::~DMovieGenerator()
+{
+}
+
+bool DMovieGenerator::begin()
+{
+	return true;
+}
+
+void DMovieGenerator::nextFrame()
+{
+	handle(*this);
+}
+
+void DMovieGenerator::end()
+{
+}
+
+
+void DMovieGenerator::reset()
+{
+	fill( qRgba(255, 255, 255, 0) );
+}
+
+
+
+

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,33 +17,26 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef DFFMPEGMOVIEGENERATOR_H
+#define DFFMPEGMOVIEGENERATOR_H
 
-#ifndef DSWFGENERATOR_H
-#define DSWFGENERATOR_H
-
-#include <QPaintDevice>
-
-#include "dgui/dmoviegeneratorinterface.h"
+#include <dgui/dmoviegenerator.h>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+	@author David Cuadrado <krawek@gmail.com>
 */
-class DSwfGenerator : public QPaintDevice, public DMovieGeneratorInterface
+class DFFMpegMovieGenerator : public DMovieGenerator
 {
 	public:
-		DSwfGenerator();
-		virtual ~DSwfGenerator();
-		
-		QPaintEngine *paintEngine() const;
-		void nextFrame();
-		
-		void reset();
+		DFFMpegMovieGenerator(Format format, int width, int height, int fps = 24);
+		~DFFMpegMovieGenerator();
 		
 	protected:
-		bool begin();
-		void end();
+		void __saveMovie(const QString &fileName);
+		virtual void handle(const QImage& image);
 		
-		void __saveMovie(const QString &filename);
+		virtual bool begin();
+		virtual void end();
 		
 	private:
 		struct Private;
