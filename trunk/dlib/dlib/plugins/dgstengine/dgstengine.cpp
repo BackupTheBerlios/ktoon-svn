@@ -51,11 +51,7 @@ GstBusSyncReply DGstEngine::bus_cb(GstBus*, GstMessage* msg, gpointer pinfo) // 
 		break;
 		case GST_MESSAGE_EOS:
 		{
-			qDebug() << "FINISHED ";
-			
-			playInfo->engine->destroyPlayInfo( playInfo );
-			
-			delete playInfo;
+			qDebug() << "FINISHED " << playInfo->id;
 		}
 		break;
 		default: ;
@@ -85,6 +81,7 @@ DGstEngine::DGstEngine() : m_currentPlayer(0)
 DGstEngine::~DGstEngine()
 {
 	QHashIterator<int, PlayInfo> i(m_players);
+	
 	while (i.hasNext())
 	{
 		i.next();
@@ -169,16 +166,22 @@ bool DGstEngine::play(int offset)
 		return false;
 	}
 	
-	g_object_set (G_OBJECT (m_players[m_currentPlayer].player), "uri", m_players[m_currentPlayer].url.toString().toLocal8Bit().data(), NULL);
-	
-	gst_element_set_state (m_players[m_currentPlayer].player, GST_STATE_PLAYING);
-	
-	if ( offset > 0 )
+	if( m_players.contains(m_currentPlayer ) )
 	{
-		seek(offset);
+		g_object_set(G_OBJECT (m_players[m_currentPlayer].player), "uri", m_players[m_currentPlayer].url.toString().toLocal8Bit().data(), NULL);
+		
+		m_players[m_currentPlayer].stopped = false;
+		gst_element_set_state(m_players[m_currentPlayer].player, GST_STATE_PLAYING);
+		
+		if ( offset >= 0 )
+		{
+			seek(offset);
+		}
+		
+		return true;
 	}
 	
-	return true;
+	return false;
 }
 
 void DGstEngine::stop()
@@ -186,8 +189,8 @@ void DGstEngine::stop()
 	qDebug() << "STOP " << m_currentPlayer;
 	if( m_players.contains(m_currentPlayer) )
 	{
-		qDebug("STOPPING");
-		gst_element_set_state (m_players[m_currentPlayer].player, GST_STATE_NULL);
+		m_players[m_currentPlayer].stopped = true;
+		gst_element_set_state(m_players[m_currentPlayer].player, GST_STATE_NULL);
 	}
 }
 
@@ -244,9 +247,17 @@ void DGstEngine::destroyPlayInfo(const PlayInfo *playInfo)
 {
 	qDebug() << "Destroy play info" << playInfo->id << " players: " << m_players.count();
 	
+	if( !m_players.contains(playInfo->id) ) return;
+	
 	m_players.remove(playInfo->id);
-	gst_element_set_state( playInfo->player, GST_STATE_NULL );
-	gst_object_unref( GST_OBJECT( playInfo->player ) );
+	
+	dDebug() << "UUU: " << m_players.count();
+	
+	if( playInfo->player != 0 )
+	{
+		gst_element_set_state( playInfo->player, GST_STATE_NULL );
+		gst_object_unref( GST_OBJECT( playInfo->player ) );
+	}
 }
 
 void DGstEngine::setVolume(int percent)

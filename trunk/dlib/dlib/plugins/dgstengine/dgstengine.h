@@ -68,6 +68,7 @@ class DGstEngine : public QObject, public DAudioEngineIface
 			GstElement *player;
 			QUrl url;
 			int id;
+			bool stopped;
 		};
 		
 		QHash<int, PlayInfo> m_players;
