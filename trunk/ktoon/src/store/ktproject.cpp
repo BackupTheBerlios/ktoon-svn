@@ -386,7 +386,7 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
 			case KTLibraryObject::Sound:
 			{
 				KTSoundLayer *sound = scene->createSoundLayer(scene->soundLayers().count());
-				sound->setFilePath(object->data().toString());
+				sound->fromSymbol(object->symbolName());
 			}
 			break;
 		}

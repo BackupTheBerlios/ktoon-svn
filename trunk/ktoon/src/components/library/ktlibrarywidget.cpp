@@ -179,7 +179,7 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 				DAudioPlayer::instance()->setCurrentPlayer(d->currentPlayerId);
 				DAudioPlayer::instance()->stop();
 				
-				d->currentPlayerId = DAudioPlayer::instance()->load(object->data().toString());
+				d->currentPlayerId = DAudioPlayer::instance()->load(object->dataPath());
 				DAudioPlayer::instance()->play(0);
 			}
 			break;

@@ -20,12 +20,17 @@
 
 #include "ktsoundlayer.h"
 
+#include <QFileInfo>
+
 #include <dsound/daudioplayer.h>
+
+#include "ktlibrary.h"
+#include "ktproject.h"
+#include "ktlibraryobject.h"
 
 struct KTSoundLayer::Private
 {
-	QString filePath;
-	
+	QString filePath, symbolName;
 	int playerId;
 };
 
@@ -40,11 +45,19 @@ KTSoundLayer::~KTSoundLayer()
 	delete d;
 }
 
-void KTSoundLayer::setFilePath(const QString &filePath)
+void KTSoundLayer::fromSymbol(const QString &symbolName)
 {
-	d->filePath = filePath;
+	KTLibrary *library = project()->library();
 	
-	d->playerId = DAudioPlayer::instance()->load(filePath);
+	if( KTLibraryObject *object = library->findObject(symbolName) )
+	{
+		if( object->type() == KTLibraryObject::Sound)
+		{
+			d->symbolName = symbolName;
+			d->filePath = object->dataPath();
+			d->playerId = DAudioPlayer::instance()->load(d->filePath);
+		}
+	}
 }
 
 QString KTSoundLayer::filePath() const
@@ -63,4 +76,33 @@ void KTSoundLayer::stop()
 	DAudioPlayer::instance()->setCurrentPlayer(d->playerId);
 	DAudioPlayer::instance()->stop();
 }
+
+
+void KTSoundLayer::fromXml(const QString &xml )
+{
+	QDomDocument document;
+	
+	if (! document.setContent(xml) )
+	{
+		return;
+	}
+	
+	QDomElement root = document.documentElement();
+	setLayerName( root.attribute( "name", layerName() ) );
+	
+	fromSymbol(root.attribute("symbol"));
+}
+
+QDomElement KTSoundLayer::toXml(QDomDocument &doc) const
+{
+	QDomElement root = doc.createElement("soundlayer");
+	root.setAttribute("name", layerName() );
+	
+	root.setAttribute("symbol", d->symbolName);
+	
+	
+	return root;
+}
+
+
 

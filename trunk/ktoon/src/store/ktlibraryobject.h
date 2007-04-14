@@ -53,11 +53,15 @@ class STORE_EXPORT KTLibraryObject : public QObject, public KTAbstractSerializab
 		void setData(const QVariant &data);
 		QVariant data() const;
 		
+		QString dataPath() const;
+		
 		void setSymbolName(const QString &name);
 		QString symbolName() const;
 		
 		
 		bool loadData(const QByteArray &data);
+		bool loadDataFromPath(const QString &dataDir);
+		
 		void saveData(const QString &dataDir);
 		
 	public:

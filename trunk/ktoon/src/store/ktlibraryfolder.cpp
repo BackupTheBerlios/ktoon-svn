@@ -171,6 +171,7 @@ void KTLibraryFolder::fromXml(const QString &xml )
 				
 				KTLibraryObject *object = new KTLibraryObject(this);
 				object->fromXml(objectDocument.toString(0));
+				object->loadDataFromPath(d->project->dataDir());
 				
 				addObject(object, object->symbolName() );
 			}

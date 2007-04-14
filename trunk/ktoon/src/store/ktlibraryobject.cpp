@@ -35,6 +35,7 @@ struct KTLibraryObject::Private
 {
 	int type;
 	QVariant data;
+	QString dataPath;
 	QString symbolName;
 };
 
@@ -60,6 +61,11 @@ void KTLibraryObject::setData(const QVariant &data)
 QVariant KTLibraryObject::data() const
 {
 	return d->data;
+}
+
+QString KTLibraryObject::dataPath() const
+{
+	return d->dataPath;
 }
 
 void KTLibraryObject::setType(int type)
@@ -103,15 +109,19 @@ void KTLibraryObject::fromXml(const QString &xml )
 		
 		d->type = objectTag.attribute("type").toInt();
 		
+		d->dataPath = objectTag.attribute("path");
+		
 		QDomElement objectData = objectTag.firstChild().toElement();
-		
-		QString data;
+		if( !objectTag.isNull())
 		{
-			QTextStream ts(&data);
-			ts << objectData;
+			QString data;
+			{
+				QTextStream ts(&data);
+				ts << objectData;
+			}
+			
+			loadData(data.toLocal8Bit());
 		}
-		
-		loadData(data.toLocal8Bit());
 	}
 }
 
@@ -121,10 +131,10 @@ QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
 	object.setAttribute("id", d->symbolName);
 	object.setAttribute("type", d->type);
 	
+	QFileInfo finfo(d->dataPath);
+	
 	switch(d->type)
 	{
-		case Svg:
-		case Image:
 		case Text:
 		case Item:
 		{
@@ -139,9 +149,39 @@ QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
 			}
 		}
 		break;
+		case Svg:
+		{
+			QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(d->data);
+			
+			if( item )
+			{
+				if( KTAbstractSerializable *serializable = dynamic_cast<KTAbstractSerializable *>(item) )
+				{
+					object.appendChild(serializable->toXml(doc));
+				}
+			}
+			
+			object.setAttribute("path", finfo.fileName());
+		}
+		break;
+		case Image:
+		{
+			QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(d->data);
+			
+			if( item )
+			{
+				if( KTAbstractSerializable *serializable = dynamic_cast<KTAbstractSerializable *>(item) )
+				{
+					object.appendChild(serializable->toXml(doc));
+				}
+			}
+			
+			object.setAttribute("path", finfo.fileName());
+		}
+		break;
 		case Sound:
 		{
-			
+			object.setAttribute("path", finfo.fileName());
 		}
 		break;
 	}
@@ -210,6 +250,37 @@ bool KTLibraryObject::loadData(const QByteArray &data)
 	return ok;
 }
 
+bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
+{
+	switch(d->type)
+	{
+		case KTLibraryObject::Image:
+		{
+			d->dataPath = dataDir+"/images/"+d->dataPath;
+			
+			QFile f(d->dataPath);
+			
+			if( f.open(QIODevice::ReadOnly) )
+			{
+				loadData(f.readAll());
+			}
+		}
+		break;
+		case KTLibraryObject::Sound:
+		{
+			d->dataPath = dataDir+"/audio/"+d->dataPath;
+		}
+		break;
+		case KTLibraryObject::Svg:
+		{
+		}
+		break;
+		default: return false; break;
+	}
+	
+	return true;
+}
+
 void KTLibraryObject::saveData(const QString &dataDir)
 {
 	switch( d->type )
@@ -227,7 +298,8 @@ void KTLibraryObject::saveData(const QString &dataDir)
 			QFile::copy(QString(d->data.toString()), saved+d->symbolName);
 			QFile::remove(QString(d->data.toString()));
 			
-			d->data = saved+d->symbolName;
+			d->dataPath = saved+d->symbolName;
+			d->data = "";
 		}
 		break;
 		case KTLibraryObject::Svg:
@@ -245,6 +317,8 @@ void KTLibraryObject::saveData(const QString &dataDir)
 			}
 			
 			qgraphicsitem_cast<KTPixmapItem *>(qvariant_cast<QGraphicsItem *>(d->data))->pixmap().save(dest+d->symbolName, "PNG");
+			
+			d->dataPath = dest+d->symbolName;
 		}
 		break;
 		default: break;

@@ -243,8 +243,22 @@ void KTScene::fromXml(const QString &xml )
 					
 					layer->fromXml( newDoc );
 				}
+			}
+			else if( e.tagName() == "soundlayer" )
+			{
+				int pos = d->soundLayers.count();
+				KTSoundLayer *layer = createSoundLayer( pos, true );
 				
-				
+				if ( layer )
+				{
+					QString newDoc;
+					{
+						QTextStream ts(&newDoc);
+						ts << n;
+					}
+					
+					layer->fromXml( newDoc );
+				}
 			}
 		}
 		
@@ -256,15 +270,17 @@ QDomElement KTScene::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("scene");
 	root.setAttribute("name", d->name );
-	doc.appendChild(root);
 	
 	Layers::ConstIterator iterator = d->layers.begin();
-	
-	
 	while ( iterator != d->layers.end() )
 	{
 		root.appendChild( (*iterator)->toXml(doc) );
 		++iterator;
+	}
+	
+	foreach(KTSoundLayer *sound, d->soundLayers)
+	{
+		root.appendChild(sound->toXml(doc));
 	}
 	
 	return root;
