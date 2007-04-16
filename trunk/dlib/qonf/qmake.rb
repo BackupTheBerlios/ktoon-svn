@@ -16,7 +16,7 @@ class QMake
 	def findQMake(minqtversion)
 		paths = [ "qmake-qt4", "qmake4", "qmake" ]
 		
-		close_stderr
+#		close_stderr
 		
 		minver = minqtversion.split(".")
 		paths.each { |path|
@@ -27,7 +27,6 @@ class QMake
 				IO.popen("#{path} -query QT_VERSION") { |prc|
 					version = prc.readlines.join("").split(".")
 				}
-				
 				next if $? != 0
 				
 				version.size.times { |i|
