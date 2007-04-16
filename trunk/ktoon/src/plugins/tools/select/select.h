@@ -22,7 +22,6 @@
 
 #include <QObject>
 #include <kttoolplugin.h>
-#include <QSpinBox>
 
 #include "ktpathitem.h"
 #include "ktproject.h"

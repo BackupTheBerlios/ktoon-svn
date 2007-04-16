@@ -44,7 +44,7 @@
 
 struct PolyLine::Private
 {
-	bool begin, ok;
+	bool begin;
 	QPointF center;
 	QPointF rigth;
 	QPointF mirror;
@@ -65,7 +65,6 @@ struct PolyLine::Private
 PolyLine::PolyLine(): d(new Private)
 {
 	d->begin = false;
-	d->ok = false;
 	
 	d->nodegroup = 0;
 	d->item = 0;
@@ -208,7 +207,7 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
 	}
 	
 	QDomDocument doc;
-	SHOW_VAR(d->nodegroup->isSelected());
+// 	SHOW_VAR(d->nodegroup->isSelected());
 	if(d->begin)
 	{
 		doc.appendChild(d->item->toXml( doc ));
@@ -343,10 +342,9 @@ void PolyLine::nodeChanged()
 	D_FUNCINFO;
 	if(d->nodegroup)
 	{
-		SHOW_VAR(!d->nodegroup->changedNodes().isEmpty());
+// 		SHOW_VAR(!d->nodegroup->changedNodes().isEmpty());
 		if(!d->nodegroup->changedNodes().isEmpty())
 		{
-			d->ok = true;
 			QDomDocument doc;
 			int position  = d->scene->currentFrame()->indexOf(d->nodegroup->parentItem());
 			if(position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(d->nodegroup->parentItem()))

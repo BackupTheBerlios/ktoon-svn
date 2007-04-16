@@ -419,11 +419,12 @@ void KTProjectCommand::itemCommand()
 		break;
 		case KTProjectRequest::Remove:
 		{
-				d->executor->removeItem( response );
+			d->executor->removeItem( response );
 		}
 		break;
 		case KTProjectRequest::Move:
 		{
+			d->executor->moveItem( response );
 		}
 		break;
 		case KTProjectRequest::Lock:

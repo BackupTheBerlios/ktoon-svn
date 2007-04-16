@@ -32,7 +32,6 @@
 #include <QTimer>
 #include <QStyleOptionGraphicsItem>
 #include <QClipboard>
-#include <QMenu>
 
 #include "ktbrushmanager.h"
 #include "ktinputdeviceinformation.h"
@@ -217,6 +216,7 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 
 void KTPaintArea::projectResponse(KTProjectResponse *)
 {
+	
 }
 
 void KTPaintArea::libraryResponse(KTLibraryResponse *request)
@@ -475,5 +475,79 @@ void KTPaintArea::addSelectedItemsToLibrary()
 		}
 	}
 }
+
+void KTPaintArea::requestMoveSelectedItems(QAction *action)
+{
+	D_FUNCINFOX("paintarea");
+	action->data().isValid();
+	{
+	
+	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
+	
+	if ( selecteds.isEmpty() )
+	{
+		DOsd::self()->display(tr("No items selected"), DOsd::Error);
+		return;
+	}
+	
+	
+	KTGraphicsScene* currentScene = graphicsScene();
+	QList<int> positions;
+	foreach(QGraphicsItem *item, selecteds)
+	{
+		positions << currentScene->currentFrame()->indexOf(item);
+	}
+	
+	QList<KTGraphicObject *> objects = currentScene->currentFrame()->graphics();
+	qSort(positions);
+	
+	QListIterator<int> position(positions);
+	position.toBack();
+	
+	while(position.hasPrevious())
+	{
+		int newPos = 0;
+		int  value = position.previous();
+		bool ok;
+		int moveType = action->data().toInt(&ok);
+		if(ok)
+		{
+			switch(moveType)
+			{
+				case KTPaintAreaBase::MoveBack:
+				{
+					newPos = 0;
+				};
+				break;
+				case KTPaintAreaBase::MoveFront:
+				{
+					newPos = currentScene->currentFrame()->graphics().count()-1;
+				};
+				break;
+				case KTPaintAreaBase::MoveBackwards:
+				{
+					newPos = value-1;
+				};
+				break;
+				case KTPaintAreaBase::MoveForwards:
+				{
+					newPos = value+1;
+				};
+				break;
+				default:
+				{
+					return;
+				};
+				break;
+			}
+		
+		
+		KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->indexOf(objects[value]), KTProjectRequest::Move, newPos );
+		emit requestTriggered(&event);
+		}
+	}
+	}
+}
+
 
 

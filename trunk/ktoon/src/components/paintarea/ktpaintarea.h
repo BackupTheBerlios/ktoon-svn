@@ -66,6 +66,8 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
 		
 		void addSelectedItemsToLibrary();
 		
+		void requestMoveSelectedItems(QAction *action);
+		
 	protected:
 		void frameResponse(KTFrameResponse *event);
 		void layerResponse(KTLayerResponse *event);

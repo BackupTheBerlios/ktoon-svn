@@ -139,71 +139,44 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
 	return false;
 }
 
-bool KTCommandExecutor::removeItems(KTItemResponse *response) // FIXME: no es estandar.
+
+bool KTCommandExecutor::moveItem(KTItemResponse *response)
 {
 	D_FUNCINFOX("items");
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
+	int position = response->itemIndex();
+	int newPositon = response->arg().toInt();
+	if(response->mode() == KTProjectResponse::Undo)
+	{
+		position = newPositon;
+		newPositon = response->itemIndex();
+	}
 	
-	QString strList = response->arg().toString();
-	
-	dFatal() << "removeItems = " << strList;
 	
 	KTScene *scene = m_project->scene(scenePosition);
 	
-	if ( scene )
+	
+	if(scene)
 	{
-		KTLayer *layer = scene->layer( layerPosition );
-		if ( layer )
+		KTLayer *layer = scene->layer(layerPosition);
+		if(layer)
 		{
-			KTFrame *frame = layer->frame( framePosition );
-			if ( frame )
+			KTFrame *frame = layer->frame(framePosition);
+			if(frame)
 			{
-// 				QStringList infoItems;
-// 				QDomDocument doc;
-// 				doc.setContent(xml);
-				
-// 				if ( position == -1)
-// 				{
-// 					qFatal("DO NOT SEND -1");
-// 				}
-				
-// 				QDomElement root = doc.documentElement();
-// 				QString strList = root.attribute ( "positions");
-				
-				QString::const_iterator itr = strList.constBegin();
-				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
-				qSort(positions.begin(), positions.end());
-				
-				int count = 0;
-				
-				foreach(qreal pos, positions )
+				if(frame->moveItem(position, newPositon))
 				{
-					int pstn = (int) pos;
-					
-					QGraphicsItem *item = frame->item(pstn-count);
-// 					QDomDocument orig;
-					
-					if(item)
-					{
-// 						orig.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( orig ));
-// 						infoItems << orig.toString();
-						frame->removeGraphicAt(pstn-count);
-						
-						count++;
-					}
+					emit responsed(response);
+					return true;
 				}
-				
-				emit responsed(response);
-				
-				return true;
 			}
 		}
 	}
-	
 	return false;
 }
+
 
 bool KTCommandExecutor::groupItems(KTItemResponse *response)
 {
@@ -215,7 +188,6 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
 	int framePosition = response->frameIndex();
 	int position = response->itemIndex();
 	QString strList = response->arg().toString();
-	SHOW_VAR(strList);
 	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
@@ -228,12 +200,9 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
 			{
 				QString::const_iterator itr = strList.constBegin();
 				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
-		
 				response->setItemIndex( frame->indexOf( frame->createItemGroupAt( position, positions)));
 				
 				emit responsed(response);
-				
-				
 				return true;
 			}
 		}
@@ -246,13 +215,10 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 {
 	D_FUNCINFOX("items");
 	
-// 	response->setAction(KTProjectRequest::Ungroup);
-	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
 	int position = response->itemIndex();
-// 	QString strList = response->arg().toString();
 	
 	KTScene *scene = m_project->scene(scenePosition);
 	
@@ -265,11 +231,6 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 			if ( frame )
 			{
 				QString strItems = "";
-// 				QString::const_iterator itr = strList.constBegin();
-// 				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
-// 				foreach(qreal pos, positions)
-// 				{
-// 					int posint = (int)(pos);
 				QList<QGraphicsItem *> items = frame->destroyItemGroup(position);
 				foreach(QGraphicsItem *item, items)
 				{
@@ -278,7 +239,6 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 						if(strItems.isEmpty())
 						{
 							strItems +="("+ QString::number(frame->indexOf(item)) ;
-// 							firstItem = currentScene->currentFrame()->indexOf(item);
 						}
 						else
 						{
@@ -287,7 +247,6 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 					}
 				}
 				strItems+= ")";
-// 				}
 				response->setArg(strItems);
 				emit responsed(response);
 				return true;
@@ -327,7 +286,7 @@ static QGraphicsItem * convert(QGraphicsItem *item, int toType)
 		break;
 		case KTLineItem::Type:
 		{
-			KTLineItem *line = KTItemConverter::convertToLine( item );
+			return KTItemConverter::convertToLine( item );
 		}
 		break;
 		default:

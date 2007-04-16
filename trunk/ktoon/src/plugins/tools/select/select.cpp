@@ -92,6 +92,12 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
 	
+	
+	if(d->changedManager)
+	{
+		d->changedManager = 0;
+	}
+	
 	foreach(QGraphicsView * view, scene->views())
 	{
 		view->setDragMode (QGraphicsView::RubberBandDrag);
@@ -150,7 +156,6 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
-	
 	if(d->changedManager)
 	{
 		d->changedManager->toggleAction();
@@ -161,7 +166,6 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	{
 		QTimer::singleShot ( 0, this, SLOT(syncNodes()));;
 	}
-	
 }
 
 void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -208,6 +212,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				doc.appendChild(KTSerializer::properties( manager->parentItem(), doc ));
 				
 				int position  = scene->currentFrame()->indexOf(manager->parentItem());
+				dDebug("selection") << "position = "<<  position;
 				if(position != -1)
 				{
 					// Restore matrix
@@ -258,6 +263,7 @@ QWidget *Select::configurator()
 
 void Select::aboutToChangeScene(KTGraphicsScene *)
 {
+	d->changedManager = 0;
 }
 
 void Select::aboutToChangeTool()
@@ -289,7 +295,6 @@ void Select::itemResponse(const KTItemResponse *event)
 				if ( frame )
 				{
 					item = frame->item(event->itemIndex());
-					
 				}
 			}
 		}

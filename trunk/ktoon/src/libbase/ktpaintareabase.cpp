@@ -229,14 +229,27 @@ void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
 		QAction *cut = menu->addAction(tr("Cut"), this, SLOT(cutItems()));
 		QAction *copy = menu->addAction(tr("Copy"), this, SLOT(copyItems()));
 		QAction *paste = menu->addAction(tr("Paste"), this, SLOT(pasteItems()));
-		menu->addSeparator();
 		QAction *del = menu->addAction(tr("Delete"), this, SLOT(deleteItems()));
 		
 		menu->addSeparator();
 		
+		QMenu *order = new QMenu(tr("Order"));
+		
+		connect(order, SIGNAL(triggered( QAction* )), this, SLOT(requestMoveSelectedItems( QAction *)));
+		order->addAction(tr("Send to back"))->setData(MoveBack);
+		order->addAction(tr("Bring to front"))->setData(MoveFront);
+		order->addAction(tr("Send backwards"))->setData(MoveBackwards);
+		order->addAction(tr("Brind forwards"))->setData(MoveForwards);
+		menu->addMenu ( order );
+		menu->addSeparator();
+		
 		menu->addAction(tr("Add to library..."), this, SLOT(addSelectedItemsToLibrary()));
 		
-		if ( scene()->selectedItems().isEmpty() )
+		menu->addSeparator();
+		
+		
+		
+		if(scene()->selectedItems().isEmpty())
 		{
 			del->setEnabled(false);
 			cut->setEnabled(false);

@@ -60,8 +60,7 @@ class KTCommandExecutor : public QObject
 		bool removeFrame(KTFrameResponse *response);
 		
 		bool removeItem(KTItemResponse *response);
-		bool removeItems(KTItemResponse *response); // FIXME: remove me
-		
+		bool moveItem(KTItemResponse *response);
 		
 		bool groupItems(KTItemResponse *response);
 		bool ungroupItems(KTItemResponse *response);

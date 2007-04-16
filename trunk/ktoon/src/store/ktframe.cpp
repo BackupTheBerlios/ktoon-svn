@@ -56,7 +56,6 @@ KTFrame::KTFrame(KTLayer *parent) : QObject(parent), d(new Private)
 KTFrame::~KTFrame()
 {
 	qDeleteAll(d->graphics);
-	
 	delete d;
 }
 
@@ -244,6 +243,38 @@ void KTFrame::replaceItem(int position, QGraphicsItem *item)
 	{
 		toReplace->setItem(item);
 	}
+}
+
+bool KTFrame::moveItem(int currentPosition, int newPosition)
+{
+	
+	if(currentPosition == newPosition || currentPosition < 0 || currentPosition >= d->graphics.count() || newPosition < 0 || newPosition >= d->graphics.count())
+	{
+		return false;
+	}
+	QGraphicsItem *tmp = item(currentPosition);
+	
+	if(currentPosition < newPosition)
+	{
+		for( int i = currentPosition; i < newPosition; i++)
+		{
+			double tmp = d->graphics[i]->item()->zValue();
+			d->graphics[i]->item()->setZValue(d->graphics[i+1]->item()->zValue());
+			d->graphics[i+1]->item()->setZValue(tmp);
+			d->graphics.swap(i, i+1);
+		}
+	}
+	else
+	{
+		for( int i = currentPosition; i > newPosition; i--)
+		{
+			double tmp = d->graphics[i]->item()->zValue();
+			d->graphics[i]->item()->setZValue(d->graphics[i-1]->item()->zValue());
+			d->graphics[i-1]->item()->setZValue(tmp);
+			d->graphics.swap(i, i-1);
+		}
+	}
+	return true;
 }
 
 bool KTFrame::removeGraphicAt(int position)
