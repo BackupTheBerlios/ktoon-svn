@@ -261,9 +261,10 @@ QWidget *Select::configurator()
 	return 0;
 }
 
-void Select::aboutToChangeScene(KTGraphicsScene *)
+void Select::aboutToChangeScene(KTGraphicsScene *scene)
 {
 	d->changedManager = 0;
+	init(scene);
 }
 
 void Select::aboutToChangeTool()

@@ -209,10 +209,6 @@ void Brush::aboutToChangeTool()
 {
 }
 
-void Brush::aboutToChangeScene(KTGraphicsScene *)
-{
-	
-}
 
 Q_EXPORT_PLUGIN2(kt_brush, Brush );
 

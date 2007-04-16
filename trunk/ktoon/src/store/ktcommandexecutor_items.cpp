@@ -327,9 +327,9 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 					
 					if(itemConverted)
 					{
-// 						scene->removeItem(item); // FIXME?
-// 						scene->addItem(itemConverted); // FIXME?
-						
+// 					scene->removeItem(item); // FIXME?
+// 					scene->addItem(itemConverted); // FIXME?
+						itemConverted->setZValue(item->zValue());
 						frame->replaceItem(position, itemConverted);
 						
 						response->setArg( QString::number(item->type()));

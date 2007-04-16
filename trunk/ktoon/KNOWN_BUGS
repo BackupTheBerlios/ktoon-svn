@@ -1,10 +1,9 @@
-- Las reglas cambian el inicio cuando se dibuja la cuadricula
 - Revisar operaciones con componentes agrupados: library
 
 - El servidor no crea un usuario por defecto y tampoco crea la estructura basica de la base de datos de usuarios
 - Se crean dos areas de dibujo cuando se crea un proyecto en red
 
-
+- Las reglas cambian el inicio cuando se dibuja la cuadricula+
 - Implementar enviar atras, enviar adelante +
 - No se puede deshacer en el polyline +
 - Mover un objeto con la herramienta de seleccion sin seleccionarlo primero, no crea la accion => no se puede deshacer +

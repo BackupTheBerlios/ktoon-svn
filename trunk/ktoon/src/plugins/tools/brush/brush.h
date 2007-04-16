@@ -58,7 +58,6 @@ class Brush : public KTToolPlugin
 		virtual QWidget *configurator();
 		
 		virtual void aboutToChangeTool();
-		void aboutToChangeScene(KTGraphicsScene *scene);
 		
 	private:
 		void setupActions();

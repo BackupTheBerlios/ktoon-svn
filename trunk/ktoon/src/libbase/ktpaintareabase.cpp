@@ -348,6 +348,7 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 	painter->fillRect( d->drawingRect, Qt::white );
 	painter->drawRect( d->drawingRect );
 	
+	emit changedZero(painter->matrix().map(QPointF(0,0)));
 	if ( d->drawGrid )
 	{
 		int sx = (int)painter->matrix().m11();
@@ -366,7 +367,6 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 	
 	painter->setRenderHint(QPainter::Antialiasing, hasAntialiasing);
 	
-	emit changedZero(painter->matrix().map(QPointF(0,0)));
 	
 	painter->restore();
 }

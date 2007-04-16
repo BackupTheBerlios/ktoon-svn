@@ -289,9 +289,9 @@ QWidget *ContourSelection::configurator()
 }
 
 
-void ContourSelection::aboutToChangeScene(KTGraphicsScene *)
+void ContourSelection::aboutToChangeScene(KTGraphicsScene *scene)
 {
-	
+	init(scene);
 }
 
 void ContourSelection::aboutToChangeTool()
