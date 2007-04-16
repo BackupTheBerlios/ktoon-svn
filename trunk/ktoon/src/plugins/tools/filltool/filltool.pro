@@ -10,8 +10,17 @@ CONFIG += plugin
 include(../../../../ktconfig.pri)
 
 TEMPLATE = lib 
-HEADERS += filltool.h 
-SOURCES += filltool.cpp 
-
+HEADERS += filltool.h  \
+cliphelper.h \
+qbezier_p.h \
+qmath_p.h \
+qnumeric.h \
+qnumeric_p.h \
+qpathclipper_p.h
+SOURCES += filltool.cpp  \
+cliphelper.cpp \
+qbezier.cpp \
+qnumeric.cpp \
+qpathclipper.cpp
 include(../tools_config.pri)
 

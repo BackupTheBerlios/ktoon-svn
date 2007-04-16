@@ -34,6 +34,8 @@
 #include "ktlineitem.h"
 #include "ktpathitem.h"
 
+#include "ktserializer.h"
+
 #include "ktitemconverter.h"
 #include "ktrequestbuilder.h"
 
@@ -44,6 +46,8 @@
 #include "ktgraphicsscene.h"
 #include "ktprojectrequest.h"
 #include "ktbrushmanager.h"
+
+#include "cliphelper.h"
 
 FillTool::FillTool()
 {
@@ -56,7 +60,7 @@ FillTool::~FillTool()
 
 QStringList FillTool::keys() const
 {
-	return QStringList() << tr("Fill");
+	return QStringList() << tr("Fill") << tr("Shape fill") << tr("Contour fill");
 }
 
 void FillTool::setupActions()
@@ -67,53 +71,142 @@ void FillTool::setupActions()
 	
 	m_actions.insert( tr("Fill"), action1 );
 	
-// 	DAction *action2 = new DAction(QIcon(THEME_DIR+"/icons/ellipse.png"), tr("Ellipse"), this);
-// 	action2->setShortcut( QKeySequence(tr("Ctrl+E")) );
-// 	action2->setCursor( QCursor(THEME_DIR+"/cursors/circle.png") );
-// 	
-// 	m_actions.insert(tr("Ellipse"), action2);
-// 	
-// 	
-// 	DAction *action3 = new DAction( QIcon(THEME_DIR+"/icons/line.png"), tr("Line"), this);
-// 	action3->setShortcut( QKeySequence(tr("Ctrl+L")) );
-// 	m_actions.insert(tr("Line"), action3);
+	DAction *action2 = new DAction( QIcon(THEME_DIR+"/icons/fillcolor.png"), tr("Shape fill"), this);
+// 	action2->setShortcut( QKeySequence(tr("Ctrl+F")) );
+	action2->setCursor( QCursor(THEME_DIR+"/cursors/paint.png") );
+	
+	m_actions.insert( tr("Shape fill"), action2 );
+
+	
+	DAction *action3 = new DAction( QIcon(THEME_DIR+"/icons/fill.png"), tr("Contour fill"), this);
+// 	action3->setShortcut( QKeySequence(tr("Ctrl+F")) );
+	action3->setCursor( QCursor(THEME_DIR+"/cursors/contour_fill.png") );
+	
+	m_actions.insert( tr("Contour fill"), action3 );
 }
 
 void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	if(input->buttons() == Qt::LeftButton)
 	{
-		QPointF pos = input->pos();
+		QGraphicsItem *clickedItem = scene->itemAt(input->pos());
 		
-		if ( currentTool() == tr("Fill") )
+		if ( currentTool() == tr("Shape fill") )
 		{
-			QList<QGraphicsItem *> items = scene->items(input->pos());
-	
-			if ( items.count() > 0 )
+			KTPathItem *item = KTItemConverter::convertToPath(clickedItem);
+			
+			if( ! item ) return;
+			
+			QList<QGraphicsItem *> colls = clickedItem->collidingItems();
+			QPainterPath res = mapPath(item);
+			
+			if( !colls.isEmpty() )
 			{
-				QGraphicsItem *itemPress = items[0];
-				if  ( KTPathItem *fillItem = itemPressed(itemPress, brushManager) )
+				bool doSubs = false;
+				foreach(QGraphicsItem *xit, colls)
 				{
-					QDomDocument doc;
-					doc.appendChild(fillItem->toXml( doc ));
-		
-					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
-	
-					emit requested(&event);
+					KTPathItem *path = KTItemConverter::convertToPath(xit);
+					if( path )
+					{
+						QPointF localPoint = xit->mapFromScene(input->pos());
+						if( path->shape().contains( localPoint ) )
+						{
+							res = ClipHelper::intersect(res, mapPath(path));
+						}
+						else
+							doSubs = true;
+					}
+				}
+				
+				if ( doSubs )
+				{
+					QPainterPath subs;
 					
-					return;
+					foreach(QGraphicsItem *xit, colls)
+					{
+						KTPathItem *path = KTItemConverter::convertToPath(xit);
+						if( path )
+						{
+							QPointF localPoint = xit->mapFromScene(input->pos());
+							if( !path->shape().contains(localPoint) )
+							{
+								subs = ClipHelper::unite(subs, mapPath(path));
+							}
+						}
+					}
+					
+					res = ClipHelper::subtract(res, subs);
+					
+					QList<QPolygonF> polygons = res.toSubpathPolygons();
+					
+					if( polygons.count() > 1 )
+					{
+						foreach(QPolygonF pol, polygons)
+						{
+							QPainterPath subpath;
+							subpath.addPolygon(pol);
+							
+							if( subpath.contains(input->pos()) )
+							{
+								res = subpath;
+								break;
+							}
+						}
+					}
+				}
+			}
+			
+			KTPathItem *intersection = new KTPathItem();
+			intersection->setPath(res);
+			
+			intersection->setZValue(clickedItem->zValue()+1);
+			
+			intersection->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
+			intersection->setBrush( brushManager->pen().brush() );
+			
+			
+			QDomDocument doc;
+			doc.appendChild(intersection->toXml( doc ));
+		
+			KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
+			emit requested(&event);
+		}
+		else
+		{
+			if( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(clickedItem) )
+			{
+				int position  = scene->currentFrame()->indexOf(shape);
+				
+				if( position >= 0 )
+				{
+					if(currentTool() == tr("Fill") )
+					{
+						shape->setBrush( brushManager->pen().brush());
+					}
+					else if (currentTool() == tr("Contour fill") )
+					{
+						QPen pen = shape->pen();
+						pen.setBrush(brushManager->pen().brush());
+						shape->setPen( pen );
+					}
+					
+					QDomDocument doc;
+					doc.appendChild(KTSerializer::properties( shape, doc ));
+					
+					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::Transform, doc.toString() );
+					emit requested(&event);
 				}
 			}
 		}
 	}
 }
 
-void FillTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void FillTool::move(const KTInputDeviceInformation *, KTBrushManager *, KTGraphicsScene *)
 {
 	
 }
 
-void FillTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
+void FillTool::release(const KTInputDeviceInformation *, KTBrushManager *, KTGraphicsScene *)
 {
 }
 
@@ -142,27 +235,24 @@ void FillTool::aboutToChangeTool()
 	
 }
 
-KTPathItem *FillTool::itemPressed(QGraphicsItem *item, const KTBrushManager *brush)
+
+QPainterPath FillTool::mapPath(const QPainterPath &path, const QPointF &pos)
 {
-	KTPathItem *fillItem = 0;
+	QMatrix tr1;
+	tr1.translate(pos.x(), pos.y());
 	
-	QList<QGraphicsItem *> collides = item->collidingItems();
+	QPainterPath p1 = tr1.map(path);
+	p1.closeSubpath();
 	
-// 	if ( collides.count() == 0)
-	{
-		fillItem = KTItemConverter::convertToPath( item );
-		
-		fillItem->setBrush(brush->pen().brush());
-		fillItem->setPen(Qt::NoPen);
-		
-		fillItem->setZValue(item->zValue()+1);
-		
-		item->scene()->addItem(fillItem );
-	}
-	
-	
-	return fillItem;
+	return p1;
 }
+
+QPainterPath FillTool::mapPath(const QGraphicsPathItem *item)
+{
+	return mapPath(item->path(), item->pos());
+}
+
+
 
 Q_EXPORT_PLUGIN2( kt_fill, FillTool )
 

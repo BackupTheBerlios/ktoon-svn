@@ -70,6 +70,8 @@ void KTItemConverter::copyProperties(QGraphicsItem *src, QGraphicsItem *dest)
 
 KTPathItem *KTItemConverter::convertToPath(QGraphicsItem *item)
 {
+	if(!item) return 0;
+	
 	KTPathItem *path = new KTPathItem( item->parentItem(), 0);
 	
 	QPainterPath ppath;
@@ -108,6 +110,7 @@ KTPathItem *KTItemConverter::convertToPath(QGraphicsItem *item)
 		case KTItemGroup::Type:
 		{
 			dWarning() << "KTItemConverter::convertToPath no support groups";
+			delete path;
 			return 0;
 		}
 		break;

@@ -56,6 +56,9 @@ class FillTool : public KTToolPlugin
 		void aboutToChangeScene(KTGraphicsScene *scene);
 		virtual void aboutToChangeTool();
 		
+		QPainterPath mapPath(const QPainterPath &path, const QPointF &pos);
+		QPainterPath mapPath(const QGraphicsPathItem *item);
+		
 	private:
 		void setupActions();
 		
