@@ -191,6 +191,8 @@ QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
 
 bool KTLibraryObject::loadData(const QByteArray &data)
 {
+	if( data.isEmpty() ) return false;
+	
 	bool ok = true;
 	switch(d->type)
 	{
@@ -200,7 +202,7 @@ bool KTLibraryObject::loadData(const QByteArray &data)
 			QGraphicsItem *item = factory.create(QString::fromLocal8Bit(data));
 			
 			setData( QVariant::fromValue(item) );
-		};
+		}
 		break;
 		case KTLibraryObject::Image:
 		{

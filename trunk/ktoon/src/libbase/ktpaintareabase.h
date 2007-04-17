@@ -42,9 +42,6 @@ class KTOON_EXPORT KTPaintAreaBase : public QGraphicsView
 {
 	Q_OBJECT;
 	public:
-		
-		enum MoveItemType { MoveBack, MoveFront, MoveBackwards, MoveForwards };
-		
 		KTPaintAreaBase(QWidget * parent = 0);
 		~KTPaintAreaBase();
 		

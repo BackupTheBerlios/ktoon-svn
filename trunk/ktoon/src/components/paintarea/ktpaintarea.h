@@ -44,6 +44,8 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
 {
 	Q_OBJECT;
 	public:
+		enum MoveItemType { MoveBack, MoveFront, MoveBackwards, MoveForwards };
+		
 		KTPaintArea(const KTProject *project, QWidget * parent = 0);
 		~KTPaintArea();
 		
@@ -69,6 +71,8 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
 		void requestMoveSelectedItems(QAction *action);
 		
 	protected:
+		void mousePressEvent( QMouseEvent * event  );
+		
 		void frameResponse(KTFrameResponse *event);
 		void layerResponse(KTLayerResponse *event);
 		void sceneResponse(KTSceneResponse *event);

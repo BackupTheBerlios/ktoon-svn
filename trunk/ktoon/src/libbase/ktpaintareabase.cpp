@@ -32,7 +32,6 @@
 #include <QTimer>
 #include <QStyleOptionGraphicsItem>
 #include <QClipboard>
-#include <QMenu>
 
 #include "ktbrushmanager.h"
 #include "ktinputdeviceinformation.h"
@@ -213,61 +212,7 @@ void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
 {
 	if ( !canPaint() ) return;
 	
-	if ( event->buttons() == Qt::LeftButton )
-	{
-		QGraphicsView::mousePressEvent(event);
-	}
-	else if ( event->buttons() == Qt::RightButton )
-	{
-		QMenu *menu = new QMenu(tr("Drawing area"));
-		
-		menu->addAction(dApp->findGlobalAction("undo"));
-		menu->addAction(dApp->findGlobalAction("redo"));
-		
-		menu->addSeparator();
-		
-		QAction *cut = menu->addAction(tr("Cut"), this, SLOT(cutItems()));
-		QAction *copy = menu->addAction(tr("Copy"), this, SLOT(copyItems()));
-		QAction *paste = menu->addAction(tr("Paste"), this, SLOT(pasteItems()));
-		QAction *del = menu->addAction(tr("Delete"), this, SLOT(deleteItems()));
-		
-		menu->addSeparator();
-		
-		QMenu *order = new QMenu(tr("Order"));
-		
-		connect(order, SIGNAL(triggered( QAction* )), this, SLOT(requestMoveSelectedItems( QAction *)));
-		order->addAction(tr("Send to back"))->setData(MoveBack);
-		order->addAction(tr("Bring to front"))->setData(MoveFront);
-		order->addAction(tr("Send backwards"))->setData(MoveBackwards);
-		order->addAction(tr("Brind forwards"))->setData(MoveForwards);
-		menu->addMenu ( order );
-		menu->addSeparator();
-		
-		menu->addAction(tr("Add to library..."), this, SLOT(addSelectedItemsToLibrary()));
-		
-		menu->addSeparator();
-		
-		
-		
-		if(scene()->selectedItems().isEmpty())
-		{
-			del->setEnabled(false);
-			cut->setEnabled(false);
-			copy->setEnabled(false);
-		}
-		
-		if ( d->copiesXml.isEmpty() )
-		{
-			paste->setEnabled(false);
-		}
-		
-		if ( QMenu *toolMenu = d->scene->currentTool()->menu() )
-		{
-			menu->addSeparator();
-			menu->addMenu(toolMenu);
-		}
-		menu->exec(event->globalPos());
-	}
+	QGraphicsView::mousePressEvent(event);
 }
 
 void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )

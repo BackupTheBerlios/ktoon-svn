@@ -1,39 +1,34 @@
 
-- Herramientas -
-	* de Relleno ~
-	* de Borrado ~
-	* de Seleccion
+- Tools -
+	* fill +
+	* selection
 		- rotate/shear
 		- Normal(flip)
 	
-	* de Trazo
+	* paint
 		- Polyline +
-		- Trazado de Bitmaps(seguir patrones, por ejemplo de color)
 
-- Filtros >Despues<
-	* Sombras
-
-- Componentes GUI -
-	* Sonido +
+- GUI Components -
+	* Sound +
 	* PaintArea
-		- Reglas +
-		- Lineas de ayuda +
+		- Ruler +
+		- Lines of guide +
 	* Tweening +
-	* Library(No olvidar soporte para red) +
+	* Library +
 
 
 - Store -
 	* Item
 		- Flip
+		- Order (send back, send front...) +
 		
 	* Frames/Layers/Scenes
-		- Copy, Paste and Cut PRIORIDAD
+		- Copy, Paste and Cut
 
 - General -
-	* Exportar a SVG
-	* Importar a SVG
-	* Importar Bitmaps + 
-	* Trazar Bitmaps
+	* Export to SVG
+	* Import to SVG
+	* Import Bitmaps +
 
 
 
