@@ -44,6 +44,8 @@ bool KTSaveProject::save(const QString &fileName, const KTProject *project)
 {
 	QDir projectDir = CACHE_DIR + "/" + project->projectName();
 	
+	dDebug("project") << "Saving project to: " << projectDir.absolutePath();
+	
 	if ( !projectDir.exists() )
 	{
 		if ( ! projectDir.mkdir(projectDir.path()) )

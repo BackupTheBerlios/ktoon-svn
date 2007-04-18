@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,69 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef AANIMATIONAREA_H
-#define AANIMATIONAREA_H
+#ifndef KTANIMATIONRENDERER_H
+#define KTANIMATIONRENDERER_H
 
-#include <QImage>
-#include <QPainter>
-#include <QPaintEvent>
-#include <QTimer>
-#include <QFrame>
-
-#include "ktscene.h"
-#include "ktglobal.h"
-#include "ktabstractprojectresponsehandler.h"
+class QPainter;
+class KTScene;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado \<krawek@gmail.com\>
 */
-class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectResponseHandler
+class KTAnimationRenderer
 {
-	Q_OBJECT
 	public:
-		KTAnimationArea(const KTProject *project, QWidget *parent = 0);
-		~KTAnimationArea();
+		KTAnimationRenderer();
+		~KTAnimationRenderer();
 		
-		QSize sizeHint() const;
+		void setScene(KTScene *scene);
 		
-		void setLoop(bool l);
+		bool nextPhotogram();
+		void render(QPainter *painter);
 		
-		void setCurrentScene(int index);
-		
-		KTScene *currentScene() const;
-		
-		void setFPS(int fps);
-		
-	public slots:
-		virtual void render();
-		virtual void play();
-		virtual void stop();
-		virtual void nextFrame();
-		virtual void previousFrame();
-		
-		
-	private slots:
-		void advance();
-		
-	protected:
-		void frameResponse(KTFrameResponse *event);
-		void layerResponse(KTLayerResponse *event);
-		void sceneResponse(KTSceneResponse *event);
-		void projectResponse(KTProjectResponse *event);
-		void itemResponse(KTItemResponse *event);
-		void libraryResponse(KTLibraryResponse *request);
-		
-	signals:
-		void progressStep(int, int);
-		void toStatusBar(const QString &, int);
-		
-		void sceneChanged(const KTScene *newScene );
-		
-		void requestTriggered(const KTProjectRequest *event);
-		
-	protected:
-		void paintEvent(QPaintEvent *e);
-		void resizeEvent ( QResizeEvent * event );
+		int currentPhotogram() const;
+		int totalPhotograms() const;
 		
 	private:
 		struct Private;

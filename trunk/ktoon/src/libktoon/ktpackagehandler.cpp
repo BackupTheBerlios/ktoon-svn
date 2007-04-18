@@ -27,6 +27,7 @@
 #include <QDir>
 
 #include "dcore/dglobal.h"
+#include "dcore/dapplicationproperties.h"
 
 #include "quazip.h"
 #include "quazipfile.h"

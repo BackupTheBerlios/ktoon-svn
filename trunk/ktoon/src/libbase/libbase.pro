@@ -18,7 +18,8 @@ HEADERS += ktexportinterface.h \
            ktpaintareabase.h \
            ktpaintarearotator.h \
            ktgraphicsscene.h \
-           ktguideline.h
+           ktguideline.h \
+           ktanimationrenderer.h
 SOURCES += ktexportpluginobject.cpp \
            ktmodulewidgetbase.cpp \
            ktpluginmanager.cpp \
@@ -26,7 +27,8 @@ SOURCES += ktexportpluginobject.cpp \
            ktpaintareabase.cpp \
            ktpaintarearotator.cpp \
            ktgraphicsscene.cpp \
-           ktguideline.cpp
+           ktguideline.cpp \
+           ktanimationrenderer.cpp
 DLIB_DIR = ../../src/dlib
 include($$DLIB_DIR/dlib.pri)
 QUAZIP_DIR = ../../3rdparty/quazip/

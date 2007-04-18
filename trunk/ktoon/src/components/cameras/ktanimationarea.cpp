@@ -26,6 +26,7 @@
 #include "ktprojectresponse.h"
 #include "ktgraphicobject.h"
 #include "ktgraphicsscene.h"
+#include "ktanimationrenderer.h"
 
 #include "ktsoundlayer.h"
 
@@ -237,7 +238,7 @@ void KTAnimationArea::libraryResponse(KTLibraryResponse *)
 {
 }
 
-void KTAnimationArea::render() // TODO: Extend to scenes
+void KTAnimationArea::render()
 {
 	KTScene *scene = d->project->scene( d->currentSceneIndex );
 	
@@ -250,21 +251,12 @@ void KTAnimationArea::render() // TODO: Extend to scenes
 		d->sounds << layer;
 	}
 	
-	int totalPhotograms = photogramsCount();
-	
-	emit toStatusBar( tr("Rendering... "), totalPhotograms*70 );
-	
-	KTGraphicsScene *graphicScene = new KTGraphicsScene;
-	graphicScene->setCurrentScene(scene);
-	graphicScene->setBackgroundBrush(Qt::white);
-	
-	graphicScene->setSceneRect(QRectF(QPointF(0,0), QSizeF( 500, 400 ) )); // FIXME: this isn't real size
-	
-	graphicScene->drawPhotogram(0); // ###: Why whithout this don't work?
-	
 	d->photograms.clear();
 	
-	for(int nPhotogramsRenderized = 0; nPhotogramsRenderized < totalPhotograms; nPhotogramsRenderized++)
+	KTAnimationRenderer renderer;
+	renderer.setScene(scene);
+	
+	while(renderer.nextPhotogram())
 	{
 		QImage renderized = QImage(size(), QImage::Format_RGB32);
 		renderized.fill(qRgb(255, 255, 255));
@@ -272,36 +264,12 @@ void KTAnimationArea::render() // TODO: Extend to scenes
 		QPainter painter(&renderized);
 		painter.setRenderHint(QPainter::Antialiasing);
 		
-		graphicScene->drawPhotogram(nPhotogramsRenderized);
-		graphicScene->render(&painter, renderized.rect(), graphicScene->sceneRect().toRect(), Qt::IgnoreAspectRatio );
+		renderer.render(&painter);
 		
 		d->photograms << renderized;
 	}
 	
 	d->isRendered = true;
-}
-
-int KTAnimationArea::photogramsCount() const
-{
-	KTScene *scene = d->project->scene( d->currentSceneIndex );
-	
-	if (!scene) return -1;
-	
-	Layers layers = scene->layers();
-	Layers::iterator layerIterator = layers.begin();
-	
-	int total = 0;
-
-	while ( layerIterator != layers.end() )
-	{
-		if( *layerIterator )
-		{
-			total = qMax(total, (*layerIterator)->frames().count());
-		}
-		++layerIterator;
-	}
-	
-	return total;
 }
 
 QSize KTAnimationArea::sizeHint() const
