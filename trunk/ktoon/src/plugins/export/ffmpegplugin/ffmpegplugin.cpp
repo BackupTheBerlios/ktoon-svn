@@ -23,12 +23,13 @@
 #include <dcore/ddebug.h>
 #include <dcore/dglobal.h>
 
+#include <dgui/dffmpegmoviegenerator.h>
+
 #include <QImage>
 #include <QPainter>
 
-#include <cstdio>
-
 #include "ktlayer.h"
+#include "ktanimationrenderer.h"
 
 FFMpegPlugin::FFMpegPlugin()
 {
@@ -46,125 +47,75 @@ QString FFMpegPlugin::key() const
 
 KTExportInterface::Formats FFMpegPlugin::availableFormats()
 {
-	return SWF | MPEG | AVI | RM | ASF | MOV | GIF;
+	return KTExportInterface::SWF | KTExportInterface::MPEG | KTExportInterface::AVI | KTExportInterface::RM | KTExportInterface::ASF | KTExportInterface::MOV | KTExportInterface::GIF;
 }
 
-void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size, float sx, float sy)
+void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format)
 {
-#ifdef HAVE_FFMPEG
+	DFFMpegMovieGenerator *generator = 0;
 	
-	FFMpegManager manager;
-	m_size = size;
-	
-	QDir temp(CACHE_DIR+"/exporting");
-	if ( !temp.exists() )
+	switch(format)
 	{
-		temp.mkdir(temp.path());
-	}
-	
-	QStringList paths = createImages(scenes, temp, sx, sy);
-	
-	// 	manager.create(filePath, format, paths, m_size,scenes[0]->fps()); // FIXME
-	
-	foreach(QString path, paths)
-	{
-		QFile::remove(path);
-	}
-	
-#endif
-}
-
-QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx, float sy, const char *format)
-{
-	QStringList paths;
-#ifdef HAVE_FFMPEG
-	int nPhotogramsRenderized = 0;
-
-	
-	foreach(KTScene *scene, scenes )
-	{
-		Layers layers = scene->layers();
-		
-		bool m_isRendered = false;
-	
-		while ( ! m_isRendered )
+		case KTExportInterface::SWF:
 		{
-			Layers::iterator layerIterator = layers.begin();
-			bool ok = true;
+			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::SWF, 540, 320, 24);
+		}
+		break;
+		case KTExportInterface::MPEG:
+		{
+			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::MPEG, 540, 320, 24);
+		}
+		break;
+		case KTExportInterface::AVI:
+		{
+			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::AVI, 540, 320, 24);
+		}
+		break;
+		case KTExportInterface::RM:
+		{
+			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::RM, 540, 320, 24);
+		}
+		break;
+		case KTExportInterface::MOV:
+		{
+			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::MOV, 540, 320, 24);
+		}
+		break;
+		case KTExportInterface::ASF:
+		{
+			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::ASF, 540, 320, 24);
+		}
+		break;
+		case KTExportInterface::GIF:
+		{
+			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::GIF, 540, 320, 24);
+		}
+		break;
+		default: return;
+	}
+	
+	
+	KTAnimationRenderer renderer;
+	{
+		QPainter painter(generator);
+		painter.setRenderHint(QPainter::Antialiasing, true);
+		
+		foreach(KTScene *scene, scenes)
+		{
+			renderer.setScene(scene);
 			
-			QImage renderized = QImage(m_size, QImage::Format_RGB32);
-			renderized.fill(qRgb(255, 255, 255));
-			
-			QPainter painter(&renderized);
-			painter.setRenderHint(QPainter::Antialiasing);
-			
-			painter.scale(sx,sy);
-			
-			while ( layerIterator != layers.end() )
+			while(renderer.nextPhotogram())
 			{
-				ok = ok && (nPhotogramsRenderized > (*layerIterator)->frames().count());
-				
-				if ( *layerIterator && nPhotogramsRenderized < (*layerIterator)->frames().count() && (*layerIterator)->isVisible() )
-				{
-					KTFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
-					if ( frame )
-					{
-// 						QList<KTGraphicComponent *> componentList = frame->components();
-// 												
-// 						if ( componentList.count() > 0  )
-// 						{
-// 							QList<KTGraphicComponent *>::iterator it = componentList.begin();
-// 													
-// 							while ( it != componentList.end() )
-// 							{
-// 								(*it)->draw(&painter);
-// 								++it;
-// 							}
-// 						}
-					}
-				}
-				++layerIterator;
+				renderer.render(&painter);
+				generator->nextFrame();
+				generator->reset();
 			}
-			
-			
-			painter.end();
-			
-			QString file = "";
-			if ( nPhotogramsRenderized < 10 )
-			{
-				file = QString("000%1.png").arg(nPhotogramsRenderized);
-			}
-			else if ( nPhotogramsRenderized < 100 )
-			{
-				file = QString("00%1.png").arg(nPhotogramsRenderized);
-			}
-			else if( nPhotogramsRenderized < 1000 )
-			{
-				file = QString("0%1.png").arg(nPhotogramsRenderized);
-			}
-			else if( nPhotogramsRenderized < 10000 )
-			{
-				file = QString("%1.png").arg(nPhotogramsRenderized);
-			}
-			
-			renderized.save(dir.path()+"/"+file, "PNG");
-			
-			paths << dir.path()+"/"+file;
-			
-			if (ok )
-			{
-				m_isRendered = true;
-			}
-			
-			nPhotogramsRenderized++;
-			
 		}
 	}
-#endif
-	return paths;
-
+	
+	generator->saveMovie(filePath);
+	delete generator;
 }
-
 
 
 #ifdef HAVE_FFMPEG

@@ -42,13 +42,9 @@ class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectResp
 		~KTAnimationArea();
 		
 		QSize sizeHint() const;
-		
 		void setLoop(bool l);
-		
 		void setCurrentScene(int index);
-		
 		KTScene *currentScene() const;
-		
 		void setFPS(int fps);
 		
 	public slots:

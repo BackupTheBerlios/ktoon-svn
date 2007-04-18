@@ -22,15 +22,13 @@
 #define GENERICEXPORTPLUGIN_H
 
 #include <ktexportpluginobject.h>
-#include <ktexportinterface.h>
 
 /**
 	@author David Cuadrado <krawek@toonka.com>
 */
-class GenericExportPlugin : public KTExportPluginObject, public KTExportInterface
+class GenericExportPlugin : public KTExportPluginObject
 {
 	Q_OBJECT;
-	Q_INTERFACES(KTExportInterface);
 	
 	public:
 		GenericExportPlugin();
@@ -38,10 +36,8 @@ class GenericExportPlugin : public KTExportPluginObject, public KTExportInterfac
 		virtual QString key() const;
 		KTExportInterface::Formats availableFormats();
 		
-		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size, float sx = 1, float sy = 1);
+		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format);
 		
-	private:
-		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir,float sx = 1, float sy = 1, const char *format = "PNG");
 		
 	private:
 		QString m_baseName;

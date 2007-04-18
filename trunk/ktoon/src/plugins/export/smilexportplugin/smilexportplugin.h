@@ -22,7 +22,6 @@
 #define SMILEXPORTPLUGIN_H
 
 #include <ktexportpluginobject.h>
-#include <ktexportinterface.h>
 
 #include <QDomDocument>
 #include <QDomElement>
@@ -31,10 +30,9 @@
  * @author David Cuadrado \<krawek@toonka.com\>
 */
 
-class SmilExportPlugin : public KTExportPluginObject, public KTExportInterface
+class SmilExportPlugin : public KTExportPluginObject
 {
 	Q_OBJECT;
-	Q_INTERFACES(KTExportInterface);
 	
 	public:
 		SmilExportPlugin();
@@ -42,7 +40,7 @@ class SmilExportPlugin : public KTExportPluginObject, public KTExportInterface
 		virtual QString key() const;
 		KTExportInterface::Formats availableFormats();
 		
-		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size, float sx = 1, float sy = 1);
+		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format);
 		
 	private:
 		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir,float sx = 1, float sy = 1, const char *format = "PNG");

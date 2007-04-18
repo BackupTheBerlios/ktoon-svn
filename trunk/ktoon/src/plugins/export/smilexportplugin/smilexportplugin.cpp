@@ -45,12 +45,11 @@ QString SmilExportPlugin::key() const
 
 KTExportInterface::Formats SmilExportPlugin::availableFormats()
 {
-	return SMIL;
+	return KTExportInterface::SMIL;
 }
 
-void SmilExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size,float sx, float sy)
+void SmilExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format)
 {
-	m_size = size;
 	QFileInfo fileInfo(filePath);
 	
 	QDir dir = fileInfo.dir();
@@ -65,7 +64,7 @@ void SmilExportPlugin::exportToFormat(const QString &filePath, const QList<KTSce
 	
 	initSmil();
 	
-	createImages(scenes, dir, sx, sy);
+// 	createImages(scenes, dir, 1, sy);
 	
 	m_smil.documentElement().appendChild(m_body);
 	
@@ -124,96 +123,6 @@ void SmilExportPlugin::initSmil()
 	m_body = m_smil.createElement("body");
 	
 	m_smil.appendChild(root);
-}
-
-QStringList SmilExportPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx, float sy, const char *format)
-{
-	QStringList paths;
-	
-	int nPhotogramsRenderized = 0;
-	
-	foreach(KTScene *scene, scenes )
-	{
-		Layers layers = scene->layers();
-		
-		bool m_isRendered = false;
-	
-		while ( ! m_isRendered )
-		{
-			Layers::iterator layerIterator = layers.begin();
-			bool ok = true;
-			
-			QImage renderized = QImage(m_size.width(), m_size.height(), QImage::Format_RGB32);
-			renderized.fill(qRgb(255, 255, 255));
-			
-			QPainter painter(&renderized);
-			painter.setRenderHint(QPainter::Antialiasing);
-			
-			while ( layerIterator != layers.end() )
-			{
-				ok = ok && (nPhotogramsRenderized > (*layerIterator)->frames().count());
-				
-				if ( *layerIterator && nPhotogramsRenderized < (*layerIterator)->frames().count() && (*layerIterator)->isVisible() )
-				{
-					KTFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
-					if ( frame )
-					{
-// 						QList<KTGraphicComponent *> componentList = frame->components();
-// 						
-// 						if ( componentList.count() > 0  )
-// 						{
-// 							QList<KTGraphicComponent *>::iterator it = componentList.begin();
-// 									
-// 							while ( it != componentList.end() )
-// 							{
-// 								(*it)->draw( &painter);
-// 								++it;
-// 							}
-// 						}
-					}
-				}
-				++layerIterator;
-			}
-			
-			QString file = "";
-			QString extension = QString::fromLocal8Bit(format).toLower();
-			if ( nPhotogramsRenderized < 10 )
-			{
-				file = QString("000%1").arg(nPhotogramsRenderized);
-			}
-			else if ( nPhotogramsRenderized < 100 )
-			{
-				file = QString("00%1").arg(nPhotogramsRenderized);
-			}
-			else if( nPhotogramsRenderized < 1000 )
-			{
-				file = QString("0%1").arg(nPhotogramsRenderized);
-			}
-			else if( nPhotogramsRenderized < 10000 )
-			{
-				file = QString("%1").arg(nPhotogramsRenderized);
-			}
-			
-			if ( !renderized.isNull() )
-			{
-				QString dest = dir.path()+"/data/"+m_baseName+file+"."+extension;
-				renderized.save(dest, format);
-				
-				paths << dest;
-				
-				// 				createPar( dest, 1.0f/(float)scene->fps() ); // FIXME
-			}
-			
-			if (ok )
-			{
-				m_isRendered = true;
-			}
-			
-			nPhotogramsRenderized++;
-		}
-	}
-	
-	return paths;
 }
 
 void SmilExportPlugin::createPar(const QString &filePath, double duration)

@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef EXPORTINTERFACE_H
-#define EXPORTINTERFACE_H
+#ifndef KTEXPORTINTERFACE_H
+#define KTEXPORTINTERFACE_H
 
 #include <QStringList>
 #include <QDir>
@@ -54,19 +54,14 @@ class KTOON_EXPORT KTExportInterface
 		
 		Q_DECLARE_FLAGS(Formats, Format);
 		
-		
 		virtual ~KTExportInterface() {};
 		virtual QString key() const = 0;
 		virtual Formats availableFormats() = 0;
 		
-		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, const QSize &size, float sx = 1, float sy = 1) = 0;
-		
-	private:
-		virtual QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx = 1, float sy = 1, const char *format = "PNG") = 0;
+		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format ) = 0;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(KTExportInterface::Formats);
-
 Q_DECLARE_INTERFACE( KTExportInterface, "com.toonka.ktoon.ExportInterface/0.1" );
 
 #endif

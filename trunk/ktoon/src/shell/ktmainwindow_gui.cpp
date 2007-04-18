@@ -130,9 +130,9 @@ void KTMainWindow::createGUI()
 	
 	//////////////
 	
-// 	KTExportWidget *m_exportWidget = new KTExportWidget(m_projectManager->project(), this);
-// 	addToolView(m_exportWidget, Qt::BottomDockWidgetArea, Drawing );
-// 	connectToDisplays(m_exportWidget);
+	KTExportWidget *m_exportWidget = new KTExportWidget(m_projectManager->project(), this);
+	addToolView(m_exportWidget, Qt::BottomDockWidgetArea, Drawing );
+	connectToDisplays(m_exportWidget);
 	
 	//////////////
 	

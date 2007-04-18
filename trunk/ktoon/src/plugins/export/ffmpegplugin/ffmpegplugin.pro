@@ -14,10 +14,8 @@ CONFIG += plugin
 
 TEMPLATE = lib 
 
-HEADERS += ffmpegplugin.h \
-           ffmpegmanager.h 
-SOURCES += ffmpegplugin.cpp \
-           ffmpegmanager.cpp 
+HEADERS += ffmpegplugin.h
+SOURCES += ffmpegplugin.cpp
 !include(../../../../ktconfig.pri){
     error("Please run configure first")
 }

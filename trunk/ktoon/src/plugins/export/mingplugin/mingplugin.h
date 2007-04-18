@@ -24,25 +24,22 @@
 #include <QObject>
 #include <QDir>
 
-#include <ktexportinterface.h>
+#include <ktexportpluginobject.h>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class MingPlugin : public KTExportPluginObject, public KTExportInterface
+class MingPlugin : public KTExportPluginObject
 {
 	Q_OBJECT;
-	Q_INTERFACES(KTExportInterface);
+	
 	public:
 		MingPlugin();
 		virtual ~MingPlugin();
 		virtual QString key() const;
 		KTExportInterface::Formats availableFormats();
 		
-		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size, float sx = 1, float sy = 1);
-		
-	private:
-		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx = 1, float sy = 1, const char *format = "PNG");
+		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format);
 };
 
 #endif
