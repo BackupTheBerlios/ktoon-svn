@@ -27,7 +27,7 @@
 #include <QListWidget>
 #include <QHash>
 
-#include "ktexportinterface.h"
+#include "ktexportpluginobject.h"
 
 
 class QButtonGroup;
