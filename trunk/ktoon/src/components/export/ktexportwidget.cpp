@@ -35,302 +35,342 @@
 #include <dcore/dglobal.h>
 #include <dcore/ddebug.h>
 
+#include <dgui/ditemselector.h>
 
-KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KTModuleWidgetBase(parent), m_project(project), m_currentExporter(0), m_currentFormat(KTExportInterface::NONE)
+class SelectPlugin : public DWizardPage
 {
-	DINIT;
-	setWindowTitle(tr("E&xport"));
-	
-	setWindowIcon(QIcon(THEME_DIR+"/icons/export.png"));
-	
-	m_buttons = new QButtonGroup(this);
-	connect(m_buttons, SIGNAL(buttonClicked (int)), this, SLOT(makeAction(int)));
-	
-	QHBoxLayout *layout1 = new QHBoxLayout;
-	layout1->addStretch(1);
-	
-	m_exporterList = new QListWidget;
-	connect(m_exporterList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selectExporter(QListWidgetItem *)));
-	layout1->addWidget(m_exporterList);
-	
-	m_formatList = new QListWidget;
-	connect(m_formatList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selectFormat(QListWidgetItem *)));
-	layout1->addWidget(m_formatList);
-	
-	setupToExport( layout1);
-	setupExportBox( layout1 );
-	
-	qobject_cast<QVBoxLayout *>(layout())->addLayout(layout1);
-	
-	loadPlugins();
-}
-
-void KTExportWidget::setupToExport(QBoxLayout *mainLayout)
-{
-	QGroupBox *toExportGroup = new QGroupBox(tr("Choose scene to export"));
-	QVBoxLayout *toExportLayout = new QVBoxLayout(toExportGroup);
-	
-	QRadioButton *allScenes = new QRadioButton(tr("All scenes"));
-	allScenes->setChecked(true);
-	m_buttons->addButton(allScenes, AllScenes);
-	QRadioButton *currentScene = new QRadioButton(tr("Current scene"));
-	m_buttons->addButton(currentScene, CurrentScene);
-	
-	QHBoxLayout *rangeLayout = new QHBoxLayout();
-	QRadioButton *scenesRange = new QRadioButton(tr("Range" ));
-	rangeLayout->addWidget(scenesRange);
-	m_buttons->addButton(scenesRange, SceneRange);
-	
-	m_fromScene = new QLineEdit("0");
-	m_fromScene->setValidator(new QIntValidator(0, 100, m_fromScene));
-	rangeLayout->addWidget(m_fromScene);
-	
-	rangeLayout->addWidget(new QLabel(" to "));
-	
-	m_toScene = new QLineEdit("0");
-	m_toScene->setValidator(new QIntValidator(0, 100, m_toScene));
-	rangeLayout->addWidget(m_toScene);
-	
-	toExportLayout->addWidget(allScenes);
-	toExportLayout->addWidget(currentScene);
-	toExportLayout->addLayout(rangeLayout);
-	
-	mainLayout->addWidget(toExportGroup);
-}
-
-void KTExportWidget::setupExportBox(QBoxLayout *mainLayout)
-{
-	QGroupBox *exportBox = new QGroupBox(tr("Export it"));
-	QVBoxLayout *exportBoxLayout = new QVBoxLayout(exportBox);
-	
-	QHBoxLayout *filePathLayout = new QHBoxLayout;
-	filePathLayout->addWidget(new QLabel(tr("File: ")));
-	
-	m_filePath = new QLineEdit();
-	filePathLayout->addWidget(m_filePath);
-	
-	QToolButton *button = new QToolButton;
-	
-	button->setIcon(QIcon(THEME_DIR+"/icons/open.png"));
-	
-	connect(button, SIGNAL(clicked()), this, SLOT(chooseFile()));
-	
-	filePathLayout->addWidget(button);
-	
-	QPushButton *exportIt = new QPushButton(tr("Export"));
-	connect(exportIt, SIGNAL(clicked()), this, SLOT(exportIt()));
-	
-	exportBoxLayout->addLayout(filePathLayout);
-	
-	exportBoxLayout->addWidget(exportIt);
-	
-	mainLayout->addWidget(exportBox);
-}
-
-
-KTExportWidget::~KTExportWidget()
-{
-	DEND;
-}
-
-void KTExportWidget::loadPlugins()
-{
-	QDir pluginDirectory = QDir(HOME_DIR+"/plugins/");
-
-	foreach (QString fileName, pluginDirectory.entryList(QDir::Files))
-	{
-		QPluginLoader loader(pluginDirectory.absoluteFilePath(fileName));
-		KTExportPluginObject *plugin = qobject_cast<KTExportPluginObject*>(loader.instance());
+	Q_OBJECT;
+	public:
+		SelectPlugin();
+		~SelectPlugin();
 		
-		if (plugin)
-		{
-			KTExportInterface *exporter = qobject_cast<KTExportInterface *>(plugin);
-			
-			if (exporter)
-			{
-				QListWidgetItem *newItem = new QListWidgetItem(exporter->key(), m_exporterList);
-				m_plugins.insert(newItem, exporter);
-			}
-			else
-				dError() << "Can't load: " << fileName;
-		}
-	}
+		bool isComplete() const;
+		void reset();
+		
+		void addPlugin(const QString &plugin);
+		
+	public slots:
+		void selected(QListWidgetItem *);
+		
+	signals:
+		void selectedPlugin(const QString &plugin);
+		
+	private:
+		QListWidget *m_exporterList;
+};
+
+SelectPlugin::SelectPlugin() : DWizardPage(tr("Select plugin"))
+{
+	m_exporterList = new QListWidget;
+	connect(m_exporterList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selected(QListWidgetItem *)));
+	addWidget(m_exporterList);
+	
+	reset();
 }
 
-void KTExportWidget::selectExporter(QListWidgetItem *item)
+SelectPlugin::~SelectPlugin()
 {
-	if ( item )
+}
+
+bool SelectPlugin::isComplete() const
+{
+	return m_exporterList->selectedItems().count() > 0;
+}
+
+void SelectPlugin::reset()
+{
+	m_exporterList->clearSelection();
+}
+
+void SelectPlugin::addPlugin(const QString &plugin)
+{
+	new QListWidgetItem(plugin, m_exporterList);
+}
+
+void SelectPlugin::selected(QListWidgetItem *item)
+{
+	if( item )
 	{
-		m_currentExporter = m_plugins[item];
-		addFormats(m_currentExporter->availableFormats());
+		emit selectedPlugin(item->text());
+		emit completed();
 	}
 }
 
-void KTExportWidget::selectFormat(QListWidgetItem *item)
+class SelectFormat : public DWizardPage
 {
-	if ( item )
-	{
-		m_currentFormat = m_formats[item];
-	}
+	Q_OBJECT;
+	public:
+		SelectFormat();
+		~SelectFormat();
+		
+		bool isComplete() const;
+		void reset();
+		
+		void setFormats(KTExportInterface::Formats formats);
+		
+	private slots:
+		void selected(QListWidgetItem *item);
+		
+	signals:
+		void formatSelected(int format);
+		
+	private:
+		QListWidget *m_formatList;
+};
+
+SelectFormat::SelectFormat() : DWizardPage(tr(""))
+{
+	m_formatList = new QListWidget;
+	connect(m_formatList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selected(QListWidgetItem *)));
+	addWidget(m_formatList);
+	
+	reset();
 }
 
-void KTExportWidget::addFormats(KTExportInterface::Formats formats)
+SelectFormat::~SelectFormat()
 {
-	m_formats.clear();
+}
+
+bool SelectFormat::isComplete() const
+{
+	return m_formatList->selectedItems().count() > 0;
+}
+
+void SelectFormat::reset()
+{
+	m_formatList->clearSelection();
+}
+
+void SelectFormat::setFormats(KTExportInterface::Formats formats)
+{
 	m_formatList->clear();
 	
 	if ( formats & KTExportInterface::SWF )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("Macromedia flash"), m_formatList);
 		
-		m_formats.insert(format, KTExportInterface::SWF);
+		format->setData(3124,KTExportInterface::SWF);
 	}
 	
 	if ( formats & KTExportInterface::MPEG )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("MPEG Video"), m_formatList);
 		
-		m_formats.insert(format, KTExportInterface::MPEG);
+		format->setData(3124, KTExportInterface::MPEG);
 	}
 	
 	if ( formats & KTExportInterface::AVI )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("AVI Video"), m_formatList);
 		
-		m_formats.insert(format, KTExportInterface::AVI);
+		format->setData(3124, KTExportInterface::AVI);
 	}
 	
 	if ( formats & KTExportInterface::RM )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("RealMedia Video"), m_formatList);
 		
-		m_formats.insert(format, KTExportInterface::RM);
+		format->setData(3124, KTExportInterface::RM);
 	}
 	
 	if ( formats & KTExportInterface::ASF )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("ASF Video"), m_formatList);
 		
-		m_formats.insert(format, KTExportInterface::ASF);
+		format->setData(3124, KTExportInterface::ASF);
 	}
 	
 	if ( formats & KTExportInterface::MOV )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("QuickTime Video"), m_formatList);
 		
-		m_formats.insert(format, KTExportInterface::MOV);
+		format->setData(3124, KTExportInterface::MOV);
 	}
 	
 	if ( formats & KTExportInterface::GIF )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("Gif Image"), m_formatList);
 		
-		m_formats.insert(format, KTExportInterface::GIF);
+		format->setData(3124, KTExportInterface::GIF);
 	}
 	
 	if ( formats & KTExportInterface::PNG )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("PNG Image Array"), m_formatList);
 		
-		m_formats.insert(format, KTExportInterface::PNG);
+		format->setData(3124, KTExportInterface::PNG);
 	}
 	
 	if ( formats & KTExportInterface::JPEG )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("JPEG Image Array"), m_formatList);
 		
-		m_formats.insert(format, KTExportInterface::JPEG);
+		format->setData(3124, KTExportInterface::JPEG);
 	}
 	
 	if ( formats & KTExportInterface::SMIL )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("SMIL"), m_formatList);
 		
-		m_formats.insert(format, KTExportInterface::SMIL);
+		format->setData(3124, KTExportInterface::SMIL);
 	}
 }
 
-void KTExportWidget::makeAction(int buttonId)
+void SelectFormat::selected(QListWidgetItem *item)
 {
-	m_fromScene->setReadOnly(true);
-	m_toScene->setReadOnly(true);
-	switch(buttonId)
+	if( item )
 	{
-		case AllScenes:
-		{
-			
-		}
-		break;
-		case CurrentScene:
-		{
-			
-		}
-		break;
-		case SceneRange:
-		{
-			m_fromScene->setReadOnly(false);
-			m_toScene->setReadOnly(false);
-		}
-		break;
+		emit formatSelected(item->data(3124).toInt());
+		emit completed();
 	}
 }
 
-void KTExportWidget::exportIt()
+class SelectScenes : public DWizardPage
 {
-	D_FUNCINFO;
-	
-	if( m_currentExporter && m_currentFormat != KTExportInterface::NONE )
-	{
-		QString file = fileToExport();
+	Q_OBJECT;
+	public:
+		SelectScenes();
+		~SelectScenes();
 		
-		if ( file.isNull() ) return;
+		bool isComplete() const;
+		void reset();
 		
-		dDebug("export") << "Exporting to file: " << file;
+		void setScenes(const QList<KTScene *> &scenes);
 		
-		QList<KTScene *> scenes = scenesToExport();
+		void aboutToNextPage();
 		
-		dDebug("export") << "Exporting " << scenes.count() << " scenes";
+	private slots:
+		void updateState();
 		
-		if ( scenes.count() > 0)
-		{
-			m_currentExporter->exportToFormat( file, scenes, m_currentFormat );
-		}
-	}
-	else
-	{
-		DOsd::self()->display( tr("Please choose the format before export"), DOsd::Error );
-	}
-}
+	signals:
+		void selectedScenes(const QList<int> &scenes);
+		
+	private:
+		DItemSelector *m_selector;
+};
 
-QList<KTScene *> KTExportWidget::scenesToExport()
+SelectScenes::SelectScenes() : DWizardPage(tr(""))
 {
-	QList<KTScene *> scenes = m_project->scenes();
+	m_selector = new DItemSelector;
 	
-// 	if ( scenes.count() == 0 ) return QList<KTScene *>();
-	
-// 	switch( m_buttons->checkedId() )
-// 	{
-// 		case AllScenes:
-// 		{
-// 			return scenes;
-// 		}
-// 		break;
-// 		case CurrentScene:
-// 		{
-// 		}
-// 		break;
-// 		case SceneRange:
-// 		{
-// 		}
-// 		break;
-// 		
-// 		default: break;
-// 	}
-	
-	return scenes;
+	connect(m_selector, SIGNAL(changed()), this, SLOT(updateState()));
+	addWidget(m_selector);
 }
 
-QString KTExportWidget::fileToExport() const
+SelectScenes::~SelectScenes()
+{
+}
+
+bool SelectScenes::isComplete() const
+{
+	return m_selector->selectedItems().count() > 0;
+}
+
+void SelectScenes::reset()
+{
+}
+
+void SelectScenes::setScenes(const QList<KTScene *> &scenes)
+{
+	m_selector->clear();
+	
+	int pos = 1;
+	foreach(KTScene *scene, scenes)
+	{
+		m_selector->addItem(QString("%1: ").arg(pos)+scene->sceneName());
+		pos++;
+	}
+}
+
+void SelectScenes::aboutToNextPage()
+{
+	emit selectedScenes(m_selector->selectedIndexes());
+}
+
+void SelectScenes::updateState()
+{
+	emit completed();
+}
+
+class ExportTo : public DWizardPage
+{
+	Q_OBJECT;
+	public:
+		ExportTo(const KTProject *project);
+		~ExportTo();
+		
+		bool isComplete() const;
+		void reset();
+		
+		void aboutToFinish();
+		
+	public slots:
+		void exportIt();
+		
+	private slots:
+		void updateState(const QString & text);
+		
+	private:
+		QString fileToExport() const;
+		QList<KTScene *> scenesToExport() const;
+		
+	public slots:
+		void setScenesIndexes(const QList<int> &indexes);
+		void setCurrentExporter(KTExportInterface *currentExporter);
+		void setCurrentFormat(int currentFormat);
+		
+	private:
+		QList<int> m_indexes;
+		KTExportInterface *m_currentExporter;
+		KTExportInterface::Format m_currentFormat;
+		
+		const KTProject *m_project;
+		
+		QLineEdit *m_filePath;
+};
+
+ExportTo::ExportTo(const KTProject *project) : DWizardPage(tr("")), m_currentExporter(0), m_currentFormat(KTExportInterface::NONE), m_project(project)
+{
+	m_filePath = new QLineEdit;
+	addWidget(m_filePath);
+	
+	connect(m_filePath, SIGNAL(textChanged ( const QString &)), this, SLOT(updateState(const QString &)));
+}
+
+ExportTo::~ExportTo()
+{
+}
+
+bool ExportTo::isComplete() const
+{
+	return !m_filePath->text().isEmpty();
+}
+
+void ExportTo::reset()
+{
+}
+
+void ExportTo::aboutToFinish()
+{
+	exportIt();
+}
+
+void ExportTo::setScenesIndexes(const QList<int> &indexes)
+{
+	m_indexes = indexes;
+}
+
+void ExportTo::setCurrentExporter(KTExportInterface *currentExporter)
+{
+	m_currentExporter = currentExporter;
+}
+
+void ExportTo::setCurrentFormat(int currentFormat)
+{
+	m_currentFormat = KTExportInterface::Format(currentFormat);
+}
+
+QString ExportTo::fileToExport() const
 {
 	QString file = m_filePath->text();
 	
@@ -415,15 +455,148 @@ QString KTExportWidget::fileToExport() const
 	return file;
 }
 
-void KTExportWidget::chooseFile()
+void ExportTo::updateState(const QString &)
 {
-// 	QFileDialog fileDialog;
-// 	fileDialog.setFileMode(QFileDialog::Directory);
-// 	
-// 	if ( fileDialog.exec() != QDialog::Rejected )
-// 	{
-// 		m_filePath->setText(fileDialog.selectedFiles()[0] );
-// 	}
-	QString file = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"), QDir::homePath());
-	m_filePath->setText(file);
+	emit completed();
 }
+
+void ExportTo::exportIt()
+{
+	D_FUNCINFO;
+	
+	if( m_currentExporter && m_currentFormat != KTExportInterface::NONE )
+	{
+		QString file = fileToExport();
+		
+		if ( file.isNull() ) return;
+		
+		dDebug("export") << "Exporting to file: " << file;
+		
+		QList<KTScene *> scenes = scenesToExport();
+		
+		dDebug("export") << "Exporting " << scenes.count() << " scenes";
+		
+		if ( scenes.count() > 0)
+		{
+			m_currentExporter->exportToFormat( file, scenes, m_currentFormat );
+		}
+	}
+	else
+	{
+		DOsd::self()->display( tr("Please choose the format before export"), DOsd::Error );
+	}
+}
+
+QList<KTScene *> ExportTo::scenesToExport() const
+{
+	QList<KTScene *> scenes;
+	foreach(int index, m_indexes)
+	{
+		scenes << m_project->scene(index);
+	}
+	
+	return scenes;
+}
+
+
+KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : DWizard(parent), m_project(project)
+{
+	DINIT;
+	setWindowTitle(tr("Export"));
+	setWindowIcon(QIcon(THEME_DIR+"/icons/export.png"));
+	
+	m_pluginSelectionPage = new SelectPlugin();
+	addPage(m_pluginSelectionPage);
+	
+	m_formatSelectionPage = new SelectFormat();
+	addPage(m_formatSelectionPage);
+	
+	m_scenesSelectionPage = new SelectScenes();
+	m_scenesSelectionPage->setScenes(project->scenes());
+	
+	addPage(m_scenesSelectionPage);
+	
+	m_exportToPage = new ExportTo(project);
+	addPage(m_exportToPage);
+	
+	connect(m_pluginSelectionPage, SIGNAL(selectedPlugin(const QString &)), this, SLOT(setExporter(const QString &)));
+	connect(m_formatSelectionPage, SIGNAL(formatSelected(int)), m_exportToPage, SLOT(setCurrentFormat(int)));
+	connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportToPage, SLOT(setScenesIndexes(const QList<int> &)));
+	
+	loadPlugins();
+}
+
+/*
+void KTExportWidget::setupExportBox(QBoxLayout *mainLayout)
+{
+	QGroupBox *exportBox = new QGroupBox(tr("Export it"));
+	QVBoxLayout *exportBoxLayout = new QVBoxLayout(exportBox);
+	
+	QHBoxLayout *filePathLayout = new QHBoxLayout;
+	filePathLayout->addWidget(new QLabel(tr("File: ")));
+	
+	m_filePath = new QLineEdit();
+	filePathLayout->addWidget(m_filePath);
+	
+	QToolButton *button = new QToolButton;
+	
+	button->setIcon(QIcon(THEME_DIR+"/icons/open.png"));
+	
+	connect(button, SIGNAL(clicked()), this, SLOT(chooseFile()));
+	
+	filePathLayout->addWidget(button);
+	
+	QPushButton *exportIt = new QPushButton(tr("Export"));
+	connect(exportIt, SIGNAL(clicked()), this, SLOT(exportIt()));
+	
+	exportBoxLayout->addLayout(filePathLayout);
+	
+	exportBoxLayout->addWidget(exportIt);
+	
+	mainLayout->addWidget(exportBox);
+}*/
+
+
+KTExportWidget::~KTExportWidget()
+{
+	DEND;
+}
+
+void KTExportWidget::loadPlugins()
+{
+	QDir pluginDirectory = QDir(HOME_DIR+"/plugins/");
+
+	foreach (QString fileName, pluginDirectory.entryList(QDir::Files))
+	{
+		QPluginLoader loader(pluginDirectory.absoluteFilePath(fileName));
+		KTExportPluginObject *plugin = qobject_cast<KTExportPluginObject*>(loader.instance());
+		
+		if (plugin)
+		{
+			KTExportInterface *exporter = qobject_cast<KTExportInterface *>(plugin);
+			
+			if (exporter)
+			{
+				m_pluginSelectionPage->addPlugin(exporter->key());
+				m_plugins.insert(exporter->key(), exporter);
+			}
+			else
+				dError() << "Can't load: " << fileName;
+		}
+	}
+}
+
+void KTExportWidget::setExporter(const QString &plugin)
+{
+	if ( m_plugins.contains(plugin) )
+	{
+		KTExportInterface* currentExporter = m_plugins[plugin];
+		m_formatSelectionPage->setFormats(currentExporter->availableFormats());
+		
+		m_exportToPage->setCurrentExporter(currentExporter);
+	}
+}
+
+
+#include "ktexportwidget.moc"
+

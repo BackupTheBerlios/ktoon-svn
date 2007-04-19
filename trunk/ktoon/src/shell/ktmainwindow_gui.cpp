@@ -127,13 +127,7 @@ void KTMainWindow::createGUI()
 	KinasWidget *m_scriptEditor = new KinasWidget;
 	addToolView( m_scriptEditor, Qt::BottomDockWidgetArea, Drawing );
 #endif
-	
-	//////////////
-	
-	KTExportWidget *m_exportWidget = new KTExportWidget(m_projectManager->project(), this);
-	addToolView(m_exportWidget, Qt::BottomDockWidgetArea, Drawing );
-	connectToDisplays(m_exportWidget);
-	
+		
 	//////////////
 	
 	/////////////////////
@@ -188,7 +182,8 @@ void KTMainWindow::setupMenu()
 	m_fileMenu->addAction(m_actionManager->find("saveproject"));
 	m_fileMenu->addAction(m_actionManager->find("saveprojectas"));
 	m_fileMenu->addAction(m_actionManager->find("closeproject"));
-
+	m_fileMenu->addSeparator();
+	m_fileMenu->addAction(m_actionManager->find("exportproject"));
 	m_fileMenu->addSeparator();
 	m_fileMenu->addAction(m_actionManager->find("ImportPalettes"));
 	m_fileMenu->addSeparator();
@@ -316,6 +311,11 @@ void KTMainWindow::setupFileActions()
 	DAction *importPalette = new DAction( QPixmap(THEME_DIR+"/icons/import.png"), tr( "&Import GIMP palettes..." ),  QKeySequence(), this, SLOT(importPalettes()), m_actionManager);
 	importPalette->setStatusTip(tr("Imports palettes"));
 	m_actionManager->insert( importPalette, "importpalettes", "file" );
+	
+	// -----
+	DAction *exportProject = new DAction( QPixmap(THEME_DIR+"/icons/export.png"), tr( "&Export project..." ),  QKeySequence(), this, SLOT(exportProject()), m_actionManager);
+	exportProject->setStatusTip(tr("Exports project to different formats"));
+	m_actionManager->insert( exportProject, "exportproject", "file" );
 	
 	DAction *exit = new DAction(QPixmap(THEME_DIR+"/icons/export.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")), qApp, SLOT(closeAllWindows ()), m_actionManager);
 	exit->setStatusTip(tr("Closes the application"));

@@ -29,65 +29,40 @@
 
 #include "ktexportpluginobject.h"
 
+#include "dgui/dwizard.h"
 
 class QButtonGroup;
 class QLineEdit;
+class SelectPlugin;
+class SelectFormat;
+class SelectScenes;
+class ExportTo;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTExportWidget : public KTModuleWidgetBase
+class KTExportWidget : public DWizard
 {
 	Q_OBJECT
 	public:
 		KTExportWidget(const KTProject *project, QWidget *parent = 0);
 		~KTExportWidget();
-		void addFormats(KTExportInterface::Formats formats);
-		
-		QString fileToExport() const;
-		
-	private:
-		enum ButtonId
-		{
-			AllScenes = 0,
-			CurrentScene,
-			SceneRange
-		};
-		
-	public slots:
-		void exportIt();
-		
-	private:
-		void setupToExport(QBoxLayout *mainLayout);
-		void setupExportBox(QBoxLayout *mainLayout);
 		
 	private slots:
-		void makeAction(int buttonId);
-		void selectExporter(QListWidgetItem *item);
-		void selectFormat(QListWidgetItem *item);
-		
-		void chooseFile();
+		void setExporter(const QString &plugin);
 		
 	private:
 		void loadPlugins();
-		QList<KTScene *> scenesToExport();
 		
 	private:
-		QButtonGroup *m_buttons;
+		SelectPlugin *m_pluginSelectionPage;
+		SelectFormat *m_formatSelectionPage;
+		SelectScenes *m_scenesSelectionPage;
+		ExportTo *m_exportToPage;
 		
 		const KTProject *m_project;
 		
-		QListWidget *m_exporterList;
-		QListWidget *m_formatList;
-		
-		QHash<QListWidgetItem *, KTExportInterface *> m_plugins;
-		QHash<QListWidgetItem *, KTExportInterface::Format > m_formats;
-		
-		KTExportInterface *m_currentExporter;
-		KTExportInterface::Format m_currentFormat;
-		
-		QLineEdit *m_fromScene, *m_toScene;
-		QLineEdit *m_filePath;
+		QHash<QString, KTExportInterface *> m_plugins;
 };
 
 #endif

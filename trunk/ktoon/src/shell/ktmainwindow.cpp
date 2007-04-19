@@ -624,4 +624,11 @@ void KTMainWindow::addPage(QWidget *widget)
 	addWidget(widget);
 }
 
+void KTMainWindow::exportProject()
+{
+	KTExportWidget exportWidget(m_projectManager->project(), this);
+	exportWidget.exec();
+}
+
+
 
