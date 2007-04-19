@@ -71,10 +71,8 @@ DWizardPage *DWizard::addPage(DWizardPage *newPage)
 		newPage->setFocus();
 		m_backButton->setEnabled(false);
 		m_nextButton->setDefault(true);
-// 		m_finishButton->setEnabled(false);
 	}
 	
-// 	dDebug() << "ENABLE: " << newPage->isComplete();
 	m_nextButton->setEnabled( newPage->isComplete() );
 	
 	connect(newPage, SIGNAL(completed()), this, SLOT(pageCompleted()));
@@ -184,14 +182,14 @@ DWizardPage::DWizardPage(const QString &title, QWidget *parent) : DVHBox(parent)
 void DWizardPage::setPixmap(const QPixmap &px)
 {
 	QImage image = px.toImage();
-// 	DImageEffect::hash( image, DImageEffect::SouthLite, 1);
+	
 	m_image->setPixmap(QPixmap::fromImage(image));
 	m_image->show();
 }
 
 void DWizardPage::setWidget(QWidget *w)
 {
-	m_layout->addWidget(w, 0, 1/*, Qt::AlignTop*/);
+	m_layout->addWidget(w, 0, 1);
 }
 
 DWizardPage::~DWizardPage() {};

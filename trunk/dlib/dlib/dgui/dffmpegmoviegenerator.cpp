@@ -121,11 +121,49 @@ struct DFFMpegMovieGenerator::Private
 	AVFormatContext *oc;
 	AVOutputFormat *fmt;
 	
+	void chooseFileExtension(int format);
 	bool openVideo(AVFormatContext *oc, AVStream *st);
 	bool writeVideoFrame(const QImage &image);
 	void closeVideo(AVStream *st);
 };
 
+void DFFMpegMovieGenerator::Private::chooseFileExtension(int format)
+{
+	switch( format )
+	{
+		case ASF:
+		{
+			movieFile += ".asf";
+		}
+		break;
+		case AVI:
+		{
+// 			fmt->video_codec = CODEC_ID_MSMPEG4V3;
+			movieFile += ".avi";
+		}
+		break;
+		case MOV:
+		{
+			movieFile += ".mov";
+		}
+		break;
+		case RM:
+		{
+			movieFile += ".rm";
+		}
+		break;
+		case SWF:
+		{
+			movieFile += ".swf";
+		}
+		break;
+		default:
+		{
+			movieFile += ".mpg";
+		}
+		break;
+	}
+}
 
 bool DFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st)
 {
@@ -270,46 +308,23 @@ DFFMpegMovieGenerator::DFFMpegMovieGenerator(DMovieGeneratorInterface::Format fo
 {
 	d->movieFile = QDir::tempPath()+"/ffmpeg_video"+DAlgorithm::randomString(12);
 	
-	switch( format )
-	{
-		case ASF:
-		{
-			d->movieFile += ".asf";
-		}
-		break;
-		case AVI:
-		{
-// 			fmt->video_codec = CODEC_ID_MSMPEG4V3;
-			d->movieFile += ".avi";
-		}
-		break;
-		case MOV:
-		{
-			d->movieFile += ".mov";
-		}
-		break;
-		case RM:
-		{
-			d->movieFile += ".rm";
-		}
-		break;
-		case SWF:
-		{
-			d->movieFile += ".swf";
-		}
-		break;
-		default:
-		{
-			d->movieFile += ".mpg";
-		}
-		break;
-	}
+	d->chooseFileExtension(format);
 	
 	d->fps = fps;
 	
 	begin();
 }
 
+DFFMpegMovieGenerator::DFFMpegMovieGenerator(DMovieGeneratorInterface::Format format, const QSize &size, int fps) : DMovieGenerator(size.width(), size.height()), d(new Private)
+{
+	d->movieFile = QDir::tempPath()+"/ffmpeg_video"+DAlgorithm::randomString(12);
+	
+	d->chooseFileExtension(format);
+	
+	d->fps = fps;
+	
+	begin();
+}
 
 DFFMpegMovieGenerator::~DFFMpegMovieGenerator()
 {
