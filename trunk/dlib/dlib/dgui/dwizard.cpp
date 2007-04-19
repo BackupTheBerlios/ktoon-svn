@@ -75,7 +75,7 @@ DWizardPage *DWizard::addPage(DWizardPage *newPage)
 	}
 	
 // 	dDebug() << "ENABLE: " << newPage->isComplete();
-// 	m_nextButton->setEnabled( newPage->isComplete() );
+	m_nextButton->setEnabled( newPage->isComplete() );
 	
 	connect(newPage, SIGNAL(completed()), this, SLOT(pageCompleted()));
 	
@@ -94,6 +94,12 @@ void DWizard::showPage(int index)
 
 void DWizard::back()
 {
+	DWizardPage *current = qobject_cast<DWizardPage *>(m_history.currentWidget());
+	if( current )
+	{
+		current->aboutToBackPage();
+	}
+	
 	m_history.setCurrentIndex(m_history.currentIndex()-1);
 	
 	if ( m_history.currentIndex() == 0 )
@@ -112,14 +118,17 @@ void DWizard::back()
 
 void DWizard::next()
 {
+	DWizardPage *current = qobject_cast<DWizardPage *>(m_history.currentWidget());
+	if( current )
+	{
+		current->aboutToNextPage();
+	}
+	
 	m_history.setCurrentIndex(m_history.currentIndex()+1);
 	
-// 	dDebug() << m_history.currentIndex() << " " << m_history.count() << endl;
-	
-	if ( m_history.currentIndex() == m_history.count()-1 )
+	if ( m_history.currentIndex() == m_history.count()-1 && current->isComplete())
 	{
 		m_nextButton->setEnabled(false);
-// 		m_finishButton->setEnabled(true);
 		m_backButton->setEnabled(true);
 		
 		m_finishButton->setDefault(true);
@@ -144,10 +153,7 @@ void DWizard::pageCompleted()
 	
 	if ( m_history.currentIndex() == m_history.count()-1 )
 	{
-		if ( current->isComplete() )
-		{
-			m_finishButton->setEnabled(current->isComplete());
-		}
+		m_finishButton->setEnabled(current->isComplete());
 	}
 	else
 	{

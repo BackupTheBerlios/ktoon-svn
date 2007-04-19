@@ -37,12 +37,12 @@ class DWizardPage;
 
 class D_GUI_EXPORT DWizard : public QDialog
 {
-	Q_OBJECT
-
+	Q_OBJECT;
+	
 	public:
 		DWizard(QWidget *parent = 0);
 		~DWizard();
-		DWizardPage *addPage(DWizardPage *DWizardPage);
+		DWizardPage *addPage(DWizardPage *page);
 		void showPage(int index);
 		void showPage(DWizardPage *page);
 		
@@ -72,7 +72,7 @@ class DWizardPage : public DVHBox
 {
 	Q_OBJECT
 	public:
-		DWizardPage(const QString &title, QWidget *parent );
+		DWizardPage(const QString &title, QWidget *parent = 0 );
 		virtual ~DWizardPage();
 		
 		virtual bool isComplete() const = 0;
@@ -82,6 +82,8 @@ class DWizardPage : public DVHBox
 		void setWidget(QWidget *w);
 		
 	public slots:
+		virtual void aboutToNextPage() {}
+		virtual void aboutToBackPage() {}
 		virtual void aboutToFinish() {};
 		
 	private:
