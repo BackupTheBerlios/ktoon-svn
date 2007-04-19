@@ -48,7 +48,7 @@ KTExportInterface::Formats GenericExportPlugin::availableFormats()
 	return KTExportInterface::PNG;
 }
 
-void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format)
+void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
 {
 	QFileInfo fileInfo(filePath);
 	

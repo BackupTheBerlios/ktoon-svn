@@ -50,7 +50,7 @@ KTExportInterface::Formats FFMpegPlugin::availableFormats()
 	return KTExportInterface::SWF | KTExportInterface::MPEG | KTExportInterface::AVI | KTExportInterface::RM | KTExportInterface::ASF | KTExportInterface::MOV | KTExportInterface::GIF;
 }
 
-void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format)
+void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
 {
 	DFFMpegMovieGenerator *generator = 0;
 	
@@ -58,37 +58,37 @@ void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
 	{
 		case KTExportInterface::SWF:
 		{
-			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::SWF, 540, 320, 24);
+			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::SWF, size, fps);
 		}
 		break;
 		case KTExportInterface::MPEG:
 		{
-			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::MPEG, 540, 320, 24);
+			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::MPEG, size, fps);
 		}
 		break;
 		case KTExportInterface::AVI:
 		{
-			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::AVI, 540, 320, 24);
+			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::AVI, size, fps);
 		}
 		break;
 		case KTExportInterface::RM:
 		{
-			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::RM, 540, 320, 24);
+			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::RM, size, fps);
 		}
 		break;
 		case KTExportInterface::MOV:
 		{
-			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::MOV, 540, 320, 24);
+			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::MOV, size, fps);
 		}
 		break;
 		case KTExportInterface::ASF:
 		{
-			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::ASF, 540, 320, 24);
+			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::ASF, size, fps);
 		}
 		break;
 		case KTExportInterface::GIF:
 		{
-			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::GIF, 540, 320, 24);
+			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::GIF, size, fps);
 		}
 		break;
 		default: return;

@@ -36,6 +36,7 @@
 #include <dcore/ddebug.h>
 
 #include <dgui/ditemselector.h>
+#include <dgui/dxyspinbox.h>
 
 class SelectPlugin : public DWizardPage
 {
@@ -63,7 +64,7 @@ SelectPlugin::SelectPlugin() : DWizardPage(tr("Select plugin"))
 {
 	m_exporterList = new QListWidget;
 	connect(m_exporterList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selected(QListWidgetItem *)));
-	addWidget(m_exporterList);
+	setWidget(m_exporterList);
 	
 	reset();
 }
@@ -122,7 +123,7 @@ SelectFormat::SelectFormat() : DWizardPage(tr(""))
 {
 	m_formatList = new QListWidget;
 	connect(m_formatList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selected(QListWidgetItem *)));
-	addWidget(m_formatList);
+	setWidget(m_formatList);
 	
 	reset();
 }
@@ -254,7 +255,8 @@ SelectScenes::SelectScenes() : DWizardPage(tr(""))
 	m_selector = new DItemSelector;
 	
 	connect(m_selector, SIGNAL(changed()), this, SLOT(updateState()));
-	addWidget(m_selector);
+	
+	setWidget(m_selector);
 }
 
 SelectScenes::~SelectScenes()
@@ -309,6 +311,7 @@ class ExportTo : public DWizardPage
 		
 	private slots:
 		void updateState(const QString & text);
+		void chooseFile();
 		
 	private:
 		QString fileToExport() const;
@@ -327,14 +330,65 @@ class ExportTo : public DWizardPage
 		const KTProject *m_project;
 		
 		QLineEdit *m_filePath;
+		QSpinBox *m_fps;
+		
+		DXYSpinBox *m_size;
 };
 
 ExportTo::ExportTo(const KTProject *project) : DWizardPage(tr("")), m_currentExporter(0), m_currentFormat(KTExportInterface::NONE), m_project(project)
 {
-	m_filePath = new QLineEdit;
-	addWidget(m_filePath);
+	QWidget *container = new QWidget;
+	QVBoxLayout *layout = new QVBoxLayout(container);
 	
+	
+	////////////////
+	QHBoxLayout *filePathLayout = new QHBoxLayout;
+	filePathLayout->addWidget(new QLabel(tr("File: ")));
+	
+	m_filePath = new QLineEdit;
 	connect(m_filePath, SIGNAL(textChanged ( const QString &)), this, SLOT(updateState(const QString &)));
+	filePathLayout->addWidget(m_filePath);
+	
+	QToolButton *button = new QToolButton;
+	button->setIcon(QIcon(THEME_DIR+"/icons/open.png"));
+	connect(button, SIGNAL(clicked()), this, SLOT(chooseFile()));
+	filePathLayout->addWidget(button);
+	
+	layout->addLayout(filePathLayout);
+	/////////////////
+	
+	QWidget *configure = new QWidget;
+	QHBoxLayout *configureLayout = new QHBoxLayout(configure);
+	configureLayout->addStretch();
+	
+	m_size = new DXYSpinBox(tr("Size") );
+	m_size->setMaximum( 1024 );
+	m_size->setModifyTogether(true);
+	
+	m_size->setX( 520 );
+	m_size->setY( 340);
+	
+	QGroupBox *configuration = new QGroupBox(tr("Configuration"));
+	QHBoxLayout *configurationLayout = new QHBoxLayout(configuration);
+	
+	configurationLayout->addWidget(new QLabel(tr("FPS")));
+	
+	m_fps = new QSpinBox;
+	m_fps->setMinimum(0);
+	m_fps->setMaximum(100);
+	m_fps->setValue(24);
+	configurationLayout->addWidget(m_fps);
+	
+	configureLayout->addWidget(m_size);
+	configureLayout->addWidget(configuration);
+	
+	configureLayout->addStretch();
+	
+	layout->addWidget(configure);
+	
+	layout->addStretch();
+	
+	setWidget(container);
 }
 
 ExportTo::~ExportTo()
@@ -460,6 +514,13 @@ void ExportTo::updateState(const QString &)
 	emit completed();
 }
 
+void ExportTo::chooseFile()
+{
+	QString fileName = QFileDialog::getSaveFileName( this, tr("Choose a file name..."));
+	
+	m_filePath->setText(fileName);
+}
+
 void ExportTo::exportIt()
 {
 	D_FUNCINFO;
@@ -478,7 +539,7 @@ void ExportTo::exportIt()
 		
 		if ( scenes.count() > 0)
 		{
-			m_currentExporter->exportToFormat( file, scenes, m_currentFormat );
+			m_currentExporter->exportToFormat( file, scenes, m_currentFormat, QSize(m_size->x(),m_size->x()), m_fps->value()  );
 		}
 	}
 	else
@@ -526,40 +587,10 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : DWiz
 	loadPlugins();
 }
 
-/*
-void KTExportWidget::setupExportBox(QBoxLayout *mainLayout)
-{
-	QGroupBox *exportBox = new QGroupBox(tr("Export it"));
-	QVBoxLayout *exportBoxLayout = new QVBoxLayout(exportBox);
-	
-	QHBoxLayout *filePathLayout = new QHBoxLayout;
-	filePathLayout->addWidget(new QLabel(tr("File: ")));
-	
-	m_filePath = new QLineEdit();
-	filePathLayout->addWidget(m_filePath);
-	
-	QToolButton *button = new QToolButton;
-	
-	button->setIcon(QIcon(THEME_DIR+"/icons/open.png"));
-	
-	connect(button, SIGNAL(clicked()), this, SLOT(chooseFile()));
-	
-	filePathLayout->addWidget(button);
-	
-	QPushButton *exportIt = new QPushButton(tr("Export"));
-	connect(exportIt, SIGNAL(clicked()), this, SLOT(exportIt()));
-	
-	exportBoxLayout->addLayout(filePathLayout);
-	
-	exportBoxLayout->addWidget(exportIt);
-	
-	mainLayout->addWidget(exportBox);
-}*/
-
-
 KTExportWidget::~KTExportWidget()
 {
 	DEND;
+	qDeleteAll(m_plugins);
 }
 
 void KTExportWidget::loadPlugins()

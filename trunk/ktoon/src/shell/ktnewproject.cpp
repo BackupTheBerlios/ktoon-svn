@@ -32,20 +32,20 @@
 
 struct KTNewProject::Private
 {
-		QLineEdit *projectName;
-		QLineEdit *authorName;
-		QSpinBox *fps;
-		
-		DXYSpinBox *size;
-		
-		bool useNetwork;
-		
-		QGroupBox *netOptions;
-		
-		QLineEdit *server;
-		QSpinBox *port;
-		QLineEdit *login;
-		QLineEdit *password;
+	QLineEdit *projectName;
+	QLineEdit *authorName;
+	QSpinBox *fps;
+	
+	DXYSpinBox *size;
+	
+	bool useNetwork;
+	
+	QGroupBox *netOptions;
+	
+	QLineEdit *server;
+	QSpinBox *port;
+	QLineEdit *login;
+	QLineEdit *password;
 };
 
 KTNewProject::KTNewProject(QWidget *parent)
