@@ -27,6 +27,20 @@
 class DMovieGeneratorInterface
 {
 	public:
+		enum Format
+		{
+			NONE = 0,
+			SWF = 1<<0,
+			MPEG = 1<<1,
+			AVI = 1<<2,
+			RM = 1 << 3,
+			ASF = 1 << 5,
+			MOV = 1 << 6,
+			GIF = 1 << 7
+		};
+		
+		Q_DECLARE_FLAGS(Formats, Format);
+		
 		virtual ~DMovieGeneratorInterface() {}
 		
 		virtual void nextFrame() = 0;
@@ -43,6 +57,8 @@ class DMovieGeneratorInterface
 		virtual bool begin() = 0;
 		virtual void end() = 0;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(DMovieGeneratorInterface::Formats);
 
 #endif
 

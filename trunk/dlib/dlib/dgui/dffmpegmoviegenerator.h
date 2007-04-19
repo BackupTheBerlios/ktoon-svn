@@ -28,7 +28,7 @@
 class DFFMpegMovieGenerator : public DMovieGenerator
 {
 	public:
-		DFFMpegMovieGenerator(Format format, int width, int height, int fps = 24);
+		DFFMpegMovieGenerator(DMovieGeneratorInterface::Format format, int width, int height, int fps = 24);
 		~DFFMpegMovieGenerator();
 		
 	protected:

@@ -265,7 +265,7 @@ void DFFMpegMovieGenerator::Private::closeVideo(AVStream *st)
 	av_free(videOutbuf);
 }
 
-DFFMpegMovieGenerator::DFFMpegMovieGenerator(Format format, int width, int height, int fps)
+DFFMpegMovieGenerator::DFFMpegMovieGenerator(DMovieGeneratorInterface::Format format, int width, int height, int fps)
  : DMovieGenerator(width, height), d(new Private)
 {
 	d->movieFile = QDir::tempPath()+"/ffmpeg_video"+DAlgorithm::randomString(12);
