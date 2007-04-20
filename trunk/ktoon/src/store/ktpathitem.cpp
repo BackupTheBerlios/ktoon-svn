@@ -134,7 +134,7 @@ void KTPathItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * op
 
 bool KTPathItem::contains ( const QPointF & point ) const
 {
-#if 1
+#if 0
 	double thickness = 4;
 	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
 	
@@ -165,8 +165,7 @@ bool KTPathItem::contains ( const QPointF & point ) const
 	
 	return false;
 #else
-// 	return QGraphicsPathItem::contains (point );
-	return false;
+	return QGraphicsPathItem::contains (point );
 #endif
 }
 

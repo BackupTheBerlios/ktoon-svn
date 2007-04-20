@@ -183,7 +183,7 @@ void KTMainWindow::setupMenu()
 	m_fileMenu->addAction(m_actionManager->find("saveprojectas"));
 	m_fileMenu->addAction(m_actionManager->find("closeproject"));
 	m_fileMenu->addSeparator();
-	m_fileMenu->addAction(m_actionManager->find("exportproject"));
+	m_fileMenu->addAction(m_actionManager->find("export"));
 	m_fileMenu->addSeparator();
 	m_fileMenu->addAction(m_actionManager->find("ImportPalettes"));
 	m_fileMenu->addSeparator();
@@ -313,9 +313,9 @@ void KTMainWindow::setupFileActions()
 	m_actionManager->insert( importPalette, "importpalettes", "file" );
 	
 	// -----
-	DAction *exportProject = new DAction( QPixmap(THEME_DIR+"/icons/export.png"), tr( "&Export project..." ),  QKeySequence(), this, SLOT(exportProject()), m_actionManager);
+	DAction *exportProject = new DAction( QPixmap(THEME_DIR+"/icons/export.png"), tr( "&Export..." ),  QKeySequence(), this, SLOT(exportProject()), m_actionManager);
 	exportProject->setStatusTip(tr("Exports project to different formats"));
-	m_actionManager->insert( exportProject, "exportproject", "file" );
+	m_actionManager->insert( exportProject, "export", "file" );
 	
 	DAction *exit = new DAction(QPixmap(THEME_DIR+"/icons/export.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")), qApp, SLOT(closeAllWindows ()), m_actionManager);
 	exit->setStatusTip(tr("Closes the application"));

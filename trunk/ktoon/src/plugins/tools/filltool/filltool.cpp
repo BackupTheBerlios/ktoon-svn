@@ -28,6 +28,7 @@
 
 #include <dcore/dglobal.h>
 #include <dcore/ddebug.h>
+#include <dgui/dpathhandler.h>
 
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
@@ -109,7 +110,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 					if( path )
 					{
 						QPointF localPoint = xit->mapFromScene(input->pos());
-						if( path->shape().contains( localPoint ) )
+						if( path->shape().contains( localPoint ) && path->scenePos() != item->scenePos() )
 						{
 							res = ClipHelper::intersect(res, mapPath(path));
 						}
@@ -137,15 +138,12 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 					
 					res = ClipHelper::subtract(res, subs);
 					
-					QList<QPolygonF> polygons = res.toSubpathPolygons();
+					QList<QPainterPath> subpaths = DPathHandler::toSubpaths(res);
 					
-					if( polygons.count() > 1 )
+					if( subpaths.count() > 1 )
 					{
-						foreach(QPolygonF pol, polygons)
+						foreach(QPainterPath subpath, subpaths)
 						{
-							QPainterPath subpath;
-							subpath.addPolygon(pol);
-							
 							if( subpath.contains(input->pos()) )
 							{
 								res = subpath;

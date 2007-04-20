@@ -577,7 +577,7 @@ struct VertexListNavigate {
     inline void next()
     {
         prev = cur;
-        if (cur->getType(0) == PathVertex::MoveTo)
+        if (cur->getType(0) == PathVertex::MoveTo && !lastMove)
             lastMove = cur;
 	cur = cur ? cur->next : 0;
     }
@@ -585,8 +585,6 @@ struct VertexListNavigate {
     inline PathVertex *getNextNode() const
     {
 	PathVertex *nn = cur ? cur->next: 0;
-        if (nn && nn->getType(0) == PathVertex::MoveTo)
-            return lastMove;
 	return nn;
     }
 
@@ -610,24 +608,24 @@ VertexList *VertexList::fromPainterPath(const QPainterPath &path)
 {
     VertexList *lst = new VertexList;
 
-    QPointF lstMovePos;
-    PathVertex *lstMove = 0;
+    bool multipleMoves = false;
+    PathVertex *firstMove = 0;
     for (int i = 0; i < path.elementCount(); ++i) {
         const QPainterPath::Element &e = path.elementAt(i);
         switch(e.type) {
         case QPainterPath::MoveToElement: {
-            lstMove = new PathVertex(e.x, e.y,
+            PathVertex *lstMove = new PathVertex(e.x, e.y,
                                      PathVertex::MoveTo);
             lst->appendNode(lstMove);
-            lstMovePos = QPointF(e.x, e.y);
+            multipleMoves = firstMove;
+            if (!firstMove)
+                firstMove = lstMove;
             break;
         }
         case QPainterPath::LineToElement: {
-            if ((i == (path.elementCount() -1) ||
-                 path.elementAt(i+1).type == QPainterPath::MoveToElement) &&
-                (qFuzzyCompare(e.x, lstMovePos.x()) &&
-                 qFuzzyCompare(e.y, lstMovePos.y()))) {
-                lstMove->setType(PathVertex::MoveLineTo);
+            if (i == (path.elementCount() - 1) && !multipleMoves &&
+                qFuzzyCompare(firstMove->x, e.x) && qFuzzyCompare(firstMove->y, e.y)) {
+                firstMove->setType(PathVertex::MoveLineTo);
             } else {
                 lst->appendNode(new PathVertex(e.x, e.y,
                                                PathVertex::LineTo));
@@ -639,13 +637,11 @@ VertexList *VertexList::fromPainterPath(const QPainterPath &path)
             Q_ASSERT(path.elementAt(i+1).type == QPainterPath::CurveToDataElement);
             Q_ASSERT(path.elementAt(i+2).type == QPainterPath::CurveToDataElement);
 #endif
-            if ((i == (path.elementCount() - 3) ||
-                 path.elementAt(i+3).type == QPainterPath::MoveToElement) &&
-                (qFuzzyCompare(path.elementAt(i+2).x, lstMovePos.x()) &&
-                 qFuzzyCompare(path.elementAt(i+2).y, lstMovePos.y()))) {
-                lstMove->setType(PathVertex::MoveCurveTo);
-                lstMove->ctrl1 = QPointF(e.x, e.y);
-                lstMove->ctrl2 = QPointF(path.elementAt(i+1).x, path.elementAt(i+1).y);
+            if (i == (path.elementCount() - 3) && !multipleMoves &&
+                qFuzzyCompare(firstMove->x, e.x) && qFuzzyCompare(firstMove->y, e.y)) {
+                firstMove->setType(PathVertex::MoveCurveTo);
+                firstMove->ctrl1 = QPointF(e.x, e.y);
+                firstMove->ctrl2 = QPointF(path.elementAt(i+1).x, path.elementAt(i+1).y);
             } else {
                 PathVertex *vtx = new PathVertex(path.elementAt(i+2).x,
                                                  path.elementAt(i+2).y,
@@ -1721,7 +1717,6 @@ QPainterPath QPathClipper::clip(Operation op)
 {
     d->op = op;
 
-
 #ifdef QDEBUG_CLIPPER
     qDebug("xxxxxxxxxxxxxxxxxxxxxxxxx");
     d->subject->dump();
@@ -1803,14 +1798,17 @@ QPainterPath QPathClipper::clip(Operation op)
 
         PathVertex::Direction traversal_stat = PathVertex::Stop;
 
+        int count = 0;
         QList<PathVertex*> vertices;
-		int counter = 0;
         while (not_over)
 		{
-			if( counter > 2000 ) break;
             not_over = d->walkResultingPath(start, prev_code_owner,
                                             current, traversal_stat, vertices);
-			counter++;
+			if( count >= 2000 )
+			{
+				return result;
+			}
+			count++;
 		}
 
         result.addPath(d->pathFromList(vertices));
@@ -1831,7 +1829,7 @@ bool QPathClipper::contains()
     bool intersect = d->areIntersecting();
 
     //we have an intersection clearly we can't be fully contained
-    if (!intersect)
+    if (intersect)
         return false;
 
     //if there's no intersections the path is already completely outside
