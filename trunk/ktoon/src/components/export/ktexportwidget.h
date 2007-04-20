@@ -34,7 +34,6 @@
 class QButtonGroup;
 class QLineEdit;
 class SelectPlugin;
-class SelectFormat;
 class SelectScenes;
 class ExportTo;
 
@@ -56,7 +55,6 @@ class KTExportWidget : public DWizard
 		
 	private:
 		SelectPlugin *m_pluginSelectionPage;
-		SelectFormat *m_formatSelectionPage;
 		SelectScenes *m_scenesSelectionPage;
 		ExportTo *m_exportToPage;
 		

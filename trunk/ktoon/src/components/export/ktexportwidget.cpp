@@ -49,22 +49,40 @@ class SelectPlugin : public DWizardPage
 		void reset();
 		
 		void addPlugin(const QString &plugin);
+		void setFormats(KTExportInterface::Formats formats);
 		
 	public slots:
-		void selected(QListWidgetItem *);
+		void selectedPluginItem(QListWidgetItem *);
+		void selectedFormatItem(QListWidgetItem *);
 		
 	signals:
 		void selectedPlugin(const QString &plugin);
+		void formatSelected(int format);
 		
 	private:
 		QListWidget *m_exporterList;
+		QListWidget *m_formatList;
 };
 
 SelectPlugin::SelectPlugin() : DWizardPage(tr("Select plugin"))
 {
+	QWidget *container = new QWidget;
+	QHBoxLayout *layout = new QHBoxLayout(container);
+	
+	
 	m_exporterList = new QListWidget;
-	connect(m_exporterList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selected(QListWidgetItem *)));
-	setWidget(m_exporterList);
+	connect(m_exporterList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selectedPluginItem(QListWidgetItem *)));
+	
+	
+	layout->addWidget(m_exporterList);
+	
+	m_formatList = new QListWidget;
+	connect(m_formatList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selectedFormatItem(QListWidgetItem *)));
+	
+	layout->addWidget(m_formatList);
+	
+	
+	setWidget(container);
 	
 	reset();
 }
@@ -75,12 +93,13 @@ SelectPlugin::~SelectPlugin()
 
 bool SelectPlugin::isComplete() const
 {
-	return m_exporterList->selectedItems().count() > 0;
+	return m_exporterList->selectedItems().count() > 0 && m_formatList->selectedItems().count() > 0;
 }
 
 void SelectPlugin::reset()
 {
 	m_exporterList->clearSelection();
+	m_formatList->clearSelection();
 }
 
 void SelectPlugin::addPlugin(const QString &plugin)
@@ -88,7 +107,7 @@ void SelectPlugin::addPlugin(const QString &plugin)
 	new QListWidgetItem(plugin, m_exporterList);
 }
 
-void SelectPlugin::selected(QListWidgetItem *item)
+void SelectPlugin::selectedPluginItem(QListWidgetItem *item)
 {
 	if( item )
 	{
@@ -97,52 +116,7 @@ void SelectPlugin::selected(QListWidgetItem *item)
 	}
 }
 
-class SelectFormat : public DWizardPage
-{
-	Q_OBJECT;
-	public:
-		SelectFormat();
-		~SelectFormat();
-		
-		bool isComplete() const;
-		void reset();
-		
-		void setFormats(KTExportInterface::Formats formats);
-		
-	private slots:
-		void selected(QListWidgetItem *item);
-		
-	signals:
-		void formatSelected(int format);
-		
-	private:
-		QListWidget *m_formatList;
-};
-
-SelectFormat::SelectFormat() : DWizardPage(tr(""))
-{
-	m_formatList = new QListWidget;
-	connect(m_formatList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selected(QListWidgetItem *)));
-	setWidget(m_formatList);
-	
-	reset();
-}
-
-SelectFormat::~SelectFormat()
-{
-}
-
-bool SelectFormat::isComplete() const
-{
-	return m_formatList->selectedItems().count() > 0;
-}
-
-void SelectFormat::reset()
-{
-	m_formatList->clearSelection();
-}
-
-void SelectFormat::setFormats(KTExportInterface::Formats formats)
+void SelectPlugin::setFormats(KTExportInterface::Formats formats)
 {
 	m_formatList->clear();
 	
@@ -217,7 +191,7 @@ void SelectFormat::setFormats(KTExportInterface::Formats formats)
 	}
 }
 
-void SelectFormat::selected(QListWidgetItem *item)
+void SelectPlugin::selectedFormatItem(QListWidgetItem *item)
 {
 	if( item )
 	{
@@ -569,9 +543,6 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : DWiz
 	m_pluginSelectionPage = new SelectPlugin();
 	addPage(m_pluginSelectionPage);
 	
-	m_formatSelectionPage = new SelectFormat();
-	addPage(m_formatSelectionPage);
-	
 	m_scenesSelectionPage = new SelectScenes();
 	m_scenesSelectionPage->setScenes(project->scenes());
 	
@@ -581,7 +552,7 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : DWiz
 	addPage(m_exportToPage);
 	
 	connect(m_pluginSelectionPage, SIGNAL(selectedPlugin(const QString &)), this, SLOT(setExporter(const QString &)));
-	connect(m_formatSelectionPage, SIGNAL(formatSelected(int)), m_exportToPage, SLOT(setCurrentFormat(int)));
+	connect(m_pluginSelectionPage, SIGNAL(formatSelected(int)), m_exportToPage, SLOT(setCurrentFormat(int)));
 	connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportToPage, SLOT(setScenesIndexes(const QList<int> &)));
 	
 	loadPlugins();
@@ -622,7 +593,7 @@ void KTExportWidget::setExporter(const QString &plugin)
 	if ( m_plugins.contains(plugin) )
 	{
 		KTExportInterface* currentExporter = m_plugins[plugin];
-		m_formatSelectionPage->setFormats(currentExporter->availableFormats());
+		m_pluginSelectionPage->setFormats(currentExporter->availableFormats());
 		
 		m_exportToPage->setCurrentExporter(currentExporter);
 	}
