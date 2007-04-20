@@ -87,7 +87,10 @@ class D_CORE_EXPORT DPathHandler
 		static QPainterPath buildPath(const QStringList &polygonsStr, QChar sep);
 		
 		static QPainterPath buildPath(const QString &svgpath);
-
+		
+		
+		static QPainterPath fromElements(const QList<QPainterPath::Element>& elements);
+		static QList<QPainterPath> toSubpaths(const QPainterPath & path );
 };
 
 #endif

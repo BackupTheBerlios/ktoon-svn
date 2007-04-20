@@ -139,3 +139,73 @@ QPainterPath DPathHandler::buildPath(const QString &svgpath)
 	return QPainterPath();
 }
 
+
+QPainterPath DPathHandler::fromElements(const QList<QPainterPath::Element>& elements)
+{
+	QPainterPath shape;
+	QVector<QPointF> curve;
+	
+	foreach(QPainterPath::Element e, elements)
+	{
+		switch(e.type)
+		{
+			case QPainterPath::MoveToElement:
+			{
+				shape.moveTo(e.x, e.y);
+				break;
+			}
+			case QPainterPath::LineToElement:
+			{
+				shape.lineTo(e.x, e.y);
+				break;
+			}
+			case QPainterPath::CurveToDataElement:
+			{
+				curve << e;
+				if(curve.count() == 3)
+				{
+					shape.cubicTo(curve[0], curve[1], curve[2]);
+				}
+				break;
+			}
+			case QPainterPath::CurveToElement:
+			{
+				curve.clear();
+				curve << e;
+				break;
+			}
+		}
+	}
+	return shape;
+}
+
+QList<QPainterPath> DPathHandler::toSubpaths(const QPainterPath & path )
+{
+	QList<QPainterPath> paths;
+	QList<QPainterPath::Element> elements;
+	
+	for(int index = 0; index < path.elementCount(); index++ )
+	{
+		QPainterPath::Element e = path.elementAt(index);
+		
+		if(e.type == QPainterPath::MoveToElement && !elements.isEmpty())
+		{
+			QPainterPath path = DPathHandler::fromElements(elements);
+			paths << path;
+			elements.clear();
+		}
+		
+		elements << e;
+	}
+	
+	if( ! elements.isEmpty() )
+	{
+		QPainterPath path = DPathHandler::fromElements(elements);
+		paths << path;
+		elements.clear();
+	}
+	
+	return paths;
+}
+
+
