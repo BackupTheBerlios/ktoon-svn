@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "sproject.h"
+#include <QFileInfo>
 #include <ktsaveproject.h>
 
 #include <dcore/dapplicationproperties.h>
@@ -93,13 +94,15 @@ QDomElement SProject::infoToXml(QDomDocument &doc) const
 	
 	QDomElement file = doc.createElement("file");
 	
-	QString fileName = dAppProp->cacheDir() + "/" + projectName();
+	QString fileName = projectName();
 	if ( !fileName.endsWith(".ktn") )
 	{
 		fileName += ".ktn";
 	}
 	
-	file.setAttribute("name", d->filename);
+	
+	QFileInfo fi(d->filename);
+	file.setAttribute("name", fi.fileName());
 	
 	project.appendChild(file);
 	QDomElement usersE = doc.createElement("users");

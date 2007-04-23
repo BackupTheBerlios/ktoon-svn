@@ -57,8 +57,7 @@ bool DatabaseParser::startTag(const QString &tag, const QXmlAttributes &atts)
 		}
 		else if(tag == "file")
 		{
-			QString filename = atts.value("name");
-			
+			QString filename = dAppProp->cacheDir() + "/" + atts.value("name");
 			tmpInfo.file = filename;
 			
 			if(filename > m_lastFileName)
@@ -70,6 +69,7 @@ bool DatabaseParser::startTag(const QString &tag, const QXmlAttributes &atts)
 			{
 				if(tmpInfo.name == m_condition)
 				{
+					gc();
 					m_project = new SProject(filename);
 					m_project->setProjectName(tmpInfo.name);
 					m_project->setAuthor(tmpInfo.author);
@@ -178,6 +178,7 @@ void DatabaseParser::gc()
 {
 	D_FUNCINFO;
 	delete m_project;
+	m_project = 0;
 	m_projectExists = 0;
 }
 
