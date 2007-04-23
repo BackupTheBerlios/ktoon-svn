@@ -2,23 +2,42 @@
 
 require 'qonf/configure'
 require 'qonf/info'
+require 'qonf/dlibconfig.rb'
 
-begin
-	conf = RQonf::Configure.new(ARGV)
-
-	if conf.hasArgument?("help") or conf.hasArgument?("h")
-		puts <<_EOH_
+def usage
+	puts <<_EOH_
 Use: #{$0} [options]
 	options:
 		--help, -h:					Show this message
 		--prefix=[prefix], -prefix [prefix]:		Sets prefix
 		--with-debug:					Enable debug
+		--with-ktoondir=[ktoon dir]                     Use KToon dir
 _EOH_
-		exit 0
+	exit 0
+end
+
+
+begin
+	conf = RQonf::Configure.new(ARGV)
+
+	if conf.hasArgument?("help") or conf.hasArgument?("h")
+		usage()
 	end
 	
 	conf.verifyQtVersion("4.2.0")
 	
+	ktoondir = conf.argumentValue("with-ktoondir")
+	
+	if ktoondir.to_s.empty?
+		ktoondir = ENV["KTOON_HOME"]
+	end
+	
+	if ktoondir.to_s.empty?
+		usage()
+	end
+	
+	ktoondir = File.expand_path(ktoondir)
+
 	config = RQonf::Config.new
 	
 	config.addModule("core")
@@ -30,11 +49,14 @@ _EOH_
 	config.addLib("-ldgui")
 	config.addLib("-ldcore")
 	config.addLib("-ldsound")
-	config.addLib("-L#{ENV["KTOON_HOME"]}/lib -lktoon -lstore -lktbase")
+	config.addLib("-L#{ktoondir}/lib -lktoon -lstore -lktbase")
+	
+	config.addLib("-L#{RQonf::CONFIG["libdir"]}")
+        config.addIncludePath(RQonf::CONFIG["includepath"])
 
-	config.addIncludePath(ENV["KTOON_HOME"]+"/include/ktoon")
-	config.addIncludePath(ENV["KTOON_HOME"]+"/include/store")
-	config.addIncludePath(ENV["KTOON_HOME"]+"/include/base")
+	config.addIncludePath(ktoondir+"/include/ktoon")
+	config.addIncludePath(ktoondir+"/include/store")
+	config.addIncludePath(ktoondir+"/include/base")
 	
 	
 	if not conf.hasArgument?("with-debug")

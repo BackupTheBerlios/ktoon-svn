@@ -1,16 +1,16 @@
 #!/bin/bash
 
-export LD_LIBRARY_PATH=$KTOON_HOME/lib
+export LD_LIBRARY_PATH=$KTOON_HOME/lib:$LD_LIBRARY_PATH
 export QT_NO_GLIB=1
 
 BASE=`dirname $0`
 
 if [ "$1" == "-g" ]
 then
-	${BASE}/bin/ktoond.bin $*
-else
 	shift 1
 	gdb -ex run -ex bt --batch --args ${BASE}/bin/ktoond.bin "$*"
+else
+	${BASE}/bin/ktoond.bin $*
 fi
 
 

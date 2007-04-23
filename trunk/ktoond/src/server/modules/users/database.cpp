@@ -36,7 +36,19 @@ struct Database::Private
 Database::Database(const QString &dbfile) : d(new Private)
 {
 	d->dbfile = dbfile;
-// 	init(dbfile);
+	
+	if( !QFile::exists(d->dbfile))
+	{
+		Users::User user;
+		user.setLogin("admin");
+		user.setName(QObject::tr("System administrator"));
+		user.setPassword("d41d8cd98f00b204e9800998ecf8427e");
+		
+		user.addRight(new Right("admin", true, true));
+		user.addRight(new Right("project", true, true));
+		
+		addUser(user);
+	}
 }
 
 
