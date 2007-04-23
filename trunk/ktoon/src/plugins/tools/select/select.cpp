@@ -49,8 +49,7 @@ struct Select::Private
 {
 	QMap<QString, DAction *> actions;
 	QList<NodeManager*> nodeManagers;
-	QGraphicsView *view;
-	KTProject *project;
+	KTGraphicsScene *scene;
 	NodeManager* changedManager;
 };
 
@@ -68,6 +67,11 @@ Select::~Select()
 
 void Select::init(KTGraphicsScene *scene)
 {
+	D_FUNCINFOX("tools");
+	qDeleteAll(d->nodeManagers);
+	d->nodeManagers.clear();
+	d->changedManager = 0;
+	
 	foreach(QGraphicsView * view, scene->views())
 	{
 		view->setDragMode (QGraphicsView::RubberBandDrag);
@@ -75,7 +79,15 @@ void Select::init(KTGraphicsScene *scene)
 		{
 			if(!qgraphicsitem_cast<Node *>(item))
 			{
-				item->setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
+				if(scene->currentFrame()->visualIndexOf(item) != -1  )
+				{
+					item->setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
+				}
+				else
+				{
+					item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+					item->setFlag(QGraphicsItem::ItemIsMovable, false );
+				}
 			}
 		}
 	}
@@ -123,8 +135,11 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 	}
 	
 	QList<QGraphicsItem *> selecteds = scene->selectedItems();
-	selecteds << scene->mouseGrabberItem();
 	
+	if(scene->currentFrame()->visualIndexOf(scene->mouseGrabberItem()) > -1)
+	{
+		selecteds << scene->mouseGrabberItem();
+	}
 	foreach(QGraphicsItem *item, selecteds)
 	{
 		if(item && dynamic_cast<KTAbstractSerializable* > (item) )
@@ -147,7 +162,7 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 		}
 	}
 	
-	d->project = scene->scene()->project();
+	d->scene = scene;
 }
 
 void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -164,7 +179,7 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	
 	if(input->buttons() == Qt::LeftButton && scene->selectedItems().count() > 0)
 	{
-		QTimer::singleShot ( 0, this, SLOT(syncNodes()));;
+		QTimer::singleShot ( 0, this, SLOT(syncNodes()));
 	}
 }
 
@@ -212,10 +227,13 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				doc.appendChild(KTSerializer::properties( manager->parentItem(), doc ));
 				
 				int position  = scene->currentFrame()->visualIndexOf(manager->parentItem());
-				dDebug("selection") << "position = "<<  position;
 				if(position != -1)
 				{
 					// Restore matrix
+					foreach(QGraphicsView * view, scene->views())
+					{
+						view->setUpdatesEnabled(false);
+					}
 					manager->restoreItem();
 					
 					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::Transform, doc.toString() );
@@ -263,12 +281,13 @@ QWidget *Select::configurator()
 
 void Select::aboutToChangeScene(KTGraphicsScene *scene)
 {
-	d->changedManager = 0;
+	D_FUNCINFOX("tools");
 	init(scene);
 }
 
 void Select::aboutToChangeTool()
 {
+	D_FUNCINFOX("tools");
 	qDeleteAll(d->nodeManagers);
 	d->nodeManagers.clear();
 }
@@ -276,15 +295,18 @@ void Select::aboutToChangeTool()
 
 void Select::itemResponse(const KTItemResponse *event)
 {
-	D_FUNCINFO;
+	D_FUNCINFOX("tools");
 	
 	QGraphicsItem *item = 0;
 	KTScene *scene = 0;
 	KTLayer *layer = 0;
 	KTFrame *frame = 0;
-	if(d->project)
+	
+	KTProject *project = d->scene->scene()->project();
+	
+	if(project)
 	{
-		scene = d->project->scene(event->sceneIndex());
+		scene = project->scene(event->sceneIndex());
 		if ( scene )
 		{
 			layer = scene->layer( event->layerIndex() );
@@ -310,8 +332,13 @@ void Select::itemResponse(const KTItemResponse *event)
 	{
 		case KTProjectRequest::Transform:
 		{
+			
 			if ( item )
 			{
+				foreach(QGraphicsView * view, d->scene->views())
+				{
+					view->setUpdatesEnabled(true);
+				}
 				foreach(NodeManager* node, d->nodeManagers)
 				{
 					node->show();

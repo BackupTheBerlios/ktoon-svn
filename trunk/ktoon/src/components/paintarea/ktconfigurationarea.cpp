@@ -74,6 +74,7 @@ QSize  KTConfigurationArea::sizeHint() const
 
 void KTConfigurationArea::setConfigurator(QWidget *w)
 {
+	Q_CHECK_PTR(w);
 	QWidget *old = widget();
 	
 	if ( !w || old == w ) return;
@@ -82,6 +83,7 @@ void KTConfigurationArea::setConfigurator(QWidget *w)
 	{
 		old->hide();
 	}
+	
 	
 	setWidget(w);
 	

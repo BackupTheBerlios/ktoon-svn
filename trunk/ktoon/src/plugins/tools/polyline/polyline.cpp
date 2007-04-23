@@ -83,6 +83,7 @@ PolyLine::~PolyLine()
 
 void PolyLine::init(KTGraphicsScene *scene)
 {
+	endItem();
 	foreach(QGraphicsView *view,  scene->views() )
 	{
 		view->setDragMode ( QGraphicsView::NoDrag );
@@ -296,6 +297,11 @@ void PolyLine::itemResponse(const KTItemResponse *response)
 		{
 			if(d->nodegroup && item)
 			{
+				foreach(QGraphicsView * view, d->scene->views())
+				{
+					view->setUpdatesEnabled(true);
+				}
+				
 				if(qgraphicsitem_cast<QGraphicsPathItem *>(d->nodegroup->parentItem()) != item)
 				{
 					delete d->item;
@@ -354,6 +360,10 @@ void PolyLine::nodeChanged()
 				doc.appendChild(qgraphicsitem_cast<KTPathItem *>(d->nodegroup->parentItem())->toXml(doc));
 				
 				KTProjectRequest event = KTRequestBuilder::createItemRequest( d->scene->currentSceneIndex(), d->scene->currentLayerIndex(), d->scene->currentFrameIndex(), position, KTProjectRequest::EditNodes, doc.toString() );
+				foreach(QGraphicsView * view, d->scene->views())
+				{
+					view->setUpdatesEnabled(false);
+				}
 				d->nodegroup->restoreItem();
 				emit requested(&event);
 			}

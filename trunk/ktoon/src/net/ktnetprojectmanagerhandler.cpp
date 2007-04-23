@@ -95,13 +95,11 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
 	
 	d->chat = new KTChat;
 	d->comunicationModule->addTab(d->chat, tr("chat"));
-	d->chat->setVisible(false);
 	
 	connect(d->chat, SIGNAL(requestSendMessage(const QString&)), this, SLOT(sendChatMessage(const QString&)));
 	
 	d->notices = new KTNotice;
 	d->comunicationModule->addTab(d->notices, tr("notices"));
-	d->notices->setVisible(false);
 	
 	connect(d->notices, SIGNAL(requestSendMessage(const QString&)), this, SLOT(sendNoticeMessage(const QString&)));
 }
@@ -226,7 +224,6 @@ void KTNetProjectManagerHandler::emitRequest(KTProjectRequest *request, bool toS
 void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QString &package )
 {
 	D_FUNCINFOX("net");
-	dDebug() << "read " << package;
 	if ( root == "request" )
 	{
 		KTRequestParser parser;
@@ -241,8 +238,11 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 				d->ownPackage = false;
 			}
 			
+			SHOW_VAR(d->ownPackage);
+			
 			KTProjectRequest request = KTRequestBuilder::fromResponse( parser.response() );
 			emitRequest(&request, d->doAction );
+			
 		}
 		else // TODO: mostrar error
 		{

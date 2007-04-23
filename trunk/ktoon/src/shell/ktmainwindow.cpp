@@ -309,6 +309,7 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 			delete m_viewChat;
 		}
 		m_viewChat = addToolView( netProjectManagerHandler->comunicationWidget(),  Qt::RightDockWidgetArea, All);
+		m_viewChat->setVisible(false);
 		
 		
 		return true;

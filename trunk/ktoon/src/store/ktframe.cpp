@@ -375,7 +375,6 @@ int KTFrame::visualIndexOf(QGraphicsItem *item)
 			return d->graphics.visualIndex(object);
 		}
 	}
-	
 	return -1;
 }
 

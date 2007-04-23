@@ -39,7 +39,6 @@
 #include "ktprojectrequest.h"
 #include "ktprojectresponse.h"
 
-// #include "nodemanager.h"
 #include <QDebug>
 #include <QTimer>
 
@@ -72,16 +71,16 @@ ContourSelection::~ContourSelection()
 
 void ContourSelection::init(KTGraphicsScene *scene)
 {
-// 	d->view = view;
+	qDeleteAll(d->nodeGroups);
+	d->nodeGroups.clear();
 	foreach(QGraphicsView * view, scene->views())
 	{
 		view->setDragMode (QGraphicsView::RubberBandDrag);
-		
-		foreach(QGraphicsItem *item, view->scene()->items() )
+		foreach(QGraphicsItem *item, view->scene()->items())
 		{
-			if(!qgraphicsitem_cast<DControlNode *>(item))
+			if(!qgraphicsitem_cast<DControlNode *>(item) && scene->currentFrame()->visualIndexOf(item) != -1  )
 			{
-				item->setFlags (QGraphicsItem::ItemIsSelectable /*| QGraphicsItem::ItemIsMovable*/ );
+				item->setFlags (QGraphicsItem::ItemIsSelectable);
 			}
 		}
 	}
@@ -94,6 +93,10 @@ QStringList ContourSelection::keys() const
 
 void ContourSelection::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+	foreach(QGraphicsView * view, scene->views())
+	{
+		view->setDragMode (QGraphicsView::RubberBandDrag);
+	}
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	
@@ -160,6 +163,12 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 					doc.appendChild(qgraphicsitem_cast<KTPathItem *>(group->parentItem())->toXml(doc));
 					
 					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::EditNodes, doc.toString() );
+					
+					foreach(QGraphicsView * view, scene->views())
+					{
+						view->setUpdatesEnabled(false);
+					}
+					
 					group->restoreItem();
 					emit requested(&event);
 				}
@@ -227,6 +236,10 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
 			
 			if ( item )
 			{
+				foreach(QGraphicsView * view, d->scene->views())
+				{
+					view->setUpdatesEnabled(true);
+				}
 				foreach(DNodeGroup* group, d->nodeGroups)
 				{
 					if(qgraphicsitem_cast<QGraphicsPathItem *>(group->parentItem()) == item)

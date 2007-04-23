@@ -198,7 +198,7 @@ QWidget *Brush::configurator()
 {
 	if ( ! m_configurator )
 	{
-		m_configurator = new ExactnessConfigurator;;
+		m_configurator = new ExactnessConfigurator;
 	}
 	
 	return m_configurator;

@@ -250,16 +250,12 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 				double a = (180 * KTGraphicalAlgorithm::angleForPos(p1, p2)) / M_PI;
 				d->manager->rotate(a-45 );
 			}
-			else
-			{
-				
-			}
 		}
 	}
-	
 	if(d->typeNode == Center)
 	{
-		d->parent->moveBy(event->pos().x(), event->pos().y() );
+		d->parent->moveBy(event->scenePos().x() - scenePos().x() , event->scenePos().y() - scenePos().y() );
+		event->accept();
 	}
 }
 

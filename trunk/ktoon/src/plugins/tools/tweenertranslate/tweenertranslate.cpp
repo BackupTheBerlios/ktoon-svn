@@ -65,6 +65,8 @@ TweenerTranslate::TweenerTranslate() : KTToolPlugin(), d(new Private)
 	d->configurator = 0;
 	d->creatingPath = true;
 	d->selecting = false;
+	d->path = 0;
+	d->group = 0;
 }
 
 
@@ -75,9 +77,12 @@ TweenerTranslate::~TweenerTranslate()
 
 void TweenerTranslate::init(KTGraphicsScene *scene)
 {
-	d->scene = scene;
+	delete d->path;
 	d->path = 0;
+	delete d->group;
 	d->group = 0;
+	
+	d->scene = scene;
 	setCreatePath();
 }
 

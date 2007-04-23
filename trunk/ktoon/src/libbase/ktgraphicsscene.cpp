@@ -166,8 +166,11 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 				
 				for(int frameIndex = photogram-1; frameIndex > photogram-d->onionSkin.previous-1; frameIndex-- )
 				{
-					addFrame( layer->frame(frameIndex), opacity );
-					
+					KTFrame * frame = layer->frame(frameIndex);
+					if(frame)
+					{
+						addFrame( frame, opacity );
+					}
 					opacity -= opacityFactor;
 				}
 			}
@@ -179,8 +182,12 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 				
 				for(int frameIndex = photogram+1; frameIndex < photogram+d->onionSkin.next+1; frameIndex++ )
 				{
-					addFrame( layer->frame(frameIndex), opacity );
 					
+					KTFrame * frame = layer->frame(frameIndex);
+					if(frame)
+					{
+						addFrame( frame, opacity );
+					}
 					opacity -= opacityFactor;
 				}
 			}
@@ -531,7 +538,7 @@ void KTGraphicsScene::itemResponse(KTItemResponse *event)
 {
 	if ( d->tool )
 	{
-		d->tool->init(this); //FIXME:d->tool->init(this); in itemResponse ???
+		//d->tool->init(this); //FIXME:d->tool->init(this); in itemResponse ???
 		d->tool->itemResponse(event);
 	}
 }
