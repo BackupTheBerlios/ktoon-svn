@@ -124,7 +124,7 @@ RQonf::Makefile::override( ARGV[0].to_s, "#{@destdir}", "#{@statusFile}" )
 	
 	def findTest(path)
 		if $DEBUG
-			Info.warn << "Searching qonfs in: " << path << $endl
+			Info.warn << "Searching qonf files in: " << path << $endl
 		end
 		Dir.foreach(path) { |f|
 			
@@ -143,18 +143,4 @@ end
 
 
 end # module
-
-if __FILE__ == $0
-	begin
-		conf = RQonf::Configure.new()
-		
-		conf.verifyQtVersion("4.2.0")
-		conf.createTests
-		conf.createConfig("config.pri")
-	rescue QonfException => err
-		Info.error << "Configure failed. error was: #{err.message}\n"
-	rescue => err
-		Info.error << "General failure: #{err.message}\n" << err.backtrace
-	end
-end
 

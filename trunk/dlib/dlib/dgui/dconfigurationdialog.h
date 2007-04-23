@@ -29,28 +29,37 @@
 #include "dgui/dwidgetlistview.h"
 #include "dgui/dflatbutton.h"
 
-#include "dgui/dpagedialog.h"
 #include "dcore/dglobal.h"
 
 class QStackedWidget;
-class QTreeWidget;
-class QTableWidgetItem;
+class QListWidget;
+class QListWidgetItem;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-
-class D_GUI_EXPORT DConfigurationDialog : public DPageDialog
+class D_GUI_EXPORT DConfigurationDialog : public QDialog
 {
 	Q_OBJECT
 	public:
 		DConfigurationDialog(QWidget *parent = 0);
 		~DConfigurationDialog();
 		
+		
+		void addPage(QWidget *page, const QString &label, const QIcon &icon);
+		QWidget *currentPage() const;
+		
 	public slots:
 		virtual void ok();
 		virtual void cancel();
 		virtual void apply();
+		
+	private slots:
+		void changePage(QListWidgetItem *, QListWidgetItem*);
+		
+	private:
+		struct Private;
+		Private *const d;
 };
 
 #endif

@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DPATHHANDLER_H
-#define DPATHHANDLER_H
+#ifndef DPATHHELPER_H
+#define DPATHHELPER_H
 
 #include <QPainterPath>
 #include <QChar>
@@ -29,7 +29,7 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_CORE_EXPORT DPathHandler
+class D_CORE_EXPORT DPathHelper
 {
 	public:
 		/**
@@ -40,13 +40,13 @@ class D_CORE_EXPORT DPathHandler
 		 * @endif
 		 * @return 
 		 */
-		DPathHandler();
+		DPathHelper();
 		
 		/**
 		 * Destructor
 		 * @return 
 		 */
-		~DPathHandler();
+		~DPathHelper();
 		
 		/**
 		 * @if english

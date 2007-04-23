@@ -25,37 +25,75 @@
 #include <QStackedWidget>
 #include <QLabel>
 #include <QHeaderView>
-
+#include <QDialogButtonBox>
+#include <QListWidget>
 
 #include "dseparator.h"
 
 #include "ddebug.h"
 
-DConfigurationDialog::DConfigurationDialog(QWidget *parent) : DPageDialog(parent)
-{
-	setFaceType( DPageDialog::Tree );
+////////////////
 
-	QHBoxLayout *buttonLayout = new QHBoxLayout;
-	buttonLayout->addStretch(1);
+struct DConfigurationDialog::Private
+{
+	QListWidget *list;
+	QStackedWidget *pageArea;
 	
-	QPushButton *applyButton = new QPushButton(tr("Apply"));
-	connect(applyButton, SIGNAL(clicked()), this, SLOT(apply()));
-	buttonLayout->addWidget(applyButton);
+};
+
+DConfigurationDialog::DConfigurationDialog(QWidget *parent) : QDialog(parent), d(new Private)
+{
+	QVBoxLayout *layout = new QVBoxLayout(this);
 	
-	QPushButton *okButton = new QPushButton(tr("OK"));
-	connect(okButton, SIGNAL(clicked()), this, SLOT(ok()));
-	buttonLayout->addWidget(okButton);
+	QHBoxLayout *pages = new QHBoxLayout;
 	
-	QPushButton *cancelButton = new QPushButton(tr("Cancel"));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
-	buttonLayout->addWidget(cancelButton);
+	d->list = new QListWidget;
+	d->list->setViewMode(QListView::IconMode);
+	d->list->setFlow(QListView::TopToBottom);
+	d->list->setIconSize(QSize(96, 84));
+	d->list->setMovement(QListView::Static);
+	d->list->setMaximumWidth(128);
+	d->list->setSpacing(12);
 	
-	static_cast<QBoxLayout *>(layout())->addLayout(buttonLayout);
+	connect(d->list, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(changePage(QListWidgetItem *, QListWidgetItem*)));
+	
+	pages->addWidget(d->list);
+	
+	d->pageArea = new QStackedWidget;
+	pages->addWidget(d->pageArea, 1);
+	
+	layout->addLayout(pages);
+	
+	QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Apply, Qt::Horizontal, this);
+	
+	connect(buttonBox, SIGNAL(accepted()), this, SLOT(ok()));
+	connect(buttonBox, SIGNAL(rejected()), this, SLOT(cancel()));
+	connect(buttonBox->button(QDialogButtonBox::Apply), SIGNAL(clicked()), this, SLOT(apply()));
+	
+	layout->addWidget(new DSeparator());
+	layout->addWidget(buttonBox);
 }
 
 
 DConfigurationDialog::~DConfigurationDialog()
 {
+	delete d;
+}
+
+void DConfigurationDialog::addPage(QWidget *page, const QString &label, const QIcon &icon)
+{
+	QListWidgetItem *pageItem = new QListWidgetItem(d->list);
+	pageItem->setIcon(icon);
+	pageItem->setText(label);
+	pageItem->setTextAlignment(Qt::AlignHCenter);
+	pageItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+	
+	d->pageArea->addWidget(page);
+}
+
+QWidget *DConfigurationDialog::currentPage() const
+{
+	return d->pageArea->currentWidget();
 }
 
 void DConfigurationDialog::ok()
@@ -71,3 +109,12 @@ void DConfigurationDialog::cancel()
 void DConfigurationDialog::apply()
 {
 }
+
+void DConfigurationDialog::changePage(QListWidgetItem *curr, QListWidgetItem *prev)
+{
+	if (!curr)
+		curr = prev;
+	
+	d->pageArea->setCurrentIndex(d->list->row(curr));
+}
+

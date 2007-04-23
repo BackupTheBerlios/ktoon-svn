@@ -19,6 +19,17 @@ _EOH_
 		exit 0
 	end
 	
+	File.open("qonf/dlibconfig.rb", "w") { |file|
+	file << %@
+module RQonf
+	CONFIG = {}
+	CONFIG["prefix"] = "#{conf.destdir}"
+	CONFIG["libdir"] = "#{conf.destdir}/lib"
+	CONFIG["includepath"] = "#{conf.destdir}/include"
+end
+@
+	}
+	
 	conf.setTestDir("configure.tests")
 	conf.verifyQtVersion("4.2.0")
 	conf.createTests
@@ -47,11 +58,12 @@ _EOH_
 	
 	config.save("dlib/dlibconfig.pri")
 	
+	qonfdestdir = (Process.euid == 0 ? Config::CONFIG['sitelibdir'] : conf.destdir + "/" + Config::CONFIG['rubylibdir'].sub(Config::CONFIG["libdir"], "" ) )
 	File.open("qonf.pri", "w") { |file|
 		file << %@
 INSTALLS += qonf
 qonf.files += qonf/*.rb
-qonf.path += #{Config::CONFIG['sitelibdir']}/qonf\n@
+qonf.path += #{qonfdestdir}/qonf\n@
 	}
 	
 	conf.createMakefiles

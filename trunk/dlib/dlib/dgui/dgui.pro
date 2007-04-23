@@ -43,12 +43,7 @@ HEADERS += danimwidget.h \
            dosd.h \
            dtipdialog.h \
            dwaitstyle.h \
-           dpagedialog.h \
-           dpagemodel.h \
-           dpageview.h \
-           dpageview_p.h \
-           dpagewidget.h \
-           dpagewidgetmodel.h \
+           dpathhelper.h \
            dcirclebutton.h \
            dcirclebuttonbar.h \
            dcollapsiblewidget.h \
@@ -69,7 +64,6 @@ HEADERS += danimwidget.h \
            dworkspacemainwindow.h \
            dcontrolnode.h \
            dnodegroup.h   \
-           dpathhandler.h \
            dimageeffect.h \
            ddoublecombobox.h \
            dmoviegenerator.h \
@@ -111,12 +105,7 @@ SOURCES += danimwidget.cpp \
            dosd.cpp \
            dtipdialog.cpp \
            dwaitstyle.cpp \
-           dpagedialog.cpp \
-           dpagemodel.cpp \
-           dpageview.cpp \
-           dpageview_p.cpp \
-           dpagewidget.cpp \
-           dpagewidgetmodel.cpp \
+           dpathhelper.cpp \
            dcirclebutton.cpp \
            dcirclebuttonbar.cpp \
            dcollapsiblewidget.cpp \
@@ -135,7 +124,6 @@ SOURCES += danimwidget.cpp \
            dworkspacemainwindow.cpp \
            dcontrolnode.cpp \
            dnodegroup.cpp   \
-           dpathhandler.cpp \
            dimageeffect.cpp \
            ddualcolorbutton.cpp \
            ddoublecombobox.cpp \

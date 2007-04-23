@@ -2,7 +2,7 @@
 module RQonf
 
 class Config
-	def initialize
+	def initialize()
 		@includePath = []
 		@libs = []
 		@modules = []
