@@ -173,10 +173,10 @@ void DNodeGroup::createNodes(QGraphicsPathItem *pathItem)
 {
 	if(pathItem)
 	{
-		foreach(DControlNode *node, d->nodes)
+		/*foreach(DControlNode *node, d->nodes)
 		{
 			d->scene->removeItem(node);
-		}
+		}*/
 		qDeleteAll(d->nodes);
 		d->nodes.clear();
 		

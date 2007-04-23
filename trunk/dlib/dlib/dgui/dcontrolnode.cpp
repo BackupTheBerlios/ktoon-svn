@@ -67,9 +67,8 @@ DControlNode::DControlNode(int index, DNodeGroup *nodeGroup, const QPointF & pos
 
 
 DControlNode::~DControlNode()
-{
-	
-	DEND;
+{	
+	//DEND;
 }
 
 
