@@ -147,7 +147,8 @@ void KTMainWindow::createNewProject()
 	
 	m_projectManager->setupNewProject();
 	
-	newViewDocument( tr("Document") );
+	if( !m_isNetworkProject )
+		newViewDocument(tr("Document"));
 }
 
 void KTMainWindow::newViewDocument(const QString &title)
@@ -245,7 +246,8 @@ bool KTMainWindow::closeProject()
 	
 	setUpdatesEnabled(false);
 	
-	m_viewDoc->closeArea();
+	if( m_viewDoc )
+		m_viewDoc->closeArea();
 	m_animationSpace->closeAllWindows();
 	
 	removeWidget(m_animationSpace, true);
@@ -377,7 +379,7 @@ void KTMainWindow::openProject(const QString &path)
 			
 			newViewDocument( m_projectManager->project()->projectName() );
 			
-			// HACK
+			// TODO: move to project manager
 			KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Select);
 			response.setFrameIndex(0);
 			response.setSceneIndex(0);

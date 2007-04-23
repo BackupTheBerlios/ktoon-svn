@@ -246,7 +246,7 @@ void KTAnimationArea::render()
 	
 	d->sounds.clear();
 	
-	foreach(KTSoundLayer *layer, scene->soundLayers() )
+	foreach(KTSoundLayer *layer, scene->soundLayers().values() )
 	{
 		d->sounds << layer;
 	}

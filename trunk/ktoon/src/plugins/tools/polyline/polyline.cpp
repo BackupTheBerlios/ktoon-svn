@@ -207,7 +207,6 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
 	}
 	
 	QDomDocument doc;
-// 	SHOW_VAR(d->nodegroup->isSelected());
 	if(d->begin)
 	{
 		doc.appendChild(d->item->toXml( doc ));
@@ -217,7 +216,8 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
 	}
 	else if(!d->nodegroup->isSelected())
 	{
-		int position  = scene->currentFrame()->indexOf(d->nodegroup->parentItem());
+		int position  = scene->currentFrame()->visualIndexOf(d->item);
+		
 		if(position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(d->nodegroup->parentItem()))
 		{
 			doc.appendChild(qgraphicsitem_cast<KTPathItem *>(d->nodegroup->parentItem())->toXml(doc));
@@ -252,7 +252,6 @@ void PolyLine::itemResponse(const KTItemResponse *response)
 			
 			if ( layer )
 			{
-				
 				frame = layer->frame( response->frameIndex() );
 				
 				if ( frame )
@@ -271,11 +270,15 @@ void PolyLine::itemResponse(const KTItemResponse *response)
 	{
 		case KTProjectRequest::Add:
 		{
-			if(!d->begin)
+			if(KTPathItem * path = qgraphicsitem_cast<KTPathItem *>(item))
 			{
-				if(KTPathItem * path = qgraphicsitem_cast<KTPathItem *>(item))
+				if(d->item != path)
 				{
 					d->item = path;
+					if(d->nodegroup)
+					{
+						d->nodegroup->setParentItem(path);
+					}
 				}
 			}
 		}
@@ -297,9 +300,8 @@ void PolyLine::itemResponse(const KTItemResponse *response)
 				{
 					delete d->item;
 					d->item = qgraphicsitem_cast<KTPathItem *>(item);
-					d->nodegroup->setParentItem(item);
+					d->nodegroup->setParentItem(d->item);
 				}
-				
 				d->nodegroup->createNodes(d->item);
 				d->nodegroup->saveParentProperties();
 				d->nodegroup->expandAllNodes();
@@ -346,7 +348,7 @@ void PolyLine::nodeChanged()
 		if(!d->nodegroup->changedNodes().isEmpty())
 		{
 			QDomDocument doc;
-			int position  = d->scene->currentFrame()->indexOf(d->nodegroup->parentItem());
+			int position  = d->scene->currentFrame()->visualIndexOf(d->nodegroup->parentItem());
 			if(position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(d->nodegroup->parentItem()))
 			{
 				doc.appendChild(qgraphicsitem_cast<KTPathItem *>(d->nodegroup->parentItem())->toXml(doc));

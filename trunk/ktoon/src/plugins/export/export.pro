@@ -3,11 +3,17 @@
 # Subdir relative project main directory: ./src/plugins/export
 # Target is a subdirs project 
 
-SUBDIRS += ffmpegplugin \
-           genericexportplugin \
-           mingplugin \
+SUBDIRS += genericexportplugin \
            smilexportplugin 
-KDEV_QTVER = 4 
+
+contains(DEFINES, HAVE_FFMPEG) {
+	SUBDIRS += ffmpegplugin
+}
+
+contains(DEFINES, HAVE_MING) {
+	SUBDIRS += mingplugin
+}
+
 CONFIG += release \
           warn_on 
 TEMPLATE = subdirs 

@@ -28,7 +28,7 @@
 
 #include <dcore/dglobal.h>
 #include <dcore/ddebug.h>
-#include <dgui/dpathhandler.h>
+#include <dgui/dpathhelper.h>
 
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
@@ -138,7 +138,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 					
 					res = ClipHelper::subtract(res, subs);
 					
-					QList<QPainterPath> subpaths = DPathHandler::toSubpaths(res);
+					QList<QPainterPath> subpaths = DPathHelper::toSubpaths(res);
 					
 					if( subpaths.count() > 1 )
 					{
@@ -173,7 +173,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 		{
 			if( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(clickedItem) )
 			{
-				int position  = scene->currentFrame()->indexOf(shape);
+				int position  = scene->currentFrame()->visualIndexOf(shape);
 				
 				if( position >= 0 )
 				{

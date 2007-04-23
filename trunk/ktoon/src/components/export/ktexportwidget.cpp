@@ -544,7 +544,7 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : DWiz
 	addPage(m_pluginSelectionPage);
 	
 	m_scenesSelectionPage = new SelectScenes();
-	m_scenesSelectionPage->setScenes(project->scenes());
+	m_scenesSelectionPage->setScenes(project->scenes().values());
 	
 	addPage(m_scenesSelectionPage);
 	

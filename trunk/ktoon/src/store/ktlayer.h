@@ -26,9 +26,12 @@
 
 #include <QDomDocument>
 #include <QDomElement>
+
+#include "ktinthash.h"
+
 #include "ktglobal_store.h"
 
-typedef QList<KTFrame *> Frames;
+typedef KTIntHash<KTFrame *> Frames;
 
 class KTScene;
 class KTProject;
@@ -103,8 +106,11 @@ class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 		KTScene *scene() const;
 		KTProject *project() const;
 		
-		int indexOf(KTFrame *frame) const;
-		int index() const;
+		int logicalIndexOf(KTFrame *frame) const;
+		int visualIndexOf(KTFrame *frame) const;
+		
+		int logicalIndex() const;
+		int visualIndex() const;
 		
 	public:
 		virtual void fromXml(const QString &xml );

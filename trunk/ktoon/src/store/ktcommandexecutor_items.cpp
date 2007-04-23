@@ -47,7 +47,6 @@
 bool KTCommandExecutor::createItem(KTItemResponse *response)
 {
 	D_FUNCINFOX("items");
-// 	response->setAction(KTProjectRequest::Add);
 	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
@@ -74,7 +73,7 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
 				if ( item )
 				{
 					emit responsed(response);
-					response->setItemIndex( frame->indexOf( item ));
+					response->setItemIndex( frame->visualIndexOf( item ));
 				}
 			}
 			else
@@ -200,7 +199,7 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
 			{
 				QString::const_iterator itr = strList.constBegin();
 				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
-				response->setItemIndex( frame->indexOf( frame->createItemGroupAt( position, positions)));
+				response->setItemIndex( frame->visualIndexOf( frame->createItemGroupAt( position, positions)));
 				
 				emit responsed(response);
 				return true;
@@ -234,15 +233,15 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 				QList<QGraphicsItem *> items = frame->destroyItemGroup(position);
 				foreach(QGraphicsItem *item, items)
 				{
-					if(frame->indexOf(item) != -1 )
+					if(frame->visualIndexOf(item) != -1 )
 					{
 						if(strItems.isEmpty())
 						{
-							strItems +="("+ QString::number(frame->indexOf(item)) ;
+							strItems +="("+ QString::number(frame->visualIndexOf(item)) ;
 						}
 						else
 						{
-							strItems += " , "+ QString::number(frame->indexOf(item));
+							strItems += " , "+ QString::number(frame->visualIndexOf(item));
 						}
 					}
 				}

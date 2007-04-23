@@ -23,7 +23,8 @@ HEADERS += ktgraphicalgorithm.h \
            ktcompress.h  \
            ktsocketbase.h \
            ktxmlparserbase.h \
-           ktproxyitem.h
+           ktproxyitem.h \
+           ktinthash.h
 SOURCES += ktgraphicalgorithm.cpp \
            ktpaintareaproperties.cpp \
            ktgradientcreator.cpp \

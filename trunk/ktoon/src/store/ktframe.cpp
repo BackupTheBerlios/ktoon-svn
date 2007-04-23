@@ -43,7 +43,7 @@ struct KTFrame::Private
 	QString name;
 	bool isLocked;
 	bool isVisible;
-	QList<KTGraphicObject *> graphics;
+	GraphicObjects graphics;
 };
 
 KTFrame::KTFrame(KTLayer *parent) : QObject(parent), d(new Private)
@@ -55,7 +55,7 @@ KTFrame::KTFrame(KTLayer *parent) : QObject(parent), d(new Private)
 
 KTFrame::~KTFrame()
 {
-	qDeleteAll(d->graphics);
+	d->graphics.clear(true);
 	delete d;
 }
 
@@ -115,13 +115,15 @@ void KTFrame::fromXml(const QString &xml )
 			{
 				QDomNode n2 = e.firstChild();
 				
+				KTGraphicObject *last = 0;
+				
 				while(!n2.isNull())
 				{
 					QDomElement e2 = n2.toElement();
 					
-					if( e2.tagName() == "tweening" )
+					if( e2.tagName() == "tweening" && last)
 					{
-						KTItemTweener *tweener = new KTItemTweener(0, d->graphics.last());
+						KTItemTweener *tweener = new KTItemTweener(0, last);
 						
 						QString newDoc;
 					
@@ -132,7 +134,7 @@ void KTFrame::fromXml(const QString &xml )
 						
 						tweener->fromXml(newDoc);
 						
-						d->graphics.last()->setTweener(tweener);
+						last->setTweener(tweener);
 					}
 					else
 					{
@@ -144,6 +146,7 @@ void KTFrame::fromXml(const QString &xml )
 						}
 						
 						createItem(d->graphics.count(), newDoc);
+						last = d->graphics.visualValue(d->graphics.count()-1);
 					}
 					n2 = n2.nextSibling();
 				}
@@ -160,12 +163,9 @@ QDomElement KTFrame::toXml(QDomDocument &doc) const
 	root.setAttribute("name", d->name );
 	doc.appendChild(root);
 	
-	QList<KTGraphicObject *>::ConstIterator iterator = d->graphics.begin();
-	
-	while ( iterator != d->graphics.end() )
+	foreach(KTGraphicObject *object, d->graphics.visualValues() )
 	{
-		root.appendChild( (*iterator)->toXml(doc) );
-		++iterator;
+		root.appendChild( object->toXml(doc) );
 	}
 	
 	return root;
@@ -173,17 +173,21 @@ QDomElement KTFrame::toXml(QDomDocument &doc) const
 
 void KTFrame::addItem(QGraphicsItem *item)
 {
-	if ( d->graphics.count() )
+	insertItem(d->graphics.count(), item);
+}
+
+void KTFrame::insertItem(int position, QGraphicsItem *item)
+{
+	if ( d->graphics.contains(position-1) )
 	{
-		if ( QGraphicsItem *lastItem = d->graphics.last()->item() )
+		if ( QGraphicsItem *lastItem = d->graphics.visualValue(position-1)->item() )
 		{
 			item->setZValue(lastItem->zValue()+1);
 		}
 	}
 	
 	KTGraphicObject *object = new KTGraphicObject(item, this);
-	
-	d->graphics << object;
+	d->graphics.insert(position, object);
 }
 
 QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group )
@@ -214,7 +218,7 @@ QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group 
 		count++;
 	}
 	
-	addItem( g );
+	insertItem(position, g );
 	return g;
 }
 
@@ -247,31 +251,30 @@ void KTFrame::replaceItem(int position, QGraphicsItem *item)
 
 bool KTFrame::moveItem(int currentPosition, int newPosition)
 {
-	
+	D_FUNCINFO << "current "<< currentPosition << " new "  << newPosition;
 	if(currentPosition == newPosition || currentPosition < 0 || currentPosition >= d->graphics.count() || newPosition < 0 || newPosition >= d->graphics.count())
 	{
 		return false;
 	}
-	QGraphicsItem *tmp = item(currentPosition);
 	
 	if(currentPosition < newPosition)
 	{
 		for( int i = currentPosition; i < newPosition; i++)
 		{
-			double tmp = d->graphics[i]->item()->zValue();
-			d->graphics[i]->item()->setZValue(d->graphics[i+1]->item()->zValue());
-			d->graphics[i+1]->item()->setZValue(tmp);
-			d->graphics.swap(i, i+1);
+			double tmp = d->graphics.visualValue(i)->item()->zValue();
+			d->graphics.visualValue(i)->item()->setZValue(d->graphics.visualValue(i+1)->item()->zValue());
+			d->graphics.visualValue(i+1)->item()->setZValue(tmp);
+			d->graphics.moveVisual(i, i+1);
 		}
 	}
 	else
 	{
 		for( int i = currentPosition; i > newPosition; i--)
 		{
-			double tmp = d->graphics[i]->item()->zValue();
-			d->graphics[i]->item()->setZValue(d->graphics[i-1]->item()->zValue());
-			d->graphics[i-1]->item()->setZValue(tmp);
-			d->graphics.swap(i, i-1);
+			double tmp = d->graphics.visualValue(i)->item()->zValue();
+			d->graphics.visualValue(i)->item()->setZValue(d->graphics.visualValue(i-1)->item()->zValue());
+			d->graphics.visualValue(i-1)->item()->setZValue(tmp);
+			d->graphics.moveVisual(i, i-1);
 		}
 	}
 	return true;
@@ -284,7 +287,7 @@ bool KTFrame::removeGraphicAt(int position)
 		return false;
 	}
 	
-	KTGraphicObject *object = d->graphics.takeAt(position);
+	KTGraphicObject *object = d->graphics.takeVisual(position);
 	
 	QGraphicsItem *item = object->item();
 	
@@ -313,19 +316,19 @@ QGraphicsItem *KTFrame::createItem(int position, const QString &xml, bool loaded
 	QGraphicsItem *item = itemFactory.create( xml );
 	if( item )
 	{
-		addItem( item );
+		insertItem(position, item );
 	}
 	
 	if( loaded )
 	{
-		KTProjectLoader::createItem( scene()->index(), layer()->index(), index(), position, xml, project() );
+		KTProjectLoader::createItem( scene()->visualIndex(), layer()->visualIndex(), visualIndex(), position, xml, project() );
 	}
 	
 	return item;
 }
 
 
-QList<KTGraphicObject *> KTFrame::graphics() const
+GraphicObjects KTFrame::graphics() const
 {
 	return d->graphics;
 }
@@ -338,7 +341,7 @@ KTGraphicObject *KTFrame::graphic(int position) const
 		return 0;
 	}
 	
-	return d->graphics[position];
+	return d->graphics.visualValue(position);
 }
 
 QGraphicsItem *KTFrame::item(int position) const
@@ -353,30 +356,51 @@ QGraphicsItem *KTFrame::item(int position) const
 	return 0;
 }
 
-int KTFrame::indexOf(KTGraphicObject *object)
+int KTFrame::visualIndexOf(KTGraphicObject *object)
 {
-	return d->graphics.indexOf(object);
+	return d->graphics.visualIndex(object);
 }
 
-int KTFrame::indexOf(QGraphicsItem *item)
+int KTFrame::logicalIndexOf(KTGraphicObject *object)
 {
-	int index = -1;
-	foreach(KTGraphicObject *object, d->graphics)
+	return d->graphics.logicalIndex(object);
+}
+
+int KTFrame::visualIndexOf(QGraphicsItem *item)
+{
+	foreach(KTGraphicObject *object, d->graphics.values() )
 	{
-		index++;
-		
 		if (object->item() == item )
 		{
-			return index;
+			return d->graphics.visualIndex(object);
 		}
 	}
 	
-	return index;
+	return -1;
 }
 
-int KTFrame::index() const
+int KTFrame::logicalIndexOf(QGraphicsItem *item)
 {
-	return layer()->indexOf(const_cast<KTFrame *>(this));
+	foreach(KTGraphicObject *object, d->graphics.values())
+	{
+		if (object->item() == item )
+		{
+			return d->graphics.logicalIndex(object);
+		}
+	}
+	
+	return -1;
+}
+
+
+int KTFrame::logicalIndex() const
+{
+	return layer()->visualIndexOf(const_cast<KTFrame *>(this));
+}
+
+int KTFrame::visualIndex() const
+{
+	return layer()->logicalIndexOf(const_cast<KTFrame *>(this));
 }
 
 KTLayer *KTFrame::layer() const

@@ -211,7 +211,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				QDomDocument doc;
 				doc.appendChild(KTSerializer::properties( manager->parentItem(), doc ));
 				
-				int position  = scene->currentFrame()->indexOf(manager->parentItem());
+				int position  = scene->currentFrame()->visualIndexOf(manager->parentItem());
 				dDebug("selection") << "position = "<<  position;
 				if(position != -1)
 				{

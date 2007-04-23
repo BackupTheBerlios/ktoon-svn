@@ -81,6 +81,8 @@ KTProject::~KTProject()
 	
 	deleteDataDir();
 	
+	d->scenes.clear(true);
+	
 	delete d;
 }
 
@@ -106,9 +108,7 @@ void KTProject::loadLibrary(const QString &filename)
  */
 void KTProject::clear()
 {
-	qDeleteAll(d->scenes);
-	d->scenes.clear();
-	
+	d->scenes.clear(true);
 	d->sceneCounter = 0;
 	
 	deleteDataDir();
@@ -200,7 +200,7 @@ bool KTProject::removeScene(int position)
 	
 	if ( toRemove )
 	{
-		d->scenes.removeAt(position);
+		d->scenes.removeVisual(position);
 		
 		delete toRemove;
 		toRemove = 0;
@@ -222,9 +222,7 @@ bool KTProject::moveScene(int position, int newPosition)
 		return false;
 	}
 	
-	KTScene *scene = d->scenes.takeAt(position);
-	
-	d->scenes.insert(newPosition, scene);
+	d->scenes.moveVisual(position, newPosition);
 	
 	return true;
 }
@@ -237,12 +235,17 @@ KTScene *KTProject::scene(int position) const
 		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
 		return 0;
 	}
-	return d->scenes[position];
+	return d->scenes.visualValue(position);
 }
 
-int KTProject::indexOf(KTScene *scene) const
+int KTProject::visualIndexOf(KTScene *scene) const
 {
-	return d->scenes.indexOf(scene);
+	return d->scenes.visualIndex(scene);
+}
+
+int KTProject::logicalIndexOf(KTScene *scene) const
+{
+	return d->scenes.logicalIndex(scene);
 }
 
 void KTProject::fromXml(const QString &xml )

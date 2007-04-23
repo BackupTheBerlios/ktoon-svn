@@ -29,6 +29,8 @@
 #include <QGraphicsScene>
 #include <QMap>
 
+#include "ktinthash.h"
+
 #include "ktglobal_store.h"
 
 class QGraphicsItem;
@@ -38,8 +40,8 @@ class KTLayer;
 class KTSoundLayer;
 class KTGraphicObject;
 
-typedef QVector<KTLayer *> Layers;
-typedef QVector<KTSoundLayer *> SoundLayers;
+typedef KTIntHash<KTLayer *> Layers;
+typedef KTIntHash<KTSoundLayer *> SoundLayers;
 
 /**
  * @brief Esta clase representa una escena
@@ -115,8 +117,10 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
 		 */
 		bool moveLayer(int from, int to);
 		
-		int index() const;
-		int indexOf(KTLayer *layer) const;
+		int logicalIndex() const;
+		int visualIndex() const;
+		int visualIndexOf(KTLayer *layer) const;
+		int logicalIndexOf(KTLayer *layer) const;
 		
 		KTProject *project() const;
 		

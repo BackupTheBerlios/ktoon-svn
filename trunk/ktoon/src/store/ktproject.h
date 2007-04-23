@@ -27,6 +27,9 @@
 #include <QObject>
 #include <QDomDocument>
 #include <QDomElement>
+
+#include "ktinthash.h"
+
 #include "ktglobal_store.h"
 
 
@@ -38,7 +41,7 @@ class KTProjectResponse;
 class QGraphicsItem;
 class KTLibrary;
 
-typedef QList<KTScene *> Scenes;
+typedef KTIntHash<KTScene *> Scenes;
 
 
 /**
@@ -67,7 +70,9 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		QString dataDir() const;
 		
 		KTScene *scene(int position) const;
-		int indexOf(KTScene *scene) const;
+		
+		int visualIndexOf(KTScene *scene) const;
+		int logicalIndexOf(KTScene *scene) const;
 		
 		Scenes scenes() const;
 		

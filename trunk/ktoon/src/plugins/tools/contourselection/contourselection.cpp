@@ -138,7 +138,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 				{
 					if( !qgraphicsitem_cast<KTPathItem*>(item) )
 					{
-						KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->indexOf(item), KTProjectRequest::Convert, 2);
+						KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->visualIndexOf(item), KTProjectRequest::Convert, 2);
 						emit requested(&event);
 					}
 					else
@@ -153,7 +153,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 		{
 			if(!group->changedNodes().isEmpty() )
 			{
-				int position  = scene->currentFrame()->indexOf(group->parentItem());
+				int position  = scene->currentFrame()->visualIndexOf(group->parentItem());
 				if(position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(group->parentItem()))
 				{
 					QDomDocument doc;

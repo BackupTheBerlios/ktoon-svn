@@ -26,6 +26,9 @@
 
 #include <QDomDocument>
 #include <QDomElement>
+
+#include "ktinthash.h"
+
 #include "ktglobal_store.h"
 
 class KTFrame;
@@ -33,6 +36,8 @@ class KTLayer;
 class KTGraphicObject;
 class KTProject;
 class KTScene;
+
+typedef KTIntHash<KTGraphicObject *> GraphicObjects;
 
 /**
  * @brief Esta clase representa un marco o frame de la animacion
@@ -76,6 +81,7 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		bool isVisible() const;
 		
 		void addItem(QGraphicsItem *item);
+		void insertItem(int position, QGraphicsItem *item);
 		
 		void replaceItem(int position, QGraphicsItem *item);
 		bool moveItem(int currentPosition, int newPosition);
@@ -83,8 +89,7 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		bool removeGraphicAt(int position);
 		QGraphicsItem *createItem(int position, const QString &xml, bool loaded = false);
 		
-		QList<KTGraphicObject *> graphics() const;
-		
+		GraphicObjects graphics() const;
 		
 		KTGraphicObject *graphic(int position) const;
 		QGraphicsItem *item(int position) const;
@@ -96,9 +101,13 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		KTScene *scene() const;
 		KTProject *project() const;
 		
-		int indexOf(KTGraphicObject *object);
-		int indexOf(QGraphicsItem *item);
-		int index() const;
+		int visualIndexOf(KTGraphicObject *object);
+		int logicalIndexOf(KTGraphicObject *object);
+		int visualIndexOf(QGraphicsItem *item);
+		int logicalIndexOf(QGraphicsItem *item);
+		
+		int visualIndex() const;
+		int logicalIndex() const;
 		
 	public:
 		virtual void fromXml(const QString &xml );

@@ -2,7 +2,7 @@
 
 BASE=`dirname $0`
 
-export LD_LIBRARY_PATH=$BASE/src/dlib/dgui:$BASE/src/dlib/dcore:$BASE/src/dlib/dsound/:$BASE/src/store:$BASE/src/libktoon:$BASE/src/libbase
+export LD_LIBRARY_PATH=$BASE/src/dlib/dgui:$BASE/src/dlib/dcore:$BASE/src/dlib/dsound/:$BASE/src/store:$BASE/src/libktoon:$BASE/src/libbase:$LD_LIBRARY_PATH
 export QT_NO_GLIB=1
 
 

@@ -1,6 +1,8 @@
 - Revisar operaciones con componentes agrupados: library
 
-- Se crean dos areas de dibujo cuando se crea un proyecto en red
+- Los grupos no guardan o cargan bien la matriz de transformacion
+- Los nombres de los elementos (frames, scenes, etc...) no se cargan bien
+- Algunas herramientas tienen punteros indefinidos cuando se cierra el proyecto (ej. select)
 
 - Las reglas cambian el inicio cuando se dibuja la cuadricula +
 - No se puede deshacer en el polyline +
@@ -11,6 +13,7 @@
 
 
 - existe un crash en polyline dibujando lineas, cambiando de frames, seleccionando otra vez herramienta de polyline +
+- Se crean dos areas de dibujo cuando se crea un proyecto en red +
 - Revisar herramienta de lapiz +
 - Crash cuando se remueve una escena o se crea mas de una + 
 - Revisar operaciones con componentes agrupados: tweening +

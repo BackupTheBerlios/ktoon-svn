@@ -162,9 +162,7 @@ void KTMainWindow::setupMenu()
 	m_fileMenu->addMenu(newMenu);
 	
 	newMenu->addAction(m_actionManager->find("newproject"));
-#if 0
-	newMenu->addAction(m_actionManager->find("newdocument")); // TODO: Documents
-#endif
+	
 	newMenu->addSeparator();
 	m_fileMenu->addAction(m_actionManager->find("openproject"));
 	m_fileMenu->addAction(m_actionManager->find("opennetproject"));

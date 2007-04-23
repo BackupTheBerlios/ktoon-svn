@@ -2,6 +2,7 @@
 
 require 'qonf/configure'
 require 'qonf/info'
+require 'qonf/dlibconfig'
 
 begin
 	conf = RQonf::Configure.new(ARGV)
@@ -35,6 +36,8 @@ _EOH_
 	config.addLib("-ldcore")
 	config.addLib("-ldsound")
 	
+	config.addLib("-L#{RQonf::CONFIG["libdir"]}")
+	config.addIncludePath(RQonf::CONFIG["includepath"])
 	
 	config.addDefine("VERSION=0.9+svn")
 	config.addDefine('VERSION_STR=\\\\\"0.9+svn\\\\\"')

@@ -48,17 +48,15 @@ struct KTAnimationRenderer::Private
 int KTAnimationRenderer::Private::calculateTotalPhotograms(KTScene *scene)
 {
 	Layers layers = scene->layers();
-	Layers::iterator layerIterator = layers.begin();
 	
 	int total = 0;
 
-	while ( layerIterator != layers.end() )
+	foreach(KTLayer *layer, layers.values())
 	{
-		if( *layerIterator )
+		if( layer )
 		{
-			total = qMax(total, (*layerIterator)->frames().count());
+			total = qMax(total, layer->frames().count());
 		}
-		++layerIterator;
 	}
 	
 	return total;

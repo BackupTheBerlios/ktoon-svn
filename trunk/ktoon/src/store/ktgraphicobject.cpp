@@ -163,8 +163,13 @@ KTFrame *KTGraphicObject::frame() const
 	return d->frame;
 }
 
-int KTGraphicObject::index() const
+int KTGraphicObject::logicalIndex() const
 {
-	return d->frame->indexOf(const_cast<KTGraphicObject *>(this));
+	return d->frame->logicalIndexOf(const_cast<KTGraphicObject *>(this));
+}
+
+int KTGraphicObject::visualIndex() const
+{
+	return d->frame->visualIndexOf(const_cast<KTGraphicObject *>(this));
 }
 

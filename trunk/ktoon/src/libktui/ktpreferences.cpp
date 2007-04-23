@@ -180,22 +180,22 @@ KTPreferences::KTPreferences( QWidget *parent ) : DConfigurationDialog(parent )
 	setWindowTitle( tr( "Application KTPreferences" ) );
 	
 	m_generalPage = new GeneralPage;
-	addPage(m_generalPage, tr("General"))->setIcon(QPixmap(THEME_DIR+"/icons/general_config.png"));;
+	addPage(m_generalPage, tr("General"), QPixmap(THEME_DIR+"/icons/general_config.png"));
 	
 	m_themeSelector = new KTThemeSelector;
-	addPage(m_themeSelector, tr("Theme preferences"))->setIcon( QPixmap(THEME_DIR+"/icons/theme_config.png") );
+	addPage(m_themeSelector, tr("Theme preferences"), QPixmap(THEME_DIR+"/icons/theme_config.png") );
 	
 	
 	
 	m_fontChooser = new FontPage;
-	addPage(m_fontChooser, tr("Font"))->setIcon(QPixmap(THEME_DIR+"/icons/font_config.png"));
+	addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR+"/icons/font_config.png"));
 	
 	
 	m_drawingAreaProperties = new KTPaintAreaConfig;
-	addPage(m_drawingAreaProperties, tr("Paint area"))->setIcon( QIcon(THEME_DIR+"/icons/drawing_area.png") );
+	addPage(m_drawingAreaProperties, tr("Paint area"), QIcon(THEME_DIR+"/icons/drawing_area.png") );
 	
 	
-	resize(400,400);
+// 	resize(400,400);
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -212,22 +212,22 @@ void KTPreferences::ok()
 
 void KTPreferences::apply()
 {
-	if ( static_cast<KTThemeSelector *>(currentPage()->widget()) ==  m_themeSelector)
+	if ( static_cast<KTThemeSelector *>(currentPage()) ==  m_themeSelector)
 	{
 		if(m_themeSelector->applyColors() )
 		{
 			dApp->applyTheme(m_themeSelector->document());
 		}
 	}
-	else if ( static_cast<GeneralPage *>( currentPage()->widget()) == m_generalPage )
+	else if ( static_cast<GeneralPage *>( currentPage()) == m_generalPage )
 	{
 		m_generalPage->saveValues();
 	}
-	else if ( qobject_cast<FontPage *>(currentPage()->widget() ) == m_fontChooser )
+	else if ( qobject_cast<FontPage *>(currentPage() ) == m_fontChooser )
 	{
 		dApp->setFont(m_fontChooser->currentFont());
 	}
-	else if ( qobject_cast<KTPaintAreaConfig *>(currentPage()->widget() ) == m_drawingAreaProperties )
+	else if ( qobject_cast<KTPaintAreaConfig *>(currentPage() ) == m_drawingAreaProperties )
 	{
 	}
 }

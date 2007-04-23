@@ -154,7 +154,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 	
 	bool valid = false;
 	
-	foreach(KTLayer *layer, d->scene->layers())
+	foreach(KTLayer *layer, d->scene->layers().values())
 	{
 		if ( layer->isVisible() )
 		{
@@ -201,7 +201,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 	{
 		if(object->frame()->layer()->isVisible() )
 		{
-			int origin = object->frame()->index();
+			int origin = object->frame()->visualIndex();
 			
 			if( KTItemTweener *tweener = object->tweener() )
 			{
@@ -226,7 +226,7 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity )
 {
 	if ( frame )
 	{
-		foreach(KTGraphicObject *object, frame->graphics() )
+		foreach(KTGraphicObject *object, frame->graphics().values() )
 		{
 			addGraphicObject(object, opacity);
 		}
@@ -282,7 +282,7 @@ int KTGraphicsScene::currentSceneIndex() const
 {
 	if( !d->scene ) return -1;
 	
-	return d->scene->index();
+	return d->scene->visualIndex();
 }
 
 void KTGraphicsScene::setNextOnionSkinCount(int n)

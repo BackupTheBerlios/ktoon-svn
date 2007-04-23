@@ -235,7 +235,7 @@ void TweenerTranslate::applyTweener()
 					d->scene->currentSceneIndex(),
 					d->scene->currentLayerIndex(),
 					d->scene->currentFrameIndex(),
-					d->scene->currentFrame()->indexOf(item),
+					d->scene->currentFrame()->visualIndexOf(item),
 					KTProjectRequest::Tweening, d->configurator->steps()
 					);
 			emit requested(&request);

@@ -64,7 +64,7 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 		{
 			response->setArg(frame->frameName());
 		}
-		response->setFrameIndex( layer->indexOf(frame));
+		response->setFrameIndex( layer->visualIndexOf(frame));
 		emit responsed( response );
 		
 		if ( !state.isEmpty() )
