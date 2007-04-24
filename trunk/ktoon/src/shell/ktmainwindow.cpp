@@ -88,8 +88,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(),  m_projectMa
 	m_projectManager = new KTProjectManager(this);
 	m_projectManager->setHandler( new KTLocalProjectManagerHandler );
 	
-	m_handlerLocalRequest = new KTHandlerLocalRequest( m_projectManager, this);
-	
 // 	setProjectManager( projectManager );
 	
 	splash->setMessage( tr("Setting up the project manager") );
@@ -522,9 +520,7 @@ void KTMainWindow::ui4paintArea(QWidget *widget)
 
 void KTMainWindow::ui4localRequest(QWidget *widget)
 {
-	connect(widget, SIGNAL(localRequestTriggered(const KTProjectRequest *)), m_handlerLocalRequest, SLOT(handle(const KTProjectRequest *)));
-	
-	connect(m_handlerLocalRequest, SIGNAL(responsed( KTProjectResponse* )), widget, SLOT(handleProjectResponse(KTProjectResponse *)));
+	connect(widget, SIGNAL(localRequestTriggered(const KTProjectRequest *)), m_projectManager, SLOT(handleLocalRequest(const KTProjectRequest *)));
 }
 
 void KTMainWindow::messageToStatus(const QString &msg)

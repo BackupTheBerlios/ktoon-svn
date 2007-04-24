@@ -238,11 +238,20 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 				d->ownPackage = false;
 			}
 			
-			SHOW_VAR(d->ownPackage);
+			if( d->ownPackage && !d->doAction )
+			{
+				if( parser.response()->part() == KTProjectRequest::Item )
+				{
+					KTItemResponse *response = static_cast<KTItemResponse *>(parser.response());
+					KTProjectRequest request = KTRequestBuilder::createFrameRequest(response->sceneIndex(), response->layerIndex(), response->frameIndex(), KTProjectRequest::Select);
+					
+					emit sendLocalCommand(&request);
+				}
+				return;
+			}
 			
 			KTProjectRequest request = KTRequestBuilder::fromResponse( parser.response() );
-			emitRequest(&request, d->doAction );
-			
+			emitRequest(&request, d->doAction && d->ownPackage );
 		}
 		else // TODO: mostrar error
 		{

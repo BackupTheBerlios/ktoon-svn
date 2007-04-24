@@ -58,7 +58,6 @@
 
 // Projects
 #include "ktprojectmanager.h"
-#include "kthandlerlocalrequest.h"
 #include "ktsplash.h"
 
 #include "ktviewdocument.h"
@@ -188,7 +187,6 @@ class KTMainWindow : public DTabbedMainWindow
 		KTStatusBar *m_statusBar;
 		DActionManager *m_actionManager;
 		QMenu *m_fileMenu,*m_settingsMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
-		KTHandlerLocalRequest *m_handlerLocalRequest;
 		QStringList m_recentProjects;
 		
 		QMenu *m_recentProjectsMenu;

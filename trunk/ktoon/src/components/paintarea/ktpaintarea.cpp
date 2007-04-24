@@ -47,8 +47,6 @@
 #include "dcore/dconfig.h"
 #include "dgui/dapplication.h"
 
-#include <cmath>
-
 #include "kttextitem.h"
 
 #include "librarydialog.h"
@@ -168,6 +166,8 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
 
 void KTPaintArea::frameResponse(KTFrameResponse *event)
 {
+	if( graphicsScene()->isDrawing() ) return;
+	
 	switch(event->action())
 	{
 		case KTProjectRequest::Select:
@@ -211,6 +211,8 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 
 void KTPaintArea::layerResponse(KTLayerResponse *event)
 {
+	if( graphicsScene()->isDrawing() ) return;
+	
 	KTGraphicsScene *sscene = graphicsScene();
 	
 	if( !sscene->scene() ) return;
@@ -230,6 +232,9 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
 void KTPaintArea::sceneResponse(KTSceneResponse *event)
 {
 	D_FUNCINFOX("paintarea");
+	
+	if( graphicsScene()->isDrawing() ) return;
+	
 	switch(event->action())
 	{
 		case KTProjectRequest::Select:
@@ -252,6 +257,8 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 
 void KTPaintArea::itemResponse(KTItemResponse *event)
 {
+	if( graphicsScene()->isDrawing() ) return;
+	
 	switch(event->action())
 	{
 // 		case KTProjectRequest::Add:
@@ -285,6 +292,8 @@ void KTPaintArea::projectResponse(KTProjectResponse *)
 
 void KTPaintArea::libraryResponse(KTLibraryResponse *request)
 {
+	if( graphicsScene()->isDrawing() ) return;
+	
 	switch(request->action())
 	{
 		case KTProjectRequest::AddSymbolToProject:

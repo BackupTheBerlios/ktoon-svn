@@ -55,7 +55,8 @@ class STORE_EXPORT KTAbstractProjectHandler : public QObject
 		virtual bool isValid() const;
 		
 	signals:
-		void sendCommand(const KTProjectRequest *event, bool addToStack);
+		void sendCommand(const KTProjectRequest *request, bool addToStack);
+		void sendLocalCommand(const KTProjectRequest *request);
 		void openNewArea(const QString &name);
 };
 

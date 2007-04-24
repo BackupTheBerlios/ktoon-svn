@@ -68,8 +68,9 @@ class STORE_EXPORT KTProjectManager : public QObject
 		void setupProjectDir();
 		
 	protected slots:
-		virtual void handleProjectRequest(const KTProjectRequest *event);
-		virtual void createCommand(const KTProjectRequest *event, bool addToStack);
+		virtual void handleProjectRequest(const KTProjectRequest *request);
+		virtual void handleLocalRequest(const KTProjectRequest *request);
+		virtual void createCommand(const KTProjectRequest *request, bool addToStack);
 		
 	private slots:
 		void emitResponse( KTProjectResponse *response);

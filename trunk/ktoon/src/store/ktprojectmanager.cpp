@@ -85,9 +85,6 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), d(new Pri
 KTProjectManager::~KTProjectManager()
 {
 	DEND;
-	
-	// TODO: delete all project data, BE CAREFUL
-	
 	delete d;
 }
 
@@ -109,6 +106,7 @@ void KTProjectManager::setHandler(KTAbstractProjectHandler *handler)
 	if ( d->handler )
 	{
 		disconnect(d->handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
+		disconnect(d->handler, SIGNAL(sendLocalCommand(const KTProjectRequest *)), this, SLOT(handleLocalRequest(const KTProjectRequest *)));
 		
 		delete d->handler;
 		d->handler = 0;
@@ -120,6 +118,7 @@ void KTProjectManager::setHandler(KTAbstractProjectHandler *handler)
 	d->handler->setProject(d->project);
 	
 	connect(d->handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
+	connect(d->handler, SIGNAL(sendLocalCommand(const KTProjectRequest *)), this, SLOT(handleLocalRequest(const KTProjectRequest *)));
 }
 
 KTAbstractProjectHandler *KTProjectManager::handler() const
@@ -278,6 +277,14 @@ void KTProjectManager::handleProjectRequest(const KTProjectRequest *request)
 	{
 		qDebug("ERROR: NO HANDLER");
 	}
+}
+
+void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
+{
+	KTRequestParser parser;
+	parser.parse( request->xml());
+	
+	emit responsed(parser.response());
 }
 
 

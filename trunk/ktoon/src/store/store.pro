@@ -44,7 +44,6 @@ HEADERS += ktlayer.h \
            ktabstractprojectresponsehandler.h \
            ktsaveproject.h \
            ktprojectloader.h \
-           kthandlerlocalrequest.h \
            ktgraphiclibraryitem.h \
            ktitemtweener.h \
            kttweenerstep.h \
@@ -87,7 +86,6 @@ SOURCES += ktlayer.cpp \
            ktitemfactory.cpp \
            ktsaveproject.cpp \
            ktprojectloader.cpp \
-           kthandlerlocalrequest.cpp \
            ktgraphiclibraryitem.cpp \
            ktitemtweener.cpp \
            kttweenerstep.cpp \
