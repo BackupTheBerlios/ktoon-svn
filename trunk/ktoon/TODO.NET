@@ -1,3 +1,7 @@
 
 * Implementar GUI para seleccionar usuarios que pueden participar en un proyecto
 * Crear un usuario por defecto y la estructura basica de la base de datos de usuarios en el servidor
+
+* Separar deshacer/rehacer por clientes
+
+

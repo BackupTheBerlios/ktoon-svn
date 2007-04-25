@@ -54,7 +54,7 @@ struct KTGraphicsScene::Private
 	{
 		int previous;
 		int next;
-		QMap<QGraphicsItem *, double> opacityMap;
+		QHash<QGraphicsItem *, double> opacityMap;
 	} onionSkin;
 	
 	struct FramePosition
@@ -552,4 +552,25 @@ KTBrushManager *KTGraphicsScene::brushManager() const
 {
 	return d->brushManager;
 }
+
+void KTGraphicsScene::aboutToMousePress()
+{
+	QHash<QGraphicsItem *, double>::iterator it = d->onionSkin.opacityMap.begin();
+
+	while(it != d->onionSkin.opacityMap.end() )
+	{
+		if( it.value() != 1.0 )
+		{
+			it.key()->setAcceptedMouseButtons(Qt::NoButton);
+			it.key()->setFlag(QGraphicsItem::ItemIsSelectable, false);
+		}
+		else
+		{
+			it.key()->setAcceptedMouseButtons( Qt::LeftButton | Qt::RightButton | Qt::MidButton | Qt::XButton1 | Qt::XButton2 );
+		}
+
+		++it;
+	}
+}
+
 

@@ -212,6 +212,7 @@ void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
 {
 	if ( !canPaint() ) return;
 	
+	d->scene->aboutToMousePress();
 	QGraphicsView::mousePressEvent(event);
 }
 

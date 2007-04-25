@@ -79,15 +79,7 @@ void Select::init(KTGraphicsScene *scene)
 		{
 			if(!qgraphicsitem_cast<Node *>(item))
 			{
-				if(scene->currentFrame()->visualIndexOf(item) != -1  )
-				{
-					item->setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
-				}
-				else
-				{
-					item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-					item->setFlag(QGraphicsItem::ItemIsMovable, false );
-				}
+				item->setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
 			}
 		}
 	}
