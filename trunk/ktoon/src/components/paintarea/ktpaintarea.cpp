@@ -258,7 +258,6 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 void KTPaintArea::itemResponse(KTItemResponse *event)
 {
 	if( graphicsScene()->isDrawing() ) return;
-	
 	switch(event->action())
 	{
 // 		case KTProjectRequest::Add:
@@ -282,6 +281,7 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 			
 		}
 	}
+
 	graphicsScene()->itemResponse(event);
 }
 

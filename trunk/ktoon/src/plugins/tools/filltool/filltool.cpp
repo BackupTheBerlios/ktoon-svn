@@ -59,6 +59,15 @@ FillTool::~FillTool()
 {
 }
 
+void FillTool::init(KTGraphicsScene *scene)
+{
+	foreach(QGraphicsItem *item, scene->items() )
+	{
+		item->setFlag(QGraphicsItem::ItemIsSelectable, true);
+		item->setFlag(QGraphicsItem::ItemIsFocusable, true);
+	}
+}
+
 QStringList FillTool::keys() const
 {
 	return QStringList() << tr("Fill") << tr("Shape fill") << tr("Contour fill");

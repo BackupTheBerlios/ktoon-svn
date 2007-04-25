@@ -325,19 +325,20 @@ KTFrame *KTGraphicsScene::currentFrame()
 void KTGraphicsScene::setCurrentScene(KTScene *scene)
 {
 	Q_CHECK_PTR(scene);
-	qDeleteAll(d->lines);
-	d->lines.clear();
-	
-	clean();
-	
-	d->scene = scene;
-	
-	drawCurrentPhotogram();
 	
 	if(d->tool)
 	{
 		d->tool->aboutToChangeScene(this);
 	}
+
+	qDeleteAll(d->lines);
+	d->lines.clear();
+	
+
+	clean();
+	d->scene = scene;
+	
+	drawCurrentPhotogram();
 }
 
 void KTGraphicsScene::setLayerVisible(int layerIndex, bool visible)
@@ -357,6 +358,7 @@ KTScene *KTGraphicsScene::scene() const
 
 void KTGraphicsScene::setTool(KTToolPlugin *tool)
 {
+	drawCurrentPhotogram();
 	if(d->tool)
 	{
 		if(d->tool->toolType() == KTToolPlugin::Selection )
@@ -395,9 +397,10 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	
 	d->inputInformation->updateFromMouseEvent(event);
 	
+	d->isDrawing = false;
+	
 	if( event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
 	{
-		d->isDrawing = false;
 	}
 	else if (d->tool )
 	{

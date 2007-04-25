@@ -3,6 +3,11 @@
 - Los grupos no guardan o cargan bien la matriz de transformacion
 - Los nombres de los elementos (frames, scenes, etc...) no se cargan bien
 
+- Dibujar el onion skin en un Z mas profundo
+- Cargar JPEGS
+- Mover frames en red
+
+
 - Algunas herramientas tienen punteros indefinidos cuando se cierra el proyecto (ej. select)+
 
 - Las reglas cambian el inicio cuando se dibuja la cuadricula +
