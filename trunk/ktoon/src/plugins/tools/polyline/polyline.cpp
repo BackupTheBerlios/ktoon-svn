@@ -266,7 +266,7 @@ void PolyLine::itemResponse(const KTItemResponse *response)
 	{
 		dFatal() << "Project not exist";
 	}
-	
+		
 	switch(response->action())
 	{
 		case KTProjectRequest::Add:
@@ -286,11 +286,14 @@ void PolyLine::itemResponse(const KTItemResponse *response)
 		break;
 		case KTProjectRequest::Remove:
 		{
-			d->path = QPainterPath();
-			delete d->item;
-			d->item = 0;
-			delete d->nodegroup;
-			d->nodegroup = 0;
+			if(item == d->item)
+			{
+				d->path = QPainterPath();
+				delete d->item;
+				d->item = 0;
+				delete d->nodegroup;
+				d->nodegroup = 0;
+			}
 		}
 		break;
 		case KTProjectRequest::EditNodes:
@@ -314,6 +317,7 @@ void PolyLine::itemResponse(const KTItemResponse *response)
 			}
 		}
 		break;
+		
 		default: break;
 	}
 }
@@ -401,6 +405,16 @@ void PolyLine::aboutToChangeScene(KTGraphicsScene *)
 	d->item = 0;
 	delete d->nodegroup;
 	d->nodegroup = 0;
+	
+	if(d->nodegroup)
+	{
+		d->nodegroup->show();
+		if(d->nodegroup->parentItem())
+		{
+			d->nodegroup->parentItem()->setSelected(true);
+			d->nodegroup->syncNodesFromParent();
+		}
+	}
 }
 
 void PolyLine::aboutToChangeTool()

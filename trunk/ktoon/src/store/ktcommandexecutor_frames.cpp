@@ -275,8 +275,30 @@ bool KTCommandExecutor::setFrameVisibility(KTFrameResponse *response)
 	return false;
 }
 
-
-
-
-
+bool KTCommandExecutor::expandFrame(KTFrameResponse *response)
+{
+	int scenePos = response->sceneIndex();
+	int layerPos = response->layerIndex();
+	int position = response->frameIndex();
+	
+	KTScene *scene = m_project->scene(scenePos);
+	
+	if ( !scene)
+	{
+		return false;
+	}
+	
+	KTLayer *layer = scene->layer(layerPos);
+	
+	if ( layer )
+	{
+		if(layer->expandFrame(position, 1))
+		{
+			emit responsed(response);
+			return true;
+		}
+	}
+	return false;
+	
+}
 

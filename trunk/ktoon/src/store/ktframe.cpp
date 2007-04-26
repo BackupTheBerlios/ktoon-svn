@@ -44,6 +44,7 @@ struct KTFrame::Private
 	bool isLocked;
 	bool isVisible;
 	GraphicObjects graphics;
+	int repeat;
 };
 
 KTFrame::KTFrame(KTLayer *parent) : QObject(parent), d(new Private)
@@ -51,6 +52,7 @@ KTFrame::KTFrame(KTLayer *parent) : QObject(parent), d(new Private)
 	d->name = "Frame";
 	d->isLocked = false;
 	d->isVisible = true;
+	d->repeat = 1;
 }
 
 KTFrame::~KTFrame()
@@ -356,17 +358,17 @@ QGraphicsItem *KTFrame::item(int position) const
 	return 0;
 }
 
-int KTFrame::visualIndexOf(KTGraphicObject *object)
+int KTFrame::visualIndexOf(KTGraphicObject *object) const
 {
 	return d->graphics.visualIndex(object);
 }
 
-int KTFrame::logicalIndexOf(KTGraphicObject *object)
+int KTFrame::logicalIndexOf(KTGraphicObject *object) const
 {
 	return d->graphics.logicalIndex(object);
 }
 
-int KTFrame::visualIndexOf(QGraphicsItem *item)
+int KTFrame::visualIndexOf(QGraphicsItem *item) const
 {
 	foreach(KTGraphicObject *object, d->graphics.values() )
 	{
@@ -378,7 +380,7 @@ int KTFrame::visualIndexOf(QGraphicsItem *item)
 	return -1;
 }
 
-int KTFrame::logicalIndexOf(QGraphicsItem *item)
+int KTFrame::logicalIndexOf(QGraphicsItem *item) const
 {
 	foreach(KTGraphicObject *object, d->graphics.values())
 	{
@@ -395,6 +397,17 @@ int KTFrame::logicalIndexOf(QGraphicsItem *item)
 int KTFrame::logicalIndex() const
 {
 	return layer()->visualIndexOf(const_cast<KTFrame *>(this));
+}
+
+
+void KTFrame::setRepeat(int repeat)
+{
+	d->repeat = repeat;
+}
+
+int KTFrame::repeat() const
+{
+	return d->repeat;
 }
 
 int KTFrame::visualIndex() const

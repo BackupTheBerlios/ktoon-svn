@@ -539,6 +539,7 @@ bool KTGraphicsScene::event(QEvent *e)
 
 void KTGraphicsScene::itemResponse(KTItemResponse *event)
 {
+	D_FUNCINFOX("scene");
 	if ( d->tool )
 	{
 		//d->tool->init(this); //FIXME:d->tool->init(this); in itemResponse ???

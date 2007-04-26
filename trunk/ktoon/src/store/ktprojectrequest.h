@@ -100,7 +100,8 @@ class STORE_EXPORT KTProjectRequest
 			EditNodes = 10,
 			AddSymbolToProject = 11,
 			Tweening = 12,
-			Update = 13
+			Update = 13,
+			Expand = 14
 		};
 		
 		enum Part

@@ -381,6 +381,16 @@ KTExposureTable::~KTExposureTable()
 	delete d;
 }
 
+QString KTExposureTable::frameName(int indexLayer, int indexFrame)
+{
+	QTableWidgetItem *frame = item( indexFrame , indexLayer);
+	if(frame)
+	{
+		return frame->text();
+	}
+}
+
+
 void KTExposureTable::setFrameName(int indexLayer, int indexFrame,const QString & name)
 {
 	QTableWidgetItem *frame = item( indexFrame , indexLayer);
@@ -548,7 +558,6 @@ void KTExposureTable::moveFrame(  int oldPosLayer, int oldPosFrame, int newPosLa
 	setItem(oldPosFrame, oldPosLayer, newItem);
 	//FIXME remover esto
 	setCurrentItem(oldItem);
-	//
 }
 
 void KTExposureTable::moveLayer( int oldPosLayer, int newPosLayer )

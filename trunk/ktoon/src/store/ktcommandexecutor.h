@@ -93,6 +93,8 @@ class KTCommandExecutor : public QObject
 		
 		bool createTweening(KTItemResponse *response);
 		
+		bool expandFrame(KTFrameResponse *response);
+		
 	signals:
 		void responsed(KTProjectResponse *response);
 		

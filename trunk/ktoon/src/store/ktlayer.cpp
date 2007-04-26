@@ -120,8 +120,12 @@ bool KTLayer::removeFrame(int position)
 	if ( toRemove )
 	{
 		d->frames.removeVisual(position);
-		delete toRemove;
+		toRemove->setRepeat(toRemove->repeat()-1);
 		
+		if(toRemove->repeat() < 1)
+		{
+			delete toRemove;
+		}
 		return true;
 	}
 	
@@ -141,8 +145,30 @@ bool KTLayer::moveFrame(int from, int to)
 }
 
 
+bool KTLayer::expandFrame(int position, int size)
+{
+	if ( position < 0 || position >= d->frames.count() )
+	{
+		return false;
+	}
+	
+	KTFrame *toExpand = frame(position);
+	
+	if(toExpand)
+	{
+		for(int i = 0; i < size; i++)
+		{
+			d->frames.expandValue(position);
+// 		d->frames.insert(position+i+1, toExpand);
+		}
+		toExpand->setRepeat(toExpand->repeat()+size);
+		return true;
+	}
+	return false;
+}
 
-KTFrame *KTLayer::frame(int position)
+
+KTFrame *KTLayer::frame(int position) const
 {
 	if ( position < 0 || position >= d->frames.count() )
 	{

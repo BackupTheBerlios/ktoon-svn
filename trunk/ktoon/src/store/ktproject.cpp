@@ -56,6 +56,7 @@ struct KTProject::Private
 	bool isOpen;
 	QString author;
 	QString description;
+	
 };
 
 /**
@@ -67,7 +68,6 @@ KTProject::KTProject(QObject *parent) : QObject(parent), d(new Private)
 	
 	d->sceneCounter = 0;
 	d->isOpen = false;
-	
 	d->library = new KTLibrary("library", this);
 }
 
@@ -416,7 +416,6 @@ bool KTProject::isOpen()
 {
 	return d->isOpen;
 }
-
 
 bool KTProject::deleteDataDir()
 {

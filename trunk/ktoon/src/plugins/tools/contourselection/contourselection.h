@@ -72,9 +72,6 @@ class ContourSelection : public KTToolPlugin
 	private:
 		struct Private;
 		Private *const d;
-		
-	private slots:
-		void syncNodes();
 };
 
 #endif

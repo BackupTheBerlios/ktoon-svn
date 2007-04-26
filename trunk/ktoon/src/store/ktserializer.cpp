@@ -58,7 +58,6 @@ QDomElement KTSerializer::properties(const QGraphicsItem *item, QDomDocument &do
 	
 	properties.setAttribute( "flags", item->flags());
 	
-	properties.setAttribute( "selected", item->isSelected() );
 	
 	return properties;
 }
@@ -77,8 +76,6 @@ void KTSerializer::loadProperties(QGraphicsItem *item, const QXmlAttributes &att
 	item->setEnabled(atts.value("pos") != "0"); // default true
 		
 	item->setFlags( QGraphicsItem::GraphicsItemFlags(atts.value("flags").toInt()) );
-	
-	item->setSelected( atts.value("selected") == "1" ); // default false
 }
 
 void KTSerializer::loadProperties(QGraphicsItem *item, const QDomElement &e)
@@ -97,8 +94,6 @@ void KTSerializer::loadProperties(QGraphicsItem *item, const QDomElement &e)
 		item->setEnabled(e.attribute("pos") != "0");
 		
 		item->setFlags( QGraphicsItem::GraphicsItemFlags(e.attribute("flags").toInt()) );
-		
-		item->setSelected( e.attribute("selected") == "1" ); // default false
 	}
 }
 

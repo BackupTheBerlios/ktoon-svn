@@ -78,7 +78,7 @@ void ContourSelection::init(KTGraphicsScene *scene)
 		view->setDragMode (QGraphicsView::RubberBandDrag);
 		foreach(QGraphicsItem *item, view->scene()->items())
 		{
-			if(!qgraphicsitem_cast<DControlNode *>(item) && scene->currentFrame()->visualIndexOf(item) != -1  )
+			if(!qgraphicsitem_cast<DControlNode *>(item))
 			{
 				item->setFlags (QGraphicsItem::ItemIsSelectable);
 			}
@@ -189,7 +189,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 
 void ContourSelection::itemResponse(const KTItemResponse *response)
 {
-	D_FUNCINFO;
+	D_FUNCINFOX("selection");
 	KTProject *project = d->scene->scene()->project();
 	QGraphicsItem *item = 0;
 	KTScene *scene = 0;
@@ -233,7 +233,6 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
 		break;
 		case KTProjectRequest::EditNodes:
 		{
-			
 			if ( item )
 			{
 				foreach(QGraphicsView * view, d->scene->views())
@@ -253,7 +252,22 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
 			}
 		}
 		break;
-		default: break;
+		default:
+		{
+			foreach(DNodeGroup* node, d->nodeGroups )
+			{
+				if(node)
+				{
+					node->show();
+					if(node->parentItem())
+					{
+						node->parentItem()->setSelected(true);
+						node->syncNodesFromParent();
+					}
+				}
+			}
+		}
+		break;
 	}
 }
 
@@ -312,30 +326,6 @@ void ContourSelection::aboutToChangeTool()
 // 	d->view->setDragMode (QGraphicsView::NoDrag);
 	qDeleteAll(d->nodeGroups);
 	d->nodeGroups.clear();
-}
-
-
-void ContourSelection::syncNodes()
-{
-	
-// 	//FIXME: tratar de optimizar esto
-	foreach(DNodeGroup* node, d->nodeGroups)
-	{
-		if(node)
-		{
-			if(qgraphicsitem_cast<QGraphicsPathItem *>(node->parentItem()))
-			{
-				node->show();
-				node->syncNodesFromParent();
-				node->saveParentProperties();
-				node->parentItem()->setSelected(true);
-			}
-			else
-			{
-				delete d->nodeGroups.takeAt(d->nodeGroups.indexOf((node)));
-			}
-		}
-	}
 }
 
 

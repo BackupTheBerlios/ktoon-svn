@@ -94,9 +94,9 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
 		SoundLayers soundLayers() const;
 		
 		
-		KTLayer *layer(int position);
+		KTLayer *layer(int position) const;
 		
-		KTSoundLayer *soundLayer(int position);
+		KTSoundLayer *soundLayer(int position) const;
 		
 		void setLayers(const Layers &);
 		

@@ -311,6 +311,12 @@ void KTProjectCommand::frameCommand()
 			d->executor->setFrameVisibility(response);
 		}
 		break;
+		case KTProjectRequest::Expand:
+		{
+			d->executor->expandFrame(response);
+		}
+		break;
+		
 		default: break;
 	}
 }

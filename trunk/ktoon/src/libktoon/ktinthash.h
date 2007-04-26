@@ -65,10 +65,14 @@ class KTIntHash
 		void insert(int pos, T value);
 		void add(T value);
 		
+		void expandValue(int index);
+		
 		T value(int index) const;
 		T operator[](int index) const;
 		QList<T> visualValues() const;
 		QList<T> values() const;
+		
+		QList<int> visualIndices() const;
 		
 		bool isEmpty();
 		
@@ -212,6 +216,14 @@ void KTIntHash<T>::add(T value)
 }
 
 template<typename T>
+void KTIntHash<T>::expandValue(int index)
+{
+	int value = d->visualIndices[index];
+	d->visualIndices.insert(index+1, value);
+}
+
+
+template<typename T>
 T KTIntHash<T>::value(int index) const
 {
 	return d->visualIndices.value(index);
@@ -241,6 +253,13 @@ template<typename T>
 QList<T> KTIntHash<T>::values() const
 {
 	return d->logicalIndices.values();
+}
+
+
+template<typename T>
+QList<int> KTIntHash<T>::visualIndices() const
+{
+	return d->visualIndices;
 }
 
 template<typename T>

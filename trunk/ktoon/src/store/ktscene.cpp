@@ -182,7 +182,7 @@ bool KTScene::removeLayer( int position)
  * @param position 
  * @return 
  */
-KTLayer *KTScene::layer(int position)
+KTLayer *KTScene::layer(int position) const
 {
 	if ( position < 0 || position >= d->layers.count() )
 	{
@@ -193,7 +193,7 @@ KTLayer *KTScene::layer(int position)
 	return d->layers.visualValue(position);
 }
 
-KTSoundLayer *KTScene::soundLayer(int position)
+KTSoundLayer *KTScene::soundLayer(int position) const
 {
 	if ( position < 0 || position >= d->soundLayers.count() )
 	{

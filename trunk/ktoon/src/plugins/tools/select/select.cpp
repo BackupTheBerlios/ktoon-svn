@@ -75,7 +75,7 @@ void Select::init(KTGraphicsScene *scene)
 	foreach(QGraphicsView * view, scene->views())
 	{
 		view->setDragMode (QGraphicsView::RubberBandDrag);
-		foreach(QGraphicsItem *item, view->scene()->items() )
+		foreach(QGraphicsItem *item, scene->items() )
 		{
 			if(!qgraphicsitem_cast<Node *>(item))
 			{
@@ -102,10 +102,10 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 		d->changedManager = 0;
 	}
 	
-	foreach(QGraphicsView * view, scene->views())
-	{
-		view->setDragMode (QGraphicsView::RubberBandDrag);
-	}
+// 	foreach(QGraphicsView * view, scene->views())
+// 	{
+// 		view->setDragMode (QGraphicsView::RubberBandDrag);
+// 	}
 	
 	if ( input->keyModifiers() != Qt::ControlModifier )
 	{
@@ -128,7 +128,7 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 	
 	QList<QGraphicsItem *> selecteds = scene->selectedItems();
 	
-	if(scene->currentFrame()->visualIndexOf(scene->mouseGrabberItem()) > -1)
+	if(scene->currentFrame()->visualIndexOf(scene->mouseGrabberItem()) != -1)
 	{
 		selecteds << scene->mouseGrabberItem();
 	}
@@ -336,13 +336,16 @@ void Select::itemResponse(const KTItemResponse *event)
 					node->show();
 					node->syncNodesFromParent();
 					node->beginToEdit();
-					node->parentItem()->setSelected(true);
 					break;
 				}
 			}
 		}
 		break;
-		default: break;
+		default:
+		{
+			syncNodes();
+		}
+		break;
 	}
 }
 

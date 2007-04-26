@@ -81,6 +81,7 @@ void KTExposureSheet::createMenu()
 	d->menu->addAction(tr("Insert frame"))->setData(KTProjectActionBar::InsertFrame);
 	d->menu->addAction( tr("Remove frame"))->setData(KTProjectActionBar::RemoveFrame);
 	d->menu->addAction( tr("Lock frame"))->setData(KTProjectActionBar::LockFrame);
+	d->menu->addAction( tr("Expand frame"), this, SLOT(emitRequestExpandCurrentFrame()));
 	
 	connect(d->menu,  SIGNAL(triggered( QAction * )), this, SLOT(actionTiggered(QAction*)));
 }
@@ -207,6 +208,13 @@ void KTExposureSheet::emitRequestChangeScene(int index)
 	emit localRequestTriggered( &request );
 }
 
+void KTExposureSheet::emitRequestExpandCurrentFrame()
+{
+	D_FUNCINFOX("exposure");
+	KTProjectRequest request = KTRequestBuilder::createFrameRequest(d->scenes->currentIndex(), d->currentTable->currentLayer(), d->currentTable->currentFrame(), KTProjectRequest::Expand, 1);
+	emit requestTriggered( &request );
+}
+
 void KTExposureSheet::insertItem(int indexLayer, int indexFrame)
 {
 	KTProjectRequest request = KTRequestBuilder::createFrameRequest( d->scenes->currentIndex() , indexLayer, indexFrame, KTProjectRequest::Add );
@@ -248,7 +256,12 @@ void KTExposureSheet::moveLayer(int oldIndex, int newIndex)
 
 void KTExposureSheet::actionTiggered(QAction *action)
 {
-	applyAction(action->data().toInt());
+	bool ok;
+	int id = action->data().toInt(&ok);
+	if(ok)
+	{
+		applyAction(id);
+	}
 }
 
 void KTExposureSheet::closeAllScenes()
@@ -315,7 +328,6 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
 		{
 			case KTProjectRequest::Add:
 			{
-				dDebug() << "INSERT LAYER: " << e->layerIndex();
 				scene->insertLayer(e->layerIndex(),  e->arg().toString());
 			}
 			break;
@@ -394,6 +406,15 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
 				scene->selectFrame( e->layerIndex(), e->frameIndex());
 			}
 			break;
+			case KTProjectRequest::Expand:
+			{
+				for(int i = 0; i < e->arg().toInt(); i++)
+				{
+					scene->setUseFrame( e->layerIndex(), e->frameIndex()+i+1, scene->frameName(e->layerIndex(), e->frameIndex()) );
+				}
+			}
+			break;
+			
 		}
 	}
 }

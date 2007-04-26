@@ -101,13 +101,16 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		KTScene *scene() const;
 		KTProject *project() const;
 		
-		int visualIndexOf(KTGraphicObject *object);
-		int logicalIndexOf(KTGraphicObject *object);
-		int visualIndexOf(QGraphicsItem *item);
-		int logicalIndexOf(QGraphicsItem *item);
+		int visualIndexOf(KTGraphicObject *object) const;
+		int logicalIndexOf(KTGraphicObject *object) const;
+		int visualIndexOf(QGraphicsItem *item) const;
+		int logicalIndexOf(QGraphicsItem *item) const;
 		
 		int visualIndex() const;
 		int logicalIndex() const;
+		
+		void setRepeat(int repeat);
+		int repeat() const;
 		
 	public:
 		virtual void fromXml(const QString &xml );

@@ -172,19 +172,15 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 	{
 		case KTProjectRequest::Select:
 		{
-			setCurrentScene( event->sceneIndex() );
 			
 			KTGraphicsScene *sscene = graphicsScene();
 			
 			if( !sscene->scene() ) return;
+			setUpdatesEnabled(true);
 			
 			sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
 			sscene->drawPhotogram(event->frameIndex());
-			
-// 			if ( event->action() == KTProjectRequest::Select ) // FIXME
-// 			{
-// 				if ( d->tool ) d->tool->init( this );
-// 			}
+			setCurrentScene( event->sceneIndex() );
 			
 			dDebug("paintarea") << "frame: " << event->frameIndex() << " " << "layer: " << event->layerIndex();
 		}
@@ -257,31 +253,31 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 
 void KTPaintArea::itemResponse(KTItemResponse *event)
 {
-	if( graphicsScene()->isDrawing() ) return;
-	switch(event->action())
+	if( !graphicsScene()->isDrawing() )
 	{
-// 		case KTProjectRequest::Add:
-// 		{
-// 		}
-// 		break;
-// 		case KTProjectRequest::Remove:
-// 		{
-// 			
-// 		}
-// 		break;
-		case KTProjectRequest::Transform:
+		switch(event->action())
 		{
-			viewport()->update();
-		}
-		break;
-		default:
-		{
-			graphicsScene()->drawCurrentPhotogram();
-			viewport()->update(scene()->sceneRect().toRect() );
-			
+	// 		case KTProjectRequest::Add:
+	// 		{
+	// 		}
+	// 		break;
+	// 		case KTProjectRequest::Remove:
+	// 		{
+	// 			
+	// 		}
+	// 		break;
+			case KTProjectRequest::Transform:
+			{
+				viewport()->update();
+			}
+			break;
+			default:
+			{
+				graphicsScene()->drawCurrentPhotogram();
+				viewport()->update(scene()->sceneRect().toRect() );
+			}
 		}
 	}
-
 	graphicsScene()->itemResponse(event);
 }
 
@@ -383,8 +379,6 @@ void KTPaintArea::ungroupItems()
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
 	if(!selecteds.isEmpty())
 	{
-// 		QString strItems= "";
-		
 		KTGraphicsScene* currentScene = graphicsScene();
 		if(currentScene)
 		{
@@ -394,43 +388,18 @@ void KTPaintArea::ungroupItems()
 				emit requestTriggered(&event);
 			}
 		}
-		/*int firstItem = -1;
-		if(currentScene)
-		{
-			foreach(QGraphicsItem *item, selecteds)
-			{
-				if(currentScene->currentFrame()->visualIndexOf(item) != -1 && qgraphicsited->cast<QGraphicsItemGroup *>(item) )
-				{
-					if(strItems.isEmpty())
-					{
-						strItems +="("+ QString::number(currentScene->currentFrame()->visualIndexOf(item)) ;
-						firstItem = currentScene->currentFrame()->visualIndexOf(item);
-					}
-					else
-					{
-						strItems += " , "+ QString::number(currentScene->currentFrame()->visualIndexOf(item));
-					}
-				}
-			}
-			strItems+= ")";
-		}
-		if(strItems != ")")
-		{
-			KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, KTProjectRequest::Ungroup, strItems );
-			emit requestTriggered(&event);
-	}*/
+		
 	}
 }
 
 void KTPaintArea::copyItems()
 {
-	D_FUNCINFO;
+	D_FUNCINFOX("paintarea");
 	d->copiesXml.clear();
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
 	if(!selecteds.isEmpty())
 	{
 		KTGraphicsScene* currentScene = graphicsScene();
-// 		int firstItem = -1;
 		
 		if(currentScene)
 		{
@@ -476,7 +445,7 @@ void KTPaintArea::copyItems()
 
 void KTPaintArea::pasteItems()
 {
-	D_FUNCINFO;
+	D_FUNCINFOX("paintarea");
 	KTGraphicsScene* currentScene = graphicsScene();
 	
 	foreach(QString xml, d->copiesXml)
@@ -489,7 +458,7 @@ void KTPaintArea::pasteItems()
 
 void KTPaintArea::cutItems()
 {
-	D_FUNCINFO;
+	D_FUNCINFOX("paintarea");
 	copyItems();
 	deleteItems();
 }
