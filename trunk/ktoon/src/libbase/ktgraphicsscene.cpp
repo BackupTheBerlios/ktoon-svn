@@ -202,31 +202,37 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 		}
 	}
 	
-	if( !valid ) return;
-	
-	foreach(KTGraphicObject *object, d->scene->tweeningObjects())
+	if( valid )
 	{
-		if(object->frame()->layer()->isVisible() )
+		foreach(KTGraphicObject *object, d->scene->tweeningObjects())
 		{
-			int origin = object->frame()->visualIndex();
-			
-			if( KTItemTweener *tweener = object->tweener() )
+			if(object->frame()->layer()->isVisible() )
 			{
-				tweener->setStep(0);
+				int origin = object->frame()->visualIndex();
 				
-				if( origin < photogram && photogram < origin+tweener->frames() )
+				if( KTItemTweener *tweener = object->tweener() )
 				{
-					int step = photogram - origin;
+					tweener->setStep(0);
 					
-					tweener->setStep(step);
-					
-					addGraphicObject(object);
+					if( origin < photogram && photogram < origin+tweener->frames() )
+					{
+						int step = photogram - origin;
+						
+						tweener->setStep(step);
+						
+						addGraphicObject(object);
+					}
 				}
 			}
 		}
+		
+		update();
 	}
 	
-	update();
+	if( d->tool )
+	{
+		d->tool->updateScene(this);
+	}
 }
 
 void KTGraphicsScene::addFrame(KTFrame *frame, double opacity )

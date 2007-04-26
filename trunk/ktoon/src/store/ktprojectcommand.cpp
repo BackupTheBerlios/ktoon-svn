@@ -40,17 +40,19 @@ struct KTProjectCommand::Private
 	bool executed;
 };
 
-KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectRequest *event) : QUndoCommand(), d(new Private())
+KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectRequest *request) : QUndoCommand(), d(new Private())
 {
 	d->executor = executor;
 	d->executed = false;
 	
 	KTRequestParser parser;
-	if ( ! parser.parse( event->xml() ) )
+	if ( ! parser.parse( request->xml() ) )
 	{
 		qFatal("==> KTProjectCommand::KTProjectCommand()");
 	}
 	d->response = parser.response();
+	
+	d->response->setExternal(request->isExternal());
 	
 	if ( !d->response ) qFatal("Unparsed response!");
 	

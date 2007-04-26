@@ -72,37 +72,67 @@ QString KTProjectRequestArgument::toString()
 	return m_value;
 }
 
-KTProjectRequest::KTProjectRequest(const QString &xml) : m_xml(xml), m_id(Project), m_local(false)
+struct KTProjectRequest::Private
+{
+	Private(const QString &xml) : xml(xml), id(Project), isExternal(false)
+	{
+	}
+	
+	QString xml;
+	int id;
+	bool isExternal;
+};
+
+KTProjectRequest::KTProjectRequest(const QString &xml) : d(new Private(xml))
 {
 }
 
 
 KTProjectRequest::~KTProjectRequest()
 {
+	delete d;
 }
 
 
 void KTProjectRequest::setId(int id)
 {
-	m_id = id;
+	d->id = id;
 }
 
 int KTProjectRequest::id() const
 {
-	return m_id;
+	return d->id;
 }
 
 
 
 bool KTProjectRequest::isValid() const
 {
-	return !m_xml.isEmpty(); // TODO: Verficar que sea XML
+	return !d->xml.isEmpty(); // TODO: Verficar que sea XML
 }
 
 
 QString KTProjectRequest::xml() const
 {
-	return m_xml;
+	return d->xml;
 }
 
+void KTProjectRequest::setExternal(bool b)
+{
+	d->isExternal = b;
+}
+
+bool KTProjectRequest::isExternal() const
+{
+	return d->isExternal;
+}
+
+KTProjectRequest &KTProjectRequest::operator=(const KTProjectRequest &other)
+{
+	d->xml = other.d->xml;
+	d->id = other.d->id;
+	d->isExternal = other.d->isExternal;
+	
+	return *this;
+}
 

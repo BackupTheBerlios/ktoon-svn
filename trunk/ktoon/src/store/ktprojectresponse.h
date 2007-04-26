@@ -51,6 +51,9 @@ class STORE_EXPORT KTProjectResponse
 		void setData(const QByteArray &data);
 		void setMode(Mode mode);
 		
+		void setExternal(bool e);
+		bool external() const;
+		
 		Mode mode() const;
 		
 		KTProjectRequestArgument arg() const;

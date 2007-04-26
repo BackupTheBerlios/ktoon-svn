@@ -49,6 +49,11 @@ void KTToolPlugin::init(KTGraphicsScene *scene)
 	Q_UNUSED(scene);
 }
 
+void KTToolPlugin::updateScene(KTGraphicsScene *scene)
+{
+	Q_UNUSED(scene);
+}
+
 void KTToolPlugin::setCurrentTool(const QString &tool)
 {
 	d->currentTool = tool;

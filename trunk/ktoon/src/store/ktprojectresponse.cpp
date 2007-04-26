@@ -23,13 +23,15 @@
 class KTProjectResponse::Private
 {
 	public:
-		Private(int part, int action) : part(part), action(action) {}
+		Private(int part, int action) : part(part), action(action), isExternal(false) {}
 		
 		int part;
 		int action;
 		KTProjectRequestArgument arg;
 		QByteArray data;
 		Mode mode;
+		
+		bool isExternal;
 };
 
 KTProjectResponse::KTProjectResponse(int part, int action) : d(new Private(part, action))
@@ -133,6 +135,16 @@ int KTProjectResponse::originalAction() const
 void KTProjectResponse::setMode(Mode mode)
 {
 	d->mode = mode;
+}
+
+void KTProjectResponse::setExternal(bool e)
+{
+	d->isExternal = e;
+}
+
+bool KTProjectResponse::external() const
+{
+	return d->isExternal;
 }
 
 KTProjectResponse::Mode KTProjectResponse::mode() const

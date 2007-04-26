@@ -49,6 +49,7 @@ class KTOON_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 		QString currentTool() const;
 		
 		virtual void init(KTGraphicsScene *scene);
+		virtual void updateScene(KTGraphicsScene *scene);
 		
 		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene ) = 0;
 		virtual void doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene );

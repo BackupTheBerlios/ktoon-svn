@@ -122,11 +122,16 @@ class STORE_EXPORT KTProjectRequest
 		virtual bool isValid() const;
 		
 		QString xml() const;
+		
+		void setExternal(bool b);
+		bool isExternal() const;
+		
+		
+		KTProjectRequest &operator = (const KTProjectRequest &other);
 
 	private:
-		QString m_xml;
-		int m_id;
-		bool m_local;
+		struct Private;
+		Private *const d;
 };
 
 

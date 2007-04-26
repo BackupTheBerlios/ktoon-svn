@@ -282,9 +282,12 @@ void KTProjectManager::handleProjectRequest(const KTProjectRequest *request)
 void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
 {
 	KTRequestParser parser;
-	parser.parse( request->xml());
 	
-	emit responsed(parser.response());
+	if( parser.parse( request->xml()) )
+	{
+		parser.response()->setExternal(request->isExternal());
+		emit responsed(parser.response());
+	}
 }
 
 

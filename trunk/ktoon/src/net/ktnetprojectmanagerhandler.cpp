@@ -245,12 +245,14 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 					KTItemResponse *response = static_cast<KTItemResponse *>(parser.response());
 					KTProjectRequest request = KTRequestBuilder::createFrameRequest(response->sceneIndex(), response->layerIndex(), response->frameIndex(), KTProjectRequest::Select);
 					
+					request.setExternal(!d->ownPackage);
 					emit sendLocalCommand(&request);
 				}
 				return;
 			}
 			
 			KTProjectRequest request = KTRequestBuilder::fromResponse( parser.response() );
+			request.setExternal(!d->ownPackage);
 			emitRequest(&request, d->doAction && d->ownPackage );
 		}
 		else // TODO: mostrar error
