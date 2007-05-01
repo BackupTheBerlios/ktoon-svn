@@ -69,7 +69,11 @@ class KTExposureSheet : public KTModuleWidgetBase
 		
 	private slots: 
 		void emitRequestChangeScene(int index);
+		
+		void emitRequestCopyCurrentFrame();
+		void emitRequestPasteInCurrentFrame();
 		void emitRequestExpandCurrentFrame();
+		
 		void insertItem(int indexLayer, int indexFrame);
 		void renameFrame(int indexLayer, int indexFrame, const QString & name);
 		void selectFrame(int indexLayer, int indexFrame);

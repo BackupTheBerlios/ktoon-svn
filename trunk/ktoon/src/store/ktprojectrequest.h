@@ -94,14 +94,19 @@ class STORE_EXPORT KTProjectRequest
 			Group = 7,
 			Ungroup = -Group,
 			
+			
 			// Items
 			Transform = 8,
 			Convert = 9,
 			EditNodes = 10,
 			AddSymbolToProject = 11,
 			Tweening = 12,
+			
+			// frames
 			Update = 13,
-			Expand = 14
+			Expand = 14,
+			Copy = 15,
+			Paste = 16,
 		};
 		
 		enum Part

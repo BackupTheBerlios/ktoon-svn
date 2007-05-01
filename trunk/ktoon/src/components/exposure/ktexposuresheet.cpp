@@ -39,6 +39,8 @@ struct KTExposureSheet::Private
 	KTExposureTable *currentTable;
 	KTProjectActionBar *actionBar;
 	QMenu *menu;
+	QString nameCopyFrame;
+// 	QString copyFrame;
 };
 
 KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet"), d(new Private)
@@ -81,7 +83,11 @@ void KTExposureSheet::createMenu()
 	d->menu->addAction(tr("Insert frame"))->setData(KTProjectActionBar::InsertFrame);
 	d->menu->addAction( tr("Remove frame"))->setData(KTProjectActionBar::RemoveFrame);
 	d->menu->addAction( tr("Lock frame"))->setData(KTProjectActionBar::LockFrame);
+	
+	d->menu->addAction( tr("Copy frame"), this, SLOT(emitRequestCopyCurrentFrame()));
+	d->menu->addAction( tr("Paste in frame"), this, SLOT(emitRequestPasteInCurrentFrame()));
 	d->menu->addAction( tr("Expand frame"), this, SLOT(emitRequestExpandCurrentFrame()));
+	
 	
 	connect(d->menu,  SIGNAL(triggered( QAction * )), this, SLOT(actionTiggered(QAction*)));
 }
@@ -142,7 +148,7 @@ void KTExposureSheet::applyAction(int action)
 		break;
 		case KTProjectActionBar::InsertFrame:
 		{
-			int used = d->currentTable->numUsed();
+			int used = d->currentTable->numUsed( d->currentTable->currentColumn() );
 			int finish = d->currentTable->currentFrame()+1;
 			
 			if(used < finish)
@@ -206,6 +212,42 @@ void KTExposureSheet::emitRequestChangeScene(int index)
 {
 	KTProjectRequest request = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
 	emit localRequestTriggered( &request );
+}
+
+
+void KTExposureSheet::emitRequestCopyCurrentFrame()
+{
+	KTProjectRequest request = KTRequestBuilder::createFrameRequest(d->scenes->currentIndex(), d->currentTable->currentLayer(), d->currentTable->currentFrame(), KTProjectRequest::Copy);
+	emit localRequestTriggered( &request );
+}
+
+void KTExposureSheet::emitRequestPasteInCurrentFrame()
+{
+	/*if(!d->copyFrame.isEmpty())
+	{
+		KTProjectRequest request = KTRequestBuilder::createFrameRequest(d->scenes->currentIndex(), d->currentTable->currentLayer(), d->currentTable->currentFrame()+1, KTProjectRequest::Paste, d->copyFrame );
+		emit requestTriggered( &request );
+	}
+	*/
+	
+	if(d->nameCopyFrame.isEmpty())
+		return;
+	
+	if( d->currentTable->numUsed(d->currentTable->currentLayer()) <= d->currentTable->currentRow() )
+	{
+		for(int i = d->currentTable->numUsed(d->currentTable->currentLayer()); i <= d->currentTable->currentRow(); i++)
+		{
+			insertItem(d->currentTable->currentLayer(), i);
+			
+			KTProjectRequest request = KTRequestBuilder::createFrameRequest(d->scenes->currentIndex(), d->currentTable->currentLayer(), i, KTProjectRequest::Paste);
+			emit localRequestTriggered( &request );
+		}
+	}
+	else
+	{
+		KTProjectRequest request = KTRequestBuilder::createFrameRequest(d->scenes->currentIndex(), d->currentTable->currentLayer(), d->currentTable->currentFrame(), KTProjectRequest::Paste);
+		emit localRequestTriggered( &request );
+	}
 }
 
 void KTExposureSheet::emitRequestExpandCurrentFrame()
@@ -377,7 +419,7 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
 		{
 			case KTProjectRequest::Add:
 			{
-				scene->setUseFrame( e->layerIndex(), e->frameIndex(),  e->arg().toString());
+				scene->setUseFrame( e->layerIndex(), e->frameIndex(),  e->arg().toString(), e->external());
 			}
 			break;
 			case KTProjectRequest::Remove:
@@ -387,7 +429,7 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
 			break;
 			case KTProjectRequest::Move:
 			{
-				scene->moveFrame( e->layerIndex(), e->frameIndex(), e->layerIndex(), e->arg().toInt());
+				scene->moveFrame( e->layerIndex(), e->frameIndex(), e->layerIndex(), e->arg().toInt(), e->external());
 			}
 			break;
 			case KTProjectRequest::Lock:
@@ -410,11 +452,34 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
 			{
 				for(int i = 0; i < e->arg().toInt(); i++)
 				{
-					scene->setUseFrame( e->layerIndex(), e->frameIndex()+i+1, scene->frameName(e->layerIndex(), e->frameIndex()) );
+					scene->setUseFrame( e->layerIndex(), e->frameIndex()+i+1, scene->frameName(e->layerIndex(), e->frameIndex()), e->external() );
 				}
 			}
 			break;
-			
+			case KTProjectRequest::Copy:
+			{
+				d->nameCopyFrame = scene->frameName(e->layerIndex(), e->frameIndex());
+// 				d->copyFrame = e->arg().toString();
+			}
+			break;
+			case KTProjectRequest::Paste:
+			{
+				if(e->frameIndex() >= scene->numUsed( e->layerIndex() ))
+				{
+					if(e->mode() == KTProjectResponse::Undo)
+					{
+						if(e->arg().toString().isEmpty())
+						{
+							scene->removeFrame(e->layerIndex(), e->frameIndex());
+						}
+					}
+					else
+					{
+						scene->setUseFrame( e->layerIndex(), e->frameIndex(), d->nameCopyFrame + "- copy", e->external());
+					}
+				}
+			}
+			break;
 		}
 	}
 }

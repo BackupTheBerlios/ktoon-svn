@@ -116,6 +116,10 @@ int KTProjectResponse::action() const
 				return KTProjectRequest::Ungroup;
 			}
 			break;
+			case KTProjectRequest::Paste:
+			{
+			}
+			break;
 			default:
 			{
 				qFatal("Unhandled action");

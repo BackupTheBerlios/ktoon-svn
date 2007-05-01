@@ -112,6 +112,8 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		void setRepeat(int repeat);
 		int repeat() const;
 		
+		void clean();
+		
 	public:
 		virtual void fromXml(const QString &xml );
 		virtual QDomElement toXml(QDomDocument &doc) const;

@@ -47,16 +47,16 @@ class KTExposureTable : public QTableWidget
 		int currentLayer() const;
 		int currentFrame() const;
 		void insertLayer(int index, const QString & name);
-		void setUseFrame(int indexLayer, int indexFrame, const QString & name);
+		void setUseFrame(int indexLayer, int indexFrame, const QString & name, bool external);
 		void removeLayer(int indexLayer );
 		void removeFrame(int indexLayer, int indexFrame);
-		void moveFrame( int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame );
+		void moveFrame( int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external );
 		void moveLayer( int oldPosLayer, int newPosLayer );
 		
 		void setLockFrame(int indexLayer, int indexFrame, bool locked);
 		void setLockLayer(int indexLayer,  bool locked);
 		void setVisibilityChanged(int visualIndex, bool visibility);
-		int numUsed() const;
+		int numUsed( int column ) const;
 		
 		QString frameName(int indexLayer, int indexFrame);
 		void setFrameName(int indexLayer, int indexFrame,const QString & name);

@@ -275,6 +275,7 @@ void KTProjectCommand::undo()
 
 void KTProjectCommand::frameCommand()
 {
+	D_FUNCINFO;
 	KTFrameResponse *response = static_cast<KTFrameResponse *>(d->response);
 	switch(response->action())
 	{
@@ -318,6 +319,12 @@ void KTProjectCommand::frameCommand()
 			d->executor->expandFrame(response);
 		}
 		break;
+		case KTProjectRequest::Paste:
+		{
+			d->executor->pasteFrame(response);
+		}
+		break;
+		
 		
 		default: break;
 	}

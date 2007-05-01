@@ -170,6 +170,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 	
 	switch(event->action())
 	{
+		case KTProjectRequest::Paste:
 		case KTProjectRequest::Select:
 		{
 			

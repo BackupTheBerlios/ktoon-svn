@@ -24,6 +24,12 @@
 #include <QDir>
 
 #include "ktproject.h"
+
+#include "ktscene.h"
+#include "ktlayer.h"
+#include "ktframe.h"
+
+
 #include "ktprojectrequest.h"
 #include "ktprojectcommand.h"
 #include "ktcommandexecutor.h"
@@ -62,6 +68,8 @@ class KTProjectManager::Private
 		KTCommandExecutor *commandExecutor;
 		
 		KTProjectManagerParams *params;
+		
+		QString copyFrame;
 };
 
 KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), d(new Private())
@@ -285,6 +293,40 @@ void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
 	
 	if( parser.parse( request->xml()) )
 	{
+		if(KTFrameResponse *response = static_cast<KTFrameResponse *>(parser.response()))
+		{
+			int scenePos = response->sceneIndex();
+			int layerPos = response->layerIndex();
+			int position = response->frameIndex();
+			
+			if(response->action() == KTProjectRequest::Copy)
+			{
+				KTScene *scene = d->project->scene(scenePos);
+				if ( scene )
+				{
+					KTLayer *layer = scene->layer( layerPos );
+					if ( layer )
+					{
+						KTFrame *frame = layer->frame( position );
+						if ( frame )
+						{
+							QDomDocument doc;
+							doc.appendChild(frame->toXml( doc ));
+							d->copyFrame = doc.toString(0);
+							
+							response->setArg( d->copyFrame );
+							
+						}
+					}
+				}
+			}
+			else if(response->action() == KTProjectRequest::Paste)
+			{
+				response->setArg(d->copyFrame);
+				handleProjectRequest( & KTRequestBuilder::fromResponse( response ));
+				return;
+			}
+		}
 		parser.response()->setExternal(request->isExternal());
 		emit responsed(parser.response());
 	}

@@ -302,3 +302,37 @@ bool KTCommandExecutor::expandFrame(KTFrameResponse *response)
 	
 }
 
+
+bool KTCommandExecutor::pasteFrame( KTFrameResponse *response)
+{
+	int scenePos = response->sceneIndex();
+	int layerPos = response->layerIndex();
+	int position = response->frameIndex();
+	QString copyFrame = response->arg().toString();
+	
+	KTScene *scene = m_project->scene(scenePos);
+	if ( scene )
+	{
+		KTLayer *layer = scene->layer( layerPos );
+		if ( layer )
+		{
+			KTFrame *frame = layer->frame( position );
+			if(frame)
+			{
+				QString name = frame->frameName();
+				
+				QDomDocument doc;
+				doc.appendChild(frame->toXml(doc));
+				response->setArg(doc.toString(0));
+				frame->clean();
+				frame->fromXml(copyFrame);
+				frame->setFrameName(name);
+				emit responsed(response);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+

@@ -61,6 +61,12 @@ KTFrame::~KTFrame()
 	delete d;
 }
 
+
+void KTFrame::clean()
+{
+	d->graphics.clear(true);
+}
+
 void KTFrame::setFrameName(const QString &name)
 {
 	d->name = name;

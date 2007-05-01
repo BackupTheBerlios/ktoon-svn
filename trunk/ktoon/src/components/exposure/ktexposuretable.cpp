@@ -451,10 +451,10 @@ int KTExposureTable::currentFrame() const
 		}
 		else
 		{
-			return currentRow()-1;
+			return currentRow()-1;//???
 		}
 	}
-	return currentRow()-1;
+	return currentRow()-1;//???
 }
 
 void KTExposureTable::insertLayer(int index, const QString & name)
@@ -463,7 +463,7 @@ void KTExposureTable::insertLayer(int index, const QString & name)
 	d->header->insertLayer( index, name );
 }
 
-void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString & name)
+void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString & name, bool external)
 {
 	QTableWidgetItem * frame = new QTableWidgetItem;
 	
@@ -480,7 +480,7 @@ void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString 
 	
 	for(int i = d->header->lastFrame(logicalIndex)-1; i > indexFrame; i--)
 	{
-		moveFrame(  indexLayer, i , indexLayer, i-1);
+		moveFrame(  indexLayer, i , indexLayer, i-1, external);
 	}
 	
 	if(d->header->lastFrame(logicalIndex)  == rowCount ())
@@ -549,7 +549,7 @@ void KTExposureTable::removeFrame(int indexLayer, int indexFrame)
 	setUpdatesEnabled(true);
 }
 
-void KTExposureTable::moveFrame(  int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame)
+void KTExposureTable::moveFrame(  int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external)
 {
 	QTableWidgetItem * oldItem  = takeItem(oldPosFrame, oldPosLayer );
 	QTableWidgetItem * newItem  = takeItem(newPosFrame, newPosLayer );
@@ -557,7 +557,11 @@ void KTExposureTable::moveFrame(  int oldPosLayer, int oldPosFrame, int newPosLa
 	setItem(newPosFrame, newPosLayer, oldItem);
 	setItem(oldPosFrame, oldPosLayer, newItem);
 	//FIXME remover esto
-	setCurrentItem(oldItem);
+	
+	if(!external)
+	{
+		setCurrentItem(oldItem);
+	}
 }
 
 void KTExposureTable::moveLayer( int oldPosLayer, int newPosLayer )
@@ -577,9 +581,9 @@ void KTExposureTable::emitRequestSetUsedFrame( int indexFrame,  int indexLayer)
 	}
 }
 
-int KTExposureTable::numUsed() const
+int KTExposureTable::numUsed(int column) const
 {
-	return d->header->lastFrame( currentColumn() );
+	return d->header->lastFrame( column );
 }
 
 bool KTExposureTable::edit( const QModelIndex & index, EditTrigger trigger, QEvent *event )
