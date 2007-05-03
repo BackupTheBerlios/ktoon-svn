@@ -49,7 +49,8 @@ class KTOON_EXPORT KTExportInterface
 			GIF = 1 << 7,
 			PNG = 1 << 8,
 			JPEG = 1 << 9,
-			SMIL = 1 << 10
+			XPM = 1 << 10,
+			SMIL = 1 << 11
 		};
 		
 		Q_DECLARE_FLAGS(Formats, Format);

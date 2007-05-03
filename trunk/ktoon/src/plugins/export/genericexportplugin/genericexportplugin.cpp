@@ -27,6 +27,7 @@
 #include <QPainter>
 
 #include "ktlayer.h"
+#include "ktanimationrenderer.h"
 
 GenericExportPlugin::GenericExportPlugin()
 {
@@ -45,7 +46,7 @@ QString GenericExportPlugin::key() const
 
 KTExportInterface::Formats GenericExportPlugin::availableFormats()
 {
-	return KTExportInterface::PNG;
+	return KTExportInterface::PNG | KTExportInterface::JPEG | KTExportInterface::XPM;
 }
 
 void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
@@ -59,8 +60,42 @@ void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KT
 		dir.mkdir(dir.path());
 	}
 	
-	char *f = "PNG";
 	m_baseName = fileInfo.baseName();
+	char *fmt = "PNG";
+	
+	switch( format )
+	{
+		case KTExportInterface::JPEG:
+		{
+			fmt = "JPEG";
+		}
+		break;
+		case KTExportInterface::XPM:
+		{
+			fmt = "XPM";
+		}
+		break;
+	}
+	
+	KTAnimationRenderer renderer;
+	foreach(KTScene *scene, scenes)
+	{
+		renderer.setScene(scene);
+		
+		int photogram = 0;
+		while(renderer.nextPhotogram())
+		{
+			QImage img(size, QImage::Format_RGB32);
+			{
+				QPainter painter(&img);
+				painter.setRenderHint(QPainter::Antialiasing, true);
+				renderer.render(&painter);
+			}
+			img.save(fileInfo.absolutePath() +"/"+ QString(m_baseName+"%1.%2").arg(photogram).arg(QString(fmt).toLower() ), fmt);
+			
+			photogram++;
+		}
+	}
 }
 
 Q_EXPORT_PLUGIN( GenericExportPlugin );
