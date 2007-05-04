@@ -9,3 +9,5 @@ INCLUDEPATH += .
 LIBS += -lavformat -lavcodec
 # Input
 SOURCES += main.cpp
+
+DEFINES += INT64_C=int

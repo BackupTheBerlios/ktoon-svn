@@ -68,7 +68,8 @@ HEADERS += danimwidget.h \
            ddoublecombobox.h \
            dmoviegenerator.h \
            dmoviegeneratorinterface.h  \
-           ditemselector.h
+           ditemselector.h \
+           dindicatordrawer.h
 SOURCES += danimwidget.cpp \
            dapplication.cpp \
            dcellview.cpp \
@@ -128,7 +129,8 @@ SOURCES += danimwidget.cpp \
            ddualcolorbutton.cpp \
            ddoublecombobox.cpp \
            dmoviegenerator.cpp  \
-           ditemselector.cpp
+           ditemselector.cpp \
+           dindicatordrawer.cpp
 DEFINES += DLIB_GUI
 RESOURCES += dgui_images.qrc
 QT += xml
