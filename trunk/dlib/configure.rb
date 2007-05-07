@@ -58,7 +58,8 @@ end
 	
 	config.save("dlib/dlibconfig.pri")
 	
-	qonfdestdir = (Process.euid == 0 ? Config::CONFIG['sitelibdir'] : conf.destdir + "/" + Config::CONFIG['rubylibdir'].sub(Config::CONFIG["libdir"], "" ) )
+	# qonfdestdir = ( File.stat(Config::CONFIG['sitelibdir']).writable? ? Config::CONFIG['sitelibdir'] : conf.destdir )
+	qonfdestdir = ( (File.stat(Config::CONFIG['sitelibdir']).writable? or not File.stat(conf.destdir).writable? ) ? Config::CONFIG['sitelibdir'] : conf.destdir )
 	File.open("qonf.pri", "w") { |file|
 		file << %@
 INSTALLS += qonf
@@ -70,6 +71,8 @@ qonf.path += #{qonfdestdir}/qonf\n@
 	
 	conf.qmake.run
 	RQonf::Makefile::override("#{Dir.getwd}/Makefile", "", conf.statusFile)
+	
+	puts %@Make sure "#{qonfdestdir}" is in your RUBYLIB@
 	
 rescue => err
 	Info.error << "Configure failed. error was: #{err.message}\n"
