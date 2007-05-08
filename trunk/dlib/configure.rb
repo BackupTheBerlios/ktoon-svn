@@ -57,9 +57,14 @@ end
 	unix.addVariable("OBJECTS_DIR", ".obj")
 	
 	config.save("dlib/dlibconfig.pri")
-	
-	# qonfdestdir = ( File.stat(Config::CONFIG['sitelibdir']).writable? ? Config::CONFIG['sitelibdir'] : conf.destdir )
-	qonfdestdir = ( (File.stat(Config::CONFIG['sitelibdir']).writable? or not File.stat(conf.destdir).writable? ) ? Config::CONFIG['sitelibdir'] : conf.destdir )
+
+	destdir_valid = conf.destdir
+
+	while not File.exists?(destdir_valid)
+		destdir_valid = File.expand_path(destdir_valid+"/..")
+	end
+
+	qonfdestdir = ( (File.stat(Config::CONFIG['sitelibdir']).writable? or not File.stat(destdir_valid).writable? ) ? Config::CONFIG['sitelibdir'] : conf.destdir )
 	File.open("qonf.pri", "w") { |file|
 		file << %@
 INSTALLS += qonf

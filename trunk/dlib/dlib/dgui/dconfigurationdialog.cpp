@@ -49,10 +49,12 @@ DConfigurationDialog::DConfigurationDialog(QWidget *parent) : QDialog(parent), d
 	
 	d->list = new QListWidget;
 	d->list->setViewMode(QListView::IconMode);
+	d->list->setWrapping(false);
 	d->list->setFlow(QListView::TopToBottom);
 	d->list->setIconSize(QSize(96, 84));
 	d->list->setMovement(QListView::Static);
-	d->list->setMaximumWidth(128);
+	d->list->setMaximumWidth((84+12)*2);
+	d->list->setMinimumWidth(84+12);
 	d->list->setSpacing(12);
 	
 	connect(d->list, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(changePage(QListWidgetItem *, QListWidgetItem*)));
