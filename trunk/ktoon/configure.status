@@ -1,0 +1,3 @@
+
+require 'qonf/makefile'
+RQonf::Makefile::override( ARGV[0].to_s, "/usr/local/ktoon", "/home/spy/Proyectos/ktoon/0.9/ktoon/configure.status" )

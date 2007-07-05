@@ -1,0 +1,32 @@
+kcpuinfo.cpp:43: aviso: se definió ‘void sighandler(int)’ pero no se usa
+kcirclebutton.cpp: In member function ‘virtual QSize DCircleButton::sizeHint() const’:
+kcirclebutton.cpp:116: aviso: variable ‘radio’ sin uso
+kcirclebutton.cpp: At global scope:
+kcirclebutton.cpp:206: aviso: parámetro ‘e’ sin uso
+kcollapsiblewidget.cpp:123: aviso: parámetro ‘e’ sin uso
+kcollapsiblewidget.cpp: In member function ‘virtual void DClickableLabel::mouseMoveEvent(QMouseEvent*)’:
+kcollapsiblewidget.cpp:162: aviso: variable ‘dropAction’ sin uso
+kcollapsiblewidget.cpp: In member function ‘virtual void DClickableLabel::paintEvent(QPaintEvent*)’:
+kcollapsiblewidget.cpp:192: aviso: pasando ‘qreal’ para el argumento 1 de ‘void QRect::setX(int)’
+kcollapsiblewidget.cpp: In member function ‘virtual void DSettingsContainer::dragEnterEvent(QDragEnterEvent*)’:
+kcollapsiblewidget.cpp:300: aviso: variable ‘mimeData’ sin uso
+kcollapsiblewidget.cpp: In member function ‘virtual void DSettingsContainer::dragMoveEvent(QDragMoveEvent*)’:
+kcollapsiblewidget.cpp:320: aviso: variable ‘mimeData’ sin uso
+kimageeffect.cpp: In static member function ‘static QImage DImageEffect::gradient(const QSize&, const QColor&, const QColor&, DImageEffect::GradientType, int)’:
+kimageeffect.cpp:295: aviso: se solicitó la dirección de ‘y’, el cual se declaró como ‘register’
+kimageeffect.cpp: At global scope:
+kimageeffect.cpp:4746: aviso: parámetro ‘bpp’ sin uso
+kimageeffect.cpp:4746: aviso: parámetro ‘has_alpha’ sin uso
+kmainwindowfactory.cpp:58: aviso: parámetro ‘obj’ sin uso
+kosd.cpp: In member function ‘void DOsd::display(const QString&, DOsd::Level, int)’:
+kosd.cpp:122: aviso: pasando ‘qreal’ para el argumento 1 de ‘void QWidget::move(int, int)’
+kosd.cpp: At global scope:
+kosd.cpp:179: aviso: parámetro ‘e’ sin uso
+kpathhelper.cpp:135: aviso: parámetro ‘svgpath’ sin uso
+ktabdialog.cpp:41: aviso: parámetro ‘parent’ sin uso
+kterm.cpp:64: aviso: parámetro ‘ec’ sin uso
+kterm.cpp:64: aviso: parámetro ‘s’ sin uso
+kviewbutton.cpp: In member function ‘void DViewButton::setup()’:
+kviewbutton.cpp:106: aviso: variable ‘act’ sin uso
+kwaitstyle.cpp:535: aviso: parámetro ‘palette’ sin uso
+

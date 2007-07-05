@@ -1,0 +1,30 @@
+- Revisar operaciones con componentes agrupados: library
+
+- Los grupos no guardan o cargan bien la matriz de transformacion
+- Los nombres de los elementos (frames, scenes, etc...) no se cargan bien
+
+- Dibujar el onion skin en un Z mas profundo
+- Cargar JPEGS
+- Mover frames en red
+
+
+- Algunas herramientas tienen punteros indefinidos cuando se cierra el proyecto (ej. select)+
+
+- Las reglas cambian el inicio cuando se dibuja la cuadricula +
+- No se puede deshacer en el polyline +
+- Mover un objeto con la herramienta de seleccion sin seleccionarlo primero, no crea la accion => no se puede deshacer +
+- La herramienta de nodos no edita lineTo +
+- En la herramienta de contornos, se necesita mover un nodo para que se dibujen los hijos +
+- Cuando el item se mueva, no poner nodos de rotar +
+
+
+- existe un crash en polyline dibujando lineas, cambiando de frames, seleccionando otra vez herramienta de polyline +
+- Se crean dos areas de dibujo cuando se crea un proyecto en red +
+- Revisar herramienta de lapiz +
+- Crash cuando se remueve una escena o se crea mas de una + 
+- Revisar operaciones con componentes agrupados: tweening +
+- Crash copiando y pegando items agrupados +
+- Cargar grupo +
+
+
+
