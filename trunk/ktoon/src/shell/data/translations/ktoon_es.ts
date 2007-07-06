@@ -7,26 +7,26 @@
     </message>
     <message>
         <source>&lt;h1&gt;Welcome to the KToon Configuration wizard!&lt;/h1&gt;&lt;br&gt;&lt;br&gt;&lt;table border=0 align=right &gt;&lt;tr&gt;&lt;td&gt;- KToon is a 2D Animation Toolkit designed by animators for animators.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;- KToon is free/open software and it is covered under the GNU GPL license terms.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;- KToon is Software Project developed by Toonka Films (http://www.toonka.com)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br&gt;&lt;br&gt;This is an &quot;easy to use tool&quot; to allow you to configure your KToon environment.&lt;br&gt;&lt;br&gt;Please, choose the &quot;Next&quot; button to setting up some parameters&lt;br&gt; required to use KToon correctly or use the &quot;Cancel&quot; button&lt;br&gt; to close this dialog. Enjoy KToon!&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;--The KToon Team&lt;/em&gt;&lt;br&gt;&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h1&gt;Bienvenido al asistente de configuración de KToon!&lt;/h1&gt;&lt;br&gt;&lt;br&gt;&lt;table border=0 align=right &gt;&lt;tr&gt;&lt;td&gt;- KToon es una herramienta de animación 2D creada por animadores para animadores.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;- KToon es Software Libre y está cubierto por los términos de la licencia GNU GPL.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;- KToon es un proyecto de software desarrollado por Toonka Films (http://www.toonka.com)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br&gt;&lt;br&gt;Esta es una herramienta &quot;facil de usar&quot; para configurar su entorno de trabajo con KToon.&lt;br&gt;&lt;br&gt;Por favor, seleccione el botón &quot;Siguiente&quot; para configurar algunos de los parametros&lt;br&gt; requeridos para usar KToon de manera adecuada o seleccione el botón &quot;Cancelar&quot; &lt;br&gt; para cerrar este dialogo. Disfrute KToon!&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;--El equipo de desarrollo&lt;/em&gt;&lt;br&gt;&lt;br&gt;</translation>
     </message>
 </context>
 <context>
     <name>CWSecondPage</name>
     <message>
         <source>Configure KToon</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurar KToon</translation>
     </message>
     <message>
         <source>&lt;h3&gt;Step 1&lt;h3&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h3&gt;Paso 1&lt;h3&gt;</translation>
     </message>
     <message>
         <source>Choose your KToon installation directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Escoja el directorio de installación para KToon</translation>
     </message>
     <message>
         <source>Choose the directory where KToon is installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Escoja el directorio donde KToon ha sido instalado</translation>
     </message>
     <message>
         <source>Browse...</source>
