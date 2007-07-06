@@ -30,216 +30,216 @@
     </message>
     <message>
         <source>Browse...</source>
-        <translation type="unfinished"></translation>
+        <translation>Explorar...</translation>
     </message>
     <message>
         <source>Choose a temporal directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Escoja un directorio temporal</translation>
     </message>
     <message>
         <source>Choose the directory for temporal files</source>
-        <translation type="unfinished"></translation>
+        <translation>Escoja un directorio para los archivos temporales</translation>
     </message>
 </context>
 <context>
     <name>CrashWidget</name>
     <message>
         <source>What&apos;s happen?</source>
-        <translation type="unfinished"></translation>
+        <translation>Qué sucede?</translation>
     </message>
     <message>
         <source>Executable information</source>
-        <translation type="unfinished"></translation>
+        <translation>Información de ejecutable</translation>
     </message>
     <message>
         <source>Backtrace</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitacora</translation>
     </message>
 </context>
 <context>
     <name>KTApplication</name>
     <message>
         <source>Initializing repository %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Inicializando repositorio %1</translation>
     </message>
     <message>
         <source>I cannot create the repository</source>
-        <translation type="unfinished"></translation>
+        <translation>No es posible crear el repositorio</translation>
     </message>
 </context>
 <context>
     <name>KTMainWindow</name>
     <message>
-        <source>KToon: 2D animation toolkit</source>
-        <translation type="unfinished"></translation>
+        <source>KToon: 2D Animation Toolkit</source>
+        <translation>KToon: Herramienta 2D de Animación</translation>
     </message>
     <message>
         <source>Setting up the project manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurando el administrador de proyectos</translation>
     </message>
     <message>
         <source>Loading action manager...</source>
-        <translation type="unfinished"></translation>
+        <translation>Creando administrador de acciones...</translation>
     </message>
     <message>
         <source>Creating menu bar...</source>
-        <translation type="unfinished"></translation>
+        <translation>Creando barra de menu...</translation>
     </message>
     <message>
         <source>Creating GUI...</source>
-        <translation type="unfinished"></translation>
+        <translation>Creando GUI...</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Documento</translation>
     </message>
     <message>
         <source>Opening a new paint area...</source>
-        <translation type="unfinished"></translation>
+        <translation>Abriendo una nueva area de dibujo...</translation>
     </message>
     <message>
         <source>Opening a new document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Abriendo un nuevo documento...</translation>
     </message>
     <message>
         <source>Illustration: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilustración: %1</translation>
     </message>
     <message>
         <source>Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>Animación</translation>
     </message>
     <message>
         <source>Do you want to save?</source>
-        <translation type="unfinished"></translation>
+        <translation>Desea guardar su trabajo?</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Guardar</translation>
     </message>
     <message>
         <source>Discard</source>
-        <translation type="unfinished"></translation>
+        <translation>Descartar</translation>
     </message>
     <message>
         <source>Import project package</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar proyecto</translation>
     </message>
     <message>
         <source>KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)</source>
-        <translation type="unfinished"></translation>
+        <translation>Proyecto KToon (*.ktn);;Proyecto KToon en Red (*.ktnet)</translation>
     </message>
     <message>
         <source>Project %1 opened!</source>
-        <translation type="unfinished"></translation>
+        <translation>Proyecto %1 abierto!</translation>
     </message>
     <message>
         <source>Cannot open project!</source>
-        <translation type="unfinished"></translation>
+        <translation>No se puede abrir el proyecto!</translation>
     </message>
     <message>
         <source>KToon Project Package (*.ktn)</source>
-        <translation type="unfinished"></translation>
+        <translation>Proyecto KToon (*.ktn)</translation>
     </message>
     <message>
         <source>Preferences Dialog Opened</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialogo de preferencias abierto</translation>
     </message>
     <message>
         <source>Import gimp palettes</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar paletas de gimp</translation>
     </message>
     <message>
         <source>Importing palettes</source>
-        <translation type="unfinished"></translation>
+        <translation>Importando paletas</translation>
     </message>
     <message>
         <source>Help:%1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ayuda:%1</translation>
     </message>
     <message>
         <source>Build project package</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear paquete del proyecto</translation>
     </message>
     <message>
         <source>Project %1 saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Proyecto %1 guardado</translation>
     </message>
     <message>
         <source>Cannot save the project!</source>
-        <translation type="unfinished"></translation>
+        <translation>No se puede salvar el proyecto!</translation>
     </message>
     <message>
         <source>New camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Nueva camara</translation>
     </message>
     <message>
         <source>Import bitmap...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar imagen...</translation>
     </message>
     <message>
         <source>Import audio file...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar archivo de audio...</translation>
     </message>
     <message>
         <source>&amp;File</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Archivo</translation>
     </message>
     <message>
         <source>&amp;New...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nuevo...</translation>
     </message>
     <message>
         <source>Recents</source>
-        <translation type="unfinished"></translation>
+        <translation>Recientes</translation>
     </message>
     <message>
         <source>&amp;Insert</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Insertar</translation>
     </message>
     <message>
         <source>&amp;Window</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ventana</translation>
     </message>
     <message>
         <source>Perspective</source>
-        <translation type="unfinished"></translation>
+        <translation>Perspectiva</translation>
     </message>
     <message>
         <source>Drawing</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilustración</translation>
     </message>
     <message>
         <source>&amp;Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Configuración</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ayuda</translation>
     </message>
     <message>
         <source>New project</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuevo proyecto</translation>
     </message>
     <message>
         <source>Opens a new project</source>
-        <translation type="unfinished"></translation>
+        <translation>Abre un nuevo proyecto</translation>
     </message>
     <message>
         <source>Open project</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir proyecto</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <source>Loads an existent project</source>
-        <translation type="unfinished"></translation>
+        <translation>Cargar un proyecto existente</translation>
     </message>
     <message>
         <source>Open project from server...</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir proyecto desde el servidor...</translation>
     </message>
     <message>
         <source></source>
@@ -247,212 +247,212 @@
     </message>
     <message>
         <source>Import project to server...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar proyecto al servidor...</translation>
     </message>
     <message>
         <source>Save project</source>
-        <translation type="unfinished"></translation>
+        <translation>Guardar proyecto</translation>
     </message>
     <message>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+S</translation>
     </message>
     <message>
         <source>Saves the current project in the current location</source>
-        <translation type="unfinished"></translation>
+        <translation>Guarda el proyecto actual en la ruta actual</translation>
     </message>
     <message>
         <source>Save project &amp;As...</source>
-        <translation type="unfinished"></translation>
+        <translation>Guardar proyecto como...</translation>
     </message>
     <message>
         <source>Opens a dialog box to save the current project in any location</source>
-        <translation type="unfinished"></translation>
+        <translation>Abre un dialogo para guardar el proyecto actual en alguna ruta</translation>
     </message>
     <message>
         <source>Cl&amp;ose project</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerrar proyecto</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+W</translation>
     </message>
     <message>
         <source>Closes the active project</source>
-        <translation type="unfinished"></translation>
+        <translation>Cierra el proyecto activo</translation>
     </message>
     <message>
         <source>&amp;Import GIMP palettes...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Importar paletas de GIMP...</translation>
     </message>
     <message>
         <source>Imports palettes</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar paletas</translation>
     </message>
     <message>
         <source>&amp;Export...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar...</translation>
     </message>
     <message>
         <source>Exports project to different formats</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporta proyecto a otros formatos</translation>
     </message>
     <message>
         <source>E&amp;xit</source>
-        <translation type="unfinished"></translation>
+        <translation>Salir</translation>
     </message>
     <message>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Q</translation>
     </message>
     <message>
         <source>Closes the application</source>
-        <translation type="unfinished"></translation>
+        <translation>Cierra la aplicación</translation>
     </message>
     <message>
         <source>Launch configuration wizard...</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar asistente de configuración...</translation>
     </message>
     <message>
         <source>Launch first configuration wizard</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar primer asistente de configuración</translation>
     </message>
     <message>
         <source>Pr&amp;eferences...</source>
-        <translation type="unfinished"></translation>
+        <translation>Preferencias...</translation>
     </message>
     <message>
         <source>Opens the preferences dialog box</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir el Dialogo de Preferencias</translation>
     </message>
     <message>
         <source>About KToon</source>
-        <translation type="unfinished"></translation>
+        <translation>Acerca de KToon</translation>
     </message>
     <message>
-        <source>Tip of day</source>
-        <translation type="unfinished"></translation>
+        <source>Tip of the day</source>
+        <translation>Consejo del Dia</translation>
     </message>
     <message>
         <source>Show debug dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar Dialogo de Depuración</translation>
     </message>
     <message>
         <source>Insert scene</source>
-        <translation type="unfinished"></translation>
+        <translation>Insertar Escena</translation>
     </message>
     <message>
         <source>Bar Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Barra de Acciones</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Deshacer</translation>
     </message>
 </context>
 <context>
     <name>KTNewProject</name>
     <message>
         <source>Create a new project</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear un nuevo proyecto</translation>
     </message>
     <message>
         <source>Project Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre del Proyecto</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Autor</translation>
     </message>
     <message>
         <source>Dimension</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensión</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opciones</translation>
     </message>
     <message>
         <source>FPS</source>
-        <translation type="unfinished"></translation>
+        <translation>FPS</translation>
     </message>
     <message>
         <source>Project info</source>
-        <translation type="unfinished"></translation>
+        <translation>Información del Proyecto</translation>
     </message>
     <message>
         <source>Create a network project</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear un proyecto en red</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"></translation>
+        <translation>Red</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuario</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Clave</translation>
     </message>
     <message>
         <source>Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Servidor</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Puerto</translation>
     </message>
     <message>
         <source>Please fill the project name field</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, ingrese el nombre del proyecto</translation>
     </message>
 </context>
 <context>
     <name>KTSplash</name>
     <message>
         <source>Version </source>
-        <translation type="unfinished"></translation>
+        <translation>Versión </translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Missing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Falta...</translation>
     </message>
     <message>
         <source>You need configure the application</source>
-        <translation type="unfinished"></translation>
+        <translation>Usted necesita configurar la aplicación</translation>
     </message>
     <message>
         <source>Initializing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Inicializando...</translation>
     </message>
     <message>
         <source>Loading Modules</source>
-        <translation type="unfinished"></translation>
+        <translation>Cargando modulos</translation>
     </message>
     <message>
         <source>Loaded!</source>
-        <translation type="unfinished"></translation>
+        <translation>Cargado!</translation>
     </message>
     <message>
-        <source>2D Animation tool kit</source>
-        <translation type="unfinished"></translation>
+        <source>2D Animation Tool Kit</source>
+        <translation>Herramienta de Animación 2D</translation>
     </message>
     <message>
         <source>Usage: %1 [option]</source>
-        <translation type="unfinished"></translation>
+        <translation>Uso: %1 [opcion]</translation>
     </message>
     <message>
         <source>Options: </source>
-        <translation type="unfinished"></translation>
+        <translation>Opciones: </translation>
     </message>
     <message>
         <source><byte value="x9"/><byte value="x9"/>Reconfigure %1</source>
-        <translation type="unfinished"></translation>
+        <translation><byte value="x9"/><byte value="x9"/>Reconfigurar %1</translation>
     </message>
     <message>
         <source>Fatal error</source>
