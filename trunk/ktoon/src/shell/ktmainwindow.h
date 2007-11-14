@@ -28,7 +28,7 @@
 #include <QResizeEvent>
 #include <QCloseEvent>
 #include <QUndoStack>
-#include <dgui/dactionmanager.h>
+#include <kgui/kactionmanager.h>
 #include "ktviewdocument.h"
 
 #include "ktworkspace.h"
@@ -50,11 +50,11 @@
 
 #include "ktviewdocument.h"
 
-#include <dgui/dtabbedmainwindow.h>
+#include <kgui/ktabbedmainwindow.h>
 #include "ktstatusbar.h"
 
-#include <dgui/dosd.h>
-#include <dgui/dtoolview.h>
+#include <kgui/kosd.h>
+#include <kgui/ktoolview.h>
 
 // Projects
 #include "ktprojectmanager.h"

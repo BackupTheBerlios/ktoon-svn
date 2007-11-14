@@ -39,7 +39,6 @@ class QMake
 				if distance > 0
 					IO.popen("#{path} -query QT_VERSION") { |prc|
 						found = prc.readlines.join("")
-						print "Ver: #{found}"
 						version = found.split(".")
 						if (found.length != 0)
 							qtversion = found.chop
@@ -49,13 +48,11 @@ class QMake
 
 					version.size.times { |i|
 						if version.size < i and minver.size >= 2
-							print "Saliendo 1"
 							break
 						end
 					
 						if version[i] < minver[i]
 							flag = false
-							print "Saliendo 2"
 							break
 						end 
 					}

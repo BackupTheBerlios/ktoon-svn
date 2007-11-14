@@ -26,8 +26,8 @@
 
 #include "ktpathitem.h"
 
-#include <dgui/dcontrolnode.h>
-#include <dgui/dnodegroup.h>
+#include <kgui/kcontrolnode.h>
+#include <kgui/knodegroup.h>
 
 
 class DDControlNode;

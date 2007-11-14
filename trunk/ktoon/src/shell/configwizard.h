@@ -23,7 +23,7 @@
 
 #include <QString>
 
-#include <dgui/dwizard.h>
+#include <kgui/kwizard.h>
 
 class CWFirstPage;
 class CWSecondPage;

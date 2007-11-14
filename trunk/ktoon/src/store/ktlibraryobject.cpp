@@ -28,7 +28,7 @@
 #include <QTemporaryFile>
 #include <QDir>
 
-#include <dsound/daudioplayer.h>
+#include <ksound/kaudioplayer.h>
 #include <kcore/kdebug.h>
 
 struct KTLibraryObject::Private

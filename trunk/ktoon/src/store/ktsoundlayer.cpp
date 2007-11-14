@@ -22,7 +22,7 @@
 
 #include <QFileInfo>
 
-#include <dsound/daudioplayer.h>
+#include <ksound/kaudioplayer.h>
 
 #include "ktlibrary.h"
 #include "ktproject.h"

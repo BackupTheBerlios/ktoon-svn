@@ -21,10 +21,10 @@
 #define KTNEWPROYECT_H
 
 
-#include <dgui/dosd.h>
-#include <dgui/dtabdialog.h>
-#include <dgui/dwizard.h>
-#include <dgui/dxyspinbox.h>
+#include <kgui/kosd.h>
+#include <kgui/ktabdialog.h>
+#include <kgui/kwizard.h>
+#include <kgui/kxyspinbox.h>
 
 class KTProjectManagerParams;
 
