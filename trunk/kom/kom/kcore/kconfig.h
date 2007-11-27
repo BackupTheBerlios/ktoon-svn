@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DCONFIG_H
-#define DCONFIG_H
+#ifndef KCONFIG_H
+#define KCONFIG_H
 
 #include <QObject>
 #include <QDir>
@@ -30,19 +32,19 @@
 #include "kcore/kglobal.h"
 
 
-class DConfig;
+class KConfig;
 
 /**
  * @author David Cuadrado
  * this is a dom config handler
 */
 
-class D_CORE_EXPORT DConfig : public QObject
+class K_CORE_EXPORT KConfig : public QObject
 {
 	public:
-		~DConfig();
+		~KConfig();
 	protected:
-		explicit DConfig();
+		explicit KConfig();
 		void init();
 		
 		
@@ -54,7 +56,7 @@ class D_CORE_EXPORT DConfig : public QObject
 
 		QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() ) const;
 
-		static DConfig *instance();
+		static KConfig *instance();
 		
 		bool isOk();
 		QDomDocument document();
@@ -65,13 +67,13 @@ class D_CORE_EXPORT DConfig : public QObject
 		QDomElement find(const QDomElement &element, const QString &key) const;
 		
 	private:
-		static DConfig *m_instance;
+		static KConfig *m_instance;
 		
 		class Private;
-		Private * const d;
+		Private * const k;
 
 };
 
-#define DCONFIG DConfig::instance()
+#define KCONFIG KConfig::instance()
 
 #endif

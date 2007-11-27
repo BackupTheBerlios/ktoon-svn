@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DAUDIOENGINEIFACE_H
-#define DAUDIOENGINEIFACE_H
+#ifndef KAUDIOENGINEIFACE_H
+#define KAUDIOENGINEIFACE_H
 
 #include <QString>
 #include <QPluginLoader>
@@ -31,10 +33,10 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_CORE_EXPORT DAudioEngineIface
+class K_CORE_EXPORT KAudioEngineIface
 {
 	public:
-		virtual ~DAudioEngineIface() {}
+		virtual ~KAudioEngineIface() {}
 		virtual QString key() const = 0;
 		
 		/**
@@ -57,7 +59,7 @@ class D_CORE_EXPORT DAudioEngineIface
 		virtual void setVolume(int percent) = 0;
 };
 
-Q_DECLARE_INTERFACE(DAudioEngineIface, "org.klib.DAudioEngineIface/0.1");
+Q_DECLARE_INTERFACE(KAudioEngineIface, "org.klib.KAudioEngineIface/0.1");
 
 #endif
 

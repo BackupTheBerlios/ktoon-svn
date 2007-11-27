@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -41,7 +43,7 @@
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class D_CORE_EXPORT DSpellHighlighter : public QSyntaxHighlighter
+class K_CORE_EXPORT KSpellHighlighter : public QSyntaxHighlighter
 {
 	public:
 		/**
@@ -53,12 +55,12 @@ class D_CORE_EXPORT DSpellHighlighter : public QSyntaxHighlighter
 		 * @param parent 
 		 * @return 
 		 */
-		DSpellHighlighter(QTextDocument * parent);
+		KSpellHighlighter(QTextDocument * parent);
 		/**
 		 * Destructor
 		 * @return 
 		 */
-		~DSpellHighlighter();
+		~KSpellHighlighter();
 		
 		/**
 		 * @if english
@@ -75,7 +77,7 @@ class D_CORE_EXPORT DSpellHighlighter : public QSyntaxHighlighter
 		
 	private:
 		QColor m_resaltColor;
-		DSpeller *m_speller;
+		KSpeller *m_speller;
 };
 
 #endif

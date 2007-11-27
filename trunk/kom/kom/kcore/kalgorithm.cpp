@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,16 +32,7 @@
 #include <fcntl.h>
 #endif
 
-// DAlgorithm::DAlgorithm()
-// {
-// }
-// 
-// 
-// DAlgorithm::~DAlgorithm()
-// {
-// }
-
-int DAlgorithm::random()
+int KAlgorithm::random()
 {
 	static bool init = false;
 	if (!init)
@@ -62,7 +55,7 @@ int DAlgorithm::random()
 	return rand();
 }
 
-QString DAlgorithm::randomString(int length)
+QString KAlgorithm::randomString(int length)
 {
 	if (length <=0 ) return QString();
 
@@ -79,7 +72,7 @@ QString DAlgorithm::randomString(int length)
 	return str;
 }
 
-QColor DAlgorithm::randomColor(bool withAlpha)
+QColor KAlgorithm::randomColor(bool withAlpha)
 {
 	QColor c(random() % 255, random() % 255, random() % 255 );
 	

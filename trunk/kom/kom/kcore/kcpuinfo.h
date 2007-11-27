@@ -24,8 +24,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __DCPUINFO_H
-#define __DCPUINFO_H
+#ifndef __KCPUINFO_H
+#define __KCPUINFO_H
 
 #include "kcore/kglobal.h"
 
@@ -34,7 +34,7 @@
  * runtime about processor support for certain architecture extensions,
  * such as MMX, SSE, 3DNow and AltiVec.
  */
-class D_CORE_EXPORT DCPUInfo
+class K_CORE_EXPORT KCPUInfo
 {
     public:
        /**

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DSPELLINTERFACE_H
-#define DSPELLINTERFACE_H
+#ifndef KSPELLINTERFACE_H
+#define KSPELLINTERFACE_H
 
 #include <QString>
 #include <QStringList>
@@ -33,10 +35,10 @@
  * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_CORE_EXPORT DSpellInterface
+class K_CORE_EXPORT KSpellInterface
 {
 	public:
-		virtual ~DSpellInterface() {}
+		virtual ~KSpellInterface() {}
 		/**
 		 * @if english
 		 * This function must check if a word is right

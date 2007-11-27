@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -22,7 +24,7 @@
 
 #include <kdebug.h>
 
-struct DXmlParserBase::Private
+struct KXmlParserBase::Private
 {
 	QString currentTag;
 	QString root;
@@ -32,112 +34,112 @@ struct DXmlParserBase::Private
 	QString document;
 };
 
-DXmlParserBase::DXmlParserBase() : QXmlDefaultHandler(), d(new Private)
+KXmlParserBase::KXmlParserBase() : QXmlDefaultHandler(), k(new Private)
 {
 }
 
 
-DXmlParserBase::~DXmlParserBase()
+KXmlParserBase::~KXmlParserBase()
 {
-	delete d;
+	delete k;
 }
 
-void DXmlParserBase::initialize()
+void KXmlParserBase::initialize()
 {
 }
 
 
-bool DXmlParserBase::startDocument()
+bool KXmlParserBase::startDocument()
 {
-	d->isParsing = true;
+	k->isParsing = true;
 	
-	d->currentTag = QString();
-	d->root = QString();
-	d->readText = false;
-	d->ignore = false;
+	k->currentTag = QString();
+	k->root = QString();
+	k->readText = false;
+	k->ignore = false;
 	
 	initialize();
 	return true;
 }
 
-bool DXmlParserBase::endDocument()
+bool KXmlParserBase::endDocument()
 {
-	d->isParsing = false;
+	k->isParsing = false;
 	return true;
 }
 
-bool DXmlParserBase::startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
+bool KXmlParserBase::startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
 {
-	if ( d->ignore ) return true;
+	if ( k->ignore ) return true;
 	
-	if ( d->root.isEmpty() )
+	if ( k->root.isEmpty() )
 	{
-		d->root = qname;
+		k->root = qname;
 	}
 	
 	bool r = startTag(qname, atts);
 	
-	d->currentTag = qname;
+	k->currentTag = qname;
 	
 	return r;
 }
 
 
-bool DXmlParserBase::endElement( const QString&, const QString& , const QString& qname)
+bool KXmlParserBase::endElement( const QString&, const QString& , const QString& qname)
 {
 	return endTag(qname);
 }
 
 
-bool DXmlParserBase::characters(const QString & ch)
+bool KXmlParserBase::characters(const QString & ch)
 {
-	if ( d->ignore ) return true;
+	if ( k->ignore ) return true;
 	
-	if ( d->readText )
+	if ( k->readText )
 	{
 		text(ch.simplified());
-		d->readText = false;
+		k->readText = false;
 	}
 	
 	return true;
 }
 
-bool DXmlParserBase::error ( const QXmlParseException & exception )
+bool KXmlParserBase::error ( const QXmlParseException & exception )
 {
-	dWarning() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
-	dWarning() << __PRETTY_FUNCTION__ << " Document: " << d->document;
+	kWarning() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	kWarning() << __PRETTY_FUNCTION__ << " Document: " << k->document;
 	return true;
 }
 
-bool DXmlParserBase::fatalError ( const QXmlParseException & exception )
+bool KXmlParserBase::fatalError ( const QXmlParseException & exception )
 {
-	dFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
-	dWarning() << __PRETTY_FUNCTION__ << " Document: " << d->document;
+	kFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	kWarning() << __PRETTY_FUNCTION__ << " Document: " << k->document;
 	return true;
 }
 
 
-void DXmlParserBase::setReadText(bool read)
+void KXmlParserBase::setReadText(bool read)
 {
-	d->readText = read;
+	k->readText = read;
 }
 
-void DXmlParserBase::setIgnore(bool ignore)
+void KXmlParserBase::setIgnore(bool ignore)
 {
-	d->ignore = ignore;
+	k->ignore = ignore;
 }
 
-QString DXmlParserBase::currentTag() const
+QString KXmlParserBase::currentTag() const
 {
-	return d->currentTag;
+	return k->currentTag;
 }
 
-QString DXmlParserBase::root() const
+QString KXmlParserBase::root() const
 {
-	return d->root;
+	return k->root;
 }
 
-bool DXmlParserBase::parse(const QString &doc)
+bool KXmlParserBase::parse(const QString &doc)
 {
 	QXmlSimpleReader reader;
 	
@@ -147,19 +149,19 @@ bool DXmlParserBase::parse(const QString &doc)
 	QXmlInputSource xmlsource;
 	xmlsource.setData(doc);
 	
-	d->document = doc;
+	k->document = doc;
 	
 	return reader.parse(&xmlsource);
 }
 
 
-bool DXmlParserBase::parse(QFile *file)
+bool KXmlParserBase::parse(QFile *file)
 {
 	if ( !file->isOpen() )
 	{
 		if( ! file->open(QIODevice::ReadOnly | QIODevice::Text) )
 		{
-			dWarning() << "Cannot open file " << file->fileName();
+			kWarning() << "Cannot open file " << file->fileName();
 			return false;
 		}
 	}

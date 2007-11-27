@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,12 +29,12 @@
 #include <QString>
 #include <QtDebug>
 
-DAspellChecker::DAspellChecker() : m_speller(0)
+KAspellChecker::KAspellChecker() : m_speller(0)
 {
 	init();
 }
 
-bool DAspellChecker::init()
+bool KAspellChecker::init()
 {
 	QString locale = QString(QLocale::system().name()).left(2);
 	if ( locale.length() < 2 )
@@ -62,19 +64,19 @@ bool DAspellChecker::init()
 	return true;
 }
 
-DAspellChecker::~DAspellChecker()
+KAspellChecker::~KAspellChecker()
 {
 	if ( m_speller ) delete_aspell_speller(m_speller);
 }
 
-bool DAspellChecker::checkWord(const QString &word)
+bool KAspellChecker::checkWord(const QString &word)
 {
 	if ( !m_speller ) return true;
 	
 	return aspell_speller_check(m_speller, word.toLocal8Bit().data(), -1);
 }
 
-QStringList DAspellChecker::suggestions(const QString &word)
+QStringList KAspellChecker::suggestions(const QString &word)
 {
 	if ( !m_speller ) return QStringList();
 	

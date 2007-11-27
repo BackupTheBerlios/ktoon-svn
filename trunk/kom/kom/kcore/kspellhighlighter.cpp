@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,24 +23,24 @@
 #include "kspellhighlighter.h"
 #include <QtDebug>
 
-DSpellHighlighter::DSpellHighlighter(QTextDocument * parent) : QSyntaxHighlighter(parent)
+KSpellHighlighter::KSpellHighlighter(QTextDocument * parent) : QSyntaxHighlighter(parent)
 {
 	m_resaltColor = Qt::darkMagenta;
-	m_speller = new DSpeller;
+	m_speller = new KSpeller;
 }
 
 
-DSpellHighlighter::~DSpellHighlighter()
+KSpellHighlighter::~KSpellHighlighter()
 {
 	delete m_speller;
 }
 
-void DSpellHighlighter::setResaltColor(const QColor &color)
+void KSpellHighlighter::setResaltColor(const QColor &color)
 {
 	m_resaltColor = color;
 }
 
-void DSpellHighlighter::highlightBlock ( const QString & text )
+void KSpellHighlighter::highlightBlock ( const QString & text )
 {
 	QTextCharFormat format;
 	format.setFontWeight(QFont::Bold);

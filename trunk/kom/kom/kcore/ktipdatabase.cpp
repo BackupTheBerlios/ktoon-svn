@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,58 +29,58 @@
 
 #include "kdebug.h"
 
-struct DTipDatabase::Private
+struct KTipDatabase::Private
 {
-	QList<DTip> tips;
+	QList<KTip> tips;
 	int currentTipIndex;
 };
 
-DTipDatabase::DTipDatabase(const QString &file) : d(new Private)
+KTipDatabase::KTipDatabase(const QString &file) : k(new Private)
 {
 	loadTips( file );
 	
-	if ( !d->tips.isEmpty() )
+	if ( !k->tips.isEmpty() )
 	{
-		d->currentTipIndex = DAlgorithm::random() % d->tips.count();
+		k->currentTipIndex = KAlgorithm::random() % k->tips.count();
 	}
 }
 
 
-DTipDatabase::~DTipDatabase()
+KTipDatabase::~KTipDatabase()
 {
-	delete d;
+	delete k;
 }
 
-DTip DTipDatabase::tip() const
+KTip KTipDatabase::tip() const
 {
-	if (d->currentTipIndex >= 0 && d->currentTipIndex < d->tips.count() )
-		return d->tips[d->currentTipIndex];
-	return DTip();
+	if (k->currentTipIndex >= 0 && k->currentTipIndex < k->tips.count() )
+		return k->tips[k->currentTipIndex];
+	return KTip();
 }
 
-void DTipDatabase::nextTip()
+void KTipDatabase::nextTip()
 {
-	if (d->tips.isEmpty())
+	if (k->tips.isEmpty())
 		return ;
-	d->currentTipIndex += 1;
-	if (d->currentTipIndex >= (int) d->tips.count())
+	k->currentTipIndex += 1;
+	if (k->currentTipIndex >= (int) k->tips.count())
 	{
-		d->currentTipIndex = 0;
+		k->currentTipIndex = 0;
 	}
 }
 
-void DTipDatabase::prevTip()
+void KTipDatabase::prevTip()
 {
-	if (d->tips.isEmpty())
+	if (k->tips.isEmpty())
 		return ;
-	d->currentTipIndex -= 1;
-	if (d->currentTipIndex < 0)
+	k->currentTipIndex -= 1;
+	if (k->currentTipIndex < 0)
 	{
-		d->currentTipIndex = d->tips.count() - 1;
+		k->currentTipIndex = k->tips.count() - 1;
 	}
 }
 
-void DTipDatabase::loadTips(const QString &filePath)
+void KTipDatabase::loadTips(const QString &filePath)
 {
 	QDomDocument doc;
 	QFile file(filePath);
@@ -104,9 +106,9 @@ void DTipDatabase::loadTips(const QString &filePath)
 		{
 			if ( e.tagName() == "tip" )
 			{
-				DTip tip;
+				KTip tip;
 				tip.text = e.text();
-				d->tips << tip;
+				k->tips << tip;
 			}
 		}
 		n = n.nextSibling();

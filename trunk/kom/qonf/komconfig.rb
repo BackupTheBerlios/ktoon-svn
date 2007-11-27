@@ -1,7 +1,7 @@
 
 module RQonf
 	CONFIG = {}
-	CONFIG["prefix"] = "/usr/lib/kom"
-	CONFIG["libdir"] = "/usr/lib/kom/lib"
-	CONFIG["includepath"] = "/usr/lib/kom/include"
+	CONFIG["prefix"] = "/usr/local"
+	CONFIG["libdir"] = "/usr/local/lib"
+	CONFIG["includepath"] = "/usr/local/include"
 end

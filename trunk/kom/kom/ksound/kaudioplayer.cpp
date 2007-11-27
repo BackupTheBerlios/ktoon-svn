@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,31 +29,31 @@
 
 #define PLUGIN_DIR QString(KLIB_PREFIX)+"/lib/klib/plugins"
 
-DAudioPlayer *DAudioPlayer::s_instance = 0;
+KAudioPlayer *KAudioPlayer::s_instance = 0;
 
 
-DAudioPlayer::DAudioPlayer() : QObject(), m_engine(0)
+KAudioPlayer::KAudioPlayer() : QObject(), m_engine(0)
 {
 }
 
 
-DAudioPlayer::~DAudioPlayer()
+KAudioPlayer::~KAudioPlayer()
 {
 }
 
-DAudioPlayer *DAudioPlayer::instance()
+KAudioPlayer *KAudioPlayer::instance()
 {
 	if ( !s_instance )
 	{
-		s_instance = new DAudioPlayer;
+		s_instance = new KAudioPlayer;
 	}
 	
 	return s_instance;
 }
 
-void DAudioPlayer::loadEngine(const QString &engineKey)
+void KAudioPlayer::loadEngine(const QString &engineKey)
 {
-	dDebug("audio engine") << "Loading engine: " << engineKey << " from: " << PLUGIN_DIR;
+	kDebug("audio engine") << "Loading engine: " << engineKey << " from: " << PLUGIN_DIR;
 	
 	QDir m_pluginDirectory = QDir(PLUGIN_DIR);
 	
@@ -62,14 +64,14 @@ void DAudioPlayer::loadEngine(const QString &engineKey)
 		
 		if (plugin)
 		{
-			dDebug("audio engine") << "******FILE: " << fileName;
-			DAudioEngineIface *engine = qobject_cast<DAudioEngineIface *>(plugin);
+			kDebug("audio engine") << "******FILE: " << fileName;
+			KAudioEngineIface *engine = qobject_cast<KAudioEngineIface *>(plugin);
 			
 			if ( engine )
 			{
 				if ( engine->key() == engineKey )
 				{
-					dDebug("audio engine") << "Loaded!";
+					kDebug("audio engine") << "Loaded!";
 					m_engine = engine;
 					m_engine->init();
 					break;
@@ -80,7 +82,7 @@ void DAudioPlayer::loadEngine(const QString &engineKey)
 }
 
 
-int DAudioPlayer::load( const QUrl &url, int id )
+int KAudioPlayer::load( const QUrl &url, int id )
 {
 	if ( m_engine )
 	{
@@ -89,7 +91,7 @@ int DAudioPlayer::load( const QUrl &url, int id )
 	return -1;
 }
 
-void DAudioPlayer::play(int offset)
+void KAudioPlayer::play(int offset)
 {
 	if ( m_engine )
 	{
@@ -97,7 +99,7 @@ void DAudioPlayer::play(int offset)
 	}
 }
 
-void DAudioPlayer::pause()
+void KAudioPlayer::pause()
 {
 	if ( m_engine )
 	{
@@ -105,7 +107,7 @@ void DAudioPlayer::pause()
 	}
 }
 
-void DAudioPlayer::setCurrentPlayer(int id)
+void KAudioPlayer::setCurrentPlayer(int id)
 {
 	if ( m_engine )
 	{
@@ -113,7 +115,7 @@ void DAudioPlayer::setCurrentPlayer(int id)
 	}
 }
 
-void DAudioPlayer::stop()
+void KAudioPlayer::stop()
 {
 	if ( m_engine )
 	{
@@ -121,7 +123,7 @@ void DAudioPlayer::stop()
 	}
 }
 
-void DAudioPlayer::seek( uint ms )
+void KAudioPlayer::seek( uint ms )
 {
 	if ( m_engine )
 	{
@@ -129,7 +131,7 @@ void DAudioPlayer::seek( uint ms )
 	}
 }
 
-void DAudioPlayer::setVolume(int percent)
+void KAudioPlayer::setVolume(int percent)
 {
 	if ( m_engine )
 	{

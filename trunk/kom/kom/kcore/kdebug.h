@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DDEBUG_H
-#define DDEBUG_H
+#ifndef KDEBUG_H
+#define KDEBUG_H
 
 #include <QTextStream>
 #include <QStringList>
@@ -35,23 +37,23 @@
 */
 
 #ifdef __GNUC__
-#define D_FUNCINFO dDebug() << "[" << __PRETTY_FUNCTION__ << "] "
-#define D_FUNCINFOX(area) dDebug(area) << "[" << __PRETTY_FUNCTION__ << "] "
-#define DINIT dDebug("class") << "[Initializing " << __FUNCTION__ << "]"
-#define DEND dDebug("class") << "[Destroying " << __FUNCTION__ << "]"
-#define FUNC_NOT_IMPLEMENTED dWarning() << __FILE__ << ":" << __LINE__ << " " << __PRETTY_FUNCTION__ << " not implemented yet";
+#define K_FUNCINFO kDebug() << "[" << __PRETTY_FUNCTION__ << "] "
+#define K_FUNCINFOX(area) kDebug(area) << "[" << __PRETTY_FUNCTION__ << "] "
+#define KINIT kDebug("class") << "[Initializing " << __FUNCTION__ << "]"
+#define KEND kDebug("class") << "[Destroying " << __FUNCTION__ << "]"
+#define FUNC_NOT_IMPLEMENTED kWarning() << __FILE__ << ":" << __LINE__ << " " << __PRETTY_FUNCTION__ << " not implemented yet";
 
 #else
 
-#define D_FUNCINFO
-#define D_FUNCINFOX(area)
-#define DINIT dDebug("class") << "[Initializing " << __FILE__ << ":" << __LINE__ << "] "
-#define DEND dDebug("class") << "[Destroying " << __FILE__ << ":" << __LINE__ << "] "
-#define FUNC_NOT_IMPLEMENTED dWarning() << __FILE__<<":"<<__LINE__ << " not implemented yet";
+#define K_FUNCINFO
+#define K_FUNCINFOX(area)
+#define KINIT kDebug("class") << "[Initializing " << __FILE__ << ":" << __LINE__ << "] "
+#define KEND kDebug("class") << "[Destroying " << __FILE__ << ":" << __LINE__ << "] "
+#define FUNC_NOT_IMPLEMENTED kWarning() << __FILE__<<":"<<__LINE__ << " not implemented yet";
 #endif
 
-#define D_CHECKPTR(ptr) if ( ptr == 0 ) { dFatal() << __PRETTY_FUNCTION__ << ": " << #ptr << " is NULL"; } 
-#define SHOW_VAR(arg) dDebug() << #arg << " = " << arg;
+#define K_CHECKPTR(ptr) if ( ptr == 0 ) { dFatal() << __PRETTY_FUNCTION__ << ": " << #ptr << " is NULL"; } 
+#define SHOW_VAR(arg) kDebug() << #arg << " = " << arg;
 
 class QPalette;
 
@@ -84,24 +86,24 @@ template <class T> class QList;
 
 enum DebugType
 {
-	DDebugMsg = 0,
-	DWarningMsg,
-	DErrorMsg,
-	DFatalMsg
+	KDebugMsg = 0,
+	KWarningMsg,
+	KErrorMsg,
+	KFatalMsg
 };
 
 enum DebugOutput
 {
-	DDefault = -1,
-	DNone = 0,
-	DFileOutput,
-	DBoxOutput,
-	DShellOutput,
-	DBrowserOutput
+	KDefault = -1,
+	KNone = 0,
+	KFileOutput,
+	KBoxOutput,
+	KShellOutput,
+	KBrowserOutput
 };
 
-#if !defined(D_NODEBUG)
-class D_CORE_EXPORT DDebug
+#if !defined(K_NODEBUG)
+class K_CORE_EXPORT KDebug
 {
 	public:
 		class Streamer : public QObject
@@ -194,122 +196,122 @@ class D_CORE_EXPORT DDebug
 		} *streamer;
 		
 		
-		DDebug(DebugType t, const QString &area, DebugOutput o);
-		DDebug(const DDebug &);
-		~DDebug();
+		KDebug(DebugType t, const QString &area, DebugOutput o);
+		KDebug(const KDebug &);
+		~KDebug();
 		
 		static void setForceDisableGUI();
 		
-		inline DDebug &operator<<(QTextStreamManipulator /*m*/)
+		inline KDebug &operator<<(QTextStreamManipulator /*m*/)
 		{ 
 // 			streamer->ts << m; 
 			return *this; 
 		}
 		
-		inline DDebug &operator<<(QTextStreamFunction /*f*/)
+		inline KDebug &operator<<(QTextStreamFunction /*f*/)
 		{
 // 			streamer->ts << f;
 			return *this;
 		}
 		
-		inline DDebug& operator << (const QString &str)
+		inline KDebug& operator << (const QString &str)
 		{
 			*streamer << "\"" << str << "\"";
 			return *this;
 		};
 		
-		inline DDebug& operator << (char c)
+		inline KDebug& operator << (char c)
 		{
 			*streamer << "\'" << c << "\'";
 			return *this;
 		};
 		
-		inline DDebug &operator<<(bool t) 
+		inline KDebug &operator<<(bool t) 
 		{ 
 			*streamer << (t ? "true" : "false"); 
 			return *this; 
 		}
 
-		inline DDebug &operator<<(signed short t) 
+		inline KDebug &operator<<(signed short t) 
 		{ 
 			*streamer << t; 
 			return *this; 
 		}
-		inline DDebug &operator<<(unsigned short t) 
+		inline KDebug &operator<<(unsigned short t) 
 		{ 
 			*streamer << t; 
 			return *this; 
 		}
-		inline DDebug &operator<<(signed int t) 
+		inline KDebug &operator<<(signed int t) 
 		{ 
 			*streamer << t; 
 			return *this; 
 		}
-		inline DDebug &operator<<(unsigned int t) 
+		inline KDebug &operator<<(unsigned int t) 
 		{ 
 			*streamer << t; 
 			return *this; 
 		}
-		inline DDebug &operator<<(signed long t) 
+		inline KDebug &operator<<(signed long t) 
 		{ 
 			*streamer << t; 
 			return *this; 
 		}
-		inline DDebug &operator<<(unsigned long t) 
+		inline KDebug &operator<<(unsigned long t) 
 		{ 
 			*streamer << t; 
 			return *this; 
 		}
-		inline DDebug &operator<<(float t) 
+		inline KDebug &operator<<(float t) 
 		{ 
 			*streamer << t; 
 			return *this; 
 		}
-		inline DDebug &operator<<(double t) 
+		inline KDebug &operator<<(double t) 
 		{ 
 			*streamer << t; 
 			return *this; 
 		}
-		inline DDebug &operator<<(const char* t) 
+		inline KDebug &operator<<(const char* t) 
 		{ 
 			*streamer << t; 
 			return *this; 
 		}
 		
-		DDebug& operator<<( const QDateTime& );
-		DDebug& operator<<( const QDate&     );
-		DDebug& operator<<( const QTime&     );
-		DDebug& operator<<( const QPoint & ) ;
-		DDebug& operator<<( const QPointF & ) ;
-		DDebug& operator<<( const QSize & ) ;
-		DDebug& operator<<( const QRect & ) ;
-		DDebug& operator<<( const QVariant & );
-		DDebug& operator << (const QEvent*);
-		DDebug& operator<<( const QStringList & );
+		KDebug& operator<<( const QDateTime& );
+		KDebug& operator<<( const QDate&     );
+		KDebug& operator<<( const QTime&     );
+		KDebug& operator<<( const QPoint & ) ;
+		KDebug& operator<<( const QPointF & ) ;
+		KDebug& operator<<( const QSize & ) ;
+		KDebug& operator<<( const QRect & ) ;
+		KDebug& operator<<( const QVariant & );
+		KDebug& operator << (const QEvent*);
+		KDebug& operator<<( const QStringList & );
 		
 		
 #ifdef QT_GUI_LIB
 		void resaltWidget(QWidget *w, const QColor &color = QColor(Qt::magenta));
 		
-		DDebug& operator<<( const QPixmap& p );
-		DDebug& operator<<( const QIcon& p );
-		DDebug& operator<<( const QImage& p );
-		DDebug& operator<<( const QRegion & );
-		DDebug& operator<<( const QColor & );
-		DDebug& operator<<( const QPen & );
-		DDebug& operator<<( const QBrush & );
-		DDebug& operator << (const QWidget*);
-		DDebug& operator << (const QLinearGradient &);
-		DDebug& operator << (const QRadialGradient &);
-		DDebug& operator << (const QConicalGradient &);
-		DDebug& operator << (const QGradient *);
-		DDebug& operator << (const QMatrix &);
+		KDebug& operator<<( const QPixmap& p );
+		KDebug& operator<<( const QIcon& p );
+		KDebug& operator<<( const QImage& p );
+		KDebug& operator<<( const QRegion & );
+		KDebug& operator<<( const QColor & );
+		KDebug& operator<<( const QPen & );
+		KDebug& operator<<( const QBrush & );
+		KDebug& operator << (const QWidget*);
+		KDebug& operator << (const QLinearGradient &);
+		KDebug& operator << (const QRadialGradient &);
+		KDebug& operator << (const QConicalGradient &);
+		KDebug& operator << (const QGradient *);
+		KDebug& operator << (const QMatrix &);
 		
 		static QTextBrowser *browser();
 #endif
 		
 		
-		template <class T> DDebug& operator << ( const QList<T> &list );
+		template <class T> KDebug& operator << ( const QList<T> &list );
 		
 	private slots:
 		void write();
@@ -322,7 +324,7 @@ class D_CORE_EXPORT DDebug
 		QString m_area;
 };
 
-template <class T> DDebug &DDebug::operator<<( const QList<T> &list )
+template <class T> KDebug &KDebug::operator<<( const QList<T> &list )
 {
 	*this << "(";
 	typename QList<T>::ConstIterator it = list.begin();
@@ -340,60 +342,60 @@ template <class T> DDebug &DDebug::operator<<( const QList<T> &list )
 
 // Global functions
 
-inline DDebug dDebug(const QString &area = QString(), int output = DDefault)
+inline KDebug kDebug(const QString &area = QString(), int output = DDefault)
 {
-	return DDebug(DDebugMsg, area, DebugOutput(output));
+	return KDebug(KDebugMsg, area, DebugOutput(output));
 }
 
-inline DDebug dDebug(int area, int output = DDefault)
+inline KDebug kDebug(int area, int output = KDefault)
 {
-	return DDebug(DDebugMsg, QString::number(area), DebugOutput(output));
+	return KDebug(KDebugMsg, QString::number(area), DebugOutput(output));
 }
 
-inline DDebug dFatal(const QString &area = QString(), int output = DDefault)
+inline KDebug kFatal(const QString &area = QString(), int output = KDefault)
 {
-	return DDebug(DFatalMsg, area, DebugOutput(output));
+	return KDebug(KFatalMsg, area, DebugOutput(output));
 }
 
-inline DDebug dFatal(int area, int output = DDefault)
+inline KDebug kFatal(int area, int output = KDefault)
 {
-	return DDebug(DFatalMsg, QString::number(area), DebugOutput(output));
+	return KDebug(KFatalMsg, QString::number(area), DebugOutput(output));
 }
 
-inline DDebug dError(const QString &area = QString(), int output = DDefault)
+inline KDebug dError(const QString &area = QString(), int output = KDefault)
 {
-	return DDebug(DErrorMsg, area, DebugOutput(output));
+	return KDebug(KErrorMsg, area, DebugOutput(output));
 }
 
-inline DDebug dError(int area, int output = DDefault)
+inline KDebug dError(int area, int output = KDefault)
 {
-	return DDebug(DErrorMsg, QString::number(area), DebugOutput(output));
+	return KDebug(KErrorMsg, QString::number(area), DebugOutput(output));
 }
 
-inline DDebug dWarning(const QString &area = QString(), int output = DDefault)
+inline KDebug kWarning(const QString &area = QString(), int output = KDefault)
 {
-	return DDebug(DWarningMsg, area, DebugOutput(output));
+	return KDebug(KWarningMsg, area, DebugOutput(output));
 }
 
-inline DDebug dWarning(int area, int output = DDefault)
+inline KDebug kWarning(int area, int output = KDefault)
 {
-	return DDebug(DWarningMsg, QString::number(area), DebugOutput(output));
+	return KDebug(KWarningMsg, QString::number(area), DebugOutput(output));
 }
 
-#else // D_NODEBUG
+#else // K_NODEBUG
 
-class DNDebug
+class KNDebug
 {
 	public:
-		inline DNDebug(){}
-		inline DNDebug(const DNDebug &){}
-		inline ~DNDebug(){}
-		inline DNDebug &operator<<(QTextStreamFunction) { return *this; }
-		inline DNDebug &operator<<(QTextStreamManipulator) { return *this; }
-		inline DNDebug &space() { return *this; }
-		inline DNDebug &nospace() { return *this; }
-		inline DNDebug &maybeSpace() { return *this; }
-		template<typename T> inline DNDebug &operator<<(const T &) { return *this; }
+		inline KNDebug(){}
+		inline KNDebug(const KNDebug &){}
+		inline ~KNDebug(){}
+		inline KNDebug &operator<<(QTextStreamFunction) { return *this; }
+		inline KNDebug &operator<<(QTextStreamManipulator) { return *this; }
+		inline KNDebug &space() { return *this; }
+		inline KNDebug &nospace() { return *this; }
+		inline KNDebug &maybeSpace() { return *this; }
+		template<typename T> inline KNDebug &operator<<(const T &) { return *this; }
 		
 #ifdef QT_GUI_LIB
 		void resaltWidget(QWidget */*w*/, const QColor &/*color*/ = QColor(Qt::magenta))
@@ -404,26 +406,26 @@ class DNDebug
 #endif
 };
 
-inline DNDebug dDebug(int = 0,int = DDefault)
+inline KNDebug kDebug(int = 0,int = KDefault)
 {
-	return DNDebug();
+	return KNDebug();
 }
 
-inline DNDebug dDebug(const QString &, int = DDefault)
+inline KNDebug kDebug(const QString &, int = KDefault)
 {
-	return DNDebug();
+	return KNDebug();
 }
 
-#define dFatal dDebug
-#define dError dDebug
-#define dWarning dDebug
+#define kFatal kDebug
+#define kError kDebug
+#define kWarning kDebug
 
-#endif // D_NODEBUG
+#endif // K_NODEBUG
 
 #ifdef __GNUC__
-#define dfDebug dDebug() << __FILE__ << ":" <<__FUNCTION__ << ":: "
+#define kfDebug kDebug() << __FILE__ << ":" <<__FUNCTION__ << ":: "
 #else
-#define dfDebug dDebug() << __FILE__<<":"<<__LINE__<<":: "
+#define kfDebug kDebug() << __FILE__<<":"<<__LINE__<<":: "
 #endif
 
 #endif

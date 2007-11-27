@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -29,7 +31,7 @@
 #include "kcore/kdebug.h"
 
 
-class DConfig::Private
+class KConfig::Private
 {
 	public:
 		QDomDocument document;
@@ -45,54 +47,54 @@ class DConfig::Private
 };
 
 
-DConfig* DConfig::m_instance = 0;
+KConfig* KConfig::m_instance = 0;
 
-DConfig::DConfig() : QObject(), d(new Private)
+KConfig::KConfig() : QObject(), k(new Private)
 {
-	DINIT;
+	KINIT;
 	
 #ifdef Q_WS_X11
-	d->configDirectory.setPath(QDir::homePath()+"/."+QCoreApplication::applicationName ());
+	k->configDirectory.setPath(QDir::homePath()+"/."+QCoreApplication::applicationName ());
 #elif defined(Q_WS_WIN)
-	d->configDirectory.setPath(QDir::homePath()+"/"+QCoreApplication::applicationName ());
+	k->configDirectory.setPath(QDir::homePath()+"/"+QCoreApplication::applicationName ());
 #elif defined(Q_WS_MAC)
-	d->configDirectory.setPath(QDir::homePath()+"/."+QCoreApplication::applicationName ());
+	k->configDirectory.setPath(QDir::homePath()+"/."+QCoreApplication::applicationName ());
 #endif
 
-	if ( !d->configDirectory.exists() )
+	if ( !k->configDirectory.exists() )
 	{
-		dDebug() << tr("%1 not exists... creating...").arg(d->configDirectory.path()) << endl;
-		if(!d->configDirectory.mkdir(d->configDirectory.path()))
+		kDebug() << tr("%1 not exists... creating...").arg(k->configDirectory.path()) << endl;
+		if(!k->configDirectory.mkdir(k->configDirectory.path()))
 		{
-			dError() << tr("I can't create %1").arg(d->configDirectory.path()) << endl;
+			kError() << tr("I can't create %1").arg(k->configDirectory.path()) << endl;
 		}
 	}
 	
-	d->path = d->configDirectory.path() + "/"+QCoreApplication::applicationName().toLower()+".cfg";
+	k->path = k->configDirectory.path() + "/"+QCoreApplication::applicationName().toLower()+".cfg";
 	
 	init();
 }
 
 
-DConfig::~DConfig()
+KConfig::~KConfig()
 {
-	DEND;
+	KEND;
 	if ( m_instance ) delete m_instance;
 }
 
-DConfig *DConfig::instance()
+KConfig *KConfig::instance()
 {
 	if ( ! m_instance )
 	{
-		m_instance = new DConfig;
+		m_instance = new KConfig;
 	}
 	return m_instance;
 }
 
-void DConfig::init()
+void KConfig::init()
 {
-	QFile config( d->path );
-	d->isOk = false;
+	QFile config( k->path );
+	k->isOk = false;
 	
 	if ( config.exists() )
 	{
@@ -100,93 +102,93 @@ void DConfig::init()
 		int errorLine = 0;
 		int errorColumn = 0;
 		
-		d->isOk = d->document.setContent(&config, &errorMsg, &errorLine, &errorColumn);
+		k->isOk = k->document.setContent(&config, &errorMsg, &errorLine, &errorColumn);
 		
-		if ( !d->isOk )
+		if ( !k->isOk )
 		{
-			dDebug() << QObject::tr("Configuration file is corrupted %1:%2: %3").arg(errorLine).arg(errorColumn).arg(errorMsg);
+			kDebug() << QObject::tr("Configuration file is corrupted %1:%2: %3").arg(errorLine).arg(errorColumn).arg(errorMsg);
 		}
 		config.close();
 	}
 	
-	if ( !d->isOk )
+	if ( !k->isOk )
 	{
-		QDomProcessingInstruction header = d->document.createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
-		d->document.appendChild(header);
+		QDomProcessingInstruction header = k->document.createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
+		k->document.appendChild(header);
 		
-		QDomElement root = d->document.createElement( "Config" );
-		d->document.appendChild( root );
+		QDomElement root = k->document.createElement( "Config" );
+		k->document.appendChild( root );
 	}
 }
 
-bool DConfig::isOk()
+bool KConfig::isOk()
 {
-	return d->isOk;
+	return k->isOk;
 }
 
-QDomDocument DConfig::document()
+QDomDocument KConfig::document()
 {
-	return d->document;
+	return k->document;
 }
 
-void DConfig::sync()
+void KConfig::sync()
 {
-	QFile f(d->path);
+	QFile f(k->path);
 	
 	if ( f.open(QIODevice::WriteOnly) )
 	{
 		QTextStream st( &f );
-		st << d->document.toString() << endl;
+		st << k->document.toString() << endl;
 		
-		d->isOk = true;
+		k->isOk = true;
 		
 		f.close();
 	}
 	else
 	{
-		d->isOk = false;
+		k->isOk = false;
 	}
 	
 	init();
 }
 
-void DConfig::beginGroup(const QString & prefix )
+void KConfig::beginGroup(const QString & prefix )
 {
 	QString stripped = Qt::escape(prefix);
 	
 	stripped.replace(' ', "_");
 	stripped.replace('\n', "");
 	
-	d->lastGroup = d->currentGroup.tagName();
+	k->lastGroup = k->currentGroup.tagName();
 	
-	if ( d->groups.contains(stripped) )
+	if ( k->groups.contains(stripped) )
 	{
-		d->currentGroup = d->groups[stripped];
+		k->currentGroup = k->groups[stripped];
 	}
 	else
 	{
-		d->currentGroup = find(d->document.documentElement(), stripped);
+		k->currentGroup = find(k->document.documentElement(), stripped);
 		
-		if ( d->currentGroup.isNull() )
+		if ( k->currentGroup.isNull() )
 		{
-			d->currentGroup = d->document.createElement(stripped);
-			d->document.documentElement().appendChild(d->currentGroup);
+			k->currentGroup = k->document.createElement(stripped);
+			k->document.documentElement().appendChild(k->currentGroup);
 		}
 		
 	}
 }
 
-void DConfig::endGroup()
+void KConfig::endGroup()
 {
-	if ( !d->lastGroup.isEmpty() )
+	if ( !k->lastGroup.isEmpty() )
 	{
-		beginGroup( d->lastGroup );
+		beginGroup( k->lastGroup );
 	}
 }
 
-void DConfig::setValue ( const QString & key, const QVariant & value )
+void KConfig::setValue ( const QString & key, const QVariant & value )
 {
-	QDomElement element = find(d->currentGroup, key);
+	QDomElement element = find(k->currentGroup, key);
 	
 	if ( !element.isNull () )
 	{
@@ -203,7 +205,7 @@ void DConfig::setValue ( const QString & key, const QVariant & value )
 	}
 	else
 	{
-		element = d->document.createElement(key);
+		element = k->document.createElement(key);
 		
 		if ( value.canConvert( QVariant::StringList ) )
 		{
@@ -216,13 +218,13 @@ void DConfig::setValue ( const QString & key, const QVariant & value )
 			element.setAttribute("value", value.toString());
 		}
 		
-		d->currentGroup.appendChild(element);
+		k->currentGroup.appendChild(element);
 	}
 }
 
-QVariant DConfig::value ( const QString & key, const QVariant & defaultValue) const
+QVariant KConfig::value ( const QString & key, const QVariant & defaultValue) const
 {
-	QDomElement element = find(d->currentGroup, key); // Current group or root?
+	QDomElement element = find(k->currentGroup, key); // Current group or root?
 	
 	if ( element.isNull() )
 	{
@@ -245,7 +247,7 @@ QVariant DConfig::value ( const QString & key, const QVariant & defaultValue) co
 
 
 
-QDomElement DConfig::find(const QDomElement &element, const QString &key) const 
+QDomElement KConfig::find(const QDomElement &element, const QString &key) const 
 {
 	QDomElement recent;
 	QDomNode n = element.firstChild();

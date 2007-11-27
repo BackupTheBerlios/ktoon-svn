@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,9 +27,9 @@
 
 #include <QApplication>
 
-DApplicationProperties *DApplicationProperties::s_instance = 0;
+KApplicationProperties *KApplicationProperties::s_instance = 0;
 
-struct DApplicationProperties::Private
+struct KApplicationProperties::Private
 {
 	QString homeDir;
 	QString dataDir;
@@ -36,42 +38,42 @@ struct DApplicationProperties::Private
 	QString cacheDir;
 };
 
-DApplicationProperties::DApplicationProperties() : d(new Private)
+KApplicationProperties::KApplicationProperties() : d(new Private)
 {
 }
 
 
-DApplicationProperties::~DApplicationProperties()
+KApplicationProperties::~KApplicationProperties()
 {
 	delete d;
 }
 
-void DApplicationProperties::setDataDir(const QString &v)
+void KApplicationProperties::setDataDir(const QString &v)
 {
 	d->dataDir = v;
 }
 
-void DApplicationProperties::setHomeDir(const QString &v)
+void KApplicationProperties::setHomeDir(const QString &v)
 {
 	d->homeDir = v;
 }
 
-void DApplicationProperties::setThemeDir(const QString &v)
+void KApplicationProperties::setThemeDir(const QString &v)
 {
 	d->themeDir = v;
 }
 
-void DApplicationProperties::setCacheDir(const QString &v)
+void KApplicationProperties::setCacheDir(const QString &v)
 {
 	d->cacheDir = v;
 }
 
-void DApplicationProperties::setVersion(const QString &v)
+void KApplicationProperties::setVersion(const QString &v)
 {
 	d->version = v;
 }
 
-QString DApplicationProperties::dataDir() const
+QString KApplicationProperties::dataDir() const
 {
 	if ( d->dataDir.isEmpty() )
 	{
@@ -88,12 +90,12 @@ QString DApplicationProperties::dataDir() const
 	return d->dataDir;
 }
 
-QString DApplicationProperties::homeDir() const
+QString KApplicationProperties::homeDir() const
 {
 	return d->homeDir;
 }
 
-QString DApplicationProperties::themeDir() const
+QString KApplicationProperties::themeDir() const
 {
 	if ( d->themeDir.isEmpty() )
 	{
@@ -103,26 +105,26 @@ QString DApplicationProperties::themeDir() const
 	return d->themeDir;
 }
 
-QString DApplicationProperties::configDir() const
+QString KApplicationProperties::configDir() const
 {
 	return QDir::homePath()+"/."+qApp->applicationName();
 }
 
-QString DApplicationProperties::cacheDir() const
+QString KApplicationProperties::cacheDir() const
 {
 	return d->cacheDir;
 }
 
-QString DApplicationProperties::version() const
+QString KApplicationProperties::version() const
 {
 	return d->version;
 }
 
-DApplicationProperties *DApplicationProperties::instance()
+KApplicationProperties *KApplicationProperties::instance()
 {
 	if (s_instance == 0 )
 	{
-		s_instance = new DApplicationProperties;
+		s_instance = new KApplicationProperties;
 	}
 	
 	return s_instance;

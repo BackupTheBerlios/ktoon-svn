@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,27 +20,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DTIPDATABASE_H
-#define DTIPDATABASE_H
+#ifndef KTIPDATABASE_H
+#define KTIPDATABASE_H
 
 #include <QString>
 #include <QList>
 #include "kcore/kglobal.h"
 
 /**
- * @struct DTip
+ * @struct KTip
  * @author David Cuadrado <krawek@gmail.com>
  */
 
-struct DTip
+struct KTip
 {
 	QString text;
 };
 
 /**
- * @class DTipDatabase
+ * @class KTipDatabase
  * 
- * Esta clase esta encargada de manejar la base de datos de mensajes de ayuda, utiles o deseados que se quieran mostrar en la aplicación.
+ * Esta clase esta encargada de manejar la base de datos de mensajes de ayuda, utiles o deseados que se quieran mostrar en la aplicaciï¿½n.
  * 
  * El archivo de base de datos tiene la siguiente forma:
  * 
@@ -52,12 +54,12 @@ struct DTip
  * @author David Cuadrado \<krawek@gmail.com\>
  */
 
-class D_CORE_EXPORT DTipDatabase
+class K_CORE_EXPORT KTipDatabase
 {
 	public:
-		DTipDatabase(const QString &file);
-		~DTipDatabase();
-		DTip tip() const;
+		KTipDatabase(const QString &file);
+		~KTipDatabase();
+		KTip tip() const;
 		void nextTip();
 		void prevTip();
 		
@@ -66,7 +68,7 @@ class D_CORE_EXPORT DTipDatabase
 		
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 

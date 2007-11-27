@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -40,7 +42,7 @@ struct AspellSpeller;
  * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_CORE_EXPORT DAspellChecker : public DSpellInterface
+class K_CORE_EXPORT KAspellChecker : public KSpellInterface
 {
 	public:
 		/**
@@ -51,7 +53,7 @@ class D_CORE_EXPORT DAspellChecker : public DSpellInterface
 		 * Constructor por defecto
 		 * @endif
 		 */
-		DAspellChecker();
+		KAspellChecker();
 		
 		/**
 		 * @if english
@@ -61,10 +63,10 @@ class D_CORE_EXPORT DAspellChecker : public DSpellInterface
 		 * Destructor
 		 * @endif
 		 */
-		virtual ~DAspellChecker();
+		virtual ~KAspellChecker();
 		
 		/**
-		 * Reimplementado de DDSpellInterface, esta funcion verifica si una palabra esta bien escrita
+		 * Reimplementado de KSpellInterface, esta funcion verifica si una palabra esta bien escrita
 		 */
 		bool checkWord(const QString &word);
 		

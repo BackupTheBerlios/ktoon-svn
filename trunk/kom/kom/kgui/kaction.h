@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,21 +19,21 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef DACTION_H
-#define DACTION_H
+#ifndef KACTION_H
+#define KACTION_H
 
 #include <QAction>
 #include <QKeySequence>
 
 #include "kcore/kglobal.h"
 
-class DActionManager;
+class KActionManager;
 
 /**
- * @brief la clase DAction hereda de QAction, para facilitar la creaccion de acciones, y dando un parametro para identificar las acciones.
+ * @brief la clase KAction hereda de QAction, para facilitar la creaccion de acciones, y dando un parametro para identificar las acciones.
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_GUI_EXPORT DAction : public QAction
+class K_GUI_EXPORT KAction : public QAction
 {
 	Q_OBJECT;
 	public:
@@ -40,7 +42,7 @@ class D_GUI_EXPORT DAction : public QAction
 		 * @param parent padre de la accion
 		 * @param id identificador de la accion
 		 */
-		DAction ( QObject * parent, const QString &id = QString() );
+		KAction ( QObject * parent, const QString &id = QString() );
 		
 		/**
 		 * Construye una accion con un texto, un padre y un identificador.
@@ -48,7 +50,7 @@ class D_GUI_EXPORT DAction : public QAction
 		 * @param parent padre de la accion.
 		 * @param id identificador de la accion.
 		 */
-		DAction ( const QString & text, QObject * parent, const QString &id = QString());
+		KAction ( const QString & text, QObject * parent, const QString &id = QString());
 		/**
 		 * Construye una accion con un icono, un texto, un padre y un identificador
 		 * @param icon icono de la accion.
@@ -56,7 +58,7 @@ class D_GUI_EXPORT DAction : public QAction
 		 * @param parent padre de la accion.
 		 * @param id identificador de la accion.
 		 */
-		DAction ( const QIcon & icon, const QString & text, QObject * parent, const QString &id = QString() );
+		KAction ( const QIcon & icon, const QString & text, QObject * parent, const QString &id = QString() );
 		/**
 		 * Construye una accion con un icono, un texto, una tecla, un padre y un identificador.
 		 * 
@@ -66,14 +68,14 @@ class D_GUI_EXPORT DAction : public QAction
 		 * @param parent padre de la accion.
 		 * @param id identificador de la accion.
 		 */
-		DAction ( const QIcon & icon, const QString & text, const QString &key, QObject * parent, const QString &id = QString());
+		KAction ( const QIcon & icon, const QString & text, const QString &key, QObject * parent, const QString &id = QString());
 		/**
 		 * construye una accion con un icono, un padre y un identificador.
 		 * @param icon icono de la accion.
 		 * @param parent padre de la accion.
 		 * @param id identificador de la accion.
 		 */
-		DAction ( const QIcon & icon, QObject * parent, const QString &id = QString());
+		KAction ( const QIcon & icon, QObject * parent, const QString &id = QString());
 		
 		/**
 		 * Construye una accion con un icono, una tecla rapida, un padre y un identificador
@@ -82,7 +84,7 @@ class D_GUI_EXPORT DAction : public QAction
 		 * @param parent padre de la accion.
 		 * @param id identificador de la accion.
 		 */
-		DAction ( const QIcon & icon,  const QKeySequence &key, QObject * parent, const QString &id = QString());
+		KAction ( const QIcon & icon,  const QKeySequence &key, QObject * parent, const QString &id = QString());
 		/**
 		 * Construye una accion con un icono, un texto, una secuencia de teclas, un objeto, un slot, un padre y un id.
 		 * por ejemplo DAction *action = new DAction(QIcon(), "accion", QKeySequence(tr("a")), obj, SLOT(close()), this, "accion");
@@ -95,14 +97,14 @@ class D_GUI_EXPORT DAction : public QAction
 		 * @param parent padre de la accion.
 		 * @param id identificador de la accion.
 		 */
-		DAction (const QIcon & icon, const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id = QString());
+		KAction (const QIcon & icon, const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id = QString());
 		
-		DAction (const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id = QString());
+		KAction (const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id = QString());
 		
 		/**
 		 * Destructor.
 		 */
-		~DAction();
+		~KAction();
 		
 		/**
 		 * Asigna un cursor a la accion.
@@ -115,7 +117,7 @@ class D_GUI_EXPORT DAction : public QAction
 		QCursor cursor() const;
 		
 	private:
-		void initWithManager(DActionManager * parent, const QString &id);
+		void initWithManager(KActionManager * parent, const QString &id);
 		void init();
 		
 	private:

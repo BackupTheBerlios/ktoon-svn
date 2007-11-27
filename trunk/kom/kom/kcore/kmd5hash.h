@@ -30,8 +30,8 @@
 **
 **********************************************************************/
 
-#ifndef DMD5HASH_H
-#define DMD5HASH_H
+#ifndef KMD5HASH_H
+#define KMD5HASH_H
 
 
 #include "kcore/kglobal.h"
@@ -40,7 +40,7 @@ class QByteArray;
 class QString;
 class QFile;
 
-class D_CORE_EXPORT DMD5Hash
+class K_CORE_EXPORT KMD5Hash
 {
 	public:
 		static QString hash(const QString &str);

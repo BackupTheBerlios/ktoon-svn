@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,7 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#if !defined(D_NODEBUG)
+#if !defined(K_NODEBUG)
 #include "kdebug.h"
 
 #include <QFile>
@@ -119,7 +121,7 @@ ConfigReader::ConfigReader()
 	showArea = settings.value("show_area", false).toBool();
 	showAll = settings.value("show_all", true).toBool();
 	
-	defaultOutput= DebugOutput(settings.value("default", DShellOutput).toInt());
+	defaultOutput= DebugOutput(settings.value("default", KShellOutput).toInt());
 	
 	forceDisableGUI = false;
 	
@@ -218,12 +220,12 @@ void DebugBrowserHighlighter::highlightBlock ( const QString &text )
 
 #endif // QT_GUI_LIB
 
-static void dDebugOutput(DebugType t, DebugOutput o, const char *data)
+static void kDebugOutput(DebugType t, DebugOutput o, const char *data)
 {
-	if ( o == DBoxOutput || o == DBrowserOutput && configReader.forceDisableGUI )
+	if ( o == KBoxOutput || o == KBrowserOutput && configReader.forceDisableGUI )
 	{
-		o = DShellOutput;
-		configReader.defaultOutput = DShellOutput;
+		o = KShellOutput;
+		configReader.defaultOutput = KShellOutput;
 	}
 	
 	char *output = "%s\n";
@@ -232,22 +234,22 @@ static void dDebugOutput(DebugType t, DebugOutput o, const char *data)
 	{
 		switch(t)
 		{
-			case DDebugMsg:
+			case KDebugMsg:
 			{
 	// 			output = "%s\n";
 			}
 			break;
-			case DWarningMsg:
+			case KWarningMsg:
 			{
 				output = SHOW_WARNING;
 			}
 			break;
-			case DErrorMsg:
+			case KErrorMsg:
 			{
 				output = SHOW_ERROR;
 			}
 			break;
-			case DFatalMsg:
+			case KFatalMsg:
 			{
 				output = SHOW_FATAL;
 			}
@@ -257,14 +259,14 @@ static void dDebugOutput(DebugType t, DebugOutput o, const char *data)
 	
 	switch(o)
 	{
-		case DShellOutput:
+		case KShellOutput:
 		{
 			fprintf(stderr, output, data);
 		}
 		break;
-		case DFileOutput:
+		case KFileOutput:
 		{
-			QFile outFile("ddebug.log");
+			QFile outFile("kdebug.log");
 			
 			if ( outFile.open( QIODevice::WriteOnly | QIODevice::Text) )
 			{
@@ -274,26 +276,26 @@ static void dDebugOutput(DebugType t, DebugOutput o, const char *data)
 		}
 		break;
 #ifdef QT_GUI_LIB
-		case DBoxOutput:
+		case KBoxOutput:
 		{
 			switch(t)
 			{
-				case DDebugMsg:
+				case KDebugMsg:
 				{
 					QMessageBox::information(0, QObject::tr("Information"), data,  QMessageBox::Ok );
 				}
 				break;
-				case DWarningMsg:
+				case KWarningMsg:
 				{
 					QMessageBox::warning ( 0, QObject::tr("Warning"), data);
 				}
 				break;
-				case DErrorMsg:
+				case KErrorMsg:
 				{
 					QMessageBox::critical ( 0, QObject::tr("Error"), data);
 				}
 				break;
-				case DFatalMsg:
+				case KFatalMsg:
 				{
 					QMessageBox::critical ( 0, QObject::tr("Critical"), data);
 				}
@@ -301,9 +303,9 @@ static void dDebugOutput(DebugType t, DebugOutput o, const char *data)
 			}
 		}
 		break;
-		case DBrowserOutput:
+		case KBrowserOutput:
 		{
-			DDebug::browser()->append(QString(data));
+			KDebug::browser()->append(QString(data));
 		}
 		break;
 #endif
@@ -311,7 +313,7 @@ static void dDebugOutput(DebugType t, DebugOutput o, const char *data)
 	}
 }
 
-DDebug::DDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_output(o), m_area(area)
+KDebug::DDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_output(o), m_area(area)
 {
 	streamer = new Streamer();
 	
@@ -331,7 +333,7 @@ DDebug::DDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_o
 		*streamer << init << ": ";
 	}
 	
-	if ( m_output == DDefault )
+	if ( m_output == KDefault )
 	{
 		m_output = configReader.defaultOutput;
 	}
@@ -342,71 +344,71 @@ DDebug::DDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_o
 // 	}
 };
 
-DDebug::DDebug(const DDebug & d ) : streamer(d.streamer), m_type(d.m_type), m_output(d.m_output), m_area(d.m_area)
+KDebug::KDebug(const KDebug & k ) : streamer(k.streamer), m_type(k.m_type), m_output(k.m_output), m_area(k.m_area)
 {
 }
 
-DDebug::~DDebug()
+KDebug::~KDebug()
 {
 	if ( m_area.isEmpty() && configReader.showAll || configReader.areas.contains(m_area )  )
 	{
-		::dDebugOutput( m_type, m_output, streamer->buffer.toLocal8Bit().data() );
+		::kDebugOutput( m_type, m_output, streamer->buffer.toLocal8Bit().data() );
 	}
 	
 	delete streamer;
 }
 
-void DDebug::setForceDisableGUI()
+void KDebug::setForceDisableGUI()
 {
 	configReader.forceDisableGUI = true;
 }
 
 
-DDebug& DDebug::operator<<( const QDateTime& time) 
+KDebug& KDebug::operator<<( const QDateTime& time) 
 {
 	*this << time.toString();
 	return *this;
 }
 
-DDebug& DDebug::operator<<( const QDate& date) 
+KDebug& KDebug::operator<<( const QDate& date) 
 {
 	*this << date.toString();
 
 	return *this;
 }
 
-DDebug& DDebug::operator<<( const QTime& time) 
+KDebug& KDebug::operator<<( const QTime& time) 
 {
 	*this << time.toString();
 	return *this;
 }
 
-DDebug& DDebug::operator<<( const QPoint & p)  
+KDebug& KDebug::operator<<( const QPoint & p)  
 {
 	*this << "(" << p.x() << ", " << p.y() << ")";
 	return *this;
 }
 
-DDebug& DDebug::operator<<( const QPointF & p)  
+KDebug& KDebug::operator<<( const QPointF & p)  
 {
 	*this << "(" << p.x() << ", " << p.y() << ")";
 	return *this;
 }
 
 
-DDebug& DDebug::operator<<( const QSize & s)  
+KDebug& KDebug::operator<<( const QSize & s)  
 {
 	*this << "[" << s.width() << "x" << s.height() << "]";
 	return *this;
 }
 
-DDebug& DDebug::operator<<( const QRect & r)  
+KDebug& KDebug::operator<<( const QRect & r)  
 {
 	*this << "[" << r.x() << "," << r.y() << " - " << r.width() << "x" << r.height() << "]";
 	return *this;
 }
 
-DDebug& DDebug::operator<<( const QStringList & l) 
+KDebug& KDebug::operator<<( const QStringList & l) 
 {
 	*this << "(";
 	*this << l.join(",");
@@ -416,7 +418,7 @@ DDebug& DDebug::operator<<( const QStringList & l)
 }
 
 
-DDebug& DDebug::operator<<( const QVariant & v) 
+KDebug& KDebug::operator<<( const QVariant & v) 
 {
 	*this << "[variant: ";
 	*this << v.typeName();
@@ -427,7 +429,7 @@ DDebug& DDebug::operator<<( const QVariant & v)
 }
 
 
-DDebug& DDebug::operator << (const QEvent* e)
+KDebug& KDebug::operator << (const QEvent* e)
 {
 	*this << "[Event " << e->type() << "]";
 	
@@ -436,19 +438,19 @@ DDebug& DDebug::operator << (const QEvent* e)
 
 
 #ifdef QT_GUI_LIB
-DDebug& DDebug::operator<<( const QPixmap& p ) 
+KDebug& KDebug::operator<<( const QPixmap& p ) 
 {
 	*this << "(" << p.width() << ", " << p.height() << ")";
 	return *this;
 }
 
-DDebug& DDebug::operator<<( const QIcon& p )
+KDebug& KDebug::operator<<( const QIcon& p )
 {
 	*this << "(" << p.pixmap(QSize() ).width() << ", " << p.pixmap(QSize()).height() << ")";
 	return *this;
 }
 
-DDebug& DDebug::operator<<( const QImage& p ) 
+KDebug& KDebug::operator<<( const QImage& p ) 
 {
 	*this << "(" << p.width() << ", " << p.height() << ")";
 	return *this;
@@ -456,7 +458,7 @@ DDebug& DDebug::operator<<( const QImage& p )
 
 
 
-DDebug& DDebug::operator<<( const QRegion & reg) 
+KDebug& KDebug::operator<<( const QRegion & reg) 
 {
 	*this<< "[ ";
 
@@ -470,7 +472,7 @@ DDebug& DDebug::operator<<( const QRegion & reg)
 	return *this;
 }
 
-DDebug& DDebug::operator<<( const QColor & c) 
+KDebug& KDebug::operator<<( const QColor & c) 
 {
 	if ( c.isValid() )
 		*this << c.name();
@@ -479,7 +481,7 @@ DDebug& DDebug::operator<<( const QColor & c)
 	return *this;
 }
 
-DDebug& DDebug::operator<<( const QPen & p) 
+KDebug& KDebug::operator<<( const QPen & p) 
 {
 	static const char* const s_penStyles[] = {
 		"NoPen", "SolidLine", "DashLine", "DotLine", "DashDotLine",
@@ -505,7 +507,7 @@ DDebug& DDebug::operator<<( const QPen & p)
 			return *this;
 }
 
-DDebug& DDebug::operator<<( const QBrush & b)
+KDebug& KDebug::operator<<( const QBrush & b)
 {
 	if ( b.gradient())
 	{
@@ -534,7 +536,7 @@ DDebug& DDebug::operator<<( const QBrush & b)
 	return *this;
 }
 
-DDebug& DDebug::operator << (const QWidget* t) 
+KDebug& KDebug::operator << (const QWidget* t) 
 {
 	if ( t )
 	{
@@ -547,25 +549,25 @@ DDebug& DDebug::operator << (const QWidget* t)
 	return *this; 
 }
 
-DDebug& DDebug::operator << (const QLinearGradient &g)
+KDebug& KDebug::operator << (const QLinearGradient &g)
 {
 	*this << "QLinearGradient start=" << g.start() << " stop="<<g.finalStop();
 	return *this;
 }
 
-DDebug& DDebug::operator << (const QRadialGradient &g)
+KDebug& KDebug::operator << (const QRadialGradient &g)
 {
 	*this << "QRadialGradient center=" << g.center() << " focal="<<g.focalPoint() << " radius=" << g.radius();
 	return *this;
 }
 
-DDebug& DDebug::operator << (const QConicalGradient &g)
+KDebug& KDebug::operator << (const QConicalGradient &g)
 {
 	*this << "QConicalGradient center=" << g.center() << " angle="<<g.angle();
 	return *this;
 }
 
-DDebug& DDebug::operator << (const QGradient *g)
+KDebug& KDebug::operator << (const QGradient *g)
 {
 	switch(g->type())
 	{
@@ -589,7 +591,7 @@ DDebug& DDebug::operator << (const QGradient *g)
 	return *this;
 }
 
-DDebug& DDebug::operator << (const QMatrix &m)
+KDebug& KDebug::operator << (const QMatrix &m)
 {
 	*this << "\n";
 	*this << "|" << m.m11() << "\t" << m.m12() << "\t" << 0 << "\t|\n";
@@ -599,14 +601,14 @@ DDebug& DDebug::operator << (const QMatrix &m)
 	return *this;
 }
 
-void DDebug::resaltWidget(QWidget *w, const QColor &color)
+void KDebug::resaltWidget(QWidget *w, const QColor &color)
 {
 	QPalette pal = w->palette();
 	pal.setColor(QPalette::Background, color);
 	w->setPalette(pal);
 }
 
-QTextBrowser *DDebug::browser()
+QTextBrowser *KDebug::browser()
 {
 	if ( !debugBrowser)
 	{
@@ -621,5 +623,5 @@ QTextBrowser *DDebug::browser()
 
 #endif // QT_GUI_LIB
 
-#endif // D_NODEBUG
+#endif // K_NODEBUG
 

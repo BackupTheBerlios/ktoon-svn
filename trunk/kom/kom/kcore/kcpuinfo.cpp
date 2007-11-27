@@ -105,7 +105,7 @@ static int getCpuFeatures()
 
     // Test bit 23 (MMX support)
     if ( result & 0x00800000 )
-        features |= DCPUInfo::IntelMMX;
+        features |= KCPUInfo::IntelMMX;
 
     __asm__ __volatile__(
       "pushl %%ebx             \n\t"
@@ -123,12 +123,12 @@ static int getCpuFeatures()
       : "=a"(have3DNOW) : );
 
     if ( have3DNOW )
-        features |= DCPUInfo::AMD3DNOW;
+        features |= KCPUInfo::AMD3DNOW;
 
 #ifdef HAVE_X86_SSE
     // Test bit 25 (SSE support)
     if ( result & 0x00200000 ) {
-        features |= DCPUInfo::IntelSSE;
+        features |= KCPUInfo::IntelSSE;
 
         // OS support test for SSE.
         // Install our own sighandler for SIGILL.
@@ -136,7 +136,7 @@ static int getCpuFeatures()
 
         // Try executing an SSE insn to see if we get a SIGILL
         if ( setjmp( env ) )
-            features ^= DCPUInfo::IntelSSE; // The OS support test failed
+            features ^= KCPUInfo::IntelSSE; // The OS support test failed
         else
             __asm__ __volatile__("xorps %xmm0, %xmm0");
 
@@ -145,7 +145,7 @@ static int getCpuFeatures()
 
         // Test bit 26 (SSE2 support)
         if ( (result & 0x00400000) && (features & DCPUInfo::IntelSSE) )
-            features |= DCPUInfo::IntelSSE2;
+            features |= KCPUInfo::IntelSSE2;
 
         // Note: The OS requirements for SSE2 are the same as for SSE
         //       so we don't have to do any additional tests for that.
@@ -162,7 +162,7 @@ static int getCpuFeatures()
                               : /* none */
                               : "r" (-1) );
         signal( SIGILL, SIG_DFL );
-        features |= DCPUInfo::AltiVec;
+        features |= KCPUInfo::AltiVec;
     }
 #endif // __i386__
 #endif //HAVE_GNU_INLINE_ASM
@@ -170,6 +170,6 @@ static int getCpuFeatures()
     return features;
 }
 
-unsigned int DCPUInfo::s_features = getCpuFeatures();
+unsigned int KCPUInfo::s_features = getCpuFeatures();
 
 

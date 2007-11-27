@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,33 +19,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef DFORTUNEGENERATOR_H
-#define DFORTUNEGENERATOR_H
+#ifndef KFORTUNEGENERATOR_H
+#define KFORTUNEGENERATOR_H
 
 #include <QString>
 
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
 */
-class DFortuneGenerator
+class KFortuneGenerator
 {
 	public:
-		~DFortuneGenerator();
-		static DFortuneGenerator *self();
+		~KFortuneGenerator();
+		static KFortuneGenerator *self();
 		
 		QString generate();
 		
 	protected:
-		DFortuneGenerator();
+		KFortuneGenerator();
 		void findFortunePath();
 		
 		
 		
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 		
-		static DFortuneGenerator *s_self;
+		static KFortuneGenerator *s_self;
 };
 
 #endif

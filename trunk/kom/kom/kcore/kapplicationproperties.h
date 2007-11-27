@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DAPPLICATIONPROPERTIES_H
-#define DAPPLICATIONPROPERTIES_H
+#ifndef KAPPLICATIONPROPERTIES_H
+#define KAPPLICATIONPROPERTIES_H
 
 #include <QString>
 #include "kglobal.h"
@@ -27,11 +29,11 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_CORE_EXPORT DApplicationProperties
+class K_CORE_EXPORT KApplicationProperties
 {
 	protected:
-		DApplicationProperties();
-		virtual ~DApplicationProperties();
+		KApplicationProperties();
+		virtual ~KApplicationProperties();
 		
 	public:
 		void setDataDir(const QString &v);
@@ -48,15 +50,15 @@ class D_CORE_EXPORT DApplicationProperties
 		virtual QString cacheDir() const;
 		virtual QString version() const;
 		
-		static DApplicationProperties *instance();
+		static KApplicationProperties *instance();
 		
 	private:
-		static DApplicationProperties *s_instance;
+		static KApplicationProperties *s_instance;
 		
 		struct Private;
 		Private *const d;
 };
 
-#define dAppProp DApplicationProperties::instance()
+#define kAppProp KApplicationProperties::instance()
 
 #endif

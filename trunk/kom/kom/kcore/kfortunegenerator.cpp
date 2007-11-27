@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,54 +23,54 @@
 
 #include <QProcess>
 
-DFortuneGenerator *DFortuneGenerator::s_self = 0;
+KFortuneGenerator *KFortuneGenerator::s_self = 0;
 
-struct DFortuneGenerator::Private
+struct KFortuneGenerator::Private
 {
 	bool isValid;
 	QString fortunePath;
 };
 
 
-DFortuneGenerator::DFortuneGenerator() : d(new Private())
+KFortuneGenerator::KFortuneGenerator() : k(new Private())
 {
 	findFortunePath();
 }
 
 
-DFortuneGenerator::~DFortuneGenerator()
+KFortuneGenerator::~KFortuneGenerator()
 {
-	delete d;
+	delete k;
 }
 
-DFortuneGenerator *DFortuneGenerator::self()
+KFortuneGenerator *KFortuneGenerator::self()
 {
 	if ( !s_self )
-		s_self = new DFortuneGenerator;
+		s_self = new KFortuneGenerator;
 	
 	return s_self;
 }
 
-void DFortuneGenerator::findFortunePath()
+void KFortuneGenerator::findFortunePath()
 {
-	d->fortunePath = "fortune";
-	if ( QProcess::execute(d->fortunePath) == 0 )
+	k->fortunePath = "fortune";
+	if ( QProcess::execute(k->fortunePath) == 0 )
 	{
-		d->isValid = true;
+		k->isValid = true;
 	}
 	else
 	{
-		d->isValid = false;
+		k->isValid = false;
 	}
 }
 
-QString DFortuneGenerator::generate()
+QString KFortuneGenerator::generate()
 {
-	if ( !d->isValid )
+	if ( !k->isValid )
 		return "";
 	
 	QProcess proc;
-	proc.start(d->fortunePath);
+	proc.start(k->fortunePath);
 	
 	proc.waitForFinished();
 	

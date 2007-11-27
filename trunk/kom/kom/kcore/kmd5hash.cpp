@@ -39,7 +39,7 @@
 // 512K buffer
 #define MD5_READ_BUFFER 524288
 
-QString DMD5Hash::hashData(const char* bytes, int size)
+QString KMD5Hash::hashData(const char* bytes, int size)
 {
 	/*
 	 * Start MD5 accumulation. Set bit count to 0 and buffer to mysterious
@@ -61,17 +61,17 @@ QString DMD5Hash::hashData(const char* bytes, int size)
 	return finalize(ctx);
 }
 
-QString DMD5Hash::hash(const QString &str)
+QString KMD5Hash::hash(const QString &str)
 {
 	return hashData(str.toLocal8Bit());
 }
 
-QString DMD5Hash::hashData(const QByteArray& bytes)
+QString KMD5Hash::hashData(const QByteArray& bytes)
 {
 	return hashData(bytes.data(), bytes.size());
 }
 
-QString DMD5Hash::hashFile(QFile& file)
+QString KMD5Hash::hashFile(QFile& file)
 {
 	/* To compute the message digest of a chunk of bytes, declare an
 	 * MD5Context structure, pass it to MD5Init, call MD5Update as
@@ -110,13 +110,13 @@ QString DMD5Hash::hashFile(QFile& file)
 	return finalize(ctx);
 }
 
-QString DMD5Hash::hashFile(const QString& filename)
+QString KMD5Hash::hashFile(const QString& filename)
 {
 	QFile file(filename);
 	return hashFile(file);
 }
 
-void DMD5Hash::updateHash(md5Context* ctx, const char* data, long int length)
+void KMD5Hash::updateHash(md5Context* ctx, const char* data, long int length)
 {
 	unsigned int t;
 
@@ -160,7 +160,7 @@ void DMD5Hash::updateHash(md5Context* ctx, const char* data, long int length)
 	memcpy(ctx->in, data, length);
 }
 
-QString DMD5Hash::finalize(md5Context& ctx)
+QString KMD5Hash::finalize(md5Context& ctx)
 {
 	unsigned count;
 	unsigned char *p;
@@ -228,7 +228,7 @@ QString DMD5Hash::finalize(md5Context& ctx)
  * reflect the addition of 16 longwords of new data. MD5Update blocks
  * the data and converts bytes into longwords for this routine.
  */
-void DMD5Hash::md5Transform(unsigned int buf[4], unsigned int const in[16])
+void KMD5Hash::md5Transform(unsigned int buf[4], unsigned int const in[16])
 {
 	register unsigned int a, b, c, d;
 

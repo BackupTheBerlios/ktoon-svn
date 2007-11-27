@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DXMLPARSERBASE_H
-#define DXMLPARSERBASE_H
+#ifndef KXMLPARSERBASE_H
+#define KXMLPARSERBASE_H
 
 #include <QXmlDefaultHandler>
 #include "kglobal.h"
@@ -27,14 +29,14 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_CORE_EXPORT DXmlParserBase : public QXmlDefaultHandler
+class K_CORE_EXPORT KXmlParserBase : public QXmlDefaultHandler
 {
 	public:
-		~DXmlParserBase();
+		~KXmlParserBase();
 		
 		
 	protected:
-		DXmlParserBase();
+		KXmlParserBase();
 		
 		bool startDocument();
 		bool endDocument();
@@ -64,7 +66,7 @@ class D_CORE_EXPORT DXmlParserBase : public QXmlDefaultHandler
 		
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 #endif

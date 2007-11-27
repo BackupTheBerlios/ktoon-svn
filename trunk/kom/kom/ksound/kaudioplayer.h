@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DAUDIOPLAYER_H
-#define DAUDIOPLAYER_H
+#ifndef KAUDIOPLAYER_H
+#define KAUDIOPLAYER_H
 
 #include <qobject.h>
 
@@ -29,14 +31,14 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_CORE_EXPORT DAudioPlayer : public QObject
+class K_CORE_EXPORT KAudioPlayer : public QObject
 {
 	Q_OBJECT;
 	public:
-		DAudioPlayer();
-		~DAudioPlayer();
+		KAudioPlayer();
+		~KAudioPlayer();
 		
-		static DAudioPlayer *instance();
+		static KAudioPlayer *instance();
 		
 		void loadEngine(const QString &engine);
 		
@@ -51,18 +53,18 @@ class D_CORE_EXPORT DAudioPlayer : public QObject
 		void setVolume(int percent);
 		
 	private:
-		static DAudioPlayer *s_instance;
+		static KAudioPlayer *s_instance;
 		
-		DAudioEngineIface *m_engine;
+		KAudioEngineIface *m_engine;
 };
 
-namespace DPlayer
+namespace KPlayer
 {
 	inline int play(const QUrl &url, int seek = 0)
 	{
-		int id = DAudioPlayer::instance()->load(url);
+		int id = KAudioPlayer::instance()->load(url);
 		
-		DAudioPlayer::instance()->play( seek );
+		KAudioPlayer::instance()->play( seek );
 		
 		return id;
 	}

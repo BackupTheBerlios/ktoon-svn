@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DACTIONMANAGER_H
-#define DACTIONMANAGER_H
+#ifndef KACTIONMANAGER_H
+#define KACTIONMANAGER_H
 
 #include <QObject>
 #include <QWidget>
@@ -29,9 +31,9 @@
 #include "kgui/kaction.h"
 #include "kcore/kglobal.h"
 
-typedef QList<QAction *> DActionList;
-typedef QHash<QString, QAction *> DActionDict;
-typedef QHash<QString, DActionDict> DActionContainer;
+typedef QList<QAction *> KActionList;
+typedef QHash<QString, QAction *> KActionDict;
+typedef QHash<QString, KActionDict> KActionContainer;
 
 class QToolBar;
 class QMenuBar;
@@ -41,14 +43,14 @@ class QMenuBar;
  * @author David Cuadrado \<krawek@gmail.com\>
 */
 
-class D_GUI_EXPORT DActionManager : public QObject
+class K_GUI_EXPORT KActionManager : public QObject
 {
 	Q_OBJECT
 
 	public:
 		
-		DActionManager(QObject *parent = 0);
-		~DActionManager();
+		KActionManager(QObject *parent = 0);
+		~KActionManager();
 		
 		bool insert(QAction *action, const QString &id, const QString &container = "default" );
 		void remove( QAction* action, const QString &container = QString()  );
@@ -62,7 +64,7 @@ class D_GUI_EXPORT DActionManager : public QObject
 		QToolBar *setupToolBar(QToolBar *toolBar, const QString &container, bool clear = true );
 		
 	private:
-		DActionContainer m_actionContainer;
+		KActionContainer m_actionContainer;
 };
 
 #endif

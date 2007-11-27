@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DSPELLER_H
-#define DSPELLER_H
+#ifndef KSPELLER_H
+#define KSPELLER_H
 
 #include <QObject>
 
@@ -32,12 +34,12 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_CORE_EXPORT DSpeller : public QObject
+class K_CORE_EXPORT KSpeller : public QObject
 {
 	Q_OBJECT;
 	public:
-		DSpeller(QObject *parent = 0);
-		~DSpeller();
+		KSpeller(QObject *parent = 0);
+		~KSpeller();
 		
 		bool checkWord(const QString &word);
 		QStringList suggestions(const QString &word);
@@ -46,7 +48,7 @@ class D_CORE_EXPORT DSpeller : public QObject
 		QString removeExtraCharacters(const QString &str);
 		
 	private:
-		DSpellInterface *m_speller;
+		KSpellInterface *m_speller;
 };
 
 #endif

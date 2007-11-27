@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -23,22 +25,22 @@
 
 #include <QtDebug>
 
-DSpeller::DSpeller(QObject *parent) : QObject(parent), m_speller(0)
+KSpeller::KSpeller(QObject *parent) : QObject(parent), m_speller(0)
 {
 #if defined(HAVE_ASPELL)
-	m_speller = new DAspellChecker;
+	m_speller = new KAspellChecker;
 #else
 #warning NO SPELL MACROS DEFINED!
 #endif
 }
 
 
-DSpeller::~DSpeller()
+KSpeller::~KSpeller()
 {
 	if (m_speller) delete m_speller;
 }
 
-bool DSpeller::checkWord(const QString &word)
+bool KSpeller::checkWord(const QString &word)
 {
 	if( m_speller)
 	{
@@ -47,7 +49,7 @@ bool DSpeller::checkWord(const QString &word)
 	return false;
 }
 
-QStringList DSpeller::suggestions(const QString &word)
+QStringList KSpeller::suggestions(const QString &word)
 {
 	if ( m_speller )
 	{
@@ -57,7 +59,7 @@ QStringList DSpeller::suggestions(const QString &word)
 	return QStringList();
 }
 
-QString DSpeller::removeExtraCharacters(const QString &str)
+QString KSpeller::removeExtraCharacters(const QString &str)
 {
 	QString result = str;
 	
