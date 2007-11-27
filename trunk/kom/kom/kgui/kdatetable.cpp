@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -119,7 +121,7 @@ QSize Day::sectionSizeFromContents( int logicalIndex ) const
 
 //////////////////////
 
-DDateTable::DDateTable(QWidget *parent) : QTableWidget( 5, 7, parent)
+KDateTable::KDateTable(QWidget *parent) : QTableWidget( 5, 7, parent)
 {
 	m_date = QDate::currentDate();
 	
@@ -143,11 +145,11 @@ DDateTable::DDateTable(QWidget *parent) : QTableWidget( 5, 7, parent)
 	connect(this, SIGNAL( itemEntered (QTableWidgetItem * )), this, SLOT(dateFromItem(QTableWidgetItem *)));
 }
 
-DDateTable::~DDateTable()
+KDateTable::~KDateTable()
 {
 }
 
-void DDateTable::setDate(const QDate &date)
+void KDateTable::setDate(const QDate &date)
 {
 	if ( date != m_date)
 	{
@@ -158,7 +160,7 @@ void DDateTable::setDate(const QDate &date)
 	setMonth( date.month() );
 }
 
-void DDateTable::setCellSize(int width, int height)
+void KDateTable::setCellSize(int width, int height)
 {
 	m_cellWidth = width;
 	m_cellHeight = height;
@@ -172,7 +174,7 @@ void DDateTable::setCellSize(int width, int height)
 	}
 }
 
-void DDateTable::setMonth(int month)
+void KDateTable::setMonth(int month)
 {
 	m_date.setYMD(m_date.year(), month, m_date.day());
 	
@@ -204,7 +206,7 @@ void DDateTable::setMonth(int month)
 	}
 }
 
-QDate DDateTable::dateFromPosition(int position)
+QDate KDateTable::dateFromPosition(int position)
 {
 	QDate date;
 	date.setYMD( m_date.year(), m_date.month(), 1);
@@ -219,7 +221,7 @@ QDate DDateTable::dateFromPosition(int position)
 	return date;
 }
 
-QDate DDateTable::dateFromItem(QTableWidgetItem *item)
+QDate KDateTable::dateFromItem(QTableWidgetItem *item)
 {
 	if ( !item ) return QDate();
 	
@@ -231,23 +233,23 @@ QDate DDateTable::dateFromItem(QTableWidgetItem *item)
 	return date;
 }
 
-QDate DDateTable::date() const
+QDate KDateTable::date() const
 {
 	return m_date;
 }
 
-int DDateTable::cellWidth() const
+int KDateTable::cellWidth() const
 {
 	return m_cellWidth;
 }
 
 
-int DDateTable::cellHeight() const
+int KDateTable::cellHeight() const
 {
 	return m_cellHeight;
 }
 
-void DDateTable::paintEvent(QPaintEvent *e)
+void KDateTable::paintEvent(QPaintEvent *e)
 {
 	setCellSize( viewport()->width() / 7, viewport()->height() / 5);
 	

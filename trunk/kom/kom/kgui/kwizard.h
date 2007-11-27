@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,8 +19,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef DWIZARD_H
-#define DWIZARD_H
+
+#ifndef KWIZARD_H
+#define KWIZARD_H
 
 #include <QDialog>
 #include <QPushButton>
@@ -29,22 +32,22 @@
 #include "kgui/kvhbox.h"
 #include <kcore/kglobal.h>
 
-class DWizardPage;
+class KWizardPage;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class D_GUI_EXPORT DWizard : public QDialog
+class K_GUI_EXPORT KWizard : public QDialog
 {
 	Q_OBJECT;
 	
 	public:
-		DWizard(QWidget *parent = 0);
-		~DWizard();
-		DWizardPage *addPage(DWizardPage *page);
+		KWizard(QWidget *parent = 0);
+		~KWizard();
+		KWizardPage *addPage(KWizardPage *page);
 		void showPage(int index);
-		void showPage(DWizardPage *page);
+		void showPage(KWizardPage *page);
 		
 	private slots:
 		void back();
@@ -68,12 +71,12 @@ class D_GUI_EXPORT DWizard : public QDialog
 #include <QGridLayout>
 #include <QLabel>
 
-class DWizardPage : public DVHBox
+class KWizardPage : public KVHBox
 {
 	Q_OBJECT
 	public:
-		DWizardPage(const QString &title, QWidget *parent = 0 );
-		virtual ~DWizardPage();
+		KWizardPage(const QString &title, QWidget *parent = 0 );
+		virtual ~KWizardPage();
 		
 		virtual bool isComplete() const = 0;
 		virtual void reset() = 0;

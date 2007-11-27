@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,17 +29,17 @@
 
 #include "kdebug.h"
 
-DThemeManager::DThemeManager() : QXmlDefaultHandler()
+KThemeManager::KThemeManager() : QXmlDefaultHandler()
 {
 	m_palette = QApplication::palette();
 }
 
 
-DThemeManager::~DThemeManager()
+KThemeManager::~KThemeManager()
 {
 }
 
-bool DThemeManager::applyTheme(const QString &file)
+bool KThemeManager::applyTheme(const QString &file)
 {
 	bool ok = false;
 	QXmlSimpleReader reader;
@@ -58,7 +60,7 @@ bool DThemeManager::applyTheme(const QString &file)
 	return ok;
 }
 
-bool DThemeManager::applyTheme(const DThemeDocument &dd)
+bool KThemeManager::applyTheme(const KThemeDocument &kd)
 {
 // 	dDebug() << "Applying theme" << endl;;
 	bool ok = false;
@@ -66,21 +68,21 @@ bool DThemeManager::applyTheme(const DThemeDocument &dd)
 	reader.setContentHandler(this);
 	reader.setErrorHandler(this);
 	QXmlInputSource xmlsource;
-	xmlsource.setData(dd.toString());
+	xmlsource.setData(kd.toString());
 	if ( reader.parse(&xmlsource) )
 	{
 		ok = true;
 	}
 	else
 	{
-		dDebug() << QObject::tr("I can't analize the theme document") << endl;
+		kDebug() << QObject::tr("I can't analize the theme document") << endl;
 		ok = false;
 	}
 	
 	return ok;
 }
 
-bool DThemeManager::startElement( const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
+bool KThemeManager::startElement( const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
 {
 	m_qname = qname;
 
@@ -88,7 +90,7 @@ bool DThemeManager::startElement( const QString& , const QString& , const QStrin
 	{
 		m_root = qname;
 	}
-	else if ( m_root == "DTheme" )
+	else if ( m_root == "KTheme" )
 	{
 		if ( qname == "Text" )
 		{
@@ -218,35 +220,35 @@ bool DThemeManager::startElement( const QString& , const QString& , const QStrin
 	return true;
 }
 
-bool DThemeManager::endElement(const QString&, const QString&, const QString& qname)
+bool KThemeManager::endElement(const QString&, const QString&, const QString& qname)
 {
-	if ( qname == "DTheme" )
+	if ( qname == "KTheme" )
 	{
-		dApp->applyPalette(m_palette);
+		kApp->applyPalette(m_palette);
 	}
 	
 	return true;
 }
 
-bool DThemeManager::characters(const QString &)
+bool KThemeManager::characters(const QString &)
 {
 	return true;
 }
 
-bool DThemeManager::error ( const QXmlParseException & exception )
+bool KThemeManager::error ( const QXmlParseException & exception )
 {
-	dError() << "Error analizing theme: " << exception.message() << endl;
+	kError() << "Error analizing theme: " << exception.message() << endl;
 	return false;
 }
 
-bool DThemeManager::fatalError ( const QXmlParseException & exception )
+bool KThemeManager::fatalError ( const QXmlParseException & exception )
 {
-	dError() << "FATAL Error analizing theme: " << endl;
-	dError() << "Line: " << exception.lineNumber() << " Column: " << exception.columnNumber() << " " << exception.message() << endl;
+	kError() << "FATAL Error analizing theme: " << endl;
+	kError() << "Line: " << exception.lineNumber() << " Column: " << exception.columnNumber() << " " << exception.message() << endl;
 	return false;
 }
 
-QColor DThemeManager::getColor(const QXmlAttributes& atts)
+QColor KThemeManager::getColor(const QXmlAttributes& atts)
 {
 	QColor color(atts.value("color"));
 	return color;

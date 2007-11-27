@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -38,7 +40,7 @@
 #include <QMouseEvent>
 
 
-DColorButton::DColorButton(QWidget* parent) : QAbstractButton( parent )
+KColorButton::KColorButton(QWidget* parent) : QAbstractButton( parent )
 {
 	setMinimumSize( minimumSizeHint() );
 	setAcceptDrops( true );
@@ -48,7 +50,7 @@ DColorButton::DColorButton(QWidget* parent) : QAbstractButton( parent )
 }
 
 
-DColorButton::~DColorButton()
+KColorButton::~KColorButton()
 {
 }
 
@@ -56,7 +58,7 @@ DColorButton::~DColorButton()
 /*
  * Sets the color of this button
  */
-void DColorButton::setColor( const QColor& color )
+void KColorButton::setColor( const QColor& color )
 {
 	m_color = color;
 	update();
@@ -66,7 +68,7 @@ void DColorButton::setColor( const QColor& color )
 /*
  * Returns the color of this button
  */
-QColor DColorButton::color() const
+QColor KColorButton::color() const
 {
 	return m_color;
 }
@@ -75,7 +77,7 @@ QColor DColorButton::color() const
 /*
  * Returns the size hint for this widget.
  */
-QSize DColorButton::sizeHint() const
+QSize KColorButton::sizeHint() const
 {
 	return QSize( 50, 25 );
 }
@@ -84,7 +86,7 @@ QSize DColorButton::sizeHint() const
 /*
  * Returns the minumum size hint for this widget.
  */
-QSize DColorButton::minimumSizeHint() const
+QSize KColorButton::minimumSizeHint() const
 {
 	return QSize( 50, 25 );
 }
@@ -93,7 +95,7 @@ QSize DColorButton::minimumSizeHint() const
 /*
  * Draws the button.
  */
-void DColorButton::paintEvent(QPaintEvent *)
+void KColorButton::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
 	
@@ -114,7 +116,7 @@ void DColorButton::paintEvent(QPaintEvent *)
 /*
  * Shows a color selection dialog for editing the button color.
  */
-void DColorButton::showEditor()
+void KColorButton::showEditor()
 {
 	QColor c = QColorDialog::getColor( palette().background().color(), this );
 
@@ -131,7 +133,7 @@ void DColorButton::showEditor()
 /*
  * Handles the mouse press event.
  */
-void DColorButton::mousePressEvent(QMouseEvent* e)
+void KColorButton::mousePressEvent(QMouseEvent* e)
 {
 	QAbstractButton::mousePressEvent(e);
 	m_position = e->pos();
@@ -143,7 +145,7 @@ void DColorButton::mousePressEvent(QMouseEvent* e)
 /*
  * Draws a rectangle with the buttons color as the mouse is dragged.
  */
-void DColorButton::mouseMoveEvent(QMouseEvent* e)
+void KColorButton::mouseMoveEvent(QMouseEvent* e)
 {
 	QAbstractButton::mouseMoveEvent( e );
 
@@ -164,7 +166,8 @@ void DColorButton::mouseMoveEvent(QMouseEvent* e)
 	drag->setMimeData(mimeData);
 	drag->setPixmap( pix );
 		
-	/*Qt::DropAction dropAction = */drag->start(Qt::MoveAction);
+	/*Qt::DropAction dropAction = */
+	drag->start(Qt::MoveAction);
 
 }
 
@@ -172,7 +175,7 @@ void DColorButton::mouseMoveEvent(QMouseEvent* e)
 /*
  * Accepts or ignores a drag enter event.
  */
-void DColorButton::dragEnterEvent( QDragEnterEvent *event )
+void KColorButton::dragEnterEvent( QDragEnterEvent *event )
 {
 	setFocus();
 
@@ -194,7 +197,7 @@ void DColorButton::dragEnterEvent( QDragEnterEvent *event )
 	}
 }
 
-void DColorButton::setPalette ( const QPalette & pal)
+void KColorButton::setPalette ( const QPalette & pal)
 {
 	m_color = pal.button().color();
 }
@@ -202,7 +205,7 @@ void DColorButton::setPalette ( const QPalette & pal)
 /*
  * Accepts or ignores a drag move event.
  */
-void DColorButton::dragMoveEvent( QDragMoveEvent *event )
+void KColorButton::dragMoveEvent( QDragMoveEvent *event )
 {
 	if ( event->mimeData()->hasColor() )
 	{
@@ -218,7 +221,7 @@ void DColorButton::dragMoveEvent( QDragMoveEvent *event )
 /*
  * If a color has been dragged, it will become the new color of this button.
  */
-void DColorButton::dropEvent( QDropEvent *event )
+void KColorButton::dropEvent( QDropEvent *event )
 {
 	if (event->mimeData()->hasColor())
 	{

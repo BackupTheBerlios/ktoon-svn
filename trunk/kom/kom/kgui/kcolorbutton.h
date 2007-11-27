@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DCOLORBUTTON_H
-#define DCOLORBUTTON_H
+#ifndef KCOLORBUTTON_H
+#define KCOLORBUTTON_H
 
 #include <QAbstractButton>
 #include <QMouseEvent>
@@ -31,14 +33,14 @@
 
 class QColor;
 
-class D_GUI_EXPORT DColorButton : public QAbstractButton
+class K_GUI_EXPORT KColorButton : public QAbstractButton
 {
 	Q_OBJECT;
 	Q_PROPERTY( QColor color READ color WRITE setColor );
 
 	public:
-		DColorButton( QWidget* parent = 0);
-		~DColorButton();
+		KColorButton( QWidget* parent = 0);
+		~KColorButton();
 
 		void setColor( const QColor& );
 		QColor color() const;
@@ -66,4 +68,4 @@ class D_GUI_EXPORT DColorButton : public QAbstractButton
 		QPoint m_position;
 };
 
-#endif //DCOLORBUTTON_H
+#endif //KCOLORBUTTON_H

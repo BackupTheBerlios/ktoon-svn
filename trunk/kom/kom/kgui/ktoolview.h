@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,28 +20,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DTOOLVIEW_H
-#define DTOOLVIEW_H
+#ifndef KTOOLVIEW_H
+#define KTOOLVIEW_H
 
 #include <QDockWidget>
 #include <QIcon>
 #include <kgui/kideality.h>
 
-class DViewButton;
+class KViewButton;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_IDEAL_EXPORT DToolView : public QDockWidget
+class K_IDEAL_EXPORT KToolView : public QDockWidget
 {
 	Q_OBJECT;
 	
 	public:
-		DToolView(const QString &title, const QIcon &icon = QIcon(), QWidget * parent = 0);
-		virtual ~DToolView();
+		KToolView(const QString &title, const QIcon &icon = QIcon(), QWidget * parent = 0);
+		virtual ~KToolView();
 		
 		void setDescription(const QString &description);
-		DViewButton *button() const;
+		KViewButton *button() const;
 		QSize sizeHint() const;
 		
 		void setPerspective(int wsp);
@@ -67,7 +69,7 @@ class D_IDEAL_EXPORT DToolView : public QDockWidget
 #endif
 		
 	private:
-		DViewButton *m_button;
+		KViewButton *m_button;
 		int m_size;
 		
 		int m_perspective;

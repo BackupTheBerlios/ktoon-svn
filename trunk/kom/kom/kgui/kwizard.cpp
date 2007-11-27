@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,6 +19,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "kwizard.h"
 
 #include "kvhbox.h"
@@ -29,7 +32,7 @@
 #include <QLabel>
 #include <QBitmap>
 
-DWizard::DWizard(QWidget *parent) : QDialog(parent)
+KWizard::KWizard(QWidget *parent) : QDialog(parent)
 {
 	m_cancelButton = new QPushButton(tr("Cancel"));
 	m_backButton = new QPushButton(tr("< &Back"));
@@ -55,11 +58,11 @@ DWizard::DWizard(QWidget *parent) : QDialog(parent)
 }
 
 
-DWizard::~DWizard()
+KWizard::~KWizard()
 {
 }
 
-DWizardPage *DWizard::addPage(DWizardPage *newPage)
+KWizardPage *KWizard::addPage(KWizardPage *newPage)
 {
 	newPage->setParent(&m_history);
 	newPage->show();
@@ -80,19 +83,19 @@ DWizardPage *DWizard::addPage(DWizardPage *newPage)
 	return newPage;
 }
 
-void DWizard::showPage(DWizardPage *page)
+void KWizard::showPage(KWizardPage *page)
 {
 	m_history.setCurrentWidget(page);
 }
 
-void DWizard::showPage(int index)
+void KWizard::showPage(int index)
 {
 	m_history.setCurrentIndex(index);
 }
 
-void DWizard::back()
+void KWizard::back()
 {
-	DWizardPage *current = qobject_cast<DWizardPage *>(m_history.currentWidget());
+	KWizardPage *current = qobject_cast<KWizardPage *>(m_history.currentWidget());
 	if( current )
 	{
 		current->aboutToBackPage();
@@ -114,9 +117,9 @@ void DWizard::back()
 	}
 }
 
-void DWizard::next()
+void KWizard::next()
 {
-	DWizardPage *current = qobject_cast<DWizardPage *>(m_history.currentWidget());
+	KWizardPage *current = qobject_cast<KWizardPage *>(m_history.currentWidget());
 	if( current )
 	{
 		current->aboutToNextPage();
@@ -138,16 +141,16 @@ void DWizard::next()
 	pageCompleted();
 }
 
-void DWizard::finish()
+void KWizard::finish()
 {
-	DWizardPage *current = qobject_cast<DWizardPage *>(m_history.currentWidget());
+	KWizardPage *current = qobject_cast<KWizardPage *>(m_history.currentWidget());
 	if ( current ) current->aboutToFinish();
 	accept();
 }
 
-void DWizard::pageCompleted()
+void KWizard::pageCompleted()
 {
-	DWizardPage *current = qobject_cast<DWizardPage *>(m_history.currentWidget());
+	KWizardPage *current = qobject_cast<KWizardPage *>(m_history.currentWidget());
 	
 	if ( m_history.currentIndex() == m_history.count()-1 )
 	{
@@ -159,11 +162,11 @@ void DWizard::pageCompleted()
 	}
 }
 
-DWizardPage::DWizardPage(const QString &title, QWidget *parent) : DVHBox(parent)
+KWizardPage::KWizardPage(const QString &title, QWidget *parent) : KVHBox(parent)
 {
-	DVHBox *theTitle = new DVHBox(this, Qt::Vertical);
+	KVHBox *theTitle = new KVHBox(this, Qt::Vertical);
 	new QLabel(title, theTitle);
-	new DSeparator(theTitle);
+	new KSeparator(theTitle);
 	boxLayout()->setAlignment(theTitle, Qt::AlignTop);
 	
 	m_container = new QFrame(this);
@@ -174,20 +177,20 @@ DWizardPage::DWizardPage(const QString &title, QWidget *parent) : DVHBox(parent)
 	m_layout->addWidget(m_image, 0, 0, Qt::AlignLeft);
 	m_image->hide();
 	
-	new DSeparator(this);
+	new KSeparator(this);
 	
 	hide();
 }
 
-void DWizardPage::setPixmap(const QPixmap &px)
+void KWizardPage::setPixmap(const QPixmap &px)
 {
 	m_image->setPixmap(px);
 	m_image->show();
 }
 
-void DWizardPage::setWidget(QWidget *w)
+void KWizardPage::setWidget(QWidget *w)
 {
 	m_layout->addWidget(w, 0, 1);
 }
 
-DWizardPage::~DWizardPage() {};
+KWizardPage::~KWizardPage() {};

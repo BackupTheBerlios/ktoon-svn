@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef DSEPARATOR_H
-#define DSEPARATOR_H
+#ifndef KSEPARATOR_H
+#define KSEPARATOR_H
 
 #include <QFrame>
 #include <kcore/kglobal.h>
@@ -28,7 +28,7 @@
  *
  * @author Michael Roth \<mroth@wirlweb.de\>
  */
-class D_GUI_EXPORT DSeparator : public QFrame
+class K_GUI_EXPORT KSeparator : public QFrame
 {
 	Q_OBJECT;
 	Q_PROPERTY( Qt::Orientation orientation READ orientation WRITE setOrientation );
@@ -39,7 +39,7 @@ class D_GUI_EXPORT DSeparator : public QFrame
    * @param parent parent object.
    * @param f extra QWidget flags.
    **/
-  DSeparator(QWidget* parent=0);
+  KSeparator(QWidget* parent=0);
 
   /**
    * Constructor.
@@ -48,7 +48,7 @@ class D_GUI_EXPORT DSeparator : public QFrame
    * @param parent parent object.
    * @param f extra QWidget flags.
    **/
-  DSeparator(Qt::Orientation orientation, QWidget* parent=0);
+  KSeparator(Qt::Orientation orientation, QWidget* parent=0);
 
   /**
    * Returns the orientation of the separator.
@@ -67,8 +67,8 @@ protected:
   virtual void virtual_hook( int id, void* data );
 
 private:
-  class DSeparatorPrivate* d;
+  class KSeparatorPrivate* k;
 };
 
 
-#endif // DSEPARATOR_H
+#endif // KSEPARATOR_H

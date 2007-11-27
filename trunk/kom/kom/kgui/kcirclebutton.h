@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,7 +23,7 @@
 #ifndef CCBUTTON_H
 #define CCBUTTON_H
 /**
- * @file dcirclebutton.h
+ * @file kcirclebutton.h
  * Include this file if you need the class DCircleButton
  */
 #include <QPushButton>
@@ -29,22 +31,22 @@
 #include "kcore/kglobal.h"
 
 /**
- * @short The DCircleButton class provides a circular button
+ * @short The KCircleButton class provides a circular button
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class D_GUI_EXPORT DCircleButton : public QPushButton
+class K_GUI_EXPORT KCircleButton : public QPushButton
 {
 	Q_OBJECT
 	public:
 		/**
 		 * Constructs a DCircleButton
 		 */
-		DCircleButton(int diameter, bool animate = true, QWidget *parent = 0);
+		KCircleButton(int diameter, bool animate = true, QWidget *parent = 0);
 		/**
 		 * Destructor
 		 */
-		~DCircleButton();
+		~KCircleButton();
 		
 		QStyleOptionButton styleOption() const;
 		QSize sizeHint() const;

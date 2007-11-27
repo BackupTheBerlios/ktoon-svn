@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,23 +23,23 @@
 #include "kflatbutton.h"
 #include <QPainter>
 
-DFlatButton::DFlatButton(QWidget *parent) : QAbstractButton(parent)
+KFlatButton::KFlatButton(QWidget *parent) : QAbstractButton(parent)
 {
 	setCheckable(true);
 }
 
-DFlatButton::DFlatButton(const QString &text, QWidget *parent ) : QAbstractButton(parent)
+KFlatButton::KFlatButton(const QString &text, QWidget *parent ) : QAbstractButton(parent)
 {
 	setText(text);
 	setCheckable(true);
 }
 
 
-DFlatButton::~DFlatButton()
+KFlatButton::~KFlatButton()
 {
 }
 
-void DFlatButton::paintEvent(QPaintEvent *)
+void KFlatButton::paintEvent(QPaintEvent *)
 {
 	QRect rect = contentsRect();
 	

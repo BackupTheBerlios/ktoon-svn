@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -23,7 +25,7 @@
 
 /**
  * @file kcirclebuttonbar.h
- * Include this file if you need the class DCircleButtonBar
+ * Include this file if you need the class KCircleButtonBar
  */
 
 #include <qframe.h>
@@ -41,27 +43,27 @@
 class QPainterPath;
 
 /**
- * @short The DCircleButtonBar class provides a circular button bar
+ * @short The KCircleButtonBar class provides a circular button bar
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class D_GUI_EXPORT DCircleButtonBar : public QFrame
+class K_GUI_EXPORT KCircleButtonBar : public QFrame
 {
 	public:
 		/**
-		 * Constructs a DCircleButtonBar
+		 * Constructs a KCircleButtonBar
 		 */
-		DCircleButtonBar(int radio = 40, QWidget *parent= 0);
+		KCircleButtonBar(int radio = 40, QWidget *parent= 0);
 		/**
 		 * Destructor
 		 */
-		~DCircleButtonBar();
+		~KCircleButtonBar();
 		/**
-		 * Add button in DCircleButtonBar
-		 * @param pix image of new DCircleButton
-		 * @return pointer of new DCircleButton
+		 * Add button in KCircleButtonBar
+		 * @param pix image of new KCircleButton
+		 * @return pointer of new KCircleButton
 		 */
-		DCircleButton *addButton(const QPixmap &pix);
+		KCircleButton *addButton(const QPixmap &pix);
 		
 	private:
 		QPixmap m_mask;

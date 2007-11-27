@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DBUTTONBAR_H
-#define DBUTTONBAR_H
+#ifndef KBUTTONBAR_H
+#define KBUTTONBAR_H
 
 #include <kgui/kideality.h>
 
@@ -28,8 +30,8 @@
 #include <QMap>
 #include <QTimer>
 
-class DViewButton;
-class DToolView;
+class KViewButton;
+class KToolView;
 class QAction;
 class QMenu;
 
@@ -37,20 +39,20 @@ class QMenu;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_IDEAL_EXPORT DButtonBar : public QToolBar
+class K_IDEAL_EXPORT KButtonBar : public QToolBar
 {
 	Q_OBJECT;
 	public:
-		DButtonBar(Qt::ToolBarArea area, QWidget *parent = 0);
-		~DButtonBar();
+		KButtonBar(Qt::ToolBarArea area, QWidget *parent = 0);
+		~KButtonBar();
 		
-		void addButton(DViewButton *viewButton);
-		void removeButton(DViewButton *viewButton);
+		void addButton(KViewButton *viewButton);
+		void removeButton(KViewButton *viewButton);
 		
 		bool isEmpty() const;
 		
-		void disable(DViewButton *v);
-		void enable(DViewButton *v);
+		void disable(KViewButton *v);
+		void enable(KViewButton *v);
 		
 		bool isExclusive() const;
 		bool autohide() const;
@@ -61,7 +63,7 @@ class D_IDEAL_EXPORT DButtonBar : public QToolBar
 		void setEnableButtonBlending(bool enable);
 		
 	public slots:
-		void onlyShow(DToolView *tool, bool ensureVisible = false);
+		void onlyShow(KToolView *tool, bool ensureVisible = false);
 		
 		void setExclusive(bool excl);
 		void setAutoHide(bool autohide);

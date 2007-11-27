@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -60,7 +62,7 @@ static char * new_xpm[] = {
 "OOOOOOOOOOO.",
 "............"};
 
-class DCircleButton::Animator
+class KCircleButton::Animator
 {
 	public:
 		Animator() : aStep(0), aBegin(false), m_interval(50) 
@@ -86,7 +88,7 @@ class DCircleButton::Animator
 		int m_interval;
 };
 
-DCircleButton::DCircleButton(int diameter, bool animate, QWidget *parent) : QPushButton(parent), m_diameter(diameter)
+KCircleButton::KCircleButton(int diameter, bool animate, QWidget *parent) : QPushButton(parent), m_diameter(diameter)
 {
 	show();
 
@@ -106,12 +108,12 @@ DCircleButton::DCircleButton(int diameter, bool animate, QWidget *parent) : QPus
 	}
 }
 
-DCircleButton::~DCircleButton()
+KCircleButton::~KCircleButton()
 {
 	delete m_animator;
 }
 
-QSize DCircleButton::sizeHint() const
+QSize KCircleButton::sizeHint() const
 {
 	// int radio = m_diameter/2;
 	ensurePolished();
@@ -154,7 +156,7 @@ QSize DCircleButton::sizeHint() const
 	return (style()->sizeFromContents(QStyle::CT_PushButton, &opt, QSize(w, h), this).expandedTo(QApplication::globalStrut()));
 }
 
-QStyleOptionButton DCircleButton::styleOption() const
+QStyleOptionButton KCircleButton::styleOption() const
 {
 	QStyleOptionButton opt;
 	opt.init(this);
@@ -187,7 +189,7 @@ QStyleOptionButton DCircleButton::styleOption() const
 	return opt;
 }
 
-void DCircleButton::paintMask()
+void KCircleButton::paintMask()
 {
 	m_mask = QPixmap(m_diameter, m_diameter);
 	m_mask.fill(Qt::transparent);
@@ -203,7 +205,7 @@ void DCircleButton::paintMask()
 	paintMask.end();
 }
 
-void DCircleButton::paintEvent(QPaintEvent *e)
+void KCircleButton::paintEvent(QPaintEvent *e)
 {
 // 	qDebug("Painting");
 
@@ -252,7 +254,7 @@ void DCircleButton::paintEvent(QPaintEvent *e)
 	painter.restore();
 }
 
-void DCircleButton::animate()
+void KCircleButton::animate()
 {
 	if ( m_animator->aBegin )
 	{
@@ -290,7 +292,7 @@ void DCircleButton::animate()
 // 	update();
 }
 
-void DCircleButton::enterEvent(QEvent *)
+void KCircleButton::enterEvent(QEvent *)
 {
 	m_animator->aStep = m_diameter;
 	
@@ -300,7 +302,7 @@ void DCircleButton::enterEvent(QEvent *)
 	update();
 }
 
-void DCircleButton::leaveEvent(QEvent *) 
+void KCircleButton::leaveEvent(QEvent *) 
 {
 	m_animator->aBegin = false;
 	m_animator->aStep = 0;

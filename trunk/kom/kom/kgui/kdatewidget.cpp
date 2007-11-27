@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                       *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *	
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -23,17 +25,17 @@
 #include <QComboBox>
 #include <QHBoxLayout>
 
-DDateWidget::DDateWidget(QWidget *parent) : QWidget(parent)
+KDateWidget::KDateWidget(QWidget *parent) : QWidget(parent)
 {
 	init(QDate::currentDate());
 }
 
-DDateWidget::DDateWidget(const QDate &date, QWidget *parent) : QWidget(parent)
+KDateWidget::KDateWidget(const QDate &date, QWidget *parent) : QWidget(parent)
 {
 	init(date);
 }
 
-void DDateWidget::init(const QDate &date)
+void KDateWidget::init(const QDate &date)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	
@@ -64,11 +66,11 @@ void DDateWidget::init(const QDate &date)
 	connect(m_mounth, SIGNAL(activated( int )), this, SLOT(updateDateValues(int))); 
 }
 
-DDateWidget::~DDateWidget()
+KDateWidget::~KDateWidget()
 {
 }
 
-void DDateWidget::setDate(const QDate &date)
+void KDateWidget::setDate(const QDate &date)
 {
 	m_date = date;
 	
@@ -88,12 +90,12 @@ void DDateWidget::setDate(const QDate &date)
 	m_mounth->blockSignals( false );
 }
 
-QDate DDateWidget::date() const
+QDate KDateWidget::date() const
 {
 	return m_date;
 }
 
-void DDateWidget::updateDateValues(int)
+void KDateWidget::updateDateValues(int)
 {
 	QDate newDate;
 	

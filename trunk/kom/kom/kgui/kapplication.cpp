@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -33,9 +35,9 @@
 #include "kdebug.h"
 #include "kactionmanager.h"
 
-DApplication::DApplication(int & argc, char ** argv) : QApplication(argc, argv)
+KApplication::KApplication(int & argc, char ** argv) : QApplication(argc, argv)
 {
-	DINIT;
+	KINIT;
 	
 	QApplication::setEffectEnabled( Qt::UI_AnimateMenu, true);
 	QApplication::setEffectEnabled( Qt::UI_AnimateCombo, true);
@@ -44,28 +46,28 @@ DApplication::DApplication(int & argc, char ** argv) : QApplication(argc, argv)
 	
 	parseArgs(argc, argv);
 	
-	m_actionManager = new DActionManager(this);
+	m_actionManager = new KActionManager(this);
 }
 
 
-DApplication::~DApplication()
+KApplication::~KApplication()
 {
-	DEND;
+	KEND;
 	
-	DCONFIG->sync();
+	KCONFIG->sync();
 }
 
-void DApplication::applyTheme(const QString &file)
+void KApplication::applyTheme(const QString &file)
 {
 	m_themeManager.applyTheme(file);
 }
 
-void DApplication::applyTheme(const DThemeDocument &dd)
+void KApplication::applyTheme(const KThemeDocument &kd)
 {
-	m_themeManager.applyTheme(dd);
+	m_themeManager.applyTheme(kd);
 }
 
-void DApplication::applyColors(ColorSchema cs)
+void KApplication::applyColors(ColorSchema cs)
 {
 	QPalette pal = QApplication::palette();
 	switch (cs)
@@ -94,7 +96,7 @@ void DApplication::applyColors(ColorSchema cs)
 	applyPalette(pal);
 }
 
-void DApplication::applyPalette(const QPalette &pal)
+void KApplication::applyPalette(const QPalette &pal)
 {
 	setPalette(pal);
 	
@@ -109,7 +111,7 @@ void DApplication::applyPalette(const QPalette &pal)
 	}
 }
 
-void DApplication::changeFont(const QFont &font)
+void KApplication::changeFont(const QFont &font)
 {
 	QApplication::setFont(font, "QWidget");
 // 	if ( mainWidget() )
@@ -127,16 +129,16 @@ void DApplication::changeFont(const QFont &font)
 // 	}
 }
 
-DConfig *DApplication::config(const QString &group )
+KConfig *KApplication::config(const QString &group )
 {
-	DConfig *config = DConfig::instance();
+	KConfig *config = KConfig::instance();
 	
 	config->beginGroup( group );
 	
 	return config;
 }
 
-void DApplication::parseArgs(int &argc, char **argv)
+void KApplication::parseArgs(int &argc, char **argv)
 {
 	for(int i = 0; i < argc; i++)
 	{
@@ -159,24 +161,24 @@ void DApplication::parseArgs(int &argc, char **argv)
 	}
 }
 
-bool DApplication::isArg(const QString &arg)
+bool KApplication::isArg(const QString &arg)
 {
 	return m_parseArgs.keys().contains(arg);
 }
 
-QString DApplication::getParam(const QString &arg)
+QString KApplication::getParam(const QString &arg)
 {
 	if ( ! m_parseArgs.contains(arg) )
 		return "";
 	return m_parseArgs[arg];
 }
 
-bool DApplication::firstRun() 
+bool KApplication::firstRun() 
 {
 	return false;
 }
 
-bool DApplication::insertGlobalAction(QAction *action, const QString& id)
+bool KApplication::insertGlobalAction(QAction *action, const QString& id)
 {
 	if (m_actionManager->insert( action, id, "global") )
 	{
@@ -187,12 +189,12 @@ bool DApplication::insertGlobalAction(QAction *action, const QString& id)
 	return false;
 }
 
-void DApplication::removeGlobalAction(QAction *action)
+void KApplication::removeGlobalAction(QAction *action)
 {
 	m_actionManager->remove( action, "global");
 }
 
-QAction *DApplication::findGlobalAction(const QString &id)
+QAction *KApplication::findGlobalAction(const QString &id)
 {
 	return m_actionManager->find( id, "global");
 }

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -32,7 +34,7 @@
 #include <QTimer>
 #include <QtDebug>
 
-class DViewButton::Animator
+class KViewButton::Animator
 {
 	public:
 		Animator(QObject *parent) : count(0), MAXCOUNT(30), INTERVAL(30), isEnter(false)
@@ -72,18 +74,18 @@ class DViewButton::Animator
 		bool isEnter;
 };
 
-DViewButton::DViewButton(Qt::ToolBarArea area, DToolView *toolView, QWidget * parent) : QToolButton(parent), m_area(area), m_toolView(toolView)
+KViewButton::KViewButton(Qt::ToolBarArea area, KToolView *toolView, QWidget * parent) : QToolButton(parent), m_area(area), m_toolView(toolView)
 {
 	setup();
 }
 
 
-DViewButton::DViewButton(DToolView *toolView, QWidget *parent) : QToolButton(parent), m_area(Qt::LeftToolBarArea), m_toolView(toolView)
+KViewButton::KViewButton(KToolView *toolView, QWidget *parent) : QToolButton(parent), m_area(Qt::LeftToolBarArea), m_toolView(toolView)
 {
 	setup();
 }
 
-void DViewButton::setup()
+void KViewButton::setup()
 {
 // 	setAutoExclusive(true);
 	setCheckable( true );
@@ -114,34 +116,34 @@ void DViewButton::setup()
 	}
 }
 
-DViewButton::~DViewButton()
+KViewButton::~KViewButton()
 {
 	delete m_animator;
 }
 
-void DViewButton::setOnlyText()
+void KViewButton::setOnlyText()
 {
 	setToolButtonStyle(Qt::ToolButtonTextOnly);
 }
 
-void DViewButton::setOnlyIcon()
+void KViewButton::setOnlyIcon()
 {
 	setToolButtonStyle(Qt::ToolButtonIconOnly);
 }
 
 
-void DViewButton::setArea(Qt::ToolBarArea area)
+void KViewButton::setArea(Qt::ToolBarArea area)
 {
 	m_area = area;
 	update();
 }
 
-Qt::ToolBarArea DViewButton::area() const
+Qt::ToolBarArea KViewButton::area() const
 {
 	return m_area;
 }
 
-QSize DViewButton::sizeHint() const
+QSize KViewButton::sizeHint() const
 {
 	QSize size = QToolButton::sizeHint();
 	
@@ -154,7 +156,7 @@ QSize DViewButton::sizeHint() const
 }
 
 
-QStyleOptionToolButton DViewButton::styleOption() const
+QStyleOptionToolButton KViewButton::styleOption() const
 {
 	QStyleOptionToolButton opt;
 	opt.init(this);
@@ -264,7 +266,7 @@ QStyleOptionToolButton DViewButton::styleOption() const
 	return opt;
 }
 
-void DViewButton::paintEvent(QPaintEvent *e)
+void KViewButton::paintEvent(QPaintEvent *e)
 {
 	Q_UNUSED(e);
 	
@@ -322,7 +324,7 @@ void DViewButton::paintEvent(QPaintEvent *e)
 	m_palette.setBrush(QPalette::ButtonText, opt.palette.buttonText());
 }
 
-QMenu *DViewButton::createMenu()
+QMenu *KViewButton::createMenu()
 {
 	QMenu *menu = new QMenu(tr("Menu"), this);
 	menu->addAction(tr("Only icon"), this, SLOT(setOnlyIcon()) );
@@ -337,7 +339,7 @@ QMenu *DViewButton::createMenu()
 	return menu;
 }
 
-void DViewButton::mousePressEvent(QMouseEvent *e)
+void KViewButton::mousePressEvent(QMouseEvent *e)
 {
 	QToolButton::mousePressEvent(e);
 	
@@ -348,7 +350,7 @@ void DViewButton::mousePressEvent(QMouseEvent *e)
 	}
 }
 
-void DViewButton::enterEvent( QEvent* )
+void KViewButton::enterEvent( QEvent* )
 {
 // 	bool checked = defaultAction() ? defaultAction()->isChecked() : isChecked();
 // 	qDebug() << "CHECKED: " << checked << " DOWN: " << isDown();
@@ -370,7 +372,7 @@ void DViewButton::enterEvent( QEvent* )
 	}
 }
 
-void DViewButton::leaveEvent( QEvent* )
+void KViewButton::leaveEvent( QEvent* )
 {
 	if ( m_animator->count == 0 )
 	{
@@ -385,7 +387,7 @@ void DViewButton::leaveEvent( QEvent* )
 	}
 }
 
-void DViewButton::animate()
+void KViewButton::animate()
 {
 	if ( m_animator->isEnter ) 
 	{
@@ -408,33 +410,33 @@ void DViewButton::animate()
 	}
 }
 
-void DViewButton::toggleSensibility()
+void KViewButton::toggleSensibility()
 {
 	m_isSensible = !m_isSensible;
 }
 
-void DViewButton::setSensible(bool s)
+void KViewButton::setSensible(bool s)
 {
 	m_isSensible = s;
 }
 
-bool DViewButton::isSensible() const
+bool KViewButton::isSensible() const
 {
 	return m_isSensible;
 }
 
-void DViewButton::setBlending(bool e)
+void KViewButton::setBlending(bool e)
 {
 	m_blending = e;
 }
 
-bool DViewButton::blending() const
+bool KViewButton::blending() const
 {
 	return m_blending;
 }
 
 
-void DViewButton::toggleView()
+void KViewButton::toggleView()
 {
 	QMainWindow *mw = static_cast<QMainWindow *>(m_toolView->parentWidget());
 	
@@ -470,7 +472,7 @@ void DViewButton::toggleView()
 }
 
 
-DToolView *DViewButton::toolView() const
+KToolView *KViewButton::toolView() const
 {
 	return m_toolView;
 }

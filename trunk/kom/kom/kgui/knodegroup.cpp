@@ -1,3 +1,25 @@
+/***************************************************************************
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
 #include "knodegroup.h"
 
 #include <kcore/kdebug.h>
@@ -5,9 +27,9 @@
 #include <QGraphicsPathItem>
 #include <QAbstractGraphicsShapeItem>
 
-struct DNodeGroup::Private
+struct KNodeGroup::Private
 {
-	QList<DControlNode*> nodes;
+	QList<KControlNode*> nodes;
 	QGraphicsItem *parentItem;
 	QPainterPath path;
 	QPointF pos;
@@ -16,12 +38,12 @@ struct DNodeGroup::Private
 };
 
 
-DNodeGroup::DNodeGroup(QGraphicsItem * parent, QGraphicsScene *scene): d(new Private)
+KNodeGroup::KNodeGroup(QGraphicsItem * parent, QGraphicsScene *scene): k(new Private)
 {
-	DINIT;
+	KINIT;
 	
-	d->parentItem = parent;
-	d->scene = scene;
+	k->parentItem = parent;
+	k->scene = scene;
 	
 	if(QGraphicsPathItem *pathItem = qgraphicsitem_cast<QGraphicsPathItem *>(parent))
 	{
@@ -30,28 +52,28 @@ DNodeGroup::DNodeGroup(QGraphicsItem * parent, QGraphicsScene *scene): d(new Pri
 }
 
 
-QGraphicsItem * DNodeGroup::parentItem()
+QGraphicsItem * KNodeGroup::parentItem()
 {
-	return d->parentItem;
+	return k->parentItem;
 }
 
 
-DNodeGroup::~DNodeGroup()
+KNodeGroup::~KNodeGroup()
 {
-	DEND;
-	qDeleteAll(d->nodes);
-	d->nodes.clear();
-	delete d;
+	KEND;
+	qDeleteAll(k->nodes);
+	k->nodes.clear();
+	delete k;
 }
 
 
-void DNodeGroup::syncNodes(const QPainterPath & path)
+void KNodeGroup::syncNodes(const QPainterPath & path)
 {
-	if(d->nodes.isEmpty())
+	if(k->nodes.isEmpty())
 	{
 		return;
 	}
-	foreach(DControlNode *node, d->nodes)
+	foreach(KControlNode *node, k->nodes)
 	{
 		if(node)
 		{
@@ -62,23 +84,23 @@ void DNodeGroup::syncNodes(const QPainterPath & path)
 }
 
 
-void DNodeGroup::syncNodesFromParent()
+void KNodeGroup::syncNodesFromParent()
 {
-	if(d->parentItem)
+	if(k->parentItem)
 	{
-		if(qgraphicsitem_cast<QGraphicsPathItem *>(d->parentItem))
+		if(qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem))
 		{
-			syncNodes(d->parentItem->sceneMatrix().map( qgraphicsitem_cast<QGraphicsPathItem *>(d->parentItem)->path()));
+			syncNodes(k->parentItem->sceneMatrix().map( qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path()));
 		}
 	}
 }
 
 
-void DNodeGroup::setParentItem(QGraphicsItem *newParent)
+void KNodeGroup::setParentItem(QGraphicsItem *newParent)
 {
-	D_FUNCINFO;
-	d->parentItem = newParent;
-	foreach(DControlNode *node, d->nodes)
+	K_FUNCINFO;
+	k->parentItem = newParent;
+	foreach(KControlNode *node, k->nodes)
 	{
 		if(node)
 		{
@@ -87,80 +109,80 @@ void DNodeGroup::setParentItem(QGraphicsItem *newParent)
 	}
 }
 
-void DNodeGroup::moveElementTo(int index, const QPointF& pos )
+void KNodeGroup::moveElementTo(int index, const QPointF& pos )
 {
 
-	QPainterPath path = qgraphicsitem_cast<QGraphicsPathItem *>(d->parentItem)->path();
+	QPainterPath path = qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path();
 	path.setElementPositionAt(index,pos.x(), pos.y() );
 	QPainterPath::Element e = path.elementAt(0);
-	qgraphicsitem_cast<QGraphicsPathItem *>( d->parentItem)->setPath(path);
+	qgraphicsitem_cast<QGraphicsPathItem *>( k->parentItem)->setPath(path);
 	
-	if(d->changedNodes.contains (index))
+	if(k->changedNodes.contains (index))
 	{
-		(*d->changedNodes.find(index)) = pos;
+		(*k->changedNodes.find(index)) = pos;
 	}
 	else
 	{
-		d->changedNodes.insert(index, pos);
-		emit itemChanged( d->parentItem );
+		k->changedNodes.insert(index, pos);
+		emit itemChanged( k->parentItem );
 	}
 }
 
 
-QHash<int, QPointF > DNodeGroup::changedNodes()
+QHash<int, QPointF > KNodeGroup::changedNodes()
 {
-	return d->changedNodes;
+	return k->changedNodes;
 }
 
 
-void DNodeGroup::clearChangesNodes()
+void KNodeGroup::clearChangesNodes()
 {
-	d->changedNodes.clear();
+	k->changedNodes.clear();
 }
 
 
-void DNodeGroup::restoreItem()
+void KNodeGroup::restoreItem()
 {
-	qgraphicsitem_cast<QGraphicsPathItem *>( d->parentItem)->setPath(d->path);
-	d->parentItem->setPos(d->pos);
+	qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->setPath(k->path);
+	k->parentItem->setPos(k->pos);
 }
 
 
-void DNodeGroup::show()
+void KNodeGroup::show()
 {
-	foreach(DControlNode *node, d->nodes)
+	foreach(KControlNode *node, k->nodes)
 	{
-		if(qgraphicsitem_cast<QGraphicsPathItem *>( d->parentItem))
+		if(qgraphicsitem_cast<QGraphicsPathItem *>( k->parentItem))
 		{
 			if(!node->scene())
 			{
-				d->scene->addItem(node);
+				k->scene->addItem(node);
 			}
 		}
 	}
 }
 
 
-void DNodeGroup::saveParentProperties()
+void KNodeGroup::saveParentProperties()
 {
-	if(qgraphicsitem_cast<QGraphicsPathItem *>(d->parentItem))
+	if(qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem))
 	{
-		d->path = qgraphicsitem_cast<QGraphicsPathItem *>(d->parentItem)->path();
-		d->pos = d->parentItem->scenePos();
+		k->path = qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path();
+		k->pos = k->parentItem->scenePos();
 	}
 }
 
 
-int DNodeGroup::removeSelectedNodes()
+int KNodeGroup::removeSelectedNodes()
 {
 	int count = 0;
-	foreach(DControlNode *node, d->nodes )
+	foreach(KControlNode *node, k->nodes )
 	{
 		if ( node->isSelected() )
 		{
 			count++;
 			
-			d->nodes.removeAll(node);
+			k->nodes.removeAll(node);
 			// FIXME: re-crear el path.
 		}
 	}
@@ -169,7 +191,7 @@ int DNodeGroup::removeSelectedNodes()
 }
 
 
-void DNodeGroup::createNodes(QGraphicsPathItem *pathItem)
+void KNodeGroup::createNodes(QGraphicsPathItem *pathItem)
 {
 	if(pathItem)
 	{
@@ -177,8 +199,8 @@ void DNodeGroup::createNodes(QGraphicsPathItem *pathItem)
 		{
 			d->scene->removeItem(node);
 		}*/
-		qDeleteAll(d->nodes);
-		d->nodes.clear();
+		qDeleteAll(k->nodes);
+		k->nodes.clear();
 		
 		QPainterPath path = pathItem->sceneMatrix().map( pathItem->path());
 		saveParentProperties();
@@ -193,49 +215,49 @@ void DNodeGroup::createNodes(QGraphicsPathItem *pathItem)
 				if(index - 2 < 0) continue;
 				if( path.elementAt(index-2).type == QPainterPath::CurveToElement )
 				{
-					DControlNode *node = new DControlNode(index, this,  path.elementAt(index), pathItem, d->scene);
+					KControlNode *node = new KControlNode(index, this,  path.elementAt(index), pathItem, k->scene);
 					QPainterPath::Element e1 = path.elementAt(index-1);
-					node->setLeft(new DControlNode(index-1,this, e1, pathItem, d->scene));
+					node->setLeft(new KControlNode(index-1,this, e1, pathItem, k->scene));
 					
 					if(index+1 < path.elementCount() )
 					{
 						QPainterPath::Element e2 = path.elementAt(index+1);
 						if(e2.type == QPainterPath::CurveToElement)
 						{
-							node->setRight(new DControlNode(index+1, this, e2, pathItem, d->scene));
-							d->nodes << node->right();
+							node->setRight(new DControlNode(index+1, this, e2, pathItem, k->scene));
+							k->nodes << node->right();
 							index++;
 						}
 					}
-					d->nodes << node;
-					d->nodes << node->left();
+					k->nodes << node;
+					k->nodes << node->left();
 				}
 			}
 			else if( (e.type == QPainterPath::LineToElement || e.type == QPainterPath::MoveToElement ) )
 			{
-				DControlNode *node;
+				KControlNode *node;
 				if(index+1 < path.elementCount())
 				{
 					
 					if( path.elementAt(index+1).type == QPainterPath::CurveToElement )
 					{
-						node = new DControlNode(index, this, path.elementAt(index), pathItem, d->scene);
-						node->setRight(new DControlNode(index+1,this, path.elementAt(index+1), pathItem, d->scene));
+						node = new KControlNode(index, this, path.elementAt(index), pathItem, k->scene);
+						node->setRight(new KControlNode(index+1,this, path.elementAt(index+1), pathItem, k->scene));
 						
 						index++;
-						d->nodes << node;
-						d->nodes << node->right();
+						k->nodes << node;
+						k->nodes << node->right();
 					}
 					else
 					{
-						node = new DControlNode(index, this, path.elementAt(index), pathItem, d->scene);
-						d->nodes << node;
+						node = new KControlNode(index, this, path.elementAt(index), pathItem, k->scene);
+						k->nodes << node;
 					}
 				}
 				else
 				{
-					node = new DControlNode(index, this, path.elementAt(index), pathItem, d->scene);
-					d->nodes << node;
+					node = new KControlNode(index, this, path.elementAt(index), pathItem, k->scene);
+					k->nodes << node;
 				}
 			}
 			index++;
@@ -243,32 +265,32 @@ void DNodeGroup::createNodes(QGraphicsPathItem *pathItem)
 	}
 	else
 	{
-		dDebug("selection") << "Item not item path";
+		kDebug("selection") << "Item not item path";
 	}
 }
 
-void DNodeGroup::addControlNode(DControlNode* )
+void KNodeGroup::addControlNode(KControlNode* )
 {
 	
 }
 
-void DNodeGroup::emitNodeClicked()
+void KNodeGroup::emitNodeClicked()
 {
 	emit nodeClicked();
 }
 
 
-void DNodeGroup::expandAllNodes()
+void KNodeGroup::expandAllNodes()
 {
-	foreach(DControlNode *node, d->nodes )
+	foreach(KControlNode *node, k->nodes )
 	{
 		node->setVisibleChilds(true);
 	}
 }
 
-bool DNodeGroup::isSelected()
+bool KNodeGroup::isSelected()
 {
-	foreach(DControlNode *node, d->nodes )
+	foreach(KControlNode *node, k->nodes )
         {
 		if(node->isSelected())
 		{

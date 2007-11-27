@@ -111,7 +111,7 @@ struct short_packet
 //
 //======================================================================
 
-QImage DImageEffect::gradient(const QSize &size, const QColor &ca,
+QImage KImageEffect::gradient(const QSize &size, const QColor &ca,
 	const QColor &cb, GradientType eff, int ncols)
 {
     int rDiff, gDiff, bDiff;
@@ -121,7 +121,7 @@ QImage DImageEffect::gradient(const QSize &size, const QColor &ca,
 
     if (size.width() == 0 || size.height() == 0) {
 #ifndef NDEBUG
-      std::cerr << "WARNING: DImageEffect::gradient: invalid image" << std::endl;
+      std::cerr << "WARNING: KImageEffect::gradient: invalid image" << std::endl;
 #endif
       return image;
     }
@@ -375,7 +375,7 @@ QImage DImageEffect::gradient(const QSize &size, const QColor &ca,
 //   the balanced code would suffer with no other gain than a mere
 //   source code and byte code size economy.
 
-QImage DImageEffect::unbalancedGradient(const QSize &size, const QColor &ca,
+QImage KImageEffect::unbalancedGradient(const QSize &size, const QColor &ca,
 	const QColor &cb, GradientType eff, int xfactor, int yfactor,
 	int ncols)
 {
@@ -409,7 +409,7 @@ QImage DImageEffect::unbalancedGradient(const QSize &size, const QColor &ca,
 
     if (size.width() == 0 || size.height() == 0) {
 #ifndef NDEBUG
-      std::cerr << "WARNING: DImageEffect::unbalancedGradient : invalid image\n";
+      std::cerr << "WARNING: KImageEffect::unbalancedGradient : invalid image\n";
 #endif
       return image;
     }
@@ -641,11 +641,11 @@ struct KIE8Pack
  * less expensive than doing a float operation on the 3 color components of
  * each pixel. (mosfet)
  */
-QImage& DImageEffect::intensity(QImage &image, float percent)
+QImage& KImageEffect::intensity(QImage &image, float percent)
 {
     if (image.width() == 0 || image.height() == 0) {
 #ifndef NDEBUG
-      std::cerr << "WARNING: DImageEffect::intensity : invalid image\n";
+      std::cerr << "WARNING: KImageEffect::intensity : invalid image\n";
 #endif
       return image;
     }
@@ -833,12 +833,12 @@ QImage& DImageEffect::intensity(QImage &image, float percent)
     return image;
 }
 
-QImage& DImageEffect::channelIntensity(QImage &image, float percent,
+QImage& KImageEffect::channelIntensity(QImage &image, float percent,
                                        RGBComponent channel)
 {
     if (image.width() == 0 || image.height() == 0) {
 #ifndef NDEBUG
-      std::cerr << "WARNING: DImageEffect::channelIntensity : invalid image\n";
+      std::cerr << "WARNING: KImageEffect::channelIntensity : invalid image\n";
 #endif
       return image;
     }
@@ -924,13 +924,13 @@ QImage& DImageEffect::channelIntensity(QImage &image, float percent,
 
 // Modulate an image with an RBG channel of another image
 //
-QImage& DImageEffect::modulate(QImage &image, QImage &modImage, bool reverse,
+QImage& KImageEffect::modulate(QImage &image, QImage &modImage, bool reverse,
 	ModulationType type, int factor, RGBComponent channel)
 {
     if (image.width() == 0 || image.height() == 0 ||
         modImage.width() == 0 || modImage.height() == 0) {
 #ifndef NDEBUG
-      std::cerr << "WARNING: DImageEffect::modulate : invalid image\n";
+      std::cerr << "WARNING: KImageEffect::modulate : invalid image\n";
 #endif
       return image;
     }
@@ -1054,14 +1054,14 @@ QImage& DImageEffect::modulate(QImage &image, QImage &modImage, bool reverse,
 
 
 // Nice and fast direct pixel manipulation
-QImage& DImageEffect::blend(const QColor& clr, QImage& dst, float opacity)
+QImage& KImageEffect::blend(const QColor& clr, QImage& dst, float opacity)
 {
     if (dst.width() <= 0 || dst.height() <= 0)
         return dst;
 
     if (opacity < 0.0 || opacity > 1.0) {
 #ifndef NDEBUG
-        std::cerr << "WARNING: DImageEffect::blend : invalid opacity. Range [0, 1]\n";
+        std::cerr << "WARNING: KImageEffect::blend : invalid opacity. Range [0, 1]\n";
 #endif
         return dst;
     }
@@ -1295,7 +1295,7 @@ QImage& DImageEffect::blend(const QColor& clr, QImage& dst, float opacity)
 }
 
 // Nice and fast direct pixel manipulation
-QImage& DImageEffect::blend(QImage& src, QImage& dst, float opacity)
+QImage& KImageEffect::blend(QImage& src, QImage& dst, float opacity)
 {
     if (src.width() <= 0 || src.height() <= 0)
         return dst;
@@ -1304,14 +1304,14 @@ QImage& DImageEffect::blend(QImage& src, QImage& dst, float opacity)
 
     if (src.width() != dst.width() || src.height() != dst.height()) {
 #ifndef NDEBUG
-        std::cerr << "WARNING: DImageEffect::blend : src and destination images are not the same size\n";
+        std::cerr << "WARNING: KImageEffect::blend : src and destination images are not the same size\n";
 #endif
         return dst;
     }
 
     if (opacity < 0.0 || opacity > 1.0) {
 #ifndef NDEBUG
-        std::cerr << "WARNING: DImageEffect::blend : invalid opacity. Range [0, 1]\n";
+        std::cerr << "WARNING: KImageEffect::blend : invalid opacity. Range [0, 1]\n";
 #endif
         return dst;
     }
@@ -1524,13 +1524,13 @@ QImage& DImageEffect::blend(QImage& src, QImage& dst, float opacity)
 }
 
 
-QImage& DImageEffect::blend(QImage &image, float initial_intensity,
+QImage& KImageEffect::blend(QImage &image, float initial_intensity,
                             const QColor &bgnd, GradientType eff,
                             bool anti_dir)
 {
     if (image.width() == 0 || image.height() == 0 || image.depth()!=32 ) {
 #ifndef NDEBUG
-      std::cerr << "WARNING: DImageEffect::blend : invalid image\n";
+      std::cerr << "WARNING: KImageEffect::blend : invalid image\n";
 #endif
       return image;
     }
@@ -1725,14 +1725,14 @@ QImage& DImageEffect::blend(QImage &image, float initial_intensity,
         }
     }
 #ifndef NDEBUG
-    else std::cerr << "DImageEffect::blend effect not implemented" << std::endl;
+    else std::cerr << "KImageEffect::blend effect not implemented" << std::endl;
 #endif
     return image;
 }
 
 // Not very efficient as we create a third big image...
 //
-QImage& DImageEffect::blend(QImage &image1, QImage &image2,
+QImage& KImageEffect::blend(QImage &image1, QImage &image2,
 			    GradientType gt, int xf, int yf)
 {
   if (image1.width() == 0 || image1.height() == 0 ||
@@ -1741,7 +1741,7 @@ QImage& DImageEffect::blend(QImage &image1, QImage &image2,
 
   QImage image3;
 
-  image3 = DImageEffect::unbalancedGradient(image1.size(),
+  image3 = KImageEffect::unbalancedGradient(image1.size(),
 				    QColor(0,0,0), QColor(255,255,255),
 				    gt, xf, yf, 0);
 
@@ -1750,14 +1750,14 @@ QImage& DImageEffect::blend(QImage &image1, QImage &image2,
 
 // Blend image2 into image1, using an RBG channel of blendImage
 //
-QImage& DImageEffect::blend(QImage &image1, QImage &image2,
+QImage& KImageEffect::blend(QImage &image1, QImage &image2,
 			    QImage &blendImage, RGBComponent channel)
 {
     if (image1.width() == 0 || image1.height() == 0 ||
         image2.width() == 0 || image2.height() == 0 ||
         blendImage.width() == 0 || blendImage.height() == 0) {
 #ifndef NDEBUG
-        std::cerr << "DImageEffect::blend effect invalid image" << std::endl;
+        std::cerr << "KImageEffect::blend effect invalid image" << std::endl;
 #endif
       return image1;
     }
@@ -1825,7 +1825,7 @@ QImage& DImageEffect::blend(QImage &image1, QImage &image2,
 //
 //======================================================================
 
-unsigned int DImageEffect::lHash(unsigned int c)
+unsigned int KImageEffect::lHash(unsigned int c)
 {
     unsigned char r = qRed(c), g = qGreen(c), b = qBlue(c), a = qAlpha(c);
     unsigned char nr, ng, nb;
@@ -1839,7 +1839,7 @@ unsigned int DImageEffect::lHash(unsigned int c)
 
 // -----------------------------------------------------------------------------
 
-unsigned int DImageEffect::uHash(unsigned int c)
+unsigned int KImageEffect::uHash(unsigned int c)
 {
     unsigned char r = qRed(c), g = qGreen(c), b = qBlue(c), a = qAlpha(c);
     unsigned char nr, ng, nb;
@@ -1853,11 +1853,11 @@ unsigned int DImageEffect::uHash(unsigned int c)
 
 // -----------------------------------------------------------------------------
 
-QImage& DImageEffect::hash(QImage &image, Lighting lite, unsigned int spacing)
+QImage& KImageEffect::hash(QImage &image, Lighting lite, unsigned int spacing)
 {
     if (image.width() == 0 || image.height() == 0) {
 #ifndef NDEBUG
-        std::cerr << "DImageEffect::hash effect invalid image" << std::endl;
+        std::cerr << "KImageEffect::hash effect invalid image" << std::endl;
 #endif
       return image;
     }
@@ -1934,7 +1934,7 @@ QImage& DImageEffect::hash(QImage &image, Lighting lite, unsigned int spacing)
 //
 //======================================================================
 
-QImage& DImageEffect::flatten(QImage &img, const QColor &ca,
+QImage& KImageEffect::flatten(QImage &img, const QColor &ca,
                             const QColor &cb, int ncols)
 {
     if (img.width() == 0 || img.height() == 0)
@@ -2031,7 +2031,7 @@ QImage& DImageEffect::flatten(QImage &img, const QColor &ca,
 //
 //======================================================================
 
-QImage& DImageEffect::fade(QImage &img, float val, const QColor &color)
+QImage& KImageEffect::fade(QImage &img, float val, const QColor &color)
 {
     if (img.width() == 0 || img.height() == 0)
       return img;
@@ -2113,7 +2113,7 @@ QImage& DImageEffect::fade(QImage &img, float val, const QColor &color)
 //
 // It does produce lower quality grayscale ;-) Use fast == true for the fast
 // algorithm, false for the higher quality one (mosfet).
-QImage& DImageEffect::toGray(QImage &img, bool fast)
+QImage& KImageEffect::toGray(QImage &img, bool fast)
 {
     if (img.width() == 0 || img.height() == 0)
       return img;
@@ -2163,7 +2163,7 @@ QImage& DImageEffect::toGray(QImage &img, bool fast)
 }
 
 // CT 29Jan2000 - desaturation algorithms
-QImage& DImageEffect::desaturate(QImage &img, float desat)
+QImage& KImageEffect::desaturate(QImage &img, float desat)
 {
     if (img.width() == 0 || img.height() == 0)
       return img;
@@ -2186,7 +2186,7 @@ QImage& DImageEffect::desaturate(QImage &img, float desat)
 }
 
 // Contrast stuff (mosfet)
-QImage& DImageEffect::contrast(QImage &img, int c)
+QImage& KImageEffect::contrast(QImage &img, int c)
 {
     if (img.width() == 0 || img.height() == 0)
       return img;
@@ -2248,7 +2248,7 @@ QImage& DImageEffect::contrast(QImage &img, int c)
 // Floyd-Steinberg dithering
 // Ref: Bitmapped Graphics Programming in C++
 //      Marv Luse, Addison-Wesley Publishing, 1993.
-QImage& DImageEffect::dither(QImage &img, const QColor *palette, int size)
+QImage& KImageEffect::dither(QImage &img, const QColor *palette, int size)
 {
     if (img.width() == 0 || img.height() == 0 ||
         palette == 0 || img.depth() <= 8)
@@ -2336,7 +2336,7 @@ QImage& DImageEffect::dither(QImage &img, const QColor *palette, int size)
     return img;
 }
 
-int DImageEffect::nearestColor( int r, int g, int b, const QColor *palette, int size )
+int KImageEffect::nearestColor( int r, int g, int b, const QColor *palette, int size )
 {
     if (palette == 0)
       return 0;
@@ -2366,7 +2366,7 @@ int DImageEffect::nearestColor( int r, int g, int b, const QColor *palette, int 
     return nearest;
 }
 
-bool DImageEffect::blend(
+bool KImageEffect::blend(
     const QImage & upper,
     const QImage & lower,
     QImage & output
@@ -2380,7 +2380,7 @@ bool DImageEffect::blend(
   )
   {
 #ifndef NDEBUG
-    std::cerr << "DImageEffect::blend : Sizes not correct\n" ;
+    std::cerr << "KImageEffect::blend : Sizes not correct\n" ;
 #endif
     return false;
   }
@@ -2426,7 +2426,7 @@ bool DImageEffect::blend(
 
 #if 0
 // Not yet...
-bool DImageEffect::blend(
+bool KImageEffect::blend(
     const QImage & upper,
     const QImage & lower,
     QImage & output,
@@ -2439,7 +2439,7 @@ bool DImageEffect::blend(
 
 #endif
 
-bool DImageEffect::blend(
+bool KImageEffect::blend(
     int &x, int &y,
     const QImage & upper,
     const QImage & lower,
@@ -2504,7 +2504,7 @@ bool DImageEffect::blend(
   return true;
 }
 
-bool DImageEffect::blendOnLower(
+bool KImageEffect::blendOnLower(
     int x, int y,
     const QImage & upper,
     const QImage & lower
@@ -2575,7 +2575,7 @@ bool DImageEffect::blendOnLower(
   return true;
 }
 
-void DImageEffect::blendOnLower(const QImage &upper, const QPoint &upperOffset,
+void KImageEffect::blendOnLower(const QImage &upper, const QPoint &upperOffset,
                                 QImage &lower, const QRect &lowerRect)
 {
     // clip rect
@@ -2597,7 +2597,7 @@ void DImageEffect::blendOnLower(const QImage &upper, const QPoint &upperOffset,
     }
 }
 
-void DImageEffect::blendOnLower(const QImage &upper, const QPoint &upperOffset,
+void KImageEffect::blendOnLower(const QImage &upper, const QPoint &upperOffset,
                           QImage &lower, const QRect &lowerRect, float opacity)
 {
     // clip rect
@@ -2619,7 +2619,7 @@ void DImageEffect::blendOnLower(const QImage &upper, const QPoint &upperOffset,
     }
 }
 
-QRect DImageEffect::computeDestinationRect(const QSize &lowerSize,
+QRect KImageEffect::computeDestinationRect(const QSize &lowerSize,
                                        Disposition disposition, QImage &upper)
 {
     int w = lowerSize.width();
@@ -2684,7 +2684,7 @@ QRect DImageEffect::computeDestinationRect(const QSize &lowerSize,
     return d;
 }
 
-void DImageEffect::blendOnLower(QImage &upper, QImage &lower,
+void KImageEffect::blendOnLower(QImage &upper, QImage &lower,
                                 Disposition disposition, float opacity)
 {
     QRect r = computeDestinationRect(lower.size(), disposition, upper);
@@ -2696,7 +2696,7 @@ void DImageEffect::blendOnLower(QImage &upper, QImage &lower,
 
 
 // For selected icons
-QImage& DImageEffect::selectedImage( QImage &img, const QColor &col )
+QImage& KImageEffect::selectedImage( QImage &img, const QColor &col )
 {
     return blend( col, img, 0.5);
 }
@@ -2738,7 +2738,7 @@ dealings in ImageMagick without prior written authorization from the
 ImageMagick Studio.
 */
 
-QImage DImageEffect::sample(QImage &src, int w, int h)
+QImage KImageEffect::sample(QImage &src, int w, int h)
 {
     if(w == src.width() && h == src.height())
         return(src);
@@ -2750,7 +2750,7 @@ QImage DImageEffect::sample(QImage &src, int w, int h)
     int *y_offset = (int *)malloc(h*sizeof(int));
     if(!x_offset || !y_offset){
 #ifndef NDEBUG
-        qWarning("DImageEffect::sample(): Unable to allocate pixel buffer");
+        qWarning("KImageEffect::sample(): Unable to allocate pixel buffer");
 #endif
         free(x_offset);
         free(y_offset);
@@ -2801,7 +2801,7 @@ QImage DImageEffect::sample(QImage &src, int w, int h)
     return(dest);
 }
 
-void DImageEffect::threshold(QImage &img, unsigned int threshold)
+void KImageEffect::threshold(QImage &img, unsigned int threshold)
 {
     int i, count;
     unsigned int *data;
@@ -2817,7 +2817,7 @@ void DImageEffect::threshold(QImage &img, unsigned int threshold)
         data[i] = intensityValue(data[i]) < threshold ? QColor(Qt::black).rgb() : QColor(Qt::white).rgb();
 }
 
-void DImageEffect::hull(const int x_offset, const int y_offset,
+void KImageEffect::hull(const int x_offset, const int y_offset,
                         const int polarity, const int columns,
                         const int rows,
                         unsigned int *f, unsigned int *g)
@@ -2897,7 +2897,7 @@ void DImageEffect::hull(const int x_offset, const int y_offset,
     }
 }
 
-QImage DImageEffect::despeckle(QImage &src)
+QImage KImageEffect::despeckle(QImage &src)
 {
     int i, j, x, y;
     unsigned int *blue_channel, *red_channel, *green_channel, *buffer,
@@ -3008,7 +3008,7 @@ QImage DImageEffect::despeckle(QImage &src)
     return(dest);
 }
 
-unsigned int DImageEffect::generateNoise(unsigned int pixel,
+unsigned int KImageEffect::generateNoise(unsigned int pixel,
                                          NoiseType noise_type)
 {
 #define NoiseEpsilon  1.0e-5
@@ -3103,7 +3103,7 @@ unsigned int DImageEffect::generateNoise(unsigned int pixel,
     return((unsigned int) (value+0.5));
 }
 
-QImage DImageEffect::addNoise(QImage &src, NoiseType noise_type)
+QImage KImageEffect::addNoise(QImage &src, NoiseType noise_type)
 {
     int x, y;
     QImage dest(src.width(), src.height(), QImage::Format_RGB32);
@@ -3142,7 +3142,7 @@ QImage DImageEffect::addNoise(QImage &src, NoiseType noise_type)
     return(dest);
 }
 
-unsigned int DImageEffect::interpolateColor(QImage *image, double x_offset,
+unsigned int KImageEffect::interpolateColor(QImage *image, double x_offset,
                                             double y_offset,
                                             unsigned int background)
 {
@@ -3233,7 +3233,7 @@ unsigned int DImageEffect::interpolateColor(QImage *image, double x_offset,
                  (unsigned char)(beta*(alpha*qAlpha(p)+x_offset*qAlpha(q))+y_offset*(alpha*qAlpha(r)+x_offset*qAlpha(s)))));
 }
 
-QImage DImageEffect::implode(QImage &src, double factor,
+QImage KImageEffect::implode(QImage &src, double factor,
                              unsigned int background)
 {
     double amount, distance, radius;
@@ -3314,7 +3314,7 @@ QImage DImageEffect::implode(QImage &src, double factor,
     return(dest);
 }
 
-QImage DImageEffect::rotate(QImage &img, RotateDirection r)
+QImage KImageEffect::rotate(QImage &img, RotateDirection r)
 {
     QImage dest;
     int x, y;
@@ -3412,7 +3412,7 @@ QImage DImageEffect::rotate(QImage &img, RotateDirection r)
     return(dest);
 }
 
-void DImageEffect::solarize(QImage &img, double factor)
+void KImageEffect::solarize(QImage &img, double factor)
 {
     int i, count;
     int threshold;
@@ -3435,7 +3435,7 @@ void DImageEffect::solarize(QImage &img, double factor)
     }
 }
 
-QImage DImageEffect::spread(QImage &src, unsigned int amount)
+QImage KImageEffect::spread(QImage &src, unsigned int amount)
 {
     int quantum, x, y;
     int x_distance, y_distance;
@@ -3486,7 +3486,7 @@ QImage DImageEffect::spread(QImage &src, unsigned int amount)
     return(dest);
 }
 
-QImage DImageEffect::swirl(QImage &src, double degrees,
+QImage KImageEffect::swirl(QImage &src, double degrees,
                            unsigned int background)
 {
     double cosine, distance, factor, radius, sine, x_center, x_distance,
@@ -3564,7 +3564,7 @@ QImage DImageEffect::swirl(QImage &src, double degrees,
     return(dest);
 }
 
-QImage DImageEffect::wave(QImage &src, double amplitude, double wavelength,
+QImage KImageEffect::wave(QImage &src, double amplitude, double wavelength,
                           unsigned int background)
 {
     double *sine_map;
@@ -3597,13 +3597,13 @@ QImage DImageEffect::wave(QImage &src, double amplitude, double wavelength,
 
 // New algorithms based on ImageMagick 5.5.6 (05/26/03)
 
-QImage DImageEffect::oilPaint(QImage &src, int /*radius*/)
+QImage KImageEffect::oilPaint(QImage &src, int /*radius*/)
 {
     /* binary compat method - remove me when possible! */
     return(oilPaintConvolve(src, 0));
 }
 
-QImage DImageEffect::oilPaintConvolve(QImage &src, double radius)
+QImage KImageEffect::oilPaintConvolve(QImage &src, double radius)
 {
     unsigned long count /*,*histogram*/;
     unsigned long histogram[256];
@@ -3620,13 +3620,13 @@ QImage DImageEffect::oilPaintConvolve(QImage &src, double radius)
 
     width = getOptimalKernelWidth(radius, 0.5);
     if(src.width() < width){
-        qWarning("DImageEffect::oilPaintConvolve(): Image is smaller than radius!");
+        qWarning("KImageEffect::oilPaintConvolve(): Image is smaller than radius!");
         return(dest);
     }
     /*
     histogram = (unsigned long *)malloc(256*sizeof(unsigned long));
     if(!histogram){
-        qWarning("DImageEffect::oilPaintColvolve(): Unable to allocate memory!");
+        qWarning("KImageEffect::oilPaintColvolve(): Unable to allocate memory!");
         return(dest);
     }
     */
@@ -3649,7 +3649,7 @@ QImage DImageEffect::oilPaintConvolve(QImage &src, double radius)
 
                     k = intensityValue(jumpTable[my][mx]);
                     if(k > 255){
-                        qWarning("DImageEffect::oilPaintConvolve(): k is %d",
+                        qWarning("KImageEffect::oilPaintConvolve(): k is %d",
                                  k);
                         k = 255;
                     }
@@ -3668,23 +3668,23 @@ QImage DImageEffect::oilPaintConvolve(QImage &src, double radius)
     return(dest);
 }
 
-QImage DImageEffect::charcoal(QImage &src, double /*factor*/)
+QImage KImageEffect::charcoal(QImage &src, double /*factor*/)
 {
     /* binary compat method - remove me when possible! */
     return(charcoal(src, 0, 1));
 }
 
-QImage DImageEffect::charcoal(QImage &src, double radius, double sigma)
+QImage KImageEffect::charcoal(QImage &src, double radius, double sigma)
 {
     QImage img(edge(src, radius));
     img = blur(img, radius, sigma);
     normalize(img);
     img.invertPixels(QImage::InvertRgb);
-    DImageEffect::toGray(img);
+    KImageEffect::toGray(img);
     return(img);
 }
 
-void DImageEffect::normalize(QImage &image)
+void KImageEffect::normalize(QImage &image)
 {
     struct double_packet high, low, intensity, *histogram;
     struct short_packet *normalize_map;
@@ -3708,7 +3708,7 @@ void DImageEffect::normalize(QImage &image)
             liberateMemory(&histogram);
         if(normalize_map)
             liberateMemory(&normalize_map);
-        qWarning("DImageEffect::normalize(): Unable to allocate memory!");
+        qWarning("KImageEffect::normalize(): Unable to allocate memory!");
         return;
     }
 
@@ -3894,7 +3894,7 @@ void DImageEffect::normalize(QImage &image)
     liberateMemory(&normalize_map);
 }
 
-void DImageEffect::equalize(QImage &image)
+void KImageEffect::equalize(QImage &image)
 {
     struct double_packet high, low, intensity, *map, *histogram;
     struct short_packet *equalize_map;
@@ -3916,7 +3916,7 @@ void DImageEffect::equalize(QImage &image)
             liberateMemory(&map);
         if(equalize_map)
             liberateMemory(&equalize_map);
-        qWarning("DImageEffect::equalize(): Unable to allocate memory!");
+        qWarning("KImageEffect::equalize(): Unable to allocate memory!");
         return;
     }
 
@@ -3994,7 +3994,7 @@ void DImageEffect::equalize(QImage &image)
 
 }
 
-QImage DImageEffect::edge(QImage &image, double radius)
+QImage KImageEffect::edge(QImage &image, double radius)
 {
     double *kernel;
     int width;
@@ -4010,12 +4010,12 @@ QImage DImageEffect::edge(QImage &image, double radius)
 
     width = getOptimalKernelWidth(radius, 0.5);
     if(image.width() < width || image.height() < width){
-        qWarning("DImageEffect::edge(): Image is smaller than radius!");
+        qWarning("KImageEffect::edge(): Image is smaller than radius!");
         return(dest);
     }
     kernel= (double *)malloc(width*width*sizeof(double));
     if(!kernel){
-        qWarning("DImageEffect::edge(): Unable to allocate memory!");
+        qWarning("KImageEffect::edge(): Unable to allocate memory!");
         return(dest);
     }
     for(i=0; i < (width*width); i++)
@@ -4026,13 +4026,13 @@ QImage DImageEffect::edge(QImage &image, double radius)
     return(dest);
 }
 
-QImage DImageEffect::emboss(QImage &src)
+QImage KImageEffect::emboss(QImage &src)
 {
     /* binary compat method - remove me when possible! */
     return(emboss(src, 0, 1));
 }
 
-QImage DImageEffect::emboss(QImage &image, double radius, double sigma)
+QImage KImageEffect::emboss(QImage &image, double radius, double sigma)
 {
     double alpha, *kernel;
     int j, width;
@@ -4040,18 +4040,18 @@ QImage DImageEffect::emboss(QImage &image, double radius, double sigma)
     QImage dest;
 
     if(sigma == 0.0){
-        qWarning("DImageEffect::emboss(): Zero sigma is not permitted!");
+        qWarning("KImageEffect::emboss(): Zero sigma is not permitted!");
         return(dest);
     }
 
     width = getOptimalKernelWidth(radius, sigma);
     if(image.width() < width || image.height() < width){
-        qWarning("DImageEffect::emboss(): Image is smaller than radius!");
+        qWarning("KImageEffect::emboss(): Image is smaller than radius!");
         return(dest);
     }
     kernel= (double *)malloc(width*width*sizeof(double));
     if(!kernel){
-        qWarning("DImageEffect::emboss(): Unable to allocate memory!");
+        qWarning("KImageEffect::emboss(): Unable to allocate memory!");
         return(dest);
     }
     if(image.depth() < 32)
@@ -4077,7 +4077,7 @@ QImage DImageEffect::emboss(QImage &image, double radius, double sigma)
     return(dest);
 }
 
-void DImageEffect::blurScanLine(double *kernel, int width,
+void KImageEffect::blurScanLine(double *kernel, int width,
                                 unsigned int *src, unsigned int *dest,
                                 int columns)
 {
@@ -4217,7 +4217,7 @@ void DImageEffect::blurScanLine(double *kernel, int width,
     }
 }
 
-int DImageEffect::getBlurKernel(int width, double sigma, double **kernel)
+int KImageEffect::getBlurKernel(int width, double sigma, double **kernel)
 {
 #define KernelRank 3
     double alpha, normalize;
@@ -4245,13 +4245,13 @@ int DImageEffect::getBlurKernel(int width, double sigma, double **kernel)
     return(width);
 }
 
-QImage DImageEffect::blur(QImage &src, double /*factor*/)
+QImage KImageEffect::blur(QImage &src, double /*factor*/)
 {
     /* binary compat method - remove me when possible! */
     return(blur(src, 0, 1));
 }
 
-QImage DImageEffect::blur(QImage &src, double radius, double sigma)
+QImage KImageEffect::blur(QImage &src, double radius, double sigma)
 {
     double *kernel;
     QImage dest;
@@ -4261,7 +4261,7 @@ QImage DImageEffect::blur(QImage &src, double radius, double sigma)
     unsigned int *p, *q;
 
     if(sigma == 0.0){
-        qWarning("DImageEffect::blur(): Zero sigma is not permitted!");
+        qWarning("KImageEffect::blur(): Zero sigma is not permitted!");
         return(dest);
     }
     if(src.depth() < 32)
@@ -4291,7 +4291,7 @@ QImage DImageEffect::blur(QImage &src, double radius, double sigma)
     }
 
     if(width < 3){
-        qWarning("DImageEffect::blur(): Kernel radius is too small!");
+        qWarning("KImageEffect::blur(): Kernel radius is too small!");
         liberateMemory(&kernel);
         return(dest);
     }
@@ -4323,7 +4323,7 @@ QImage DImageEffect::blur(QImage &src, double radius, double sigma)
     return(dest);
 }
 
-bool DImageEffect::convolveImage(QImage *image, QImage *dest,
+bool KImageEffect::convolveImage(QImage *image, QImage *dest,
                                  const unsigned int order,
                                  const double *kernel)
 {
@@ -4338,12 +4338,12 @@ bool DImageEffect::convolveImage(QImage *image, QImage *dest,
 
     width = order;
     if((width % 2) == 0){
-        qWarning("DImageEffect: Kernel width must be an odd number!");
+        qWarning("KImageEffect: Kernel width must be an odd number!");
         return(false);
     }
     normal_kernel = (double *)malloc(width*width*sizeof(double));
     if(!normal_kernel){
-        qWarning("DImageEffect: Unable to allocate memory!");
+        qWarning("KImageEffect: Unable to allocate memory!");
         return(false);
     }
     *dest = QImage(image->width(), image->height(), QImage::Format_RGB32);
@@ -4398,7 +4398,7 @@ bool DImageEffect::convolveImage(QImage *image, QImage *dest,
 
 }
 
-int DImageEffect::getOptimalKernelWidth(double radius, double sigma)
+int KImageEffect::getOptimalKernelWidth(double radius, double sigma)
 {
     double normalize, value;
     long width;
@@ -4420,13 +4420,13 @@ int DImageEffect::getOptimalKernelWidth(double radius, double sigma)
     return((int)width-2);
 }
 
-QImage DImageEffect::sharpen(QImage &src, double /*factor*/)
+QImage KImageEffect::sharpen(QImage &src, double /*factor*/)
 {
     /* binary compat method - remove me when possible! */
     return(sharpen(src, 0, 1));
 }
 
-QImage DImageEffect::sharpen(QImage &image, double radius, double sigma)
+QImage KImageEffect::sharpen(QImage &image, double radius, double sigma)
 {
     double alpha, normalize, *kernel;
     int width;
@@ -4434,17 +4434,17 @@ QImage DImageEffect::sharpen(QImage &image, double radius, double sigma)
     QImage dest;
 
     if(sigma == 0.0){
-        qWarning("DImageEffect::sharpen(): Zero sigma is not permitted!");
+        qWarning("KImageEffect::sharpen(): Zero sigma is not permitted!");
         return(dest);
     }
     width = getOptimalKernelWidth(radius, sigma);
     if(image.width() < width){
-        qWarning("DImageEffect::sharpen(): Image is smaller than radius!");
+        qWarning("KImageEffect::sharpen(): Image is smaller than radius!");
         return(dest);
     }
     kernel = (double *)malloc(width*width*sizeof(double));
     if(!kernel){
-        qWarning("DImageEffect::sharpen(): Unable to allocate memory!");
+        qWarning("KImageEffect::sharpen(): Unable to allocate memory!");
         return(dest);
     }
 
@@ -4466,7 +4466,7 @@ QImage DImageEffect::sharpen(QImage &image, double radius, double sigma)
 
 // End of new algorithms
 
-QImage DImageEffect::shade(QImage &src, bool color_shading, double azimuth,
+QImage KImageEffect::shade(QImage &src, bool color_shading, double azimuth,
              double elevation)
 {
     struct PointInfo{
@@ -4604,7 +4604,7 @@ QImage DImageEffect::shade(QImage &src, bool color_shading, double azimuth,
 // taking a grayscale threshold (ie: 128) and incrementing RGB color
 // channels above it and decrementing those below it, but this gives much
 // better results. (mosfet 12/28/01)
-void DImageEffect::contrastHSV(QImage &img, bool sharpen)
+void KImageEffect::contrastHSV(QImage &img, bool sharpen)
 {
     int i, sign;
     unsigned int *data;
@@ -4643,7 +4643,7 @@ void DImageEffect::contrastHSV(QImage &img, bool sharpen)
 
 struct BumpmapParams {
     BumpmapParams( double bm_azimuth, double bm_elevation,
-                   int bm_depth, DImageEffect::BumpmapType bm_type,
+                   int bm_depth, KImageEffect::BumpmapType bm_type,
                    bool invert ) {
          /* Convert to radians */
         double azimuth = DegreesToRadians( bm_azimuth );
@@ -4671,18 +4671,18 @@ struct BumpmapParams {
             double n = 0;
             switch (bm_type)
             {
-            case DImageEffect::Spherical:
+            case KImageEffect::Spherical:
                 n = i / 255.0 - 1.0;
                 lut[i] = (int) (255.0 * sqrt(1.0 - n * n) + 0.5);
                 break;
 
-            case DImageEffect::Sinuosidal:
+            case KImageEffect::Sinuosidal:
                 n = i / 255.0;
                 lut[i] = (int) (255.0 * (sin((-M_PI / 2.0) + M_PI * n) + 1.0) /
                                         2.0 + 0.5);
                 break;
 
-            case DImageEffect::Linear:
+            case KImageEffect::Linear:
             default:
                 lut[i] = i;
             }
@@ -4841,7 +4841,7 @@ static void bumpmap_row( uint           *src,
  * @return The destination image (dst) containing the result.
  * @author Zack Rusin <zack@kde.org>
  */
-QImage DImageEffect::bumpmap(QImage &img, QImage &map, double azimuth, double elevation,
+QImage KImageEffect::bumpmap(QImage &img, QImage &map, double azimuth, double elevation,
                              int depth, int xofs, int yofs, int waterlevel,
                              int ambient, bool compensate, bool invert,
                              BumpmapType type, bool tiled)

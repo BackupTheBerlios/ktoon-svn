@@ -1,6 +1,8 @@
-/**************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+/***************************************************************************
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,10 +20,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DVHBOX_H
-#define DVHBOX_H
+#ifndef KVHBOX_H
+#define KVHBOX_H
 
-class DVHBox;
+class KVHBox;
 
 #include <QFrame>
 #include <QLayout>
@@ -34,13 +36,13 @@ class DVHBox;
  * @author David Cuadrado
 */
 
-class D_GUI_EXPORT DVHBox : public QFrame
+class K_GUI_EXPORT KVHBox : public QFrame
 {
 	Q_OBJECT
 	public:
-		DVHBox(QWidget *parent, Qt::Orientation o);
-		DVHBox(QWidget *parent = 0, bool isVertical = true);
-		~DVHBox();
+		KVHBox(QWidget *parent, Qt::Orientation o);
+		KVHBox(QWidget *parent = 0, bool isVertical = true);
+		~KVHBox();
 		void moveWidgetUp(QWidget *);
 		void moveWidgetDown(QWidget *);
 		void switchWidgetsPosition(QWidget *first, QWidget *second);

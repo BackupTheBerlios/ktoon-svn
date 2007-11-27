@@ -26,8 +26,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-#ifndef __DIMAGE_EFFECT_H
-#define __DIMAGE_EFFECT_H
+#ifndef __KIMAGE_EFFECT_H
+#define __KIMAGE_EFFECT_H
 
 #include "kcore/kglobal.h"
 
@@ -45,13 +45,13 @@ class QRect;
  * just call the static methods. They are encapsulated here merely to provide
  * a common namespace.
  */
-class D_CORE_EXPORT DImageEffect
+class K_CORE_EXPORT KImageEffect
 {
 public:
     /**
      * This enum provides a gradient type specification
-     * @see DImageEffect::blend(), DImageEffect::gradient(),
-     * DImageEffect::unbalancedGradient()
+     * @see KImageEffect::blend(), KImageEffect::gradient(),
+     * KImageEffect::unbalancedGradient()
      */
     enum GradientType { VerticalGradient,
 			HorizontalGradient,
@@ -65,8 +65,8 @@ public:
 
     /**
      * This enum provides a RGB channel specification
-     * @see DImageEffect::blend(), DImageEffect::channelIntensity(),
-     * DImageEffect::modulate()
+     * @see KImageEffect::blend(), KImageEffect::channelIntensity(),
+     * KImageEffect::modulate()
      */
     enum RGBComponent { Red,   //!< Red channel
 			Green, //!< Green channel
@@ -77,7 +77,7 @@ public:
 
     /**
      * This enum provides a lighting direction specification
-     * @see DImageEffect::hash()
+     * @see KImageEffect::hash()
      */
     enum Lighting {NorthLite, //!< Lighting from the top of the image
 		   NWLite,    //!< Lighting from the top left of the image
@@ -91,7 +91,7 @@ public:
 
     /**
      * This enum provides a modulation type specification
-     * @see DImageEffect::modulate()
+     * @see KImageEffect::modulate()
      */
     enum ModulationType { Intensity,  //!< Modulate image intensity
 			  Saturation, //!< Modulate image saturation
@@ -101,7 +101,7 @@ public:
 
     /**
      * This enum provides a noise type specification
-     * @see DImageEffect::addNoise()
+     * @see KImageEffect::addNoise()
      */
     enum NoiseType { UniformNoise=0,              //!< Uniform distribution
 		     GaussianNoise,               //!< Gaussian distribution
@@ -113,7 +113,7 @@ public:
 
     /**
      * This enum provides a rotation specification.
-     * @see DImageEffect::rotate()
+     * @see KImageEffect::rotate()
      */
     enum RotateDirection{ Rotate90,  //!< Rotate 90 degrees to the right.
 			  Rotate180, //!< Rotate 180 degrees.
@@ -122,7 +122,7 @@ public:
 
     /**
      * This enum lists possible bumpmapping implementations.
-     * @see DImageEffect::bumpmap()
+     * @see KImageEffect::bumpmap()
      */
     enum BumpmapType {
         Linear,
@@ -156,7 +156,7 @@ public:
      * @param type The type of gradient.
      * @param xfactor The x decay length. Use a value between -200 and 200.
      * @param yfactor The y decay length.
-     * @param ncols The number of colors. See DImageEffect:gradient.
+     * @param ncols The number of colors. See KImageEffect:gradient.
      */
     static QImage unbalancedGradient(const QSize &size, const QColor &ca,
 	    const QColor &cb, GradientType type, int xfactor = 100,
@@ -316,7 +316,7 @@ public:
 
     /**
      * Disposition of a source image on top of a destination image.
-     * @see DImageEffect::computeDestinationRect, DImageEffect::blendOnLower
+     * @see KImageEffect::computeDestinationRect, KImageEffect::blendOnLower
      */
     enum Disposition { NoImage = 0, //!< Don't overlay
 		       Centered,    //!< Center top image on botton image

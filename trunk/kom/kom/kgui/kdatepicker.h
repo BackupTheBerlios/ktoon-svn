@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DDATEPICKER_H
-#define DDATEPICKER_H
+#ifndef KDATEPICKER_H
+#define KDATEPICKER_H
 
 #include <QFrame>
 #include <QToolButton>
@@ -36,12 +38,12 @@ class QLabel;
  * 
 */
 
-class D_GUI_EXPORT DDatePicker : public QFrame
+class K_GUI_EXPORT KDatePicker : public QFrame
 {
 	Q_OBJECT;
 	public:
-		DDatePicker(QWidget *parent = 0);
-		~DDatePicker();
+		KDatePicker(QWidget *parent = 0);
+		~KDatePicker();
 		void setDate(const QDate &date);
 		QDate date() const;
 		
@@ -67,7 +69,7 @@ class D_GUI_EXPORT DDatePicker : public QFrame
 		
 	private:
 		QComboBox *m_week;
-		DDateTable *m_dateTable;
+		KDateTable *m_dateTable;
 		
 		class EditableButton;
 		
@@ -75,7 +77,7 @@ class D_GUI_EXPORT DDatePicker : public QFrame
 		 EditableButton *m_year;
 };
 
-class DDatePicker::EditableButton : public QToolButton
+class KDatePicker::EditableButton : public QToolButton
 {
 	Q_OBJECT
 	public:

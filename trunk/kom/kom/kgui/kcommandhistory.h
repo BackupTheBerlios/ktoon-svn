@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DCOMMANDHISTORY_H
-#define DCOMMANDHISTORY_H
+#ifndef KCOMMANDHISTORY_H
+#define KCOMMANDHISTORY_H
 
 #include <QObject>
 #include <QHash>
@@ -31,13 +33,13 @@ class QAction;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DCommandHistory : public QObject
+class KCommandHistory : public QObject
 {
 	Q_OBJECT;
 	
 	public:
-		DCommandHistory(QUndoStack *stack, QObject *parent = 0);
-		~DCommandHistory();
+		KCommandHistory(QUndoStack *stack, QObject *parent = 0);
+		~KCommandHistory();
 		
 		QAction *redoAction() const;
 		QAction *undoAction() const;

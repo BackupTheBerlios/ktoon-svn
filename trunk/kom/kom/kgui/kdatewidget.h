@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DDATEWIDGET_H
-#define DDATEWIDGET_H
+#ifndef KDATEWIDGET_H
+#define KDATEWIDGET_H
 
 #include <qwidget.h>
 #include <QDate>
@@ -31,13 +33,13 @@ class QSpinBox;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_GUI_EXPORT DDateWidget : public QWidget
+class K_GUI_EXPORT KDateWidget : public QWidget
 {
 	Q_OBJECT;
 	public:
-		DDateWidget(QWidget *parent = 0);
-		DDateWidget(const QDate &date, QWidget *parent = 0);
-		~DDateWidget();
+		KDateWidget(QWidget *parent = 0);
+		KDateWidget(const QDate &date, QWidget *parent = 0);
+		~KDateWidget();
 		
 		void setDate(const QDate &date);
 		QDate date() const;

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -31,7 +33,7 @@
 
 #include <QtDebug>
 
-DButtonBar::DButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent), m_autoHide(false), m_blockHider(false)
+KButtonBar::KButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent), m_autoHide(false), m_blockHider(false)
 {
 	setMovable(false);
 	
@@ -65,7 +67,7 @@ DButtonBar::DButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent)
 	}
 	
 	
-	setObjectName("DButtonBar-"+windowTitle());
+	setObjectName("KButtonBar-"+windowTitle());
 	
 	m_separator = addAction("");
 	m_separator->setEnabled(false); // Separator
@@ -76,11 +78,11 @@ DButtonBar::DButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent)
 }
 
 
-DButtonBar::~DButtonBar()
+KButtonBar::~KButtonBar()
 {
 }
 
-QMenu *DButtonBar::createMenu()
+QMenu *KButtonBar::createMenu()
 {
 	QMenu *menu = new QMenu(windowTitle(), this);
 	
@@ -111,7 +113,7 @@ QMenu *DButtonBar::createMenu()
 	return menu;
 }
 
-void DButtonBar::addButton(DViewButton *viewButton)
+void KButtonBar::addButton(KViewButton *viewButton)
 {
 	QAction *act = addWidget(viewButton);
 	
@@ -130,7 +132,7 @@ void DButtonBar::addButton(DViewButton *viewButton)
 	
 }
 
-void DButtonBar::removeButton(DViewButton *viewButton)
+void KButtonBar::removeButton(KViewButton *viewButton)
 {
 	if ( ! m_buttons.buttons().contains(viewButton) ) return;
 	
@@ -141,7 +143,7 @@ void DButtonBar::removeButton(DViewButton *viewButton)
 	if ( isEmpty() ) hide();
 }
 
-bool DButtonBar::isEmpty() const
+bool KButtonBar::isEmpty() const
 {
 	// O(n) -> very slow...
 	
@@ -158,12 +160,12 @@ bool DButtonBar::isEmpty() const
 }
 
 
-void DButtonBar::setExclusive(bool excl)
+void KButtonBar::setExclusive(bool excl)
 {
 	m_buttons.setExclusive( excl );
 }
 
-void DButtonBar::setAutoHide(bool autohide)
+void KButtonBar::setAutoHide(bool autohide)
 {
 	m_autoHide = autohide;
 	if (autohide)
@@ -172,30 +174,30 @@ void DButtonBar::setAutoHide(bool autohide)
 	}
 }
 
-bool DButtonBar::autohide() const
+bool KButtonBar::autohide() const
 {
 	return m_autoHide;
 }
 
-void DButtonBar::setShowOnlyIcons()
+void KButtonBar::setShowOnlyIcons()
 {
 	foreach(QAbstractButton *b, m_buttons.buttons() )
 	{
-		DViewButton *viewButton = static_cast<DViewButton *>(b);
+		KViewButton *viewButton = static_cast<KViewButton *>(b);
 		viewButton->setOnlyIcon();
 	}
 }
 
-void DButtonBar::setShowOnlyTexts()
+void KButtonBar::setShowOnlyTexts()
 {
 	foreach(QAbstractButton *b, m_buttons.buttons() )
 	{
-		DViewButton *viewButton = static_cast<DViewButton *>(b);
+		KViewButton *viewButton = static_cast<KViewButton *>(b);
 		viewButton->setOnlyText();
 	}
 }
 
-void DButtonBar::disable(DViewButton *v)
+void KButtonBar::disable(KViewButton *v)
 {
 	QAction *a = m_actionForWidget[v];
 	if ( a )
@@ -204,7 +206,7 @@ void DButtonBar::disable(DViewButton *v)
 	}
 }
 
-void DButtonBar::enable(DViewButton *v)
+void KButtonBar::enable(KViewButton *v)
 {
 	QAction *a = m_actionForWidget[v];
 	if ( a )
@@ -213,14 +215,14 @@ void DButtonBar::enable(DViewButton *v)
 	}
 }
 
-bool DButtonBar::isExclusive() const
+bool KButtonBar::isExclusive() const
 {
 	return m_buttons.exclusive();
 }
 
-void DButtonBar::onlyShow(DToolView *tool, bool ensureVisible)
+void KButtonBar::onlyShow(KToolView *tool, bool ensureVisible)
 {
-	DViewButton *button = tool->button();
+	KViewButton *button = tool->button();
 	
 	if ( ensureVisible )
 	{
@@ -232,11 +234,11 @@ void DButtonBar::onlyShow(DToolView *tool, bool ensureVisible)
 	hideOthers( button );
 }
 
-void DButtonBar::hideOthers(QAbstractButton *source)
+void KButtonBar::hideOthers(QAbstractButton *source)
 {
 	if ( !m_buttons.exclusive() )
 	{
-		static_cast<DViewButton *>(source)->toggleView();
+		static_cast<KViewButton *>(source)->toggleView();
 		return;
 	}
 	
@@ -246,7 +248,7 @@ void DButtonBar::hideOthers(QAbstractButton *source)
 	
 	foreach(QAbstractButton *b, m_buttons.buttons())
 	{
-		DViewButton *button = static_cast<DViewButton *>(b);
+		KViewButton *button = static_cast<KViewButton *>(b);
 		if ( source != button )
 		{
 			if ( button->toolView()->isVisible() )
@@ -259,14 +261,14 @@ void DButtonBar::hideOthers(QAbstractButton *source)
 		}
 	}
 	
-	static_cast<DViewButton *>(source)->toggleView();
+	static_cast<KViewButton *>(source)->toggleView();
 	
 	m_buttons.setExclusive(true);
 	setUpdatesEnabled( true);
 }
 
 
-void DButtonBar::mousePressEvent(QMouseEvent *e)
+void KButtonBar::mousePressEvent(QMouseEvent *e)
 {
 	QToolBar::mousePressEvent(e);
 	
@@ -280,13 +282,13 @@ void DButtonBar::mousePressEvent(QMouseEvent *e)
 	}
 }
 
-void DButtonBar::enterEvent(QEvent *e)
+void KButtonBar::enterEvent(QEvent *e)
 {
 	QToolBar::enterEvent(e);
 	doNotHide();
 }
 
-void DButtonBar::leaveEvent(QEvent *e)
+void KButtonBar::leaveEvent(QEvent *e)
 {
 	QToolBar::leaveEvent(e);
 	
@@ -296,7 +298,7 @@ void DButtonBar::leaveEvent(QEvent *e)
 	}
 }
 
-void DButtonBar::doNotHide()
+void KButtonBar::doNotHide()
 {
 	if ( m_hider.isActive() )
 	{
@@ -304,20 +306,20 @@ void DButtonBar::doNotHide()
 	}
 }
 
-void DButtonBar::showSeparator(bool e)
+void KButtonBar::showSeparator(bool e)
 {
 	m_separator->setVisible(e);
 }
 
-int DButtonBar::count() const
+int KButtonBar::count() const
 {
 	return m_buttons.buttons().count();
 }
 
-void DButtonBar::setEnableButtonBlending(bool enable)
+void KButtonBar::setEnableButtonBlending(bool enable)
 {
 	foreach(QAbstractButton *button, m_buttons.buttons() )
 	{
-		static_cast<DViewButton *>(button)->setBlending(enable);
+		static_cast<KViewButton *>(button)->setBlending(enable);
 	}
 }

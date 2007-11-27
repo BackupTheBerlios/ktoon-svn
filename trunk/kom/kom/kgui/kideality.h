@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,18 +20,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DIDEALITY_H
-#define DIDEALTIY_H
+#ifndef KIDEALITY_H
+#define KIDEALTIY_H
 
 #include <qglobal.h>
 
 #if defined(QT_SHARED) || defined(QT_PLUGIN)
-# define D_IDEAL_EXPORT Q_GUI_EXPORT
+# define K_IDEAL_EXPORT Q_GUI_EXPORT
 #else
-# define D_IDEAL_EXPORT
+# define K_IDEAL_EXPORT
 #endif
 
 
-#endif // DIDEALITY_H
+#endif // KIDEALITY_H
 
 

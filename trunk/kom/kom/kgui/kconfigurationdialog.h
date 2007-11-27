@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,9 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
-#ifndef DCONFIGURATIONDIALOG_H
-#define DCONFIGURATIONDIALOG_H
+#ifndef KCONFIGURATIONDIALOG_H
+#define KCONFIGURATIONDIALOG_H
 
 #include <QDialog>
 #include <QMap>
@@ -38,12 +39,12 @@ class QListWidgetItem;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_GUI_EXPORT DConfigurationDialog : public QDialog
+class K_GUI_EXPORT KConfigurationDialog : public QDialog
 {
 	Q_OBJECT
 	public:
-		DConfigurationDialog(QWidget *parent = 0);
-		~DConfigurationDialog();
+		KConfigurationDialog(QWidget *parent = 0);
+		~KConfigurationDialog();
 		
 		
 		void addPage(QWidget *page, const QString &label, const QIcon &icon);
@@ -59,7 +60,7 @@ class D_GUI_EXPORT DConfigurationDialog : public QDialog
 		
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 #endif

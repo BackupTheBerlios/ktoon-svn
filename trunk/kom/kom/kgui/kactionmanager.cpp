@@ -151,7 +151,7 @@ QAction *KActionManager::find(const QString &_id, const QString &container) cons
 		
 	if ( action == 0)
 	{
-		kError() << "DActionManager::find(): Returning NULL action: " << id << " in " << container;
+		kError() << "KActionManager::find(): Returning NULL action: " << id << " in " << container;
 	}
 	
 	return action;

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -22,7 +24,7 @@
 
 #include <QApplication>
 
-DCircleButtonBar::DCircleButtonBar(int radio, QWidget *parent) : QFrame(parent), m_radio(radio), m_buttonCount(0), m_offset(30)
+KCircleButtonBar::KCircleButtonBar(int radio, QWidget *parent) : QFrame(parent), m_radio(radio), m_buttonCount(0), m_offset(30)
 {	
 	m_layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
 	m_layout->setSpacing(0);
@@ -35,11 +37,11 @@ DCircleButtonBar::DCircleButtonBar(int radio, QWidget *parent) : QFrame(parent),
 }
 
 
-DCircleButtonBar::~DCircleButtonBar()
+KCircleButtonBar::~KCircleButtonBar()
 {
 }
 
-void DCircleButtonBar::paintEvent(QPaintEvent *)
+void KCircleButtonBar::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
@@ -57,14 +59,14 @@ void DCircleButtonBar::paintEvent(QPaintEvent *)
 	
 }
 
-DCircleButton *DCircleButtonBar::addButton(const QPixmap &pix)
+KCircleButton *KCircleButtonBar::addButton(const QPixmap &pix)
 {
 	m_buttonCount++;
 	
 	m_mask = QPixmap( (m_buttonCount+1)*m_radio+m_offset*3, m_radio+10);
 	m_mask.fill(Qt::transparent);
 	
-	DCircleButton *but = new DCircleButton(m_radio,true, this);
+	KCircleButton *but = new KCircleButton(m_radio,true, this);
 	
 	
 	m_layout->addWidget(but);
@@ -73,7 +75,7 @@ DCircleButton *DCircleButtonBar::addButton(const QPixmap &pix)
 	return but;
 }
 
-void DCircleButtonBar::resizeEvent(QResizeEvent *)
+void KCircleButtonBar::resizeEvent(QResizeEvent *)
 {
 	m_border = QPainterPath();
 	m_border.moveTo(m_offset, 0);

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DAPPLICATION_H
-#define DAPPLICATION_H
+#ifndef KAPPLICATION_H
+#define KAPPLICATION_H
 
 #include <QApplication>
 #include <QMap>
@@ -41,10 +43,10 @@
 
 class QApplication;
 class QString;
-class DThemeDocument;
+class KThemeDocument;
 class QPalette;
-class DActionManager;
-class DAction;
+class KActionManager;
+class KAction;
 
 typedef QMap<QString, QString> ParseArgs;
 
@@ -60,7 +62,7 @@ typedef QMap<QString, QString> ParseArgs;
  * @TODO
  * @li We need have a cache directory (like /tmp in un*x)
 */
-class D_GUI_EXPORT DApplication : public QApplication
+class K_GUI_EXPORT KApplication : public QApplication
 {
 	Q_OBJECT
 	public:
@@ -76,14 +78,14 @@ class D_GUI_EXPORT DApplication : public QApplication
 		 * @param argv 
 		 * @return 
 		 */
-		DApplication(int & argc, char ** argv);
+		KApplication(int & argc, char ** argv);
 		
 		
 		/**
 		 * Destructor
 		 * @return 
 		 */
-		~DApplication();
+		~KApplication();
 		
 		/**
 		 * @if english
@@ -119,7 +121,6 @@ class D_GUI_EXPORT DApplication : public QApplication
 		 */
 		void applyPalette( const QPalette &p );
 		
-		
 		/**
 		 * @if english
 		 * Translate
@@ -140,7 +141,7 @@ class D_GUI_EXPORT DApplication : public QApplication
 		 * @endif
 		 * @param dd 
 		 */
-		void applyTheme(const DThemeDocument &dd);
+		void applyTheme(const KThemeDocument &kd);
 		
 		/**
 		 * @if english
@@ -178,7 +179,7 @@ class D_GUI_EXPORT DApplication : public QApplication
 		void changeFont(const QFont &font); // static?
 		
 		
-		DConfig *config(const QString &group = "General");
+		KConfig *config(const QString &group = "General");
 		
 		
 		bool insertGlobalAction(QAction *action, const QString& id);
@@ -199,12 +200,12 @@ class D_GUI_EXPORT DApplication : public QApplication
 		
 	private:
 		ParseArgs m_parseArgs;
-		DThemeManager m_themeManager;
-		DActionManager *m_actionManager;
+		KThemeManager m_themeManager;
+		KActionManager *m_actionManager;
 };
 
 #include <kcore/kglobal.h>
 
-#define dApp static_cast<DApplication *>(qApp)
+#define kApp static_cast<KApplication *>(qApp)
 
 #endif

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -34,35 +36,35 @@
 
 ////////////////
 
-struct DConfigurationDialog::Private
+struct KConfigurationDialog::Private
 {
 	QListWidget *list;
 	QStackedWidget *pageArea;
 	
 };
 
-DConfigurationDialog::DConfigurationDialog(QWidget *parent) : QDialog(parent), d(new Private)
+KConfigurationDialog::KConfigurationDialog(QWidget *parent) : QDialog(parent), k(new Private)
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	
 	QHBoxLayout *pages = new QHBoxLayout;
 	
-	d->list = new QListWidget;
-	d->list->setViewMode(QListView::IconMode);
-	d->list->setWrapping(false);
-	d->list->setFlow(QListView::TopToBottom);
-	d->list->setIconSize(QSize(96, 84));
-	d->list->setMovement(QListView::Static);
-	d->list->setMaximumWidth((84+12)*2);
-	d->list->setMinimumWidth(84+12);
-	d->list->setSpacing(12);
+	k->list = new QListWidget;
+	k->list->setViewMode(QListView::IconMode);
+	k->list->setWrapping(false);
+	k->list->setFlow(QListView::TopToBottom);
+	k->list->setIconSize(QSize(96, 84));
+	k->list->setMovement(QListView::Static);
+	k->list->setMaximumWidth((84+12)*2);
+	k->list->setMinimumWidth(84+12);
+	k->list->setSpacing(12);
 	
-	connect(d->list, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(changePage(QListWidgetItem *, QListWidgetItem*)));
+	connect(k->list, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(changePage(QListWidgetItem *, QListWidgetItem*)));
 	
-	pages->addWidget(d->list);
+	pages->addWidget(k->list);
 	
-	d->pageArea = new QStackedWidget;
-	pages->addWidget(d->pageArea, 1);
+	k->pageArea = new QStackedWidget;
+	pages->addWidget(k->pageArea, 1);
 	
 	layout->addLayout(pages);
 	
@@ -72,51 +74,51 @@ DConfigurationDialog::DConfigurationDialog(QWidget *parent) : QDialog(parent), d
 	connect(buttonBox, SIGNAL(rejected()), this, SLOT(cancel()));
 	connect(buttonBox->button(QDialogButtonBox::Apply), SIGNAL(clicked()), this, SLOT(apply()));
 	
-	layout->addWidget(new DSeparator());
+	layout->addWidget(new KSeparator());
 	layout->addWidget(buttonBox);
 }
 
 
-DConfigurationDialog::~DConfigurationDialog()
+KConfigurationDialog::~KConfigurationDialog()
 {
-	delete d;
+	delete k;
 }
 
-void DConfigurationDialog::addPage(QWidget *page, const QString &label, const QIcon &icon)
+void KConfigurationDialog::addPage(QWidget *page, const QString &label, const QIcon &icon)
 {
-	QListWidgetItem *pageItem = new QListWidgetItem(d->list);
+	QListWidgetItem *pageItem = new QListWidgetItem(k->list);
 	pageItem->setIcon(icon);
 	pageItem->setText(label);
 	pageItem->setTextAlignment(Qt::AlignHCenter);
 	pageItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 	
-	d->pageArea->addWidget(page);
+	k->pageArea->addWidget(page);
 }
 
-QWidget *DConfigurationDialog::currentPage() const
+QWidget *KConfigurationDialog::currentPage() const
 {
-	return d->pageArea->currentWidget();
+	return k->pageArea->currentWidget();
 }
 
-void DConfigurationDialog::ok()
+void KConfigurationDialog::ok()
 {
 	accept();
 }
 
-void DConfigurationDialog::cancel()
+void KConfigurationDialog::cancel()
 {
 	reject();
 }
 
-void DConfigurationDialog::apply()
+void KConfigurationDialog::apply()
 {
 }
 
-void DConfigurationDialog::changePage(QListWidgetItem *curr, QListWidgetItem *prev)
+void KConfigurationDialog::changePage(QListWidgetItem *curr, QListWidgetItem *prev)
 {
 	if (!curr)
 		curr = prev;
 	
-	d->pageArea->setCurrentIndex(d->list->row(curr));
+	k->pageArea->setCurrentIndex(k->list->row(curr));
 }
 

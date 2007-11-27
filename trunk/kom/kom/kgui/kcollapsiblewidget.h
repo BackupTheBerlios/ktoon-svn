@@ -18,8 +18,8 @@
    Boston, MA 02110-1301, USA.
 */
 
-#ifndef DCOLLAPSIBLEWIDGET_H
-#define DCOLLAPSIBLEWIDGET_H
+#ifndef KCOLLAPSIBLEWIDGET_H
+#define KCOLLAPSIBLEWIDGET_H
 
 #include <QScrollArea>
 #include <QLabel>
@@ -29,12 +29,12 @@
 class QScrollArea;
 class QTextDocument;
 
-class D_GUI_EXPORT DClickableLabel : public QWidget
+class K_GUI_EXPORT KClickableLabel : public QWidget
 {
 	Q_OBJECT
 	public:
-		DClickableLabel( QWidget* parent = 0 );
-		~DClickableLabel();
+		KClickableLabel( QWidget* parent = 0 );
+		~KClickableLabel();
 		
 		void setText(const QString &text);
 		QString text() const;
@@ -67,13 +67,13 @@ class D_GUI_EXPORT DClickableLabel : public QWidget
   @short A widget that has a caption and a collapsible widget
   @author Daniel Molkentin <molkentin@kde.org>
  */
-class D_GUI_EXPORT DCollapsibleWidget : public QWidget
+class K_GUI_EXPORT KCollapsibleWidget : public QWidget
 {
 	Q_OBJECT
 	public:
-		DCollapsibleWidget(QWidget *parent = 0);
-		DCollapsibleWidget(const QString& caption, QWidget *parent = 0);
-		~DCollapsibleWidget();
+		KCollapsibleWidget(QWidget *parent = 0);
+		KCollapsibleWidget(const QString& caption, QWidget *parent = 0);
+		~KCollapsibleWidget();
     
 		QString caption() const;
 		bool isExpanded() const;
@@ -92,9 +92,9 @@ class D_GUI_EXPORT DCollapsibleWidget : public QWidget
 		void init();
 
 	private:
-		Q_DISABLE_COPY( DCollapsibleWidget );
+		Q_DISABLE_COPY( KCollapsibleWidget );
 		class Private;
-		Private *d;
+		Private *k;
 };
 
 
@@ -103,16 +103,16 @@ class D_GUI_EXPORT DCollapsibleWidget : public QWidget
          usually in the form of DCollapsibleWidgets.
   @author Daniel Molkentin <molkentin@kde.org>
  */
-class D_GUI_EXPORT DSettingsContainer : public QScrollArea
+class K_GUI_EXPORT KSettingsContainer : public QScrollArea
 {
 	Q_ENUMS( CollapseState );
 	Q_OBJECT;
 	public:
 		enum CollapseState { Collapsed, Uncollapsed };
-		DSettingsContainer( QWidget *parent = 0 );
-		~DSettingsContainer();
+		KSettingsContainer( QWidget *parent = 0 );
+		~KSettingsContainer();
 
-		DCollapsibleWidget* insertWidget( QWidget* w, const QString& name );
+		KCollapsibleWidget* insertWidget( QWidget* w, const QString& name );
 		void removeWidget(QWidget *w );
 		
 	protected:
@@ -121,12 +121,12 @@ class D_GUI_EXPORT DSettingsContainer : public QScrollArea
 		void dropEvent(QDropEvent* e);
 
 	private:
-		Q_DISABLE_COPY( DSettingsContainer );
+		Q_DISABLE_COPY( KSettingsContainer );
 		class Private;
-		Private *d;
+		Private *k;
 };
 
 
 
-#endif // DCOLLAPSIBLEWIDGET_H
+#endif // KCOLLAPSIBLEWIDGET_H
 

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado   *
- *   kuadrosx@toonka.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,16 +32,16 @@
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class DNodeGroup;
-class DControlNode : public QObject, public QGraphicsItem
+class KNodeGroup;
+class KControlNode : public QObject, public QGraphicsItem
 {
 	Q_OBJECT;
 	
 	public:
 		
-		DControlNode(int index, DNodeGroup *nodeGroup, const QPointF & pos = QPoint(0,0) ,  QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
+		KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos = QPoint(0,0) ,  QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
 		
-		~DControlNode();
+		~KControlNode();
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 		QRectF boundingRect() const;
 		enum { Type = UserType + 100 };
@@ -47,18 +49,18 @@ class DControlNode : public QObject, public QGraphicsItem
 		int type() const { return Type; }
 // 		int typeNodeEditor() const;
 		
-		void setLeft( DControlNode *left);
-		void setRight( DControlNode *right);
-		void setNodeParent( DControlNode *nodeParent);
+		void setLeft( KControlNode *left);
+		void setRight( KControlNode *right);
+		void setNodeParent( KControlNode *nodeParent);
 		int index() const;
 		
 		void setParentI( QGraphicsItem * newParent ); // ### setParentI no es una convencion, buscar un mejor nombre
 		QGraphicsItem *parentI();
 		
 		
-		DControlNode *left();
-		DControlNode *right();
-		DControlNode *nodeParent();
+		KControlNode *left();
+		KControlNode *right();
+		KControlNode *nodeParent();
 		
 		void setNotChange(bool notChange);
 		
@@ -80,7 +82,7 @@ class DControlNode : public QObject, public QGraphicsItem
 		
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 #endif

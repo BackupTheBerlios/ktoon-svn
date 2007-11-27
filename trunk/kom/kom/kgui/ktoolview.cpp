@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -29,21 +31,21 @@
 #include <QLayout>
 #include <QEvent>
 
-DToolView::DToolView(const QString &title, const QIcon &icon, QWidget * parent)
+KToolView::KToolView(const QString &title, const QIcon &icon, QWidget * parent)
 	: QDockWidget(title, parent), m_size(-1), m_perspective(0)
 {
 	setWindowIcon(icon);
 	setup();
 	
-	setObjectName("DToolView-"+title);
+	setObjectName("KToolView-"+title);
 }
 
 
-DToolView::~DToolView()
+KToolView::~KToolView()
 {
 }
 
-void DToolView::setup()
+void KToolView::setup()
 {
 	
 #if QT_VERSION < 0x040200
@@ -59,12 +61,12 @@ void DToolView::setup()
 }
 
 
-DViewButton *DToolView::button() const
+KViewButton *KToolView::button() const
 {
 	return m_button;
 }
 
-void DToolView::saveSize(bool checked)
+void KToolView::saveSize(bool checked)
 {
 	if ( m_button->area() == Qt::LeftToolBarArea || m_button->area() == Qt::RightToolBarArea )
 	{
@@ -78,7 +80,7 @@ void DToolView::saveSize(bool checked)
 	setVisible(checked);
 }
 
-QSize DToolView::sizeHint() const
+QSize KToolView::sizeHint() const
 {
 	QSize size = QDockWidget::sizeHint();
 	
@@ -97,34 +99,34 @@ QSize DToolView::sizeHint() const
 }
 
 
-void DToolView::setDescription(const QString &description)
+void KToolView::setDescription(const QString &description)
 {
 	m_button->setStatusTip ( description );
 }
 
-void DToolView::setPerspective(int wsp)
+void KToolView::setPerspective(int wsp)
 {
 	m_perspective = wsp;
 }
 
-int DToolView::perspective() const
+int KToolView::perspective() const
 {
 	return m_perspective;
 }
 
-int DToolView::fixedSize() const
+int KToolView::fixedSize() const
 {
 	return m_size;
 }
 
-void DToolView::setFixedSize(int s)
+void KToolView::setFixedSize(int s)
 {
 	m_size = s;
 }
 
-void DToolView::showEvent(QShowEvent *e)
+void KToolView::showEvent(QShowEvent *e)
 {
-	if ( DMainWindow *mw = dynamic_cast<DMainWindow *>(parentWidget() ) )
+	if ( KMainWindow *mw = dynamic_cast<KMainWindow *>(parentWidget() ) )
 	{
 		if ( !(mw->currentPerspective() & m_perspective) ) 
 		{
@@ -138,7 +140,7 @@ void DToolView::showEvent(QShowEvent *e)
 
 #if QT_VERSION < 0x040200
 
-bool DToolView::event(QEvent *e)
+bool KToolView::event(QEvent *e)
 {
 	bool toReturn =  QDockWidget::event(e);
 	

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,25 +20,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DVIEWBUTTON_H
-#define DVIEWBUTTON_H
+#ifndef KVIEWBUTTON_H
+#define KVIEWBUTTON_H
 
 #include <QToolButton>
 #include <QStyleOptionToolButton>
 #include <kgui/kideality.h>
 
-class DToolView;
+class KToolView;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_IDEAL_EXPORT DViewButton : public QToolButton
+class K_IDEAL_EXPORT KViewButton : public QToolButton
 {
 	Q_OBJECT;
 	public:
-		DViewButton(Qt::ToolBarArea area, DToolView *toolView, QWidget * parent = 0 );
-		DViewButton(DToolView *toolView, QWidget *parent = 0 );
-		~DViewButton();
+		KViewButton(Qt::ToolBarArea area, KToolView *toolView, QWidget * parent = 0 );
+		KViewButton(KToolView *toolView, QWidget *parent = 0 );
+		~KViewButton();
 		
 		void setArea(Qt::ToolBarArea area);
 		Qt::ToolBarArea area() const;
@@ -46,7 +48,7 @@ class D_IDEAL_EXPORT DViewButton : public QToolButton
 		bool isSensible() const;
 		bool blending() const;
 		
-		DToolView *toolView() const;
+		KToolView *toolView() const;
 		
 	public slots:
 		void setSensible(bool s);
@@ -85,7 +87,7 @@ class D_IDEAL_EXPORT DViewButton : public QToolButton
 		
 		QPalette m_palette;
 		
-		DToolView *m_toolView;
+		KToolView *m_toolView;
 };
 
 #endif

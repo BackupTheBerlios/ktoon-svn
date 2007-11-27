@@ -47,11 +47,11 @@ class CollapsibleMimeData : public QMimeData
 		CollapsibleMimeData();
 		~CollapsibleMimeData();
 		
-		void setCollapsibleWidget(DCollapsibleWidget *w);
-		DCollapsibleWidget *collapsibleWidget() const;
+		void setCollapsibleWidget(KCollapsibleWidget *w);
+		KCollapsibleWidget *collapsibleWidget() const;
 		
 	private:
-		DCollapsibleWidget *m_cw;
+		KCollapsibleWidget *m_cw;
 };
 
 
@@ -64,18 +64,18 @@ CollapsibleMimeData::~CollapsibleMimeData()
 }
 
 
-void CollapsibleMimeData::setCollapsibleWidget(DCollapsibleWidget *w)
+void CollapsibleMimeData::setCollapsibleWidget(KCollapsibleWidget *w)
 {
 	m_cw = w;
 }
 
-DCollapsibleWidget *CollapsibleMimeData::collapsibleWidget() const
+KCollapsibleWidget *CollapsibleMimeData::collapsibleWidget() const
 {
 	return m_cw;
 }
 
 
-DClickableLabel::DClickableLabel( QWidget* parent )
+KClickableLabel::KClickableLabel( QWidget* parent )
 	: QWidget( parent ), m_isEnter(false), m_isDragging(false), m_checked(false)
 {
 	setMouseTracking( false );
@@ -83,36 +83,36 @@ DClickableLabel::DClickableLabel( QWidget* parent )
 	m_text = new QTextDocument(this);
 }
 
-DClickableLabel::~DClickableLabel()
+KClickableLabel::~KClickableLabel()
 {
 }
 
-QSize DClickableLabel::sizeHint() const
+QSize KClickableLabel::sizeHint() const
 {
 	return m_text->size().toSize();
 }
 
-void DClickableLabel::setText(const QString &text)
+void KClickableLabel::setText(const QString &text)
 {
 	m_text->setHtml(text);
 }
 
-QString DClickableLabel::text() const
+QString KClickableLabel::text() const
 {
 	return m_text->toPlainText();
 }
 
-void DClickableLabel::setChecked(bool c)
+void KClickableLabel::setChecked(bool c)
 {
 	m_checked = c;
 }
 
-bool DClickableLabel::isChecked() const
+bool KClickableLabel::isChecked() const
 {
 	return m_checked;
 }
 
-void DClickableLabel::mousePressEvent (QMouseEvent *e)
+void KClickableLabel::mousePressEvent (QMouseEvent *e)
 {
 	m_isDragging = false;
 	
@@ -120,7 +120,7 @@ void DClickableLabel::mousePressEvent (QMouseEvent *e)
 	QWidget::mousePressEvent( e );
 }
 
-void DClickableLabel::mouseReleaseEvent( QMouseEvent *e )
+void KClickableLabel::mouseReleaseEvent( QMouseEvent *e )
 {
 	if ( ! m_isDragging )
 	{
@@ -130,7 +130,7 @@ void DClickableLabel::mouseReleaseEvent( QMouseEvent *e )
 	}
 }
 
-void DClickableLabel::mouseMoveEvent(QMouseEvent* e)
+void KClickableLabel::mouseMoveEvent(QMouseEvent* e)
 {
 	QWidget::mouseMoveEvent( e );
 
@@ -141,7 +141,7 @@ void DClickableLabel::mouseMoveEvent(QMouseEvent* e)
 	
 	QDrag *drag = new QDrag( this );
 	CollapsibleMimeData *mimeData = new CollapsibleMimeData;
-	DCollapsibleWidget *parent = dynamic_cast<DCollapsibleWidget *>(parentWidget());
+	KCollapsibleWidget *parent = dynamic_cast<KCollapsibleWidget *>(parentWidget());
 	
 	if ( ! parent ) return;
 	QWidget *inner = parent->innerWidget();
@@ -164,7 +164,7 @@ void DClickableLabel::mouseMoveEvent(QMouseEvent* e)
 	m_isDragging = true;
 }
 
-void DClickableLabel::paintEvent (QPaintEvent *e)
+void KClickableLabel::paintEvent (QPaintEvent *e)
 {
 	QPainter painter(this);
 	if ( m_isEnter )
@@ -201,14 +201,14 @@ void DClickableLabel::paintEvent (QPaintEvent *e)
 	QWidget::paintEvent(e);
 }
 
-void DClickableLabel::enterEvent ( QEvent * e)
+void KClickableLabel::enterEvent ( QEvent * e)
 {
 	m_isEnter = true;
 	update();
 	QWidget::enterEvent(e);
 }
 
-void DClickableLabel::leaveEvent(QEvent *e)
+void KClickableLabel::leaveEvent(QEvent *e)
 {
 	m_isEnter = false;
 	update();
@@ -220,32 +220,32 @@ void DClickableLabel::leaveEvent(QEvent *e)
  * Private classes
  *****************************************************************/
 
-class DCollapsibleWidget::Private
+class KCollapsibleWidget::Private
 {
 	public:
 		QGridLayout    *cwlayout;
 		QWidget        *innerWidget;
-		DClickableLabel *label;
+		KClickableLabel *label;
 };
 
-class DSettingsContainer::Private
+class KSettingsContainer::Private
 {
 	public:
 		QVBoxLayout *layout;
-		QList<DCollapsibleWidget *> collapsibles;
+		QList<KCollapsibleWidget *> collapsibles;
 };
 
 /******************************************************************
  * Implementation
  *****************************************************************/
 
-DSettingsContainer::DSettingsContainer(QWidget *parent)
-	: QScrollArea( parent ), d(new DSettingsContainer::Private)
+KSettingsContainer::KSettingsContainer(QWidget *parent)
+	: QScrollArea( parent ), k(new KSettingsContainer::Private)
 {
 	QWidget *w = new QWidget;
 	QVBoxLayout *helperLay = new QVBoxLayout(w);
-	d->layout = new QVBoxLayout;
-	helperLay->addLayout( d->layout );
+	k->layout = new QVBoxLayout;
+	helperLay->addLayout( k->layout );
 	helperLay->addStretch(2);
 	setWidget(w);
 	setWidgetResizable(true);
@@ -253,12 +253,12 @@ DSettingsContainer::DSettingsContainer(QWidget *parent)
 	setAcceptDrops(true);
 }
 
-DSettingsContainer::~DSettingsContainer()
+KSettingsContainer::~KSettingsContainer()
 {
-	delete d;
+	delete k;
 }
 
-DCollapsibleWidget* DSettingsContainer::insertWidget( QWidget *w, const QString& name )
+KCollapsibleWidget* KSettingsContainer::insertWidget( QWidget *w, const QString& name )
 {
 	if (w && w->layout())
 	{
@@ -267,33 +267,33 @@ DCollapsibleWidget* DSettingsContainer::insertWidget( QWidget *w, const QString&
 		lay->setSpacing(0);
 	}
 
-	DCollapsibleWidget *cw = new DCollapsibleWidget( name );
+	KCollapsibleWidget *cw = new KCollapsibleWidget( name );
 	
-	d->layout->addWidget( cw );
+	k->layout->addWidget( cw );
 	cw->setInnerWidget( w );
 	
-	d->collapsibles << cw;
+	k->collapsibles << cw;
 	
 	cw->show();
 	
 	return cw;
 }
 
-void DSettingsContainer::removeWidget(QWidget *w )
+void KSettingsContainer::removeWidget(QWidget *w )
 {
-	foreach( DCollapsibleWidget *cw, d->collapsibles )
+	foreach( KCollapsibleWidget *cw, k->collapsibles )
 	{
 		if ( cw->innerWidget() == w )
 		{
-			d->collapsibles.removeAll(cw );
-			d->layout->removeWidget(cw);
+			k->collapsibles.removeAll(cw );
+			k->layout->removeWidget(cw);
 			
 			break;
 		}
 	}
 }
 
-void DSettingsContainer::dragEnterEvent ( QDragEnterEvent * event )
+void KSettingsContainer::dragEnterEvent ( QDragEnterEvent * event )
 {
 	setFocus();
 	
@@ -315,7 +315,7 @@ void DSettingsContainer::dragEnterEvent ( QDragEnterEvent * event )
 	}
 }
 
-void DSettingsContainer::dragMoveEvent(QDragMoveEvent* event)
+void KSettingsContainer::dragMoveEvent(QDragMoveEvent* event)
 {
 	if ( const CollapsibleMimeData *mimeData = dynamic_cast<const CollapsibleMimeData *>(event->mimeData()) )
 	{
@@ -328,33 +328,33 @@ void DSettingsContainer::dragMoveEvent(QDragMoveEvent* event)
 }
 
 
-void DSettingsContainer::dropEvent(QDropEvent* event)
+void KSettingsContainer::dropEvent(QDropEvent* event)
 {
 	if (const CollapsibleMimeData *mimeData = dynamic_cast<const CollapsibleMimeData *>(event->mimeData()))
 	{
-		d->layout->removeWidget( mimeData->collapsibleWidget());
+		k->layout->removeWidget( mimeData->collapsibleWidget());
 		
 		
 		QWidget *child = childAt(event->pos());
 		
 		if (child )
 		{
-			if ( DCollapsibleWidget *prev = dynamic_cast< DCollapsibleWidget *>(child) )
+			if ( KCollapsibleWidget *prev = dynamic_cast< KCollapsibleWidget *>(child) )
 			{
-				d->layout->insertWidget( d->layout->indexOf(prev)+1, mimeData->collapsibleWidget());
+				k->layout->insertWidget( k->layout->indexOf(prev)+1, mimeData->collapsibleWidget());
 			}
-			else if ( DCollapsibleWidget *prev = dynamic_cast< DCollapsibleWidget *>(child->parentWidget()) )
+			else if ( KCollapsibleWidget *prev = dynamic_cast< KCollapsibleWidget *>(child->parentWidget()) )
 			{
-				d->layout->insertWidget( d->layout->indexOf(prev)+1, mimeData->collapsibleWidget());
+				k->layout->insertWidget( k->layout->indexOf(prev)+1, mimeData->collapsibleWidget());
 			}
 			else
 			{
-				d->layout->addWidget(mimeData->collapsibleWidget());
+				k->layout->addWidget(mimeData->collapsibleWidget());
 			}
 		}
 		else
 		{
-			d->layout->addWidget(mimeData->collapsibleWidget());
+			k->layout->addWidget(mimeData->collapsibleWidget());
 		}
 		
 		if (event->source() == this) 
@@ -374,49 +374,49 @@ void DSettingsContainer::dropEvent(QDropEvent* event)
 }
 
 
-DCollapsibleWidget::DCollapsibleWidget(QWidget *parent)
-	: QWidget(parent), d(new DCollapsibleWidget::Private)
+KCollapsibleWidget::KCollapsibleWidget(QWidget *parent)
+	: QWidget(parent), k(new KCollapsibleWidget::Private)
 {
 	init();
 }
-DCollapsibleWidget::DCollapsibleWidget(const QString& caption, QWidget *parent)
-	: QWidget(parent), d(new DCollapsibleWidget::Private)
+KCollapsibleWidget::KCollapsibleWidget(const QString& caption, QWidget *parent)
+	: QWidget(parent), k(new KCollapsibleWidget::Private)
 {
 	init();
 	setCaption(caption);
 }
 
-void DCollapsibleWidget::init()
+void KCollapsibleWidget::init()
 {
-	d->innerWidget = 0;
-	d->cwlayout = new QGridLayout( this );
-	d->cwlayout->setMargin(0);
+	k->innerWidget = 0;
+	k->cwlayout = new QGridLayout( this );
+	k->cwlayout->setMargin(0);
 	
-	d->label = new DClickableLabel;
-	d->label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+	k->label = new KClickableLabel;
+	k->label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
 	
 	
-	d->cwlayout->addWidget(d->label, 1, 1);
+	k->cwlayout->addWidget(k->label, 1, 1);
 	
 // 	d->label->show();
 	
-	connect(d->label, SIGNAL(clicked()), this, SLOT(toggleExpanded()));
+	connect(k->label, SIGNAL(clicked()), this, SLOT(toggleExpanded()));
 	
 	setExpanded(false);
 	setEnabled(false);
 }
 
-DCollapsibleWidget::~DCollapsibleWidget()
+KCollapsibleWidget::~KCollapsibleWidget()
 {
-	delete d;
+	delete k;
 }
 
-QWidget* DCollapsibleWidget::innerWidget() const
+QWidget* KCollapsibleWidget::innerWidget() const
 {
-	return d->innerWidget;
+	return k->innerWidget;
 }
 
-void DCollapsibleWidget::setInnerWidget(QWidget *w)
+void KCollapsibleWidget::setInnerWidget(QWidget *w)
 {
 	if (!w) return;
 	
@@ -424,49 +424,49 @@ void DCollapsibleWidget::setInnerWidget(QWidget *w)
 	w->setParent(container);
 	
 	QVBoxLayout *containerLayout = new QVBoxLayout(container);
-	d->innerWidget = w;
+	k->innerWidget = w;
 	
 	containerLayout->addWidget(w);
 
-	d->cwlayout->addWidget(container, 2, 1);
-	d->cwlayout->setRowStretch(2, 1);
+	k->cwlayout->addWidget(container, 2, 1);
+	k->cwlayout->setRowStretch(2, 1);
 	
 	setEnabled( true );
 	setExpanded(isExpanded());
 }
 
-void DCollapsibleWidget::setCaption(const QString& caption)
+void KCollapsibleWidget::setCaption(const QString& caption)
 {
-	d->label->setText(QString("<b>%1</b>").arg(caption));
+	k->label->setText(QString("<b>%1</b>").arg(caption));
 }
 
-QString DCollapsibleWidget::caption() const
+QString KCollapsibleWidget::caption() const
 {
-	return d->label->text();
+	return k->label->text();
 }
 
-void DCollapsibleWidget::setExpanded(bool expanded)
+void KCollapsibleWidget::setExpanded(bool expanded)
 {
-	if ( d->innerWidget )
+	if ( k->innerWidget )
 	{
 		setUpdatesEnabled( false );
-		d->innerWidget->parentWidget()->setVisible(expanded);
-		d->innerWidget->setVisible(expanded);
+		k->innerWidget->parentWidget()->setVisible(expanded);
+		k->innerWidget->setVisible(expanded);
 		
-		d->label->setChecked(expanded);
+		k->label->setChecked(expanded);
 		
 		setUpdatesEnabled( true );
 	}
 }
 
-bool DCollapsibleWidget::isExpanded() const
+bool KCollapsibleWidget::isExpanded() const
 {
-	return d->label->isChecked();
+	return k->label->isChecked();
 }
 
-void DCollapsibleWidget::toggleExpanded()
+void KCollapsibleWidget::toggleExpanded()
 {
-	setExpanded( d->label->isChecked() );
+	setExpanded( k->label->isChecked() );
 }
 
 

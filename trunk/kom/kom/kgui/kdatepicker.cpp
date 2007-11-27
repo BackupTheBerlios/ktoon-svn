@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,7 +30,7 @@
 #include <QIntValidator>
 #include <QLineEdit>
 
-DDatePicker::EditableButton::EditableButton()
+KDatePicker::EditableButton::EditableButton()
 {
 	m_editor = new QLineEdit(this);
 	m_editor->setValidator(new QIntValidator(1753, 4000, m_editor));
@@ -40,11 +42,11 @@ DDatePicker::EditableButton::EditableButton()
 	
 }
 
-DDatePicker::EditableButton::~EditableButton()
+KDatePicker::EditableButton::~EditableButton()
 {
 }
 
-void DDatePicker::EditableButton::emitYearSelected()
+void KDatePicker::EditableButton::emitYearSelected()
 {
 	int year = m_editor->text().toInt();
 	
@@ -53,7 +55,7 @@ void DDatePicker::EditableButton::emitYearSelected()
 	emit yearSelected(year);
 }
 
-void DDatePicker::EditableButton::edit()
+void KDatePicker::EditableButton::edit()
 {
 	m_editor->setMaximumSize(size());
 	
@@ -64,7 +66,7 @@ void DDatePicker::EditableButton::edit()
 	
 }
 
-DDatePicker::DDatePicker(QWidget *parent) : QFrame(parent)
+KDatePicker::KDatePicker(QWidget *parent) : QFrame(parent)
 {
 	Q_INIT_RESOURCE(kgui_images);
 	
@@ -122,7 +124,6 @@ DDatePicker::DDatePicker(QWidget *parent) : QFrame(parent)
 	
 	QToolButton *nextYear = new QToolButton();
 	
-	
 	nextYear->setAutoRaise(true);
 	nextYear->setToolButtonStyle ( Qt::ToolButtonIconOnly );
 	nextYear->setIconSize( QSize(32,32));
@@ -136,7 +137,7 @@ DDatePicker::DDatePicker(QWidget *parent) : QFrame(parent)
 	
 	// Main widget
 	
-	m_dateTable = new DDateTable;
+	m_dateTable = new KDateTable;
 	
 	mainLayout->addWidget(m_dateTable);
 	
@@ -176,7 +177,7 @@ DDatePicker::DDatePicker(QWidget *parent) : QFrame(parent)
 	connect(m_dateTable, SIGNAL(dateChanged( const QDate &)), this, SIGNAL(dateChanged( const QDate& )));
 }
 
-void DDatePicker::fillWeeks(const QDate &date)
+void KDatePicker::fillWeeks(const QDate &date)
 {
 	int year = date.year();
 	
@@ -196,11 +197,11 @@ void DDatePicker::fillWeeks(const QDate &date)
 	m_week->setCurrentIndex( date.weekNumber( &year) );
 }
 
-DDatePicker::~DDatePicker()
+KDatePicker::~KDatePicker()
 {
 }
 
-void DDatePicker::setWeek(int week)
+void KDatePicker::setWeek(int week)
 {
 	QDate temp(m_dateTable->date().year(), 1, 1);
 	
@@ -209,13 +210,13 @@ void DDatePicker::setWeek(int week)
 	setDate(temp);
 }
 
-void DDatePicker::setYear(int year)
+void KDatePicker::setYear(int year)
 {
 	QDate date(year, m_dateTable->date().month(), m_dateTable->date().day());
 	setDate(date);
 }
 
-void DDatePicker::setDate(const QDate &date)
+void KDatePicker::setDate(const QDate &date)
 {
 	if ( date.isValid() )
 	{
@@ -229,14 +230,14 @@ void DDatePicker::setDate(const QDate &date)
 }
 
 
-void DDatePicker::previousYear()
+void KDatePicker::previousYear()
 {
 	QDate date = m_dateTable->date().addYears(-1);
 	
 	setDate(date);
 }
 
-void DDatePicker::nextYear()
+void KDatePicker::nextYear()
 {
 	QDate date = m_dateTable->date().addYears(1);
 	
@@ -244,21 +245,21 @@ void DDatePicker::nextYear()
 }
 
 
-void DDatePicker::previousMounth()
+void KDatePicker::previousMounth()
 {
 	QDate date = m_dateTable->date().addMonths(-1);
 	
 	setDate(date);
 }
 
-void DDatePicker::nextMounth()
+void KDatePicker::nextMounth()
 {
 	QDate date = m_dateTable->date().addMonths(1);
 	
 	setDate(date);
 }
 
-void DDatePicker::mounthFromAction(QAction *act)
+void KDatePicker::mounthFromAction(QAction *act)
 {
 	if ( act )
 	{
@@ -270,7 +271,7 @@ void DDatePicker::mounthFromAction(QAction *act)
 	}
 }
 
-QDate DDatePicker::date() const
+QDate KDatePicker::date() const
 {
 	return m_dateTable->date();
 }

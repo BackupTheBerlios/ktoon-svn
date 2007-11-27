@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,26 +20,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DTHEMEMANAGER_H
-#define DTHEMEMANAGER_H
+#ifndef KTHEMEMANAGER_H
+#define KTHEMEMANAGER_H
 
 #include <QXmlDefaultHandler>
 #include <QPalette>
 #include <kcore/kglobal.h>
 
-class DThemeDocument;
+class KThemeDocument;
 
 /**
  * @author David Cuadrado
 */
-class D_GUI_EXPORT DThemeManager : public QXmlDefaultHandler
+class K_GUI_EXPORT KThemeManager : public QXmlDefaultHandler
 {
 	public:
-		DThemeManager();
-		~DThemeManager();
+		KThemeManager();
+		~KThemeManager();
 		
 		bool applyTheme(const QString &file);
-		bool applyTheme(const DThemeDocument &dd);
+		bool applyTheme(const KThemeDocument &dd);
 		
 		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
 		

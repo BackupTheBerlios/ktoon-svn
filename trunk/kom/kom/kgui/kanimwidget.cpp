@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   				   *
- *   krawek@gmail.com    						   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -29,10 +31,10 @@
 
 #include "kdebug.h"
 
-class DAnimWidget::Controller
+class KAnimWidget::Controller
 {
 	public:
-		Controller(DAnimWidget *area) : m_area(area), m_timerId(-1)
+		Controller(KAnimWidget *area) : m_area(area), m_timerId(-1)
 		{
 		}
 		~Controller()
@@ -54,11 +56,11 @@ class DAnimWidget::Controller
 		}
 		
 	private:
-		DAnimWidget *m_area;
+		KAnimWidget *m_area;
 		int m_timerId;
 };
 
-DAnimWidget::DAnimWidget(const QPixmap &px, const QString &text, QWidget *parent) : QWidget(parent), m_type(AnimText), m_controller(new Controller(this)), m_background(px), m_text(text)
+KAnimWidget::KAnimWidget(const QPixmap &px, const QString &text, QWidget *parent) : QWidget(parent), m_type(AnimText), m_controller(new Controller(this)), m_background(px), m_text(text)
 {
 	resize(px.width()/2, px.height());
 	
@@ -68,22 +70,22 @@ DAnimWidget::DAnimWidget(const QPixmap &px, const QString &text, QWidget *parent
 	m_textRect = QRectF(QPointF(40, height()), fontMetrics.size(Qt::TextWordWrap, m_text).expandedTo( QSizeF(px.width(), 0)) );
 }
 
-DAnimWidget::DAnimWidget(ListOfPixmaps lop, QWidget *parent) : QWidget(parent), m_type(AnimPixmap), m_controller(new Controller(this)), m_pixmaps(lop), m_pixmapIndex(0)
+KAnimWidget::KAnimWidget(ListOfPixmaps lop, QWidget *parent) : QWidget(parent), m_type(AnimPixmap), m_controller(new Controller(this)), m_pixmaps(lop), m_pixmapIndex(0)
 {
 	m_background = lop[0];
 }
 
-DAnimWidget::~ DAnimWidget()
+KAnimWidget::~ KAnimWidget()
 {
 	delete m_controller;
 }
 
-void DAnimWidget::setBackgroundPixmap(const QPixmap &px)
+void KAnimWidget::setBackgroundPixmap(const QPixmap &px)
 {
 	m_background = px;
 }
 
-void DAnimWidget::showEvent ( QShowEvent * e )
+void KAnimWidget::showEvent ( QShowEvent * e )
 {
 	switch(m_type)
 	{
@@ -101,13 +103,13 @@ void DAnimWidget::showEvent ( QShowEvent * e )
 	QWidget::showEvent (e);
 }
 
-void DAnimWidget::hideEvent ( QHideEvent *e)
+void KAnimWidget::hideEvent ( QHideEvent *e)
 {
 	m_controller->stop();
 	QWidget::hideEvent ( e);
 }
 
-void DAnimWidget::timerEvent(QTimerEvent *)
+void KAnimWidget::timerEvent(QTimerEvent *)
 {
 	switch(m_type)
 	{
@@ -127,7 +129,7 @@ void DAnimWidget::timerEvent(QTimerEvent *)
 	update();
 }
 
-void DAnimWidget::paintEvent(QPaintEvent *)
+void KAnimWidget::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing, true);

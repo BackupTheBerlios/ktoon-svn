@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -23,7 +25,7 @@
 #include <QResizeEvent>
 #include "kdebug.h"
 
-DWidgetListView::DWidgetListView(QWidget * parent) : QTableWidget(0,1,parent)
+KWidgetListView::KWidgetListView(QWidget * parent) : QTableWidget(0,1,parent)
 {
 	verticalHeader()->hide();
 	horizontalHeader()->hide();
@@ -33,11 +35,11 @@ DWidgetListView::DWidgetListView(QWidget * parent) : QTableWidget(0,1,parent)
 }
 
 
-DWidgetListView::~DWidgetListView()
+KWidgetListView::~KWidgetListView()
 {
 }
 
-QTableWidgetItem *DWidgetListView::addWidget(QWidget *widget)
+QTableWidgetItem *KWidgetListView::addWidget(QWidget *widget)
 {
 	QTableWidgetItem *newItem = new QTableWidgetItem();
 	
@@ -55,7 +57,7 @@ QTableWidgetItem *DWidgetListView::addWidget(QWidget *widget)
 	return newItem;
 }
 
-QTableWidgetItem *DWidgetListView::insertWidget(int pos, QWidget *widget)
+QTableWidgetItem *KWidgetListView::insertWidget(int pos, QWidget *widget)
 {
 	QTableWidgetItem *newItem = new QTableWidgetItem();
 	
@@ -71,23 +73,23 @@ QTableWidgetItem *DWidgetListView::insertWidget(int pos, QWidget *widget)
 }
 
 
-QWidget *DWidgetListView::widget(QTableWidgetItem *treeItem)
+QWidget *KWidgetListView::widget(QTableWidgetItem *treeItem)
 {
 	return indexWidget(indexFromItem(treeItem));
 }
 
-QTableWidgetItem *DWidgetListView::item(QWidget *widget)
+QTableWidgetItem *KWidgetListView::item(QWidget *widget)
 {
 	return m_items[widget];
 }
 
-void DWidgetListView::resizeEvent(QResizeEvent *e)
+void KWidgetListView::resizeEvent(QResizeEvent *e)
 {
 	horizontalHeader()->resizeSection (0, e->size().width() );
 }
 
 
-void DWidgetListView::moveItemUp(int index)
+void KWidgetListView::moveItemUp(int index)
 {
 	if ( index > 0 )
 	{
@@ -97,7 +99,7 @@ void DWidgetListView::moveItemUp(int index)
 	}
 }
 
-void DWidgetListView::moveItemDown(int index)
+void KWidgetListView::moveItemDown(int index)
 {
 	if ( index < rowCount() )
 	{
@@ -108,7 +110,7 @@ void DWidgetListView::moveItemDown(int index)
 }
 
 
-int DWidgetListView::currentVisualRow() const
+int KWidgetListView::currentVisualRow() const
 {
 	return verticalHeader()->visualIndex(currentRow());
 }

@@ -1,18 +1,39 @@
+/***************************************************************************
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 #include "kclicklineedit.h"
 
 #include <QPainter>
 
 
-struct DClickLineEdit::Private
+struct KClickLineEdit::Private
 {
 	QString clickMessage;
 	bool drawClickMsg;
 };
 
-DClickLineEdit::DClickLineEdit( const QString &msg, QWidget *parent) : QLineEdit(parent), d(new Private)
+KClickLineEdit::KClickLineEdit( const QString &msg, QWidget *parent) : QLineEdit(parent), k(new Private)
 {
-	d->drawClickMsg = true;
+	k->drawClickMsg = true;
 	setClickMessage( msg );
 	
 	setFocusPolicy ( Qt::ClickFocus );
@@ -20,64 +41,64 @@ DClickLineEdit::DClickLineEdit( const QString &msg, QWidget *parent) : QLineEdit
 	setStyleSheet(QString(":enabled { padding-right: %1; }").arg(8));
 }
 
-DClickLineEdit::~DClickLineEdit()
+KClickLineEdit::~KClickLineEdit()
 {
-	delete d;
+	delete k;
 }
 
-void DClickLineEdit::setClickMessage( const QString &msg )
+void KClickLineEdit::setClickMessage( const QString &msg )
 {
-	d->clickMessage = msg;
+	k->clickMessage = msg;
 	repaint();
 }
 
-QString DClickLineEdit::clickMessage() const
+QString KClickLineEdit::clickMessage() const
 {
-	return d->clickMessage;
+	return k->clickMessage;
 }
 
 
-void DClickLineEdit::setText( const QString &txt )
+void KClickLineEdit::setText( const QString &txt )
 {
-	d->drawClickMsg = txt.isEmpty();
+	k->drawClickMsg = txt.isEmpty();
 	repaint();
 	QLineEdit::setText( txt );
 }
 
-void DClickLineEdit::paintEvent( QPaintEvent *e )
+void KClickLineEdit::paintEvent( QPaintEvent *e )
 {
 	QLineEdit::paintEvent(e);
 	
 	QPainter p(this);
-	if ( d->drawClickMsg == true && !hasFocus() )
+	if ( k->drawClickMsg == true && !hasFocus() )
 	{
 		QPen tmp = p.pen();
 		p.setPen( palette().color( QPalette::Disabled, QPalette::Text ) );
 		QRect cr = contentsRect();
 		
 		cr.adjust(3, 0, 0 ,0);
-		p.drawText( cr, Qt::AlignVCenter, d->clickMessage );
+		p.drawText( cr, Qt::AlignVCenter, k->clickMessage );
 		p.setPen( tmp );
 	}
 }
 
 
-void DClickLineEdit::focusInEvent( QFocusEvent *ev )
+void KClickLineEdit::focusInEvent( QFocusEvent *ev )
 {
-	if ( d->drawClickMsg == true ) 
+	if ( k->drawClickMsg == true ) 
 	{
-		d->drawClickMsg = false;
+		k->drawClickMsg = false;
 		repaint();
 	}
 	QLineEdit::focusInEvent( ev );
 }
 
 
-void DClickLineEdit::focusOutEvent( QFocusEvent *ev )
+void KClickLineEdit::focusOutEvent( QFocusEvent *ev )
 {
 	if ( text().isEmpty() ) 
 	{
-		d->drawClickMsg = true;
+		k->drawClickMsg = true;
 		repaint();
 	}
 	QLineEdit::focusOutEvent( ev );

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   				   *
- *   krawek@gmail.com   						   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,11 +20,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DANIMWIDGET_H
-#define DANIMWIDGET_H
+#ifndef KANIMWIDGET_H
+#define KANIMWIDGET_H
 /**
- * @file danimwidget.h
- * @brief Include this file if you need the class DAnimWidget
+ * @file kanimwidget.h
+ * @brief Include this file if you need the class KAnimWidget
  */
 
 #include <QPixmap>
@@ -39,33 +41,33 @@ typedef QList<QPixmap> ListOfPixmaps;
  * @short Translate
  * @elseif spanish
  * Si el es de texto lo va desplazando de arriba abajo hacia arriba y si es de imgenes las va mostrando una por una.
- * @short La clase DAnimWidget provee de un widget que hace una simple animacion, de un texto o una secuencia de imagenes.
+ * @short La clase KAnimWidget provee de un widget que hace una simple animacion, de un texto o una secuencia de imagenes.
  * 
  * @Author David Cuadrado
  * @endif
  */
-class D_GUI_EXPORT DAnimWidget : public QWidget
+class K_GUI_EXPORT KAnimWidget : public QWidget
 {
 	public:
 		enum Type { AnimText = 0, AnimPixmap };
 		/**
-		 * Construye un DAnimWidget con una imagen de fondo, un texto para animar y un padre.
+		 * Construye un KAnimWidget con una imagen de fondo, un texto para animar y un padre.
 		 * @param px imagen de fondo
 		 * @param text texto para animar
 		 * @param parent 
 		 */
-		DAnimWidget(const QPixmap &px, const QString &text, QWidget *parent = 0);
+		KAnimWidget(const QPixmap &px, const QString &text, QWidget *parent = 0);
 		/**
-		 * Construye un DAnimWidget con una lista de imagenes para animar y un padre.
+		 * Construye un KAnimWidget con una lista de imagenes para animar y un padre.
 		 * @param lop imagenes para animar
 		 * @param parent 
 		 */
-		DAnimWidget(ListOfPixmaps lop, QWidget *parent = 0);
+		KAnimWidget(ListOfPixmaps lop, QWidget *parent = 0);
 		
 		/**
 		 * Destructor
 		 */
-		~DAnimWidget();
+		~KAnimWidget();
 		
 		/**
 		 * pone una imagen de fondo a la animacion
