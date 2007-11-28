@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -37,17 +39,17 @@
 class EventFilter : public QObject
 {
 	public:
-		EventFilter(DMainWindow *mw, QObject *parent = 0);
+		EventFilter(KMainWindow *mw, QObject *parent = 0);
 		~EventFilter();
 		
 	protected:
 		bool eventFilter(QObject *obj, QEvent *event);
 		
 	private:
-		DMainWindow *m_mainWindow;
+		KMainWindow *m_mainWindow;
 };
 
-EventFilter::EventFilter(DMainWindow *mw, QObject *parent) : QObject(parent), m_mainWindow(mw)
+EventFilter::EventFilter(KMainWindow *mw, QObject *parent) : QObject(parent), m_mainWindow(mw)
 {
 }
 
@@ -84,7 +86,7 @@ bool EventFilter::eventFilter(QObject *obj, QEvent *event)
  * Construct a factory.
  * @return 
  */
-DMainWindowFactory::DMainWindowFactory()
+KMainWindowFactory::KMainWindowFactory()
 {
 }
 
@@ -93,7 +95,7 @@ DMainWindowFactory::DMainWindowFactory()
  * Destructor
  * @return 
  */
-DMainWindowFactory::~DMainWindowFactory()
+KMainWindowFactory::~KMainWindowFactory()
 {
 }
 
@@ -102,31 +104,31 @@ DMainWindowFactory::~DMainWindowFactory()
  * @param other 
  * @return 
  */
-DMainWindow *DMainWindowFactory::create(QMainWindow *other)
+KMainWindow *KMainWindowFactory::create(QMainWindow *other)
 {
-	DMainWindow *mainWindow = 0;
+	KMainWindow *mainWindow = 0;
 	
 	if ( other->isVisible() )
 	{
 		other->hide();
 	}
 	
-	if ( other->inherits( "DMainWindow" ) )
+	if ( other->inherits( "KMainWindow" ) )
 	{
-		qWarning() << QObject::tr("Can't create a DMainWindow from DMainWindow");
-		return static_cast<DMainWindow *>(other);
+		qWarning() << QObject::tr("Can't create a KMainWindow from KMainWindow");
+		return static_cast<KMainWindow *>(other);
 	}
 	
 	if ( QWidget *central = other->centralWidget() )
 	{
 		if ( QTabWidget *tabWidget = dynamic_cast<QTabWidget *>(central) )
 		{
-			mainWindow = new DTabbedMainWindow;
-			static_cast<DTabbedMainWindow *>(mainWindow)->setTabWidget(tabWidget);
+			mainWindow = new KTabbedMainWindow;
+			static_cast<KTabbedMainWindow *>(mainWindow)->setTabWidget(tabWidget);
 		}
 		else
 		{
-			mainWindow = new DMainWindow;
+			mainWindow = new KMainWindow;
 			central->setParent(mainWindow);
 			mainWindow->setCentralWidget( central );
 		}
@@ -167,7 +169,7 @@ DMainWindow *DMainWindowFactory::create(QMainWindow *other)
 	
 	mainWindow->setStatusBar(other->statusBar());
 	mainWindow->setMenuBar(other->menuBar());
-	mainWindow->setCurrentPerspective( DMainWindow::DefaultPerspective );
+	mainWindow->setCurrentPerspective( KMainWindow::DefaultPerspective );
 	
 	
 	

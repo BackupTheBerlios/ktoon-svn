@@ -35,7 +35,7 @@ class QBitmap;
  * 
  * @short A widget for selecting two related colors.
  *
- * DDualColorButton allows the user to select two cascaded colors (usually a
+ * KDualColorButton allows the user to select two cascaded colors (usually a
  * foreground and background color). Other features include drag and drop
  * from other KDE color widgets, a reset to black and white control, and a
  * swap colors control.
@@ -51,7 +51,7 @@ class QBitmap;
  *
  * @author Daniel M. Duley <mosfet@kde.org>
  */
-class D_GUI_EXPORT DDualColorButton : public QWidget
+class K_GUI_EXPORT KDualColorButton : public QWidget
 {
 	Q_OBJECT
 	Q_ENUMS( DualColor )
@@ -70,17 +70,17 @@ class D_GUI_EXPORT DDualColorButton : public QWidget
      		 */
 		
     		/// KDE4 remove name argument
-		DDualColorButton(QWidget *parent=0);
+		KDualColorButton(QWidget *parent=0);
 
     		/**
 		 * Constructs a new DDualColorButton with the supplied foreground and
 		 * background colors.
      		*/
     		/// KDE4 remove name argument
-		DDualColorButton(const QBrush &fgColor, const QBrush &bgColor,
+		KDualColorButton(const QBrush &fgColor, const QBrush &bgColor,
 				 QWidget *parent=0);
 
-		~DDualColorButton();
+		~KDualColorButton();
     		/**
 		 * Returns the current foreground color.
      		*/
@@ -133,7 +133,7 @@ class D_GUI_EXPORT DDualColorButton : public QWidget
     		/**
 		 * Emitted when the user changes the current color selection.
      		*/
-		void currentChanged(DDualColorButton::DualColor s);
+		void currentChanged(KDualColorButton::DualColor s);
 		
 // 		void selectionChanged();
 		

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -24,7 +26,7 @@
 #include <QLabel>
 #include "kseparator.h"
 
-DOptionalDialog::DOptionalDialog(const QString &text,const QString &title,QWidget *parent) : QDialog(parent)
+KOptionalDialog::KOptionalDialog(const QString &text,const QString &title,QWidget *parent) : QDialog(parent)
 {
 	setWindowTitle(title);
 	m_layout = new QVBoxLayout;
@@ -37,7 +39,7 @@ DOptionalDialog::DOptionalDialog(const QString &text,const QString &title,QWidge
 	
 	m_layout->addStretch(10);
 	
-	m_layout->addWidget(new DSeparator);
+	m_layout->addWidget(new KSeparator);
 	
 	QHBoxLayout *buttonLayout = new QHBoxLayout;
 	buttonLayout->addStretch(1);
@@ -58,11 +60,11 @@ DOptionalDialog::DOptionalDialog(const QString &text,const QString &title,QWidge
 }
 
 
-DOptionalDialog::~DOptionalDialog()
+KOptionalDialog::~KOptionalDialog()
 {
 }
 
-bool DOptionalDialog::shownAgain()
+bool KOptionalDialog::shownAgain()
 {
 	return m_checkBox->isChecked();
 }

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -23,12 +25,12 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 
-DTabDialog::DTabDialog(QWidget *parent, bool modal)
+KTabDialog::KTabDialog(QWidget *parent, bool modal)
  : QDialog(parent)
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 
-	m_tabWidget = new DTabWidget(this);
+	m_tabWidget = new KTabWidget(this);
 	
 	mainLayout->addWidget(m_tabWidget);
 	setLayout(mainLayout);
@@ -38,12 +40,12 @@ DTabDialog::DTabDialog(QWidget *parent, bool modal)
 	setModal(modal);
 }
 
-DTabDialog::DTabDialog(int buttons, QWidget *parent, bool modal)
+KTabDialog::KTabDialog(int buttons, QWidget *parent, bool modal)
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	setLayout(mainLayout);
 	
-	m_tabWidget = new DTabWidget(this);
+	m_tabWidget = new KTabWidget(this);
 	
 	mainLayout->addWidget(m_tabWidget);
 	
@@ -52,7 +54,7 @@ DTabDialog::DTabDialog(int buttons, QWidget *parent, bool modal)
 	setModal(modal);
 }
 
-void DTabDialog::setupButtons(int buttons)
+void KTabDialog::setupButtons(int buttons)
 {
 	QHBoxLayout *buttonLayout = new QHBoxLayout;
 	buttonLayout->addStretch(1);
@@ -117,40 +119,40 @@ void DTabDialog::setupButtons(int buttons)
 }
 
 
-DTabDialog::~DTabDialog()
+KTabDialog::~KTabDialog()
 {
 }
 
-void DTabDialog::addTab ( QWidget * child, const QString & label )
+void KTabDialog::addTab ( QWidget * child, const QString & label )
 {
 	m_tabWidget->addTab(child, label);
 }
 
-void DTabDialog::addTab ( QWidget * child, const QIcon & iconset, const QString & label )
+void KTabDialog::addTab ( QWidget * child, const QIcon & iconset, const QString & label )
 {
 	m_tabWidget->addTab(child, iconset, label);
 }
 
-QWidget *DTabDialog::currentTab()
+QWidget *KTabDialog::currentTab()
 {
 	return m_tabWidget->currentWidget();
 }
 
-void DTabDialog::ok()
+void KTabDialog::ok()
 {
 	accept();
 }
 
-void DTabDialog::cancel()
+void KTabDialog::cancel()
 {
 	reject();
 }
 
-void DTabDialog::apply()
+void KTabDialog::apply()
 {
 }
 
-void DTabDialog::setButtonText(Button b, const QString &text)
+void KTabDialog::setButtonText(Button b, const QString &text)
 {
 	QPushButton *button = m_buttons[b];
 	if ( button )
@@ -159,13 +161,13 @@ void DTabDialog::setButtonText(Button b, const QString &text)
 	}
 }
 
-QPushButton *DTabDialog::button(Button b)
+QPushButton *KTabDialog::button(Button b)
 {
 	return m_buttons[b];
 }
 
 
-DTabWidget *DTabDialog::tabWidget() const
+KTabWidget *KTabDialog::tabWidget() const
 {
 	return m_tabWidget;
 }

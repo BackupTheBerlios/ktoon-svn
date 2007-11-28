@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DRADIOBUTTONGROUP_H
-#define DRADIOBUTTONGROUP_H
+#ifndef KRADIOBUTTONGROUP_H
+#define KRADIOBUTTONGROUP_H
 
 #include <QGroupBox>
 #include <QRadioButton>
@@ -30,12 +32,12 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_GUI_EXPORT DRadioButtonGroup : public QGroupBox
+class K_GUI_EXPORT KRadioButtonGroup : public QGroupBox
 {
 	Q_OBJECT
 	public:
-		DRadioButtonGroup(const QString &title, Qt::Orientation orientation, QWidget *parent = 0);
-		~DRadioButtonGroup();
+		KRadioButtonGroup(const QString &title, Qt::Orientation orientation, QWidget *parent = 0);
+		~KRadioButtonGroup();
 		
 		void addItem ( const QString & text, int index = -1 );
 		void addItems(const QStringList &texts);

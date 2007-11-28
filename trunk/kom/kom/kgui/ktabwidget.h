@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                          	   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DTABWIDGET_H
-#define DTABWIDGET_H
+#ifndef KTABWIDGET_H
+#define KTABWIDGET_H
 
 #include <QTabWidget>
 #include <kcore/kglobal.h>
@@ -27,12 +29,12 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_GUI_EXPORT DTabWidget : public QTabWidget
+class K_GUI_EXPORT KTabWidget : public QTabWidget
 {
 	Q_OBJECT
 	public:
-		DTabWidget(QWidget *parent = 0);
-		~DTabWidget();
+		KTabWidget(QWidget *parent = 0);
+		~KTabWidget();
 		
 	public slots:
 		void removeAllTabs();

@@ -224,7 +224,7 @@ void KNodeGroup::createNodes(QGraphicsPathItem *pathItem)
 						QPainterPath::Element e2 = path.elementAt(index+1);
 						if(e2.type == QPainterPath::CurveToElement)
 						{
-							node->setRight(new DControlNode(index+1, this, e2, pathItem, k->scene));
+							node->setRight(new KControlNode(index+1, this, e2, pathItem, k->scene));
 							k->nodes << node->right();
 							index++;
 						}

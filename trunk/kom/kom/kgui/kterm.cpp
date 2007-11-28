@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,7 +27,7 @@
 #include <QApplication>
 
 
-DTerm::DTerm(QWidget *w) : QX11EmbedContainer(w)
+KTerm::KTerm(QWidget *w) : QX11EmbedContainer(w)
 {
 	m_process = new QProcess(this);
 	
@@ -34,20 +36,20 @@ DTerm::DTerm(QWidget *w) : QX11EmbedContainer(w)
 }
 
 
-DTerm::~DTerm()
+KTerm::~KTerm()
 {
 	m_process->kill();
 	m_process->waitForFinished();
 }
 
-QSize DTerm::sizeHint() const
+QSize KTerm::sizeHint() const
 {
 	QSize size(400,300);
 	
 	return size.expandedTo(QApplication::globalStrut());
 }
 
-void DTerm::showTerm()
+void KTerm::showTerm()
 {
 	QStringList args;
 
@@ -61,7 +63,7 @@ void DTerm::showTerm()
 	}
 }
 
-void DTerm::closeTerm(int ec, QProcess::ExitStatus s)
+void KTerm::closeTerm(int ec, QProcess::ExitStatus s)
 {
 	emit termClosed();
 	close();

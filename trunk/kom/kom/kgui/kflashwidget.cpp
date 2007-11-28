@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,68 +30,68 @@
 #include <QPainter>
 
 
-struct DFlashWidget::Private
+struct KFlashWidget::Private
 {
 	QString movie;
 	QProcess *process;
 	bool isOk;
 };
 
-DFlashWidget::DFlashWidget(const QString &swf, QWidget *parent) : QX11EmbedContainer(parent), d(new Private)
+KFlashWidget::KFlashWidget(const QString &swf, QWidget *parent) : QX11EmbedContainer(parent), k(new Private)
 {
 	setWindowTitle(tr("Flashing"));
 	
-	d->movie = swf;
-	d->isOk = true;
+	k->movie = swf;
+	k->isOk = true;
 	
 // 	setAttribute(Qt::WA_OpaquePaintEvent, true);
 	
-	d->process = new QProcess(this);
+	k->process = new QProcess(this);
 	
-	connect(d->process, SIGNAL(started ()), this, SLOT(updateSize()));
+	connect(k->process, SIGNAL(started ()), this, SLOT(updateSize()));
 // 	d->process->setEnvironment(QStringList()<<"SESSION_MANAGER=\"\"");
 	
 	resize(640, 480); // FIXME
 }
 
 
-DFlashWidget::~DFlashWidget()
+KFlashWidget::~KFlashWidget()
 {
-	d->process->kill();
-	d->process->waitForFinished();
+	k->process->kill();
+	k->process->waitForFinished();
 	
-	delete d;
+	delete k;
 }
 
-void DFlashWidget::play()
+void KFlashWidget::play()
 {
 	QStringList args;
 
-	args << QStringList() << "-x" << QString::number(winId()) << "-s" << "1.5" << d->movie;
+	args << QStringList() << "-x" << QString::number(winId()) << "-s" << "1.5" << k->movie;
 
-	d->process->start("gnash", args);
+	k->process->start("gnash", args);
 	
-	d->process->waitForStarted();
+	k->process->waitForStarted();
 	
-	if ( d->process->error() == QProcess::FailedToStart || d->process->state() == QProcess::NotRunning)
+	if ( k->process->error() == QProcess::FailedToStart || k->process->state() == QProcess::NotRunning)
 	{
 		qWarning("Please install gnash");
-		d->isOk = false;
+		k->isOk = false;
 	}
 	else
 	{
-		d->isOk = true;
+		k->isOk = true;
 	}
 	repaint();
 }
 
-void DFlashWidget::stop()
+void KFlashWidget::stop()
 {
-	d->process->terminate();
-	d->process->waitForFinished();
+	k->process->terminate();
+	k->process->waitForFinished();
 }
 
-void DFlashWidget::mousePressEvent(QMouseEvent *e)
+void KFlashWidget::mousePressEvent(QMouseEvent *e)
 {
 	if ( e->button() == Qt::RightButton )
 	{
@@ -99,7 +101,7 @@ void DFlashWidget::mousePressEvent(QMouseEvent *e)
 	e->ignore();
 }
 
-void DFlashWidget::mouseDoubleClickEvent( QMouseEvent *e)
+void KFlashWidget::mouseDoubleClickEvent( QMouseEvent *e)
 {
 	stop();
 	play();
@@ -107,16 +109,16 @@ void DFlashWidget::mouseDoubleClickEvent( QMouseEvent *e)
 	e->ignore();
 }
 
-void DFlashWidget::updateSize()
+void KFlashWidget::updateSize()
 {
 	// TODO: Update the widget size
 }
 
-void DFlashWidget::paintEvent (QPaintEvent *e)
+void KFlashWidget::paintEvent (QPaintEvent *e)
 {
 	QX11EmbedContainer::paintEvent(e);
 	
-	if ( !d->isOk )
+	if ( !k->isOk )
 	{
 		QPainter painter(this);
 		

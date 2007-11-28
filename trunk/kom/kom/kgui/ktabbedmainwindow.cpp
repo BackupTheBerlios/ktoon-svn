@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -84,19 +86,19 @@ void TabWidgetPrivate::wheelMove( int delta )
 #else
 
 #include <ktabwidget.h>
-#define TabWidgetPrivate DTabWidget
+#define TabWidgetPrivate KTabWidget
 
 #endif
 
 
-// DTabbedMainWindow
+// KTabbedMainWindow
 
 /**
  * Construct a tabbed main window.
  * @param parent 
  * @return 
  */
-DTabbedMainWindow::DTabbedMainWindow(QWidget *parent) : DMainWindow(parent)
+KTabbedMainWindow::KTabbedMainWindow(QWidget *parent) : KMainWindow(parent)
 {
 	m_tabWidget = new TabWidgetPrivate;
 	
@@ -111,7 +113,7 @@ DTabbedMainWindow::DTabbedMainWindow(QWidget *parent) : DMainWindow(parent)
  * Destructor
  * @return 
  */
-DTabbedMainWindow::~DTabbedMainWindow()
+KTabbedMainWindow::~KTabbedMainWindow()
 {
 	
 }
@@ -120,7 +122,7 @@ DTabbedMainWindow::~DTabbedMainWindow()
  * Setup the tab widget.
  * @param w 
  */
-void DTabbedMainWindow::setupTabWidget(QTabWidget *w)
+void KTabbedMainWindow::setupTabWidget(QTabWidget *w)
 {
 	w->setFocusPolicy(Qt::NoFocus);
 	
@@ -152,7 +154,7 @@ void DTabbedMainWindow::setupTabWidget(QTabWidget *w)
 	connect(w, SIGNAL(currentChanged ( int)), this, SLOT(emitWidgetChanged( int )));
 }
 
-void DTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int perspective)
+void KTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int perspective)
 {
 	if ( perspective & currentPerspective() )
 	{
@@ -180,7 +182,7 @@ void DTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int perspect
  * Remove a widget from the window.
  * @param widget 
  */
-void DTabbedMainWindow::removeWidget(QWidget *widget, bool force)
+void KTabbedMainWindow::removeWidget(QWidget *widget, bool force)
 {
 	if ( force ) m_persistantWidgets.removeAll(widget);
 	if ( m_persistantWidgets.contains(widget) ) return;
@@ -210,7 +212,7 @@ void DTabbedMainWindow::removeWidget(QWidget *widget, bool force)
 /**
  * Close the current tab.
  */
-void DTabbedMainWindow::closeCurrentTab()
+void KTabbedMainWindow::closeCurrentTab()
 {
 	int index = m_tabWidget->currentIndex();
 	
@@ -220,7 +222,7 @@ void DTabbedMainWindow::closeCurrentTab()
 	}
 }
 
-void DTabbedMainWindow::emitWidgetChanged(int index)
+void KTabbedMainWindow::emitWidgetChanged(int index)
 {
 	QWidget *w = m_tabWidget->widget(index);
 	
@@ -247,7 +249,7 @@ void DTabbedMainWindow::emitWidgetChanged(int index)
  * Sets other tab widget.
  * @param w 
  */
-void DTabbedMainWindow::setTabWidget(QTabWidget *w)
+void KTabbedMainWindow::setTabWidget(QTabWidget *w)
 {
 	m_tabWidget->close();
 	
@@ -265,7 +267,7 @@ void DTabbedMainWindow::setTabWidget(QTabWidget *w)
  * Return the current tab widget.
  * @return 
  */
-QTabWidget *DTabbedMainWindow::tabWidget() const
+QTabWidget *KTabbedMainWindow::tabWidget() const
 {
 	return m_tabWidget;
 }
@@ -274,7 +276,7 @@ QTabWidget *DTabbedMainWindow::tabWidget() const
  * Setup the perspective. Shows the pages in wps and hide others.
  * @param wps 
  */
-void DTabbedMainWindow::setupPerspective(int wps)
+void KTabbedMainWindow::setupPerspective(int wps)
 {
 	// FIXME: Flickr = (
 	

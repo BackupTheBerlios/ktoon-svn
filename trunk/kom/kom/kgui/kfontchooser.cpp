@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,32 +29,32 @@
 
 #include "kformfactory.h"
 
-DFontChooser::DFontChooser(QWidget *parent) : QFrame(parent)
+KFontChooser::KFontChooser(QWidget *parent) : QFrame(parent)
 {
 	QHBoxLayout *mainLayout = new QHBoxLayout(this);
 	m_families = new QFontComboBox;
 	
 	connect(m_families, SIGNAL(currentFontChanged(const QFont & )), this, SLOT(loadFontInfo(const QFont &)));
 	
-	mainLayout->addLayout(DFormFactory::makeLine(tr("Family"), m_families));
+	mainLayout->addLayout(KFormFactory::makeLine(tr("Family"), m_families));
 	
 	m_fontStyle = new QComboBox;
 	connect(m_fontStyle, SIGNAL(activated (int)), this, SLOT(emitFontChanged( int)));
-	mainLayout->addLayout(DFormFactory::makeLine(tr("Style"), m_fontStyle));
+	mainLayout->addLayout(KFormFactory::makeLine(tr("Style"), m_fontStyle));
 	
 	m_fontSize = new QComboBox;
 	connect(m_fontSize, SIGNAL(activated (int)), this, SLOT(emitFontChanged( int)));
-	mainLayout->addLayout(DFormFactory::makeLine(tr("Size"), m_fontSize));
+	mainLayout->addLayout(KFormFactory::makeLine(tr("Size"), m_fontSize));
 	
 	setCurrentFont(m_families->currentFont());
 }
 
 
-DFontChooser::~DFontChooser()
+KFontChooser::~KFontChooser()
 {
 }
 
-void DFontChooser::loadFontInfo(const QFont &newFont)
+void KFontChooser::loadFontInfo(const QFont &newFont)
 {
 	QString currentSize = m_fontSize->currentText();
 	QString currentStyle = m_fontStyle->currentText();
@@ -100,12 +102,12 @@ void DFontChooser::loadFontInfo(const QFont &newFont)
 	emit fontChanged();
 }
 
-void DFontChooser::emitFontChanged(int )
+void KFontChooser::emitFontChanged(int )
 {
 	emit fontChanged();
 }
 
-void DFontChooser::setCurrentFont(const QFont &font)
+void KFontChooser::setCurrentFont(const QFont &font)
 {
 	QFontDatabase fdb;
 	
@@ -114,7 +116,7 @@ void DFontChooser::setCurrentFont(const QFont &font)
 	m_fontSize->setCurrentIndex(m_fontSize->findText(QString::number(font.pointSize())));
 }
 
-QFont DFontChooser::currentFont() const
+QFont KFontChooser::currentFont() const
 {
 	return m_currentFont;
 }

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,16 +27,16 @@
 
 #include <QLabel>
 
-DFormFactory::DFormFactory()
+KFormFactory::KFormFactory()
 {
 }
 
 
-DFormFactory::~DFormFactory()
+KFormFactory::~KFormFactory()
 {
 }
 
-QBoxLayout *DFormFactory::makeLine(const QString &text, QWidget *widget,  Qt::Orientation o)
+QBoxLayout *KFormFactory::makeLine(const QString &text, QWidget *widget,  Qt::Orientation o)
 {
 	QBoxLayout *layout;
 	
@@ -58,7 +60,7 @@ QBoxLayout *DFormFactory::makeLine(const QString &text, QWidget *widget,  Qt::Or
 	return layout;
 }
 
-QGridLayout *DFormFactory::makeGrid(const QStringList &texts, const QWidgetList &widgets, Qt::Alignment alignment)
+QGridLayout *KFormFactory::makeGrid(const QStringList &texts, const QWidgetList &widgets, Qt::Alignment alignment)
 {
 	Q_ASSERT(texts.count() != widgets.count());
 	

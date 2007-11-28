@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,22 +20,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DVALIDATES_H
-#define DVALIDATES_H
+#ifndef KVALIDATES_H
+#define KVALIDATES_H
 
 #include <QWidget>
 class QLineEdit;
 
-#define D_GIVE_NAME(obj) obj->setObjectName( #obj );
+#define K_GIVE_NAME(obj) obj->setObjectName( #obj );
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DFormValidator
+class KFormValidator
 {
 	public:
-		DFormValidator(QWidget *form);
-		virtual ~DFormValidator();
+		KFormValidator(QWidget *form);
+		virtual ~KFormValidator();
 		
 		void setForm(QWidget *form);
 		

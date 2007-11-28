@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DSQUEEZELABEL_H
-#define DSQUEEZELABEL_H
+#ifndef KSQUEEZELABEL_H
+#define KSQUEEZELABEL_H
 
 #include <qlabel.h>
 #include <kcore/kglobal.h>
@@ -45,12 +47,12 @@
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class D_GUI_EXPORT DSqueezeLabel : public QLabel
+class K_GUI_EXPORT KSqueezeLabel : public QLabel
 {
 	public:
-		DSqueezeLabel(QWidget *parent, const char *name=0);
-		DSqueezeLabel(const QString &text, QWidget *parent, const char *name=0);
-		~DSqueezeLabel();
+		KSqueezeLabel(QWidget *parent, const char *name=0);
+		KSqueezeLabel(const QString &text, QWidget *parent, const char *name=0);
+		~KSqueezeLabel();
 		
 		QSize sizeHint() const;
 		QSize minimumSizeHint() const;

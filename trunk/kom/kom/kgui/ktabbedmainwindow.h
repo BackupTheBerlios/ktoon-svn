@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DTABBEDMAINWINDOW_H
-#define DTABBEDMAINWINDOW_H
+#ifndef KTABBEDMAINWINDOW_H
+#define KTABBEDMAINWINDOW_H
 
 #include <kgui/kmainwindow.h>
 
@@ -29,12 +31,12 @@ class QTabWidget;
  * A tabbed main window.
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_IDEAL_EXPORT DTabbedMainWindow : public DMainWindow
+class K_IDEAL_EXPORT KTabbedMainWindow : public KMainWindow
 {
 	Q_OBJECT;
 	public:
-		DTabbedMainWindow(QWidget *parent = 0);
-		~DTabbedMainWindow();
+		KTabbedMainWindow(QWidget *parent = 0);
+		~KTabbedMainWindow();
 		
 		void addWidget(QWidget *widget, bool persistant = false, int perspective = DefaultPerspective);
 		void removeWidget(QWidget *widget, bool force = false);

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,8 +19,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef DFORMFACTORY_H
-#define DFORMFACTORY_H
+#ifndef KFORMFACTORY_H
+#define KFORMFACTORY_H
 
 #include <QWidget>
 #include <QStringList>
@@ -30,11 +32,11 @@ class QGridLayout;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_GUI_EXPORT DFormFactory
+class K_GUI_EXPORT KFormFactory
 {
 	public:
-		DFormFactory();
-		~DFormFactory();
+		KFormFactory();
+		~KFormFactory();
 		
 	public:
 		static QBoxLayout *makeLine(const QString &text, QWidget *widget,  Qt::Orientation = Qt::Vertical);

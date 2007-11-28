@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DPATHHELPER_H
-#define DPATHHELPER_H
+#ifndef KPATHHELPER_H
+#define KPATHHELPER_H
 
 #include <QPainterPath>
 #include <QChar>
@@ -29,7 +31,7 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_CORE_EXPORT DPathHelper
+class K_CORE_EXPORT KPathHelper
 {
 	public:
 		/**
@@ -40,13 +42,13 @@ class D_CORE_EXPORT DPathHelper
 		 * @endif
 		 * @return 
 		 */
-		DPathHelper();
+		KPathHelper();
 		
 		/**
 		 * Destructor
 		 * @return 
 		 */
-		~DPathHelper();
+		~KPathHelper();
 		
 		/**
 		 * @if english

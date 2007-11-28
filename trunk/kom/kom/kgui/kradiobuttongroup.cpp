@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,7 +27,7 @@
 
 #include "kdebug.h"
 
-DRadioButtonGroup::DRadioButtonGroup(const QString &title, Qt::Orientation orientation, QWidget *parent) : QGroupBox(title, parent), m_orientation(orientation)
+KRadioButtonGroup::KRadioButtonGroup(const QString &title, Qt::Orientation orientation, QWidget *parent) : QGroupBox(title, parent), m_orientation(orientation)
 {
 	if ( orientation == Qt::Horizontal )
 	{
@@ -42,11 +44,11 @@ DRadioButtonGroup::DRadioButtonGroup(const QString &title, Qt::Orientation orien
 	setLayout(m_layout);
 }
 
-DRadioButtonGroup::~DRadioButtonGroup()
+KRadioButtonGroup::~KRadioButtonGroup()
 {
 }
 
-void DRadioButtonGroup::addItem ( const QString & text, int index )
+void KRadioButtonGroup::addItem ( const QString & text, int index )
 {
 	QRadioButton *button = new QRadioButton(text);
 	m_buttonGroup->addButton(button, index);
@@ -54,7 +56,7 @@ void DRadioButtonGroup::addItem ( const QString & text, int index )
 	m_layout->addWidget(button);
 }
 
-void DRadioButtonGroup::addItems(const QStringList &texts)
+void KRadioButtonGroup::addItems(const QStringList &texts)
 {
 	QStringList::ConstIterator it = texts.begin();
 	
@@ -74,17 +76,17 @@ void DRadioButtonGroup::addItems(const QStringList &texts)
 	}
 }
 
-int DRadioButtonGroup::currentIndex() const
+int KRadioButtonGroup::currentIndex() const
 {
 	return m_buttonGroup->buttons().indexOf(m_buttonGroup->checkedButton () );
 }
 
-void DRadioButtonGroup::emitButtonId(QAbstractButton *button)
+void KRadioButtonGroup::emitButtonId(QAbstractButton *button)
 {
 	emit clicked(m_buttonGroup->buttons().indexOf(button));
 }
 
-void DRadioButtonGroup::setCurrentIndex ( int index )
+void KRadioButtonGroup::setCurrentIndex ( int index )
 {
 	QAbstractButton *button = m_buttonGroup->button(index);
 	if ( button )

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -32,12 +34,12 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class D_GUI_EXPORT DOsd : public QWidget
+class K_GUI_EXPORT KOsd : public QWidget
 {
 	Q_OBJECT;
 	
 	private:
-		DOsd(QWidget *parent = 0);
+		KOsd(QWidget *parent = 0);
 		
 	public:
 		enum Level
@@ -48,11 +50,11 @@ class D_GUI_EXPORT DOsd : public QWidget
 			Error,
 			Fatal
 		};
-		~DOsd();
+		~KOsd();
 		
 		void display( const QString & message, Level level = Info, int ms = -1 );
 		
-		static DOsd *self();
+		static KOsd *self();
 		
 	private slots:
 		void animate();
@@ -65,7 +67,7 @@ class D_GUI_EXPORT DOsd : public QWidget
 		void drawPixmap(const QBrush &background, const QBrush &foreground);
 
 	private:
-		static DOsd *s_osd;
+		static KOsd *s_osd;
 		QPixmap m_pixmap;
 		QTimer *m_timer;
 		

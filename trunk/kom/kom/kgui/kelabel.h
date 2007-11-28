@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,8 +19,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef DELABEL_H
-#define DELABEL_H
+#ifndef KELABEL_H
+#define KELABEL_H
 
 #include <kgui/ksqueezelabel.h>
 
@@ -30,13 +32,13 @@
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class D_GUI_EXPORT DELabel : public DSqueezeLabel
+class K_GUI_EXPORT KELabel : public KSqueezeLabel
 {
 	Q_OBJECT
 
 	public:
-		DELabel(const QString &text, QWidget *parent = 0);
-		~DELabel();
+		KELabel(const QString &text, QWidget *parent = 0);
+		~KELabel();
 		void setValidator(const QValidator * v);
 		
 	public slots:

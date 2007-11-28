@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -29,9 +31,9 @@
 
 #include "kcore/kdebug.h"
 
-DOsd *DOsd::s_osd = 0;
+KOsd *KOsd::s_osd = 0;
 
-DOsd::DOsd( QWidget * parent ) : QWidget( parent), m_timer( 0 )
+KOsd::KOsd( QWidget * parent ) : QWidget( parent), m_timer( 0 )
 {
 	setFocusPolicy( Qt::NoFocus );
 	
@@ -54,13 +56,13 @@ DOsd::DOsd( QWidget * parent ) : QWidget( parent), m_timer( 0 )
 	m_document = new QTextDocument(this);
 }
 
-DOsd::~DOsd()
+KOsd::~KOsd()
 {
 	delete m_animator;
 	delete m_timer;
 }
 
-void DOsd::display( const QString &message, Level level, int ms )
+void KOsd::display( const QString &message, Level level, int ms )
 {
 	if (message.isEmpty()) return;
 	
@@ -160,30 +162,30 @@ void DOsd::display( const QString &message, Level level, int ms )
 	}
 }
 
-DOsd *DOsd::self()
+KOsd *KOsd::self()
 {
 	if ( ! s_osd )
 	{
-		s_osd = new DOsd(QApplication::desktop() );
+		s_osd = new KOsd(QApplication::desktop() );
 	}
 	
 	return s_osd;
 }
 
-void DOsd::paintEvent( QPaintEvent * e )
+void KOsd::paintEvent( QPaintEvent * e )
 {
 	QPainter p( this );
 	p.drawPixmap( e->rect().topLeft(), m_pixmap, e->rect() );
 }
 
-void DOsd::mousePressEvent( QMouseEvent *e )
+void KOsd::mousePressEvent( QMouseEvent *e )
 {
 	if ( m_timer )
 		m_timer->stop();
 	hide();
 }
 
-void DOsd::animate()
+void KOsd::animate()
 {
 	if ( !isVisible() )
 	{
@@ -236,7 +238,7 @@ void DOsd::animate()
 	repaint();
 }
 
-void DOsd::drawPixmap(const QBrush &background, const QBrush &foreground)
+void KOsd::drawPixmap(const QBrush &background, const QBrush &foreground)
 {
 	QPixmap symbol;
 	
@@ -263,8 +265,6 @@ void DOsd::drawPixmap(const QBrush &background, const QBrush &foreground)
 	QPainter bufferPainter( &m_pixmap );
 	bufferPainter.setRenderHint(QPainter::Antialiasing);
 	bufferPainter.setPen( QPen(QBrush(foreground), 3)  );
-	
-	
 	
 	QLinearGradient gradient(geometry.topLeft(), geometry.bottomLeft() );
 	

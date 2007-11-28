@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,25 +20,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DTERMTAB_H
-#define DTERMTAB_H
+#ifndef KTERMTAB_H
+#define KTERMTAB_H
 
 #include <kgui/ktabwidget.h>
 #include <QToolButton>
 #include <kcore/kglobal.h>
 
 
-class DTerm;
+class KTerm;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_GUI_EXPORT DTermTab : public DTabWidget
+class K_GUI_EXPORT KTermTab : public KTabWidget
 {
 	Q_OBJECT
 	public:
-		DTermTab(QWidget *parent = 0);
-		~DTermTab();
+		KTermTab(QWidget *parent = 0);
+		~KTermTab();
 		
 	private slots:
 		void closeTermTab();

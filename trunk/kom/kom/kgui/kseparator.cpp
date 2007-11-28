@@ -22,7 +22,7 @@
 #include <QStyleOption>
 #include <QPainter>
 
-DSeparator::DSeparator(QWidget* parent) : QFrame(parent)
+KSeparator::KSeparator(QWidget* parent) : QFrame(parent)
 {
    setLineWidth(1);
    setMidLineWidth(0);
@@ -30,7 +30,7 @@ DSeparator::DSeparator(QWidget* parent) : QFrame(parent)
 }
 
 
-DSeparator::DSeparator(Qt::Orientation orientation, QWidget* parent)
+KSeparator::KSeparator(Qt::Orientation orientation, QWidget* parent)
    : QFrame(parent)
 {
    setLineWidth(1);
@@ -39,7 +39,7 @@ DSeparator::DSeparator(Qt::Orientation orientation, QWidget* parent)
 }
 
 
-void DSeparator::setOrientation(Qt::Orientation orientation)
+void KSeparator::setOrientation(Qt::Orientation orientation)
 {
    if (orientation == Qt::Vertical) {
       setFrameShape ( QFrame::VLine );
@@ -53,10 +53,10 @@ void DSeparator::setOrientation(Qt::Orientation orientation)
    }
 }
 
-Qt::Orientation DSeparator::orientation() const
+Qt::Orientation KSeparator::orientation() const
 {
    return ( frameStyle() & VLine ) ? Qt::Vertical : Qt::Horizontal;
 }
 
-void DSeparator::virtual_hook( int, void* )
+void KSeparator::virtual_hook( int, void* )
 { /*BASE::virtual_hook( id, data );*/ }

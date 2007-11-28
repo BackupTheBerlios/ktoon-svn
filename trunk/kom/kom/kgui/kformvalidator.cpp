@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,21 +30,21 @@
 
 #include <QtDebug>
 
-DFormValidator::DFormValidator(QWidget *form) : m_parent(form)
+KFormValidator::KFormValidator(QWidget *form) : m_parent(form)
 {
 }
 
 
-DFormValidator::~DFormValidator()
+KFormValidator::~KFormValidator()
 {
 }
 
-void DFormValidator::setForm(QWidget *form)
+void KFormValidator::setForm(QWidget *form)
 {
 	m_parent = form;
 }
 
-bool DFormValidator::validatesNumerically(bool real)
+bool KFormValidator::validatesNumerically(bool real)
 {
 	bool ok = false;
 	foreach(QObject *child, m_parent->children())
@@ -65,7 +67,7 @@ bool DFormValidator::validatesNumerically(bool real)
 	return ok;
 }
 
-bool DFormValidator::validatesRange(int i, int e)
+bool KFormValidator::validatesRange(int i, int e)
 {
 	bool ok = false;
 	
@@ -87,7 +89,7 @@ bool DFormValidator::validatesRange(int i, int e)
 	return ok;
 }
 
-bool DFormValidator::validatesRegExp( const QString &regexp)
+bool KFormValidator::validatesRegExp( const QString &regexp)
 {
 	bool ok = false;
 	foreach(QObject *child, m_parent->children())
@@ -104,7 +106,7 @@ bool DFormValidator::validatesRegExp( const QString &regexp)
 
 
 
-bool DFormValidator::validatesNumericallyOf(bool real, const QString &name)
+bool KFormValidator::validatesNumericallyOf(bool real, const QString &name)
 {
 	bool ok = false;
 	foreach(QObject *child, m_parent->children())
@@ -128,7 +130,7 @@ bool DFormValidator::validatesNumericallyOf(bool real, const QString &name)
 	return ok;
 }
 
-bool DFormValidator::validatesRangeOf(int i, int e, const QString &name)
+bool KFormValidator::validatesRangeOf(int i, int e, const QString &name)
 {
 	bool ok = false;
 	foreach(QObject *child, m_parent->children() )
@@ -151,7 +153,7 @@ bool DFormValidator::validatesRangeOf(int i, int e, const QString &name)
 	return ok;
 }
 
-bool DFormValidator::validatesRegExpOf( const QString &regexp, const QString &name)
+bool KFormValidator::validatesRegExpOf( const QString &regexp, const QString &name)
 {
 	bool ok = false;
 	foreach(QObject *child, m_parent->children())
@@ -169,7 +171,7 @@ bool DFormValidator::validatesRegExpOf( const QString &regexp, const QString &na
 	return ok;
 }
 
-bool DFormValidator::validatesLength(int max)
+bool KFormValidator::validatesLength(int max)
 {
         bool ok = false;
         foreach(QObject *child, m_parent->children())
@@ -184,7 +186,7 @@ bool DFormValidator::validatesLength(int max)
         return ok;
 }
 
-bool DFormValidator::validatesLengthOf(int max, const QString &name)
+bool KFormValidator::validatesLengthOf(int max, const QString &name)
 {
         bool ok = false;
         foreach(QObject *child, m_parent->children())
@@ -204,7 +206,7 @@ bool DFormValidator::validatesLengthOf(int max, const QString &name)
         return ok;
 }
 
-bool DFormValidator::validatesMask(const QString &mask)
+bool KFormValidator::validatesMask(const QString &mask)
 {
         bool ok = false;
         foreach(QObject *child, m_parent->children())
@@ -219,7 +221,7 @@ bool DFormValidator::validatesMask(const QString &mask)
         return ok;
 }
 
-bool DFormValidator::validatesMaskOf(const QString &mask, const QString &name)
+bool KFormValidator::validatesMaskOf(const QString &mask, const QString &name)
 {
         bool ok = false;
         foreach(QObject *child, m_parent->children())
@@ -239,19 +241,19 @@ bool DFormValidator::validatesMaskOf(const QString &mask, const QString &name)
 }
 
 
-void DFormValidator::validatesMaskOf(const QString &mask, QLineEdit *line)
+void KFormValidator::validatesMaskOf(const QString &mask, QLineEdit *line)
 {
 	line->setInputMask(mask);
 	m_childs << line;
 }
 
-void DFormValidator::validatesLengthOf(int max, QLineEdit *line)
+void KFormValidator::validatesLengthOf(int max, QLineEdit *line)
 {
 	line->setMaxLength(max);
 	m_childs << line;
 }
 
-void DFormValidator::validatesNumericallyOf(bool real, QLineEdit *line)
+void KFormValidator::validatesNumericallyOf(bool real, QLineEdit *line)
 {
 	if ( real )
 	{
@@ -264,20 +266,20 @@ void DFormValidator::validatesNumericallyOf(bool real, QLineEdit *line)
 	m_childs << line;
 }
 
-void DFormValidator::validatesRangeOf(int i, int e, QLineEdit *line)
+void KFormValidator::validatesRangeOf(int i, int e, QLineEdit *line)
 {
 	line->setValidator(new QIntValidator(i, e, line));
 	m_childs << line;
 }
 
-void DFormValidator::validatesRegExpOf(const QString &regexp, QLineEdit *line)
+void KFormValidator::validatesRegExpOf(const QString &regexp, QLineEdit *line)
 {
 	line->setValidator(new QRegExpValidator(QRegExp(regexp), line));
 	m_childs << line;
 }
 
 
-bool DFormValidator::validate()
+bool KFormValidator::validate()
 {
 	bool ok = true;
 	
@@ -297,7 +299,7 @@ bool DFormValidator::validate()
 	return ok;
 }
 
-bool DFormValidator::validate(QLineEdit *line)
+bool KFormValidator::validate(QLineEdit *line)
 {
 	bool ok = true;
 	if ( line->validator() != 0 )

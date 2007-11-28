@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,7 +30,7 @@
 
 #include "kterm.h"
 
-DTermTab::DTermTab(QWidget *parent) : DTabWidget(parent)
+KTermTab::KTermTab(QWidget *parent) : KTabWidget(parent)
 {
 // 	tabBar()->setShape( QTabBar::TriangularNorth );
 	
@@ -39,7 +41,6 @@ DTermTab::DTermTab(QWidget *parent) : DTabWidget(parent)
 	
 	m_closeTab = new QToolButton(this);
 	m_closeTab->setText(tr("Close"));
-	
 	
 	connect(m_closeTab, SIGNAL(clicked()), this, SLOT(closeCurrentTerm()));
 	
@@ -53,13 +54,13 @@ DTermTab::DTermTab(QWidget *parent) : DTabWidget(parent)
 }
 
 
-DTermTab::~DTermTab()
+KTermTab::~KTermTab()
 {
 }
 
-void DTermTab::newTerm()
+void KTermTab::newTerm()
 {
-	DTerm *term = new DTerm;
+	KTerm *term = new KTerm;
 	addTab(term, tr("Console %1").arg(count()));
 		
 	term->showTerm();
@@ -67,21 +68,21 @@ void DTermTab::newTerm()
 	connect(term, SIGNAL(termClosed()), this, SLOT(closeTermTab()));
 }
 
-void DTermTab::closeCurrentTerm()
+void KTermTab::closeCurrentTerm()
 {
 	removeTab(currentIndex());
 }
 
-void DTermTab::closeTermTab()
+void KTermTab::closeTermTab()
 {
-	DTerm *term = qobject_cast<DTerm *>(sender());
+	KTerm *term = qobject_cast<KTerm *>(sender());
 	if( term)
 	{
 		closeTermTab( term );
 	}
 }
 
-void DTermTab::closeTermTab(DTerm *term)
+void KTermTab::closeTermTab(KTerm *term)
 {
 	removeTab(indexOf(term));
 }

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DMAINWINDOW_H
-#define DMAINWINDOW_H
+#ifndef KMAINWINDOW_H
+#define KMAINWINDOW_H
 
 #include <kgui/kideality.h>
 
@@ -29,16 +31,16 @@
 #include <QHash>
 #include <QMap>
 
-class DButtonBar;
-class DToolView;
-class DMainWindowAbstractSettings;
+class KButtonBar;
+class KToolView;
+class KMainWindowAbstractSettings;
 
 /**
  * iDeality Main Window
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class D_IDEAL_EXPORT DMainWindow : public QMainWindow
+class K_IDEAL_EXPORT KMainWindow : public QMainWindow
 {
 	Q_OBJECT;
 	public:
@@ -48,14 +50,14 @@ class D_IDEAL_EXPORT DMainWindow : public QMainWindow
 			DefaultPerspective
 		};
 		
-		DMainWindow(QWidget *parent = 0);
-		~DMainWindow();
+		KMainWindow(QWidget *parent = 0);
+		~KMainWindow();
 		
-		DToolView *addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective = DefaultPerspective);
-		void removeToolView(DToolView *view);
+		KToolView *addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective = DefaultPerspective);
+		void removeToolView(KToolView *view);
 		
 		// FIXME: remove tool view
-		void moveToolView(DToolView *view, Qt::DockWidgetArea newPlace);
+		void moveToolView(KToolView *view, Qt::DockWidgetArea newPlace);
 		
 		
 		void addToPerspective(QWidget *widget, int perspective = DefaultPerspective);
@@ -73,12 +75,12 @@ class D_IDEAL_EXPORT DMainWindow : public QMainWindow
 		
 		virtual QMenu *createPopupMenu();
 		
-		void setSettingsHandler(DMainWindowAbstractSettings *settings);
+		void setSettingsHandler(KMainWindowAbstractSettings *settings);
 		void restoreGUI();
 		void saveGUI();
 		
-		QHash<Qt::ToolBarArea, DButtonBar *> buttonBars() const;
-		QHash<DButtonBar *, QList<DToolView*> > toolViews() const;
+		QHash<Qt::ToolBarArea, KButtonBar *> buttonBars() const;
+		QHash<KButtonBar *, QList<KToolView*> > toolViews() const;
 		
 	private:
 		Qt::DockWidgetArea toDockWidgetArea(Qt::ToolBarArea area);
@@ -105,17 +107,17 @@ class D_IDEAL_EXPORT DMainWindow : public QMainWindow
 #endif
 		
 	private:
-		DToolView *m_forRelayout;
+		KToolView *m_forRelayout;
 		
 	private:
-		QHash<Qt::ToolBarArea, DButtonBar *> m_buttonBars;
-		QHash<DButtonBar *, QList<DToolView*> > m_toolViews;
+		QHash<Qt::ToolBarArea, KButtonBar *> m_buttonBars;
+		QHash<KButtonBar *, QList<KToolView*> > m_toolViews;
 		QHash<QWidget *, int> m_managedWidgets;
 		QHash<QAction *, int> m_managedActions;
 		
 		int m_currentPerspective;
 		
-		DMainWindowAbstractSettings *m_settings;
+		KMainWindowAbstractSettings *m_settings;
 		
 		bool m_autoRestore;
 };

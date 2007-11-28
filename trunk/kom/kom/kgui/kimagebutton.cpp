@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -31,7 +33,7 @@
 
 #include "kdebug.h"
 
-class DImageButton::Animation
+class KImageButton::Animation
 {
 	public:
 		Animation(int initialSize) : aSize(initialSize), aBeginning(true), m_interval(80)
@@ -57,13 +59,13 @@ class DImageButton::Animation
 		int m_interval;
 };
 
-DImageButton::DImageButton(const QIcon &icon, int size, QWidget *parent, bool animate ) : QPushButton(parent), m_imageSize(size), m_animator(0), m_isAnimated(animate)
+KImageButton::KImageButton(const QIcon &icon, int size, QWidget *parent, bool animate ) : QPushButton(parent), m_imageSize(size), m_animator(0), m_isAnimated(animate)
 {
 	setup();
 	setImage(icon);
 }
 
-DImageButton::DImageButton(const QIcon &icon, int size, QObject *reciever, const char *method, QWidget *parent, bool animate ) : QPushButton(parent), m_imageSize(size), m_animator(0), m_isAnimated(animate)
+KImageButton::KImageButton(const QIcon &icon, int size, QObject *reciever, const char *method, QWidget *parent, bool animate ) : QPushButton(parent), m_imageSize(size), m_animator(0), m_isAnimated(animate)
 {
 	setup();
 	setImage(icon);
@@ -72,7 +74,7 @@ DImageButton::DImageButton(const QIcon &icon, int size, QObject *reciever, const
 }
 
 
-DImageButton::~DImageButton()
+KImageButton::~KImageButton()
 {
 	if ( m_isAnimated )
 	{
@@ -80,7 +82,7 @@ DImageButton::~DImageButton()
 	}
 }
 
-void DImageButton::setup()
+void KImageButton::setup()
 {
 	setFlat( true );
 	setAutoDefault( false );
@@ -93,7 +95,7 @@ void DImageButton::setup()
 	setFocusPolicy( Qt::NoFocus );
 }
 
-void DImageButton::enterEvent(QEvent *)
+void KImageButton::enterEvent(QEvent *)
 {
 // 	setIconSize( QSize(m_imageSize-10,m_imageSize-10) );
 	
@@ -113,7 +115,7 @@ void DImageButton::enterEvent(QEvent *)
 	}
 }
 
-void DImageButton::leaveEvent(QEvent *)
+void KImageButton::leaveEvent(QEvent *)
 {
 	if ( m_isAnimated && !isDown() )
 	{
@@ -129,7 +131,7 @@ void DImageButton::leaveEvent(QEvent *)
 	}
 }
 
-void DImageButton::animate()
+void KImageButton::animate()
 {
 	if ( m_isAnimated )
 	{
@@ -158,7 +160,7 @@ void DImageButton::animate()
 	}
 }
 
-// void DImageButton::resizeEvent(QResizeEvent *e)
+// void KImageButton::resizeEvent(QResizeEvent *e)
 // {
 // 	QPainter painter( &m_drawer );
 // 
@@ -176,13 +178,13 @@ void DImageButton::animate()
 // }
 
 
-void DImageButton::setImage ( const QIcon & icon)
+void KImageButton::setImage ( const QIcon & icon)
 {
 	setIconSize( QSize(m_imageSize,m_imageSize) );
 	QPushButton::setIcon(icon);
 }
 
-// void DImageButton::paintEvent(QPaintEvent *e)
+// void KImageButton::paintEvent(QPaintEvent *e)
 // {
 // 	QPushButton::paintEvent(e);
 // 	
@@ -195,7 +197,7 @@ void DImageButton::setImage ( const QIcon & icon)
 // }
 
 
-void DImageButton::setAnimated(bool anim)
+void KImageButton::setAnimated(bool anim)
 {
 	m_isAnimated = anim;
 }

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,7 +29,7 @@
 #include <QPaintEvent> 
 #include <QPainter>
 
-struct DRulerBase::Private
+struct KRulerBase::Private
 {
 	int position;
 	Qt::Orientation orientation;
@@ -44,31 +46,31 @@ struct DRulerBase::Private
 	double scaleFactor;
 };
 
-DRulerBase::DRulerBase(Qt::Orientation orientation, QWidget *parent) : QFrame(parent), d(new Private)
+KRulerBase::KRulerBase(Qt::Orientation orientation, QWidget *parent) : QFrame(parent), k(new Private)
 {
-	d->position = 0;
-	d->orientation = orientation;
-	d->drawPointer = false;
-	d->separation = 10;
+	k->position = 0;
+	k->orientation = orientation;
+	k->drawPointer = false;
+	k->separation = 10;
 	
-	d->zero = QPointF(0,0);
-	d->pArrow = QPolygonF(3);
+	k->zero = QPointF(0,0);
+	k->pArrow = QPolygonF(3);
 	
-	d->scaleFactor = 1.0;
+	k->scaleFactor = 1.0;
 	
-	if(d->orientation == Qt::Horizontal)
+	if(k->orientation == Qt::Horizontal)
 	{
 		setMaximumHeight(10);
 		setMinimumHeight(20);
 		
-		d->width = width();
-		d->height = height();
+		k->width = width();
+		k->height = height();
 		
-		d->pArrow << QPointF(0.0, 0.0);
-		d->pArrow << QPointF(5.0,  5.0);
-		d->pArrow << QPointF(10.0, 0.0);
+		k->pArrow << QPointF(0.0, 0.0);
+		k->pArrow << QPointF(5.0,  5.0);
+		k->pArrow << QPointF(10.0, 0.0);
 		
-		d->pArrow.translate(0, 10);
+		k->pArrow.translate(0, 10);
 	}
 	else
 	{
@@ -76,50 +78,50 @@ DRulerBase::DRulerBase(Qt::Orientation orientation, QWidget *parent) : QFrame(pa
 		setMinimumWidth(20);
 		
 		
-		d->width = height();
-		d->height =  width();
+		k->width = height();
+		k->height =  width();
 		
-		d->pArrow << QPointF(0.0, 0.0);
-		d->pArrow << QPointF(5.0, 5.0);
-		d->pArrow << QPointF(0.0, 10.0);
+		k->pArrow << QPointF(0.0, 0.0);
+		k->pArrow << QPointF(5.0, 5.0);
+		k->pArrow << QPointF(0.0, 10.0);
 		
-		d->pArrow.translate(10,0);
+		k->pArrow.translate(10,0);
 	}
 	
 	
 	setMouseTracking ( true );
 	
-	connect(this, SIGNAL(displayMenu(DRulerBase *, QPoint)), this, SLOT(showMenu(DRulerBase *, QPoint)));
+	connect(this, SIGNAL(displayMenu(KRulerBase *, QPoint)), this, SLOT(showMenu(KRulerBase *, QPoint)));
 	
-	d->menu = new QMenu(this);
+	k->menu = new QMenu(this);
 	
-	QAction *to5 = d->menu->addAction( tr("Change scale to 5..."));
-	QAction *to10 = d->menu->addAction( tr("Change scale to 10..."));
+	QAction *to5 = k->menu->addAction( tr("Change scale to 5..."));
+	QAction *to10 = k->menu->addAction( tr("Change scale to 10..."));
 	
 	connect(to5, SIGNAL(triggered()), this, SLOT(changeScaleTo5pts()));
 	connect(to10, SIGNAL(triggered()), this, SLOT(changeScaleTo10pts()));
 }
 
 
-DRulerBase::~DRulerBase()
+KRulerBase::~KRulerBase()
 {
 // 	delete d->pArrow;
 // 	delete d->pScale;
 	
-	delete d;
+	delete k;
 }
 
-void DRulerBase::paintEvent ( QPaintEvent * )
+void KRulerBase::paintEvent ( QPaintEvent * )
 {
 	QPainter p(this);
 	
-	if( d->orientation == Qt::Vertical )
+	if( k->orientation == Qt::Vertical )
 	{
-		p.scale(1.0, d->scaleFactor);
+		p.scale(1.0, k->scaleFactor);
 	}
 	else
 	{
-		p.scale(d->scaleFactor, 1.0);
+		p.scale(k->scaleFactor, 1.0);
 	}
 	
 	drawScale(&p);
@@ -127,24 +129,24 @@ void DRulerBase::paintEvent ( QPaintEvent * )
 	
 	p.save();
 	
-	p.drawConvexPolygon(d->pArrow);
+	p.drawConvexPolygon(k->pArrow);
 	p.restore();
 	
 	p.end();
 	
 }
 
-void DRulerBase::drawScale(QPainter *painter)
+void KRulerBase::drawScale(QPainter *painter)
 {
 	painter->save();
 	QFontMetrics fm(font());
 	
 	int fact = 1;
 	int init;
-	if(d->orientation == Qt::Horizontal)
+	if(k->orientation == Qt::Horizontal)
 	{
-		painter->translate(d->zero.x(), 0);
-		init = (int)d->zero.x();
+		painter->translate(k->zero.x(), 0);
+		init = (int)k->zero.x();
 		
 		painter->drawLine(0,height()-1, width(), height()-1 );
 	}
@@ -152,84 +154,84 @@ void DRulerBase::drawScale(QPainter *painter)
 	{
 		painter->drawLine(width()-1, 0, width()-1, height());
 		fact = -1;
-		painter->translate(0, d->zero.y());
+		painter->translate(0, k->zero.y());
 		painter->rotate(90);
-		init = (int)d->zero.y();
+		init = (int)k->zero.y();
 		painter->drawLine(0, height()-1, width(), height()-1 );
 	}
 	
-	for(int i = 0; i < d->width; i += d->separation)
+	for(int i = 0; i < k->width; i += k->separation)
 	{
 		QSize sizeFont = fm.size (Qt::TextSingleLine, QString::number(i));
 		if( i % 100 == 0 ) // FIXME
 		{
-			painter->drawLine ( i, d->height*fact, i, 0 );
-			if(d->orientation == Qt::Vertical)
+			painter->drawLine ( i, k->height*fact, i, 0 );
+			if(k->orientation == Qt::Vertical)
 			{
-				painter->drawText( QPoint(i, d->height/2 -sizeFont.height()), QString::number(i));
+				painter->drawText( QPoint(i, k->height/2 -sizeFont.height()), QString::number(i));
 			}
 			else
 			{
-				painter->drawText( QPoint(i, d->height/2), QString::number(i));
+				painter->drawText( QPoint(i, k->height/2), QString::number(i));
 			}
 		}
 		else
 		{
-			painter->drawLine ( i, d->height*fact, i, d->height*fact - d->height/4*fact );
+			painter->drawLine ( i, k->height*fact, i, k->height*fact - k->height/4*fact );
 		}
 	}
 	
 	
-	for(int i = init; i > 0 ; i -= d->separation)
+	for(int i = init; i > 0 ; i -= k->separation)
 	{
 		QSize sizeFont = fm.size (Qt::TextSingleLine, QString::number(i));
 		if( i % 100  == 0 ) // FIXME
 		{
-			painter->drawLine ( -i, d->height*fact, -i, 0 );
-			if(d->orientation == Qt::Vertical)
+			painter->drawLine ( -i, k->height*fact, -i, 0 );
+			if(k->orientation == Qt::Vertical)
 			{
-				painter->drawText( QPoint(-i, d->height/2 -sizeFont.height()), QString::number(-i));
+				painter->drawText( QPoint(-i, k->height/2 -sizeFont.height()), QString::number(-i));
 			}
 			else
 			{
 				
-				painter->drawText( -i, d->height/2,  QString::number(-i));
+				painter->drawText( -i, k->height/2,  QString::number(-i));
 			}
 		}
 		else
 		{
-			painter->drawLine ( -i, d->height*fact, -i, d->height*fact - d->height/4*fact );
+			painter->drawLine ( -i, k->height*fact, -i, k->height*fact - k->height/4*fact );
 		}
 	}
 	
 	painter->restore();
 }
 
-void DRulerBase::resizeEvent ( QResizeEvent * )
+void KRulerBase::resizeEvent ( QResizeEvent * )
 {
-	if(d->orientation == Qt::Horizontal)
+	if(k->orientation == Qt::Horizontal)
 	{
-		d->width = width();
-		d->height = height();
+		k->width = width();
+		k->height = height();
 	}
-	else if(d->orientation == Qt::Vertical)
+	else if(k->orientation == Qt::Vertical)
 	{
-		d->width = height();
-		d->height =  width();
+		k->width = height();
+		k->height =  width();
 	}
 
 	update();
 }
 
-void DRulerBase::mouseMoveEvent ( QMouseEvent * e )
+void KRulerBase::mouseMoveEvent ( QMouseEvent * e )
 {
-	if ( d->drawPointer )
+	if ( k->drawPointer )
 	{
 		movePointers(e->pos()/*-QPoint(d->zero, d->zero)*/);
 	}
 }
 
-// const double DRulerBase::unitGetRatioFromIndex(const int index)
+// const double KRulerBase::unitGetRatioFromIndex(const int index)
 // {
 // 	//PT, MM, IN, P, CM, C (Cicero)
 // 	//NOTE: Calling functions that divide by this value will crash on divide by 0. They shouldnt be getting
@@ -240,37 +242,37 @@ void DRulerBase::mouseMoveEvent ( QMouseEvent * e )
 // 	return ratio[index];
 // }
 // 
-// const double DRulerBase::pts2mm(double pts)
+// const double KRulerBase::pts2mm(double pts)
 // {
 // 	return pts * unitGetRatioFromIndex(SC_MM);
 // }
 // 
-// const double DRulerBase::mm2pts(double mm)
+// const double KRulerBase::mm2pts(double mm)
 // {
 // 	return mm / unitGetRatioFromIndex(SC_MM);
 // }
 
-void DRulerBase::setDrawPointer(bool yes)
+void KRulerBase::setDrawPointer(bool yes)
 {
-	d->drawPointer = yes;
+	k->drawPointer = yes;
 	update();
 }
 
-void DRulerBase::setSeparation(int sep)
+void KRulerBase::setSeparation(int sep)
 {
 	if ( sep > 0 && sep <= 10000 )
 	{
-		d->separation = sep;
+		k->separation = sep;
 // 		drawScale();
 		update();
 	}
 	else
 	{
-		dError() << "I can't assign separation : " << sep << endl;
+		kError() << "I can't assign separation : " << sep << endl;
 	}
 }
 
-void DRulerBase::mousePressEvent (QMouseEvent *e)
+void KRulerBase::mousePressEvent (QMouseEvent *e)
 {
 	if ( e->button() == Qt::RightButton )
 	{
@@ -278,83 +280,83 @@ void DRulerBase::mousePressEvent (QMouseEvent *e)
 	}
 }
 
-Qt::Orientation DRulerBase::orientation()
+Qt::Orientation KRulerBase::orientation()
 {
-	return d->orientation;
+	return k->orientation;
 }
 
-int DRulerBase::separation() const
+int KRulerBase::separation() const
 {
-	return d->separation;
+	return k->separation;
 }
 
-double DRulerBase::scaleFactor() const
+double KRulerBase::scaleFactor() const
 {
-	return d->scaleFactor;
+	return k->scaleFactor;
 }
 
-void DRulerBase::showMenu(DRulerBase *ruler, QPoint pos)
+void KRulerBase::showMenu(KRulerBase *ruler, QPoint pos)
 {
 	if(ruler)
 	{
-		d->menu->popup(pos);
+		k->menu->popup(pos);
 	}
 }
 
 
 
 
-void DRulerBase::slide(int value)
+void KRulerBase::slide(int value)
 {
-	if ( d->orientation == Qt::Horizontal )
+	if ( k->orientation == Qt::Horizontal )
 	{
-		move(-value+d->height, pos().y());
+		move(-value+k->height, pos().y());
 	}
 	else
 	{
-		move(pos().x(), -value+d->height);
+		move(pos().x(), -value+k->height);
 	}
 }
 
 
-QPointF DRulerBase::zero() const
+QPointF KRulerBase::zero() const
 {
-	return d->zero;
+	return k->zero;
 }
 
-void DRulerBase::translateArrow(double dx, double dy)
+void KRulerBase::translateArrow(double dx, double dy)
 {
-	d->pArrow.translate(dx, dy);
+	k->pArrow.translate(dx, dy);
 }
 
-void DRulerBase::setZeroAt(const QPointF & pos)
+void KRulerBase::setZeroAt(const QPointF & pos)
 {
-	d->zero = pos;
+	k->zero = pos;
 	update();
 }
 
-void DRulerBase::scale(double factor)
+void KRulerBase::scale(double factor)
 {
-	d->scaleFactor = factor;
+	k->scaleFactor = factor;
 	update();
 }
 
-QSize DRulerBase::sizeHint() const
+QSize KRulerBase::sizeHint() const
 {
-	if ( d->orientation == Qt::Horizontal )
+	if ( k->orientation == Qt::Horizontal )
 	{
-		return QSize(d->width/3, height());
+		return QSize(k->width/3, height());
 	}
 	
-	return QSize( width(), d->height/3 );
+	return QSize( width(), k->height/3 );
 }
 
-void DRulerBase::changeScaleTo5pts()
+void KRulerBase::changeScaleTo5pts()
 {
 	setSeparation( 5 );
 }
 
-void DRulerBase::changeScaleTo10pts()
+void KRulerBase::changeScaleTo10pts()
 {
 	setSeparation( 10 );
 }

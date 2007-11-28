@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,13 +29,13 @@
 
 #include "kdebug.h"
 
-DSqueezeLabel::DSqueezeLabel(QWidget *parent, const char *name) : QLabel(parent)
+KSqueezeLabel::KSqueezeLabel(QWidget *parent, const char *name) : QLabel(parent)
 {
 	setObjectName(name);
 	setSizePolicy(QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ));
 }
 
-DSqueezeLabel::DSqueezeLabel( const QString &text , QWidget *parent, const char *name)
+KSqueezeLabel::KSqueezeLabel( const QString &text , QWidget *parent, const char *name)
 	: QLabel(parent)
 {
 	setObjectName(name);
@@ -43,11 +45,11 @@ DSqueezeLabel::DSqueezeLabel( const QString &text , QWidget *parent, const char 
 }
 
 
-DSqueezeLabel::~DSqueezeLabel()
+KSqueezeLabel::~KSqueezeLabel()
 {
 }
 
-void DSqueezeLabel::squeezeText()
+void KSqueezeLabel::squeezeText()
 {
 	QFontMetrics fm(fontMetrics());
 	int labelWidth = size().width();
@@ -66,7 +68,7 @@ void DSqueezeLabel::squeezeText()
 	}
 }
 
-QString DSqueezeLabel::squeezer(const QString &s, const QFontMetrics& fm, uint width)
+QString KSqueezeLabel::squeezer(const QString &s, const QFontMetrics& fm, uint width)
 {
 	if ( s.isEmpty() || uint( fm.width( s ) ) <= width )
 	{
@@ -117,37 +119,37 @@ QString DSqueezeLabel::squeezer(const QString &s, const QFontMetrics& fm, uint w
 	return s.left( leftIdx ) + "..." + s.right( rightIdx );
 }
 
-void DSqueezeLabel::resizeEvent( QResizeEvent * )
+void KSqueezeLabel::resizeEvent( QResizeEvent * )
 {
 	squeezeText();
 }
 
-void DSqueezeLabel::setAlignment( Qt::Alignment alignment )
+void KSqueezeLabel::setAlignment( Qt::Alignment alignment )
 {
 	QString tmp(m_text);
 	QLabel::setAlignment(alignment);
 	m_text = tmp;
 }
 
-QSize DSqueezeLabel::sizeHint() const
+QSize KSqueezeLabel::sizeHint() const
 {
 	return QSize(contentsRect().width(), QLabel::sizeHint().height());
 }
 
-QSize DSqueezeLabel::minimumSizeHint() const
+QSize KSqueezeLabel::minimumSizeHint() const
 {
 	QSize sh = QLabel::minimumSizeHint();
 	sh.setWidth(-1);
 	return sh;
 }
 
-void DSqueezeLabel::setText( const QString &text ) 
+void KSqueezeLabel::setText( const QString &text ) 
 {
 	m_text = text;
 	squeezeText();
 }
 
-QString DSqueezeLabel::completeText() const
+QString KSqueezeLabel::completeText() const
 {
 	return m_text;
 }

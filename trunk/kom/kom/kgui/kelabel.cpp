@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,7 +23,7 @@
 #include "kelabel.h"
 #include <QMouseEvent>
 
-DELabel::DELabel(const QString &text, QWidget *parent) : DSqueezeLabel(text, parent)
+KELabel::KELabel(const QString &text, QWidget *parent) : KSqueezeLabel(text, parent)
 {
 	m_editor = new QLineEdit(text, this);
 	m_editor->setFont( QFont( font().family(), 9 ) );
@@ -34,11 +36,11 @@ DELabel::DELabel(const QString &text, QWidget *parent) : DSqueezeLabel(text, par
 }
 
 
-DELabel::~DELabel()
+KELabel::~KELabel()
 {
 }
 
-void DELabel::mouseDoubleClickEvent( QMouseEvent *event )
+void KELabel::mouseDoubleClickEvent( QMouseEvent *event )
 {
 	if ( event->button() == Qt::LeftButton )
 	{
@@ -51,7 +53,7 @@ void DELabel::mouseDoubleClickEvent( QMouseEvent *event )
 	}
 }
 
-void DELabel::applyText()
+void KELabel::applyText()
 {
 	if(completeText() != m_editor->text())
 	{
@@ -62,7 +64,7 @@ void DELabel::applyText()
 	m_editor->hide();
 }
 
-void DELabel::edit()
+void KELabel::edit()
 {
 	m_editor->setText( completeText() );
 	m_editor->selectAll();
@@ -71,12 +73,12 @@ void DELabel::edit()
 	m_editor->setFocus();
 }
 
-void DELabel::clearFocus()
+void KELabel::clearFocus()
 {
 	m_editor->clearFocus();
 }
 
-void DELabel::setValidator(const QValidator * v)
+void KELabel::setValidator(const QValidator * v)
 {
 	m_editor->setValidator(v);
 }

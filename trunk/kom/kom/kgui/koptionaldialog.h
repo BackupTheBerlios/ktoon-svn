@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DOPTIONALDIALOG_H
-#define DOPTIONALDIALOG_H
+#ifndef KOPTIONALDIALOG_H
+#define KOPTIONALDIALOG_H
 
 #include <QDialog>
 #include <QCheckBox>
@@ -36,7 +38,7 @@
  * 
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_GUI_EXPORT DOptionalDialog : public QDialog
+class K_GUI_EXPORT KOptionalDialog : public QDialog
 {
 	Q_OBJECT
 	public:
@@ -51,12 +53,12 @@ class D_GUI_EXPORT DOptionalDialog : public QDialog
 		 * @param parent 
 		 * @return 
 		 */
-		DOptionalDialog(const QString &text, const QString &title = 0, QWidget *parent = 0);
+		KOptionalDialog(const QString &text, const QString &title = 0, QWidget *parent = 0);
 		/**
 		 * Destructor
 		 * @return 
 		 */
-		~DOptionalDialog();
+		~KOptionalDialog();
 		
 		/**
 		 * @if english

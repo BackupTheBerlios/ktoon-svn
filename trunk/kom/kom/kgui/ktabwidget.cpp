@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                          	   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -24,16 +26,15 @@
 
 #include "kdebug.h"
 
-DTabWidget::DTabWidget(QWidget *parent) : QTabWidget(parent)
+KTabWidget::KTabWidget(QWidget *parent) : QTabWidget(parent)
 {
 }
 
-
-DTabWidget::~DTabWidget()
+KTabWidget::~KTabWidget()
 {
 }
 
-void DTabWidget::removeAllTabs()
+void KTabWidget::removeAllTabs()
 {
 	int count = this->count();
 	for (int i = 0; i < count; i++)
@@ -43,7 +44,7 @@ void DTabWidget::removeAllTabs()
 }
 
 #ifndef QT_NO_WHEELEVENT
-void DTabWidget::wheelEvent( QWheelEvent *ev )
+void KTabWidget::wheelEvent( QWheelEvent *ev )
 {
 	QRect rect = tabBar()->rect();
 	rect.setWidth( width() );
@@ -54,7 +55,7 @@ void DTabWidget::wheelEvent( QWheelEvent *ev )
 	}
 }
 
-void DTabWidget::wheelMove( int delta )
+void KTabWidget::wheelMove( int delta )
 {
 	if ( count() > 1 )
 	{

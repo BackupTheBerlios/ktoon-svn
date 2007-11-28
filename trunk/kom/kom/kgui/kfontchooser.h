@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DFONTCHOOSER_H
-#define DFONTCHOOSER_H
+#ifndef KFONTCHOOSER_H
+#define KFONTCHOOSER_H
 
 #include <QFrame>
 #include <kcore/kglobal.h>
@@ -30,12 +32,12 @@ class QFontComboBox;
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
 */
-class D_GUI_EXPORT DFontChooser : public QFrame
+class K_GUI_EXPORT KFontChooser : public QFrame
 {
 	Q_OBJECT
 	public:
-		DFontChooser(QWidget *parent = 0);
-		~DFontChooser();
+		KFontChooser(QWidget *parent = 0);
+		~KFontChooser();
 		void setCurrentFont(const QFont &font);
 		QFont currentFont() const;
 		

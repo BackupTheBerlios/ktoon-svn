@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by Jorge Cuadrado <kuadrox@toonka.com>             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -31,13 +33,13 @@
 
 #define UNITCOUNT 5
 
-class DRulerBase;
+class KRulerBase;
 
 /**
  * @author Jorge Cuadrado
 */
 
-class D_GUI_EXPORT DRulerBase : public QFrame
+class K_GUI_EXPORT KRulerBase : public QFrame
 {
 	Q_OBJECT
 	
@@ -57,8 +59,8 @@ class D_GUI_EXPORT DRulerBase : public QFrame
 // 			SC_C           = 5
 // 		};
 		
-		DRulerBase(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0);
-		virtual ~DRulerBase();
+		KRulerBase(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0);
+		virtual ~KRulerBase();
 		
 // 		const double unitGetRatioFromIndex(const int index);
 // 		const double pts2mm(double pts);
@@ -80,10 +82,10 @@ class D_GUI_EXPORT DRulerBase : public QFrame
 		enum { ChangeScaleToFive, ChangeScaleToTen  };
 		
 		struct Private;
-		Private *const d;
+		Private *const k;
 		
 	signals:
-		void displayMenu(DRulerBase *, QPoint pos);
+		void displayMenu(KRulerBase *, QPoint pos);
 		
 	protected:
 		virtual void paintEvent ( QPaintEvent * e);
@@ -98,7 +100,7 @@ class D_GUI_EXPORT DRulerBase : public QFrame
 		void setDrawPointer(bool yes = true);
 		void slide(int value);
 		
-		virtual void showMenu(DRulerBase *, QPoint pos);
+		virtual void showMenu(KRulerBase *, QPoint pos);
 		
 	private slots:
 		void changeScaleTo5pts();

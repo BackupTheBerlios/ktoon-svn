@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,27 +20,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DMAINWINDOWABSTRACTSETTINGS_H
-#define DMAINWINDOWABSTRACTSETTINGS_H
+#ifndef KMAINWINDOWABSTRACTSETTINGS_H
+#define KMAINWINDOWABSTRACTSETTINGS_H
 
 #include <QObject>
 #include <kgui/kideality.h>
 
-class DToolView;
-class DMainWindow;
+class KToolView;
+class KMainWindow;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class D_IDEAL_EXPORT DMainWindowAbstractSettings : public QObject
+class K_IDEAL_EXPORT KMainWindowAbstractSettings : public QObject
 {
 	public:
-		DMainWindowAbstractSettings(QObject *parent = 0) : QObject(parent) {}
-		~DMainWindowAbstractSettings() {};
+		KMainWindowAbstractSettings(QObject *parent = 0) : QObject(parent) {}
+		~KMainWindowAbstractSettings() {};
 		
-		virtual void save(DMainWindow *w) = 0;
-		virtual void restore(DMainWindow *w) = 0;
+		virtual void save(KMainWindow *w) = 0;
+		virtual void restore(KMainWindow *w) = 0;
 		
 };
 

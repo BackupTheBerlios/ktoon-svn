@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,8 +19,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef DEDITSPINBOX_H
-#define DEDITSPINBOX_H
+
+#ifndef KEDITSPINBOX_H
+#define KEDITSPINBOX_H
 
 #include <QGroupBox>
 #include <QSpinBox>
@@ -34,7 +37,7 @@
  * @endif
  * @author Jorge Cuadrado
 */
-class D_GUI_EXPORT DEditSpinBox : public QGroupBox
+class K_GUI_EXPORT KEditSpinBox : public QGroupBox
 {
 	Q_OBJECT
 	public:
@@ -53,8 +56,8 @@ class D_GUI_EXPORT DEditSpinBox : public QGroupBox
 		 * @param name 
 		 * @return 
 		 */
-		DEditSpinBox(int value, int valueMin, int valueMax, int step, QString text, QWidget *parent = 0, const char *name = 0);
-		~DEditSpinBox();
+		KEditSpinBox(int value, int valueMin, int valueMax, int step, QString text, QWidget *parent = 0, const char *name = 0);
+		~KEditSpinBox();
 		/**
 		 * @if english
 		 * Set a range

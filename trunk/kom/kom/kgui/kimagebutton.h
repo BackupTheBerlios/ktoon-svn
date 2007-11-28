@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DIMAGEBUTTON_H
-#define DIMAGEBUTTON_H
+#ifndef KIMAGEBUTTON_H
+#define KIMAGEBUTTON_H
 
 #include <QPushButton>
 #include <QImage>
@@ -33,14 +35,14 @@
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class D_GUI_EXPORT DImageButton : public QPushButton
+class K_GUI_EXPORT KImageButton : public QPushButton
 {
 	Q_OBJECT
 
 	public:
-		DImageButton(const QIcon &icon, int size, QWidget *parent = 0, bool animate = false);
-		DImageButton(const QIcon &icon, int size, QObject *reciever, const  char *slot, QWidget *parent = 0, bool animate = false);
-		~DImageButton();
+		KImageButton(const QIcon &icon, int size, QWidget *parent = 0, bool animate = false);
+		KImageButton(const QIcon &icon, int size, QObject *reciever, const  char *slot, QWidget *parent = 0, bool animate = false);
+		~KImageButton();
 		virtual void setImage( const QIcon &icon);
 		
 		void setAnimated(bool anim);

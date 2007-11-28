@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DSTACKEDMAINWINDOW_H
-#define DSTACKEDMAINWINDOW_H
+#ifndef KSTACKEDMAINWINDOW_H
+#define KSTACKEDMAINWINDOW_H
 
 #include <kgui/kmainwindow.h>
 
@@ -30,12 +32,12 @@ class QStackedWidget;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_IDEAL_EXPORT DStackedMainWindow : public DMainWindow
+class K_IDEAL_EXPORT KStackedMainWindow : public KMainWindow
 {
 	Q_OBJECT;
 	public:
-		DStackedMainWindow(QWidget *parent = 0);
-		~DStackedMainWindow();
+		KStackedMainWindow(QWidget *parent = 0);
+		~KStackedMainWindow();
 		void addWidget(QWidget *widget, int perspective = DefaultPerspective);
 		void removeWidget(QWidget *widget);
 		

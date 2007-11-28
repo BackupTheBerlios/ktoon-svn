@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DTERM_H
-#define DTERM_H
+#ifndef KTERM_H
+#define KTERM_H
 
 #include <qwidget.h>
 #include <QProcess>
@@ -29,12 +31,12 @@
 /**
 	@author David Cuadrado <krawek@gmail.com>
 */
-class D_GUI_EXPORT DTerm : public QX11EmbedContainer
+class K_GUI_EXPORT KTerm : public QX11EmbedContainer
 {
 	Q_OBJECT
 	public:
-		DTerm(QWidget *w = 0);
-		~DTerm();
+		KTerm(QWidget *w = 0);
+		~KTerm();
 		
 		QSize sizeHint() const;
 		

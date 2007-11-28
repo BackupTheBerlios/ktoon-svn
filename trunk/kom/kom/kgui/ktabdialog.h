@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DTABDIALOG_H
-#define DTABDIALOG_H
+#ifndef KTABDIALOG_H
+#define KTABDIALOG_H
 
 #include <QDialog>
 #include "kgui/ktabwidget.h"
@@ -32,7 +34,7 @@ typedef QHash<int, QPushButton *> Buttons;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_GUI_EXPORT DTabDialog : public QDialog
+class K_GUI_EXPORT KTabDialog : public QDialog
 {
 	Q_OBJECT
 	public:
@@ -46,10 +48,10 @@ class D_GUI_EXPORT DTabDialog : public QDialog
 			Custom2 = 1<<7,
 			Custom3 = 1<<8
 		};
-		DTabDialog(QWidget *parent = 0, bool modal = true);
-		DTabDialog(int buttons = Ok|Cancel, QWidget *parent = 0, bool modal = true);
+		KTabDialog(QWidget *parent = 0, bool modal = true);
+		KTabDialog(int buttons = Ok|Cancel, QWidget *parent = 0, bool modal = true);
 		
-		~DTabDialog();
+		~KTabDialog();
 		
 		void addTab ( QWidget * child, const QString & label );
 		void addTab ( QWidget * child, const QIcon & iconset, const QString & label );
@@ -59,7 +61,7 @@ class D_GUI_EXPORT DTabDialog : public QDialog
 		void setButtonText(Button b, const QString &text);
 		QPushButton *button(Button b);
 		
-		DTabWidget *tabWidget() const;
+		KTabWidget *tabWidget() const;
 		
 	private:
 		void setupButtons(int buttons);
@@ -74,7 +76,7 @@ class D_GUI_EXPORT DTabDialog : public QDialog
 		virtual void custom3() {};
 		
 	private:
-		DTabWidget *m_tabWidget;
+		KTabWidget *m_tabWidget;
 		Buttons m_buttons;
 };
 

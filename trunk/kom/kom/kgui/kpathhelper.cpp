@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,16 +23,15 @@
 #include "kpathhelper.h"
 #include "kcore/kdebug.h"
 
-DPathHelper::DPathHelper()
+KPathHelper::KPathHelper()
 {
 }
 
-
-DPathHelper::~DPathHelper()
+KPathHelper::~KPathHelper()
 {
 }
 
-QPainterPath DPathHelper::toRect(const QPainterPath &p, const QRect &rect, float offset)
+QPainterPath KPathHelper::toRect(const QPainterPath &p, const QRect &rect, float offset)
 {
 	QPainterPath path;
 	
@@ -61,7 +62,7 @@ QPainterPath DPathHelper::toRect(const QPainterPath &p, const QRect &rect, float
 	return matrix.map(path);
 }
 
-QList<QPainterPath> DPathHelper::toRect(const QList<QPainterPath> &l, const QRect &rect, float offset)
+QList<QPainterPath> KPathHelper::toRect(const QList<QPainterPath> &l, const QRect &rect, float offset)
 {
 	QList<QPainterPath> returnList;
 	QRectF br;
@@ -103,7 +104,7 @@ QList<QPainterPath> DPathHelper::toRect(const QList<QPainterPath> &l, const QRec
 	return returnList;
 }
 
-QPainterPath DPathHelper::buildPath(const QStringList &polygonsStr, QChar sep)
+QPainterPath KPathHelper::buildPath(const QStringList &polygonsStr, QChar sep)
 {
 	// ###: Not work for curves
 	QPainterPath path;
@@ -132,15 +133,15 @@ QPainterPath DPathHelper::buildPath(const QStringList &polygonsStr, QChar sep)
 	return path;
 }
 
-QPainterPath DPathHelper::buildPath(const QString &svgpath)
+QPainterPath KPathHelper::buildPath(const QString &svgpath)
 {
-	dWarning() << QObject::tr("Not implemented yet.");
+	kWarning() << QObject::tr("Not implemented yet.");
 	
 	return QPainterPath();
 }
 
 
-QPainterPath DPathHelper::fromElements(const QList<QPainterPath::Element>& elements)
+QPainterPath KPathHelper::fromElements(const QList<QPainterPath::Element>& elements)
 {
 	QPainterPath shape;
 	QVector<QPointF> curve;
@@ -179,7 +180,7 @@ QPainterPath DPathHelper::fromElements(const QList<QPainterPath::Element>& eleme
 	return shape;
 }
 
-QList<QPainterPath> DPathHelper::toSubpaths(const QPainterPath & path )
+QList<QPainterPath> KPathHelper::toSubpaths(const QPainterPath & path )
 {
 	QList<QPainterPath> paths;
 	QList<QPainterPath::Element> elements;
@@ -190,7 +191,7 @@ QList<QPainterPath> DPathHelper::toSubpaths(const QPainterPath & path )
 		
 		if(e.type == QPainterPath::MoveToElement && !elements.isEmpty())
 		{
-			QPainterPath path = DPathHelper::fromElements(elements);
+			QPainterPath path = KPathHelper::fromElements(elements);
 			paths << path;
 			elements.clear();
 		}
@@ -200,7 +201,7 @@ QList<QPainterPath> DPathHelper::toSubpaths(const QPainterPath & path )
 	
 	if( ! elements.isEmpty() )
 	{
-		QPainterPath path = DPathHelper::fromElements(elements);
+		QPainterPath path = KPathHelper::fromElements(elements);
 		paths << path;
 		elements.clear();
 	}

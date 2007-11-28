@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -22,7 +24,7 @@
 
 #include <QStackedWidget>
 
-DStackedMainWindow::DStackedMainWindow(QWidget *parent) : DMainWindow(parent)
+KStackedMainWindow::KStackedMainWindow(QWidget *parent) : KMainWindow(parent)
 {
 	m_stack = new QStackedWidget;
 	setCentralWidget( m_stack );
@@ -31,11 +33,11 @@ DStackedMainWindow::DStackedMainWindow(QWidget *parent) : DMainWindow(parent)
 }
 
 
-DStackedMainWindow::~DStackedMainWindow()
+KStackedMainWindow::~KStackedMainWindow()
 {
 }
 
-void DStackedMainWindow::addWidget(QWidget *widget, int perspective)
+void KStackedMainWindow::addWidget(QWidget *widget, int perspective)
 {
 	if ( m_widgets.contains( perspective ) ) return;
 	
@@ -44,14 +46,14 @@ void DStackedMainWindow::addWidget(QWidget *widget, int perspective)
 	m_stack->addWidget(widget);
 }
 
-void DStackedMainWindow::removeWidget(QWidget *widget)
+void KStackedMainWindow::removeWidget(QWidget *widget)
 {
 	m_stack->removeWidget(widget);
 	
 	m_widgets.remove( m_widgets.key(widget) );
 }
 
-void DStackedMainWindow::setupPerspective(int perspective)
+void KStackedMainWindow::setupPerspective(int perspective)
 {
 	if ( m_widgets.contains(perspective) )
 	{

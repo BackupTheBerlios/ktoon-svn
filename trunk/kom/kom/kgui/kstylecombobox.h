@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DSTYLECOMBOBOX_H
-#define DSTYLECOMBOBOX_H
+#ifndef KSTYLECOMBOBOX_H
+#define KSTYLECOMBOBOX_H
 
 #include <qcombobox.h>
 #include <kcore/kglobal.h>
@@ -27,12 +29,12 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_GUI_EXPORT DStyleComboBox : public QComboBox
+class K_GUI_EXPORT KStyleComboBox : public QComboBox
 {
 	Q_OBJECT;
 	public:
-		DStyleComboBox(QWidget *parent = 0);
-		~DStyleComboBox();
+		KStyleComboBox(QWidget *parent = 0);
+		~KStyleComboBox();
 		
 	private slots:
 		void chooseStyle(const QString &style);

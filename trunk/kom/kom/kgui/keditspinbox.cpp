@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado   *
- *   kuadrosx@toonka.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,12 +19,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "keditspinbox.h"
 #include <QHBoxLayout>
 
-
-
-DEditSpinBox::DEditSpinBox( int value, int minValue, int maxValue, int step, QString text, QWidget *parent, const char *name) :QGroupBox(parent)
+KEditSpinBox::KEditSpinBox( int value, int minValue, int maxValue, int step, QString text, QWidget *parent, const char *name) :QGroupBox(parent)
 {
 	setObjectName(name);
 	QHBoxLayout *layout = new QHBoxLayout;
@@ -46,11 +47,11 @@ DEditSpinBox::DEditSpinBox( int value, int minValue, int maxValue, int step, QSt
 	setMinimumHeight(sizeHint().height());
 }
 
-DEditSpinBox::~DEditSpinBox()
+KEditSpinBox::~KEditSpinBox()
 {
 }
 
-void DEditSpinBox::setupConnects()
+void KEditSpinBox::setupConnects()
 {
 	QObject::connect(m_spin, SIGNAL(valueChanged(int)),
 			 m_slider, SLOT(setValue(int)));
@@ -60,7 +61,7 @@ void DEditSpinBox::setupConnects()
 	QObject::connect(m_spin,  SIGNAL(valueChanged(int)),this, SIGNAL(valueChanged(int)));
 }
 
-void DEditSpinBox::setRange(int min, int max)
+void KEditSpinBox::setRange(int min, int max)
 {
 	m_spin->setMinimum ( min );
 	m_spin->setMaximum ( max );
@@ -68,13 +69,13 @@ void DEditSpinBox::setRange(int min, int max)
 	m_slider->setMaximum ( max );
 }
 
-void DEditSpinBox::setValue(int value)
+void KEditSpinBox::setValue(int value)
 {
 	m_spin->setValue(value);
 	m_slider->setValue(value);
 }
 
-int DEditSpinBox::value()
+int KEditSpinBox::value()
 {
 	return m_slider->value();
 }

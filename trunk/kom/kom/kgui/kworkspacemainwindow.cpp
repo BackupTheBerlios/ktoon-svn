@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,7 +23,7 @@
 #include "kworkspacemainwindow.h"
 #include <QWorkspace>
 
-DWorkspaceMainWindow::DWorkspaceMainWindow(QWidget *parent) : DMainWindow(parent)
+KWorkspaceMainWindow::KWorkspaceMainWindow(QWidget *parent) : KMainWindow(parent)
 {
 	m_workspace = new QWorkspace;
 	
@@ -29,11 +31,11 @@ DWorkspaceMainWindow::DWorkspaceMainWindow(QWidget *parent) : DMainWindow(parent
 }
 
 
-DWorkspaceMainWindow::~DWorkspaceMainWindow()
+KWorkspaceMainWindow::~KWorkspaceMainWindow()
 {
 }
 
-void DWorkspaceMainWindow::addWidget(QWidget *widget, int perspective)
+void KWorkspaceMainWindow::addWidget(QWidget *widget, int perspective)
 {
 	addToPerspective( widget, perspective );
 	
@@ -41,7 +43,7 @@ void DWorkspaceMainWindow::addWidget(QWidget *widget, int perspective)
 	widget->show();
 }
 
-void DWorkspaceMainWindow::removeWidget(QWidget *widget)
+void KWorkspaceMainWindow::removeWidget(QWidget *widget)
 {
 	removeFromPerspective( widget );
 	
