@@ -36,15 +36,16 @@
 
 typedef void (*kde_sighandler_t) (int);
 
+/*
 #ifdef __i386__
 static jmp_buf env;
-
-// Sighandler for the SSE OS support check
+//Sighandler for the SSE OS support check
 static void sighandler( int )
 {
     std::longjmp( env, 1 );
 }
 #endif
+*/
 
 #ifdef __PPC__
 static sigjmp_buf  jmpbuf;

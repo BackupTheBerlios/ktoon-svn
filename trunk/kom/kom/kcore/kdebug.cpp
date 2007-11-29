@@ -313,7 +313,7 @@ static void kDebugOutput(DebugType t, DebugOutput o, const char *data)
 	}
 }
 
-KDebug::DDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_output(o), m_area(area)
+KDebug::KDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_output(o), m_area(area)
 {
 	streamer = new Streamer();
 	

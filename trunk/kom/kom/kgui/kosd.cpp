@@ -121,7 +121,7 @@ void KOsd::display( const QString &message, Level level, int ms )
 	int height = (int)textSize.height()+10;
 	
 	QDesktopWidget desktop;
-	move ( (desktop.screenGeometry().width() - textSize.width() ) - 50, 50 );
+	move ( (int) (desktop.screenGeometry().width() - textSize.width() ) - 50, 50 );
 	
 	
 	QRect geometry( 0, 0, width + 10, height + 8 );

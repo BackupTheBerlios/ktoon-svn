@@ -342,7 +342,7 @@ template <class T> KDebug &KDebug::operator<<( const QList<T> &list )
 
 // Global functions
 
-inline KDebug kDebug(const QString &area = QString(), int output = DDefault)
+inline KDebug kDebug(const QString &area = QString(), int output = KDefault)
 {
 	return KDebug(KDebugMsg, area, DebugOutput(output));
 }
@@ -362,12 +362,12 @@ inline KDebug kFatal(int area, int output = KDefault)
 	return KDebug(KFatalMsg, QString::number(area), DebugOutput(output));
 }
 
-inline KDebug dError(const QString &area = QString(), int output = KDefault)
+inline KDebug kError(const QString &area = QString(), int output = KDefault)
 {
 	return KDebug(KErrorMsg, area, DebugOutput(output));
 }
 
-inline KDebug dError(int area, int output = KDefault)
+inline KDebug kError(int area, int output = KDefault)
 {
 	return KDebug(KErrorMsg, QString::number(area), DebugOutput(output));
 }

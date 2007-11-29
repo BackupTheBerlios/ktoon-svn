@@ -189,7 +189,7 @@ void KClickableLabel::paintEvent (QPaintEvent *e)
 	}
 	
 	QRect r = rect();
-	r.setX( (r.x() + m_text->textWidth())/2 );
+	r.setX( (int) (r.x() + m_text->textWidth())/2 );
 	
 #if QT_VERSION >= 0x040200
 	m_text->drawContents(&painter, r);
@@ -297,7 +297,9 @@ void KSettingsContainer::dragEnterEvent ( QDragEnterEvent * event )
 {
 	setFocus();
 	
-	if ( const CollapsibleMimeData *mimeData = dynamic_cast<const CollapsibleMimeData *>(event->mimeData()) )
+//	if ( const CollapsibleMimeData *mimeData = dynamic_cast<const CollapsibleMimeData *>(event->mimeData()) )
+	if ( dynamic_cast<const CollapsibleMimeData *>(event->mimeData()) )
+
 	{
 		if (event->source() == this)
 		{
@@ -317,7 +319,8 @@ void KSettingsContainer::dragEnterEvent ( QDragEnterEvent * event )
 
 void KSettingsContainer::dragMoveEvent(QDragMoveEvent* event)
 {
-	if ( const CollapsibleMimeData *mimeData = dynamic_cast<const CollapsibleMimeData *>(event->mimeData()) )
+	//if ( const CollapsibleMimeData *mimeData = dynamic_cast<const CollapsibleMimeData *>(event->mimeData()) )
+	if ( dynamic_cast<const CollapsibleMimeData *>(event->mimeData()) )
 	{
 		event->acceptProposedAction();
 	}
