@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DXYSPINBOX_H
-#define DXYSPINBOX_H
+#ifndef KXYSPINBOX_H
+#define KXYSPINBOX_H
 
 #include <QGroupBox>
 #include <QPushButton>
@@ -30,12 +32,12 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_GUI_EXPORT DXYSpinBox : public QGroupBox
+class K_GUI_EXPORT KXYSpinBox : public QGroupBox
 {
 	Q_OBJECT
 	public:
-		DXYSpinBox(const QString &title, QWidget *parent = 0);
-		~DXYSpinBox();
+		KXYSpinBox(const QString &title, QWidget *parent = 0);
+		~KXYSpinBox();
 		void setSingleStep(double step);
 		void setMinimum ( double min);
 		void setMaximum ( double max);

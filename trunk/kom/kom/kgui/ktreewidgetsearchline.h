@@ -18,8 +18,8 @@
    Boston, MA 02110-1301, USA.
 */
 
-#ifndef DTREEWIDGETSEARCHLINE_H
-#define DTREEWIDGETSEARCHLINE_H
+#ifndef KTREEWIDGETSEARCHLINE_H
+#define KTREEWIDGETSEARCHLINE_H
 
 #include <QModelIndex>
 
@@ -38,7 +38,7 @@ class QToolButton;
  * appropriate QTreeWidgets should be needed.
  */
 
-class D_GUI_EXPORT DTreeWidgetSearchLine : public DClickLineEdit
+class K_GUI_EXPORT KTreeWidgetSearchLine : public KClickLineEdit
 {
     Q_OBJECT
 
@@ -48,29 +48,29 @@ class D_GUI_EXPORT DTreeWidgetSearchLine : public DClickLineEdit
 public:
 
     /**
-     * Constructs a DTreeWidgetSearchLine with \a treeWidget being the QTreeWidget to
+     * Constructs a KTreeWidgetSearchLine with \a treeWidget being the QTreeWidget to
      * be filtered.
      *
      * If \a treeWidget is null then the widget will be disabled until listviews
      * are set with setTreeWidget(), setTreeWidgets() or added with addTreeWidget().
      */
-    DTreeWidgetSearchLine(QWidget *parent = 0, QTreeWidget *treeWidget = 0);
+    KTreeWidgetSearchLine(QWidget *parent = 0, QTreeWidget *treeWidget = 0);
 
     /**
-     * Constructs a DTreeWidgetSearchLine with \a treeWidgets being the list of
+     * Constructs a KTreeWidgetSearchLine with \a treeWidgets being the list of
      * pointers to QTreeWidgets to be filtered.
      *
      * If \a treeWidgets is empty then the widget will be disabled until listviews
      * are set with setTreeWidget(), setTreeWidgets() or added with addTreeWidget().
      */
-    DTreeWidgetSearchLine(QWidget *parent,
+    KTreeWidgetSearchLine(QWidget *parent,
                         const QList<QTreeWidget *> &treeWidgets);
 
 
     /**
-     * Destroys the DTreeWidgetSearchLine.
+     * Destroys the KTreeWidgetSearchLine.
      */
-    virtual ~DTreeWidgetSearchLine();
+    virtual ~KTreeWidgetSearchLine();
 
     /**
      * Returns true if the search is case sensitive.  This defaults to false.
@@ -286,34 +286,34 @@ private slots:
     void slotAllVisibleColumns();
 
 private:
-    class DTreeWidgetSearchLinePrivate;
-    DTreeWidgetSearchLinePrivate *d;
+    class KTreeWidgetSearchLinePrivate;
+    KTreeWidgetSearchLinePrivate *k;
 };
 
 /**
- * Creates a widget featuring a DTreeWidgetSearchLine, a label with the text
+ * Creates a widget featuring a KTreeWidgetSearchLine, a label with the text
  * "Search" and a button to clear the search.
  */
-class D_GUI_EXPORT DTreeWidgetSearchLineWidget : public QWidget
+class K_GUI_EXPORT KTreeWidgetSearchLineWidget : public QWidget
 {
     Q_OBJECT
 
 public:
     /**
-     * Creates a DTreeWidgetSearchLineWidget for \a treeWidget with \a parent as the
+     * Creates a KTreeWidgetSearchLineWidget for \a treeWidget with \a parent as the
      * parent.
      */
-    DTreeWidgetSearchLineWidget(QWidget *parent = 0, QTreeWidget *treeWidget = 0);
+    KTreeWidgetSearchLineWidget(QWidget *parent = 0, QTreeWidget *treeWidget = 0);
 
     /**
-     * Destroys the DTreeWidgetSearchLineWidget
+     * Destroys the KTreeWidgetSearchLineWidget
      */
-    ~DTreeWidgetSearchLineWidget();
+    ~KTreeWidgetSearchLineWidget();
 
     /**
      * Returns a pointer to the search line.
      */
-    DTreeWidgetSearchLine *searchLine() const;
+    KTreeWidgetSearchLine *searchLine() const;
     
     /**
      * Sets the erase icon
@@ -332,16 +332,16 @@ protected slots:
 protected:
     /**
      * Creates the search line.  This can be useful to reimplement in cases where
-     * a DTreeWidgetSearchLine subclass is used.
+     * a KTreeWidgetSearchLine subclass is used.
      *
      * It is const because it is be called from searchLine(), which to the user
      * doesn't conceptually alter the widget.
      */
-    virtual DTreeWidgetSearchLine *createSearchLine(QTreeWidget *treeWidget) const;
+    virtual KTreeWidgetSearchLine *createSearchLine(QTreeWidget *treeWidget) const;
 
 private:
-    class DTreeWidgetSearchLineWidgetPrivate;
-    DTreeWidgetSearchLineWidgetPrivate *d;
+    class KTreeWidgetSearchLineWidgetPrivate;
+    KTreeWidgetSearchLineWidgetPrivate *k;
 };
 
 #endif

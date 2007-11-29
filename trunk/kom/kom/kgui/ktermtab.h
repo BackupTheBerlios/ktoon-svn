@@ -44,7 +44,7 @@ class K_GUI_EXPORT KTermTab : public KTabWidget
 		void closeTermTab();
 		
 	public slots:
-		void closeTermTab(DTerm *term);
+		void closeTermTab(KTerm *term);
 		void newTerm();
 		void closeCurrentTerm();
 		

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -39,7 +41,7 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
 	st = av_new_stream(oc, 0);
 	if (!st) 
 	{
-		dError() << "Could not alloc stream";
+		kError() << "Could not alloc stream";
 		return 0;
 	}
 
@@ -105,7 +107,7 @@ static AVFrame *allocPicture(int pix_fmt, int width, int height)
 	return picture;
 }
 
-struct DFFMpegMovieGenerator::Private
+struct KFFMpegMovieGenerator::Private
 {
 	QString movieFile;
 	int fps;
@@ -127,7 +129,7 @@ struct DFFMpegMovieGenerator::Private
 	void closeVideo(AVStream *st);
 };
 
-void DFFMpegMovieGenerator::Private::chooseFileExtension(int format)
+void KFFMpegMovieGenerator::Private::chooseFileExtension(int format)
 {
 	switch( format )
 	{
@@ -165,7 +167,7 @@ void DFFMpegMovieGenerator::Private::chooseFileExtension(int format)
 	}
 }
 
-bool DFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st)
+bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st)
 {
 	AVCodec *codec;
 	AVCodecContext *c;
@@ -176,14 +178,14 @@ bool DFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
 	
 	if (!codec)
 	{
-		dError() << "codec not found";
+		kError() << "codec not found";
 		return false;
 	}
 
 	/* open the codec */
 	if (avcodec_open(c, codec) < 0)
 	{
-		dError() << "could not open codec";
+		kError() << "could not open codec";
 		return false;
 	}
 
@@ -198,7 +200,7 @@ bool DFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
 	picture = allocPicture(c->pix_fmt, c->width, c->height);
 	if (!picture) 
 	{
-		dError() << "Could not allocate m_picture";
+		kError() << "Could not allocate m_picture";
 		return false;
 	}
 	
@@ -208,7 +210,7 @@ bool DFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
 		tmpPicture = allocPicture(PIX_FMT_YUV420P, c->width, c->height);
 		if (!tmpPicture)
 		{
-			dError() << "Could not allocate temporary picture";
+			kError() << "Could not allocate temporary picture";
 			return false;
 		}
 	}
@@ -216,7 +218,7 @@ bool DFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
 	return true;
 }
 
-bool DFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
+bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
 {
 	AVCodecContext *c = video_st->codec;
 
@@ -280,7 +282,7 @@ bool DFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
 	}
 	if (ret != 0)
 	{
-		dError() << "Error while writing video frame";
+		kError() << "Error while writing video frame";
 		return false;
 	}
 	frameCount++;
@@ -288,7 +290,7 @@ bool DFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
 	return true;
 }
 
-void DFFMpegMovieGenerator::Private::closeVideo(AVStream *st)
+void KFFMpegMovieGenerator::Private::closeVideo(AVStream *st)
 {
 	AVCodecContext *c;
 	c = st->codec;
@@ -303,7 +305,7 @@ void DFFMpegMovieGenerator::Private::closeVideo(AVStream *st)
 	av_free(videOutbuf);
 }
 
-DFFMpegMovieGenerator::DFFMpegMovieGenerator(DMovieGeneratorInterface::Format format, int width, int height, int fps)
+KFFMpegMovieGenerator::KFFMpegMovieGenerator(DMovieGeneratorInterface::Format format, int width, int height, int fps)
  : DMovieGenerator(width, height), d(new Private)
 {
 	d->movieFile = QDir::tempPath()+"/ffmpeg_video"+DAlgorithm::randomString(12);
@@ -315,7 +317,7 @@ DFFMpegMovieGenerator::DFFMpegMovieGenerator(DMovieGeneratorInterface::Format fo
 	begin();
 }
 
-DFFMpegMovieGenerator::DFFMpegMovieGenerator(DMovieGeneratorInterface::Format format, const QSize &size, int fps) : DMovieGenerator(size.width(), size.height()), d(new Private)
+KFFMpegMovieGenerator::KFFMpegMovieGenerator(DMovieGeneratorInterface::Format format, const QSize &size, int fps) : DMovieGenerator(size.width(), size.height()), d(new Private)
 {
 	d->movieFile = QDir::tempPath()+"/ffmpeg_video"+DAlgorithm::randomString(12);
 	
@@ -326,7 +328,7 @@ DFFMpegMovieGenerator::DFFMpegMovieGenerator(DMovieGeneratorInterface::Format fo
 	begin();
 }
 
-DFFMpegMovieGenerator::~DFFMpegMovieGenerator()
+KFFMpegMovieGenerator::~KFFMpegMovieGenerator()
 {
 	if( QFile::exists( d->movieFile ) )
 	{
@@ -336,7 +338,7 @@ DFFMpegMovieGenerator::~DFFMpegMovieGenerator()
 }
 
 
-bool DFFMpegMovieGenerator::begin()
+bool KFFMpegMovieGenerator::begin()
 {
 	av_register_all();
 	d->fmt = guess_format(0, d->movieFile.toLocal8Bit().data(), 0);
@@ -348,14 +350,14 @@ bool DFFMpegMovieGenerator::begin()
 	
 	if( ! d->fmt )
 	{
-		dError() << "Cannot find a valid format for " << d->movieFile;
+		kError() << "Cannot find a valid format for " << d->movieFile;
 		return false;
 	}
 	
 	d->oc = av_alloc_format_context();
 	if ( !d->oc )
 	{
-		dError() << "Error while export";
+		kError() << "Error while export";
 		return false;
 	}
 	
@@ -366,13 +368,13 @@ bool DFFMpegMovieGenerator::begin()
 	
 	if ( !d->video_st )
 	{
-		dError() << "Can't add video stream";
+		kError() << "Can't add video stream";
 		return false;
 	}
 	
 	if (av_set_parameters(d->oc, 0) < 0)
 	{
-		dError() << "Invalid output format parameters";
+		kError() << "Invalid output format parameters";
 		return false;
 	}
 	
@@ -380,7 +382,7 @@ bool DFFMpegMovieGenerator::begin()
 	
 	if (!d->openVideo(d->oc, d->video_st) )
 	{
-		dError() << "Can't open video";
+		kError() << "Can't open video";
 		return false;
 	}
 	
@@ -388,7 +390,7 @@ bool DFFMpegMovieGenerator::begin()
 	{
 		if (url_fopen(&d->oc->pb, d->movieFile.toLocal8Bit().data(), URL_WRONLY) < 0)
 		{
-			dError() << "Could not open " << d->movieFile;
+			kError() << "Could not open " << d->movieFile;
 			return false;
 		}
 	}
@@ -402,7 +404,7 @@ bool DFFMpegMovieGenerator::begin()
 	return true;
 }
 
-void DFFMpegMovieGenerator::handle(const QImage& image)
+void KFFMpegMovieGenerator::handle(const QImage& image)
 {
 	if (d->video_st)
 	{
@@ -422,7 +424,7 @@ void DFFMpegMovieGenerator::handle(const QImage& image)
 }
 
 
-void DFFMpegMovieGenerator::end()
+void KFFMpegMovieGenerator::end()
 {
 	d->closeVideo(d->video_st);
 	av_write_trailer(d->oc);
@@ -441,7 +443,7 @@ void DFFMpegMovieGenerator::end()
 }
 
 
-void DFFMpegMovieGenerator::__saveMovie(const QString &fileName)
+void KFFMpegMovieGenerator::__saveMovie(const QString &fileName)
 {
 	if( QFile::exists( fileName ) )
 	{

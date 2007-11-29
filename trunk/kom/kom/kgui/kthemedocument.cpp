@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -20,23 +22,22 @@
  
 #include "kthemedocument.h"
 
-
-DThemeDocument::DThemeDocument() : QDomDocument()
+KThemeDocument::KThemeDocument() : QDomDocument()
 {
 	QDomProcessingInstruction header = this->createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
 	this->appendChild(header);
 	
-	QDomElement root = createElement( "DTheme" );
+	QDomElement root = createElement( "KTheme" );
 	
 	appendChild( root );
 }
 
-DThemeDocument::DThemeDocument(const QString &name, const QString &version) : QDomDocument()
+KThemeDocument::KThemeDocument(const QString &name, const QString &version) : QDomDocument()
 {
 	QDomProcessingInstruction header = this->createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
 	this->appendChild(header);
 	
-	QDomElement root = createElement( "DTheme" );
+	QDomElement root = createElement( "KTheme" );
 	root.setAttribute("name", name);
 	root.setAttribute("version", version);
 	
@@ -44,11 +45,11 @@ DThemeDocument::DThemeDocument(const QString &name, const QString &version) : QD
 }
 
 
-DThemeDocument::~DThemeDocument()
+KThemeDocument::~KThemeDocument()
 {
 }
 
-void DThemeDocument::addGeneralSection(ThemeKey tk)
+void KThemeDocument::addGeneralSection(ThemeKey tk)
 {
 	QDomElement general = createElement("General");
 	QStringList keys = tk.keys();
@@ -62,7 +63,7 @@ void DThemeDocument::addGeneralSection(ThemeKey tk)
 	documentElement().appendChild(general);
 }
 
-void DThemeDocument::addEffectsSection(ThemeKey tk)		
+void KThemeDocument::addEffectsSection(ThemeKey tk)		
 {
 	QDomElement general = createElement("Effects");
 	QStringList keys = tk.keys();
@@ -76,7 +77,7 @@ void DThemeDocument::addEffectsSection(ThemeKey tk)
 	documentElement().appendChild(general);
 }
 
-void DThemeDocument::addSelections(ThemeKey tk)
+void KThemeDocument::addSelections(ThemeKey tk)
 {
 	QDomElement general = createElement("Selections");
 	QStringList keys = tk.keys();
@@ -90,7 +91,7 @@ void DThemeDocument::addSelections(ThemeKey tk)
 	documentElement().appendChild(general);
 }
 
-void DThemeDocument::addTextEffect(ThemeKey tk)
+void KThemeDocument::addTextEffect(ThemeKey tk)
 {
 	QDomElement general = createElement("TextEffects");
 	QStringList keys = tk.keys();

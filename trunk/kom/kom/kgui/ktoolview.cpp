@@ -55,7 +55,7 @@ void KToolView::setup()
 	setFeatures(AllDockWidgetFeatures);
 // 	setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 	
-	m_button = new DViewButton(this);
+	m_button = new KViewButton(this);
 	
 	connect(toggleViewAction(), SIGNAL(toggled(bool)), this, SLOT(saveSize(bool)));
 }

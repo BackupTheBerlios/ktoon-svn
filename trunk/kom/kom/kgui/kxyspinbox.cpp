@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,7 +28,7 @@
 
 #include "kdebug.h"
 
-DXYSpinBox::DXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(title, parent), m_modifyTogether(true)
+KXYSpinBox::KXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(title, parent), m_modifyTogether(true)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	
@@ -70,12 +72,12 @@ DXYSpinBox::DXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(title,
 }
 
 
-DXYSpinBox::~DXYSpinBox()
+KXYSpinBox::~KXYSpinBox()
 {
 }
 
 
-void DXYSpinBox::updateXValue(double v)
+void KXYSpinBox::updateXValue(double v)
 {
 	emit valueXChanged( v );
 	
@@ -90,7 +92,7 @@ void DXYSpinBox::updateXValue(double v)
 	}
 }
 
-void DXYSpinBox::updateYValue(double v)
+void KXYSpinBox::updateYValue(double v)
 {
 	emit valueYChanged( v );
 	if ( m_modifyTogether && m_x->value() != v )
@@ -104,13 +106,13 @@ void DXYSpinBox::updateYValue(double v)
 	}
 }
 
-void DXYSpinBox::setModifyTogether(bool enable)
+void KXYSpinBox::setModifyTogether(bool enable)
 {
 	m_modifyTogether = enable;
 	toggleModify();
 }
 
-void DXYSpinBox::toggleModify()
+void KXYSpinBox::toggleModify()
 {
 	// TODO: Change the button icon !!
 	m_modifyTogether = !m_modifyTogether;
@@ -125,40 +127,40 @@ void DXYSpinBox::toggleModify()
 	}
 }
 
-void DXYSpinBox::setSingleStep(double step)
+void KXYSpinBox::setSingleStep(double step)
 {
 	m_x->setSingleStep(step);
 	m_y->setSingleStep(step);
 }
 
-void DXYSpinBox::setMinimum ( double min)
+void KXYSpinBox::setMinimum ( double min)
 {
 	m_x->setMinimum(min);
 	m_y->setMinimum(min);
 }
 
-void DXYSpinBox::setMaximum ( double max)
+void KXYSpinBox::setMaximum ( double max)
 {
 	m_x->setMaximum(max);
 	m_y->setMaximum(max);
 }
 
-void DXYSpinBox::setX(double x)
+void KXYSpinBox::setX(double x)
 {
 	m_x->setValue(x);
 }
 
-void DXYSpinBox::setY(double y)
+void KXYSpinBox::setY(double y)
 {
 	m_y->setValue(y);
 }
 
-double DXYSpinBox::x()
+double KXYSpinBox::x()
 {
 	return m_x->value();
 }
 
-double DXYSpinBox::y()
+double KXYSpinBox::y()
 {
 	return m_y->value();
 }

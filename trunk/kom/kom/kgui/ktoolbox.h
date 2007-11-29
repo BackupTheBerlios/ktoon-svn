@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DTOOLBOX_H
-#define DTOOLBOX_H
+#ifndef KTOOLBOX_H
+#define KTOOLBOX_H
 
 #include <kcore/kglobal.h>
 #include <QToolBox>
@@ -27,12 +29,12 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_GUI_EXPORT DToolBox : public QToolBox
+class K_GUI_EXPORT KToolBox : public QToolBox
 {
 	Q_OBJECT
 	public:
-		DToolBox(QWidget *parent = 0);
-		~DToolBox();
+		KToolBox(QWidget *parent = 0);
+		~KToolBox();
 		void addPage(QWidget *page, const QString &title);
 		
 	protected:

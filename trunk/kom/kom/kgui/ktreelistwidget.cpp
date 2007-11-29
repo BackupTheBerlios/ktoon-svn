@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,24 +28,24 @@
 
 #include "kdebug.h"
 
-class DTreeListWidgetDelegate : public QItemDelegate
+class KTreeListWidgetDelegate : public QItemDelegate
 {
 	public:
-		DTreeListWidgetDelegate(QObject * parent = 0 );
-		~DTreeListWidgetDelegate();
+		KTreeListWidgetDelegate(QObject * parent = 0 );
+		~KTreeListWidgetDelegate();
 // 		virtual bool editorEvent ( QEvent * event, QAbstractItemModel * model, const QStyleOptionViewItem & option, const QModelIndex & index );
 		
 };
 
-DTreeListWidgetDelegate::DTreeListWidgetDelegate(QObject * parent) : QItemDelegate(parent)
+KTreeListWidgetDelegate::KTreeListWidgetDelegate(QObject * parent) : QItemDelegate(parent)
 {
 }
 
-DTreeListWidgetDelegate::~DTreeListWidgetDelegate()
+KTreeListWidgetDelegate::~KTreeListWidgetDelegate()
 {
 }
 
-// bool DTreeListWidgetDelegate::editorEvent ( QEvent * event, QAbstractItemModel * model, const QStyleOptionViewItem & option, const QModelIndex & index )
+// bool KTreeListWidgetDelegate::editorEvent ( QEvent * event, QAbstractItemModel * model, const QStyleOptionViewItem & option, const QModelIndex & index )
 // {
 // // 	return QItemDelegate::editorEvent (event, model, option, index);
 // 	return true;
@@ -53,7 +55,7 @@ DTreeListWidgetDelegate::~DTreeListWidgetDelegate()
 
 //////////////////
 
-DTreeListWidget::DTreeListWidget(QWidget *parent) : QTreeWidget(parent)
+KTreeListWidget::KTreeListWidget(QWidget *parent) : QTreeWidget(parent)
 {
 	setEditTriggers(QAbstractItemView::EditKeyPressed | QAbstractItemView::DoubleClicked);
 // 	setAcceptDrops(true);
@@ -66,7 +68,7 @@ DTreeListWidget::DTreeListWidget(QWidget *parent) : QTreeWidget(parent)
 	
 	setAlternatingRowColors(true);
 	
-	DTreeListWidgetDelegate *delegator = new DTreeListWidgetDelegate(this);
+	KTreeListWidgetDelegate *delegator = new KTreeListWidgetDelegate(this);
 	
 	setItemDelegate(delegator);
 	
@@ -74,11 +76,11 @@ DTreeListWidget::DTreeListWidget(QWidget *parent) : QTreeWidget(parent)
 }
 
 
-DTreeListWidget::~DTreeListWidget()
+KTreeListWidget::~KTreeListWidget()
 {
 }
 
-void DTreeListWidget::editDoubleClickedItem(QTreeWidgetItem *item, int col)
+void KTreeListWidget::editDoubleClickedItem(QTreeWidgetItem *item, int col)
 {
 	if ( item && m_isEditable )
 	{
@@ -87,7 +89,7 @@ void DTreeListWidget::editDoubleClickedItem(QTreeWidgetItem *item, int col)
 	}
 }
 
-void DTreeListWidget::addItems(const QStringList &items)
+void KTreeListWidget::addItems(const QStringList &items)
 {
 	QStringList::ConstIterator it = items.begin();
 	
@@ -99,7 +101,7 @@ void DTreeListWidget::addItems(const QStringList &items)
 	}
 }
 
-QList<QTreeWidgetItem *> DTreeListWidget::topLevelItems()
+QList<QTreeWidgetItem *> KTreeListWidget::topLevelItems()
 {
 	QList<QTreeWidgetItem *> items;
 	for ( int i = 0; i < topLevelItemCount (); i++ )
@@ -110,19 +112,19 @@ QList<QTreeWidgetItem *> DTreeListWidget::topLevelItems()
 	return items;
 }
 
-void DTreeListWidget::setEditable(bool isEditable)
+void KTreeListWidget::setEditable(bool isEditable)
 {
 	m_isEditable = isEditable;
 }
 
-bool DTreeListWidget::isEditable() const
+bool KTreeListWidget::isEditable() const
 {
 	return m_isEditable;
 }
 
-void DTreeListWidget::closeEditor ( QWidget * editor, QAbstractItemDelegate::EndEditHint hint )
+void KTreeListWidget::closeEditor ( QWidget * editor, QAbstractItemDelegate::EndEditHint hint )
 {
-	D_FUNCINFO;
+	K_FUNCINFO;
 	
 	QLineEdit *edit = qobject_cast<QLineEdit *>(editor);
 	if ( edit )
@@ -136,7 +138,7 @@ void DTreeListWidget::closeEditor ( QWidget * editor, QAbstractItemDelegate::End
 	QTreeWidget::closeEditor(editor, hint);
 }
 
-void DTreeListWidget::removeAll()
+void KTreeListWidget::removeAll()
 {
 	clear();
 }

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -23,7 +25,7 @@
 #include <QPolygon>
 #include <QPainter>
 
-DToolBox::DToolBox(QWidget *parent)
+KToolBox::KToolBox(QWidget *parent)
 	: QToolBox(parent), m_lastIndex(0)
 {
 	setFrameStyle(QFrame::StyledPanel );
@@ -34,11 +36,11 @@ DToolBox::DToolBox(QWidget *parent)
 }
 
 
-DToolBox::~DToolBox()
+KToolBox::~KToolBox()
 {
 }
 
-void DToolBox::createIcon()
+void KToolBox::createIcon()
 {
 	QPolygon m_pArrow(3);
 
@@ -80,7 +82,7 @@ void DToolBox::createIcon()
 	
 }
 
-void DToolBox::changeIcon(int index)
+void KToolBox::changeIcon(int index)
 {
 	setItemIcon(m_lastIndex, m_icon.pixmap (QSize(22,22), QIcon::Normal, QIcon::Off));
 	
@@ -89,7 +91,7 @@ void DToolBox::changeIcon(int index)
 	m_lastIndex = index;
 }
 
-void DToolBox::addPage(QWidget *page, const QString &title)
+void KToolBox::addPage(QWidget *page, const QString &title)
 {
 	addItem(page, m_icon, title);
 }

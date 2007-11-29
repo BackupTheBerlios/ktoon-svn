@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -38,19 +40,19 @@
 #include "kconfig.h"
 #include "kdebug.h"
 
-DTipDialog::DTipDialog(const QString &file, QWidget *parent) : QDialog(parent)
+KTipDialog::KTipDialog(const QString &file, QWidget *parent) : QDialog(parent)
 {
-	m_database = new DTipDatabase(file);
+	m_database = new KTipDatabase(file);
 	setupGUI();
 }
 
-DTipDialog::DTipDialog(DTipDatabase *database, QWidget *parent) : QDialog(parent), m_database(database)
+KTipDialog::KTipDialog(KTipDatabase *database, QWidget *parent) : QDialog(parent), m_database(database)
 {
 	setupGUI();
 	
 }
 
-void DTipDialog::setupGUI()
+void KTipDialog::setupGUI()
 {
 	setWindowTitle(tr("Tip of day"));
 	
@@ -81,7 +83,7 @@ void DTipDialog::setupGUI()
 	
 	layout->addWidget(m_textArea);
 	
-	layout->addWidget(new DSeparator);
+	layout->addWidget(new KSeparator);
 	
 	QHBoxLayout *buttonLayout = new QHBoxLayout;
 	
@@ -108,35 +110,35 @@ void DTipDialog::setupGUI()
 	
 	setAttribute(Qt::WA_DeleteOnClose, true);
 	
-	DCONFIG->beginGroup("TipOfDay");
-	m_showOnStart->setChecked(qvariant_cast<bool>(DCONFIG->value("ShowOnStart", true ) ));
+	KCONFIG->beginGroup("TipOfDay");
+	m_showOnStart->setChecked(qvariant_cast<bool>(KCONFIG->value("ShowOnStart", true ) ));
 	
 	showNextTip();
 }
 
-DTipDialog::~DTipDialog()
+KTipDialog::~KTipDialog()
 {
 }
 
-void DTipDialog::showPrevTip()
+void KTipDialog::showPrevTip()
 {
 	m_database->prevTip();
-	DTip tip = m_database->tip();
+	KTip tip = m_database->tip();
 	
 	m_textArea->setHtml(tip.text);
 }
 
-void DTipDialog::showNextTip()
+void KTipDialog::showNextTip()
 {
 	m_database->nextTip();
-	DTip tip = m_database->tip();
+	KTip tip = m_database->tip();
 	
 	m_textArea->setHtml(tip.text);
 }
 
-void DTipDialog::setShowOnStart()
+void KTipDialog::setShowOnStart()
 {
-	DCONFIG->beginGroup("TipOfDay");
-	DCONFIG->setValue("ShowOnStart", m_showOnStart->isChecked());
+	KCONFIG->beginGroup("TipOfDay");
+	KCONFIG->setValue("ShowOnStart", m_showOnStart->isChecked());
 }
 

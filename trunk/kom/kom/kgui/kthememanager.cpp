@@ -53,7 +53,7 @@ bool KThemeManager::applyTheme(const QString &file)
 	}
 	else
 	{
-		dError() <<  QObject::tr("I can't analize the theme file: %1").arg(file) << endl;
+		kError() <<  QObject::tr("I can't analize the theme file: %1").arg(file) << endl;
 		ok = false;
 	}
 	

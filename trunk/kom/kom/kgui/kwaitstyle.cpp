@@ -1,7 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                           	   *
- *   Copyright (C) 2005-2005 Trolltech AS. All rights reserved.            *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -40,7 +41,7 @@ QPixmap cached(const QString &img, const QColor &color)
 
 	QPixmap pm;
 	QImage original(img);
-	pm = QPixmap::fromImage(DImageEffect::fade(original, 0.7, color), Qt::OrderedDither | Qt::OrderedAlphaDither);
+	pm = QPixmap::fromImage(KImageEffect::fade(original, 0.7, color), Qt::OrderedDither | Qt::OrderedAlphaDither);
 	if (pm.isNull())
 		return QPixmap();
 
@@ -49,14 +50,14 @@ QPixmap cached(const QString &img, const QColor &color)
 }
 
 
-DWaitStyle::DWaitStyle()
+KWaitStyle::KWaitStyle()
     : QPlastiqueStyle()
 {
 	Q_INIT_RESOURCE(kgui_images);
 }
 
 
-void DWaitStyle::drawHoverRect(QPainter *painter, const QRect &r, const QBrush &brush) const
+void KWaitStyle::drawHoverRect(QPainter *painter, const QRect &r, const QBrush &brush) const
 {
     double h = r.height();
     double h2 = r.height() / 2.0;
@@ -72,7 +73,7 @@ void DWaitStyle::drawHoverRect(QPainter *painter, const QRect &r, const QBrush &
 }
 
 
-void DWaitStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option,QPainter *painter, const QWidget *widget) const
+void KWaitStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option,QPainter *painter, const QWidget *widget) const
 {
 	Q_ASSERT(option);
 	
@@ -279,7 +280,7 @@ void DWaitStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *opt
 	return;
 }
 
-void DWaitStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+void KWaitStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
 	switch (element )
 	{
@@ -291,7 +292,7 @@ void DWaitStyle::drawControl(ControlElement element, const QStyleOption *option,
 	}
 }
 
-void DWaitStyle::drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
+void KWaitStyle::drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
 {
 	switch (control) 
 	{
@@ -377,7 +378,7 @@ void DWaitStyle::drawComplexControl(ComplexControl control, const QStyleOptionCo
 	return;
 }
 
-QRect DWaitStyle::subControlRect(ComplexControl control, const QStyleOptionComplex *option, SubControl subControl, const QWidget *widget) const
+QRect KWaitStyle::subControlRect(ComplexControl control, const QStyleOptionComplex *option, SubControl subControl, const QWidget *widget) const
 {
 	QRect rect;
 
@@ -443,7 +444,7 @@ QRect DWaitStyle::subControlRect(ComplexControl control, const QStyleOptionCompl
 	return rect;
 }
 
-QSize DWaitStyle::sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size, const QWidget *widget) const
+QSize KWaitStyle::sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size, const QWidget *widget) const
 {
 	QSize newSize = QPlastiqueStyle::sizeFromContents(type, option, size, widget);
 
@@ -465,7 +466,7 @@ QSize DWaitStyle::sizeFromContents(ContentsType type, const QStyleOption *option
 	return newSize;
 }
 
-int DWaitStyle::pixelMetric(PixelMetric pm, const QStyleOption *opt, const QWidget *widget) const
+int KWaitStyle::pixelMetric(PixelMetric pm, const QStyleOption *opt, const QWidget *widget) const
 {
 	if (pm == PM_SliderLength)
 		return 13;
@@ -498,7 +499,7 @@ int DWaitStyle::pixelMetric(PixelMetric pm, const QStyleOption *opt, const QWidg
 	return QPlastiqueStyle::pixelMetric(pm, opt, widget);
 }
 
-void DWaitStyle::polish(QWidget *widget)
+void KWaitStyle::polish(QWidget *widget)
 {
 	QPlastiqueStyle::polish(widget);
 	if (widget->layout() && qobject_cast<QGroupBox *>(widget)) 
@@ -522,7 +523,7 @@ void DWaitStyle::polish(QWidget *widget)
 	}
 }
 
-void DWaitStyle::unpolish(QWidget *widget)
+void KWaitStyle::unpolish(QWidget *widget)
 {
     if (qobject_cast<QPushButton *>(widget)
         || qobject_cast<QRadioButton *>(widget)
@@ -532,12 +533,12 @@ void DWaitStyle::unpolish(QWidget *widget)
     }
 }
 
-void DWaitStyle::polish(QPalette &palette)
+void KWaitStyle::polish(QPalette &palette)
 {
 //     palette.setColor(QPalette::Background, QColor(241, 241, 241));
 }
 
-QRect DWaitStyle::subElementRect(SubElement element, const QStyleOption *option, const QWidget *widget) const
+QRect KWaitStyle::subElementRect(SubElement element, const QStyleOption *option, const QWidget *widget) const
 {
 	QRect r;
 	switch(element) 

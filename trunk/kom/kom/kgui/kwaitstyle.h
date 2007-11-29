@@ -1,7 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                           	   *
- *   Copyright (C) 2005-2005 Trolltech AS. All rights reserved.            *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -33,10 +34,10 @@
  * @endif
  */
 
-class D_GUI_EXPORT DWaitStyle : public QPlastiqueStyle
+class K_GUI_EXPORT KWaitStyle : public QPlastiqueStyle
 {
 public:
-    DWaitStyle();
+    KWaitStyle();
 
     void drawHoverRect(QPainter *painter, const QRect &rect, const QBrush &brush) const;
 

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,8 +19,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef DTHEMEDOCUMENT_H
-#define DTHEMEDOCUMENT_H
+#ifndef KTHEMEDOCUMENT_H
+#define KTHEMEDOCUMENT_H
 
 #include <qdom.h>
 #include <qmap.h>
@@ -31,7 +33,7 @@ typedef QMap<QString, QString> ThemeKey;
  * @author David Cuadrado
  * <?xml version = '1.0' encoding = 'UTF-8'?>
  * @verbatim
- * <DTheme name="" version="" >
+ * <KTheme name="" version="" >
  * <General>
  * <Text color="#000000" />
  * 	<Base color="#EFF0FF" />
@@ -55,16 +57,16 @@ typedef QMap<QString, QString> ThemeKey;
  * 	<Link color="" />
  * 	<LinkVisited color="" />
  * </TextEffects>
- * </DTheme>
+ * </KTheme>
  * @endverbatim
 */
 
-class D_GUI_EXPORT DThemeDocument : public QDomDocument
+class K_GUI_EXPORT KThemeDocument : public QDomDocument
 {
 	public:
-		DThemeDocument();
-		DThemeDocument(const QString &name, const QString &version);
-		~DThemeDocument();
+		KThemeDocument();
+		KThemeDocument(const QString &name, const QString &version);
+		~KThemeDocument();
 		void addGeneralSection(ThemeKey tk);
 		void addEffectsSection(ThemeKey tk);
 		void addSelections(ThemeKey tk);

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DTIP_H
-#define DTIP_H
+#ifndef KTIP_H
+#define KTIP_H
 
 #include <QString>
 #include <QList>
@@ -32,17 +34,17 @@ class QCheckBox;
 class QTextBrowser;
 
 /**
- * @class DTipDialog
+ * @class KTipDialog
  * @author David Cuadrado <krawek@gmail.com>
  */
 
-class D_GUI_EXPORT DTipDialog : public QDialog
+class K_GUI_EXPORT KTipDialog : public QDialog
 {
 	Q_OBJECT;
 	public:
-		DTipDialog(const QString &file, QWidget *parent = 0);
-		DTipDialog(DTipDatabase *database, QWidget *parent = 0);
-		~DTipDialog();
+		KTipDialog(const QString &file, QWidget *parent = 0);
+		KTipDialog(KTipDatabase *database, QWidget *parent = 0);
+		~KTipDialog();
 		
 	private:
 		void setupGUI();
@@ -56,7 +58,7 @@ class D_GUI_EXPORT DTipDialog : public QDialog
 	private:
 		QTextBrowser *m_textArea;
 		QCheckBox *m_showOnStart;
-		DTipDatabase *m_database;
+		KTipDatabase *m_database;
 };
 
 #endif
