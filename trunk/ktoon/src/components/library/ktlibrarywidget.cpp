@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -43,7 +45,7 @@
 #include <kgui/kosd.h>
 #include <ksound/kaudioplayer.h>
 
-#define RETURN_IF_NOT_LIBRARY if( !d->library ) return;
+#define RETURN_IF_NOT_LIBRARY if( !k->library ) return;
 
 struct KTLibraryWidget::Private
 {
@@ -70,89 +72,89 @@ struct KTLibraryWidget::Private
 	} currentFrame;
 };
 
-KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), d(new Private)
+KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Private)
 {
-	DINIT;
+	KINIT;
 	
-	d->childCount = 0;
+	k->childCount = 0;
 	
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/library.png"));
 	setWindowTitle(tr("&Library"));
 	
 	
-	d->libraryDir = QDir(CONFIG_DIR+"/libraries");
+	k->libraryDir = QDir(CONFIG_DIR+"/libraries");
 	
-	d->display = new KTItemPreview(this);
+	k->display = new KTItemPreview(this);
 	
-	d->libraryTree = new KTGCTable(this);
+	k->libraryTree = new KTGCTable(this);
 
-	connect(d->libraryTree, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(previewItem(QTreeWidgetItem *, int)));
-	connect(d->libraryTree, SIGNAL(itemRenamed( QTreeWidgetItem* )), this, SLOT(renameObject( QTreeWidgetItem* )));
+	connect(k->libraryTree, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(previewItem(QTreeWidgetItem *, int)));
+	connect(k->libraryTree, SIGNAL(itemRenamed( QTreeWidgetItem* )), this, SLOT(renameObject( QTreeWidgetItem* )));
 	
 	QGroupBox *buttons = new QGroupBox(this);
 	QHBoxLayout *buttonLayout = new QHBoxLayout(buttons);
 	buttonLayout->setMargin(0);
 	buttonLayout->setSpacing(0);
 	
-	DImageButton *addGC = new DImageButton(QPixmap(THEME_DIR+"/icons/plussign.png" ), 22, buttons);
+	KImageButton *addGC = new KImageButton(QPixmap(THEME_DIR+"/icons/plussign.png" ), 22, buttons);
 	connect(addGC, SIGNAL(clicked()), this, SIGNAL(requestCurrentGraphic()));
 	
 	buttonLayout->addWidget(addGC);
 	addGC->setToolTip(tr( "Add the current graphic to Library" ));
 	
-	DImageButton *delGC = new DImageButton(QPixmap(THEME_DIR+"/icons/minussign.png" ), 22, buttons);
+	KImageButton *delGC = new KImageButton(QPixmap(THEME_DIR+"/icons/minussign.png" ), 22, buttons);
 	connect(delGC, SIGNAL(clicked()), this, SLOT(removeCurrentGraphic()));
 	
 	delGC->setToolTip(tr( "Remove the selected Symbol from Library" ));
 	buttonLayout->addWidget(delGC);
 	
-	DImageButton *gctoDrawingArea = new DImageButton(QPixmap(THEME_DIR+"/icons/insert_cg.png" ), 22, buttons);
+	KImageButton *gctoDrawingArea = new KImageButton(QPixmap(THEME_DIR+"/icons/insert_cg.png" ), 22, buttons);
 	connect(gctoDrawingArea, SIGNAL(clicked()), this, SLOT(emitSelectedComponent()));
 	gctoDrawingArea->setToolTip(tr( "Inserts the selected symbol into the drawing area" ) );
 	buttonLayout->addWidget(gctoDrawingArea);
 	
-	DImageButton *addFolderGC = new DImageButton(QPixmap(THEME_DIR+"/icons/addfolder.png" ), 22, buttons);
-	connect(addFolderGC, SIGNAL(clicked()), d->libraryTree, SLOT(createFolder()));
+	KImageButton *addFolderGC = new KImageButton(QPixmap(THEME_DIR+"/icons/addfolder.png" ), 22, buttons);
+	connect(addFolderGC, SIGNAL(clicked()), k->libraryTree, SLOT(createFolder()));
 	addFolderGC->setToolTip(tr( "Adds a folder to the symbol list" ));
 	buttonLayout->addWidget(addFolderGC);
 	
 	buttons->setLayout(buttonLayout);
 	
-	addChild( d->display );
+	addChild( k->display );
 	addChild( buttons );
-	addChild( d->libraryTree );
+	addChild( k->libraryTree );
 }
 
 
 KTLibraryWidget::~KTLibraryWidget()
 {
-	DEND;
-	delete d;
+	KEND;
+	delete k;
 }
 
 void KTLibraryWidget::setLibrary(const KTLibrary *library)
 {
-	d->library = library;
+	k->library = library;
 }
 
 void KTLibraryWidget::addFolder(const QString &name)
 {
-	d->libraryTree->createFolder(name);
+	k->libraryTree->createFolder(name);
 }
 
 void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 {
-	D_FUNCINFO;
+	K_FUNCINFO;
 	
 	RETURN_IF_NOT_LIBRARY;
 	
 	if ( item )
 	{
-		KTLibraryObject *object = d->library->findObject(item->text(0));
+		KTLibraryObject *object = k->library->findObject(item->text(0));
 		
 		if ( !object )
 		{
-			dDebug("library") << "Cannot find the object";
+			kDebug("library") << "Cannot find the object";
 			return;
 		}
 		
@@ -164,7 +166,7 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 			{
 				if ( object->data().canConvert<QGraphicsItem *>() )
 				{
-					d->display->render( qvariant_cast<QGraphicsItem *>(object->data()));
+					k->display->render( qvariant_cast<QGraphicsItem *>(object->data()));
 					
 #if 0 // test
 					KTSymbolEditor *editor = new KTSymbolEditor;
@@ -176,16 +178,16 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 			break;
 			case KTLibraryObject::Sound:
 			{
-				DAudioPlayer::instance()->setCurrentPlayer(d->currentPlayerId);
-				DAudioPlayer::instance()->stop();
+				KAudioPlayer::instance()->setCurrentPlayer(k->currentPlayerId);
+				KAudioPlayer::instance()->stop();
 				
-				d->currentPlayerId = DAudioPlayer::instance()->load(object->dataPath());
-				DAudioPlayer::instance()->play(0);
+				k->currentPlayerId = KAudioPlayer::instance()->load(object->dataPath());
+				KAudioPlayer::instance()->play(0);
 			}
 			break;
 			default:
 			{
-				dDebug("library") << "Unknown symbol id: " << object->type();
+				kDebug("library") << "Unknown symbol id: " << object->type();
 			}
 			break;
 		}
@@ -194,21 +196,21 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 
 void KTLibraryWidget::emitSelectedComponent()
 {
-	if ( !d->libraryTree->currentItem() ) return;
+	if ( !k->libraryTree->currentItem() ) return;
 	
-	QString symKey = d->libraryTree->currentItem()->text(0);
+	QString symKey = k->libraryTree->currentItem()->text(0);
 	
-	KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::AddSymbolToProject, symKey, KTLibraryObject::Type(d->libraryTree->currentItem()->data(0, 3216).toInt()), 0, d->currentFrame.scene, d->currentFrame.layer, d->currentFrame.frame);
+	KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::AddSymbolToProject, symKey, KTLibraryObject::Type(k->libraryTree->currentItem()->data(0, 3216).toInt()), 0, k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
 	
 	emit requestTriggered( &request);
 }
 
 void KTLibraryWidget::removeCurrentGraphic()
 {
-	if ( !d->libraryTree->currentItem() ) return;
-	QString symKey = d->libraryTree->currentItem()->text(0);
+	if ( !k->libraryTree->currentItem() ) return;
+	QString symKey = k->libraryTree->currentItem()->text(0);
 	
-	KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Remove, symKey, KTLibraryObject::Type(d->libraryTree->currentItem()->data(0, 3216).toInt()), 0 );
+	KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Remove, symKey, KTLibraryObject::Type(k->libraryTree->currentItem()->data(0, 3216).toInt()), 0 );
 	
 	emit requestTriggered( &request );
 }
@@ -262,7 +264,7 @@ void KTLibraryWidget::importBitmap()
 	}
 	else
 	{
-		DOsd::self()->display(tr("Cannot open file: %1").arg(image));
+		KOsd::self()->display(tr("Cannot open file: %1").arg(image));
 	}
 }
 
@@ -288,7 +290,7 @@ void KTLibraryWidget::importSound()
 	}
 	else
 	{
-		DOsd::self()->display(tr("Cannot open file: %1").arg(sound));
+		KOsd::self()->display(tr("Cannot open file: %1").arg(sound));
 	}
 }
 
@@ -342,14 +344,14 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 						++it;
 			}
 			
-			QList<QTreeWidgetItem *> selecteds = d->libraryTree->selectedItems();
+			QList<QTreeWidgetItem *> selecteds = k->libraryTree->selectedItems();
 			if( !selecteds.isEmpty() )
 			{
-				d->display->render( qvariant_cast<QGraphicsItem *>(d->library->findObject( selecteds[0]->text(0))->data() ));
+				k->display->render( qvariant_cast<QGraphicsItem *>(k->library->findObject( selecteds[0]->text(0))->data() ));
 			}
 			else
 			{
-				d->display->render(0);
+				k->display->render(0);
 			}
 			
 		}
@@ -366,10 +368,9 @@ void KTLibraryWidget::frameResponse(KTFrameResponse *response)
 {
 	if( response->action() == KTProjectRequest::Select )
 	{
-		d->currentFrame.frame = response->frameIndex();
-		d->currentFrame.layer = response->layerIndex();
-		d->currentFrame.scene = response->sceneIndex();
+		k->currentFrame.frame = response->frameIndex();
+		k->currentFrame.layer = response->layerIndex();
+		k->currentFrame.scene = response->sceneIndex();
 	}
 }
-
 

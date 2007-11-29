@@ -1,3 +1,25 @@
+/***************************************************************************
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
 #include <QPoint>
 #include <QColor>
 #include <QImage>
@@ -32,7 +54,7 @@ struct KTColorPicker::Private
 
 QPoint KTColorPicker::colPt()
 { 
-	return QPoint((360-d->hue)*(pWidth-1)/360, (255-d->sat)*(pHeight-1)/255); 
+	return QPoint((360-k->hue)*(pWidth-1)/360, (255-k->sat)*(pHeight-1)/255); 
 }
 int KTColorPicker::huePt(const QPoint &pt)
 { 
@@ -49,10 +71,10 @@ void KTColorPicker::setCol(const QPoint &pt)
 	setCol(huePt(pt), satPt(pt)); 
 }
 
-KTColorPicker::KTColorPicker(QWidget* parent) : QFrame(parent), d( new Private)
+KTColorPicker::KTColorPicker(QWidget* parent) : QFrame(parent), k( new Private)
 {
-	d->hue = 0;
-	d->sat = 0;
+	k->hue = 0;
+	k->sat = 0;
 	setCol(150, 255);
 
 	QImage img(pWidth, pHeight, QImage::Format_RGB32);
@@ -68,7 +90,7 @@ KTColorPicker::KTColorPicker(QWidget* parent) : QFrame(parent), d( new Private)
 		}
 	}
     
-	d->pix = new QPixmap(QPixmap::fromImage(img));
+	k->pix = new QPixmap(QPixmap::fromImage(img));
 	setAttribute(Qt::WA_NoSystemBackground);
 	setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed) );
 
@@ -76,8 +98,8 @@ KTColorPicker::KTColorPicker(QWidget* parent) : QFrame(parent), d( new Private)
 
 KTColorPicker::~KTColorPicker()
 {
-	delete d;
-	DEND;
+	delete k;
+	KEND;
 }
 
 QSize KTColorPicker::sizeHint() const
@@ -92,7 +114,7 @@ void KTColorPicker::setCol(int h, int s)
 	if (nhue == d->hue && nsat == d->sat)
 		return;
 	QRect r(colPt(), QSize(20,20));
-	d->hue = nhue; d->sat = nsat;
+	k->hue = nhue; d->sat = nsat;
 	r = r.unite(QRect(colPt(), QSize(20,20)));
 	r.translate(contentsRect().x()-9, contentsRect().y()-9);
     //    update(r);
@@ -102,10 +124,10 @@ void KTColorPicker::setCol(int h, int s)
 void KTColorPicker::setH(int h)
 {
 	int nhue = qMin(qMax(0,h), 359);
-	if (nhue == d->hue )
+	if (nhue == k->hue )
 		return;
 	QRect r(colPt(), QSize(20,20));
-	d->hue = nhue;
+	k->hue = nhue;
 	r = r.unite(QRect(colPt(), QSize(20,20)));
 	r.translate(contentsRect().x()-9, contentsRect().y()-9);
 	repaint(r);
@@ -115,10 +137,10 @@ void KTColorPicker::setH(int h)
 void KTColorPicker::setS(int s)
 {
 	int nsat = qMin(qMax(0,s), 255);
-	if ( nsat == d->sat)
+	if ( nsat == k->sat)
 		return;
 	QRect r(colPt(), QSize(20,20));
-	d->sat = nsat;
+	k->sat = nsat;
 	r = r.unite(QRect(colPt(), QSize(20,20)));
 	r.translate(contentsRect().x()-9, contentsRect().y()-9);
     //    update(r);
@@ -130,14 +152,14 @@ void KTColorPicker::mouseMoveEvent(QMouseEvent *m)
 {
 	QPoint p = m->pos() - contentsRect().topLeft();
 	setCol(p);
-	emit newCol(d->hue, d->sat);
+	emit newCol(k->hue, k->sat);
 }
 
 void KTColorPicker::mousePressEvent(QMouseEvent *m)
 {
 	QPoint p = m->pos() - contentsRect().topLeft();
 	setCol(p);
-	emit newCol(d->hue, d->sat);
+	emit newCol(k->hue, k->sat);
 }
 
 void KTColorPicker::paintEvent(QPaintEvent* )
@@ -146,7 +168,7 @@ void KTColorPicker::paintEvent(QPaintEvent* )
 	drawFrame(&p);
 	QRect r = contentsRect();
 
-	p.drawPixmap(r.topLeft(), *d->pix);
+	p.drawPixmap(r.topLeft(), *k->pix);
 	QPoint pt = colPt() + r.topLeft();
 	p.setPen(Qt::black);
 
@@ -156,10 +178,10 @@ void KTColorPicker::paintEvent(QPaintEvent* )
 
 int KTColorPicker::hue()
 {
-	return d->hue;
+	return k->hue;
 }
 
 int KTColorPicker::sat()
 {
-	return d->sat;
+	return k->sat;
 }

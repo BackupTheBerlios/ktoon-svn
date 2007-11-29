@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -67,11 +69,11 @@ class KTNetProjectManagerParams;
 class KTProjectResponse;
 
 /**
- * Ventana principal de la aplicación
+ * Ventana principal de la aplicaciï¿½n
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTMainWindow : public DTabbedMainWindow
+class KTMainWindow : public KTabbedMainWindow
 {
 	Q_OBJECT;
 	public:
@@ -185,7 +187,7 @@ class KTMainWindow : public DTabbedMainWindow
 		KTViewDocument *m_viewDoc;
 		KTWorkspace *m_animationSpace;
 		KTStatusBar *m_statusBar;
-		DActionManager *m_actionManager;
+		KActionManager *m_actionManager;
 		QMenu *m_fileMenu,*m_settingsMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
 		QStringList m_recentProjects;
 		
@@ -193,7 +195,7 @@ class KTMainWindow : public DTabbedMainWindow
 		
 	private: // Network
 		bool m_isNetworkProject;
-		DToolView *m_viewChat;
+		KToolView *m_viewChat;
 		
 	// Components
 	private:

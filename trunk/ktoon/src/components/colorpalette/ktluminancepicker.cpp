@@ -1,3 +1,24 @@
+/***************************************************************************
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 #include "ktluminancepicker.h"
 
@@ -21,28 +42,28 @@ struct KTLuminancePicker::Private
 
 int KTLuminancePicker::y2val(int y)
 {
-	int d = height() - 2*coff - 1;
+	int k = height() - 2*coff - 1;
 	return 255 - (y - coff)*255/d;
 }
 
 int KTLuminancePicker::val2y(int v)
 {
-	int d = height() - 2*coff - 1;
+	int k = height() - 2*coff - 1;
 	return coff + (255-v)*d/255;
 }
 
 KTLuminancePicker::KTLuminancePicker(QWidget* parent)
-	:QWidget(parent), d( new Private)
+	:QWidget(parent), k( new Private)
 {
-	d->hue = 100; d->val = 100; d->sat = 100;
-	d->pix = 0;
+	k->hue = 100; k->val = 100; d->sat = 100;
+	k->pix = 0;
     //    setAttribute(WA_NoErase, true);
 }
 
 KTLuminancePicker::~KTLuminancePicker()
 {
-	delete d;
-	DEND;
+	delete k;
+	KEND;
 }
 
 void KTLuminancePicker::mouseMoveEvent(QMouseEvent *m)
@@ -57,19 +78,19 @@ void KTLuminancePicker::mousePressEvent(QMouseEvent *m)
 
 void KTLuminancePicker::setVal(int v)
 {
-	if (d->val == v)
+	if (k->val == v)
 		return;
-	d->val = qMax(0, qMin(v,255));
-	delete d->pix; d->pix=0;
+	k->val = qMax(0, qMin(v,255));
+	delete k->pix; k->pix=0;
 	repaint();
-	emit newHsv(d->hue, d->sat, d->val);
+	emit newHsv(k->hue, k->sat, k->val);
 }
 
 //receives from a d->hue,d->sat chooser and relays.
 void KTLuminancePicker::setCol(int h, int s)
 {
-	setCol(h, s, d->val);
-	emit newHsv(h, s, d->val);
+	setCol(h, s, k->val);
+	emit newHsv(h, s, k->val);
 }
 
 void KTLuminancePicker::paintEvent(QPaintEvent *)
@@ -79,28 +100,28 @@ void KTLuminancePicker::paintEvent(QPaintEvent *)
 	QRect r(0, foff, w, height() - 2*foff);
 	int wi = r.width() - 2;
 	int hi = r.height() - 2;
-	if (!d->pix || d->pix->height() != hi || d->pix->width() != wi) {
-		delete d->pix;
+	if (!k->pix || k->pix->height() != hi || k->pix->width() != wi) {
+		delete k->pix;
 		QImage img(wi, hi, QImage::Format_RGB32);
 		int y;
 		for (y = 0; y < hi; y++) {
 			QColor c;
-			c.setHsv(d->hue, d->sat, y2val(y+coff));
+			c.setHsv(d->hue, k->sat, y2val(y+coff));
 			QRgb r = c.rgb();
 			int x;
 			for (x = 0; x < wi; x++)
 				img.setPixel(x, y, r);
 		}
-		d->pix = new QPixmap(QPixmap::fromImage(img));
+		k->pix = new QPixmap(QPixmap::fromImage(img));
 	}
 	QPainter p(this);
-	p.drawPixmap(1, coff, *d->pix);
+	p.drawPixmap(1, coff, *k->pix);
 	const QPalette &g = palette();
 	qDrawShadePanel(&p, r, g, true);
 	p.setPen(g.foreground().color());
 	p.setBrush(g.foreground());
 	QPolygon a;
-	int y = val2y(d->val);
+	int y = val2y(k->val);
 	a.setPoints(3, w, y, w+5, y+5, w+5, y-5);
 	p.eraseRect(w, 0, 5, height());
 	p.drawPolygon(a);
@@ -108,15 +129,15 @@ void KTLuminancePicker::paintEvent(QPaintEvent *)
 
 void KTLuminancePicker::setCol(int h, int s , int v)
 {
-	d->val = v;
-	d->hue = h;
-	d->sat = s;
-	delete d->pix; d->pix=0;
+	k->val = v;
+	k->hue = h;
+	k->sat = s;
+	delete k->pix; k->pix=0;
 	repaint();
 }
 
 int  KTLuminancePicker::value()
 {
-	return d->val;
+	return k->val;
 }
 

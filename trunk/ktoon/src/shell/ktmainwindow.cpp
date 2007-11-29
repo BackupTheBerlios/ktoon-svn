@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -67,9 +69,9 @@
 
 KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(),  m_projectManager(0), m_viewDoc(0), m_animationSpace(0),  m_viewChat(0), m_exposureSheet(0),  m_scenes(0)
 {
-	DINIT;
+	KINIT;
 	
-	DAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: ponerlo en la configuración
+	KAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: ponerlo en la configuraciï¿½n
 	
 	setObjectName("KTMainWindow_");
 	
@@ -77,7 +79,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(),  m_projectMa
 	setStatusBar( m_statusBar );
 	
 	setWindowTitle( tr("KToon: 2D animation toolkit" ) );
-	m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
+	m_renderType = KToon::RenderType(KCONFIG->value("RenderType").toInt());
 	
 	
 	m_projectManager = new KTProjectManager(this);
@@ -99,8 +101,8 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(),  m_projectMa
 	setupMenu();
 	setupToolBar();
 	
-	DCONFIG->beginGroup("TipOfDay");
-	bool showTips = qvariant_cast<bool>(DCONFIG->value("ShowOnStart", true ));
+	KCONFIG->beginGroup("TipOfDay");
+	bool showTips = qvariant_cast<bool>(KCONFIG->value("ShowOnStart", true ));
 	
 	
 	if ( showTips )
@@ -111,22 +113,22 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(),  m_projectMa
 	KTPluginManager::instance()->loadPlugins();
 	setCurrentPerspective( Drawing );
 	
-	DCONFIG->beginGroup("General");
+	KCONFIG->beginGroup("General");
 	
-	bool openLast = DCONFIG->value("OpenLastProject", true).toBool();
+	bool openLast = KCONFIG->value("OpenLastProject", true).toBool();
 	
 	if ( openLast )
 	{
-		openProject(DCONFIG->value("LastProject").toString());
+		openProject(KCONFIG->value("LastProject").toString());
 	}
 }
 
 
 KTMainWindow::~KTMainWindow()
 {
-	DEND;
+	KEND;
 	delete KTPluginManager::instance();
-	delete DOsd::self();
+	delete KOsd::self();
 }
 
 // Modal
@@ -146,12 +148,12 @@ void KTMainWindow::createNewProject()
 
 void KTMainWindow::newViewDocument(const QString &title)
 {
-	D_FUNCINFO;
-	dDebug() << m_projectManager->isOpen();
+	K_FUNCINFO;
+	kDebug() << m_projectManager->isOpen();
 	if ( m_projectManager->isOpen())
 	{
 		messageToStatus(tr("Opening a new paint area..."));
-		DOsd::self()->display(tr("Opening a new document..."));
+		KOsd::self()->display(tr("Opening a new document..."));
 		
 		m_viewDoc = new KTViewDocument(m_projectManager->project());
 		
@@ -405,12 +407,12 @@ void KTMainWindow::openProject(const QString &path)
 			
 			setUpdatesEnabled(true);
 			
-			DOsd::self()->display( tr("Project %1 opened!").arg(m_projectManager->project()->projectName()) );
+			KOsd::self()->display( tr("Project %1 opened!").arg(m_projectManager->project()->projectName()) );
 		}
 		else
 		{
 			setUpdatesEnabled(true);
-			DOsd::self()->display( tr("Cannot open project!"), DOsd::Error );
+			KOsd::self()->display( tr("Cannot open project!"), KOsd::Error );
 		}
 	}
 }
@@ -450,7 +452,7 @@ void KTMainWindow::importProjectToServer()
 
 void KTMainWindow::save()
 {
-	dDebug("project") << "Saving..";
+	kDebug("project") << "Saving..";
 	QTimer::singleShot(0, this, SLOT(saveProject()));
 }
 
@@ -473,7 +475,7 @@ void KTMainWindow::aboutKToon()
 
 void KTMainWindow::showTipDialog()
 {
-	DTipDialog *tipDialog = new DTipDialog(DATA_DIR+"/tips", this);
+	KTipDialog *tipDialog = new KTipDialog(DATA_DIR+"/tips", this);
 	tipDialog->show();
 // 	tipDialog.exec();
 }
@@ -525,7 +527,7 @@ void KTMainWindow::messageToStatus(const QString &msg)
 
 void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 {
-	D_FUNCINFO;
+	K_FUNCINFO;
 	KTHelpBrowser *page = new KTHelpBrowser(this);
 	page->setDataDirs( QStringList() << m_helper->helpPath() );
 	
@@ -558,11 +560,11 @@ void KTMainWindow::saveProject()
 	
 	if ( m_projectManager->saveProject(m_fileName) )
 	{
-		DOsd::self()->display(tr("Project %1 saved").arg(m_projectManager->project()->projectName()), DOsd::Info);
+		KOsd::self()->display(tr("Project %1 saved").arg(m_projectManager->project()->projectName()), KOsd::Info);
 	}
 	else
 	{
-		DOsd::self()->display(tr("Cannot save the project!"), DOsd::Error );
+		KOsd::self()->display(tr("Cannot save the project!"), KOsd::Error );
 	}
 }
 
@@ -594,11 +596,11 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 		return;
 	}
 	
-	DCONFIG->beginGroup("General");
-	DCONFIG->setValue("LastProject", lastProject);
-	DCONFIG->setValue("recents", m_recentProjects);
+	KCONFIG->beginGroup("General");
+	KCONFIG->setValue("LastProject", lastProject);
+	KCONFIG->setValue("recents", m_recentProjects);
 	
-	DMainWindow::closeEvent(event);
+	KMainWindow::closeEvent(event);
 }
 
 void KTMainWindow::createCommand(const KTPaintAreaEvent *event)

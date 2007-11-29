@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,7 +20,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-
 
 #ifndef KTGRADIENTMANAGER_H
 #define KTGRADIENTMANAGER_H
@@ -99,7 +100,7 @@ class KTOON_EXPORT KTGradientCreator : public QFrame
 		QBrush currentGradient();
 		
 		/**
-		 * Devuelve el tamaño ideal
+		 * Devuelve el tamaï¿½o ideal
 		 */
 		virtual QSize sizeHint () const;
 		

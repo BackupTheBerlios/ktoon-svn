@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                          	   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -45,61 +47,61 @@ struct KTScene::Private
 	QList<KTGraphicObject *> tweeningObjects;
 };
 
-KTScene::KTScene(KTProject *parent) : QObject(parent), d(new Private)
+KTScene::KTScene(KTProject *parent) : QObject(parent), k(new Private)
 {
-	d->isLocked = false;
-	d->layerCount = 0;
-	d->isVisible = true;
+	k->isLocked = false;
+	k->layerCount = 0;
+	k->isVisible = true;
 }
 
 
 KTScene::~KTScene()
 {
-	DEND;
+	KEND;
 	
-	d->layers.clear(true);
+	k->layers.clear(true);
 	
-	delete d;
+	delete k;
 }
 
 void KTScene::setSceneName(const QString &name)
 {
-	d->name = name;
+	k->name = name;
 }
 
 void KTScene::setLocked(bool isLocked)
 {
-	d->isLocked = isLocked;
+	k->isLocked = isLocked;
 }
 
 QString KTScene::sceneName() const
 {
-	return d->name;
+	return k->name;
 }
 
 bool KTScene::isLocked() const
 {
-	return d->isLocked;
+	return k->isLocked;
 }
 
 void KTScene::setVisible(bool isVisible)
 {
-	d->isVisible = isVisible;
+	k->isVisible = isVisible;
 }
 
 bool KTScene::isVisible() const
 {
-	return d->isVisible;
+	return k->isVisible;
 }
 
 Layers KTScene::layers() const
 {
-	return d->layers;
+	return k->layers;
 }
 
 SoundLayers KTScene::soundLayers() const
 {
-	return d->soundLayers;
+	return k->soundLayers;
 }
 
 /**
@@ -107,26 +109,26 @@ SoundLayers KTScene::soundLayers() const
  */
 void KTScene::setLayers(const Layers &layers)
 {
-	d->layers = layers;
+	k->layers = layers;
 }
 
 KTLayer *KTScene::createLayer(int position, bool loaded)
 {
-	D_FUNCINFO << position;
+	K_FUNCINFO << position;
 	
-	if ( position < 0 || position > d->layers.count() )
+	if ( position < 0 || position > k->layers.count() )
 	{
-		dDebug() << "Error in createLayer";
+		kDebug() << "Error in createLayer";
 		return 0;
 	}
 	
 	KTLayer *layer = new KTLayer(this);
 	
-	d->layerCount++;
+	k->layerCount++;
 	
-	layer->setLayerName(tr("Layer %1").arg(d->layerCount));
+	layer->setLayerName(tr("Layer %1").arg(k->layerCount));
 	
-	d->layers.insert( position, layer);
+	k->layers.insert( position, layer);
 	
 	if ( loaded )
 	{
@@ -138,21 +140,21 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
 
 KTSoundLayer *KTScene::createSoundLayer(int position, bool loaded)
 {
-	D_FUNCINFO << position;
+	K_FUNCINFO << position;
 	
-	if ( position < 0 || position > d->soundLayers.count() )
+	if ( position < 0 || position > k->soundLayers.count() )
 	{
-		dDebug() << "Error in createLayer";
+		kDebug() << "Error in createLayer";
 		return 0;
 	}
 	
 	KTSoundLayer *layer = new KTSoundLayer(this);
 	
-	d->layerCount++;
+	k->layerCount++;
 	
 	layer->setLayerName(tr("Sound layer %1").arg(d->layerCount));
 	
-	d->soundLayers.insert( position, layer);
+	k->soundLayers.insert( position, layer);
 	
 	if ( loaded )
 	{
@@ -167,7 +169,7 @@ bool KTScene::removeLayer( int position)
 	KTLayer *layer = this->layer(position);
 	if ( layer )
 	{
-		d->layers.remove(position);
+		k->layers.remove(position);
 		delete layer;
 		
 		return true;
@@ -178,30 +180,30 @@ bool KTScene::removeLayer( int position)
 
 
 /**
- * Retorna el layer que se encuentra en la posición indicada
+ * Retorna el layer que se encuentra en la posiciï¿½n indicada
  * @param position 
  * @return 
  */
 KTLayer *KTScene::layer(int position) const
 {
-	if ( position < 0 || position >= d->layers.count() )
+	if ( position < 0 || position >= k->layers.count() )
 	{
-		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+		K_FUNCINFO << " FATAL ERROR: index out of bound " << position;
 		return 0;
 	}
 	
-	return d->layers.visualValue(position);
+	return k->layers.visualValue(position);
 }
 
 KTSoundLayer *KTScene::soundLayer(int position) const
 {
-	if ( position < 0 || position >= d->soundLayers.count() )
+	if ( position < 0 || position >= k->soundLayers.count() )
 	{
-		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+		K_FUNCINFO << " FATAL ERROR: index out of bound " << position;
 		return 0;
 	}
 	
-	return d->soundLayers.visualValue(position);
+	return k->soundLayers.visualValue(position);
 }
 
 
@@ -228,7 +230,7 @@ void KTScene::fromXml(const QString &xml )
 		{
 			if ( e.tagName() == "layer" )
 			{
-				int pos = d->layers.count();
+				int pos = k->layers.count();
 				KTLayer *layer = createLayer( pos, true );
 				
 				if ( layer )
@@ -245,7 +247,7 @@ void KTScene::fromXml(const QString &xml )
 			}
 			else if( e.tagName() == "soundlayer" )
 			{
-				int pos = d->soundLayers.count();
+				int pos = k->soundLayers.count();
 				KTSoundLayer *layer = createSoundLayer( pos, true );
 				
 				if ( layer )
@@ -268,14 +270,14 @@ void KTScene::fromXml(const QString &xml )
 QDomElement KTScene::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("scene");
-	root.setAttribute("name", d->name );
+	root.setAttribute("name", k->name );
 	
-	foreach(KTLayer *layer, d->layers.visualValues())
+	foreach(KTLayer *layer, k->layers.visualValues())
 	{
 		root.appendChild( layer->toXml(doc) );
 	}
 	
-	foreach(KTSoundLayer *sound, d->soundLayers.visualValues())
+	foreach(KTSoundLayer *sound, k->soundLayers.visualValues())
 	{
 		root.appendChild(sound->toXml(doc));
 	}
@@ -286,16 +288,16 @@ QDomElement KTScene::toXml(QDomDocument &doc) const
 
 bool KTScene::moveLayer(int from, int to)
 {
-	if ( from < 0 || from >= d->layers.count() || to < 0 || to >= d->layers.count() )
+	if ( from < 0 || from >= k->layers.count() || to < 0 || to >= k->layers.count() )
 	{
 		return false;
 	}
 	
-	KTLayer *layer = d->layers[from];
+	KTLayer *layer = k->layers[from];
 	
-	d->layers.insert(to, layer);
+	k->layers.insert(to, layer);
 	
-	d->layers.remove(from);
+	k->layers.remove(from);
 	
 	return true;
 }
@@ -322,12 +324,12 @@ int KTScene::visualIndex() const
 
 int KTScene::visualIndexOf(KTLayer *layer) const
 {
-	return d->layers.visualIndex(layer);
+	return k->layers.visualIndex(layer);
 }
 
 int KTScene::logicalIndexOf(KTLayer *layer) const
 {
-	return d->layers.logicalIndex(layer);
+	return k->layers.logicalIndex(layer);
 }
 
 KTProject *KTScene::project() const
@@ -337,16 +339,16 @@ KTProject *KTScene::project() const
 
 void KTScene::addTweeningObject(KTGraphicObject *object)
 {
-	d->tweeningObjects << object;
+	k->tweeningObjects << object;
 }
 
 void KTScene::removeTweeningObject(KTGraphicObject *object)
 {
-	d->tweeningObjects.removeAll(object);
+	k->tweeningObjects.removeAll(object);
 }
 
 QList<KTGraphicObject *> KTScene::tweeningObjects() const
 {
-	return d->tweeningObjects;
+	return k->tweeningObjects;
 }
 

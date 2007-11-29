@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -40,13 +42,13 @@ struct KTGraphicObject::Private
 };
 
 KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
-	: QObject(parent), d(new Private)
+	: QObject(parent), k(new Private)
 {
-	DINIT;
+	KINIT;
 	
-	d->item = item;
-	d->tweener = 0;
-	d->frame = parent;
+	k->item = item;
+	k->tweener = 0;
+	k->frame = parent;
 	
 	initItemData();
 }
@@ -54,21 +56,21 @@ KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
 
 KTGraphicObject::~KTGraphicObject()
 {
-	DEND;
-	if( d->item )
+	KEND;
+	if( k->item )
 	{
 // 		if ( QGraphicsScene *scene = d->item->scene() )
 // 		{
 // 			scene->removeItem(d->item);
 // 		}
-		delete d->item;
+		delete k->item;
 	}
 	
-	if(d->tweener && d->frame->scene())
+	if(k->tweener && k->frame->scene())
 	{
-		d->frame->scene()->removeTweeningObject(this);
+		k->frame->scene()->removeTweeningObject(this);
 	}
-	delete d;
+	delete k;
 }
 
 void KTGraphicObject::fromXml(const QString &xml )
@@ -78,14 +80,14 @@ void KTGraphicObject::fromXml(const QString &xml )
 QDomElement KTGraphicObject::toXml(QDomDocument &doc) const
 {
 	QDomElement object = doc.createElement("object");
-	if ( KTAbstractSerializable *is = dynamic_cast<KTAbstractSerializable *>(d->item) )
+	if ( KTAbstractSerializable *is = dynamic_cast<KTAbstractSerializable *>(k->item) )
 	{
 		object.appendChild(is->toXml(doc));
 	}
 	
-	if(d->tweener)
+	if(k->tweener)
 	{
-		object.appendChild(d->tweener->toXml(doc));
+		object.appendChild(k->tweener->toXml(doc));
 	}
 	
 	return object;
@@ -94,82 +96,81 @@ QDomElement KTGraphicObject::toXml(QDomDocument &doc) const
 
 void KTGraphicObject::setItem(QGraphicsItem *item)
 {
-	d->item = item;
+	k->item = item;
 	initItemData();
 }
 
 QGraphicsItem *KTGraphicObject::item() const
 {
-	return d->item;
+	return k->item;
 }
 
 void KTGraphicObject::setObjectName(const QString &name)
 {
-	d->name = name;
+	k->name = name;
 }
 
 QString KTGraphicObject::objectName() const
 {
-	return d->name;
+	return k->name;
 }
 
 void KTGraphicObject::initItemData()
 {
 	
-	if(! d->item->data(ScaleX).isValid())
+	if(! k->item->data(ScaleX).isValid())
 	{
-		d->item->setData(ScaleX, 1.0);
+		k->item->setData(ScaleX, 1.0);
 	}
-	if(! d->item->data(ScaleY).isValid())
+	if(! k->item->data(ScaleY).isValid())
 	{
-		d->item->setData(ScaleY, 1.0);
+		k->item->setData(ScaleY, 1.0);
 	}
-	if(! d->item->data(Rotate).isValid())
+	if(! k->item->data(Rotate).isValid())
 	{
-		d->item->setData(Rotate, 0.0);
+		k->item->setData(Rotate, 0.0);
 	}
-	if(! d->item->data(TranslateX).isValid())
+	if(! k->item->data(TranslateX).isValid())
 	{
-		d->item->setData(TranslateX, 0.0);
+		k->item->setData(TranslateX, 0.0);
 	}
-	if(! d->item->data(TranslateY).isValid())
+	if(! k->item->data(TranslateY).isValid())
 	{
-		d->item->setData(TranslateY, 0.0);
+		k->item->setData(TranslateY, 0.0);
 	}
 }
 
 void KTGraphicObject::setTweener(KTItemTweener *tweener)
 {
-	d->tweener = tweener;
+	k->tweener = tweener;
 	
-	if( d->tweener )
+	if( k->tweener )
 	{
-		d->tweener->setItem(d->item);
-		d->frame->scene()->addTweeningObject(this);
+		k->tweener->setItem(k->item);
+		k->frame->scene()->addTweeningObject(this);
 	}
 	else
 	{
-		d->frame->scene()->removeTweeningObject(this);
+		k->frame->scene()->removeTweeningObject(this);
 	}
 }
 
 KTItemTweener *KTGraphicObject::tweener() const
 {
-	return d->tweener;
+	return k->tweener;
 }
 
 KTFrame *KTGraphicObject::frame() const
 {
-	return d->frame;
+	return k->frame;
 }
 
 int KTGraphicObject::logicalIndex() const
 {
-	return d->frame->logicalIndexOf(const_cast<KTGraphicObject *>(this));
+	return k->frame->logicalIndexOf(const_cast<KTGraphicObject *>(this));
 }
 
 int KTGraphicObject::visualIndex() const
 {
-	return d->frame->visualIndexOf(const_cast<KTGraphicObject *>(this));
+	return k->frame->visualIndexOf(const_cast<KTGraphicObject *>(this));
 }
-

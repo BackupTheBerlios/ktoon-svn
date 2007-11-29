@@ -54,26 +54,23 @@ RQonf::Makefile::override( ARGV[0].to_s, "#{@destdir}", "#{@statusFile}" )
 		@testsDir = dir
 	end
 	
-	def verifyQtVersion(minqtversion)
-		Info.info << "Checking for Qt 2 >= " << minqtversion << "... "
-		
-		#if @qmake.findQMake(minqtversion)
-		if qmake.findQMake(minqtversion)	
-			print "[OK2]\n"
-		else
-			print "[FAILED]\n"
-			raise QonfException.new("Invalid Qt version")
-		end
-	end
-	
+        def verifyQtVersion(minqtversion)
+                Info.info << "Checking for Qt >= " << minqtversion << "... "
+
+                if @qmake.findQMake(minqtversion, true)
+                        print "[ OK ]\n"
+                else
+                        print "[FAILED]\n"
+                        raise QonfException.new("Invalid Qt version.\n   Please, upgrade to #{minqtversion} or higher (Visit: http://www.trolltech.com)")
+                end
+        end
+
 	def createTests
 		@tests.clear
 		findTest(@testsDir)
 	end
 	
 	def runTests(config)
-		Info.info << "Testing..." 
-		print " [OK]\n"		
 		@tests.each { |test|
 			if not test.run(config) and not test.optional
 				raise QonfException.new("Required")

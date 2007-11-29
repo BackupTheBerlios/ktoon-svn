@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -62,13 +64,13 @@ struct KTProject::Private
 /**
  * Constructor por defecto
  */
-KTProject::KTProject(QObject *parent) : QObject(parent), d(new Private)
+KTProject::KTProject(QObject *parent) : QObject(parent), k(new Private)
 {
-	DINIT;
+	KINIT;
 	
-	d->sceneCounter = 0;
-	d->isOpen = false;
-	d->library = new KTLibrary("library", this);
+	k->sceneCounter = 0;
+	k->isOpen = false;
+	k->library = new KTLibrary("library", this);
 }
 
 
@@ -77,13 +79,13 @@ KTProject::KTProject(QObject *parent) : QObject(parent), d(new Private)
  */
 KTProject::~KTProject()
 {
-	DEND;
+	KEND;
 	
 	deleteDataDir();
 	
-	d->scenes.clear(true);
+	k->scenes.clear(true);
 	
-	delete d;
+	delete k;
 }
 
 /**
@@ -94,12 +96,12 @@ void KTProject::loadLibrary(const QString &filename)
 	QFile lfile(filename);
 	if ( lfile.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
-		d->library->fromXml(QString::fromLocal8Bit(lfile.readAll()));
+		k->library->fromXml(QString::fromLocal8Bit(lfile.readAll()));
 		lfile.close();
 	}
 	else
 	{
-		dFatal("library") << "Cannot open library from: " << filename;
+		kFatal("library") << "Cannot open library from: " << filename;
 	}
 }
 
@@ -108,8 +110,8 @@ void KTProject::loadLibrary(const QString &filename)
  */
 void KTProject::clear()
 {
-	d->scenes.clear(true);
-	d->sceneCounter = 0;
+	k->scenes.clear(true);
+	k->sceneCounter = 0;
 	
 	deleteDataDir();
 }
@@ -119,7 +121,7 @@ void KTProject::clear()
  */
 void KTProject::setProjectName(const QString &name)
 {
-	d->name = name;
+	k->name = name;
 }
 
 /**
@@ -127,7 +129,7 @@ void KTProject::setProjectName(const QString &name)
  */
 void KTProject::setAuthor(const QString &author)
 {
-	d->author = author;
+	k->author = author;
 }
 
 /**
@@ -135,7 +137,7 @@ void KTProject::setAuthor(const QString &author)
  */
 void KTProject::setDescription(const QString& description)
 {
-	d->description = description;
+	k->description = description;
 }
 
 /**
@@ -149,7 +151,7 @@ void KTProject::setDescription(const QString& description)
  */
 QString KTProject::projectName() const
 {
-	return d->name;
+	return k->name;
 }
 
 /**
@@ -158,7 +160,7 @@ QString KTProject::projectName() const
  */
 QString KTProject::author() const
 {
-	return d->author;
+	return k->author;
 }
 
 /**
@@ -167,23 +169,23 @@ QString KTProject::author() const
  */
 QString KTProject::description() const
 {
-	return d->description;
+	return k->description;
 }
 
 
 KTScene *KTProject::createScene(int position, bool loaded )
 {
-	dDebug("project") << "Creating scene " << position;
-	if( position < 0 || position > d->scenes.count() )
+	kDebug("project") << "Creating scene " << position;
+	if( position < 0 || position > k->scenes.count() )
 	{
 		return 0;
 	}
 	
 	KTScene *scene = new KTScene(this);
-	d->scenes.insert(position, scene);
-	d->sceneCounter++;
+	k->scenes.insert(position, scene);
+	k->sceneCounter++;
 	
-	scene->setSceneName(tr("Scene %1").arg(d->sceneCounter));
+	scene->setSceneName(tr("Scene %1").arg(k->sceneCounter));
 	
 	if ( loaded )
 	{
@@ -195,17 +197,17 @@ KTScene *KTProject::createScene(int position, bool loaded )
 
 bool KTProject::removeScene(int position)
 {
-	D_FUNCINFO;
+	K_FUNCINFO;
 	KTScene *toRemove = scene(position);
 	
 	if ( toRemove )
 	{
-		d->scenes.removeVisual(position);
+		k->scenes.removeVisual(position);
 		
 		delete toRemove;
 		toRemove = 0;
 		
-		d->sceneCounter--;
+		k->sceneCounter--;
 		
 		return true;
 	}
@@ -216,36 +218,36 @@ bool KTProject::removeScene(int position)
 
 bool KTProject::moveScene(int position, int newPosition)
 {
-	if ( position < 0 || position >= d->scenes.count() || newPosition < 0 || newPosition >= d->scenes.count() )
+	if ( position < 0 || position >= k->scenes.count() || newPosition < 0 || newPosition >= k->scenes.count() )
 	{
-		dWarning() << "Failed moving scene!";
+		kWarning() << "Failed moving scene!";
 		return false;
 	}
 	
-	d->scenes.moveVisual(position, newPosition);
+	k->scenes.moveVisual(position, newPosition);
 	
 	return true;
 }
 
 KTScene *KTProject::scene(int position) const
 {
-	D_FUNCINFOX("project")<< position;
-	if( position < 0 || position >= d->scenes.count() )
+	K_FUNCINFOX("project")<< position;
+	if( position < 0 || position >= k->scenes.count() )
 	{
-		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+		K_FUNCINFO << " FATAL ERROR: index out of bound " << position;
 		return 0;
 	}
-	return d->scenes.visualValue(position);
+	return k->scenes.visualValue(position);
 }
 
 int KTProject::visualIndexOf(KTScene *scene) const
 {
-	return d->scenes.visualIndex(scene);
+	return k->scenes.visualIndex(scene);
 }
 
 int KTProject::logicalIndexOf(KTScene *scene) const
 {
-	return d->scenes.logicalIndex(scene);
+	return k->scenes.logicalIndex(scene);
 }
 
 void KTProject::fromXml(const QString &xml )
@@ -328,27 +330,27 @@ QDomElement KTProject::toXml(QDomDocument &doc) const
 
 Scenes KTProject::scenes() const
 {
-	return d->scenes;
+	return k->scenes;
 }
 
 
 bool KTProject::createSymbol(int type, const QString &name, const QByteArray &data)
 {
-	if( !d->isOpen ) return false;
+	if( !k->isOpen ) return false;
 	
-	return d->library->createSymbol(KTLibraryObject::Type(type), name, data) != 0;
+	return k->library->createSymbol(KTLibraryObject::Type(type), name, data) != 0;
 }
 
 bool KTProject::removeSymbol(const QString &name)
 {
-	return d->library->removeObject(name);
+	return k->library->removeObject(name);
 }
 
 bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int layerIndex, int frameIndex)
 {
-	dDebug() << sceneIndex << " " << layerIndex << " " << frameIndex;
+	kDebug() << sceneIndex << " " << layerIndex << " " << frameIndex;
 	
-	KTLibraryObject *object = d->library->findObject(name);
+	KTLibraryObject *object = k->library->findObject(name);
 	
 	KTFrame *target = 0;
 	
@@ -390,16 +392,14 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
 
 bool KTProject::removeSymbolFromProject(const QString &name, int scene, int layer, int frame)
 {
-	dFatal("project") << "removeSymbolFromProject::Find me in ktproject.cpp";
-	
-	
+	kFatal("project") << "removeSymbolFromProject::Find me in ktproject.cpp";
 	
 	return false;
 }
 
 KTLibrary *KTProject::library() const
 {
-	return d->library;
+	return k->library;
 }
 
 void KTProject::emitResponse(KTProjectResponse *response)
@@ -409,12 +409,12 @@ void KTProject::emitResponse(KTProjectResponse *response)
 
 void KTProject::setOpen(bool open)
 {
-	d->isOpen = open;
+	k->isOpen = open;
 }
 
 bool KTProject::isOpen()
 {
-	return d->isOpen;
+	return k->isOpen;
 }
 
 bool KTProject::deleteDataDir()
@@ -425,7 +425,7 @@ bool KTProject::deleteDataDir()
 		
 		if( dir.exists("audio") && dir.exists("video") && dir.exists("images") || dir.exists("project.ktp") )
 		{
-			dDebug("project") << "Removing " << dir.absolutePath() << "...";
+			kDebug("project") << "Removing " << dir.absolutePath() << "...";
 			
 			dir.remove("project.ktp");
 			dir.remove("library.ktl");
@@ -461,7 +461,7 @@ bool KTProject::deleteDataDir()
 			
 			if( ! dir.rmdir(dir.absolutePath()) )
 			{
-				dError("project") << "Cannot remove project data directory!";
+				kError("project") << "Cannot remove project data directory!";
 			}
 		}
 		return true;
@@ -472,8 +472,6 @@ bool KTProject::deleteDataDir()
 
 QString KTProject::dataDir() const
 {
-	return CACHE_DIR + "/"+ d->name;
+	return CACHE_DIR + "/"+ k->name;
 }
-
-
 

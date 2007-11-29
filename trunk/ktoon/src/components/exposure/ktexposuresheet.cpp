@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -35,7 +37,7 @@
 
 struct KTExposureSheet::Private
 {
-	DTabWidget *scenes;
+	KTabWidget *scenes;
 	KTExposureTable *currentTable;
 	KTProjectActionBar *actionBar;
 	QMenu *menu;
@@ -43,14 +45,14 @@ struct KTExposureSheet::Private
 // 	QString copyFrame;
 };
 
-KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet"), d(new Private)
+KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet"), k(new Private)
 {
-	DINIT;
-	d->currentTable = 0;
+	KINIT;
+	k->currentTable = 0;
 	setWindowTitle( tr( "&Exposure Sheet" ) );
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/exposure_sheet.png"));
 	
-	d->actionBar = new KTProjectActionBar( KTProjectActionBar::InsertLayer |
+	k->actionBar = new KTProjectActionBar( KTProjectActionBar::InsertLayer |
 			KTProjectActionBar::RemoveLayer |
 			KTProjectActionBar::InsertFrame |
 			KTProjectActionBar::RemoveFrame |
@@ -58,46 +60,46 @@ KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, 
 			KTProjectActionBar::MoveFrameDown| 
 			KTProjectActionBar::LockFrame);
 	
-	connect(d->actionBar, SIGNAL(actionSelected( int )), this, SLOT(applyAction( int)));
-	addChild( d->actionBar, Qt::AlignCenter );
+	connect(k->actionBar, SIGNAL(actionSelected( int )), this, SLOT(applyAction( int)));
+	addChild( k->actionBar, Qt::AlignCenter );
 	
-	d->scenes = new DTabWidget(this);
-	connect( d->scenes , SIGNAL(currentChanged ( int )), this, SLOT(emitRequestChangeScene( int ) ));
-	addChild(d->scenes);
+	k->scenes = new KTabWidget(this);
+	connect( k->scenes , SIGNAL(currentChanged ( int )), this, SLOT(emitRequestChangeScene( int ) ));
+	addChild(k->scenes);
 	
 	createMenu();
 }
 
 KTExposureSheet::~KTExposureSheet()
 {
-	delete d;
-	DEND;
+	delete k;
+	KEND;
 }
 
 
 void KTExposureSheet::createMenu()
 {
-	d->menu = new QMenu(tr("actions"));
-	d->menu->addAction( tr("Insert layer"))->setData(KTProjectActionBar::InsertLayer);
-	d->menu->addAction( tr("Remove layer") )->setData(KTProjectActionBar::RemoveLayer);
-	d->menu->addAction(tr("Insert frame"))->setData(KTProjectActionBar::InsertFrame);
-	d->menu->addAction( tr("Remove frame"))->setData(KTProjectActionBar::RemoveFrame);
-	d->menu->addAction( tr("Lock frame"))->setData(KTProjectActionBar::LockFrame);
+	k->menu = new QMenu(tr("actions"));
+	k->menu->addAction( tr("Insert layer"))->setData(KTProjectActionBar::InsertLayer);
+	k->menu->addAction( tr("Remove layer") )->setData(KTProjectActionBar::RemoveLayer);
+	k->menu->addAction(tr("Insert frame"))->setData(KTProjectActionBar::InsertFrame);
+	k->menu->addAction( tr("Remove frame"))->setData(KTProjectActionBar::RemoveFrame);
+	k->menu->addAction( tr("Lock frame"))->setData(KTProjectActionBar::LockFrame);
 	
-	d->menu->addAction( tr("Copy frame"), this, SLOT(emitRequestCopyCurrentFrame()));
-	d->menu->addAction( tr("Paste in frame"), this, SLOT(emitRequestPasteInCurrentFrame()));
-	d->menu->addAction( tr("Expand frame"), this, SLOT(emitRequestExpandCurrentFrame()));
+	k->menu->addAction( tr("Copy frame"), this, SLOT(emitRequestCopyCurrentFrame()));
+	k->menu->addAction( tr("Paste in frame"), this, SLOT(emitRequestPasteInCurrentFrame()));
+	k->menu->addAction( tr("Expand frame"), this, SLOT(emitRequestExpandCurrentFrame()));
 	
 	
-	connect(d->menu,  SIGNAL(triggered( QAction * )), this, SLOT(actionTiggered(QAction*)));
+	connect(k->menu,  SIGNAL(triggered( QAction * )), this, SLOT(actionTiggered(QAction*)));
 }
 
 void KTExposureSheet::addScene(int index, const QString &name)
 {
-	D_FUNCINFO << " index: " << index << " name: " << name;
+	K_FUNCINFO << " index: " << index << " name: " << name;
 	KTExposureTable *newScene = new KTExposureTable;
-	newScene->setMenu(d->menu);
-	d->scenes->insertTab(index, newScene, name);
+	newScene->setMenu(k->menu);
+	k->scenes->insertTab(index, newScene, name);
 	
 	connect(newScene, SIGNAL(requestSetUsedFrame(int, int)), this, SLOT(insertItem( int, int )));
 	connect(newScene, SIGNAL(requestRenameFrame(int, int,const QString & )), this, SLOT(renameFrame( int, int, const QString &  )));
@@ -115,79 +117,79 @@ void KTExposureSheet::addScene(int index, const QString &name)
 
 void KTExposureSheet::renameScene( int index, const QString &name)
 {
-	d->scenes->setTabText(index, name);
+	k->scenes->setTabText(index, name);
 }
 
 
 void KTExposureSheet::applyAction(int action)
 {
-	D_FUNCINFO<< "action: " << action;
-	if (  d->currentTable == 0 )
+	K_FUNCINFO<< "action: " << action;
+	if (  k->currentTable == 0 )
 	{
-		dFatal() << "KTExposureSheet::applyAction: No layer view!!" << endl;
+		kFatal() << "KTExposureSheet::applyAction: No layer view!!" << endl;
 		return;
 	}
-	d->currentTable = static_cast<KTExposureTable*>( d->scenes->currentWidget());	
+	k->currentTable = static_cast<KTExposureTable*>( k->scenes->currentWidget());	
 	switch(action)
 	{
 		case KTProjectActionBar::InsertLayer:
 		{
-			int layer = d->currentTable->currentLayer()+1;
+			int layer = k->currentTable->currentLayer()+1;
 			
-			KTProjectRequest event = KTRequestBuilder::createLayerRequest( d->scenes->currentIndex(), layer, KTProjectRequest::Add);
+			KTProjectRequest event = KTRequestBuilder::createLayerRequest( k->scenes->currentIndex(), layer, KTProjectRequest::Add);
 			
 			emit requestTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::RemoveLayer:
 		{
-			KTProjectRequest event = KTRequestBuilder::createLayerRequest(d->scenes->currentIndex(), d->currentTable->currentLayer(), KTProjectRequest::Remove);
+			KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), k->currentTable->currentLayer(), KTProjectRequest::Remove);
 			
 			emit requestTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::InsertFrame:
 		{
-			int used = d->currentTable->numUsed( d->currentTable->currentColumn() );
-			int finish = d->currentTable->currentFrame()+1;
+			int used = k->currentTable->numUsed( k->currentTable->currentColumn() );
+			int finish = k->currentTable->currentFrame()+1;
 			
 			if(used < finish)
 			{
 				for(int i = used; i <= finish; i++)
 				{
-					insertItem( d->currentTable->currentLayer(), i);
+					insertItem( k->currentTable->currentLayer(), i);
 				}
 			}
 			else
 			{
-				insertItem( d->currentTable->currentLayer(), finish);
+				insertItem( k->currentTable->currentLayer(), finish);
 			}
 			
 		}
 		break;
 		case KTProjectActionBar::RemoveFrame:
 		{
-			KTProjectRequest event = KTRequestBuilder::createFrameRequest( d->scenes->currentIndex(), d->currentTable->currentLayer(), d->currentTable->currentFrame(), KTProjectRequest::Remove);
+			KTProjectRequest event = KTRequestBuilder::createFrameRequest( k->scenes->currentIndex(), k->currentTable->currentLayer(), k->currentTable->currentFrame(), KTProjectRequest::Remove);
 			emit requestTriggered( &event );
 			break;
 		}
 		case KTProjectActionBar::MoveFrameUp:
 		{
-			KTProjectRequest event = KTRequestBuilder::createFrameRequest( d->scenes->currentIndex(), d->currentTable->currentLayer(), d->currentTable->currentFrame(), KTProjectRequest::Move, d->currentTable->currentFrame()-1);
+			KTProjectRequest event = KTRequestBuilder::createFrameRequest( k->scenes->currentIndex(), k->currentTable->currentLayer(), k->currentTable->currentFrame(), KTProjectRequest::Move, k->currentTable->currentFrame()-1);
 			emit requestTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::MoveFrameDown:
 		{
-			KTProjectRequest event = KTRequestBuilder::createFrameRequest( d->scenes->currentIndex(), d->currentTable->currentLayer(), d->currentTable->currentFrame(), KTProjectRequest::Move, d->currentTable->currentFrame()+1 );
+			KTProjectRequest event = KTRequestBuilder::createFrameRequest( k->scenes->currentIndex(), k->currentTable->currentLayer(), k->currentTable->currentFrame(), KTProjectRequest::Move, k->currentTable->currentFrame()+1 );
 			emit requestTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::LockFrame:
 		{
-			bool locked = d->currentTable->frameIsLocked(d->currentTable->currentColumn(),  d->currentTable->currentFrame());
+			bool locked = k->currentTable->frameIsLocked(k->currentTable->currentColumn(), k->currentTable->currentFrame());
 			
-			KTProjectRequest event = KTRequestBuilder::createFrameRequest (d->scenes->currentIndex(), d->currentTable->currentLayer(), d->currentTable->currentFrame(), KTProjectRequest::Lock, !locked);
+			KTProjectRequest event = KTRequestBuilder::createFrameRequest (k->scenes->currentIndex(), k->currentTable->currentLayer(), k->currentTable->currentFrame(), KTProjectRequest::Lock, !locked);
 			emit requestTriggered( &event );
 		}
 		break;
@@ -197,14 +199,14 @@ void KTExposureSheet::applyAction(int action)
 
 void KTExposureSheet::setScene(int index)
 {
-	D_FUNCINFO;
-	if(d->scenes->count() >= index)
+	K_FUNCINFO;
+	if(k->scenes->count() >= index)
 	{
-		d->scenes->blockSignals(true);
-		d->scenes->setCurrentIndex(index);
+		k->scenes->blockSignals(true);
+		k->scenes->setCurrentIndex(index);
 		
-		d->currentTable = qobject_cast<KTExposureTable *>(d->scenes-> currentWidget());
-		d->scenes->blockSignals(false);
+		k->currentTable = qobject_cast<KTExposureTable *>(k->scenes-> currentWidget());
+		k->scenes->blockSignals(false);
 	}
 }
 
@@ -217,7 +219,7 @@ void KTExposureSheet::emitRequestChangeScene(int index)
 
 void KTExposureSheet::emitRequestCopyCurrentFrame()
 {
-	KTProjectRequest request = KTRequestBuilder::createFrameRequest(d->scenes->currentIndex(), d->currentTable->currentLayer(), d->currentTable->currentFrame(), KTProjectRequest::Copy);
+	KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), k->currentTable->currentLayer(), k->currentTable->currentFrame(), KTProjectRequest::Copy);
 	emit localRequestTriggered( &request );
 }
 
@@ -230,69 +232,69 @@ void KTExposureSheet::emitRequestPasteInCurrentFrame()
 	}
 	*/
 	
-	if(d->nameCopyFrame.isEmpty())
+	if(k->nameCopyFrame.isEmpty())
 		return;
 	
-	if( d->currentTable->numUsed(d->currentTable->currentLayer()) <= d->currentTable->currentRow() )
+	if( k->currentTable->numUsed(k->currentTable->currentLayer()) <= k->currentTable->currentRow() )
 	{
-		for(int i = d->currentTable->numUsed(d->currentTable->currentLayer()); i <= d->currentTable->currentRow(); i++)
+		for(int i = k->currentTable->numUsed(k->currentTable->currentLayer()); i <= k->currentTable->currentRow(); i++)
 		{
-			insertItem(d->currentTable->currentLayer(), i);
+			insertItem(k->currentTable->currentLayer(), i);
 			
-			KTProjectRequest request = KTRequestBuilder::createFrameRequest(d->scenes->currentIndex(), d->currentTable->currentLayer(), i, KTProjectRequest::Paste);
+			KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), k->currentTable->currentLayer(), i, KTProjectRequest::Paste);
 			emit localRequestTriggered( &request );
 		}
 	}
 	else
 	{
-		KTProjectRequest request = KTRequestBuilder::createFrameRequest(d->scenes->currentIndex(), d->currentTable->currentLayer(), d->currentTable->currentFrame(), KTProjectRequest::Paste);
+		KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), k->currentTable->currentLayer(), k->currentTable->currentFrame(), KTProjectRequest::Paste);
 		emit localRequestTriggered( &request );
 	}
 }
 
 void KTExposureSheet::emitRequestExpandCurrentFrame()
 {
-	D_FUNCINFOX("exposure");
-	KTProjectRequest request = KTRequestBuilder::createFrameRequest(d->scenes->currentIndex(), d->currentTable->currentLayer(), d->currentTable->currentFrame(), KTProjectRequest::Expand, 1);
+	K_FUNCINFOX("exposure");
+	KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), k->currentTable->currentLayer(), k->currentTable->currentFrame(), KTProjectRequest::Expand, 1);
 	emit requestTriggered( &request );
 }
 
 void KTExposureSheet::insertItem(int indexLayer, int indexFrame)
 {
-	KTProjectRequest request = KTRequestBuilder::createFrameRequest( d->scenes->currentIndex() , indexLayer, indexFrame, KTProjectRequest::Add );
+	KTProjectRequest request = KTRequestBuilder::createFrameRequest( k->scenes->currentIndex() , indexLayer, indexFrame, KTProjectRequest::Add );
 	emit requestTriggered( &request );
 }
 
 
 void KTExposureSheet::renameFrame(int indexLayer, int indexFrame, const QString & name)
 {
-	KTProjectRequest event = KTRequestBuilder::createFrameRequest( d->scenes->currentIndex() , indexLayer, indexFrame, KTProjectRequest::Rename, name);
+	KTProjectRequest event = KTRequestBuilder::createFrameRequest( k->scenes->currentIndex() , indexLayer, indexFrame, KTProjectRequest::Rename, name);
 	emit requestTriggered( &event );
 }
 
 void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 {
-	KTProjectRequest request = KTRequestBuilder::createFrameRequest( d->scenes->currentIndex() , indexLayer, indexFrame,KTProjectRequest::Select, "1" );
+	KTProjectRequest request = KTRequestBuilder::createFrameRequest( k->scenes->currentIndex() , indexLayer, indexFrame,KTProjectRequest::Select, "1" );
 	
 	emit localRequestTriggered( &request );
 }
 
 void KTExposureSheet::changeVisiblityLayer(int visualIndexLayer, bool visibility)
 {
-	KTProjectRequest event = KTRequestBuilder::createLayerRequest( d->scenes->currentIndex(), visualIndexLayer, KTProjectRequest::View,  visibility );
+	KTProjectRequest event = KTRequestBuilder::createLayerRequest( k->scenes->currentIndex(), visualIndexLayer, KTProjectRequest::View,  visibility );
 	emit requestTriggered( &event );
 }
 
 void KTExposureSheet::renameLayer(int indexLayer, const QString & name)
 {
-	KTProjectRequest event = KTRequestBuilder::createLayerRequest(d->scenes->currentIndex(), indexLayer, KTProjectRequest::Rename, name);
+	KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), indexLayer, KTProjectRequest::Rename, name);
 	
 	emit requestTriggered( &event );
 }
 
 void KTExposureSheet::moveLayer(int oldIndex, int newIndex)
 {
-	KTProjectRequest event = KTRequestBuilder::createLayerRequest(d->scenes->currentIndex(), oldIndex, KTProjectRequest::Move, newIndex);
+	KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), oldIndex, KTProjectRequest::Move, newIndex);
 	emit requestTriggered( &event );
 }
 
@@ -308,19 +310,19 @@ void KTExposureSheet::actionTiggered(QAction *action)
 
 void KTExposureSheet::closeAllScenes()
 {
-	D_FUNCINFO;
+	K_FUNCINFO;
 	
-	delete d->currentTable;
+	delete k->currentTable;
 	
-	d->scenes->removeAllTabs();
+	k->scenes->removeAllTabs();
 	
-	d->currentTable = 0;
+	k->currentTable = 0;
 }
 
 
 void KTExposureSheet::sceneResponse(KTSceneResponse *e)
 {
-	D_FUNCINFOX("exposure");
+	K_FUNCINFOX("exposure");
 	switch(e->action() )
 	{
 		case KTProjectRequest::Add:
@@ -330,11 +332,11 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
 		break;
 		case KTProjectRequest::Remove:
 		{
-			d->scenes->blockSignals(true);
-			QWidget * widget = d->scenes->widget( e->sceneIndex() );
-			d->scenes->removeTab(e->sceneIndex());
+			k->scenes->blockSignals(true);
+			QWidget * widget = k->scenes->widget( e->sceneIndex() );
+			k->scenes->removeTab(e->sceneIndex());
 			delete widget;
-			d->scenes->blockSignals(false);
+			k->scenes->blockSignals(false);
 		}
 		break;
 		case KTProjectRequest::Move:
@@ -354,7 +356,7 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
 		break;
 		case KTProjectRequest::Select:
 		{
-			dFatal() << "Select scene " << e->sceneIndex();
+			kFatal() << "Select scene " << e->sceneIndex();
 			setScene( e->sceneIndex() );
 		}
 		break;
@@ -363,7 +365,7 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
 
 void KTExposureSheet::layerResponse(KTLayerResponse *e)
 {
-	KTExposureTable *scene = dynamic_cast<KTExposureTable*>(d->scenes->widget((e->sceneIndex())));
+	KTExposureTable *scene = dynamic_cast<KTExposureTable*>(k->scenes->widget((e->sceneIndex())));
 	if(scene)
 	{
 		switch(e->action() )
@@ -411,8 +413,8 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
 
 void KTExposureSheet::frameResponse(KTFrameResponse *e)
 {
-	D_FUNCINFO;
-	KTExposureTable *scene = dynamic_cast<KTExposureTable*>(d->scenes->widget((e->sceneIndex())));
+	K_FUNCINFO;
+	KTExposureTable *scene = dynamic_cast<KTExposureTable*>(k->scenes->widget((e->sceneIndex())));
 	if(scene)
 	{
 		switch(e->action() )
@@ -458,7 +460,7 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
 			break;
 			case KTProjectRequest::Copy:
 			{
-				d->nameCopyFrame = scene->frameName(e->layerIndex(), e->frameIndex());
+				k->nameCopyFrame = scene->frameName(e->layerIndex(), e->frameIndex());
 // 				d->copyFrame = e->arg().toString();
 			}
 			break;
@@ -475,7 +477,7 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
 					}
 					else
 					{
-						scene->setUseFrame( e->layerIndex(), e->frameIndex(), d->nameCopyFrame + "- copy", e->external());
+						scene->setUseFrame( e->layerIndex(), e->frameIndex(), k->nameCopyFrame + "- copy", e->external());
 					}
 				}
 			}

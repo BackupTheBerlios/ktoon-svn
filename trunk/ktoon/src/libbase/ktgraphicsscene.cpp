@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -70,27 +72,27 @@ struct KTGraphicsScene::Private
 	QList<KTLineGuide *> lines;
 };
 
-KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), d(new Private)
+KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
 {
 	setItemIndexMethod(QGraphicsScene::NoIndex);
 	setCurrentFrame( -1, -1);
 	
-	d->onionSkin.next = 0;
-	d->onionSkin.previous = 0;
-	d->tool = 0;
-	d->isDrawing = false;
+	k->onionSkin.next = 0;
+	k->onionSkin.previous = 0;
+	k->tool = 0;
+	k->isDrawing = false;
 	
 	setBackgroundBrush(Qt::gray);
 	
 	
-	d->inputInformation = new KTInputDeviceInformation(this);
-	d->brushManager = new KTBrushManager(this);
+	k->inputInformation = new KTInputDeviceInformation(this);
+	k->brushManager = new KTBrushManager(this);
 }
 
 
 KTGraphicsScene::~KTGraphicsScene()
 {
-	DEND;
+	KEND;
 	
 	clearFocus();
 	clearSelection();
@@ -105,13 +107,13 @@ KTGraphicsScene::~KTGraphicsScene()
 		removeItem(item);
 	}
 	
-	delete d;
+	delete k;
 }
 
 void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 {
-	d->framePosition.layer = layer;
-	d->framePosition.frame = frame;
+	k->framePosition.layer = layer;
+	k->framePosition.frame = frame;
 	
 	foreach(QGraphicsView *view, views() )
 	{
@@ -121,7 +123,7 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 
 void KTGraphicsScene::drawCurrentPhotogram()
 {
-	drawPhotogram( d->framePosition.frame );
+	drawPhotogram( k->framePosition.frame );
 }
 
 
@@ -134,9 +136,9 @@ void KTGraphicsScene::drawItems(QPainter *painter, int numItems, QGraphicsItem *
 		painter->save();
 		painter->setMatrix(item->sceneMatrix(), true);
 		
-		if ( d->onionSkin.opacityMap.contains(item) )
+		if ( k->onionSkin.opacityMap.contains(item) )
 		{
-			painter->setOpacity( d->onionSkin.opacityMap[item] );
+			painter->setOpacity( k->onionSkin.opacityMap[item] );
 		}
 		
 		item->paint(painter, &options[i], widget);
@@ -148,23 +150,23 @@ void KTGraphicsScene::drawItems(QPainter *painter, int numItems, QGraphicsItem *
 
 void KTGraphicsScene::drawPhotogram(int photogram)
 {
-	if ( photogram < 0 || !d->scene ) return;
+	if ( photogram < 0 || !k->scene ) return;
 	
 	clean();
 	
 	bool valid = false;
 	
-	foreach(KTLayer *layer, d->scene->layers().values())
+	foreach(KTLayer *layer, k->scene->layers().values())
 	{
 		if ( layer->isVisible() )
 		{
-			if( d->onionSkin.previous > 0 )
+			if( k->onionSkin.previous > 0 )
 			{
-				double opacityFactor = 0.5 / (double)qMin(layer->frames().count(),d->onionSkin.previous);
+				double opacityFactor = 0.5 / (double)qMin(layer->frames().count(),k->onionSkin.previous);
 				
 				double opacity = 0.6;
 				
-				for(int frameIndex = photogram-1; frameIndex > photogram-d->onionSkin.previous-1; frameIndex-- )
+				for(int frameIndex = photogram-1; frameIndex > photogram-k->onionSkin.previous-1; frameIndex-- )
 				{
 					KTFrame * frame = layer->frame(frameIndex);
 					if(frame)
@@ -175,12 +177,12 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 				}
 			}
 			
-			if ( d->onionSkin.next > 0 )
+			if ( k->onionSkin.next > 0 )
 			{
-				double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), d->onionSkin.next);
+				double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.next);
 				double opacity = 0.6;
 				
-				for(int frameIndex = photogram+1; frameIndex < photogram+d->onionSkin.next+1; frameIndex++ )
+				for(int frameIndex = photogram+1; frameIndex < photogram+k->onionSkin.next+1; frameIndex++ )
 				{
 					
 					KTFrame * frame = layer->frame(frameIndex);
@@ -204,7 +206,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 	
 	if( valid )
 	{
-		foreach(KTGraphicObject *object, d->scene->tweeningObjects())
+		foreach(KTGraphicObject *object, k->scene->tweeningObjects())
 		{
 			if(object->frame()->layer()->isVisible() )
 			{
@@ -229,9 +231,9 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 		update();
 	}
 	
-	if( d->tool )
+	if( k->tool )
 	{
-		d->tool->updateScene(this);
+		k->tool->updateScene(this);
 	}
 }
 
@@ -249,7 +251,7 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity )
 void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 {
 	QGraphicsItem *item = object->item();
-	d->onionSkin.opacityMap.insert(item, opacity);
+	k->onionSkin.opacityMap.insert(item, opacity);
 	
 	if ( KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item) )
 	{
@@ -265,7 +267,7 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 
 void KTGraphicsScene::clean()
 {
-	d->onionSkin.opacityMap.clear();
+	k->onionSkin.opacityMap.clear();
 	
 	foreach(QGraphicsItem *item, items() )
 	{
@@ -275,7 +277,7 @@ void KTGraphicsScene::clean()
 		}
 	}
 	
-	foreach(KTLineGuide *line, d->lines )
+	foreach(KTLineGuide *line, k->lines )
 	{
 		addItem(line);
 	}
@@ -283,44 +285,44 @@ void KTGraphicsScene::clean()
 
 int KTGraphicsScene::currentFrameIndex() const
 {
-	return d->framePosition.frame;
+	return k->framePosition.frame;
 }
 
 int KTGraphicsScene::currentLayerIndex() const
 {
-	return d->framePosition.layer;
+	return k->framePosition.layer;
 }
 
 int KTGraphicsScene::currentSceneIndex() const
 {
-	if( !d->scene ) return -1;
+	if( !k->scene ) return -1;
 	
-	return d->scene->visualIndex();
+	return k->scene->visualIndex();
 }
 
 void KTGraphicsScene::setNextOnionSkinCount(int n)
 {
-	d->onionSkin.next = n;
+	k->onionSkin.next = n;
 	drawCurrentPhotogram();
 }
 
 void KTGraphicsScene::setPreviousOnionSkinCount(int n)
 {
-	d->onionSkin.previous = n;
+	k->onionSkin.previous = n;
 	
 	drawCurrentPhotogram();
 }
 
 KTFrame *KTGraphicsScene::currentFrame()
 {
-	if(d->scene)
+	if(k->scene)
 	{
-		KTLayer *layer = d->scene->layer( d->framePosition.layer );
+		KTLayer *layer = k->scene->layer( k->framePosition.layer );
 		if ( layer )
 		{
 			if(!layer->frames().isEmpty())
 			{
-				return layer->frame(d->framePosition.frame );
+				return layer->frame(k->framePosition.frame );
 			}
 		}
 	}
@@ -332,26 +334,26 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
 {
 	Q_CHECK_PTR(scene);
 	
-	if(d->tool)
+	if(k->tool)
 	{
-		d->tool->aboutToChangeScene(this);
+		k->tool->aboutToChangeScene(this);
 	}
 
-	qDeleteAll(d->lines);
-	d->lines.clear();
+	qDeleteAll(k->lines);
+	k->lines.clear();
 	
 
 	clean();
-	d->scene = scene;
+	k->scene = scene;
 	
 	drawCurrentPhotogram();
 }
 
 void KTGraphicsScene::setLayerVisible(int layerIndex, bool visible)
 {
-	if( !d->scene ) return;
+	if( !k->scene ) return;
 	
-	if( KTLayer *layer = d->scene->layer(layerIndex) )
+	if( KTLayer *layer = k->scene->layer(layerIndex) )
 	{
 		layer->setVisible(visible);
 	}
@@ -359,41 +361,41 @@ void KTGraphicsScene::setLayerVisible(int layerIndex, bool visible)
 
 KTScene *KTGraphicsScene::scene() const
 {
-	return d->scene;
+	return k->scene;
 }
 
 void KTGraphicsScene::setTool(KTToolPlugin *tool)
 {
 	drawCurrentPhotogram();
-	if(d->tool)
+	if(k->tool)
 	{
-		if(d->tool->toolType() == KTToolPlugin::Selection )
+		if(k->tool->toolType() == KTToolPlugin::Selection )
 		{
-			foreach(KTLineGuide *line, d->lines)
+			foreach(KTLineGuide *line, k->lines)
 			{
 				line->setFlag( QGraphicsItem::ItemIsMovable, false );
 				line->setEnabledSyncCursor(true);
 			}
 		}
-		d->tool->aboutToChangeTool();
+		k->tool->aboutToChangeTool();
 	}
 	
-	d->tool = tool;
+	k->tool = tool;
 	if(tool->toolType() == KTToolPlugin::Selection )
 	{
-		foreach(KTLineGuide *line, d->lines)
+		foreach(KTLineGuide *line, k->lines)
 		{
 			line->setFlag( QGraphicsItem::ItemIsMovable, true );
 			line->setEnabledSyncCursor(false);
 		}
 	}
-	d->tool->init(this);
+	k->tool->init(this);
 	
 }
 
 KTToolPlugin *KTGraphicsScene::currentTool() const
 {
-	return d->tool;
+	return k->tool;
 }
 
 
@@ -401,23 +403,23 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsScene::mousePressEvent(event);
 	
-	d->inputInformation->updateFromMouseEvent(event);
+	k->inputInformation->updateFromMouseEvent(event);
 	
-	d->isDrawing = false;
+	k->isDrawing = false;
 	
 	if( event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
 	{
 	}
-	else if (d->tool )
+	else if (k->tool )
 	{
-		if( d->tool->toolType() == KTToolPlugin::Brush && event->isAccepted() ) return;
+		if( k->tool->toolType() == KTToolPlugin::Brush && event->isAccepted() ) return;
 		if(currentFrame())
 		{
 			if ( event->buttons() == Qt::LeftButton && !currentFrame()->isLocked() )
 			{
-				d->tool->begin();
-				d->isDrawing = true;
-				d->tool->press(d->inputInformation, d->brushManager, this );
+				k->tool->begin();
+				k->isDrawing = true;
+				k->tool->press(k->inputInformation, k->brushManager, this );
 			}
 		}
 	}
@@ -431,11 +433,11 @@ void KTGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void KTGraphicsScene::mouseMoved(QGraphicsSceneMouseEvent *event)
 {
-	d->inputInformation->updateFromMouseEvent( event );
+	k->inputInformation->updateFromMouseEvent( event );
 	
-	if (d->tool && d->isDrawing )
+	if (k->tool && k->isDrawing )
 	{
-		d->tool->move(d->inputInformation, d->brushManager,  this );
+		k->tool->move(k->inputInformation, k->brushManager,  this );
 	}
 }
 
@@ -447,34 +449,34 @@ void KTGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void KTGraphicsScene::mouseReleased(QGraphicsSceneMouseEvent *event)
 {
-	d->inputInformation->updateFromMouseEvent( event );
+	k->inputInformation->updateFromMouseEvent( event );
 	
-	if ( d->tool && d->isDrawing )
+	if ( k->tool && k->isDrawing )
 	{
-		d->tool->release(d->inputInformation, d->brushManager, this );
-		d->tool->end();
+		k->tool->release(k->inputInformation, k->brushManager, this );
+		k->tool->end();
 	}
 	
-	d->isDrawing = false;
+	k->isDrawing = false;
 }
 
 void KTGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsScene::mouseDoubleClickEvent(event);
 	
-	d->inputInformation->updateFromMouseEvent( event );
+	k->inputInformation->updateFromMouseEvent( event );
 	
-	if (d->tool)
+	if (k->tool)
 	{
-		d->tool->doubleClick( d->inputInformation, this );
+		k->tool->doubleClick( k->inputInformation, this );
 	}
 }
 
 void KTGraphicsScene::keyPressEvent(QKeyEvent *event)
 {
-	if ( d->tool )
+	if ( k->tool )
 	{
-		d->tool->keyPressEvent(event);
+		k->tool->keyPressEvent(event);
 		
 		if ( event->isAccepted() )
 		{
@@ -504,34 +506,34 @@ void KTGraphicsScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
 	}
 	if(line)
 	{
-		d->lines << line;
+		k->lines << line;
 	}
 }
 
 
 void  KTGraphicsScene::dragLeaveEvent ( QGraphicsSceneDragDropEvent * event )
 {
-	removeItem(d->lines.last());
-	delete d->lines.takeLast();
+	removeItem(k->lines.last());
+	delete k->lines.takeLast();
 }
 
 void KTGraphicsScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
 {
-	if(!d->lines.isEmpty())
+	if(!k->lines.isEmpty())
 	{
-		d->lines.last()->setPos(event->scenePos());
+		k->lines.last()->setPos(event->scenePos());
 	}
 }
 
 void KTGraphicsScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 {
 	Q_UNUSED(event);
-	if(d->tool)
+	if(k->tool)
 	{
-		if(d->tool->toolType() == KTToolPlugin::Selection )
+		if(k->tool->toolType() == KTToolPlugin::Selection )
 		{
-			d->lines.last()->setEnabledSyncCursor(false);
-			d->lines.last()->setFlag( QGraphicsItem::ItemIsMovable, true );
+			k->lines.last()->setEnabledSyncCursor(false);
+			k->lines.last()->setFlag( QGraphicsItem::ItemIsMovable, true );
 		}
 	}
 }
@@ -545,29 +547,29 @@ bool KTGraphicsScene::event(QEvent *e)
 
 void KTGraphicsScene::itemResponse(KTItemResponse *event)
 {
-	D_FUNCINFOX("scene");
-	if ( d->tool )
+	K_FUNCINFOX("scene");
+	if ( k->tool )
 	{
 		//d->tool->init(this); //FIXME:d->tool->init(this); in itemResponse ???
-		d->tool->itemResponse(event);
+		k->tool->itemResponse(event);
 	}
 }
 
 bool KTGraphicsScene::isDrawing() const
 {
-	return d->isDrawing;
+	return k->isDrawing;
 }
 
 KTBrushManager *KTGraphicsScene::brushManager() const
 {
-	return d->brushManager;
+	return k->brushManager;
 }
 
 void KTGraphicsScene::aboutToMousePress()
 {
-	QHash<QGraphicsItem *, double>::iterator it = d->onionSkin.opacityMap.begin();
+	QHash<QGraphicsItem *, double>::iterator it = k->onionSkin.opacityMap.begin();
 
-	while(it != d->onionSkin.opacityMap.end() )
+	while(it != k->onionSkin.opacityMap.end() )
 	{
 		if( it.value() != 1.0 )
 		{
@@ -582,5 +584,3 @@ void KTGraphicsScene::aboutToMousePress()
 		++it;
 	}
 }
-
-

@@ -135,7 +135,7 @@ Makefile: ffmpegplugin.pro  /usr/lib/qt4.2.2/mkspecs/linux-g++/qmake.conf /usr/l
 		/usr/lib/qt4.2.2/lib/libQtOpenGL.prl \
 		/usr/lib/qt4.2.2/lib/libQtNetwork.prl
 	$(QMAKE) -unix -o Makefile ffmpegplugin.pro
-	/usr/bin/ruby1.8 /home/xtingray/KToon/ktoon/configure.status /home/xtingray/KToon/ktoon/src/plugins/export/ffmpegplugin/Makefile
+	/usr/bin/ruby1.8 /data/ktoon/ktoon/configure.status /data/ktoon/ktoon/src/plugins/export/ffmpegplugin/Makefile
 /usr/lib/qt4.2.2/mkspecs/common/g++.conf:
 /usr/lib/qt4.2.2/mkspecs/common/linux.conf:
 /usr/lib/qt4.2.2/mkspecs/qconfig.pri:
