@@ -19,20 +19,20 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef DFFMPEGMOVIEGENERATOR_H
-#define DFFMPEGMOVIEGENERATOR_H
+#ifndef KFFMPEGMOVIEGENERATOR_H
+#define KFFMPEGMOVIEGENERATOR_H
 
 #include <kgui/kmoviegenerator.h>
 
 /**
 	@author David Cuadrado <krawek@gmail.com>
 */
-class DFFMpegMovieGenerator : public DMovieGenerator
+class KFFMpegMovieGenerator : public KMovieGenerator
 {
 	public:
-		DFFMpegMovieGenerator(DMovieGeneratorInterface::Format format, int width, int height, int fps = 24);
-		DFFMpegMovieGenerator(DMovieGeneratorInterface::Format format, const QSize &size, int fps = 24);
-		~DFFMpegMovieGenerator();
+		KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, int width, int height, int fps = 24);
+		KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, const QSize &size, int fps = 24);
+		~KFFMpegMovieGenerator();
 		
 	protected:
 		void __saveMovie(const QString &fileName);
@@ -43,7 +43,7 @@ class DFFMpegMovieGenerator : public DMovieGenerator
 		
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 #endif

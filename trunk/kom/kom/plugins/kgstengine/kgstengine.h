@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DGSTENGINE_H
-#define DGSTENGINE_H
+#ifndef KGSTENGINE_H
+#define KGSTENGINE_H
 
 #include <QObject>
 #include <QHash>
@@ -34,14 +36,14 @@
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class DGstEngine : public QObject, public DAudioEngineIface
+class KGstEngine : public QObject, public KAudioEngineIface
 {
 	Q_OBJECT;
-	Q_INTERFACES(DAudioEngineIface);
+	Q_INTERFACES(KAudioEngineIface);
 	
 	public:
-		DGstEngine();
-		~DGstEngine();
+		KGstEngine();
+		~KGstEngine();
 		virtual QString key() const;
 		
 		virtual int load( const QUrl &url, int id = -1 );
@@ -57,14 +59,14 @@ class DGstEngine : public QObject, public DAudioEngineIface
 		
 		void setVolume(int percent);
 		
-		static DGstEngine *instance();
+		static KGstEngine *instance();
 
 	private:
-		static DGstEngine *s_instance;
+		static KGstEngine *s_instance;
 		
 		struct PlayInfo
 		{
-			DGstEngine *engine;
+			KGstEngine *engine;
 			GstElement *player;
 			QUrl url;
 			int id;

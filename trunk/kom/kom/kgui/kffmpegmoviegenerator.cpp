@@ -305,141 +305,141 @@ void KFFMpegMovieGenerator::Private::closeVideo(AVStream *st)
 	av_free(videOutbuf);
 }
 
-KFFMpegMovieGenerator::KFFMpegMovieGenerator(DMovieGeneratorInterface::Format format, int width, int height, int fps)
- : DMovieGenerator(width, height), d(new Private)
+KFFMpegMovieGenerator::KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, int width, int height, int fps)
+ : KMovieGenerator(width, height), k(new Private)
 {
-	d->movieFile = QDir::tempPath()+"/ffmpeg_video"+DAlgorithm::randomString(12);
+	k->movieFile = QDir::tempPath()+"/ffmpeg_video"+KAlgorithm::randomString(12);
 	
-	d->chooseFileExtension(format);
+	k->chooseFileExtension(format);
 	
-	d->fps = fps;
+	k->fps = fps;
 	
 	begin();
 }
 
-KFFMpegMovieGenerator::KFFMpegMovieGenerator(DMovieGeneratorInterface::Format format, const QSize &size, int fps) : DMovieGenerator(size.width(), size.height()), d(new Private)
+KFFMpegMovieGenerator::KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, const QSize &size, int fps) : KMovieGenerator(size.width(), size.height()), k(new Private)
 {
-	d->movieFile = QDir::tempPath()+"/ffmpeg_video"+DAlgorithm::randomString(12);
+	k->movieFile = QDir::tempPath()+"/ffmpeg_video"+KAlgorithm::randomString(12);
 	
-	d->chooseFileExtension(format);
+	k->chooseFileExtension(format);
 	
-	d->fps = fps;
+	k->fps = fps;
 	
 	begin();
 }
 
 KFFMpegMovieGenerator::~KFFMpegMovieGenerator()
 {
-	if( QFile::exists( d->movieFile ) )
+	if( QFile::exists( k->movieFile ) )
 	{
-		QFile::remove(d->movieFile);
+		QFile::remove(k->movieFile);
 	}
-	delete d;
+	delete k;
 }
 
 
 bool KFFMpegMovieGenerator::begin()
 {
 	av_register_all();
-	d->fmt = guess_format(0, d->movieFile.toLocal8Bit().data(), 0);
+	k->fmt = guess_format(0, k->movieFile.toLocal8Bit().data(), 0);
 	
-	if ( !d->fmt )
+	if ( !k->fmt )
 	{
-		d->fmt = guess_format("mpeg", NULL, NULL);
+		k->fmt = guess_format("mpeg", NULL, NULL);
 	}
 	
-	if( ! d->fmt )
+	if( ! k->fmt )
 	{
-		kError() << "Cannot find a valid format for " << d->movieFile;
+		kError() << "Cannot find a valid format for " << k->movieFile;
 		return false;
 	}
 	
-	d->oc = av_alloc_format_context();
-	if ( !d->oc )
+	k->oc = av_alloc_format_context();
+	if ( !k->oc )
 	{
 		kError() << "Error while export";
 		return false;
 	}
 	
-	d->oc->oformat = d->fmt;
-	snprintf(d->oc->filename, sizeof(d->oc->filename), "%s", d->movieFile.toLocal8Bit().data());
+	k->oc->oformat = k->fmt;
+	snprintf(k->oc->filename, sizeof(k->oc->filename), "%s", k->movieFile.toLocal8Bit().data());
 	
-	d->video_st = addVideoStream(d->oc, d->fmt->video_codec, width(), height(), d->fps);
+	k->video_st = addVideoStream(k->oc, k->fmt->video_codec, width(), height(), k->fps);
 	
-	if ( !d->video_st )
+	if ( !k->video_st )
 	{
 		kError() << "Can't add video stream";
 		return false;
 	}
 	
-	if (av_set_parameters(d->oc, 0) < 0)
+	if (av_set_parameters(k->oc, 0) < 0)
 	{
 		kError() << "Invalid output format parameters";
 		return false;
 	}
 	
-	dump_format(d->oc, 0, d->movieFile.toLocal8Bit().data(), 1);
+	dump_format(k->oc, 0, k->movieFile.toLocal8Bit().data(), 1);
 	
-	if (!d->openVideo(d->oc, d->video_st) )
+	if (!k->openVideo(k->oc, k->video_st) )
 	{
 		kError() << "Can't open video";
 		return false;
 	}
 	
-	if (!(d->fmt->flags & AVFMT_NOFILE))
+	if (!(k->fmt->flags & AVFMT_NOFILE))
 	{
-		if (url_fopen(&d->oc->pb, d->movieFile.toLocal8Bit().data(), URL_WRONLY) < 0)
+		if (url_fopen(&k->oc->pb, k->movieFile.toLocal8Bit().data(), URL_WRONLY) < 0)
 		{
-			kError() << "Could not open " << d->movieFile;
+			kError() << "Could not open " << k->movieFile;
 			return false;
 		}
 	}
 	
-	av_write_header(d->oc);
+	av_write_header(k->oc);
 	
-	d->video_pts = 0.0;
-	d->frameCount = 0;
-	d->streamDuration = 10;
+	k->video_pts = 0.0;
+	k->frameCount = 0;
+	k->streamDuration = 10;
 	
 	return true;
 }
 
 void KFFMpegMovieGenerator::handle(const QImage& image)
 {
-	if (d->video_st)
+	if (k->video_st)
 	{
-		d->video_pts = (double)d->video_st->pts.val * d->video_st->time_base.num / d->video_st->time_base.den;
+		k->video_pts = (double)k->video_st->pts.val * k->video_st->time_base.num / k->video_st->time_base.den;
 	}
 	else
 	{
-		d->video_pts = 0.0;
+		k->video_pts = 0.0;
 	}
 	
-	if (!d->video_st || d->video_pts >= d->streamDuration )
+	if (!k->video_st || k->video_pts >= k->streamDuration )
 	{
 		return;
 	}
 	
-	d->writeVideoFrame(image);
+	k->writeVideoFrame(image);
 }
 
 
 void KFFMpegMovieGenerator::end()
 {
-	d->closeVideo(d->video_st);
-	av_write_trailer(d->oc);
+	k->closeVideo(k->video_st);
+	av_write_trailer(k->oc);
 	
-	for(int i = 0; i < d->oc->nb_streams; i++)
+	for(int i = 0; i < k->oc->nb_streams; i++)
 	{
-		av_freep(&d->oc->streams[i]);
+		av_freep(&k->oc->streams[i]);
 	}
 	
-	if (!(d->fmt->flags & AVFMT_NOFILE)) 
+	if (!(k->fmt->flags & AVFMT_NOFILE)) 
 	{
-		url_fclose(&d->oc->pb);
+		url_fclose(&k->oc->pb);
 	}
 	
-	av_free(d->oc);
+	av_free(k->oc);
 }
 
 
@@ -450,7 +450,7 @@ void KFFMpegMovieGenerator::__saveMovie(const QString &fileName)
 		QFile::remove(fileName);
 	}
 	
-	QFile::copy(d->movieFile, fileName);
+	QFile::copy(k->movieFile, fileName);
 }
 
 

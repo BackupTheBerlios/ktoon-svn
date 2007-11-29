@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,13 +20,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DMOVIEGENERATORINTERFACE_H
-#define DMOVIEGENERATORINTERFACE_H
+#ifndef KMOVIEGENERATORINTERFACE_H
+#define KMOVIEGENERATORINTERFACE_H
 
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
 */
-class DMovieGeneratorInterface
+class KMovieGeneratorInterface
 {
 	public:
 		enum Format
@@ -41,7 +43,7 @@ class DMovieGeneratorInterface
 		
 		Q_DECLARE_FLAGS(Formats, Format);
 		
-		virtual ~DMovieGeneratorInterface() {}
+		virtual ~KMovieGeneratorInterface() {}
 		
 		virtual void nextFrame() = 0;
 		virtual void reset() = 0;
@@ -58,7 +60,7 @@ class DMovieGeneratorInterface
 		virtual void end() = 0;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(DMovieGeneratorInterface::Formats);
+Q_DECLARE_OPERATORS_FOR_FLAGS(KMovieGeneratorInterface::Formats);
 
 #endif
 

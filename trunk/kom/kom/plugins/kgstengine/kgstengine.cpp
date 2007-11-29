@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,10 +29,10 @@
 #include <kcore/kalgorithm.h>
 #include <kcore/kdebug.h>
 
-DGstEngine *DGstEngine::s_instance = 0;
+KGstEngine *KGstEngine::s_instance = 0;
 
 
-GstBusSyncReply DGstEngine::bus_cb(GstBus*, GstMessage* msg, gpointer pinfo) // static
+GstBusSyncReply KGstEngine::bus_cb(GstBus*, GstMessage* msg, gpointer pinfo) // static
 {
 	PlayInfo *playInfo = static_cast<PlayInfo *>(pinfo);
 	
@@ -62,23 +64,23 @@ GstBusSyncReply DGstEngine::bus_cb(GstBus*, GstMessage* msg, gpointer pinfo) // 
 }
 
 
-DGstEngine *DGstEngine::instance()
+KGstEngine *KGstEngine::instance()
 {
 	if ( !s_instance )
 	{
 		qDebug("CREATING INSTANCE");
-		s_instance = new DGstEngine;
+		s_instance = new KGstEngine;
 	}
 	
 	return s_instance;
 }
 
-DGstEngine::DGstEngine() : m_currentPlayer(0)
+KGstEngine::KGstEngine() : m_currentPlayer(0)
 {
 }
 
 
-DGstEngine::~DGstEngine()
+KGstEngine::~KGstEngine()
 {
 	QHashIterator<int, PlayInfo> i(m_players);
 	
@@ -92,12 +94,12 @@ DGstEngine::~DGstEngine()
 }
 
 
-QString DGstEngine::key() const
+QString KGstEngine::key() const
 {
 	return "gstreamer";
 }
 
-int DGstEngine::load( const QUrl &url, int id )
+int KGstEngine::load( const QUrl &url, int id )
 {
 	QUrl path = url;
 	if ( path.scheme().isEmpty() )
@@ -111,7 +113,7 @@ int DGstEngine::load( const QUrl &url, int id )
 	{
 		m_currentPlayer = -1;
 		
-		dError() << "Cannot load: " << path.toString();
+		kError() << "Cannot load: " << path.toString();
 		return -1;
 	}
 	
@@ -120,7 +122,7 @@ int DGstEngine::load( const QUrl &url, int id )
 		id = m_players.count();
 		if( m_players.contains(id) )
 		{
-			id = DAlgorithm::random();
+			id = KAlgorithm::random();
 		}
 	}
 	
@@ -135,7 +137,7 @@ int DGstEngine::load( const QUrl &url, int id )
 	return id;
 }
 
-bool DGstEngine::init()
+bool KGstEngine::init()
 {
 	GError *err;
 	if ( !gst_init_check( NULL, NULL, &err ) )
@@ -157,7 +159,7 @@ bool DGstEngine::init()
 	return true;
 }
 
-bool DGstEngine::play(int offset)
+bool KGstEngine::play(int offset)
 {
 	qDebug() << "PLAY " << m_currentPlayer;
 	
@@ -184,7 +186,7 @@ bool DGstEngine::play(int offset)
 	return false;
 }
 
-void DGstEngine::stop()
+void KGstEngine::stop()
 {
 	qDebug() << "STOP " << m_currentPlayer;
 	if( m_players.contains(m_currentPlayer) )
@@ -194,7 +196,7 @@ void DGstEngine::stop()
 	}
 }
 
-void DGstEngine::pause()
+void KGstEngine::pause()
 {
 	qDebug("PAUSE");
 	if( m_players.contains(m_currentPlayer) )
@@ -203,7 +205,7 @@ void DGstEngine::pause()
 	}
 }
 
-void DGstEngine::seek( uint ms )
+void KGstEngine::seek( uint ms )
 {
 	qDebug() << "SEEKING "<< ms;
 	
@@ -220,7 +222,7 @@ void DGstEngine::seek( uint ms )
 	}
 }
 
-DGstEngine::PlayInfo DGstEngine::createPlayInfo(const QUrl &url)
+KGstEngine::PlayInfo KGstEngine::createPlayInfo(const QUrl &url)
 {
 	qDebug("Create play Info");
 	
@@ -232,7 +234,7 @@ DGstEngine::PlayInfo DGstEngine::createPlayInfo(const QUrl &url)
 	return playInfo;
 }
 
-bool DGstEngine::setCurrentPlayer(int id)
+bool KGstEngine::setCurrentPlayer(int id)
 {
 	if ( m_players.contains(id) )
 	{
@@ -243,7 +245,7 @@ bool DGstEngine::setCurrentPlayer(int id)
 	return false;
 }
 
-void DGstEngine::destroyPlayInfo(const PlayInfo *playInfo)
+void KGstEngine::destroyPlayInfo(const PlayInfo *playInfo)
 {
 	qDebug() << "Destroy play info" << playInfo->id << " players: " << m_players.count();
 	
@@ -251,7 +253,7 @@ void DGstEngine::destroyPlayInfo(const PlayInfo *playInfo)
 	
 	m_players.remove(playInfo->id);
 	
-	dDebug() << "UUU: " << m_players.count();
+	kDebug() << "UUU: " << m_players.count();
 	
 	if( playInfo->player != 0 )
 	{
@@ -260,7 +262,7 @@ void DGstEngine::destroyPlayInfo(const PlayInfo *playInfo)
 	}
 }
 
-void DGstEngine::setVolume(int percent)
+void KGstEngine::setVolume(int percent)
 {
 	if ( m_currentPlayer < 0  )
 		return;
@@ -268,6 +270,6 @@ void DGstEngine::setVolume(int percent)
 }
 
 
-Q_EXPORT_PLUGIN2( gst_engine, DGstEngine );
+Q_EXPORT_PLUGIN2( gst_engine, KGstEngine );
 
 

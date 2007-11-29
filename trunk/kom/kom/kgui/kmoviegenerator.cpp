@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -20,32 +22,32 @@
 
 #include "kmoviegenerator.h"
 
-DMovieGenerator::DMovieGenerator( int width, int height )
+KMovieGenerator::KMovieGenerator( int width, int height )
  : QImage(width, height, QImage::Format_RGB32)
 {
 	reset();
 }
 
-DMovieGenerator::~DMovieGenerator()
+KMovieGenerator::~KMovieGenerator()
 {
 }
 
-bool DMovieGenerator::begin()
+bool KMovieGenerator::begin()
 {
 	return true;
 }
 
-void DMovieGenerator::nextFrame()
+void KMovieGenerator::nextFrame()
 {
 	handle(*this);
 }
 
-void DMovieGenerator::end()
+void KMovieGenerator::end()
 {
 }
 
 
-void DMovieGenerator::reset()
+void KMovieGenerator::reset()
 {
 	fill( qRgba(255, 255, 255, 0) );
 }
