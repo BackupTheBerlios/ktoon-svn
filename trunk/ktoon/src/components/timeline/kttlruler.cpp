@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,7 +28,7 @@
 
 KTTLRuler::KTTLRuler(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
 {
-	DINIT;
+	KINIT;
 	
 	setHighlightSections ( true );
 // 	setSelectionMode ( QAbstractItemView::SingleSelection );
@@ -39,7 +41,7 @@ KTTLRuler::KTTLRuler(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
 
 KTTLRuler::~KTTLRuler()
 {
-	DEND;
+	KEND;
 }
 
 void KTTLRuler::paintSection ( QPainter * painter, const QRect & rect, int logicalIndex ) const

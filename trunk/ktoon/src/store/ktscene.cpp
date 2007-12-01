@@ -152,7 +152,7 @@ KTSoundLayer *KTScene::createSoundLayer(int position, bool loaded)
 	
 	k->layerCount++;
 	
-	layer->setLayerName(tr("Sound layer %1").arg(d->layerCount));
+	layer->setLayerName(tr("Sound layer %1").arg(k->layerCount));
 	
 	k->soundLayers.insert( position, layer);
 	

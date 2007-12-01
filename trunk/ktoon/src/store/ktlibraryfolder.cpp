@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -35,16 +37,16 @@ struct KTLibraryFolder::Private
 	KTProject *project;
 };
 
-KTLibraryFolder::KTLibraryFolder(const QString &id, KTProject *project, QObject *parent) : QObject(parent), d(new Private)
+KTLibraryFolder::KTLibraryFolder(const QString &id, KTProject *project, QObject *parent) : QObject(parent), k(new Private)
 {
-	d->id = id;
-	d->project = project;
+	k->id = id;
+	k->project = project;
 }
 
 
 KTLibraryFolder::~KTLibraryFolder()
 {
-	delete d;
+	delete k;
 }
 
 KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, bool loaded)
@@ -59,11 +61,11 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
 	}
 	
 	bool ret = addObject( object, name);
-	object->saveData(d->project->dataDir());
+	object->saveData(k->project->dataDir());
 	
 	if( loaded && ret )
 	{
-		KTProjectLoader::createSymbol(type, name, data, d->project);
+		KTProjectLoader::createSymbol(type, name, data, k->project);
 	}
 	
 	return object;
@@ -71,11 +73,12 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
 
 bool KTLibraryFolder::addObject(KTLibraryObject *object, const QString &id)
 {
-	if ( !d->objects.contains(id ) )
+	if ( !k->objects.contains(id ) )
 	{
-		d->objects.insert(id, object);
+		k->objects.insert(id, object);
 		object->setSymbolName(id);
 		object->setParent(this);
+
 		return true;
 	}
 	
@@ -84,21 +87,21 @@ bool KTLibraryFolder::addObject(KTLibraryObject *object, const QString &id)
 
 bool KTLibraryFolder::removeObject(const QString &id)
 {
-	int c = d->objects.remove(id);
+	int c = k->objects.remove(id);
 	
 	return c > 0;
 }
 
 void KTLibraryFolder::addFolder(KTLibraryFolder *folder)
 {
-	d->folders << folder;
+	k->folders << folder;
 }
 
 bool KTLibraryFolder::moveObject(const QString &id, KTLibraryFolder *folder)
 {
-	if ( d->objects.contains(id) )
+	if ( k->objects.contains(id) )
 	{
-		KTLibraryObject *object = d->objects[id];
+		KTLibraryObject *object = k->objects[id];
 		removeObject( id );
 		
 		folder->addObject( object, id);
@@ -111,25 +114,25 @@ bool KTLibraryFolder::moveObject(const QString &id, KTLibraryFolder *folder)
 
 void KTLibraryFolder::setId(const QString &id)
 {
-	d->id = id;
+	k->id = id;
 }
 
 QString KTLibraryFolder::id() const
 {
-	return d->id;
+	return k->id;
 }
 
 KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
 {
-	foreach ( QString oid, d->objects.keys())
+	foreach ( QString oid, k->objects.keys())
 	{
 		if ( oid == id )
 		{
-			return d->objects[oid];
+			return k->objects[oid];
 		}
 	}
 	
-	foreach ( KTLibraryFolder *folder, d->folders )
+	foreach ( KTLibraryFolder *folder, k->folders )
 	{
 		KTLibraryObject *object = folder->findObject(id);
 		
@@ -139,34 +142,34 @@ KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
 		}
 	}
 	
-	dDebug() << "Cannot find symbol with id: " << id;
+	kDebug() << "Cannot find symbol with id: " << id;
 	
 	return 0;
 }
 
 int KTLibraryFolder::objectsCount() const
 {
-	return d->objects.count();
+	return k->objects.count();
 }
 
 int KTLibraryFolder::foldersCount() const
 {
-	return d->folders.count();
+	return k->folders.count();
 }
 
 KTProject *KTLibraryFolder::project() const
 {
-	return d->project;
+	return k->project;
 }
 
 Folders KTLibraryFolder::folders() const
 {
-	return d->folders;
+	return k->folders;
 }
 
 LibraryObjects KTLibraryFolder::objects() const
 {
-	return d->objects;
+	return k->objects;
 }
 
 void KTLibraryFolder::fromXml(const QString &xml )
@@ -194,7 +197,7 @@ void KTLibraryFolder::fromXml(const QString &xml )
 				
 				KTLibraryObject *object = new KTLibraryObject(this);
 				object->fromXml(objectDocument.toString(0));
-				object->loadDataFromPath(d->project->dataDir());
+				object->loadDataFromPath(k->project->dataDir());
 				
 				addObject(object, object->symbolName() );
 				
@@ -207,14 +210,14 @@ void KTLibraryFolder::fromXml(const QString &xml )
 					ts << objectData;
 				}
 				
-				KTProjectLoader::createSymbol(KTLibraryObject::Type(object->type()), object->symbolName(), data.toLocal8Bit(), d->project);
+				KTProjectLoader::createSymbol(KTLibraryObject::Type(object->type()), object->symbolName(), data.toLocal8Bit(), k->project);
 			}
 			else if( e.tagName() == "folder" )
 			{
 				QDomDocument folderDocument;
 				folderDocument.appendChild(folderDocument.importNode(n, true ));
 				
-				KTLibraryFolder *folder = new KTLibraryFolder( e.attribute("id"), d->project, this);
+				KTLibraryFolder *folder = new KTLibraryFolder( e.attribute("id"), k->project, this);
 				folder->fromXml(folderDocument.toString(0));
 				
 				addFolder(folder);
@@ -228,14 +231,14 @@ void KTLibraryFolder::fromXml(const QString &xml )
 QDomElement KTLibraryFolder::toXml(QDomDocument &doc) const
 {
 	QDomElement folder = doc.createElement("folder");
-	folder.setAttribute("id", d->id);
+	folder.setAttribute("id", k->id);
 	
-	foreach( KTLibraryObject *object, d->objects.values())
+	foreach( KTLibraryObject *object, k->objects.values())
 	{
 		folder.appendChild(object->toXml(doc));
 	}
 	
-	foreach( KTLibraryFolder *folderObject, d->folders)
+	foreach( KTLibraryFolder *folderObject, k->folders)
 	{
 		folder.appendChild(folderObject->toXml(doc));
 	}

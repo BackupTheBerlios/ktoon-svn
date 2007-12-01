@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -31,7 +33,6 @@ KTButtonItem::KTButtonItem(QGraphicsItem * parent, QGraphicsScene * scene)
 {
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
 	setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable  );
-	
 	
 	m_iconSize = QSize(22,22);
 }
@@ -87,8 +88,6 @@ QRectF KTButtonItem::boundingRect() const
 	
 	width += m_iconSize.width();
 	height += m_iconSize.height();
-	
-	
 	
 	return QRectF(0, 0, width, height);
 }

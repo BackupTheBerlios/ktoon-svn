@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,7 +29,7 @@ struct KTProxyItem::Private
 	QGraphicsItem *realItem;
 };
 
-KTProxyItem::KTProxyItem(QGraphicsItem *item) : QGraphicsItem(), d(new Private)
+KTProxyItem::KTProxyItem(QGraphicsItem *item) : QGraphicsItem(), k(new Private)
 {
 	setItem(item);
 	setPos(0,0);
@@ -40,54 +42,54 @@ KTProxyItem::~KTProxyItem()
 
 void KTProxyItem::setItem(QGraphicsItem *item)
 {
-	if( d->realItem )
+	if( k->realItem )
 	{
-		this->removeSceneEventFilter(d->realItem);
+		this->removeSceneEventFilter(k->realItem);
 	}
 	
-	d->realItem = item;
+	k->realItem = item;
 	
-	if( d->realItem )
+	if( k->realItem )
 	{
-		d->realItem->installSceneEventFilter(this);
-		this->setFlags(d->realItem->flags());
+		k->realItem->installSceneEventFilter(this);
+		this->setFlags(k->realItem->flags());
 	}
 }
 
 QGraphicsItem *KTProxyItem::item() const
 {
-	return d->realItem;
+	return k->realItem;
 }
 
 QRectF KTProxyItem::boundingRect() const
 {
-	if ( d->realItem )
-		return d->realItem->boundingRect();
+	if ( k->realItem )
+		return k->realItem->boundingRect();
 	
 	return QRectF(0,0, 0,0);
 }
 
 void KTProxyItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-	if( d->realItem )
+	if( k->realItem )
 	{
-		d->realItem->paint(painter, option, widget);
+		k->realItem->paint(painter, option, widget);
 		
 	}
 }
 
 QPainterPath KTProxyItem::shape() const
 {
-	if( d->realItem)
-		return d->realItem->shape();
+	if( k->realItem)
+		return k->realItem->shape();
 	
 	return QGraphicsItem::shape();
 }
 
 bool KTProxyItem::collidesWithItem( const QGraphicsItem * other, Qt::ItemSelectionMode mode) const
 {
-	if( d->realItem)
-		return d->realItem->collidesWithItem(other, mode);
+	if( k->realItem)
+		return k->realItem->collidesWithItem(other, mode);
 	
 	return QGraphicsItem::collidesWithItem(other, mode);
 }
@@ -95,8 +97,8 @@ bool KTProxyItem::collidesWithItem( const QGraphicsItem * other, Qt::ItemSelecti
 
 bool KTProxyItem::collidesWithPath ( const QPainterPath & path, Qt::ItemSelectionMode mode) const
 {
-	if( d->realItem)
-		return d->realItem->collidesWithPath(path, mode);
+	if( k->realItem)
+		return k->realItem->collidesWithPath(path, mode);
 	
 	return QGraphicsItem::collidesWithPath(path, mode);
 }
@@ -104,8 +106,8 @@ bool KTProxyItem::collidesWithPath ( const QPainterPath & path, Qt::ItemSelectio
 
 bool KTProxyItem::contains ( const QPointF & point ) const
 {
-	if( d->realItem)
-		return d->realItem->contains(point);
+	if( k->realItem)
+		return k->realItem->contains(point);
 	
 	return QGraphicsItem::contains(point);
 }
@@ -113,8 +115,8 @@ bool KTProxyItem::contains ( const QPointF & point ) const
 
 bool KTProxyItem::isObscuredBy ( const QGraphicsItem * item ) const
 {
-	if( d->realItem)
-		return d->realItem->isObscuredBy(item);
+	if( k->realItem)
+		return k->realItem->isObscuredBy(item);
 	
 	return QGraphicsItem::isObscuredBy(item);
 }
@@ -122,12 +124,8 @@ bool KTProxyItem::isObscuredBy ( const QGraphicsItem * item ) const
 
 QPainterPath KTProxyItem::opaqueArea () const
 {
-	if( d->realItem)
-		return d->realItem->opaqueArea();
+	if( k->realItem)
+		return k->realItem->opaqueArea();
 	
 	return QGraphicsItem::opaqueArea();
 }
-
-
-		
-

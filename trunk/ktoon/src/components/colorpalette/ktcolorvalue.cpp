@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -41,7 +43,7 @@ struct KTItemColorValue::Private
 	};
 };
 
-KTItemColorValue::KTItemColorValue( const QString &text, QWidget *parent ) :QFrame(parent), d(new Private)
+KTItemColorValue::KTItemColorValue( const QString &text, QWidget *parent ) :QFrame(parent), k(new Private)
 {
 	QHBoxLayout * layout = new QHBoxLayout;
 	layout->setSpacing(0);
@@ -50,59 +52,59 @@ KTItemColorValue::KTItemColorValue( const QString &text, QWidget *parent ) :QFra
 	setLayout(layout);
 	QLabel *labelText = new QLabel( text, this);
 	labelText->setSizePolicy ( QSizePolicy::Fixed,  QSizePolicy::Fixed);
-	d->value = new QSpinBox(this);
-	d->value->setMaximum ( 255 );
-	d->value->setMinimum ( 0 );
-	d->value->setSizePolicy ( QSizePolicy::Fixed,  QSizePolicy::Fixed);
-	connect(d->value, SIGNAL(valueChanged( int)) , this, SIGNAL(valueChanged( int)));
-	connect(d->value, SIGNAL(valueChanged( const QString &)), this, SIGNAL(valueChanged( const QString &)));
-	connect(d->value, SIGNAL(editingFinished()), this, SIGNAL(editingFinished()));
+	k->value = new QSpinBox(this);
+	k->value->setMaximum ( 255 );
+	k->value->setMinimum ( 0 );
+	k->value->setSizePolicy ( QSizePolicy::Fixed,  QSizePolicy::Fixed);
+	connect(k->value, SIGNAL(valueChanged( int)) , this, SIGNAL(valueChanged( int)));
+	connect(k->value, SIGNAL(valueChanged( const QString &)), this, SIGNAL(valueChanged( const QString &)));
+	connect(k->value, SIGNAL(editingFinished()), this, SIGNAL(editingFinished()));
 	layout->addWidget(labelText);
-	layout->addWidget(d->value);
+	layout->addWidget(k->value);
 }
 
 KTItemColorValue::~KTItemColorValue()
 {
-	delete d;
+	delete k;
 }
 
 void KTItemColorValue::setValue( int val)
 {
-	d->value->setValue(val);
+	k->value->setValue(val);
 }
 
 int  KTItemColorValue::value()
 {
-	return d->value->value();
+	return k->value->value();
 }
 
 void KTItemColorValue::setMax(int max)
 {
-	d->value->setMaximum( max );
+	k->value->setMaximum( max );
 }
 
 void KTItemColorValue::setRange(int minimum, int maximum)
 {
-	d->value->setRange( minimum, maximum );
+	k->value->setRange( minimum, maximum );
 }
 
 void KTItemColorValue::setSuffix(const QString &suffix )
 {
-	d->value->setSuffix(suffix);
+	k->value->setSuffix(suffix);
 }
 
 struct KTColorValue::Private
 {
 	KTItemColorValue *valueR, *valueG, *valueB, *valueH, *valueS, *valueV; 
-	DDoubleComboBox *valueA;
+	KDoubleComboBox *valueA;
 // 	QGridLayout *layout;
 	bool ok;
 };
 
-KTColorValue::KTColorValue(QWidget *parent) : QFrame(parent), d(new Private)
+KTColorValue::KTColorValue(QWidget *parent) : QFrame(parent), k(new Private)
 {
-	DINIT;
-	d->ok = true;
+	KINIT;
+	k->ok = true;
 	
 	setLayout(new QVBoxLayout());
 // 	d->layout = new QGridLayout;
@@ -114,61 +116,61 @@ KTColorValue::KTColorValue(QWidget *parent) : QFrame(parent), d(new Private)
 
 KTColorValue::~KTColorValue()
 {
-	DEND;
+	KEND;
 }
 
 void KTColorValue::setupForm()
 {
 	QGridLayout *gridLayout = new QGridLayout;
 	
-	d->valueR = new KTItemColorValue("R");
-	connect(d->valueR, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
+	k->valueR = new KTItemColorValue("R");
+	connect(k->valueR, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
 	
-	d->valueG = new KTItemColorValue("G", this);
-	connect(d->valueG, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
+	k->valueG = new KTItemColorValue("G", this);
+	connect(k->valueG, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
 	
-	d->valueB = new KTItemColorValue("B", this);
-	connect(d->valueB, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
+	k->valueB = new KTItemColorValue("B", this);
+	connect(k->valueB, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
 	
-	d->valueH = new KTItemColorValue("H", this);
-	d->valueH->setMax(359);
-	connect(d->valueH, SIGNAL(valueChanged(int)), this, SIGNAL(hueChanged(int)));
+	k->valueH = new KTItemColorValue("H", this);
+	k->valueH->setMax(359);
+	connect(k->valueH, SIGNAL(valueChanged(int)), this, SIGNAL(hueChanged(int)));
 	
-	d->valueS = new KTItemColorValue("S", this);
-	connect(d->valueS, SIGNAL(valueChanged(int)), this, SIGNAL(saturationChanged( int)));
+	k->valueS = new KTItemColorValue("S", this);
+	connect(k->valueS, SIGNAL(valueChanged(int)), this, SIGNAL(saturationChanged( int)));
 	
-	d->valueV = new KTItemColorValue("V", this);
-	connect(d->valueV, SIGNAL(valueChanged(int)), this, SIGNAL(valueChanged( int)));
+	k->valueV = new KTItemColorValue("V", this);
+	connect(k->valueV, SIGNAL(valueChanged(int)), this, SIGNAL(valueChanged( int)));
 	
 	QHBoxLayout *boxLayout = new QHBoxLayout;
 	boxLayout->setSpacing(1);
 	
-	d->valueA = new DDoubleComboBox(0, 255, this);
-	d->valueA->setDecimals(0);
+	k->valueA = new DDoubleComboBox(0, 255, this);
+	k->valueA->setDecimals(0);
 	
 	QLabel * label = new QLabel("A");
 	label->setSizePolicy ( QSizePolicy::Fixed,  QSizePolicy::Fixed);
 	boxLayout->addWidget(label);
 	
-	boxLayout->addWidget(d->valueA);
+	boxLayout->addWidget(k->valueA);
 	
 	for(int i = 0; i <= 100; i += 25)
 	{
-		d->valueA->addPercent(i);
+		k->valueA->addPercent(i);
 	}
 	
-	connect(d->valueA, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
-	connect(d->valueA, SIGNAL(activated(int)), this, SLOT(syncValuesRgb(int)));
+	connect(k->valueA, SIGNAL(editingFinished()), this, SLOT(syncValuesRgb()));
+	connect(k->valueA, SIGNAL(activated(int)), this, SLOT(syncValuesRgb(int)));
 	
 	QCheckBox *show = new QCheckBox(tr("percent"));
-	show->setChecked(d->valueA->showAsPercent());
+	show->setChecked(k->valueA->showAsPercent());
 	
-	gridLayout->addWidget(d->valueR, 0, 0,Qt::AlignTop | Qt::AlignLeft);
-	gridLayout->addWidget(d->valueG, 1, 0,Qt::AlignTop | Qt::AlignLeft);
-	gridLayout->addWidget(d->valueB, 2, 0,Qt::AlignTop | Qt::AlignLeft);
-	gridLayout->addWidget(d->valueH, 0, 1,Qt::AlignTop | Qt::AlignLeft);
-	gridLayout->addWidget(d->valueS, 1, 1,Qt::AlignTop | Qt::AlignLeft);
-	gridLayout->addWidget(d->valueV, 2, 1,Qt::AlignTop | Qt::AlignLeft);
+	gridLayout->addWidget(k->valueR, 0, 0,Qt::AlignTop | Qt::AlignLeft);
+	gridLayout->addWidget(k->valueG, 1, 0,Qt::AlignTop | Qt::AlignLeft);
+	gridLayout->addWidget(k->valueB, 2, 0,Qt::AlignTop | Qt::AlignLeft);
+	gridLayout->addWidget(k->valueH, 0, 1,Qt::AlignTop | Qt::AlignLeft);
+	gridLayout->addWidget(k->valueS, 1, 1,Qt::AlignTop | Qt::AlignLeft);
+	gridLayout->addWidget(k->valueV, 2, 1,Qt::AlignTop | Qt::AlignLeft);
 	
 	
 	boxLayout->addWidget(show);
@@ -176,59 +178,59 @@ void KTColorValue::setupForm()
 	static_cast<QHBoxLayout*>(layout())->addLayout(gridLayout);
 	static_cast<QHBoxLayout*>(layout())->addLayout(boxLayout);
 	
-	connect(show, SIGNAL(toggled( bool )), d->valueA, SLOT(setShowAsPercent( bool )));
+	connect(show, SIGNAL(toggled( bool )), k->valueA, SLOT(setShowAsPercent( bool )));
 	
 }
 
 void KTColorValue::setColor(const QBrush &brush)
 {
 	QColor color = brush.color();
-	d->ok = false;
-	d->valueR->setValue(color.red());
-	d->valueG->setValue(color.green());
-	d->valueB->setValue(color.blue());
-	d->valueH->setValue(color.hue ());
-	d->valueS->setValue(color.saturation());
-	d->valueV->setValue(color.value ());
+	k->ok = false;
+	k->valueR->setValue(color.red());
+	k->valueG->setValue(color.green());
+	k->valueB->setValue(color.blue());
+	k->valueH->setValue(color.hue ());
+	k->valueS->setValue(color.saturation());
+	k->valueV->setValue(color.value ());
 	
-	d->valueA->setValue( d->valueA->currentIndex(), color.alpha() );
+	k->valueA->setValue( k->valueA->currentIndex(), color.alpha() );
 	
-	d->ok = true;
+	k->ok = true;
 }
 
 void KTColorValue::syncValuesRgb(int)
 {
-	if(d->ok)
+	if(k->ok)
 	{
-		int r = d->valueR->value();
-		int g = d->valueG->value();
-		int b = d->valueB->value();
-		int a = (int) ::ceil(d->valueA->value());
+		int r = k->valueR->value();
+		int g = k->valueG->value();
+		int b = k->valueB->value();
+		int a = (int) ::ceil(k->valueA->value());
 		
 		QColor tmp = QColor::fromRgb(r,g,b,a);
-		d->valueH->setValue( tmp.hue ());
-		d->valueS->setValue( tmp.saturation());
-		d->valueV->setValue( tmp.value ());
+		k->valueH->setValue( tmp.hue ());
+		k->valueS->setValue( tmp.saturation());
+		k->valueV->setValue( tmp.value ());
 		emit brushChanged(QColor::fromRgb(r,g,b,a));
 	}
 }
 
 int KTColorValue::hue()
 {
-	return d->valueH->value();
+	return k->valueH->value();
 }
 
 int KTColorValue::saturation()
 {
-	return d->valueS->value();
+	return k->valueS->value();
 }
 
 int KTColorValue::value()
 {
-	return d->valueV->value();
+	return k->valueV->value();
 }
 
 int KTColorValue::alpha()
 {
-	return (int) ::ceil(d->valueA->value());
+	return (int) ::ceil(k->valueA->value());
 }

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -38,7 +40,7 @@
 #include <kgui/kitemselector.h>
 #include <kgui/kxyspinbox.h>
 
-class SelectPlugin : public DWizardPage
+class SelectPlugin : public KWizardPage
 {
 	Q_OBJECT;
 	public:
@@ -64,7 +66,7 @@ class SelectPlugin : public DWizardPage
 		QListWidget *m_formatList;
 };
 
-SelectPlugin::SelectPlugin() : DWizardPage(tr("Select plugin"))
+SelectPlugin::SelectPlugin() : KWizardPage(tr("Select plugin"))
 {
 	QWidget *container = new QWidget;
 	QHBoxLayout *layout = new QHBoxLayout(container);
@@ -200,7 +202,7 @@ void SelectPlugin::selectedFormatItem(QListWidgetItem *item)
 	}
 }
 
-class SelectScenes : public DWizardPage
+class SelectScenes : public KWizardPage
 {
 	Q_OBJECT;
 	public:
@@ -221,12 +223,12 @@ class SelectScenes : public DWizardPage
 		void selectedScenes(const QList<int> &scenes);
 		
 	private:
-		DItemSelector *m_selector;
+		KItemSelector *m_selector;
 };
 
-SelectScenes::SelectScenes() : DWizardPage(tr(""))
+SelectScenes::SelectScenes() : KWizardPage(tr(""))
 {
-	m_selector = new DItemSelector;
+	m_selector = new KItemSelector;
 	
 	connect(m_selector, SIGNAL(changed()), this, SLOT(updateState()));
 	
@@ -268,7 +270,7 @@ void SelectScenes::updateState()
 	emit completed();
 }
 
-class ExportTo : public DWizardPage
+class ExportTo : public KWizardPage
 {
 	Q_OBJECT;
 	public:
@@ -306,10 +308,10 @@ class ExportTo : public DWizardPage
 		QLineEdit *m_filePath;
 		QSpinBox *m_fps;
 		
-		DXYSpinBox *m_size;
+		KXYSpinBox *m_size;
 };
 
-ExportTo::ExportTo(const KTProject *project) : DWizardPage(tr("")), m_currentExporter(0), m_currentFormat(KTExportInterface::NONE), m_project(project)
+ExportTo::ExportTo(const KTProject *project) : KWizardPage(tr("")), m_currentExporter(0), m_currentFormat(KTExportInterface::NONE), m_project(project)
 {
 	QWidget *container = new QWidget;
 	QVBoxLayout *layout = new QVBoxLayout(container);
@@ -497,7 +499,7 @@ void ExportTo::chooseFile()
 
 void ExportTo::exportIt()
 {
-	D_FUNCINFO;
+	K_FUNCINFO;
 	
 	if( m_currentExporter && m_currentFormat != KTExportInterface::NONE )
 	{
@@ -536,7 +538,7 @@ QList<KTScene *> ExportTo::scenesToExport() const
 
 KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : DWizard(parent), m_project(project)
 {
-	DINIT;
+	KINIT;
 	setWindowTitle(tr("Export"));
 	setWindowIcon(QIcon(THEME_DIR+"/icons/export.png"));
 	
@@ -560,7 +562,7 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : DWiz
 
 KTExportWidget::~KTExportWidget()
 {
-	DEND;
+	KEND;
 	qDeleteAll(m_plugins);
 }
 
@@ -583,7 +585,7 @@ void KTExportWidget::loadPlugins()
 				m_plugins.insert(exporter->key(), exporter);
 			}
 			else
-				dError() << "Can't load: " << fileName;
+				kError() << "Can't load: " << fileName;
 		}
 	}
 }

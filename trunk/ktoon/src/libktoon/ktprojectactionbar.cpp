@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -44,9 +46,9 @@ struct KTProjectActionBar::Private
 	bool isAnimated;
 };
 
-KTProjectActionBar::KTProjectActionBar(Actions actions, Qt::Orientation orientation, QWidget *parent) : QWidget(parent ), d(new Private(orientation) )
+KTProjectActionBar::KTProjectActionBar(Actions actions, Qt::Orientation orientation, QWidget *parent) : QWidget(parent ), k(new Private(orientation) )
 {
-	connect(&d->actions, SIGNAL(buttonClicked(int)), this, SLOT(emitActionSelected(int)));
+	connect(&k->actions, SIGNAL(buttonClicked(int)), this, SLOT(emitActionSelected(int)));
 	
 	setup(actions);
 	
@@ -61,7 +63,7 @@ KTProjectActionBar::~KTProjectActionBar()
 
 void KTProjectActionBar::setFixedSize(int s)
 {
-	d->fixedSize = s;
+	k->fixedSize = s;
 	
 // 	switch(d->orientation )
 // 	{
@@ -88,19 +90,19 @@ void KTProjectActionBar::setup(Actions actions)
 {
 	QBoxLayout *mainLayout = 0;
 	
-	switch(d->orientation)
+	switch(k->orientation)
 	{
 		case Qt::Vertical:
 		{
 			mainLayout = new QBoxLayout(QBoxLayout::LeftToRight, this);
-			d->buttonLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+			k->buttonLayout = new QBoxLayout(QBoxLayout::TopToBottom);
 
 		}
 		break;
 		case Qt::Horizontal:
 		{
 			mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
-			d->buttonLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+			k->buttonLayout = new QBoxLayout(QBoxLayout::LeftToRight);
 			
 		}
 		break;
@@ -109,198 +111,198 @@ void KTProjectActionBar::setup(Actions actions)
 	mainLayout->setSpacing( 0);
 	mainLayout->setMargin( 1);
 	
-	d->buttonLayout->setSpacing(1  );
-	d->buttonLayout->setMargin( 1);
+	k->buttonLayout->setSpacing(1  );
+	k->buttonLayout->setMargin( 1);
 	
-	d->buttonLayout->addStretch();
+	k->buttonLayout->addStretch();
 	
 	int size = 16;
 	
 	if ( actions & InsertFrame )
 	{
-		DImageButton *button = new DImageButton(QIcon(THEME_DIR+"/icons/add_frame.png" ), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR+"/icons/add_frame.png" ), size);
 		button->setToolTip(tr("Insert frame") );
 		
 		button->setShortcut(QKeySequence(Qt::Key_Plus));
 		
-		d->actions.addButton(button, InsertFrame);
+		k->actions.addButton(button, InsertFrame);
 		
-		d->buttonLayout->addWidget( button );
+		k->buttonLayout->addWidget( button );
 		
-		button->setAnimated(d->isAnimated);
+		button->setAnimated(k->isAnimated);
 	}
 	
 	if ( actions & RemoveFrame )
 	{
-		DImageButton *button = new DImageButton(QIcon(THEME_DIR+"/icons/remove_frame.png"), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR+"/icons/remove_frame.png"), size);
 		button->setToolTip(tr("Remove the frame"));
 		
-		d->actions.addButton(button, RemoveFrame);
+		k->actions.addButton(button, RemoveFrame);
 		
 		button->setShortcut(QKeySequence(Qt::Key_Minus));
 		
-		d->buttonLayout->addWidget( button );
+		k->buttonLayout->addWidget( button );
 		
-		button->setAnimated(d->isAnimated);
+		button->setAnimated(k->isAnimated);
 	}
 	 
 	if ( actions & MoveFrameUp )
 	{
-		DImageButton *button = new DImageButton(QIcon(THEME_DIR+"/icons/move_frame_up.png"), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR+"/icons/move_frame_up.png"), size);
 		button->setToolTip( tr("Move frame up"));
 		
-		d->actions.addButton(button, MoveFrameUp);
+		k->actions.addButton(button, MoveFrameUp);
 		
-		d->buttonLayout->addWidget( button );
+		k->buttonLayout->addWidget( button );
 		
-		button->setAnimated(d->isAnimated);
+		button->setAnimated(k->isAnimated);
 	}
 	
 	if ( actions & MoveFrameDown )
 	{
-		DImageButton *button = new DImageButton(QIcon(THEME_DIR+"/icons/move_frame_down.png"), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR+"/icons/move_frame_down.png"), size);
 		button->setToolTip(tr("Move frame down") );
 		
-		d->actions.addButton( button, MoveFrameDown);
+		k->actions.addButton( button, MoveFrameDown);
 		
-		d->buttonLayout->addWidget( button );
+		k->buttonLayout->addWidget( button );
 		
-		button->setAnimated(d->isAnimated);
+		button->setAnimated(k->isAnimated);
 	}
 	
 	if ( actions & LockFrame )
 	{
-		DImageButton *button = new DImageButton(QIcon(HOME_DIR+"/themes/default/icons/kilit_pic.png"), size);
+		KImageButton *button = new KImageButton(QIcon(HOME_DIR+"/themes/default/icons/kilit_pic.png"), size);
 		button->setToolTip(tr("Lock frame") );
 		
-		d->actions.addButton( button, LockFrame);
+		k->actions.addButton( button, LockFrame);
 		
-		d->buttonLayout->addWidget( button );
-		button->setAnimated(d->isAnimated);
+		k->buttonLayout->addWidget( button );
+		button->setAnimated(k->isAnimated);
 	}
 	
 	if ( actions & InsertLayer )
 	{
-		DImageButton *button = new DImageButton(QIcon(HOME_DIR+"/themes/default/icons/add_layer.png"), size);
+		KImageButton *button = new KImageButton(QIcon(HOME_DIR+"/themes/default/icons/add_layer.png"), size);
 		button->setToolTip(tr("Insert a layer"));
 		
-		d->actions.addButton(button, InsertLayer);
+		k->actions.addButton(button, InsertLayer);
 		
-		d->buttonLayout->addWidget( button );
-		button->setAnimated(d->isAnimated);
+		k->buttonLayout->addWidget( button );
+		button->setAnimated(k->isAnimated);
 	}
 	 
 	if ( actions & RemoveLayer )
 	{
-		DImageButton *button = new DImageButton(QIcon( HOME_DIR+"/themes/default/icons/remove_layer.png"), size);
+		KImageButton *button = new KImageButton(QIcon( HOME_DIR+"/themes/default/icons/remove_layer.png"), size);
 		button->setToolTip(tr("Remove the layer"));
 		
-		d->actions.addButton(button, RemoveLayer);
+		k->actions.addButton(button, RemoveLayer);
 		
-		d->buttonLayout->addWidget( button );
-		button->setAnimated(d->isAnimated);
+		k->buttonLayout->addWidget( button );
+		button->setAnimated(k->isAnimated);
 		
 	}
 	 
 	if ( actions & MoveLayerUp )
 	{
-		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/move_layer_up.png" ), size);
+		KImageButton *button = new KImageButton(QIcon( THEME_DIR+"/icons/move_layer_up.png" ), size);
 		
 		button->setToolTip(tr("Move layer up")  );
 		
-		d->actions.addButton(button, MoveLayerUp);
+		k->actions.addButton(button, MoveLayerUp);
 		
-		d->buttonLayout->addWidget( button );
+		k->buttonLayout->addWidget( button );
 		button->setAnimated(true);
 	}
 	 
 	if ( actions & MoveLayerDown )
 	{
-		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/move_layer_down.png" ), size);
+		KImageButton *button = new KImageButton(QIcon( THEME_DIR+"/icons/move_layer_down.png" ), size);
 		
 		button->setToolTip( tr("Move layer down"));
 		
-		d->actions.addButton(button, MoveLayerDown);
+		k->actions.addButton(button, MoveLayerDown);
 		
-		d->buttonLayout->addWidget( button );
-		button->setAnimated(d->isAnimated);
+		k->buttonLayout->addWidget( button );
+		button->setAnimated(k->isAnimated);
 	}
 	
 	if ( actions & LockLayer )
 	{
-		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/move_layer_down.png" ), 22);
+		KImageButton *button = new KImageButton(QIcon( THEME_DIR+"/icons/move_layer_down.png" ), 22);
 		button->setToolTip(tr("Lock layer") );
 		
-		d->actions.addButton( button, LockLayer );
+		k->actions.addButton( button, LockLayer );
 		
-		d->buttonLayout->addWidget( button );
-		button->setAnimated(d->isAnimated);
+		k->buttonLayout->addWidget( button );
+		button->setAnimated(k->isAnimated);
 	}
 	
 	if ( actions & InsertScene )
 	{
-		DImageButton *button = new DImageButton(QIcon( HOME_DIR+"/themes/default/icons/add_scene.png"), size);  // TODO
+		KImageButton *button = new KImageButton(QIcon( HOME_DIR+"/themes/default/icons/add_scene.png"), size);  // TODO
 		
 		button->setToolTip(tr("Insert a scene"));
 		
-		d->actions.addButton(button, InsertScene);
+		k->actions.addButton(button, InsertScene);
 		
-		d->buttonLayout->addWidget( button );
-		button->setAnimated(d->isAnimated);
+		k->buttonLayout->addWidget( button );
+		button->setAnimated(k->isAnimated);
 	}
 	 
 	if ( actions & RemoveScene )
 	{
-		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/remove_scene.png" ), size);  // TODO
+		KImageButton *button = new KImageButton(QIcon( THEME_DIR+"/icons/remove_scene.png" ), size);  // TODO
 		
 		button->setToolTip(tr("Remove the scene"));
-		d->actions.addButton(button, RemoveScene);
+		k->actions.addButton(button, RemoveScene);
 		
-		d->buttonLayout->addWidget( button );
-		button->setAnimated(d->isAnimated);
+		k->buttonLayout->addWidget( button );
+		button->setAnimated(k->isAnimated);
 	}
 	 
 	if ( actions & MoveSceneUp )
 	{
-		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/move_scene_up.png" ), size);
+		KImageButton *button = new KImageButton(QIcon( THEME_DIR+"/icons/move_scene_up.png" ), size);
 		
 		button->setToolTip(tr("Move scene up")  );
 		
-		d->actions.addButton(button, MoveSceneUp);
+		k->actions.addButton(button, MoveSceneUp);
 		
-		d->buttonLayout->addWidget( button );
-		button->setAnimated(d->isAnimated);
+		k->buttonLayout->addWidget( button );
+		button->setAnimated(k->isAnimated);
 	}
 	 
 	if ( actions & MoveSceneDown )
 	{
-		DImageButton *button = new DImageButton(QIcon(THEME_DIR+"/icons/move_scene_down.png" ), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR+"/icons/move_scene_down.png" ), size);
 		
 		button->setToolTip( tr("Move scene down"));
 		
-		d->actions.addButton(button, MoveSceneDown);
+		k->actions.addButton(button, MoveSceneDown);
 		
-		d->buttonLayout->addWidget( button );
-		button->setAnimated(d->isAnimated);
+		k->buttonLayout->addWidget( button );
+		button->setAnimated(k->isAnimated);
 	}
 	
 	if ( actions & LockScene )
 	{
-		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/lock_scene.png"), size);
+		KImageButton *button = new KImageButton(QIcon( THEME_DIR+"/icons/lock_scene.png"), size);
 		button->setToolTip(tr("Lock scene") );
 		
-		d->actions.addButton( button, LockScene );
+		k->actions.addButton( button, LockScene );
 		
-		d->buttonLayout->addWidget( button );
-		button->setAnimated(d->isAnimated);
+		k->buttonLayout->addWidget( button );
+		button->setAnimated(k->isAnimated);
 	}
 	
-	d->buttonLayout->addStretch();
+	k->buttonLayout->addStretch();
 	
-	mainLayout->addWidget( new DSeparator(Qt::Horizontal));
+	mainLayout->addWidget( new KSeparator(Qt::Horizontal));
 	
-	mainLayout->addLayout( d->buttonLayout );
-	mainLayout->addWidget( new DSeparator(Qt::Horizontal));
+	mainLayout->addLayout( k->buttonLayout );
+	mainLayout->addWidget( new KSeparator(Qt::Horizontal));
 	
 }
 
@@ -309,7 +311,7 @@ void KTProjectActionBar::insertSeparator(int position)
 {
 	Qt::Orientation sepOrientation = Qt::Vertical;
 	
-	switch(d->orientation)
+	switch(k->orientation)
 	{
 		case Qt::Vertical:
 		{
@@ -323,13 +325,13 @@ void KTProjectActionBar::insertSeparator(int position)
 		break;
 	}
 	
-	d->buttonLayout->insertWidget(position+1, new DSeparator(sepOrientation), 1, Qt::AlignCenter);
+	k->buttonLayout->insertWidget(position+1, new KSeparator(sepOrientation), 1, Qt::AlignCenter);
 }
 
 
-DImageButton *KTProjectActionBar::button(Action action)
+KImageButton *KTProjectActionBar::button(Action action)
 {
-	return qobject_cast<DImageButton *>(d->actions.button(action));
+	return qobject_cast<KImageButton *>(k->actions.button(action));
 }
 
 void KTProjectActionBar::emitActionSelected(int action)
@@ -338,46 +340,46 @@ void KTProjectActionBar::emitActionSelected(int action)
 	{
 		case RemoveFrame:
 		{
-			bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAskFrame", false));
+			bool noAsk = qvariant_cast<bool>(KCONFIG->value("RemoveWithoutAskFrame", false));
 			if ( ! noAsk )
 			{
-				DOptionalDialog dialog(tr("Do you want to remove this frame?"), tr("Remove?"), this);
+				KOptionalDialog dialog(tr("Do you want to remove this frame?"), tr("Remove?"), this);
 				if( dialog.exec() == QDialog::Rejected )
 				{
 					return;
 				}
-				DCONFIG->setValue("RemoveWithoutAskFrame", dialog.shownAgain());
-				DCONFIG->sync();
+				KCONFIG->setValue("RemoveWithoutAskFrame", dialog.shownAgain());
+				KCONFIG->sync();
 			}
 		}
 		break;
 		case RemoveLayer:
 		{
-			bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAskLayer", false));
+			bool noAsk = qvariant_cast<bool>(KCONFIG->value("RemoveWithoutAskLayer", false));
 			if ( ! noAsk )
 			{
-				DOptionalDialog dialog(tr("Do you want to remove this layer?"), tr("Remove?"), this);
+				KOptionalDialog dialog(tr("Do you want to remove this layer?"), tr("Remove?"), this);
 				if( dialog.exec() == QDialog::Rejected )
 				{
 					return;
 				}
-				DCONFIG->setValue("RemoveWithoutAskLayer", dialog.shownAgain());
-				DCONFIG->sync();
+				KCONFIG->setValue("RemoveWithoutAskLayer", dialog.shownAgain());
+				KCONFIG->sync();
 			}
 		}
 		break;
 		case RemoveScene:
 		{
-			bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAskScene", false));
+			bool noAsk = qvariant_cast<bool>(KCONFIG->value("RemoveWithoutAskScene", false));
 			if ( ! noAsk )
 			{
-				DOptionalDialog dialog(tr("Do you want to remove this scene?"), tr("Remove?"), this);
+				KOptionalDialog dialog(tr("Do you want to remove this scene?"), tr("Remove?"), this);
 				if( dialog.exec() == QDialog::Rejected )
 				{
 					return;
 				}
-				DCONFIG->setValue("RemoveWithoutAskScene", dialog.shownAgain());
-				DCONFIG->sync();
+				KCONFIG->setValue("RemoveWithoutAskScene", dialog.shownAgain());
+				KCONFIG->sync();
 			}
 		}
 		break;

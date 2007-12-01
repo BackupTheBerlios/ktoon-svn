@@ -308,16 +308,15 @@ QDomElement KTProject::toXml(QDomDocument &doc) const
 	ktoon.setAttribute("version", "1");
 	
 	QDomElement project = doc.createElement("project");
-	project.setAttribute("name", d->name);
-	
+	project.setAttribute("name", k->name);
 	
 	QDomElement meta = doc.createElement("meta");
 	
 	QDomElement author = doc.createElement("author");
-	author.appendChild(doc.createTextNode(d->author));
+	author.appendChild(doc.createTextNode(k->author));
 	
 	QDomElement description = doc.createElement("description");
-	description.appendChild(doc.createTextNode(d->description));
+	description.appendChild(doc.createTextNode(k->description));
 	
 	
 	meta.appendChild(author);
@@ -419,7 +418,7 @@ bool KTProject::isOpen()
 
 bool KTProject::deleteDataDir()
 {
-	if(QFile::exists( dataDir() ) && !d->name.isEmpty() )
+	if(QFile::exists( dataDir() ) && !k->name.isEmpty() )
 	{
 		QDir dir(dataDir() );
 		

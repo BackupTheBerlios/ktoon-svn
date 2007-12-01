@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -37,47 +39,47 @@
 
 #include "ktlibrary.h"
 
-#define RETURN_IF_NOT_LIBRARY if( !d->library ) return;
+#define RETURN_IF_NOT_LIBRARY if( !k->library ) return;
 
 struct KTTimeLine::Private
 {
 	Private() : container(0), actionBar(0), library(0) {}
 	
-	DTabWidget *container;
+	KTabWidget *container;
 	KTProjectActionBar *actionBar;
 	
 	const KTLibrary *library;
 };
 
-KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine"), d(new Private)
+KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine"), k(new Private)
 {
-	DINIT;
+	KINIT;
 	
 	setWindowTitle(tr("&Time Line"));
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/time_line.png"));
 	
-	d->actionBar = new KTProjectActionBar(KTProjectActionBar::AllActions );
+	k->actionBar = new KTProjectActionBar(KTProjectActionBar::AllActions );
 	
-	d->actionBar->insertSeparator( 4 );
-	d->actionBar->insertSeparator( 9 );
+	k->actionBar->insertSeparator( 4 );
+	k->actionBar->insertSeparator( 9 );
 	
-	addChild( d->actionBar, Qt::AlignCenter );
+	addChild( k->actionBar, Qt::AlignCenter );
 	
-	d->container = new DTabWidget(this);
-	addChild(d->container);
+	k->container = new KTabWidget(this);
+	addChild(k->container);
 	
-	connect(d->actionBar, SIGNAL(actionSelected( int )), this, SLOT(requestCommand(int)));
+	connect(k->actionBar, SIGNAL(actionSelected( int )), this, SLOT(requestCommand(int)));
 }
 
 KTTimeLine::~KTTimeLine()
 {
-	DEND;
-	delete d;
+	KEND;
+	delete k;
 }
 
 KTLayerManager *KTTimeLine::layerManager(int sceneIndex)
 {
-	QSplitter *splitter = qobject_cast<QSplitter *>(d->container->widget(sceneIndex));
+	QSplitter *splitter = qobject_cast<QSplitter *>(k->container->widget(sceneIndex));
 	if ( splitter )
 	{
 		return qobject_cast<KTLayerManager *>(splitter->widget(0));
@@ -88,7 +90,7 @@ KTLayerManager *KTTimeLine::layerManager(int sceneIndex)
 
 KTFramesTable *KTTimeLine::framesTable(int sceneIndex)
 {
-	QSplitter *splitter = qobject_cast<QSplitter *>(d->container->widget(sceneIndex));
+	QSplitter *splitter = qobject_cast<QSplitter *>(k->container->widget(sceneIndex));
 	
 	if ( splitter )
 	{
@@ -100,12 +102,12 @@ KTFramesTable *KTTimeLine::framesTable(int sceneIndex)
 
 void KTTimeLine::insertScene(int position, const QString &name)
 {
-	if ( position < 0 || position > d->container->count() )
+	if ( position < 0 || position > k->container->count() )
 	{
 		return;
 	}
 	
-	QSplitter *splitter = new QSplitter( d->container );
+	QSplitter *splitter = new QSplitter( k->container );
 	
 	KTLayerManager *layerManager = new KTLayerManager( splitter );
 	
@@ -126,16 +128,16 @@ void KTTimeLine::insertScene(int position, const QString &name)
 	
 	connect(layerManager, SIGNAL(requestRenameEvent( int, const QString& )), this, SLOT(emitRequestRenameLayer(int, const QString &))); // FIXME
 	
-	d->container->insertTab(position, splitter, name );
+	k->container->insertTab(position, splitter, name );
 }
 
 void KTTimeLine::removeScene(int position)
 {
-	if ( position >= 0 && position < d->container->count() )
+	if ( position >= 0 && position < k->container->count() )
 	{
-		QWidget *w = d->container->widget(position);
+		QWidget *w = k->container->widget(position);
 // 		d->container->removeWidget(w);
-		d->container->removeTab(position);
+		k->container->removeTab(position);
 		
 		delete w;
 	}
@@ -143,20 +145,20 @@ void KTTimeLine::removeScene(int position)
 
 void KTTimeLine::closeAllScenes()
 {
-	while(d->container->currentWidget())
+	while(k->container->currentWidget())
 	{
-		delete d->container->currentWidget();
+		delete k->container->currentWidget();
 	}
 }
 
 void KTTimeLine::setLibrary(const KTLibrary *library)
 {
-	d->library = library;
+	k->library = library;
 }
 
 void KTTimeLine::sceneResponse(KTSceneResponse *response)
 {
-	D_FUNCINFOX("timeline");
+	K_FUNCINFOX("timeline");
 	switch(response->action())
 	{
 		case KTProjectRequest::Add:
@@ -311,7 +313,7 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
 
 void KTTimeLine::libraryResponse(KTLibraryResponse *response)
 {
-	D_FUNCINFOX("timeline") << response->symbolType();
+	K_FUNCINFOX("timeline") << response->symbolType();
 	
 	if(response->action() == KTProjectRequest::AddSymbolToProject )
 	{
@@ -340,7 +342,7 @@ void KTTimeLine::libraryResponse(KTLibraryResponse *response)
 
 void KTTimeLine::requestCommand(int action)
 {
-	int scenePos = d->container->currentIndex();
+	int scenePos = k->container->currentIndex();
 	int layerPos = -1;
 	int framePos = -1;
 	
@@ -357,7 +359,7 @@ void KTTimeLine::requestCommand(int action)
 		{
 			if ( !requestSceneAction(action, scenePos) )
 			{
-				dFatal("timeline") << "Can't handle action";
+				kFatal("timeline") << "Can't handle action";
 			}
 		}
 	}
@@ -368,7 +370,7 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
 {
 	if ( scenePos < 0 )
 	{
-		scenePos = d->container->currentIndex();
+		scenePos = k->container->currentIndex();
 	}
 	
 	if ( scenePos >= 0 )
@@ -436,7 +438,7 @@ bool KTTimeLine::requestLayerAction(int action, int layerPos, int scenePos, cons
 {
 	if ( scenePos < 0 )
 	{
-		scenePos = d->container->currentIndex();
+		scenePos = k->container->currentIndex();
 	}
 	
 	if ( scenePos >= 0 )
@@ -487,7 +489,7 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
 {
 	if ( scenePos < 0 )
 	{
-		scenePos = d->container->currentIndex();
+		scenePos = k->container->currentIndex();
 	}
 	
 	switch(action)
@@ -531,12 +533,10 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
 
 void KTTimeLine::emitRequestRenameLayer(int layer, const QString &name)
 {
-	D_FUNCINFO << name;
-	int scenePos = d->container->currentIndex();
+	K_FUNCINFO << name;
+	int scenePos = k->container->currentIndex();
 	
 	KTProjectRequest event = KTRequestBuilder::createLayerRequest( scenePos, layer, KTProjectRequest::Rename, name );
 	
 	emit requestTriggered( &event );
 }
-
-

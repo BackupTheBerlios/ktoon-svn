@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,7 +29,7 @@
 
 KTImageDevice::KTImageDevice(QWidget *parent) : QWidget(parent)
 {
-	DINIT;
+	KINIT;
 	
 	m_image = QImage(300,300, QImage::Format_RGB32);
 	m_image.fill(Qt::white);
@@ -41,7 +43,7 @@ KTImageDevice::KTImageDevice(QWidget *parent) : QWidget(parent)
 
 KTImageDevice::~KTImageDevice()
 {
-	DEND;
+	KEND;
 }
 
 QPaintEngine *KTImageDevice::paintEngine() const
@@ -59,13 +61,4 @@ void KTImageDevice::paintEvent(QPaintEvent *)
 	QPainter p(this);
 	p.drawImage(0, 0, m_image);
 }
-
-
-
-
-
-
-
-
-
 

@@ -1,19 +1,21 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
- *   m_project program is free software; you can redistribute it and/or modify  *
+ *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
- *   m_project program is distributed in the hope that it will be useful,       *
+ *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with m_project program; if not, write to the                         *
+ *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
@@ -46,7 +48,7 @@
 
 bool KTCommandExecutor::createItem(KTItemResponse *response)
 {
-	D_FUNCINFOX("items");
+	K_FUNCINFOX("items");
 	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
@@ -78,19 +80,19 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
 			}
 			else
 			{
-				dError() << tr("Frame doesn't exists!");
+				kError() << tr("Frame doesn't exists!");
 				return false;
 			}
 		}
 		else
 		{
-			dError() << tr("Layer doesn't exists!");
+			kError() << tr("Layer doesn't exists!");
 			return false;
 		}
 	}
 	else
 	{
-		dError() << tr("Scene doesn't exists!");
+		kError() << tr("Scene doesn't exists!");
 		return false;
 	}
 	
@@ -141,7 +143,7 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
 
 bool KTCommandExecutor::moveItem(KTItemResponse *response)
 {
-	D_FUNCINFOX("items");
+	K_FUNCINFOX("items");
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -179,7 +181,7 @@ bool KTCommandExecutor::moveItem(KTItemResponse *response)
 
 bool KTCommandExecutor::groupItems(KTItemResponse *response)
 {
-	D_FUNCINFOX("items");
+	K_FUNCINFOX("items");
 // 	response->setAction(KTProjectRequest::Group);
 	
 	int scenePosition = response->sceneIndex();
@@ -212,7 +214,7 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
 
 bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 {
-	D_FUNCINFOX("items");
+	K_FUNCINFOX("items");
 	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
@@ -290,7 +292,7 @@ static QGraphicsItem * convert(QGraphicsItem *item, int toType)
 		break;
 		default:
 		{
-			dWarning() << "unknown item " << toType ;
+			kWarning() << "unknown item " << toType ;
 		}
 		break;
 	}
@@ -299,7 +301,7 @@ static QGraphicsItem * convert(QGraphicsItem *item, int toType)
 
 bool KTCommandExecutor::convertItem(KTItemResponse *response)
 {
-	D_FUNCINFOX("items");
+	K_FUNCINFOX("items");
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -318,7 +320,7 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 				QGraphicsItem *item = frame->item(position);
 				if ( item )
 				{
-					dDebug("items") << item->type();
+					kDebug("items") << item->type();
 					
 					if ( toType == item->type() ) return false;
 					
@@ -344,7 +346,7 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 
 bool KTCommandExecutor::transformItem(KTItemResponse *response)
 {
-	D_FUNCINFOX("items");
+	K_FUNCINFOX("items");
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -388,7 +390,7 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
 
 bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 {
-	D_FUNCINFOX("items");
+	K_FUNCINFOX("items");
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -437,7 +439,7 @@ bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 
 bool KTCommandExecutor::createTweening(KTItemResponse *response)
 {
-	D_FUNCINFOX("items");
+	K_FUNCINFOX("items");
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();

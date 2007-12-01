@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,7 +19,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
 
 #ifndef KTPROJECTREQUEST_H
 #define KTPROJECTREQUEST_H
@@ -63,7 +64,7 @@ class STORE_EXPORT KTProjectRequest
 		{
 			None = 0,
 			/**
-			 * Añade una parte, el tipo de data es nulo
+			 * Aï¿½ade una parte, el tipo de data es nulo
 			 */
 			Add = 1,
 			/**
@@ -71,7 +72,7 @@ class STORE_EXPORT KTProjectRequest
 			 */
 			Remove = -Add,
 			/**
-			 * Mueve una parte, el tipo de data es un entero que significa la nueva posición
+			 * Mueve una parte, el tipo de data es un entero que significa la nueva posiciï¿½n
 			 */
 			Move = 2,
 			/**
@@ -136,7 +137,7 @@ class STORE_EXPORT KTProjectRequest
 
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 

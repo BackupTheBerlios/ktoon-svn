@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -39,14 +41,14 @@ struct KTLibraryObject::Private
 	QString symbolName;
 };
 
-KTLibraryObject::KTLibraryObject(QObject *parent) : QObject(parent), d(new Private)
+KTLibraryObject::KTLibraryObject(QObject *parent) : QObject(parent), k(new Private)
 {
 }
 
 
 KTLibraryObject::~KTLibraryObject()
 {
-	delete d;
+	delete k;
 }
 
 /**
@@ -55,39 +57,39 @@ KTLibraryObject::~KTLibraryObject()
  */
 void KTLibraryObject::setData(const QVariant &data)
 {
-	d->data = data;
+	k->data = data;
 }
 
 QVariant KTLibraryObject::data() const
 {
-	return d->data;
+	return k->data;
 }
 
 QString KTLibraryObject::dataPath() const
 {
-	return d->dataPath;
+	return k->dataPath;
 }
 
 void KTLibraryObject::setType(int type)
 {
-	d->type = type;
+	k->type = type;
 }
 
 int KTLibraryObject::type() const
 {
-	return d->type;
+	return k->type;
 }
 
 
 void KTLibraryObject::setSymbolName(const QString &name)
 {
-	d->symbolName = name;
-	d->symbolName.replace(QDir::separator(), "-");
+	k->symbolName = name;
+	k->symbolName.replace(QDir::separator(), "-");
 }
 
 QString KTLibraryObject::symbolName() const
 {
-	return d->symbolName;
+	return k->symbolName;
 }
 
 void KTLibraryObject::fromXml(const QString &xml )
@@ -105,11 +107,11 @@ void KTLibraryObject::fromXml(const QString &xml )
 	{
 		setSymbolName(objectTag.attribute("id"));
 		
-		if( d->symbolName.isEmpty() ) return;
+		if( k->symbolName.isEmpty() ) return;
 		
-		d->type = objectTag.attribute("type").toInt();
+		k->type = objectTag.attribute("type").toInt();
 		
-		d->dataPath = objectTag.attribute("path");
+		k->dataPath = objectTag.attribute("path");
 		
 		QDomElement objectData = objectTag.firstChild().toElement();
 		if( !objectTag.isNull())
@@ -128,17 +130,17 @@ void KTLibraryObject::fromXml(const QString &xml )
 QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
 {
 	QDomElement object = doc.createElement("object");
-	object.setAttribute("id", d->symbolName);
-	object.setAttribute("type", d->type);
+	object.setAttribute("id", k->symbolName);
+	object.setAttribute("type", k->type);
 	
-	QFileInfo finfo(d->dataPath);
+	QFileInfo finfo(k->dataPath);
 	
-	switch(d->type)
+	switch(k->type)
 	{
 		case Text:
 		case Item:
 		{
-			QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(d->data);
+			QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(k->data);
 			
 			if( item )
 			{
@@ -151,7 +153,7 @@ QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
 		break;
 		case Svg:
 		{
-			QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(d->data);
+			QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(k->data);
 			
 			if( item )
 			{
@@ -166,7 +168,7 @@ QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
 		break;
 		case Image:
 		{
-			QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(d->data);
+			QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(k->data);
 			
 			if( item )
 			{
@@ -194,7 +196,7 @@ bool KTLibraryObject::loadData(const QByteArray &data)
 	if( data.isEmpty() ) return false;
 	
 	bool ok = true;
-	switch(d->type)
+	switch(k->type)
 	{
 		case KTLibraryObject::Item:
 		{
@@ -254,13 +256,13 @@ bool KTLibraryObject::loadData(const QByteArray &data)
 
 bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
 {
-	switch(d->type)
+	switch(k->type)
 	{
 		case KTLibraryObject::Image:
 		{
-			d->dataPath = dataDir+"/images/"+d->dataPath;
+			k->dataPath = dataDir+"/images/"+k->dataPath;
 			
-			QFile f(d->dataPath);
+			QFile f(k->dataPath);
 			
 			if( f.open(QIODevice::ReadOnly) )
 			{
@@ -270,7 +272,7 @@ bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
 		break;
 		case KTLibraryObject::Sound:
 		{
-			d->dataPath = dataDir+"/audio/"+d->dataPath;
+			k->dataPath = dataDir+"/audio/"+k->dataPath;
 		}
 		break;
 		case KTLibraryObject::Svg:
@@ -285,7 +287,7 @@ bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
 
 void KTLibraryObject::saveData(const QString &dataDir)
 {
-	switch( d->type )
+	switch( k->type )
 	{
 		case KTLibraryObject::Sound:
 		{
@@ -297,11 +299,11 @@ void KTLibraryObject::saveData(const QString &dataDir)
 				dir.mkpath(saved);
 			}
 			
-			QFile::copy(QString(d->data.toString()), saved+d->symbolName);
-			QFile::remove(QString(d->data.toString()));
+			QFile::copy(QString(k->data.toString()), saved + k->symbolName);
+			QFile::remove(QString(k->data.toString()));
 			
-			d->dataPath = saved+d->symbolName;
-			d->data = "";
+			k->dataPath = saved + k->symbolName;
+			k->data = "";
 		}
 		break;
 		case KTLibraryObject::Svg:
@@ -318,13 +320,11 @@ void KTLibraryObject::saveData(const QString &dataDir)
 				dir.mkpath(dest);
 			}
 			
-			qgraphicsitem_cast<KTPixmapItem *>(qvariant_cast<QGraphicsItem *>(d->data))->pixmap().save(dest+d->symbolName, "PNG");
+			qgraphicsitem_cast<KTPixmapItem *>(qvariant_cast<QGraphicsItem *>(k->data))->pixmap().save(dest + k->symbolName, "PNG");
 			
-			d->dataPath = dest+d->symbolName;
+			k->dataPath = dest + k->symbolName;
 		}
 		break;
 		default: break;
 	}
 }
-
-

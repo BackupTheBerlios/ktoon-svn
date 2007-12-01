@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@toonka.com   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -37,19 +39,19 @@ struct KTPaletteParser::Private
 		}
 };
 
-KTPaletteParser::KTPaletteParser(): DXmlParserBase(), d(new Private)
+KTPaletteParser::KTPaletteParser(): DXmlParserBase(), k(new Private)
 {
-// 	DINIT;
-	 d->paletteName = "";
-	 d->isEditable = false;
-	 d->gradient = 0;
+// 	KINIT;
+	 k->paletteName = "";
+	 k->isEditable = false;
+	 k->gradient = 0;
 }
 
 
 KTPaletteParser::~KTPaletteParser()
 {
-	delete d;
-// 	DEND;
+	delete k;
+// 	KEND;
 }
 
 
@@ -59,14 +61,14 @@ bool KTPaletteParser::startTag(const QString &tag, const QXmlAttributes &atts)
 	{
 		if(tag == root())
 		{
-			d->paletteName = atts.value("name");
+			k->paletteName = atts.value("name");
 			if ( atts.value("editable") == "true" )
 			{
-				d->isEditable = true;
+				k->isEditable = true;
 			}
 			else
 			{
-				d->isEditable = false;
+				k->isEditable = false;
 			}
 		}
 		else if( tag == "Color")
@@ -76,19 +78,19 @@ bool KTPaletteParser::startTag(const QString &tag, const QXmlAttributes &atts)
 			
 			if ( c.isValid() )
 			{
-				d->brushes << c;
+				k->brushes << c;
 			}
 			else
 			{
-				dError() << "Invalid Color";
+				kError() << "Invalid Color";
 			}
 		}
 		else if(tag == "Gradient" )
 		{
-			if ( d->gradient ) delete d->gradient;
-			d->gradient = 0;
+			if ( k->gradient ) delete k->gradient;
+			k->gradient = 0;
 			
-			d->gradientStops.clear();
+			k->gradientStops.clear();
 			
 			QGradient::Type type = QGradient::Type(atts.value("type").toInt());
 			QGradient::Spread spread = QGradient::Spread(atts.value("spread").toInt());
@@ -96,34 +98,34 @@ bool KTPaletteParser::startTag(const QString &tag, const QXmlAttributes &atts)
 			{
 				case QGradient::LinearGradient:
 				{
-					d->gradient = new QLinearGradient(atts.value("startX").toDouble(),atts.value("startY").toDouble(),atts.value("finalX").toDouble(), atts.value("finalY").toDouble());
+					k->gradient = new QLinearGradient(atts.value("startX").toDouble(),atts.value("startY").toDouble(),atts.value("finalX").toDouble(), atts.value("finalY").toDouble());
 				}
 				break;
 				case QGradient::RadialGradient:
 				{
-					d->gradient = new QRadialGradient(atts.value("centerX").toDouble(),atts.value("centerY").toDouble(), atts.value("radius").toDouble(),atts.value("focalX").toDouble(),atts.value("focalY").toDouble() );
+					k->gradient = new QRadialGradient(atts.value("centerX").toDouble(),atts.value("centerY").toDouble(), atts.value("radius").toDouble(),atts.value("focalX").toDouble(),atts.value("focalY").toDouble() );
 				}
 				break;
 				case QGradient::ConicalGradient:
 				{
-					d->gradient = new QConicalGradient(atts.value("centerX").toDouble(),atts.value("centerY").toDouble(),atts.value("angle").toDouble());
+					k->gradient = new QConicalGradient(atts.value("centerX").toDouble(),atts.value("centerY").toDouble(),atts.value("angle").toDouble());
 				}
 				break;
 				default:
 				{
-					dFatal() << "No gradient type: " << type;
+					kFatal() << "No gradient type: " << type;
 				}
 				break;
 				
 			}
-			d->gradient->setSpread(spread);
+			k->gradient->setSpread(spread);
 		}
 		else if(tag == "Stop" )
 		{
 			QColor c(atts.value("colorName") );
 			c.setAlpha(atts.value("alpha").toInt() );
 			
-			d->gradientStops << qMakePair(atts.value("value").toDouble(), c);	
+			k->gradientStops << qMakePair(atts.value("value").toDouble(), c);	
 		}
 	}
 	return true;
@@ -133,11 +135,11 @@ bool KTPaletteParser::endTag(const QString& tag)
 {
 	if ( root() == "Palette" )
 	{
-		if ( tag == "Gradient" && d->gradient )
+		if ( tag == "Gradient" && k->gradient )
 		{
-			d->gradient->setStops(d->gradientStops);
-			d->brushes << *d->gradient;
-			d->gradientStops.clear(); 
+			k->gradient->setStops(k->gradientStops);
+			k->brushes << *k->gradient;
+			k->gradientStops.clear(); 
 		}
 	}
 	return true;
@@ -150,16 +152,16 @@ void KTPaletteParser::text(const QString& )
 
 QList<QBrush> KTPaletteParser::brushes() const
 {
-	return d->brushes;
+	return k->brushes;
 }
 
 QString KTPaletteParser::paletteName() const
 {
-	return d->paletteName;
+	return k->paletteName;
 }
 
 bool KTPaletteParser::paletteIsEditable() const
 {
-	return d->isEditable;
+	return k->isEditable;
 }
 

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -34,25 +36,25 @@ struct KTGraphicLibraryItem::Private
 	QList<QGraphicsItem *> items;
 };
 
-KTGraphicLibraryItem::KTGraphicLibraryItem() : KTProxyItem(), d(new Private)
+KTGraphicLibraryItem::KTGraphicLibraryItem() : KTProxyItem(), k(new Private)
 {
 }
 
-KTGraphicLibraryItem::KTGraphicLibraryItem(KTLibraryObject *object) : KTProxyItem(), d(new Private)
+KTGraphicLibraryItem::KTGraphicLibraryItem(KTLibraryObject *object) : KTProxyItem(), k(new Private)
 {
 	setObject(object);
 }
 
 KTGraphicLibraryItem::~KTGraphicLibraryItem()
 {
-	qDeleteAll(d->items);
-	delete d;
+	qDeleteAll(k->items);
+	delete k;
 }
 
 QDomElement KTGraphicLibraryItem::toXml(QDomDocument &doc) const
 {
 	QDomElement library = doc.createElement("symbol");
-	library.setAttribute("id", d->symbolName);
+	library.setAttribute("id", k->symbolName);
 	library.appendChild( KTSerializer::properties( this, doc));
 	
 	return library;
@@ -66,13 +68,13 @@ void KTGraphicLibraryItem::setObject(KTLibraryObject *object)
 {
 	if( !object)
 	{
-		dWarning("library") << "Setting null library object";
+		kWarning("library") << "Setting null library object";
 		return;
 	}
 	
-	D_FUNCINFOX("library") << object->symbolName();
+	K_FUNCINFOX("library") << object->symbolName();
 	
-	d->symbolName = object->symbolName();
+	k->symbolName = object->symbolName();
 	switch(object->type())
 	{
 		case KTLibraryObject::Item:
@@ -89,12 +91,12 @@ void KTGraphicLibraryItem::setObject(KTLibraryObject *object)
 
 void KTGraphicLibraryItem::setSymbolName(const QString &name)
 {
-	d->symbolName = name;
+	k->symbolName = name;
 }
 
 QString KTGraphicLibraryItem::symbolName() const
 {
-	return d->symbolName;
+	return k->symbolName;
 }
 
 

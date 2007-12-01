@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,7 +28,7 @@
 #include <QButtonGroup>
 #include "ktglobal.h"
 
-class DImageButton;
+class KImageButton;
 class QBoxLayout;
 
 /**
@@ -73,7 +75,7 @@ class KTOON_EXPORT KTProjectActionBar : public QWidget
 		
 		void insertSeparator(int position);
 		
-		DImageButton *button(Action action);
+		KImageButton *button(Action action);
 		
 	private slots:
 		void emitActionSelected(int action);
@@ -86,7 +88,7 @@ class KTOON_EXPORT KTProjectActionBar : public QWidget
 		
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(KTProjectActionBar::Actions);

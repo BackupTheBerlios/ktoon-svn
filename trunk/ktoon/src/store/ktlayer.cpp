@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -34,77 +36,77 @@ struct KTLayer::Private
 	bool isLocked;
 };
 
-KTLayer::KTLayer(KTScene *parent) : QObject(parent), d(new Private)
+KTLayer::KTLayer(KTScene *parent) : QObject(parent), k(new Private)
 {
-	d->isVisible = true;
-	d->name = tr("Layer");
-	d->framesCount = 0;
-	d->isLocked = false;
+	k->isVisible = true;
+	k->name = tr("Layer");
+	k->framesCount = 0;
+	k->isLocked = false;
 }
 
 KTLayer::~KTLayer()
 {
-	d->frames.clear(true);
+	k->frames.clear(true);
 	
-	delete d;
+	delete k;
 }
 
 Frames KTLayer::frames()
 {
-	return d->frames;
+	return k->frames;
 }
 
 void KTLayer::setFrames(const Frames &frames)
 {
-	d->frames = frames;
-	d->framesCount = frames.count();
+	k->frames = frames;
+	k->framesCount = frames.count();
 }
 
 void KTLayer::setLayerName(const QString &name)
 {
-	d->name = name;
+	k->name = name;
 }
 
 void KTLayer::setLocked(bool isLocked)
 {
-	d->isLocked = isLocked;
+	k->isLocked = isLocked;
 }
 
 bool KTLayer::isLocked() const
 {
-	return d->isLocked;
+	return k->isLocked;
 }
 
 void KTLayer::setVisible(bool isVisible)
 {
-	d->isVisible = isVisible;
+	k->isVisible = isVisible;
 // 	emit visibilityChanged(isVisible);
 }
 
 QString KTLayer::layerName() const
 {
-	return d->name;
+	return k->name;
 }
 
 bool KTLayer::isVisible() const
 {
-	return d->isVisible;
+	return k->isVisible;
 }
 
 KTFrame *KTLayer::createFrame(int position, bool loaded)
 {
-	if ( position < 0 || position > d->frames.count() )
+	if ( position < 0 || position > k->frames.count() )
 	{
 		return 0;
 	}
 	
 	KTFrame *frame = new KTFrame(this);
 	
-	d->framesCount++;
+	k->framesCount++;
 	
-	frame->setFrameName(tr("Drawing %1").arg(d->framesCount));
+	frame->setFrameName(tr("Drawing %1").arg(k->framesCount));
 	
-	d->frames.insert(position, frame);
+	k->frames.insert(position, frame);
 	
 	if ( loaded )
 	{
@@ -119,7 +121,7 @@ bool KTLayer::removeFrame(int position)
 	KTFrame *toRemove = frame(position);
 	if ( toRemove )
 	{
-		d->frames.removeVisual(position);
+		k->frames.removeVisual(position);
 		toRemove->setRepeat(toRemove->repeat()-1);
 		
 		if(toRemove->repeat() < 1)
@@ -134,12 +136,12 @@ bool KTLayer::removeFrame(int position)
 
 bool KTLayer::moveFrame(int from, int to)
 {
-	if ( from < 0 || from >= d->frames.count() || to < 0 || to >= d->frames.count() )
+	if ( from < 0 || from >= k->frames.count() || to < 0 || to >= k->frames.count() )
 	{
 		return false;
 	}
 	
-	d->frames.moveVisual(from, to);
+	k->frames.moveVisual(from, to);
 	
 	return true;
 }
@@ -147,7 +149,7 @@ bool KTLayer::moveFrame(int from, int to)
 
 bool KTLayer::expandFrame(int position, int size)
 {
-	if ( position < 0 || position >= d->frames.count() )
+	if ( position < 0 || position >= k->frames.count() )
 	{
 		return false;
 	}
@@ -158,8 +160,8 @@ bool KTLayer::expandFrame(int position, int size)
 	{
 		for(int i = 0; i < size; i++)
 		{
-			d->frames.expandValue(position);
-// 		d->frames.insert(position+i+1, toExpand);
+			k->frames.expandValue(position);
+// 		k->frames.insert(position+i+1, toExpand);
 		}
 		toExpand->setRepeat(toExpand->repeat()+size);
 		return true;
@@ -170,13 +172,13 @@ bool KTLayer::expandFrame(int position, int size)
 
 KTFrame *KTLayer::frame(int position) const
 {
-	if ( position < 0 || position >= d->frames.count() )
+	if ( position < 0 || position >= k->frames.count() )
 	{
-		D_FUNCINFO << " FATAL ERROR: index out of bound";
+		K_FUNCINFO << " FATAL ERROR: index out of bound";
 		return 0;
 	}
 	
-	return d->frames.visualValue(position);
+	return k->frames.visualValue(position);
 }
 
 
@@ -203,7 +205,7 @@ void KTLayer::fromXml(const QString &xml )
 		{
 			if ( e.tagName() == "frame" )
 			{
-				KTFrame *frame = createFrame( d->frames.count(), true );
+				KTFrame *frame = createFrame( k->frames.count(), true );
 				
 				if ( frame )
 				{
@@ -226,10 +228,10 @@ void KTLayer::fromXml(const QString &xml )
 QDomElement KTLayer::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("layer");
-	root.setAttribute("name", d->name );
+	root.setAttribute("name", k->name );
 	doc.appendChild(root);
 	
-	foreach(KTFrame *frame, d->frames.visualValues() )
+	foreach(KTFrame *frame, k->frames.visualValues() )
 	{
 		root.appendChild( frame->toXml(doc) );
 	}
@@ -249,12 +251,12 @@ KTProject *KTLayer::project() const
 
 int KTLayer::logicalIndexOf(KTFrame *frame) const
 {
-	return d->frames.logicalIndex(frame);
+	return k->frames.logicalIndex(frame);
 }
 
 int KTLayer::visualIndexOf(KTFrame *frame) const
 {
-	return d->frames.visualIndex(frame);
+	return k->frames.visualIndex(frame);
 }
 
 int KTLayer::logicalIndex() const
@@ -266,6 +268,4 @@ int KTLayer::visualIndex() const
 {
 	return scene()->visualIndexOf(const_cast<KTLayer *>(this));
 }
-
-
 

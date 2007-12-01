@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -83,55 +85,55 @@ struct KTProjectRequest::Private
 	bool isExternal;
 };
 
-KTProjectRequest::KTProjectRequest(const QString &xml) : d(new Private(xml))
+KTProjectRequest::KTProjectRequest(const QString &xml) : k(new Private(xml))
 {
 }
 
 
 KTProjectRequest::~KTProjectRequest()
 {
-	delete d;
+	delete k;
 }
 
 
 void KTProjectRequest::setId(int id)
 {
-	d->id = id;
+	k->id = id;
 }
 
 int KTProjectRequest::id() const
 {
-	return d->id;
+	return k->id;
 }
 
 
 
 bool KTProjectRequest::isValid() const
 {
-	return !d->xml.isEmpty(); // TODO: Verficar que sea XML
+	return !k->xml.isEmpty(); // TODO: Verficar que sea XML
 }
 
 
 QString KTProjectRequest::xml() const
 {
-	return d->xml;
+	return k->xml;
 }
 
 void KTProjectRequest::setExternal(bool b)
 {
-	d->isExternal = b;
+	k->isExternal = b;
 }
 
 bool KTProjectRequest::isExternal() const
 {
-	return d->isExternal;
+	return k->isExternal;
 }
 
 KTProjectRequest &KTProjectRequest::operator=(const KTProjectRequest &other)
 {
-	d->xml = other.d->xml;
-	d->id = other.d->id;
-	d->isExternal = other.d->isExternal;
+	k->xml = other.k->xml;
+	k->id = other.k->id;
+	k->isExternal = other.k->isExternal;
 	
 	return *this;
 }

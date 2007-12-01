@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrox@toonka.com>             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,7 +32,7 @@
 
 
 	
-// DGradientArrow::DGradientArrow(QPoint pos, const QColor& color): QObject(), m_color(color)
+// KGradientArrow::KGradientArrow(QPoint pos, const QColor& color): QObject(), m_color(color)
 // {
 // 	QPolygon array(6);
 // // 	if ( orientation() == Qt::Vertical )
@@ -53,27 +55,27 @@
 // 		m_form.addPolygon(array);
 // }
 // 
-// DGradientArrow::~DGradientArrow()
+// KGradientArrow::~KGradientArrow()
 // {
-// 	DEND;
+// 	KEND;
 // }
 // 
-// double DGradientArrow::position()
+// double KGradientArrow::position()
 // {
 // 	return m_form.currentPosition().x();
 // }
 // 
-// bool DGradientArrow::contains ( const QPoint & pt )
+// bool KGradientArrow::contains ( const QPoint & pt )
 // {
 // 	return m_form.contains (pt);
 // }
 // 
-// void DGradientArrow::setColor( const QColor & color)
+// void KGradientArrow::setColor( const QColor & color)
 // {
 // 	m_color = color;
 // }
 // 
-// void DGradientArrow::moveArrow( const QPoint &pos )
+// void KGradientArrow::moveArrow( const QPoint &pos )
 // {	
 // 	QMatrix matrix;
 // 	
@@ -83,7 +85,7 @@
 // }
 // 
 // 
-// void DGradientArrow::moveVertical(const QPoint &pos)
+// void KGradientArrow::moveVertical(const QPoint &pos)
 // {
 // 	QMatrix matrix;
 // 	
@@ -92,12 +94,12 @@
 // 	m_form = matrix.map(m_form);
 // }
 // 
-// QPainterPath DGradientArrow::form()
+// QPainterPath KGradientArrow::form()
 // {
 // 	return m_form;
 // }
 // 
-// QColor DGradientArrow::color() const
+// QColor KGradientArrow::color() const
 // {
 // 	return m_color;
 // }
@@ -133,7 +135,7 @@ void KTGradientSelector::init()
 
 
 KTGradientSelector::~KTGradientSelector()
-{DEND;}
+{KEND;}
 
 
 
@@ -201,7 +203,7 @@ void KTGradientSelector::mousePressEvent( QMouseEvent *e )
 	bool select = false;
 	for(int i = 0; i < m_arrows.count(); i++)
 	{
-		DGradientArrow *aArrow = m_arrows[i];
+		KGradientArrow *aArrow = m_arrows[i];
 		if ( aArrow->contains(e->pos() ) )
 		{
 			m_currentArrowIndex = i;
@@ -368,7 +370,7 @@ void KTGradientSelector::addArrow(QPoint position, QColor color)
 {
 	if(m_arrows.count() < m_maxArrows)
 	{
-		DGradientArrow *arrow = new DGradientArrow(position, color);
+		KGradientArrow *arrow = new KGradientArrow(position, color);
 		m_arrows << arrow;
 		m_currentArrowIndex = m_arrows.count()-1;
 		update();
@@ -382,7 +384,7 @@ void KTGradientSelector::setCurrentColor(const QColor& color)
 {
 	if ( m_arrows.count() > 0 )
 	{
-		DGradientArrow *arrow  = m_arrows[m_currentArrowIndex];
+		KGradientArrow *arrow  = m_arrows[m_currentArrowIndex];
 		if ( arrow )
 		{
 			m_arrows[m_currentArrowIndex]->setColor(color);

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -37,14 +39,14 @@ struct KTPackageHandler::Private
 	QString importedProjectPath;
 };
 
-KTPackageHandler::KTPackageHandler() : d(new Private)
+KTPackageHandler::KTPackageHandler() : k(new Private)
 {
 }
 
 
 KTPackageHandler::~KTPackageHandler()
 {
-	delete d;
+	delete k;
 }
 
 bool KTPackageHandler::makePackage(const QString &projectPath, const QString &packagePath)
@@ -61,20 +63,20 @@ bool KTPackageHandler::makePackage(const QString &projectPath, const QString &pa
 	QuaZip zip(packagePath);
 	if(!zip.open(QuaZip::mdCreate))
 	{
-		dError() << "Error while create package: " << zip.getZipError();
+		kError() << "Error while create package: " << zip.getZipError();
 		return false;
 	}
 	
 	if ( ! compress(&zip, projectPath ))
 	{
-		dError() << "Error while compress project" << zip.getZipError();
+		kError() << "Error while compress project" << zip.getZipError();
 		return false;
 	}
 	
 	zip.close();
 	if(zip.getZipError() != 0)
 	{
-		dError() << "Error: " << zip.getZipError();
+		kError() << "Error: " << zip.getZipError();
 		return false;
 	}
 	
@@ -84,7 +86,7 @@ bool KTPackageHandler::makePackage(const QString &projectPath, const QString &pa
 
 bool KTPackageHandler::compress(QuaZip *zip, const QString &path)
 {
-	dDebug() << "COMPRESSING: " << path;
+	kDebug() << "COMPRESSING: " << path;
 	QFile inFile;
 	QuaZipFile outFile(zip);
 	char c;
@@ -111,7 +113,7 @@ bool KTPackageHandler::compress(QuaZip *zip, const QString &path)
 		inFile.setFileName(filePath);
 		if(!inFile.open(QIODevice::ReadOnly))
 		{
-			dError() << "Error opening file " << inFile.fileName() << " : " << inFile.errorString();
+			kError() << "Error opening file " << inFile.fileName() << " : " << inFile.errorString();
 			return false;
 		}
 		while(inFile.getChar(&c) && outFile.putChar(c));
@@ -147,7 +149,7 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 	
 	if(!zip.open(QuaZip::mdUnzip))
 	{
-		dDebug() << "Error while open package: " << zip.getZipError();
+		kDebug() << "Error while open package: " << zip.getZipError();
 		return false;
 	}
 	zip.setFileNameCodec("IBM866"); // ###: ?
@@ -164,13 +166,13 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 	{
 		if(!zip.getCurrentFileInfo(&info))
 		{
-			dError() << "Can't get current file: " << zip.getZipError();
+			kError() << "Can't get current file: " << zip.getZipError();
 			return false;
 		}
 		
 		if(!file.open(QIODevice::ReadOnly)) 
 		{
-			dError() << "Can't open file "<< file.getZipError();
+			kError() << "Can't open file "<< file.getZipError();
 			return false;
 		}
 		
@@ -182,12 +184,12 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 		
 // 		if( name.endsWith(".ktp") )
 		{
-			d->importedProjectPath = QFileInfo(name).path();
+			k->importedProjectPath = QFileInfo(name).path();
 		}
 		
 		if(file.getZipError() != UNZ_OK)
 		{
-			dError() << "Error while open package " << file.getZipError();
+			kError() << "Error while open package " << file.getZipError();
 			return false;
 		}
 		
@@ -196,25 +198,25 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 		
 		if ( ! out.open(QIODevice::WriteOnly) )
 		{
-			dError() << "Error while open file: " << out.fileName() << ", error was: " << out.errorString();
+			kError() << "Error while open file: " << out.fileName() << ", error was: " << out.errorString();
 		}
 		
 		while(file.getChar(&c)) out.putChar(c);
 		out.close();
 		if(file.getZipError()!=UNZ_OK)
 		{
-			dError() << "Error while open package " << file.getZipError();
+			kError() << "Error while open package " << file.getZipError();
 			return false;
 		}
 		if(!file.atEnd()) 
 		{
-			dError() << "Not EOF";
+			kError() << "Not EOF";
 			return false;
 		}
 		file.close();
 		if(file.getZipError()!=UNZ_OK) 
 		{
-			dError() << "Error while open package " << file.getZipError();
+			kError() << "Error while open package " << file.getZipError();
 			return false;
 		}
 			
@@ -224,7 +226,7 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 	zip.close();
 	if(zip.getZipError() != UNZ_OK)
 	{
-		dError() << "Error while open package " << file.getZipError();
+		kError() << "Error while open package " << file.getZipError();
 		return false;
 	}
 	
@@ -234,7 +236,6 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 bool KTPackageHandler::createPath(const QString &filePath)
 {
 	QFileInfo info(filePath);
-	
 	QDir path = info.dir();
 	
 	if ( !path.exists() )
@@ -248,6 +249,6 @@ bool KTPackageHandler::createPath(const QString &filePath)
 
 QString KTPackageHandler::importedProjectPath() const
 {
-	return d->importedProjectPath;
+	return k->importedProjectPath;
 }
 

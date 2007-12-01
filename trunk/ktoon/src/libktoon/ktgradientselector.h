@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrox@toonka.com>             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -39,7 +41,7 @@
 
 /**
  * @if english
- * @short translate me
+ * @short This class provides a simple graphical interface to generate "GradientStops"
  * @elseif spanish
  * @short Esta clase provee de una simple interfaz grafica para generar "GradientStops".
  * @endif
@@ -50,10 +52,10 @@ class KTOON_EXPORT KTGradientSelector : public QAbstractSlider
 	Q_OBJECT;
 	
 	private:
-		class DGradientArrow : public QObject
+		class KGradientArrow : public QObject
 		{
 			public:
-				DGradientArrow(QPoint pos, const QColor& color, QObject *parent = 0) : QObject(parent), m_color(color)
+				KGradientArrow(QPoint pos, const QColor& color, QObject *parent = 0) : QObject(parent), m_color(color)
 				{
 					QPolygon array(6);
 				// 	if ( orientation() == Qt::Vertical )
@@ -75,7 +77,7 @@ class KTOON_EXPORT KTGradientSelector : public QAbstractSlider
 // 					}
 					m_form.addPolygon(array);
 				}
-				~DGradientArrow(){}
+				~KGradientArrow(){}
 				double position() 
 				{
 					return m_form.currentPosition().x();
@@ -282,7 +284,7 @@ class KTOON_EXPORT KTGradientSelector : public QAbstractSlider
 		void init();
 		int m_currentArrowIndex;
 		QLinearGradient m_gradient;
-		QList<DGradientArrow*> m_arrows;
+		QList<KGradientArrow*> m_arrows;
 		bool m_update;
 		int m_maxArrows;
 		QColor m_currentColor;

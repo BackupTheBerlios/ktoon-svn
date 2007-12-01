@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -104,7 +106,7 @@ void KTViewCamera::Status::addWidget(QWidget *widget, int stretch )
 
 KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(parent)
 {
-	DINIT;
+	KINIT;
 	
 	m_status = new Status;
 	
@@ -153,23 +155,22 @@ KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(pa
 	connect(m_bar, SIGNAL(ff()), m_animationArea, SLOT(nextFrame()));
 	connect(m_bar, SIGNAL(rew()), m_animationArea, SLOT(previousFrame()));
 #else
-	DCircleButtonBar *m_bar = new DCircleButtonBar(40);
+	KCircleButtonBar *m_bar = new DCircleButtonBar(40);
 	layout->addWidget(m_bar, 0, Qt::AlignTop | Qt::AlignCenter );
 	m_bar->show();
 	
 	qobject_cast<QBoxLayout *>(m_bar->layout())->insertStretch(0, 2);
 	
-	DCircleButton *rew = m_bar->addButton(QPixmap(THEME_DIR+"/icons/rw.png" ));
-	DCircleButton *play = m_bar->addButton(QPixmap(THEME_DIR+"/icons/play.png" ));
-	DCircleButton *stop = m_bar->addButton(QPixmap(THEME_DIR+"/icons/stop.png" ));
-	DCircleButton *ff = m_bar->addButton(QPixmap(THEME_DIR+"/icons/ff.png" ));
+	KCircleButton *rew = m_bar->addButton(QPixmap(THEME_DIR+"/icons/rw.png" ));
+	KCircleButton *play = m_bar->addButton(QPixmap(THEME_DIR+"/icons/play.png" ));
+	KCircleButton *stop = m_bar->addButton(QPixmap(THEME_DIR+"/icons/stop.png" ));
+	KCircleButton *ff = m_bar->addButton(QPixmap(THEME_DIR+"/icons/ff.png" ));
 	
 	qobject_cast<QBoxLayout *>(m_bar->layout())->addStretch(2);
 	
 	connect(play, SIGNAL(clicked()), this, SLOT(doPlay()));
 	connect(stop, SIGNAL(clicked()), m_animationArea, SLOT(stop()));
 #endif
-
 
 	m_container->setLayout(layout);
 	
@@ -179,7 +180,7 @@ KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(pa
 
 KTViewCamera::~KTViewCamera()
 {
-	DEND;
+	KEND;
 }
 
 void KTViewCamera::showSceneInfo(const KTScene *scene)

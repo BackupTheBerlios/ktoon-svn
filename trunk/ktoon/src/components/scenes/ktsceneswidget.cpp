@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -44,9 +46,9 @@ struct KTScenesWidget::Private
 		KTScenesList *tableScenes;
 };
 
-KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "KTScenesWidget"), d(new Private)
+KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "KTScenesWidget"), k(new Private)
 {
-	DINIT;
+	KINIT;
 	
 	setWindowTitle( tr( "Sce&nes manager" ) );
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/scenes.png"));
@@ -57,8 +59,8 @@ KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "
 
 KTScenesWidget::~KTScenesWidget()
 {
-	DEND;
-	delete d;
+	KEND;
+	delete k;
 }
 
 void KTScenesWidget::setupButtons()
@@ -75,19 +77,19 @@ void KTScenesWidget::setupButtons()
 
 void KTScenesWidget::setupTableScenes()
 {
-	d->tableScenes = new KTScenesList(this);
+	k->tableScenes = new KTScenesList(this);
 	
-	DTreeWidgetSearchLine *searcher = new DTreeWidgetSearchLine(this, d->tableScenes);
+	KTreeWidgetSearchLine *searcher = new KTreeWidgetSearchLine(this, k->tableScenes);
 	searcher->setClickMessage( tr("Filter here..."));
 	
 	addChild(searcher);
 	
-	addChild( d->tableScenes);
-	connect(d->tableScenes, SIGNAL(changeCurrent(QString , int )), this, SLOT(selectScene( QString, int)));
+	addChild( k->tableScenes);
+	connect(k->tableScenes, SIGNAL(changeCurrent(QString , int )), this, SLOT(selectScene( QString, int)));
 	
-	connect(d->tableScenes, SIGNAL(  itemDoubleClicked ( QTreeWidgetItem *, int )), this, SLOT(sceneDobleClick(QTreeWidgetItem *, int )));
+	connect(k->tableScenes, SIGNAL(  itemDoubleClicked ( QTreeWidgetItem *, int )), this, SLOT(sceneDobleClick(QTreeWidgetItem *, int )));
 	
-	connect(d->tableScenes, SIGNAL(itemRenamed(QTreeWidgetItem *)), this, SLOT(emitRequestRenameScene(QTreeWidgetItem *)));
+	connect(k->tableScenes, SIGNAL(itemRenamed(QTreeWidgetItem *)), this, SLOT(emitRequestRenameScene(QTreeWidgetItem *)));
 	
 }
 
@@ -118,12 +120,12 @@ void KTScenesWidget::selectScene(const QString & name, int index)
 
 void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int )
 {
-	D_FUNCINFO;
+	K_FUNCINFO;
 }
 
 void KTScenesWidget::emitRequestInsertScene()
 {
-	D_FUNCINFO;
+	K_FUNCINFO;
 	
 	int index = d->tableScenes->indexCurrentScene() + 1;
 	
@@ -148,32 +150,32 @@ void KTScenesWidget::emitRequestRemoveScene()
 
 void KTScenesWidget::closeAllScenes()
 {
-	d->tableScenes->removeAll();
+	k->tableScenes->removeAll();
 }
 
 void KTScenesWidget::sceneResponse(KTSceneResponse *e)
 {
-	D_FUNCINFOX("scenes");
+	K_FUNCINFOX("scenes");
 	switch(e->action() )
 	{
 		case KTProjectRequest::Add:
 		{
-			d->tableScenes->insertScene(e->sceneIndex(), e->arg().toString() );
+			k->tableScenes->insertScene(e->sceneIndex(), e->arg().toString() );
 		}
 		break;
 		case KTProjectRequest::Remove:
 		{
-			d->tableScenes->removeScene(e->sceneIndex());
+			k->tableScenes->removeScene(e->sceneIndex());
 		}
 		break;
 		case KTProjectRequest::Rename:
 		{
-			d->tableScenes->renameScene(e->sceneIndex(), e->arg().toString() );
+			k->tableScenes->renameScene(e->sceneIndex(), e->arg().toString() );
 		}
 		break;
 		case KTProjectRequest::Select:
 		{
-			d->tableScenes->selectScene( e->sceneIndex() );
+			k->tableScenes->selectScene( e->sceneIndex() );
 		}
 		break;
 		default: break;

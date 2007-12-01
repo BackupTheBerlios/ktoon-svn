@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -197,7 +199,7 @@ struct KTLayerManager::Private
 
 KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), d(new Private)
 {
-	DINIT;
+	KINIT;
 	
 	QTableWidgetItem *prototype = new QTableWidgetItem;
 	prototype->setTextAlignment(Qt::AlignCenter);
@@ -218,8 +220,8 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), d(
 
 KTLayerManager::~KTLayerManager()
 {
-	DEND;
-	delete d;
+	KEND;
+	delete k;
 }
 
 
@@ -232,8 +234,6 @@ void KTLayerManager::insertLayer(int position, const QString &name)
 		
 		newLayer->setBackgroundColor( palette().background().color() );
 		newLayer->setTextColor(palette().foreground().color() );
-		
-		
 		
 		insertRow (position);
 		setItem(position, 0, newLayer);
@@ -315,20 +315,20 @@ void KTLayerManager::fixSize()
 	
 	int width = this->width() - offset;
 		
-	horizontalHeader()->resizeSection(0, width-(d->rowHeight*2)-8 );
-	horizontalHeader()->resizeSection(1, d->rowHeight );
-	horizontalHeader()->resizeSection(2, d->rowHeight );
+	horizontalHeader()->resizeSection(0, width-(k->rowHeight*2)-8 );
+	horizontalHeader()->resizeSection(1, k->rowHeight );
+	horizontalHeader()->resizeSection(2, k->rowHeight );
 	
 	for(int row = 0; row < rowCount(); row++)
 	{
-		verticalHeader()->resizeSection(row, d->rowHeight);
+		verticalHeader()->resizeSection(row, k->rowHeight);
 	}
 }
 
 
 void KTLayerManager::setRowHeight(int rowHeight)
 {
-	d->rowHeight = rowHeight;
+	k->rowHeight = rowHeight;
 }
 
 

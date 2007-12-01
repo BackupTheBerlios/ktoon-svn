@@ -1,23 +1,24 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
- *   m_project program is free software; you can redistribute it and/or modify  *
+ *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
- *   m_project program is distributed in the hope that it will be useful,       *
+ *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with m_project program; if not, write to the                         *
+ *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
 
 #include "ktcommandexecutor.h"
 
@@ -57,7 +58,7 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 		
 		if (!name.isEmpty())
 		{
-			dDebug("items") << name;
+			kDebug("items") << name;
 			frame->setFrameName( name );
 		}
 		else
@@ -133,7 +134,7 @@ bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
 	{
 		if ( ! layer->moveFrame(position, newPosition) )
 		{
-			dWarning() << "Failed moving frame";
+			kWarning() << "Failed moving frame";
 			return false;
 		}
 		else

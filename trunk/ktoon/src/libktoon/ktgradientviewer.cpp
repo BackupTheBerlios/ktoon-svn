@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrox@toonka.com>             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -92,7 +94,7 @@ KTGradientViewer::KTGradientViewer(QWidget *parent)
 
 KTGradientViewer::~KTGradientViewer()
 {
-	DEND;
+	KEND;
 	delete m_controlPoint;
 }
 
@@ -107,7 +109,6 @@ void KTGradientViewer::paintEvent( QPaintEvent* e)
 	m_controlPoint->drawPoints(&p);
 	
 	p.end();
-	
 	QFrame::paintEvent(e);
 }
 
@@ -144,7 +145,7 @@ void KTGradientViewer::createGradient()
 		}
 		default:
 		{
-			dFatal() << "Fatal error, the gradient type doesn't exists!";
+			kFatal() << "Fatal error, the gradient type doesn't exists!";
 		}
 	}
 	m_gradient.setStops( m_gradientStops);
@@ -196,7 +197,7 @@ QGradient KTGradientViewer::gradient()
 		}
 		default:
 		{
-			dFatal() << "Fatal error, the gradient type doesn't exists!";
+			kFatal() << "Fatal error, the gradient type doesn't exists!";
 		}
 	}
 	gradientNormalized.setStops( m_gradientStops);
@@ -207,7 +208,6 @@ QGradient KTGradientViewer::gradient()
 void KTGradientViewer::mousePressEvent(QMouseEvent *e)
 {
 	m_controlPoint->selectPoint(e->pos());
-	
 	update();
 }
 
@@ -261,7 +261,7 @@ void KTGradientViewer::setGradient(const QGradient* gradient)
 		}
 		default:
 		{
-			dFatal() << "Fatal error, the gradient type doesn't exists!";
+			kFatal() << "Fatal error, the gradient type doesn't exists!";
 		}
 	}
 	repaint();

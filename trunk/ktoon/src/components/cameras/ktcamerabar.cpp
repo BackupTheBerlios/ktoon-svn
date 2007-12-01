@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,7 +29,7 @@
 KTCameraBar::KTCameraBar(QWidget *parent)
  : QFrame(parent)
 {
-	DINIT;
+	KINIT;
 	setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
 	setMidLineWidth(2);
 	setLineWidth (1);
@@ -38,19 +40,19 @@ KTCameraBar::KTCameraBar(QWidget *parent)
 	m_mainLayout->setSpacing(0);
 	m_mainLayout->setMargin(0);
 	
-	m_rew = new DImageButton(QPixmap(THEME_DIR+"/icons/rw.png"), 33,this, true);
+	m_rew = new KImageButton(QPixmap(THEME_DIR+"/icons/rw.png"), 33,this, true);
 	m_mainLayout->addWidget(m_rew);
 	connect(m_rew, SIGNAL(clicked()), this, SIGNAL(rew()));
 	
-	m_play = new DImageButton(QPixmap(THEME_DIR+"/icons/play.png"), 33,this, true);
+	m_play = new KImageButton(QPixmap(THEME_DIR+"/icons/play.png"), 33,this, true);
 	m_mainLayout->addWidget(m_play);
 	connect(m_play, SIGNAL(clicked()), this, SIGNAL(play()));
 	
-	m_stop = new DImageButton(QPixmap(THEME_DIR+"/icons/stop.png"), 33,this, true);
+	m_stop = new KImageButton(QPixmap(THEME_DIR+"/icons/stop.png"), 33,this, true);
 	m_mainLayout->addWidget(m_stop);
 	connect(m_stop, SIGNAL(clicked()), this, SIGNAL(stop()));
 	
-	m_ff = new DImageButton(QPixmap(THEME_DIR+"/icons/ff.png"), 33,this, true);
+	m_ff = new KImageButton(QPixmap(THEME_DIR+"/icons/ff.png"), 33,this, true);
 	m_mainLayout->addWidget(m_ff);
 	connect(m_ff, SIGNAL(clicked()), this, SIGNAL(ff()));
 	
@@ -60,7 +62,7 @@ KTCameraBar::KTCameraBar(QWidget *parent)
 
 KTCameraBar::~KTCameraBar()
 {
-	DEND;
+	KEND;
 }
 
 void KTCameraBar::setPalette(const QPalette &)

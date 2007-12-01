@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -32,14 +34,14 @@ struct KTXmlParserBase::Private
 	QString document;
 };
 
-KTXmlParserBase::KTXmlParserBase() : QXmlDefaultHandler(), d(new Private)
+KTXmlParserBase::KTXmlParserBase() : QXmlDefaultHandler(), k(new Private)
 {
 }
 
 
 KTXmlParserBase::~KTXmlParserBase()
 {
-	delete d;
+	delete k;
 }
 
 void KTXmlParserBase::initialize()
@@ -49,12 +51,12 @@ void KTXmlParserBase::initialize()
 
 bool KTXmlParserBase::startDocument()
 {
-	d->isParsing = true;
+	k->isParsing = true;
 	
-	d->currentTag = QString();
-	d->root = QString();
-	d->readText = false;
-	d->ignore = false;
+	k->currentTag = QString();
+	k->root = QString();
+	k->readText = false;
+	k->ignore = false;
 	
 	initialize();
 	return true;
@@ -62,22 +64,22 @@ bool KTXmlParserBase::startDocument()
 
 bool KTXmlParserBase::endDocument()
 {
-	d->isParsing = false;
+	k->isParsing = false;
 	return true;
 }
 
 bool KTXmlParserBase::startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
 {
-	if ( d->ignore ) return true;
+	if ( k->ignore ) return true;
 	
-	if ( d->root.isEmpty() )
+	if ( k->root.isEmpty() )
 	{
-		d->root = qname;
+		k->root = qname;
 	}
 	
 	bool r = startTag(qname, atts);
 	
-	d->currentTag = qname;
+	k->currentTag = qname;
 	
 	return r;
 }
@@ -91,12 +93,12 @@ bool KTXmlParserBase::endElement( const QString&, const QString& , const QString
 
 bool KTXmlParserBase::characters(const QString & ch)
 {
-	if ( d->ignore ) return true;
+	if ( k->ignore ) return true;
 	
-	if ( d->readText )
+	if ( k->readText )
 	{
 		text(ch.simplified());
-		d->readText = false;
+		k->readText = false;
 	}
 	
 	return true;
@@ -104,37 +106,37 @@ bool KTXmlParserBase::characters(const QString & ch)
 
 bool KTXmlParserBase::error ( const QXmlParseException & exception )
 {
-	dWarning() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
-	dWarning() << __PRETTY_FUNCTION__ << " Document: " << d->document;
+	kWarning() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	kWarning() << __PRETTY_FUNCTION__ << " Document: " << k->document;
 	return true;
 }
 
 bool KTXmlParserBase::fatalError ( const QXmlParseException & exception )
 {
-	dFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
-	dWarning() << __PRETTY_FUNCTION__ << " Document: " << d->document;
+	kFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	kWarning() << __PRETTY_FUNCTION__ << " Document: " << k->document;
 	return true;
 }
 
 
 void KTXmlParserBase::setReadText(bool read)
 {
-	d->readText = read;
+	k->readText = read;
 }
 
 void KTXmlParserBase::setIgnore(bool ignore)
 {
-	d->ignore = ignore;
+	k->ignore = ignore;
 }
 
 QString KTXmlParserBase::currentTag() const
 {
-	return d->currentTag;
+	return k->currentTag;
 }
 
 QString KTXmlParserBase::root() const
 {
-	return d->root;
+	return k->root;
 }
 
 bool KTXmlParserBase::parse(const QString &doc)
@@ -147,7 +149,7 @@ bool KTXmlParserBase::parse(const QString &doc)
 	QXmlInputSource xmlsource;
 	xmlsource.setData(doc);
 	
-	d->document = doc;
+	k->document = doc;
 	
 	return reader.parse(&xmlsource);
 }
@@ -159,7 +161,7 @@ bool KTXmlParserBase::parse(QFile *file)
 	{
 		if( ! file->open(QIODevice::ReadOnly | QIODevice::Text) )
 		{
-			dWarning() << "Cannot open file " << file->fileName();
+			kWarning() << "Cannot open file " << file->fileName();
 			return false;
 		}
 	}

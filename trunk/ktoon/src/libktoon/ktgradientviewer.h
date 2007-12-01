@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrox@toonka.com>             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,9 +30,12 @@
 
 /**
  * @if english
- * @short translate me
+ * @short This class provides a gradient visualizer, besides allows to modify:
+ * @n-If it is Lineal: the initial point and the final point
+ * @n-If it is Radial: center point, focal point 
+ * @n-If it is Conical: center point,
  * @elseif spanish
- * @short Esta clase provee de una visualizardor de gradientes, ademas de permite modificar:
+ * @short Esta clase provee un visualizador de gradientes, ademas permite modificar:
  * @n-Si es Lineal: el punto inical y punto final 
  * @n-Si es Radial: el centro, punto focal 
  * @n-Si es Conico: el centro,
