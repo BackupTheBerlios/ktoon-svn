@@ -111,10 +111,10 @@ void KTColorPicker::setCol(int h, int s)
 {
 	int nhue = qMin(qMax(0,h), 359);
 	int nsat = qMin(qMax(0,s), 255);
-	if (nhue == d->hue && nsat == d->sat)
+	if (nhue == k->hue && nsat == k->sat)
 		return;
 	QRect r(colPt(), QSize(20,20));
-	k->hue = nhue; d->sat = nsat;
+	k->hue = nhue; k->sat = nsat;
 	r = r.unite(QRect(colPt(), QSize(20,20)));
 	r.translate(contentsRect().x()-9, contentsRect().y()-9);
     //    update(r);

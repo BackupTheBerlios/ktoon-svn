@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2004 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -45,7 +47,7 @@
  * Moreover, it provides an OK Button and a Cancel Button.
  */
 
-class KTAbout : public DTabDialog
+class KTAbout : public KTabDialog
 {
 	Q_OBJECT
 
@@ -65,7 +67,7 @@ class KTAbout : public DTabDialog
 		~KTAbout();
 	
 	private:
-		DAnimWidget *m_credits;
+		KAnimWidget *m_credits;
 };
 
 #endif

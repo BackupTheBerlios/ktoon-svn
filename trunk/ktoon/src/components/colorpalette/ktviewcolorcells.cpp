@@ -58,7 +58,7 @@ KTViewColorCells::KTViewColorCells(QWidget *parent) : QFrame(parent), k(new Priv
 KTViewColorCells::~KTViewColorCells()
 {
 	KCONFIG->beginGroup("ColorPalette");
-	KCONFIG->setValue("LastPalette", d->chooserPalette->currentIndex());;
+	KCONFIG->setValue("LastPalette", k->chooserPalette->currentIndex());;
 	
 	QDir brushesDir(CONFIG_DIR+"/palettes");
 	
@@ -101,7 +101,7 @@ void KTViewColorCells::setupForm()
 	k->defaultPalette->setReadOnly( true);
 	
 	fillDefaultColors();
-	addPalette(d->defaultPalette);
+	addPalette(k->defaultPalette);
 	
 	
 	//Named Colors
@@ -197,7 +197,7 @@ void KTViewColorCells::addPalette(const QString & name, const QList<QBrush> & br
 	}
 	else
 	{
-		KTCellsColor *palette = new  KTCellsColor(d->containerPalette);
+		KTCellsColor *palette = new  KTCellsColor(k->containerPalette);
 		QList<QBrush>::ConstIterator it = brushes.begin();
 		
 		while(it != brushes.end())
@@ -320,7 +320,7 @@ void KTViewColorCells::fillNamedColor()
 
 void KTViewColorCells::addCurrentColor()
 {
-	KTCellsColor *palette = qobject_cast<KTCellsColor*>(d->containerPalette->currentWidget());
+	KTCellsColor *palette = qobject_cast<KTCellsColor*>(k->containerPalette->currentWidget());
 	
 	if(palette)
 	{

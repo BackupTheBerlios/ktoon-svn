@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -35,14 +37,13 @@ struct KTSoundLayer::Private
 };
 
 KTSoundLayer::KTSoundLayer(KTScene *parent)
- : KTLayer(parent), d(new Private)
+ : KTLayer(parent), k(new Private)
 {
 }
 
-
 KTSoundLayer::~KTSoundLayer()
 {
-	delete d;
+	delete k;
 }
 
 void KTSoundLayer::fromSymbol(const QString &symbolName)
@@ -53,28 +54,28 @@ void KTSoundLayer::fromSymbol(const QString &symbolName)
 	{
 		if( object->type() == KTLibraryObject::Sound)
 		{
-			d->symbolName = symbolName;
-			d->filePath = object->dataPath();
-			d->playerId = DAudioPlayer::instance()->load(d->filePath);
+			k->symbolName = symbolName;
+			k->filePath = object->dataPath();
+			k->playerId = KAudioPlayer::instance()->load(k->filePath);
 		}
 	}
 }
 
 QString KTSoundLayer::filePath() const
 {
-	return d->filePath;
+	return k->filePath;
 }
 
 void KTSoundLayer::play()
 {
-	DAudioPlayer::instance()->setCurrentPlayer(d->playerId);
-	DAudioPlayer::instance()->play();
+	KAudioPlayer::instance()->setCurrentPlayer(k->playerId);
+	KAudioPlayer::instance()->play();
 }
 
 void KTSoundLayer::stop()
 {
-	DAudioPlayer::instance()->setCurrentPlayer(d->playerId);
-	DAudioPlayer::instance()->stop();
+	KAudioPlayer::instance()->setCurrentPlayer(k->playerId);
+	KAudioPlayer::instance()->stop();
 }
 
 
@@ -97,12 +98,7 @@ QDomElement KTSoundLayer::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("soundlayer");
 	root.setAttribute("name", layerName() );
-	
-	root.setAttribute("symbol", d->symbolName);
-	
+	root.setAttribute("symbol", k->symbolName);
 	
 	return root;
 }
-
-
-

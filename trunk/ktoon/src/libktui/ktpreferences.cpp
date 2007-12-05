@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2004 by David Cuadrado                                  *
- *   krawek@toonka.com                                                    *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -60,31 +62,31 @@ KTPreferences::GeneralPage::GeneralPage()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 // 	m_renderType = KToon::RenderType(0);
-	DCONFIG->beginGroup("General");
+	KCONFIG->beginGroup("General");
 	
 	m_home = new QLineEdit;
 	
-	QString str = DCONFIG->value("Home").toString();
+	QString str = KCONFIG->value("Home").toString();
 	if ( !str.isEmpty())
 	{
 		m_home->setText(str);
 	}
 	
 	m_repository = new QLineEdit;
-	str = DCONFIG->value("Cache").toString();
+	str = KCONFIG->value("Cache").toString();
 	if ( !str.isEmpty())
 	{
 		m_repository->setText(str);
 	}
 	
 	m_browser = new QLineEdit;
-	str = DCONFIG->value("Browser").toString();
+	str = KCONFIG->value("Browser").toString();
 	if ( !str.isEmpty())
 	{
 		m_browser->setText(str);
 	}
 	
-	str = DCONFIG->value("RenderType").toString();
+	str = KCONFIG->value("RenderType").toString();
 
 	m_renderType = new QComboBox();
 	
@@ -96,11 +98,11 @@ KTPreferences::GeneralPage::GeneralPage()
 		m_renderType->setCurrentIndex ( str.toInt() );
 	}
 	
-	bool openLast = DCONFIG->value("OpenLastProject", true).toBool();
+	bool openLast = KCONFIG->value("OpenLastProject", true).toBool();
 	m_openLastProject = new QCheckBox();
 	m_openLastProject->setChecked(openLast);
 
-	QLayout *form = DFormFactory::makeGrid( QStringList() << tr("KToon Home") << tr("Cache") << tr("Browser") << tr("Render Type") << tr("Open last project"), QWidgetList() << m_home << m_repository << m_browser << m_renderType << m_openLastProject);
+	QLayout *form = KFormFactory::makeGrid( QStringList() << tr("KToon Home") << tr("Cache") << tr("Browser") << tr("Render Type") << tr("Open last project"), QWidgetList() << m_home << m_repository << m_browser << m_renderType << m_openLastProject);
 	
 	layout->addLayout(form);
 	
@@ -113,31 +115,31 @@ KTPreferences::GeneralPage::~GeneralPage()
 
 void KTPreferences::GeneralPage::saveValues()
 {
-	DCONFIG->beginGroup("General");
+	KCONFIG->beginGroup("General");
 	
 	QString str = m_home->text();
 	if ( !str.isEmpty() && m_home->isModified ())
 	{
-		DCONFIG->setValue("Home", str);
+		KCONFIG->setValue("Home", str);
 	}
 	
 	str = m_repository->text();
 	if ( !str.isEmpty() && m_repository->isModified () )
 	{
-		DCONFIG->setValue("Cache", str);
+		KCONFIG->setValue("Cache", str);
 	}
 	
 	str = m_browser->text();
 	if ( !str.isEmpty() && m_browser->isModified () )
 	{
-		DCONFIG->setValue("Browser", str);
+		KCONFIG->setValue("Browser", str);
 	}
 	
-	DCONFIG->setValue("RenderType", QString::number((m_renderType->itemData(m_renderType->currentIndex ()).toInt())));
+	KCONFIG->setValue("RenderType", QString::number((m_renderType->itemData(m_renderType->currentIndex ()).toInt())));
 	
-	DCONFIG->setValue("OpenLastProject", m_openLastProject->isChecked());
+	KCONFIG->setValue("OpenLastProject", m_openLastProject->isChecked());
 	
-	DCONFIG->sync();
+	KCONFIG->sync();
 }
 
 class KTPreferences::FontPage : public QWidget
@@ -150,12 +152,12 @@ class KTPreferences::FontPage : public QWidget
 		QFont currentFont() const;
 		
 	private:
-		DFontChooser *m_fontChooser;
+		KFontChooser *m_fontChooser;
 };
 
 KTPreferences::FontPage::FontPage()
 {
-	m_fontChooser = new DFontChooser(this);
+	m_fontChooser = new KFontChooser(this);
 	m_fontChooser->setCurrentFont(font());
 }
 
@@ -173,7 +175,7 @@ QFont KTPreferences::FontPage::currentFont() const
 
 //--------------- CONSTRUCTOR --------------------
 
-KTPreferences::KTPreferences( QWidget *parent ) : DConfigurationDialog(parent )
+KTPreferences::KTPreferences( QWidget *parent ) : KConfigurationDialog(parent )
 {
 	setWindowTitle( tr( "Application KTPreferences" ) );
 	
@@ -183,15 +185,11 @@ KTPreferences::KTPreferences( QWidget *parent ) : DConfigurationDialog(parent )
 	m_themeSelector = new KTThemeSelector;
 	addPage(m_themeSelector, tr("Theme preferences"), QPixmap(THEME_DIR+"/icons/theme_config.png") );
 	
-	
-	
 	m_fontChooser = new FontPage;
 	addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR+"/icons/font_config.png"));
 	
-	
 	m_drawingAreaProperties = new KTPaintAreaConfig;
 	addPage(m_drawingAreaProperties, tr("Paint area"), QIcon(THEME_DIR+"/icons/drawing_area.png") );
-	
 	
 // 	resize(400,400);
 }
@@ -205,7 +203,7 @@ KTPreferences::~KTPreferences()
 void KTPreferences::ok()
 {
 	apply();
-	DConfigurationDialog::ok();
+	KConfigurationDialog::ok();
 }
 
 void KTPreferences::apply()
@@ -214,7 +212,7 @@ void KTPreferences::apply()
 	{
 		if(m_themeSelector->applyColors() )
 		{
-			dApp->applyTheme(m_themeSelector->document());
+			kApp->applyTheme(m_themeSelector->document());
 		}
 	}
 	else if ( static_cast<GeneralPage *>( currentPage()) == m_generalPage )
@@ -223,7 +221,7 @@ void KTPreferences::apply()
 	}
 	else if ( qobject_cast<FontPage *>(currentPage() ) == m_fontChooser )
 	{
-		dApp->setFont(m_fontChooser->currentFont());
+		kApp->setFont(m_fontChooser->currentFont());
 	}
 	else if ( qobject_cast<KTPaintAreaConfig *>(currentPage() ) == m_drawingAreaProperties )
 	{

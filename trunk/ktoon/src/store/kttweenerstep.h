@@ -73,7 +73,7 @@ class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
 		
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 #endif

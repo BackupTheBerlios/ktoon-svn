@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2004 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -36,7 +38,7 @@
 
 #define DEBUG_ABOUT 1
 
-KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
+KTAbout::KTAbout( QWidget *parent ) : KTabDialog( Cancel, parent )
 {
 //	Q_INIT_RESOURCE(ktui_images);
 	
@@ -60,14 +62,14 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 	}
 	else
 	{
-		dError() << "Error while trying to read " << creditsFile.fileName();
+		kError() << "Error while trying to read " << creditsFile.fileName();
 	}
 	
 	QImage credits = QImage(DATA_DIR+"/images/credits.png" );
 	
-	DImageEffect::fade(credits, 0.25, palette().background().color());
+	KImageEffect::fade(credits, 0.25, palette().background().color());
     
-	m_credits = new DAnimWidget( QPixmap::fromImage(credits), creditsText );
+	m_credits = new KAnimWidget( QPixmap::fromImage(credits), creditsText );
 	addTab( m_credits, tr( "Credits" ) );
 	
 	QPalette pal = m_credits->palette();
@@ -82,7 +84,7 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 	QLabel *ack = new QLabel;
 	
 	QImage ackImg( DATA_DIR+"/images/sponsors.png" );
-	DImageEffect::fade( ackImg,0.2,palette().background().color()); 
+	KImageEffect::fade( ackImg,0.2,palette().background().color()); 
 	
 	ack->setPixmap(QPixmap::fromImage(ackImg));
 	
@@ -93,7 +95,7 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 	QLabel *toonka = new QLabel;
 	
 	QImage toonkaImg( DATA_DIR+"/images/toonka.png" );
-	DImageEffect::fade( toonkaImg,0.2,palette().background().color()); 
+	KImageEffect::fade( toonkaImg,0.2,palette().background().color()); 
 	
 	toonka->setPixmap(QPixmap::fromImage(toonkaImg));
 	addTab( toonka, "Toonka Films" );
@@ -103,7 +105,7 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 	QLabel *laboratoon = new QLabel;
 	
 	QImage laboratoonImg( DATA_DIR+"/images/laboratoon.png" );
-	DImageEffect::fade( laboratoonImg,0.2,palette().background().color()); 
+	KImageEffect::fade( laboratoonImg,0.2,palette().background().color()); 
 	
 	laboratoon->setPixmap( QPixmap::fromImage(laboratoonImg  ) );
 	addTab( laboratoon, "Laboratoon" );
@@ -136,5 +138,4 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 KTAbout::~KTAbout()
 {
 }
-
 

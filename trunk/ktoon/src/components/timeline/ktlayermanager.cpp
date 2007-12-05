@@ -197,7 +197,7 @@ struct KTLayerManager::Private
 	int rowHeight;
 };
 
-KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), d(new Private)
+KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), k(new Private)
 {
 	KINIT;
 	

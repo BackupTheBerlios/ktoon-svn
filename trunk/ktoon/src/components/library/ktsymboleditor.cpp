@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -63,30 +65,29 @@ struct KTSymbolEditor::Private
 	QToolBar *brushTools;
 };
 
-KTSymbolEditor::KTSymbolEditor(QWidget *parent)
-	: QMainWindow(parent), d(new Private)
+KTSymbolEditor::KTSymbolEditor(QWidget *parent) : QMainWindow(parent), k(new Private)
 {
 	setWindowTitle(tr("Symbol editor"));
 	
-	d->view = new View;
-	d->view->setRenderHints(QPainter::Antialiasing);
+	k->view = new View;
+	k->view->setRenderHints(QPainter::Antialiasing);
 	
-	d->scene = new QGraphicsScene;
-	d->view->setScene(d->scene);
+	k->scene = new QGraphicsScene;
+	k->view->setScene(k->scene);
 	
-	setCentralWidget(d->view);
+	setCentralWidget(k->view);
 	
-	d->brushTools = new QToolBar(tr("Brushes"));
-	addToolBar(Qt::BottomToolBarArea, d->brushTools);
+	k->brushTools = new QToolBar(tr("Brushes"));
+	addToolBar(Qt::BottomToolBarArea, k->brushTools);
 	
-	d->selectionTools = new QToolBar(tr("Selection"));
-	addToolBar(Qt::BottomToolBarArea, d->selectionTools);
+	k->selectionTools = new QToolBar(tr("Selection"));
+	addToolBar(Qt::BottomToolBarArea, k->selectionTools);
 	
-	d->fillTools = new QToolBar(tr("Fill"));
-	addToolBar(Qt::BottomToolBarArea, d->fillTools);
+	k->fillTools = new QToolBar(tr("Fill"));
+	addToolBar(Qt::BottomToolBarArea, k->fillTools);
 	
-	d->viewTools = new QToolBar(tr("View"));
-	addToolBar(Qt::BottomToolBarArea, d->viewTools);
+	k->viewTools = new QToolBar(tr("View"));
+	addToolBar(Qt::BottomToolBarArea, k->viewTools);
 	
 	QTimer::singleShot(0, this, SLOT(loadTools()));
 }
@@ -94,7 +95,7 @@ KTSymbolEditor::KTSymbolEditor(QWidget *parent)
 
 KTSymbolEditor::~KTSymbolEditor()
 {
-	delete d;
+	delete k;
 }
 
 
@@ -102,8 +103,8 @@ void KTSymbolEditor::setSymbol(KTLibraryObject *object)
 {
 	if(  QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(object->data()) )
 	{
-		d->symbol = object;
-		d->scene->addItem(item);
+		k->symbol = object;
+		k->scene->addItem(item);
 	}
 }
 
@@ -121,9 +122,9 @@ void KTSymbolEditor::loadTools()
 			
 		for (it = keys.begin(); it != keys.end(); ++it)
 		{
-			dDebug("plugins") << "*******Tool Loaded: " << *it;
+			kDebug("plugins") << "*******Tool Loaded: " << *it;
 			
-			DAction *act = tool->actions()[*it];
+			KAction *act = tool->actions()[*it];
 			if ( act )
 			{
 				connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
@@ -132,22 +133,22 @@ void KTSymbolEditor::loadTools()
 				{
 					case KTToolInterface::Selection:
 					{
-						d->selectionTools->addAction(act);
+						k->selectionTools->addAction(act);
 					}
 					break;
 					case KTToolInterface::Fill:
 					{
-						d->fillTools->addAction(act);
+						k->fillTools->addAction(act);
 					}
 					break;
 					case KTToolInterface::View:
 					{
-						d->viewTools->addAction(act);
+						k->viewTools->addAction(act);
 					}
 					break;
 					case KTToolInterface::Brush:
 					{
-						d->brushTools->addAction(act);
+						k->brushTools->addAction(act);
 					}
 					break;
 				}
@@ -162,8 +163,8 @@ void KTSymbolEditor::loadTools()
 
 void KTSymbolEditor::selectTool()
 {
-	D_FUNCINFO;
-	DAction *action = qobject_cast<DAction *>(sender());
+	K_FUNCINFO;
+	KAction *action = qobject_cast<KAction *>(sender());
 	
 	if ( action )
 	{
@@ -173,4 +174,3 @@ void KTSymbolEditor::selectTool()
 		
 	}
 }
-

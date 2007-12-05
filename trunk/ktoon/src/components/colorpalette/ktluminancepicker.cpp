@@ -43,19 +43,19 @@ struct KTLuminancePicker::Private
 int KTLuminancePicker::y2val(int y)
 {
 	int k = height() - 2*coff - 1;
-	return 255 - (y - coff)*255/d;
+	return 255 - (y - coff)*255/k;
 }
 
 int KTLuminancePicker::val2y(int v)
 {
 	int k = height() - 2*coff - 1;
-	return coff + (255-v)*d/255;
+	return coff + (255-v)*k/255;
 }
 
 KTLuminancePicker::KTLuminancePicker(QWidget* parent)
 	:QWidget(parent), k( new Private)
 {
-	k->hue = 100; k->val = 100; d->sat = 100;
+	k->hue = 100; k->val = 100; k->sat = 100;
 	k->pix = 0;
     //    setAttribute(WA_NoErase, true);
 }
@@ -106,7 +106,7 @@ void KTLuminancePicker::paintEvent(QPaintEvent *)
 		int y;
 		for (y = 0; y < hi; y++) {
 			QColor c;
-			c.setHsv(d->hue, k->sat, y2val(y+coff));
+			c.setHsv(k->hue, k->sat, y2val(y+coff));
 			QRgb r = c.rgb();
 			int x;
 			for (x = 0; x < wi; x++)

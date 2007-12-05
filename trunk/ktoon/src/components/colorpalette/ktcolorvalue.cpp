@@ -145,7 +145,7 @@ void KTColorValue::setupForm()
 	QHBoxLayout *boxLayout = new QHBoxLayout;
 	boxLayout->setSpacing(1);
 	
-	k->valueA = new DDoubleComboBox(0, 255, this);
+	k->valueA = new KDoubleComboBox(0, 255, this);
 	k->valueA->setDecimals(0);
 	
 	QLabel * label = new QLabel("A");

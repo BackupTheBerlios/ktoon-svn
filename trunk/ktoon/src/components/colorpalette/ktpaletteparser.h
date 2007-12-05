@@ -37,7 +37,7 @@
 
 //TODO KTPaletteParser: portar a DXmlParserBase
 
-class KTPaletteParser : public DXmlParserBase
+class KTPaletteParser : public KXmlParserBase
 {
 	public:
 		KTPaletteParser();

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -34,7 +36,6 @@ KTPluginManager::KTPluginManager(QObject *parent) : QObject(parent)
 {
 }
 
-
 KTPluginManager::~KTPluginManager()
 {
 	unloadPlugins();
@@ -50,7 +51,6 @@ KTPluginManager *KTPluginManager::instance()
 	return s_instance;
 }
 
-
 void KTPluginManager::loadPlugins()
 {
 	m_filters.clear();
@@ -63,7 +63,7 @@ void KTPluginManager::loadPlugins()
 		QPluginLoader *loader = new QPluginLoader(m_pluginDirectory.absoluteFilePath(fileName));
 		QObject *plugin = qobject_cast<QObject*>(loader->instance());
 		
-		dDebug("plugins") << "****** Trying to load plugin from: " << fileName;
+		kDebug("plugins") << "****** Trying to load plugin from: " << fileName;
 		
 		if (plugin)
 		{
@@ -83,14 +83,14 @@ void KTPluginManager::loadPlugins()
 		}
 		else
 		{
-			dFatal("plugins") << "Cannot load plugin, error was: " << loader->errorString();
+			kFatal("plugins") << "Cannot load plugin, error was: " << loader->errorString();
 		}
 	}
 }
 
 void KTPluginManager::unloadPlugins()
 {
-	dDebug("plugins") << "Unloading plugins...";
+	kDebug("plugins") << "Unloading plugins...";
 	foreach(QPluginLoader *loader, m_loaders)
 	{
 		delete loader->instance();

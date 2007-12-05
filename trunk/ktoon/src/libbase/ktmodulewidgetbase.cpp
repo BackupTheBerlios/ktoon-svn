@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -35,14 +37,14 @@ struct KTModuleWidgetBase::Private
 	QObjectList childs;
 };
 
-KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), KTAbstractProjectResponseHandler(), d( new Private )
+KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), KTAbstractProjectResponseHandler(), k( new Private )
 {
 	setObjectName(name);
 
-	d->container = new QVBoxLayout(this);
+	k->container = new QVBoxLayout(this);
 	
-	d->container->setMargin(5);
-	d->container->setSpacing(1);
+	k->container->setMargin(5);
+	k->container->setSpacing(1);
 	
 	adjustSize();
 	hide();
@@ -51,15 +53,15 @@ KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWid
 
 KTModuleWidgetBase::~KTModuleWidgetBase()
 {
-	delete d;
+	delete k;
 }
 
 void KTModuleWidgetBase::addChild(QWidget* child, Qt::Alignment alignment)
 {
-	d->childs.append(child);
+	k->childs.append(child);
 	
-	d->container->invalidate();
-	d->container->addWidget(child, 0,alignment);
+	k->container->invalidate();
+	k->container->addWidget(child, 0,alignment);
 }
 
 void KTModuleWidgetBase::setFont( const QFont &f)
@@ -94,7 +96,7 @@ void KTModuleWidgetBase::leaveEvent(QEvent *e)
 
 QBoxLayout *KTModuleWidgetBase::boxLayout()
 {
-	return d->container;
+	return k->container;
 }
 
 bool KTModuleWidgetBase::handleProjectResponse(KTProjectResponse *response)
@@ -131,4 +133,3 @@ void KTModuleWidgetBase::libraryResponse(KTLibraryResponse *libraryResponse)
 {
 	Q_UNUSED(libraryResponse);
 }
-

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -41,7 +43,7 @@
 #include <kgui/kapplication.h>
 #include <kgui/kstylecombobox.h>
 
-KTThemeSelector::KTThemeSelector(QWidget *parent) : DVHBox(parent, Qt::Vertical)
+KTThemeSelector::KTThemeSelector(QWidget *parent) : KVHBox(parent, Qt::Vertical)
 {
 	setupChooseColor();
 	loadSchemes();
@@ -54,8 +56,8 @@ KTThemeSelector::~KTThemeSelector()
 
 void KTThemeSelector::setupChooseColor()
 {
-	DVHBox *hbox = new DVHBox(this, Qt::Horizontal);
-	DVHBox *box1 = new DVHBox(hbox, Qt::Vertical);
+	KVHBox *hbox = new KVHBox(this, Qt::Horizontal);
+	KVHBox *box1 = new KVHBox(hbox, Qt::Vertical);
 	box1->boxLayout()->setMargin(10);
 	m_general = new QGroupBox(tr("General"), box1);
 	
@@ -67,13 +69,12 @@ void KTThemeSelector::setupChooseColor()
 	
 	QPalette colorGroup = QApplication::palette();
 	
-	
 	QList<QColor> colors = QList<QColor>() << colorGroup.text ().color() << colorGroup.base().color() << colorGroup.foreground().color() << colorGroup.background().color() << colorGroup.button().color() << colorGroup.buttonText().color();
 	
 	for(int i = 0; i < labels1.count(); i++)
 	{
 		layout1->addWidget(new QLabel(labels1[i], m_general), i, 0 );
-		DColorButton *button = new DColorButton(m_general);
+		KColorButton *button = new KColorButton(m_general);
 		button->setObjectName(names[i]);
 		QPalette pal = button->palette();
 		pal.setColor(QPalette::Button, colors[i]);
@@ -97,7 +98,7 @@ void KTThemeSelector::setupChooseColor()
 	for(int i = 0; i < labels2.count(); i++)
 	{
 		layout2->addWidget(new QLabel(labels2[i], m_effects), i, 0 );
-		DColorButton *button = new DColorButton(m_effects);
+		KColorButton *button = new KColorButton(m_effects);
 		button->setObjectName(names2[i]);
 		QPalette pal = button->palette();
 		pal.setColor(QPalette::Button, colors[i]);
@@ -108,7 +109,7 @@ void KTThemeSelector::setupChooseColor()
 	}
 	////////////
 	
-	DVHBox *box2 = new DVHBox(hbox, Qt::Vertical);
+	KVHBox *box2 = new KVHBox(hbox, Qt::Vertical);
 	box2->boxLayout()->setMargin(10);
 	m_selections = new QGroupBox(tr("Selections"), box2);
 	
@@ -122,7 +123,7 @@ void KTThemeSelector::setupChooseColor()
 	for(int i = 0; i < labels3.count(); i++)
 	{
 		layout3->addWidget(new QLabel(labels3[i], m_selections), i, 0 );
-		DColorButton *button = new DColorButton(m_selections);
+		KColorButton *button = new KColorButton(m_selections);
 		button->setObjectName(names3[i]);
 		QPalette pal = button->palette();
 		pal.setColor(QPalette::Button, colors[i]);
@@ -144,7 +145,7 @@ void KTThemeSelector::setupChooseColor()
 	for(int i = 0; i < labels4.count(); i++)
 	{
 		layout4->addWidget(new QLabel(labels4[i], m_textEffects), i, 0 );
-		DColorButton *button = new DColorButton(m_textEffects);
+		KColorButton *button = new KColorButton(m_textEffects);
 		button->setObjectName(names4[i]);
 		QPalette pal = button->palette();
 		pal.setColor(QPalette::Button, colors[i]);
@@ -172,11 +173,11 @@ void KTThemeSelector::setupChooseColor()
 	
 	schemeWidget->setLayout(schemaLayout);
 	
-	new DSeparator(this);
+	new KSeparator(this);
 	new QLabel(tr("Style"), this);
-	/*DStyleComboBox *styleComboBox = */new DStyleComboBox(this);
+	/*DStyleComboBox *styleComboBox = */new KStyleComboBox(this);
 	
-	new DSeparator(this);
+	new KSeparator(this);
 	m_useColors = new QCheckBox(tr("Use this colors"), this);
 	
 	connect(&m_generalButtonGroup, SIGNAL(buttonClicked(QAbstractButton * )), SLOT(chooseGeneralColor(QAbstractButton * )));
@@ -187,7 +188,7 @@ void KTThemeSelector::setupChooseColor()
 
 void KTThemeSelector::chooseGeneralColor(QAbstractButton *  button)
 {
-	QColor c = qobject_cast<DColorButton *>(button)->color();
+	QColor c = qobject_cast<KColorButton *>(button)->color();
 	QPalette pal = button->palette();
 	pal.setColor(QPalette::Button, c);
 	button->setPalette(pal);
@@ -197,7 +198,7 @@ void KTThemeSelector::chooseGeneralColor(QAbstractButton *  button)
 
 void KTThemeSelector::chooseEffectsColor(QAbstractButton *  button)
 {
-	QColor c = qobject_cast<DColorButton *>(button)->color();
+	QColor c = qobject_cast<KColorButton *>(button)->color();
 	QPalette pal = button->palette();
 	pal.setColor(QPalette::Button, c);
 	button->setPalette(pal);
@@ -206,7 +207,7 @@ void KTThemeSelector::chooseEffectsColor(QAbstractButton *  button)
 
 void KTThemeSelector::chooseSelectionsColor(QAbstractButton *  button)
 {
-	QColor c = qobject_cast<DColorButton *>(button)->color();
+	QColor c = qobject_cast<KColorButton *>(button)->color();
 	QPalette pal = button->palette();
 	pal.setColor(QPalette::Button, c);
 	button->setPalette(pal);
@@ -216,7 +217,7 @@ void KTThemeSelector::chooseSelectionsColor(QAbstractButton *  button)
 
 void KTThemeSelector::chooseTextEffectsColor(QAbstractButton *  button)
 {
-	QColor c = qobject_cast<DColorButton *>(button)->color();
+	QColor c = qobject_cast<KColorButton *>(button)->color();
 	QPalette pal = button->palette();
 	pal.setColor(QPalette::Button, c);
 	button->setPalette(pal);
@@ -225,9 +226,9 @@ void KTThemeSelector::chooseTextEffectsColor(QAbstractButton *  button)
 
 }
 
-DThemeDocument KTThemeSelector::document() const
+KThemeDocument KTThemeSelector::document() const
 {
-	DThemeDocument doc;
+	KThemeDocument doc;
 	
 	doc.addGeneralSection( m_generalSection);
 	doc.addEffectsSection(m_effectsSection);
@@ -298,13 +299,13 @@ void KTThemeSelector::loadSchemaFromListView(QTreeWidgetItem *item, int /*column
 {
 	if ( item )
 	{
-		dApp->applyTheme(CONFIG_DIR+"/themes/"+item->text(0));
+		kApp->applyTheme(CONFIG_DIR+"/themes/"+item->text(0));
 		
 		if ( ! item->text(0).isEmpty() )
 		{
-			D_FUNCINFO;
-			DCONFIG->beginGroup("General");
-			DCONFIG->setValue( "ThemeFile", CONFIG_DIR+"/themes/"+item->text(0) );
+			K_FUNCINFO;
+			KCONFIG->beginGroup("General");
+			KCONFIG->setValue( "ThemeFile", CONFIG_DIR+"/themes/"+item->text(0) );
 			
 			m_lastFile = CONFIG_DIR+"/themes/"+item->text(0);
 		}

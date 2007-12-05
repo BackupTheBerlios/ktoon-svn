@@ -127,11 +127,11 @@ void KTScenesWidget::emitRequestInsertScene()
 {
 	K_FUNCINFO;
 	
-	int index = d->tableScenes->indexCurrentScene() + 1;
+	int index = k->tableScenes->indexCurrentScene() + 1;
 	
 	if ( index == 0 )
 	{
-		index = d->tableScenes->scenesCount();
+		index = k->tableScenes->scenesCount();
 	}
 	
 	
@@ -142,7 +142,7 @@ void KTScenesWidget::emitRequestInsertScene()
 
 void KTScenesWidget::emitRequestRemoveScene()
 {
-	KTProjectRequest event = KTRequestBuilder::createSceneRequest( d->tableScenes->indexCurrentScene(), KTProjectRequest::Remove );
+	KTProjectRequest event = KTRequestBuilder::createSceneRequest( k->tableScenes->indexCurrentScene(), KTProjectRequest::Remove );
 	
 	emit requestTriggered( &event );
 }

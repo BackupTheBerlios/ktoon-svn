@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   kruadrosx@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -34,10 +36,10 @@ struct KTLineGuide::Private
 	bool enabled;
 };
 
-KTLineGuide::KTLineGuide(Qt::Orientation o ,QGraphicsScene *scene): QGraphicsItem(0, scene), d(new Private)
+KTLineGuide::KTLineGuide(Qt::Orientation o ,QGraphicsScene *scene): QGraphicsItem(0, scene), k(new Private)
 {
-	d->orientation = o;
-	d->enabled = true;
+	k->orientation = o;
+	k->enabled = true;
 // 	setAcceptsHoverEvents(true);
 // 	setAcceptedMouseButtons(0);
 	
@@ -53,7 +55,7 @@ KTLineGuide::~KTLineGuide()
 
 QRectF KTLineGuide::boundingRect() const
 {
-	if(d->orientation == Qt::Vertical)
+	if(k->orientation == Qt::Vertical)
 	{
 		return QRectF(QPointF(0,0), QSizeF(5, scene()->height()));
 	}
@@ -66,7 +68,7 @@ QRectF KTLineGuide::boundingRect() const
 void KTLineGuide::paint( QPainter * painter, const QStyleOptionGraphicsItem * , QWidget * )
 {
 	painter->setPen(QPen(Qt::black, 1, Qt::DashLine));
-	if(d->orientation == Qt::Vertical)
+	if(k->orientation == Qt::Vertical)
 	{
 		painter->drawLine((int)boundingRect().center().x(), 0, (int)boundingRect().center().x(), (int)boundingRect().height());
 	}
@@ -78,14 +80,14 @@ void KTLineGuide::paint( QPainter * painter, const QStyleOptionGraphicsItem * , 
 
 void KTLineGuide::setEnabledSyncCursor(bool enabled)
 {
-	d->enabled = enabled;
+	k->enabled = enabled;
 }
 
 QVariant KTLineGuide::itemChange( GraphicsItemChange change, const QVariant & value )
 {
 	if(change == ItemPositionChange)
 	{
-		if(d->orientation == Qt::Vertical)
+		if(k->orientation == Qt::Vertical)
 		{
 			return QPointF(value.toPointF().x(), 0);
 		}
@@ -114,7 +116,7 @@ QVariant KTLineGuide::itemChange( GraphicsItemChange change, const QVariant & va
 
 void KTLineGuide::mouseMoveEvent(QGraphicsSceneMouseEvent * e)
 {
-	if(d->enabled)
+	if(k->enabled)
 	{
 		syncCursor();
 	}
@@ -160,7 +162,7 @@ void KTLineGuide::syncCursor()
 	}
 	
 	double distance;
-	if(d->orientation == Qt::Vertical)
+	if(k->orientation == Qt::Vertical)
 	{
 		distance = globalPos.x()+ 2 - QCursor::pos().x();
 	}
@@ -171,7 +173,7 @@ void KTLineGuide::syncCursor()
 	
 	if( -QApplication::startDragDistance() < distance && distance < QApplication::startDragDistance() )
 	{
-		if(d->orientation == Qt::Vertical)
+		if(k->orientation == Qt::Vertical)
 		{
 			QCursor::setPos((int)globalPos.x()+2, (int)QCursor::pos().y()) ;
 		}

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                    *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -317,7 +319,7 @@ struct KTExposureTable::Private
 	QMenu *menu;
 };
 
-KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), d(new Private)
+KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new Private)
 {
 	
 	setItemDelegate(new KTExposureItemDelegate(this));
@@ -332,15 +334,15 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), d(new
 	
 	setRowCount( 100 );
 	
-	d->header = new KTExposureHeader(this);
-	connect(d->header, SIGNAL(visiblityChanged ( int, bool )), this, SIGNAL(requestChangeVisiblityLayer( int, bool )));
-	connect(d->header, SIGNAL(changedName ( int, const QString & )), this, SIGNAL(requestRenameLayer( int, const QString & )));
+	k->header = new KTExposureHeader(this);
+	connect(k->header, SIGNAL(visiblityChanged ( int, bool )), this, SIGNAL(requestChangeVisiblityLayer( int, bool )));
+	connect(k->header, SIGNAL(changedName ( int, const QString & )), this, SIGNAL(requestRenameLayer( int, const QString & )));
 	
 	
-	connect(d->header, SIGNAL(sectionMoved ( int , int , int  )), this, SLOT(emitRequestMoveLayer( int, int , int )));
+	connect(k->header, SIGNAL(sectionMoved ( int , int , int  )), this, SLOT(emitRequestMoveLayer( int, int , int )));
 	
 	
-	setHorizontalHeader( d->header);
+	setHorizontalHeader( k->header);
 	
 	connect(this, SIGNAL(cellClicked ( int, int )), this, SLOT(emitRequestSetUsedFrame(int, int)));
 	connect(this, SIGNAL( currentCellChanged ( int , int , int , int  )), this, SLOT( emitRequestSelectFrame(  int , int , int , int  )));
@@ -348,7 +350,7 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), d(new
 	setSelectionBehavior (QAbstractItemView::SelectItems);
 	setSelectionMode(QAbstractItemView::SingleSelection);
 	
-	d->menu = 0;
+	k->menu = 0;
 }
 
 void KTExposureTable::emitRequestRenameFrame( QTableWidgetItem * item )
@@ -367,9 +369,9 @@ void KTExposureTable::emitRequestSelectFrame(  int currentRow_, int currentColum
 
 void KTExposureTable::emitRequestMoveLayer( int , int oldVisualIndex, int newVisualIndex  )
 {
-	if(! d->header->signalMovedBlocked())
+	if(! k->header->signalMovedBlocked())
 	{
-		d->header->moveLayer( newVisualIndex, oldVisualIndex);
+		k->header->moveLayer( newVisualIndex, oldVisualIndex);
 		emit requestMoveLayer( oldVisualIndex,  newVisualIndex );
 	}
 }
@@ -378,7 +380,7 @@ void KTExposureTable::emitRequestMoveLayer( int , int oldVisualIndex, int newVis
 
 KTExposureTable::~KTExposureTable()
 {
-	delete d;
+	delete k;
 }
 
 QString KTExposureTable::frameName(int indexLayer, int indexFrame)
@@ -405,7 +407,7 @@ void KTExposureTable::setFrameName(int indexLayer, int indexFrame,const QString 
 
 void KTExposureTable::setLayerName(int indexLayer, const QString & name)
 {
-	d->header->setLayerName( d->header->logicalIndex(indexLayer), name);
+	k->header->setLayerName( k->header->logicalIndex(indexLayer), name);
 }
 
 bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
@@ -417,7 +419,7 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
 	}
 	else
 	{
-		dWarning() << "frame " << indexLayer << "," << indexFrame << " not exist";
+		kWarning() << "frame " << indexLayer << "," << indexFrame << " not exist";
 	}
 	return false;
 }
@@ -425,19 +427,19 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
 
 void KTExposureTable::selectFrame( int indexLayer, int indexFrame)
 {
-	setCurrentCell(indexFrame,  d->header->logicalIndex(indexLayer));
+	setCurrentCell(indexFrame,  k->header->logicalIndex(indexLayer));
 }
 
 
 void KTExposureTable::setMenu(QMenu *menu)
 {
-	d->menu = menu;
+	k->menu = menu;
 }
 
 int KTExposureTable::currentLayer() const
 {
-	D_FUNCINFO;
-	return d->header->visualIndex(currentColumn());
+	K_FUNCINFO;
+	return k->header->visualIndex(currentColumn());
 }
 
 int KTExposureTable::currentFrame() const
@@ -460,7 +462,7 @@ int KTExposureTable::currentFrame() const
 void KTExposureTable::insertLayer(int index, const QString & name)
 {
 	insertColumn( index );
-	d->header->insertLayer( index, name );
+	k->header->insertLayer( index, name );
 }
 
 void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString & name, bool external)
@@ -472,27 +474,26 @@ void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString 
 	frame->setData(IsUsed, true);
 	frame->setTextAlignment(Qt::AlignCenter);
 	
-	int logicalIndex = d->header->logicalIndex( indexLayer);
+	int logicalIndex = k->header->logicalIndex( indexLayer);
 	
-	d->header->setLastFrame( logicalIndex, d->header->lastFrame(logicalIndex)+1 );
+	k->header->setLastFrame( logicalIndex, k->header->lastFrame(logicalIndex)+1 );
 	
-	setItem(d->header->lastFrame(logicalIndex)-1, logicalIndex, frame);
+	setItem(k->header->lastFrame(logicalIndex)-1, logicalIndex, frame);
 	
-	for(int i = d->header->lastFrame(logicalIndex)-1; i > indexFrame; i--)
+	for(int i = k->header->lastFrame(logicalIndex)-1; i > indexFrame; i--)
 	{
 		moveFrame(  indexLayer, i , indexLayer, i-1, external);
 	}
 	
-	if(d->header->lastFrame(logicalIndex)  == rowCount ())
+	if(k->header->lastFrame(logicalIndex)  == rowCount ())
 	{
-		setRowCount( d->header->lastFrame(logicalIndex) + 50 );
+		setRowCount( k->header->lastFrame(logicalIndex) + 50 );
 	}
 }
 
 void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
 {
-	
-	int logicalIndex = d->header->logicalIndex ( indexLayer);
+	int logicalIndex = k->header->logicalIndex ( indexLayer);
 	QTableWidgetItem * frame = item(indexFrame, logicalIndex);
 	if(frame)
 	{
@@ -513,20 +514,20 @@ void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
 
 void KTExposureTable::setLockLayer(int indexLayer,  bool locked)
 {
-	d->header->setLockLayer ( indexLayer, locked);
+	k->header->setLockLayer ( indexLayer, locked);
 }
 
 
 void KTExposureTable::setVisibilityChanged(int visualIndex, bool visibility)
 {
-	d->header->setVisibilityChanged(d->header->logicalIndex(visualIndex), visibility);
+	k->header->setVisibilityChanged(k->header->logicalIndex(visualIndex), visibility);
 }
 
 void KTExposureTable::removeLayer(int indexLayer )
 {
 	
-	int logicalIndex = d->header->logicalIndex(indexLayer);
-	d->header->removeLayer(logicalIndex);
+	int logicalIndex = k->header->logicalIndex(indexLayer);
+	k->header->removeLayer(logicalIndex);
 	removeColumn ( logicalIndex );
 }
 
@@ -544,7 +545,7 @@ void KTExposureTable::removeFrame(int indexLayer, int indexFrame)
 				setItem(index-1, indexLayer, idx);
 			}
 		}
-		d->header->setLastFrame( indexLayer, d->header->lastFrame(indexLayer)-1 );
+		k->header->setLastFrame( indexLayer, k->header->lastFrame(indexLayer)-1 );
 	}
 	setUpdatesEnabled(true);
 }
@@ -566,15 +567,15 @@ void KTExposureTable::moveFrame(  int oldPosLayer, int oldPosFrame, int newPosLa
 
 void KTExposureTable::moveLayer( int oldPosLayer, int newPosLayer )
 {
-	d->header->moveLayer( oldPosLayer, newPosLayer );
+	k->header->moveLayer( oldPosLayer, newPosLayer );
 }
 
 
 void KTExposureTable::emitRequestSetUsedFrame( int indexFrame,  int indexLayer)
 {
-	int visualIndex = d->header->visualIndex ( indexLayer);
+	int visualIndex = k->header->visualIndex ( indexLayer);
 	
-	if(indexFrame == d->header->lastFrame(indexLayer))
+	if(indexFrame == k->header->lastFrame(indexLayer))
 	{
 		emit requestSetUsedFrame(visualIndex, indexFrame);
 		emit requestSelectFrame( visualIndex, indexFrame);
@@ -583,7 +584,7 @@ void KTExposureTable::emitRequestSetUsedFrame( int indexFrame,  int indexLayer)
 
 int KTExposureTable::numUsed(int column) const
 {
-	return d->header->lastFrame( column );
+	return k->header->lastFrame( column );
 }
 
 bool KTExposureTable::edit( const QModelIndex & index, EditTrigger trigger, QEvent *event )
@@ -611,9 +612,9 @@ void KTExposureTable::mousePressEvent(QMouseEvent * event)
 	QTableWidget::mousePressEvent(event);
 	if(event->button() == Qt::RightButton)
 	{
-		if(d->menu)
+		if(k->menu)
 		{
-			d->menu->exec(event->globalPos());
+			k->menu->exec(event->globalPos());
 		}
 	}
 }

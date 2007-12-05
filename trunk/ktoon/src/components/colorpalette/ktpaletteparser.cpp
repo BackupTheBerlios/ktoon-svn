@@ -39,7 +39,7 @@ struct KTPaletteParser::Private
 		}
 };
 
-KTPaletteParser::KTPaletteParser(): DXmlParserBase(), k(new Private)
+KTPaletteParser::KTPaletteParser(): KXmlParserBase(), k(new Private)
 {
 // 	KINIT;
 	 k->paletteName = "";

@@ -304,9 +304,9 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 		case KTProjectRequest::Add:
 		{
 			QString key = response->arg().toString();
-			KTLibraryObject *obj = d->library->findObject(key);
+			KTLibraryObject *obj = k->library->findObject(key);
 			
-			QTreeWidgetItem *item = new QTreeWidgetItem(d->libraryTree);
+			QTreeWidgetItem *item = new QTreeWidgetItem(k->libraryTree);
 			item->setText(0, key);
 			
 			item->setData(0, 3216, obj->type());
@@ -333,7 +333,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 		case KTProjectRequest::Remove:
 		{
 			QString key = response->arg().toString();
-			QTreeWidgetItemIterator it(d->libraryTree);
+			QTreeWidgetItemIterator it(k->libraryTree);
 			while( (*it) )
 			{
 						if( key == (*it)->text(0) )

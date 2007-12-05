@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,7 +27,7 @@
 #include <QSpinBox>
 
 
-class DColorButton;
+class KColorButton;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -47,7 +49,7 @@ class KTPaintAreaConfig : public QWidget
 		void setupPage();
 		
 	private:
-		DColorButton *m_gridColor,*m_backgroundColor,*m_onionSkinColor,*m_onionSkinBackground;
+		KColorButton *m_gridColor,*m_backgroundColor,*m_onionSkinColor,*m_onionSkinBackground;
 		QSpinBox *m_gridSeparation;
 };
 

@@ -60,7 +60,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		void setFG(const QBrush &brush);
 		void setBG(const QBrush &brush);
 		void updateColor();
-		void changeTypeColor(DDualColorButton::DualColor s);
+		void changeTypeColor(KDualColorButton::DualColor s);
 		void syncHsv(int h , int s , int v);
 		void setHS(int h, int s);
 		void changeBrushType(const QString& );

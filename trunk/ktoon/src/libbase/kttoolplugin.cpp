@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -34,14 +36,13 @@ struct KTToolPlugin::Private
 	QString currentTool;
 };
 
-KTToolPlugin::KTToolPlugin(QObject * parent) : QObject(parent), d(new Private)
+KTToolPlugin::KTToolPlugin(QObject * parent) : QObject(parent), k(new Private)
 {
 }
 
-
 KTToolPlugin::~KTToolPlugin()
 {
-	delete d;
+	delete k;
 }
 
 void KTToolPlugin::init(KTGraphicsScene *scene)
@@ -56,30 +57,28 @@ void KTToolPlugin::updateScene(KTGraphicsScene *scene)
 
 void KTToolPlugin::setCurrentTool(const QString &tool)
 {
-	d->currentTool = tool;
+	k->currentTool = tool;
 }
 
 QString KTToolPlugin::currentTool() const
 {
-	return d->currentTool;
+	return k->currentTool;
 }
 
 void KTToolPlugin::begin()
 {
-	dDebug("tools") << "Begin: " << d->currentTool;
-	
+	kDebug("tools") << "Begin: " << k->currentTool;
 }
 
 void KTToolPlugin::end()
 {
-	dDebug("tools") << "End: " << d->currentTool;
+	kDebug("tools") << "End: " << k->currentTool;
 }
 
 void KTToolPlugin::itemResponse( const KTItemResponse *event)
 {
 	Q_UNUSED(event);
 }
-
 
 void KTToolPlugin::doubleClick(const KTInputDeviceInformation *, KTGraphicsScene * )
 {

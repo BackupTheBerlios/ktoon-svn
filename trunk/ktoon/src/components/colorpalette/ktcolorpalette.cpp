@@ -104,8 +104,8 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
 	k->centralWidget->setPalette(palette());
 	
 	KCONFIG->beginGroup("ColorPalette");
-	QColor foreground = QColor(DCONFIG->value("LastForegroundColor", Qt::black).toString());
-	QColor background = QColor(DCONFIG->value("LastBackgroundColor", Qt::transparent).toString());
+	QColor foreground = QColor(KCONFIG->value("LastForegroundColor", Qt::black).toString());
+	QColor background = QColor(KCONFIG->value("LastBackgroundColor", Qt::transparent).toString());
 	
 }
 
@@ -146,7 +146,7 @@ void KTColorPalette::setupChooserTypeColor()
 	connect(k->displayColorValue, SIGNAL(hueChanged(int)), k->colorPicker, SLOT(setH(int)));
 	connect(k->displayColorValue, SIGNAL(saturationChanged(int)), k->colorPicker, SLOT(setS(int)));
 	
-	layoutContainer->addWidget(d->colorPicker, 0, Qt::AlignLeft);
+	layoutContainer->addWidget(k->colorPicker, 0, Qt::AlignLeft);
 	
 	k->luminancePicker = new KTLuminancePicker( colorMixer );
 	connect( k->luminancePicker, SIGNAL( newHsv(int, int, int )), this, SLOT (syncHsv(int, int, int)));

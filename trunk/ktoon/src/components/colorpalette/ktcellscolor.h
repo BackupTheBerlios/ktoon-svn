@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                    *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,7 +20,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KTCELLSCOLOR_H
 #define KTCELLSCOLOR_H
 
@@ -27,7 +28,7 @@
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class KTCellsColor : public DCellView
+class KTCellsColor : public KCellView
 {
 Q_OBJECT
 	public:
@@ -46,7 +47,7 @@ Q_OBJECT
 		
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 		
 	protected:
 		void mousePressEvent(QMouseEvent* e);

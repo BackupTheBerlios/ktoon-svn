@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -70,11 +72,11 @@ void Animator::holdPosition(qreal step, const QPointF &pos)
 }
 #endif
 
-#define VERIFY_STEP(s) if( s > d->frames || d->frames == 0) { \
-                         dWarning("items") << "Invalid step " << s << " for tweening, maximun step is " << d->frames << "; In " << __FUNCTION__; \
+#define VERIFY_STEP(s) if( s > k->frames || k->frames == 0) { \
+                         kWarning("items") << "Invalid step " << s << " for tweening, maximun step are " << k->frames << "; In " << __FUNCTION__; \
                          return; }
 
-#define STEP(s) s / (double)d->frames
+#define STEP(s) s / (double)k->frames
 
 struct KTItemTweener::Private
 {
@@ -98,17 +100,17 @@ struct KTItemTweener::Private
 	}
 };
 
-KTItemTweener::KTItemTweener(int frames, QObject *parent) : QObject(parent), d(new Private)
+KTItemTweener::KTItemTweener(int frames, QObject *parent) : QObject(parent), k(new Private)
 {
-	d->animator = new Animator(this);
-	d->frames = frames;
+	k->animator = new Animator(this);
+	k->frames = frames;
 }
 
 
 KTItemTweener::~KTItemTweener()
 {
-	qDeleteAll(d->steps);
-	delete d;
+	qDeleteAll(k->steps);
+	delete k;
 }
 
 // void KTItemTweener::afterAnimationStep( qreal step )
@@ -124,102 +126,102 @@ KTItemTweener::~KTItemTweener()
 
 double KTItemTweener::horizontalScaleAt( int step ) const
 {
-	return d->animator->horizontalScaleAt( STEP(step) );
+	return k->animator->horizontalScaleAt( STEP(step) );
 }
 
 double KTItemTweener::horizontalShearAt( int step ) const
 {
-	return d->animator->horizontalShearAt(STEP(step));
+	return k->animator->horizontalShearAt(STEP(step));
 }
 
 QGraphicsItem *KTItemTweener::item() const
 {
-	return d->animator->item();
+	return k->animator->item();
 }
 
 QMatrix KTItemTweener::matrixAt( int step ) const
 {
-	return d->animator->matrixAt(STEP(step));
+	return k->animator->matrixAt(STEP(step));
 }
 
 QPointF KTItemTweener::posAt( int step ) const
 {
-	return d->animator->posAt(STEP(step));
+	return k->animator->posAt(STEP(step));
 }
 
 double KTItemTweener::rotationAt( int step ) const
 {
-	return d->animator->rotationAt(STEP(step));
+	return k->animator->rotationAt(STEP(step));
 }
 
 void KTItemTweener::setItem( QGraphicsItem * item )
 {
-	d->animator->setItem(item);
+	k->animator->setItem(item);
 }
 
 void KTItemTweener::setPosAt( int step, const QPointF & point )
 {
 	VERIFY_STEP(step);
 	
-	d->animator->setPosAt(STEP(step), point);
+	k->animator->setPosAt(STEP(step), point);
 	
-	d->step(step)->setPosition(point);
+	k->step(step)->setPosition(point);
 	
 #if QT_VERSION < 0x040300
-	d->animator->holdPosition(STEP(step), point);
+	k->animator->holdPosition(STEP(step), point);
 #endif
 }
 
 void KTItemTweener::setRotationAt( int step, double angle )
 {
 	VERIFY_STEP(step);
-	d->animator->setRotationAt(STEP(step), angle);
+	k->animator->setRotationAt(STEP(step), angle);
 	
-	d->step(step)->setRotation(angle);
+	k->step(step)->setRotation(angle);
 }
 
 void KTItemTweener::setScaleAt( int step, double sx, double sy )
 {
 	VERIFY_STEP(step);
-	d->animator->setScaleAt(STEP(step), sx, sy);
+	k->animator->setScaleAt(STEP(step), sx, sy);
 	
-	d->step(step)->setScale(sx, sy);
+	k->step(step)->setScale(sx, sy);
 }
 
 void KTItemTweener::setShearAt( int step, double sh, double sv )
 {
 	VERIFY_STEP(step);
-	d->animator->setShearAt(STEP(step), sh, sv);
+	k->animator->setShearAt(STEP(step), sh, sv);
 	
-	d->step(step)->setScale(sh, sv);
+	k->step(step)->setScale(sh, sv);
 }
 
 void KTItemTweener::setTranslationAt( int step, double dx, double dy )
 {
 	VERIFY_STEP(step);
-	d->animator->setTranslationAt(STEP(step), dx, dy);
+	k->animator->setTranslationAt(STEP(step), dx, dy);
 	
-	d->step(step)->setTranslation(dx, dy);
+	k->step(step)->setTranslation(dx, dy);
 }
 
 double KTItemTweener::verticalScaleAt( int step ) const
 {
-	return d->animator->verticalScaleAt(STEP(step));
+	return k->animator->verticalScaleAt(STEP(step));
 }
 
 double KTItemTweener::verticalShearAt( int step ) const
 {
-	return d->animator->verticalShearAt(STEP(step));
+	return k->animator->verticalShearAt(STEP(step));
 }
 
 double KTItemTweener::xTranslationAt( int step ) const
 {
-	return d->animator->xTranslationAt(STEP(step));
+	return k->animator->xTranslationAt(STEP(step));
 }
 
 double KTItemTweener::yTranslationAt( int step ) const
 {
-	return d->animator->yTranslationAt(STEP(step));
+	return k->animator->yTranslationAt(STEP(step));
 }
 
 void KTItemTweener::addStep(const KTTweenerStep &step)
@@ -257,18 +259,18 @@ void KTItemTweener::addStep(const KTTweenerStep &step)
 
 void KTItemTweener::setFrames(int frames)
 {
-	d->frames = frames;
+	k->frames = frames;
 }
 
 int KTItemTweener::frames() const
 {
-	return d->frames;
+	return k->frames;
 }
 
 void KTItemTweener::setStep( int step )
 {
 	VERIFY_STEP(step);
-	d->animator->setStep(STEP(step));
+	k->animator->setStep(STEP(step));
 }
 
 void KTItemTweener::fromXml(const QString &xml)
@@ -278,7 +280,7 @@ void KTItemTweener::fromXml(const QString &xml)
 	{
 		QDomElement root = doc.documentElement();
 		
-		d->frames = root.attribute("frames").toInt();
+		k->frames = root.attribute("frames").toInt();
 		
 		QDomNode n = root.firstChild();
 		
@@ -314,9 +316,9 @@ void KTItemTweener::fromXml(const QString &xml)
 QDomElement KTItemTweener::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("tweening");
-	root.setAttribute("frames", d->frames);
+	root.setAttribute("frames", k->frames);
 	
-	foreach(KTTweenerStep *step, d->steps.values())
+	foreach(KTTweenerStep *step, k->steps.values())
 	{
 		root.appendChild(step->toXml(doc));
 	}

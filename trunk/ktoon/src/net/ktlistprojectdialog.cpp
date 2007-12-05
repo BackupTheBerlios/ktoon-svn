@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrox@toonka.com>             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -33,15 +35,14 @@
 struct KTListProjectDialog::Private
 {
 	QTreeWidget *tree;
-	DTreeWidgetSearchLine *search;
+	KTreeWidgetSearchLine *search;
 	QPushButton *accept, *cancel;
 
 };
 
-KTListProjectDialog::KTListProjectDialog()
-	: QDialog(), d(new Private)
+KTListProjectDialog::KTListProjectDialog() : QDialog(), k(new Private)
 {
-	setWindowTitle ( tr("List Projects from Server"));
+	setWindowTitle ( tr("Projects List from Server"));
 	setModal ( true );
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	setLayout(layout);
@@ -50,34 +51,30 @@ KTListProjectDialog::KTListProjectDialog()
 	QToolButton *button = new QToolButton;
 	button->setIcon( QIcon(THEME_DIR+"/icons/clear_right.png"));
 
-
 	search->addWidget(button);
-	d->tree = new  QTreeWidget;
+	k->tree = new  QTreeWidget;
 	
 	
-	d->tree->setHeaderLabels( QStringList() << tr("name") << tr("author") << tr("description") );
-	d->tree->header()->show();
-	d->search = new DTreeWidgetSearchLine(this,d->tree);
-	search->addWidget( d->search );
-	connect(button, SIGNAL(clicked()), d->search, SLOT(clear()));
+	k->tree->setHeaderLabels( QStringList() << tr("name") << tr("author") << tr("description") );
+	k->tree->header()->show();
+	k->search = new KTreeWidgetSearchLine(this,k->tree);
+	search->addWidget( k->search );
+	connect(button, SIGNAL(clicked()), k->search, SLOT(clear()));
 	
-	connect(d->tree, SIGNAL(itemDoubleClicked ( QTreeWidgetItem *, int)), this, SLOT(execAccept(QTreeWidgetItem * , int )));
+	connect(k->tree, SIGNAL(itemDoubleClicked ( QTreeWidgetItem *, int)), this, SLOT(execAccept(QTreeWidgetItem * , int )));
 	
 	layout->addLayout(search);
-	layout->addWidget(d->tree);
+	layout->addWidget(k->tree);
 	
 	//----
 	QHBoxLayout *buttons = new QHBoxLayout;
-	d->accept = new QPushButton(tr("OK"));
-	d->cancel = new QPushButton("Cancel");
-	connect(d->accept, SIGNAL( clicked ()), this, SLOT(accept()));
-	connect(d->cancel, SIGNAL( clicked()), this, SLOT(reject()));
-	buttons->addWidget(d->accept);
-	buttons->addWidget(d->cancel);
+	k->accept = new QPushButton(tr("OK"));
+	k->cancel = new QPushButton("Cancel");
+	connect(k->accept, SIGNAL( clicked ()), this, SLOT(accept()));
+	connect(k->cancel, SIGNAL( clicked()), this, SLOT(reject()));
+	buttons->addWidget(k->accept);
+	buttons->addWidget(k->cancel);
 	layout->addLayout(buttons);
-	
-	
-	
 }
 
 
@@ -87,7 +84,7 @@ KTListProjectDialog::~KTListProjectDialog()
 
 void KTListProjectDialog::addProject(const QString& name, const QString& author, const QString& description)
 {
-	QTreeWidgetItem *item = new QTreeWidgetItem(d->tree);
+	QTreeWidgetItem *item = new QTreeWidgetItem(k->tree);
 	item->setText(0, name);
 	item->setText(1, author);
 	item->setText(2, description);
@@ -95,7 +92,7 @@ void KTListProjectDialog::addProject(const QString& name, const QString& author,
 
 QString KTListProjectDialog::currentProject()
 {
-	QTreeWidgetItem *item = d->tree->currentItem ();
+	QTreeWidgetItem *item = k->tree->currentItem ();
 	if(item)
 	{
 		return item->text(0);

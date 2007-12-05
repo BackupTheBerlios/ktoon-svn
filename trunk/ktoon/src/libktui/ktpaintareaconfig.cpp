@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -31,7 +33,6 @@
 KTPaintAreaConfig::KTPaintAreaConfig(QWidget *parent) : QWidget(parent)
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
-	
 	setupPage();
 }
 
@@ -39,22 +40,19 @@ KTPaintAreaConfig::~KTPaintAreaConfig()
 {
 }
 
-
 void KTPaintAreaConfig::setupPage()
 {
-	
 	QFrame *page = new QFrame;
 	QGridLayout *pageLayout = new QGridLayout(page);
 	page->setFrameStyle(QFrame::Box | QFrame::Sunken );
 	
-	DCONFIG->beginGroup("PaintArea");
+	KCONFIG->beginGroup("PaintArea");
 	
 	pageLayout->addWidget(new QLabel(tr("Grid color")), 0, 0);
-	m_gridColor = new DColorButton;
+	m_gridColor = new KColorButton;
 	pageLayout->addWidget(m_gridColor, 0, 1);
 	
-	m_gridColor->setColor( qvariant_cast<QColor>(DCONFIG->value("GridColor", QColor(Qt::gray))));
-	
+	m_gridColor->setColor( qvariant_cast<QColor>(KCONFIG->value("GridColor", QColor(Qt::gray))));
 	
 	pageLayout->addWidget(new QLabel(tr("Grid separation")), 0, 0);
 	m_gridSeparation = new QSpinBox(this);
@@ -65,24 +63,23 @@ void KTPaintAreaConfig::setupPage()
 	m_gridSeparation->setMinimum(10);
 	m_gridSeparation->setValue(10);
 	
-	
 	pageLayout->addWidget(new QLabel(tr("Background color")), 1, 0);
-	m_backgroundColor = new DColorButton;
+	m_backgroundColor = new KColorButton;
 	pageLayout->addWidget(m_backgroundColor, 1, 1);
 	
-	m_backgroundColor->setColor(qvariant_cast<QColor>(DCONFIG->value("BackgroundColor", QColor(Qt::white))));
+	m_backgroundColor->setColor(qvariant_cast<QColor>(KCONFIG->value("BackgroundColor", QColor(Qt::white))));
 	
 	pageLayout->addWidget(new QLabel(tr("Onion skin color")), 2, 0);
-	m_onionSkinColor = new DColorButton;
+	m_onionSkinColor = new KColorButton;
 	pageLayout->addWidget(m_onionSkinColor, 2, 1);
 	
-	m_onionSkinColor->setColor(qvariant_cast<QColor>(DCONFIG->value("OnionSkinColor", QColor(Qt::lightGray))));
+	m_onionSkinColor->setColor(qvariant_cast<QColor>(KCONFIG->value("OnionSkinColor", QColor(Qt::lightGray))));
 	
 	pageLayout->addWidget(new QLabel(tr("Onion skin background ")), 3, 0);
-	m_onionSkinBackground = new DColorButton;
+	m_onionSkinBackground = new KColorButton;
 	pageLayout->addWidget(m_onionSkinBackground, 3, 1);
 	
-	m_onionSkinBackground->setColor(qvariant_cast<QColor>(DCONFIG->value("OnionSkinBackground", QColor(Qt::lightGray))));
+	m_onionSkinBackground->setColor(qvariant_cast<QColor>(KCONFIG->value("OnionSkinBackground", QColor(Qt::lightGray))));
 	
 	layout()->addWidget(page);
 }
@@ -111,4 +108,3 @@ int KTPaintAreaConfig::gridSeparation() const
 {
 	return m_gridSeparation->value();
 }
-

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -39,54 +41,54 @@ struct KTCellsColor::Private
 };
 
 KTCellsColor::KTCellsColor(QWidget *parent, Type type)
-	: DCellView(16, parent), d(new Private)
+	: KCellView(16, parent), k(new Private)
 {
-	d->type = type;
-	d->readOnly = false;
+	k->type = type;
+	k->readOnly = false;
 	setAcceptDrops(true);
 }
 
 
 KTCellsColor::~KTCellsColor()
 {
-	delete d;
+	delete k;
 }
 
 
 void KTCellsColor::setReadOnly(bool enable)
 {
-	d->readOnly = enable;
+	k->readOnly = enable;
 }
 
 bool KTCellsColor::isReadOnly()
 {
-	return d->readOnly;
+	return k->readOnly;
 }
 
 void KTCellsColor::setType(Type type)
 {
-	d->type = type;
+	k->type = type;
 }
 
 int KTCellsColor::type()
 {
-	return d->type;
+	return k->type;
 }
 
 QString KTCellsColor::name() const
 {
-	return d->name;
+	return k->name;
 }
 
 void KTCellsColor::setName(const QString& name)
 {
-	d->name = name;
+	k->name = name;
 }
 
 void KTCellsColor::save( const QString &path)
 {
 	QFile save(path);
-	KTPaletteDocument document(d->name, true);
+	KTPaletteDocument document(k->name, true);
 	
 	for(int i = 0; i < columnCount() ; i++)
 	{
@@ -162,16 +164,16 @@ void KTCellsColor::dropEvent( QDropEvent *event )
 
 void KTCellsColor::mousePressEvent(QMouseEvent* e)
 {
-	DCellView::mousePressEvent(e);
-	d->startDragPosition = e->pos();
+	KCellView::mousePressEvent(e);
+	k->startDragPosition = e->pos();
 	
 }
 
 void KTCellsColor::mouseMoveEvent(QMouseEvent* e)
 {
-	DCellView::mouseMoveEvent(e);
+	KCellView::mouseMoveEvent(e);
 	
-	if ((e->pos() - d->startDragPosition).manhattanLength() <  QApplication::startDragDistance() || !currentItem() )
+	if ((e->pos() - k->startDragPosition).manhattanLength() <  QApplication::startDragDistance() || !currentItem() )
 		return;
 
 	QDrag *drag = new QDrag( this );
@@ -192,7 +194,4 @@ void KTCellsColor::mouseMoveEvent(QMouseEvent* e)
 	/*Qt::DropAction dropAction = */drag->start(Qt::MoveAction);
 
 }
-
-
-
 

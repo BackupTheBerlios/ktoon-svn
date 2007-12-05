@@ -46,7 +46,6 @@ class KTProxyItem : public QGraphicsItem
 		virtual bool isObscuredBy ( const QGraphicsItem * item ) const;
 		virtual QPainterPath opaqueArea () const;
 		
-		
 		QPainterPath shape () const;
 		
 		enum { Type = UserType + 2 };

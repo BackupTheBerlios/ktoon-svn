@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrox@toonka.com>             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -55,21 +57,21 @@ class KTConnectDialog::Private
 		
 };
 
-KTConnectDialog::KTConnectDialog(QWidget *parent) : QDialog(parent), d(new Private())
+KTConnectDialog::KTConnectDialog(QWidget *parent) : QDialog(parent), k(new Private())
 {
-	d->login = new QLineEdit;
-	d->password = new QLineEdit;
-	d->password->setEchoMode( QLineEdit::Password);
+	k->login = new QLineEdit;
+	k->password = new QLineEdit;
+	k->password->setEchoMode( QLineEdit::Password);
 	
-	d->server = new QLineEdit;
-	d->port = new QSpinBox;
-	d->port->setMinimum(1);
-	d->port->setMaximum(65000);
+	k->server = new QLineEdit;
+	k->port = new QSpinBox;
+	k->port->setMinimum(1);
+	k->port->setMaximum(65000);
 	
-	QGridLayout *layout = DFormFactory::makeGrid(QStringList() << tr("Login") << tr("Password") << tr("Server") << tr("Port"), QWidgetList() << d->login << d->password << d->server << d->port);
+	QGridLayout *layout = KFormFactory::makeGrid(QStringList() << tr("Login") << tr("Password") << tr("Server") << tr("Port"), QWidgetList() << k->login << k->password << k->server << k->port);
 	
-	d->storePassword = new QCheckBox(tr("Store password"));
-	layout->addWidget(d->storePassword, 5, 1);
+	k->storePassword = new QCheckBox(tr("Store password"));
+	layout->addWidget(k->storePassword, 5, 1);
 	
 	QDialogButtonBox *box = new QDialogButtonBox;
 	
@@ -96,67 +98,66 @@ KTConnectDialog::~KTConnectDialog()
 
 void KTConnectDialog::setServer(const QString &server)
 {
-	d->server->setText(server);
+	k->server->setText(server);
 }
 
 void KTConnectDialog::setPort(int port)
 {
-	d->port->setValue(port);
+	k->port->setValue(port);
 }
 
 
 QString KTConnectDialog::login() const
 {
-	return d->login->text();
+	return k->login->text();
 }
 
 QString KTConnectDialog::password() const
 {
-	return d->password->text();
+	return k->password->text();
 }
 
 QString KTConnectDialog::server() const
 {
-	return d->server->text();
+	return k->server->text();
 }
 
 int KTConnectDialog::port() const
 {
-	return d->port->value();
+	return k->port->value();
 }
 
 
 void KTConnectDialog::loadSettings()
 {
-	DCONFIG->beginGroup("Network");
-	d->server->setText(DCONFIG->value("server", "localhost").toString());
-	d->port->setValue(DCONFIG->value("port", 6502).toInt());
-	d->login->setText(DCONFIG->value("login", "").toString());
-	d->password->setText(DCONFIG->value("password", "").toString());
+	KCONFIG->beginGroup("Network");
+	k->server->setText(KCONFIG->value("server", "localhost").toString());
+	k->port->setValue(KCONFIG->value("port", 6502).toInt());
+	k->login->setText(KCONFIG->value("login", "").toString());
+	k->password->setText(KCONFIG->value("password", "").toString());
 	
-	d->storePassword->setChecked(DCONFIG->value("storePassword").toInt());
+	k->storePassword->setChecked(KCONFIG->value("storePassword").toInt());
 }
 
 void KTConnectDialog::saveSettings()
 {
-	DCONFIG->beginGroup("Network");
+	KCONFIG->beginGroup("Network");
 	
-	DCONFIG->setValue("server", d->server->text() );
-	DCONFIG->setValue("port", d->port->value());
-	DCONFIG->setValue("login", d->login->text());
+	KCONFIG->setValue("server", k->server->text() );
+	KCONFIG->setValue("port", k->port->value());
+	KCONFIG->setValue("login", k->login->text());
 	
-	if ( d->storePassword->isChecked() )
+	if ( k->storePassword->isChecked() )
 	{
-		DCONFIG->setValue("password", d->password->text());
+		KCONFIG->setValue("password", k->password->text());
 	}
 	else
 	{
-		DCONFIG->setValue("password", "");
+		KCONFIG->setValue("password", "");
 	}
 	
-	DCONFIG->setValue("storePassword", d->storePassword->isChecked() ? 1 : 0);
-	
-	DCONFIG->sync();
+	KCONFIG->setValue("storePassword", k->storePassword->isChecked() ? 1 : 0);
+	KCONFIG->sync();
 	
 }
 

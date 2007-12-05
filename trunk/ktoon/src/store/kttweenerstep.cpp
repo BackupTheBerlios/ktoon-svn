@@ -38,112 +38,112 @@ struct KTTweenerStep::Private
 };
 
 KTTweenerStep::KTTweenerStep(int n)
- : KTAbstractSerializable(), d(new Private)
+ : KTAbstractSerializable(), k(new Private)
 {
-	d->n = n;
-	d->flags = None;
+	k->n = n;
+	k->flags = None;
 }
 
 KTTweenerStep::~KTTweenerStep()
 {
-	delete d;
+	delete k;
 }
 
 void KTTweenerStep::setPosition(const QPointF &pos)
 {
-	d->position = pos;
-	d->flags |= Position;
+	k->position = pos;
+	k->flags |= Position;
 }
 
 void KTTweenerStep::setTranslation(double dx, double dy)
 {
-	d->translation.x = dx;
-	d->translation.y = dy;
-	d->flags |= Translation;
+	k->translation.x = dx;
+	k->translation.y = dy;
+	k->flags |= Translation;
 }
 
 void KTTweenerStep::setRotation(double angle)
 {
-	d->rotation = angle;
-	d->flags |= Rotation;
+	k->rotation = angle;
+	k->flags |= Rotation;
 }
 
 void KTTweenerStep::setShear(double sh, double sv)
 {
-	d->shear.x = sh;
-	d->shear.y = sv;
-	d->flags |= Shear;
+	k->shear.x = sh;
+	k->shear.y = sv;
+	k->flags |= Shear;
 }
 
 void KTTweenerStep::setScale(double sx, double sy)
 {
-	d->scale.x = sx;
-	d->scale.y = sy;
-	d->flags |= Scale;
+	k->scale.x = sx;
+	k->scale.y = sy;
+	k->flags |= Scale;
 }
 
 
 bool KTTweenerStep::has(Type type) const
 {
-	return d->flags & type;
+	return k->flags & type;
 }
 
 int KTTweenerStep::n() const
 {
-	return d->n;
+	return k->n;
 }
 
 QPointF KTTweenerStep::position() const
 {
-	return d->position;
+	return k->position;
 }
 
 double KTTweenerStep::horizontalScale() const
 {
-	return d->scale.x;
+	return k->scale.x;
 }
 
 double KTTweenerStep::verticalScale() const
 {
-	return d->scale.y;
+	return k->scale.y;
 }
 
 double KTTweenerStep::horizontalShear() const
 {
-	return d->shear.x;
+	return k->shear.x;
 }
 
 double KTTweenerStep::verticalShear() const
 {
-	return d->shear.y;
+	return k->shear.y;
 }
 
 double KTTweenerStep::rotation() const
 {
-	return d->rotation;
+	return k->rotation;
 }
 
 double KTTweenerStep::xTranslation() const
 {
-	return d->translation.x;
+	return k->translation.x;
 }
 
 double KTTweenerStep::yTranslation() const
 {
-	return d->translation.y;
+	return k->translation.y;
 }
 
 
 QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
 {
 	QDomElement step = doc.createElement("step");
-	step.setAttribute("value", d->n);
+	step.setAttribute("value", k->n);
 	
 	if(this->has(KTTweenerStep::Position) )
 	{
 		QDomElement e = doc.createElement("position");
-		e.setAttribute("x", d->position.x());
-		e.setAttribute("y", d->position.y());
+		e.setAttribute("x", k->position.x());
+		e.setAttribute("y", k->position.y());
 		
 		step.appendChild(e);
 	}
@@ -151,8 +151,8 @@ QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
 	if(this->has(KTTweenerStep::Scale) )
 	{
 		QDomElement e = doc.createElement("scale");
-		e.setAttribute("sx", d->scale.x);
-		e.setAttribute("sy", d->scale.y);
+		e.setAttribute("sx", k->scale.x);
+		e.setAttribute("sy", k->scale.y);
 		
 		step.appendChild(e);
 	}
@@ -160,8 +160,8 @@ QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
 	if(this->has(KTTweenerStep::Translation) )
 	{
 		QDomElement e = doc.createElement("translation");
-		e.setAttribute("dx", d->translation.x);
-		e.setAttribute("dy", d->translation.y);
+		e.setAttribute("dx", k->translation.x);
+		e.setAttribute("dy", k->translation.y);
 		
 		step.appendChild(e);
 	}
@@ -169,8 +169,8 @@ QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
 	if(this->has(KTTweenerStep::Shear) )
 	{
 		QDomElement e = doc.createElement("shear");
-		e.setAttribute("sh", d->shear.x);
-		e.setAttribute("sv", d->shear.y);
+		e.setAttribute("sh", k->shear.x);
+		e.setAttribute("sv", k->shear.y);
 		
 		step.appendChild(e);
 	}
@@ -178,7 +178,7 @@ QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
 	if(this->has(KTTweenerStep::Rotation) )
 	{
 		QDomElement e = doc.createElement("rotation");
-		e.setAttribute("angle", d->rotation);
+		e.setAttribute("angle", k->rotation);
 		
 		step.appendChild(e);
 	}
@@ -197,7 +197,7 @@ void KTTweenerStep::fromXml(const QString& xml)
 		
 		QDomNode n = root.firstChild();
 		
-		d->n = root.attribute("value").toInt();
+		k->n = root.attribute("value").toInt();
 		
 		while(!n.isNull())
 		{

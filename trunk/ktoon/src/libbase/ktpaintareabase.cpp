@@ -1,8 +1,9 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@toonka.com>              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,7 +22,6 @@
  ***************************************************************************/
 
 #include "ktpaintareabase.h"
-
 
 #include <QGraphicsScene>
 #include <QMouseEvent>
@@ -90,21 +90,21 @@ struct KTPaintAreaBase::Private
 
 
 
-KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), d(new Private)
+KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), k(new Private)
 {
-	d->scene = new KTGraphicsScene();
+	k->scene = new KTGraphicsScene();
 	
-	d->grid = 0;
+	k->grid = 0;
 	
-	d->drawGrid = false;
-	d->angle = 0;
+	k->drawGrid = false;
+	k->angle = 0;
 	
-	d->rotator = new KTPaintAreaRotator(this, this);
+	k->rotator = new KTPaintAreaRotator(this, this);
 	
-	d->drawingRect = QRectF(QPointF(0,0), QSizeF( 500, 400 ) ); // FIXME: configurable
+	k->drawingRect = QRectF(QPointF(0,0), QSizeF( 500, 400 ) ); // FIXME: configurable
 	
-	d->scene->setSceneRect(d->drawingRect);
-	setScene(d->scene);
+	k->scene->setSceneRect(k->drawingRect);
+	setScene(k->scene);
 	
 	centerDrawingArea();
 	
@@ -116,14 +116,14 @@ KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), d(ne
 
 void KTPaintAreaBase::saveState()
 {
-	DConfig *config = dApp->config( "PaintArea" );
+	KConfig *config = kApp->config( "PaintArea" );
 	config->setValue("RenderHints", int(renderHints()));
 	
 }
 
 void KTPaintAreaBase::restoreState()
 {
-	DConfig *config = dApp->config( "PaintArea" );
+	KConfig *config = kApp->config( "PaintArea" );
 	
 	int renderHints = config->value("RenderHints", int(this->renderHints())).toInt();
 	setRenderHints(QPainter::RenderHints(renderHints));
@@ -132,7 +132,7 @@ void KTPaintAreaBase::restoreState()
 KTPaintAreaBase::~KTPaintAreaBase()
 {
 	saveState();
-	delete d;
+	delete k;
 }
 
 void KTPaintAreaBase::setAntialiasing(bool use)
@@ -152,7 +152,7 @@ void KTPaintAreaBase::setAntialiasing(bool use)
 
 void KTPaintAreaBase::setUseOpenGL(bool opengl)
 {
-	D_FUNCINFO << opengl;
+	K_FUNCINFO << opengl;
 	
 	QCursor cursor(Qt::ArrowCursor);
 	if ( viewport() )
@@ -171,7 +171,7 @@ void KTPaintAreaBase::setUseOpenGL(bool opengl)
 	}
 #else
 	Q_UNUSED(opengl);
-	dWarning() << tr("OpenGL isn't supported");
+	kWarning() << tr("OpenGL isn't supported");
 #endif
 	
 	// to restore the cursor.
@@ -184,7 +184,7 @@ void KTPaintAreaBase::setUseOpenGL(bool opengl)
 
 void KTPaintAreaBase::setDrawGrid(bool draw)
 {
-	d->drawGrid = draw;
+	k->drawGrid = draw;
 // 	resetCachedContent();
 	viewport()->update();
 }
@@ -198,21 +198,21 @@ void KTPaintAreaBase::setTool(KTToolPlugin *tool )
 		disconnect(tool,SIGNAL(requested(const KTProjectRequest *)), this, SIGNAL(requestTriggered( const KTProjectRequest* )));
 	}
 	
-	d->scene->setTool(tool);
+	k->scene->setTool(tool);
 	
 	connect(tool,SIGNAL(requested(const KTProjectRequest *)), this, SIGNAL(requestTriggered( const KTProjectRequest* )));
 }
 
 bool KTPaintAreaBase::drawGrid() const
 {
-	return d->drawGrid;
+	return k->drawGrid;
 }
 
 void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
 {
 	if ( !canPaint() ) return;
 	
-	d->scene->aboutToMousePress();
+	k->scene->aboutToMousePress();
 	QGraphicsView::mousePressEvent(event);
 }
 
@@ -221,23 +221,23 @@ void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )
 	if ( !canPaint()) return;
 	
 	// Rotate
-	if( !d->scene->isDrawing() && event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
+	if( !k->scene->isDrawing() && event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
 	{
 		setUpdatesEnabled(false);
 		
 		setDragMode(QGraphicsView::NoDrag);
 		
 		QPointF p1 = event->pos();
-		QPointF p2 = d->drawingRect.center();
+		QPointF p2 = k->drawingRect.center();
 		
-		d->rotator->rotateTo( (int)(-(180*KTGraphicalAlgorithm::angleForPos(p1,p2))/M_PI) );
+		k->rotator->rotateTo( (int)(-(180*KTGraphicalAlgorithm::angleForPos(p1,p2))/M_PI) );
 		setUpdatesEnabled(true);
 	}
 	else
 	{
 		QGraphicsView::mouseMoveEvent(event);
 		
-		if( !d->scene->mouseGrabberItem() && d->scene->isDrawing() ) // HACK
+		if( !k->scene->mouseGrabberItem() && k->scene->isDrawing() ) // HACK
 		{
 			QGraphicsSceneMouseEvent mouseEvent(QEvent::GraphicsSceneMouseMove);
 			mouseEvent.setWidget(viewport());
@@ -248,7 +248,7 @@ void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )
 			mouseEvent.setModifiers(event->modifiers());
 			mouseEvent.setAccepted(false);
 // 			QApplication::sendEvent(d->scene, &mouseEvent);
-			d->scene->mouseMoved(&mouseEvent);
+			k->scene->mouseMoved(&mouseEvent);
 		}
 	}
 	
@@ -259,7 +259,7 @@ void KTPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
 {
 	QGraphicsView::mouseReleaseEvent(event);
 	
-	if( ! d->scene->mouseGrabberItem() && d->scene->isDrawing() ) // HACK
+	if( ! k->scene->mouseGrabberItem() && k->scene->isDrawing() ) // HACK
 	{
 		QGraphicsSceneMouseEvent mouseEvent(QEvent::GraphicsSceneMouseRelease);
 		mouseEvent.setWidget(viewport());
@@ -270,7 +270,7 @@ void KTPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
 		mouseEvent.setModifiers(event->modifiers());
 		mouseEvent.setAccepted(false);
 // 		QApplication::sendEvent(d->scene, &mouseEvent);
-		d->scene->mouseReleased(&mouseEvent);
+		k->scene->mouseReleased(&mouseEvent);
 	}
 }
 
@@ -291,11 +291,11 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 	
 	painter->setPen( QPen(QColor(0,0,0,180), 3) );
 	
-	painter->fillRect( d->drawingRect, Qt::white );
-	painter->drawRect( d->drawingRect );
+	painter->fillRect( k->drawingRect, Qt::white );
+	painter->drawRect( k->drawingRect );
 	
 	emit changedZero(painter->matrix().map(QPointF(0,0)));
-	if ( d->drawGrid )
+	if ( k->drawGrid )
 	{
 		int sx = (int)painter->matrix().m11();
 		int sy = (int)painter->matrix().m22();
@@ -319,7 +319,7 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 
 void KTPaintAreaBase::drawForeground( QPainter *painter, const QRectF &rect )
 {
-	if ( KTFrame *frame = d->scene->currentFrame() )
+	if ( KTFrame *frame = k->scene->currentFrame() )
 	{
 		if ( frame->isLocked() )
 		{
@@ -329,16 +329,16 @@ void KTPaintAreaBase::drawForeground( QPainter *painter, const QRectF &rect )
 			QFontMetricsF fm(painter->font());
 			QString text = tr("Locked");
 			
-			painter->drawText(QPointF(d->scene->sceneRect().topRight().x() - fm.width(text), (d->scene->sceneRect().topRight().y() + fm.height()) / 2), text);
+			painter->drawText(QPointF(k->scene->sceneRect().topRight().x() - fm.width(text), (k->scene->sceneRect().topRight().y() + fm.height()) / 2), text);
 		}
 	}
 }
 
 bool KTPaintAreaBase::canPaint() const
 {
-	if( d->scene )
+	if( k->scene )
 	{
-		KTFrame *frame = d->scene->currentFrame();
+		KTFrame *frame = k->scene->currentFrame();
 		
 		if( frame )
 		{
@@ -351,7 +351,7 @@ bool KTPaintAreaBase::canPaint() const
 
 void KTPaintAreaBase::centerDrawingArea()
 {
-	centerOn(d->drawingRect.center());
+	centerOn(k->drawingRect.center());
 }
 
 void KTPaintAreaBase::wheelEvent(QWheelEvent *event)
@@ -372,9 +372,9 @@ bool KTPaintAreaBase::viewportEvent(QEvent *e)
 	
 	if( e->type() == QEvent::Show )
 	{
-		if( d->scene->items().isEmpty() )
+		if( k->scene->items().isEmpty() )
 		{
-			d->scene->drawCurrentPhotogram();
+			k->scene->drawCurrentPhotogram();
 		}
 	}
 	
@@ -394,22 +394,21 @@ void KTPaintAreaBase::scaleView(qreal scaleFactor)
 
 void KTPaintAreaBase::setRotationAngle(int angle)
 {
-	rotate(angle - d->angle );
-	d->angle = angle;
+	rotate(angle - k->angle );
+	k->angle = angle;
 }
 
 KTBrushManager *KTPaintAreaBase::brushManager() const
 {
-	return d->scene->brushManager();
+	return k->scene->brushManager();
 }
 
 QRectF KTPaintAreaBase::drawingRect() const
 {
-	return d->drawingRect;
+	return k->drawingRect;
 }
 
 KTGraphicsScene *KTPaintAreaBase::graphicsScene() const
 {
-	return d->scene;
+	return k->scene;
 }
-
