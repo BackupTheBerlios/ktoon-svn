@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@toonka.com>              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,21 +20,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DDOUBLECOMBOBOX_H
-#define DDOUBLECOMBOBOX_H
+#ifndef KDOUBLECOMBOBOX_H
+#define KDOUBLECOMBOBOX_H
 
 #include <QComboBox>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DDoubleComboBox : public QComboBox
+class KDoubleComboBox : public QComboBox
 {
 	Q_OBJECT;
 	
 	public:
-		DDoubleComboBox(double min, double max, QWidget *parent = 0);
-		~DDoubleComboBox();
+		KDoubleComboBox(double min, double max, QWidget *parent = 0);
+		~KDoubleComboBox();
 		
 		bool showAsPercent() const;
 		
@@ -71,7 +73,7 @@ class DDoubleComboBox : public QComboBox
 	
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 #endif

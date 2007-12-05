@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,25 +20,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DCELLVIEW_H
-#define DCELLVIEW_H
+#ifndef KCELLVIEW_H
+#define KCELLVIEW_H
 /**
  * @file dcellview.h
- * @brief Include this file if you need the class DCellView, DCellViewItem,  DCellViewItemDelegate or DCellViewModel
+ * @brief Include this file if you need the class KCellView, KCellViewItem, KCellViewItemDelegate or KCellViewModel
  */
 
 #include <QTableWidget>
 #include <QStyleOptionViewItem>
 #include "kcore/kglobal.h"
 
-class DCellViewItemDelegate;
+class KCellViewItemDelegate;
 
 
-class DCellViewItem : public QTableWidgetItem
+class KCellViewItem : public QTableWidgetItem
 {
 	public:
-		DCellViewItem();
-		~DCellViewItem();
+		KCellViewItem();
+		~KCellViewItem();
 		
 		QImage image() const;
 		QBrush background() const;
@@ -46,17 +48,17 @@ class DCellViewItem : public QTableWidgetItem
 /**
  * @author David Cuadrado <krawek@gmail.com>
  */
-class DCellView : public QTableWidget
+class KCellView : public QTableWidget
 {
 	Q_OBJECT;
 	public:
-		DCellView( int MAX_COLUMNS = 16, QWidget *parent = 0);
-		DCellView(int rows, int columns, int MAX_COLUMNS = 16, QWidget *parent = 0);
-		~DCellView();
+		KCellView( int MAX_COLUMNS = 16, QWidget *parent = 0);
+		KCellView(int rows, int columns, int MAX_COLUMNS = 16, QWidget *parent = 0);
+		~KCellView();
 		
 		void setItemSize(int w, int h);
 		
-		void addItem(DCellViewItem *item);
+		void addItem(KCellViewItem *item);
 		void addItem(const QBrush &brush);
 		void addItem(const QImage &image);
 		

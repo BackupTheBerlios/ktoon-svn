@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -31,26 +33,26 @@
 #include "kdebug.h"
 
 
-////////// DCellViewItemDelegate ///////////
+////////// KCellViewItemDelegate ///////////
 
-class DCellViewItemDelegate : public QAbstractItemDelegate
+class KCellViewItemDelegate : public QAbstractItemDelegate
 {
 	public:
-		DCellViewItemDelegate(QObject * parent = 0 );
-		~DCellViewItemDelegate();
+		KCellViewItemDelegate(QObject * parent = 0 );
+		~KCellViewItemDelegate();
 		virtual void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
 		virtual QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
 };
 
-DCellViewItemDelegate::DCellViewItemDelegate(QObject * parent) :  QAbstractItemDelegate(parent)
+KCellViewItemDelegate::KCellViewItemDelegate(QObject * parent) :  QAbstractItemDelegate(parent)
 {
 }
 
-DCellViewItemDelegate::~DCellViewItemDelegate()
+KCellViewItemDelegate::~KCellViewItemDelegate()
 {
 }
 
-void DCellViewItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+void KCellViewItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
 	Q_ASSERT(index.isValid());
 	const QAbstractItemModel *model = index.model();
@@ -103,7 +105,7 @@ void DCellViewItemDelegate::paint ( QPainter * painter, const QStyleOptionViewIt
 	}
 }
 
-QSize DCellViewItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
+QSize KCellViewItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
 	Q_ASSERT(index.isValid());
 	const QAbstractItemModel *model = index.model();
@@ -123,8 +125,8 @@ QSize DCellViewItemDelegate::sizeHint ( const QStyleOptionViewItem & option, con
 }
 
 
-////////// DCellViewItem ////////
-DCellViewItem::DCellViewItem() : QTableWidgetItem(UserType)
+////////// KCellViewItem ////////
+KCellViewItem::KCellViewItem() : QTableWidgetItem(UserType)
 {
 	setFlags(Qt::ItemIsEditable
 		      |Qt::ItemIsSelectable
@@ -134,36 +136,36 @@ DCellViewItem::DCellViewItem() : QTableWidgetItem(UserType)
 			|Qt::ItemIsDropEnabled);
 }
 
-DCellViewItem::~DCellViewItem()
+KCellViewItem::~KCellViewItem()
 {
 }
 
 
-QImage DCellViewItem::image() const
+QImage KCellViewItem::image() const
 {
 	return qvariant_cast<QImage>(data(Qt::DisplayRole));
 }
 
-QBrush DCellViewItem::background() const
+QBrush KCellViewItem::background() const
 {
 	return qvariant_cast<QBrush>(data(Qt::BackgroundColorRole));
 }
 	
-////////// DCellView  ///////////
-DCellView::DCellView(int MAX_COLUMNS, QWidget *parent) : QTableWidget(parent), m_countColor(0),  m_col(0), m_row(0), MAX_COLUMNS(MAX_COLUMNS)
+////////// KCellView  ///////////
+KCellView::KCellView(int MAX_COLUMNS, QWidget *parent) : QTableWidget(parent), m_countColor(0),  m_col(0), m_row(0), MAX_COLUMNS(MAX_COLUMNS)
 {
 	setup();
 }
 
-DCellView::DCellView(int rows, int columns, int MAX_COLUMNS, QWidget *parent)
+KCellView::KCellView(int rows, int columns, int MAX_COLUMNS, QWidget *parent)
 	: QTableWidget(rows, columns, parent), m_countColor(0),  m_col(0), m_row(0), MAX_COLUMNS(MAX_COLUMNS)
 {
 	setup();
 }
 
-void DCellView::setup()
+void KCellView::setup()
 {
-	setItemDelegate( new DCellViewItemDelegate(this));
+	setItemDelegate( new KCellViewItemDelegate(this));
 	
 	setSelectionBehavior(QAbstractItemView::SelectItems);
 	setSelectionMode (QAbstractItemView::SingleSelection);
@@ -181,14 +183,14 @@ void DCellView::setup()
 // #endif
 }
 
-void DCellView::setItemSize(int w, int h)
+void KCellView::setItemSize(int w, int h)
 {
 	m_rectHeight = h;
 	m_rectWidth = w;
 	QTimer::singleShot( 0, this, SLOT(fixSize()));
 }
 	
-void DCellView::fixSize()
+void KCellView::fixSize()
 {
 	setUpdatesEnabled(false);
 	for(int column = 0; column < columnCount(); column++)
@@ -203,11 +205,11 @@ void DCellView::fixSize()
 }
 
 
-DCellView::~DCellView()
+KCellView::~KCellView()
 {
 }
 
-QStyleOptionViewItem DCellView::viewOptions() const
+QStyleOptionViewItem KCellView::viewOptions() const
 {
 	QStyleOptionViewItem option = QAbstractItemView::viewOptions();
 	option.showDecorationSelected = true;
@@ -217,7 +219,7 @@ QStyleOptionViewItem DCellView::viewOptions() const
 	return option;
 }
 
-void DCellView::addItem(DCellViewItem *item)
+void KCellView::addItem(KCellViewItem *item)
 {
 	if( columnCount() < MAX_COLUMNS)
 	{
@@ -242,24 +244,24 @@ void DCellView::addItem(DCellViewItem *item)
 	fixSize();
 }
 
-void DCellView::addItem(const QBrush& b)
+void KCellView::addItem(const QBrush& b)
 {
-	DCellViewItem *item = new DCellViewItem;
+	KCellViewItem *item = new KCellViewItem;
 	item->setBackground(b);
 	
 	addItem( item );
 }
 
-void DCellView::addItem(const QImage &i)
+void KCellView::addItem(const QImage &i)
 {
-	DCellViewItem *item = new DCellViewItem;
+	KCellViewItem *item = new KCellViewItem;
 	item->setData(Qt::DisplayRole, i);
 	
 	addItem( item );
 }
 
 
-void DCellView::wheelEvent(QWheelEvent *event)
+void KCellView::wheelEvent(QWheelEvent *event)
 {
 	if(event->modifiers () == Qt::ControlModifier)
 	{
