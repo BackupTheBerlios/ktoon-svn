@@ -67,7 +67,7 @@
 //
 
 
-KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(),  m_projectManager(0), m_viewDoc(0), m_animationSpace(0),  m_viewChat(0), m_exposureSheet(0),  m_scenes(0)
+KTMainWindow::KTMainWindow(KTSplash *splash) : KTabbedMainWindow(),  m_projectManager(0), m_viewDoc(0), m_animationSpace(0),  m_viewChat(0), m_exposureSheet(0),  m_scenes(0)
 {
 	KINIT;
 	
@@ -90,7 +90,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(),  m_projectMa
 	splash->setMessage( tr("Setting up the project manager") );
 	
 	splash->setMessage( tr("Loading action manager...") );
-	m_actionManager = new DActionManager(this);
+	m_actionManager = new KActionManager(this);
 	
 	splash->setMessage( tr("Creating menu bar...") );
 	setupActions();
@@ -339,7 +339,7 @@ void KTMainWindow::openProject()
 
 void KTMainWindow::openProject(const QString &path)
 {
-	dWarning() << "Opening project: " << path;
+	kWarning() << "Opening project: " << path;
 	
 	if(path.isEmpty() ) return;
 	

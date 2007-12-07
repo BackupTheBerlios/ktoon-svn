@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,7 +30,7 @@
 
 #include <QLineEdit>
 #include <QCheckBox>
-//TODO añadir un campo para ingresar la descripcion del proyecto 
+//TODO aï¿½adir un campo para ingresar la descripcion del proyecto 
 
 struct KTNewProject::Private
 {
@@ -36,7 +38,7 @@ struct KTNewProject::Private
 	QLineEdit *authorName;
 	QSpinBox *fps;
 	
-	DXYSpinBox *size;
+	KXYSpinBox *size;
 	
 	bool useNetwork;
 	
@@ -48,10 +50,9 @@ struct KTNewProject::Private
 	QLineEdit *password;
 };
 
-KTNewProject::KTNewProject(QWidget *parent)
-	: DTabDialog(parent), d( new Private)
+KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private)
 {
-	d->useNetwork = false;
+	k->useNetwork = false;
 	setWindowTitle(tr("Create a new project"));
 	setModal(true);
 	
@@ -61,23 +62,23 @@ KTNewProject::KTNewProject(QWidget *parent)
 	QLabel *labelProjectName = new QLabel(tr("Project Name"), container);
 	layout->addWidget(labelProjectName, 0, 0);
 	
-	d->projectName = new QLineEdit( container );
-	layout->addWidget(d->projectName, 0, 1);
+	k->projectName = new QLineEdit( container );
+	layout->addWidget(k->projectName, 0, 1);
 	
 	QLabel *labelAuthorName = new QLabel(tr("Author"), container);
 	layout->addWidget(labelAuthorName, 1, 0);
 	
-	d->authorName = new QLineEdit( container );
-	layout->addWidget(d->authorName, 1, 1);
+	k->authorName = new QLineEdit( container );
+	layout->addWidget(k->authorName, 1, 1);
 	
-	d->size = new DXYSpinBox(tr("Dimension"), container);
-	d->size->setMaximum( 1000);
-	d->size->setModifyTogether(true);;
+	k->size = new KXYSpinBox(tr("Dimension"), container);
+	k->size->setMaximum( 1000);
+	k->size->setModifyTogether(true);;
 	
-	d->size->setX( 520 );
-	d->size->setY( 340);
+	k->size->setX( 520 );
+	k->size->setY( 340);
 	
-	layout->addWidget(d->size, 2, 0);
+	layout->addWidget(k->size, 2, 0);
 	
 	QGroupBox *renderAndFps= new QGroupBox(tr("Options"));
 	
@@ -87,11 +88,11 @@ KTNewProject::KTNewProject(QWidget *parent)
 	QBoxLayout *fpsLayout = new QBoxLayout(QBoxLayout::LeftToRight);
 	
 	QLabel *label = new QLabel(tr("FPS"));
-	d->fps = new QSpinBox();
-	d->fps->setValue(24);
+	k->fps = new QSpinBox();
+	k->fps->setValue(24);
 	
 	fpsLayout->addWidget(label);
-	fpsLayout->addWidget(d->fps);
+	fpsLayout->addWidget(k->fps);
 	subLayout->addLayout(fpsLayout);
 	
 	QWidget *mcont = new QWidget;
@@ -101,11 +102,11 @@ KTNewProject::KTNewProject(QWidget *parent)
 	addTab( container, tr("Project info"));
 	
 	setupNetOptions();
-	mcontly->addWidget(d->netOptions);
+	mcontly->addWidget(k->netOptions);
 	
 	layout->addWidget( mcont, 2, 1);
 	
-	d->netOptions->setVisible(false);
+	k->netOptions->setVisible(false);
 	
 	QCheckBox *activeNetOptions = new QCheckBox( tr("Create a network project") );
 	layout->addWidget( activeNetOptions, 3, 1);
@@ -115,52 +116,52 @@ KTNewProject::KTNewProject(QWidget *parent)
 
 KTNewProject::~KTNewProject()
 {
-	DConfig *config = dApp->config("Network");
+	KConfig *config = kApp->config("Network");
 	
-	config->setValue("server", d->server->text());
-	config->setValue("port", d->port->value());
-	config->setValue("login", d->login->text());
-	config->setValue("password", d->password->text());
+	config->setValue("server", k->server->text());
+	config->setValue("port", k->port->value());
+	config->setValue("login", k->login->text());
+	config->setValue("password", k->password->text());
 }
 
 void KTNewProject::setupNetOptions()
 {
-	d->netOptions = new QGroupBox(tr("Network"));
-	QVBoxLayout *layout = new QVBoxLayout(d->netOptions);
+	k->netOptions = new QGroupBox(tr("Network"));
+	QVBoxLayout *layout = new QVBoxLayout(k->netOptions);
 	
-	d->server = new QLineEdit;
-	d->port = new QSpinBox;
-	d->port->setMinimum(1024);
-	d->port->setMaximum(65000);
+	k->server = new QLineEdit;
+	k->port = new QSpinBox;
+	k->port->setMinimum(1024);
+	k->port->setMaximum(65000);
 	
-	d->login = new QLineEdit;
-	d->password = new QLineEdit;
+	k->login = new QLineEdit;
+	k->password = new QLineEdit;
 	
-	DConfig *config = dApp->config("Network");
+	KConfig *config = kApp->config("Network");
 	
-	d->server->setText(config->value("server", "localhost").toString());
-	d->port->setValue(config->value("port", 6502).toInt());
+	k->server->setText(config->value("server", "localhost").toString());
+	k->port->setValue(config->value("port", 6502).toInt());
 	
-	d->login->setText(config->value("login", "").toString());
-	d->password->setText(config->value("password", "").toString());
+	k->login->setText(config->value("login", "").toString());
+	k->password->setText(config->value("password", "").toString());
 	
-	d->password->setEchoMode( QLineEdit::Password );
+	k->password->setEchoMode( QLineEdit::Password );
 	
-	layout->addLayout( DFormFactory::makeGrid( QStringList() << tr("Login") << tr("Password") <<tr("Server") << tr("Port"), QWidgetList() << d->login << d->password << d->server << d->port ) );
+	layout->addLayout( KFormFactory::makeGrid( QStringList() << tr("Login") << tr("Password") <<tr("Server") << tr("Port"), QWidgetList() << k->login << k->password << k->server << k->port ) );
 }
 
 KTProjectManagerParams *KTNewProject::params()
 {
-	if ( d->useNetwork )
+	if ( k->useNetwork )
 	{
 		KTNetProjectManagerParams *params = new KTNetProjectManagerParams;
-		params->setProjectName( d->projectName->text() );
-		params->setAuthor( d->authorName->text());
-		params->setServer(d->server->text());
-		params->setPort(d->port->value());
+		params->setProjectName( k->projectName->text() );
+		params->setAuthor( k->authorName->text());
+		params->setServer(k->server->text());
+		params->setPort(k->port->value());
 		
-		params->setLogin(d->login->text());
-		params->setPassword(d->password->text());
+		params->setLogin(k->login->text());
+		params->setPassword(k->password->text());
 		
 		
 		return params;
@@ -168,29 +169,29 @@ KTProjectManagerParams *KTNewProject::params()
 	
 	KTProjectManagerParams *params = new KTProjectManagerParams;
 	
-	params->setProjectName(d->projectName->text());
-	params->setAuthor( d->authorName->text());
+	params->setProjectName(k->projectName->text());
+	params->setAuthor( k->authorName->text());
 	return params;
 }
 
 bool KTNewProject::useNetwork() const
 {
-	return d->useNetwork;
+	return k->useNetwork;
 }
 
 void KTNewProject::ok()
 {
-	if(d->projectName->text().isEmpty())
+	if(k->projectName->text().isEmpty())
 	{
-		DOsd::self()->display(tr("Please fill the project name field"), DOsd::Error);
+		KOsd::self()->display(tr("Please fill the project name field"), KOsd::Error);
 		return;
 	}
-	DTabDialog::ok();
+	KTabDialog::ok();
 }
 
-void KTNewProject::activateNetOptions(bool no)
+void KTNewProject::activateNetOptions(bool isVisible)
 {
-	d->netOptions->setVisible(no);
-	d->useNetwork = no;
+	k->netOptions->setVisible(isVisible);
+	k->useNetwork = isVisible;
 }
 

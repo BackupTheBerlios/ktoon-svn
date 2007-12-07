@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -32,7 +34,7 @@ class KTProjectManagerParams;
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-class KTNewProject : public DTabDialog
+class KTNewProject : public KTabDialog
 {
 	Q_OBJECT
 	public:
@@ -53,15 +55,15 @@ class KTNewProject : public DTabDialog
 		void setupNetOptions();
 		
 	public slots:
-		void activateNetOptions(bool no);
+		void activateNetOptions(bool isVisible);
 	
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 		
 };
 #if 0
-class KTNewProject : public DWizard
+class KTNewProject : public KWizard
 {
 	Q_OBJECT
 	public:
@@ -79,7 +81,7 @@ class KTNewProject : public DWizard
 		NPFirstPage *m_firstPage ;
 };
 
-class NPFirstPage : public DWizardPage
+class NPFirstPage : public KWizardPage
 {
 	Q_OBJECT
 	public:
@@ -102,7 +104,7 @@ class NPFirstPage : public DWizardPage
 		QComboBox *m_renderType;
 		QSpinBox *m_fps;
 		
-		DXYSpinBox *m_size;
+		KXYSpinBox *m_size;
 };
 #endif
 #endif
