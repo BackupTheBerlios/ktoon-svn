@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,20 +27,19 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
-struct DItemSelector::Private
+struct KItemSelector::Private
 {
 	QListWidget *available;
 	QListWidget *selected;
 };
 
-DItemSelector::DItemSelector(QWidget *parent)
- : QWidget(parent), d( new Private )
+KItemSelector::KItemSelector(QWidget *parent) : QWidget(parent), k( new Private )
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	
-	d->available = new QListWidget;
+	k->available = new QListWidget;
 	
-	layout->addWidget(d->available);
+	layout->addWidget(k->available);
 	
 	QVBoxLayout *controlBox = new QVBoxLayout(this);
 	controlBox->setSpacing(0);
@@ -73,129 +74,128 @@ DItemSelector::DItemSelector(QWidget *parent)
 	
 	layout->addLayout(controlBox);
 	
-	d->selected = new QListWidget;
-	layout->addWidget(d->selected);
+	k->selected = new QListWidget;
+	layout->addWidget(k->selected);
 }
 
 
-DItemSelector::~DItemSelector()
+KItemSelector::~KItemSelector()
 {
-	delete d;
+	delete k;
 }
 
 
-void DItemSelector::addCurrent()
+void KItemSelector::addCurrent()
 {
-	int row = d->available->currentRow();
+	int row = k->available->currentRow();
 	if( row >= 0 )
 	{
-		QListWidgetItem *item = d->available->takeItem(row);
-		d->selected->addItem(item);
+		QListWidgetItem *item = k->available->takeItem(row);
+		k->selected->addItem(item);
 		
 		emit changed();
 	}
 }
 
-void DItemSelector::removeCurrent()
+void KItemSelector::removeCurrent()
 {
-	int row = d->selected->currentRow();
+	int row = k->selected->currentRow();
 	if( row >= 0 )
 	{
-		QListWidgetItem *item = d->selected->takeItem(row);
-		d->available->addItem(item);
+		QListWidgetItem *item = k->selected->takeItem(row);
+		k->available->addItem(item);
 		
 		emit changed();
 	}
 }
 
-void DItemSelector::upCurrent()
+void KItemSelector::upCurrent()
 {
-	int row = d->selected->currentRow();
+	int row = k->selected->currentRow();
 	if( row >= 0 )
 	{
-		QListWidgetItem *item = d->selected->takeItem(row);
+		QListWidgetItem *item = k->selected->takeItem(row);
 		
-		d->selected->insertItem(row-1,item);
+		k->selected->insertItem(row-1,item);
 		
-		d->selected->setCurrentItem(item);
+		k->selected->setCurrentItem(item);
 		
 		emit changed();
 	}
 }
 
-void DItemSelector::downCurrent()
+void KItemSelector::downCurrent()
 {
-	int row = d->selected->currentRow();
+	int row = k->selected->currentRow();
 	if( row >= 0 )
 	{
-		QListWidgetItem *item = d->selected->takeItem(row);
+		QListWidgetItem *item = k->selected->takeItem(row);
 		
-		d->selected->insertItem(row+1,item);
-		d->selected->setCurrentItem(item);
+		k->selected->insertItem(row+1,item);
+		k->selected->setCurrentItem(item);
 		
 		emit changed();
 	}
 }
 
 
-void DItemSelector::setItems(const QStringList &items)
+void KItemSelector::setItems(const QStringList &items)
 {
-	d->available->clear();
+	k->available->clear();
 	addItems(items);
 }
 
-int DItemSelector::addItem(const QString &item)
+int KItemSelector::addItem(const QString &item)
 {
-	QListWidgetItem *it = new QListWidgetItem(item, d->available);
+	QListWidgetItem *it = new QListWidgetItem(item, k->available);
 	
-	int index = d->available->count()-1;
+	int index = k->available->count()-1;
 	
 	it->setData(4321, index);
 	
 	return index;
 }
 
-void DItemSelector::addItems(const QStringList &items)
+void KItemSelector::addItems(const QStringList &items)
 {
 	foreach(QString item, items)
 		addItem(item);
 }
 
-QStringList DItemSelector::selectedItems() const
+QStringList KItemSelector::selectedItems() const
 {
 	QStringList items;
-	for(int row = 0; row < d->selected->count(); row++)
+	for(int row = 0; row < k->selected->count(); row++)
 	{
-		QListWidgetItem *item = d->selected->item(row);
+		QListWidgetItem *item = k->selected->item(row);
 		items << item->text();
 	}
 	
 	return items;
 }
 
-QList<int> DItemSelector::selectedIndexes() const
+QList<int> KItemSelector::selectedIndexes() const
 {
 	QList<int> indexes;
-	for(int row = 0; row < d->selected->count(); row++)
+	for(int row = 0; row < k->selected->count(); row++)
 	{
-		QListWidgetItem *item = d->selected->item(row);
+		QListWidgetItem *item = k->selected->item(row);
 		indexes << item->data(4321).toInt();
 	}
 	
 	return indexes;
 }
 
-void DItemSelector::clear()
+void KItemSelector::clear()
 {
-	d->available->clear();
+	k->available->clear();
 	reset();
 }
 
-void DItemSelector::reset()
+void KItemSelector::reset()
 {
-	d->selected->clear();
+	k->selected->clear();
 	
 	emit changed();
 }
-
 

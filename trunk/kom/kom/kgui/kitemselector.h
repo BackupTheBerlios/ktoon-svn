@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,12 +28,12 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DItemSelector : public QWidget
+class KItemSelector : public QWidget
 {
 	Q_OBJECT
 	public:
-		DItemSelector(QWidget *parent = 0);
-		~DItemSelector();
+		KItemSelector(QWidget *parent = 0);
+		~KItemSelector();
 		
 		void setItems(const QStringList &items);
 		int addItem(const QString &item);
@@ -55,7 +57,7 @@ class DItemSelector : public QWidget
 		
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 #endif
