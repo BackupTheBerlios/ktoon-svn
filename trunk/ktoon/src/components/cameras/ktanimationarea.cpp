@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -55,27 +57,27 @@ struct KTAnimationArea::Private
 	QList<KTSoundLayer *> sounds;
 };
 
-KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QFrame(parent), d( new Private )
+KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QFrame(parent), k( new Private )
 {
-	d->project = project;
+	k->project = project;
 	
-	d->draw = false;
-	d->ciclicAnimation = false;
-	d->isRendered = false;
+	k->draw = false;
+	k->ciclicAnimation = false;
+	k->isRendered = false;
 	
-	d->currentSceneIndex = -1;
-	d->currentFramePosition = -1;
+	k->currentSceneIndex = -1;
+	k->currentFramePosition = -1;
 	
-	d->fps = 14;
+	k->fps = 14;
 	
 	setAttribute(Qt::WA_StaticContents);
 
-	d->renderCamera = QImage(size(), QImage::Format_RGB32);
-	d->renderCamera.fill(qRgb(255, 255, 255));
+	k->renderCamera = QImage(size(), QImage::Format_RGB32);
+	k->renderCamera.fill(qRgb(255, 255, 255));
 	
-	d->timer = new QTimer(this);
+	k->timer = new QTimer(this);
 	
-	connect(d->timer, SIGNAL(timeout()), this, SLOT(advance()));
+	connect(k->timer, SIGNAL(timeout()), this, SLOT(advance()));
 	
 	setCurrentScene( 0 );
 }
@@ -83,16 +85,16 @@ KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QF
 
 KTAnimationArea::~KTAnimationArea()
 {
-	delete d;
+	delete k;
 }
 
 void KTAnimationArea::setFPS(int fps)
 {
-	d->fps = fps;
+	k->fps = fps;
 	
-	if ( d->timer->isActive()  )
+	if ( k->timer->isActive()  )
 	{
-		d->timer->stop();
+		k->timer->stop();
 		play();
 	}
 }
@@ -100,27 +102,27 @@ void KTAnimationArea::setFPS(int fps)
 
 void KTAnimationArea::paintEvent(QPaintEvent *)
 {
-	if ( d->currentFramePosition >= 0 && d->currentFramePosition < d->photograms.count() )
+	if ( k->currentFramePosition >= 0 && k->currentFramePosition < k->photograms.count() )
 	{
-		d->renderCamera = d->photograms[d->currentFramePosition];
+		k->renderCamera = k->photograms[k->currentFramePosition];
 	}
 	
 	QPainter painter;
 	
 	painter.begin(this);
-	painter.drawImage(QPoint(0, 0), d->renderCamera);
+	painter.drawImage(QPoint(0, 0), k->renderCamera);
 }
 
 void KTAnimationArea::play()
 {
-	dDebug("camera") << "Playing!";
+	kDebug("camera") << "Playing!";
 	
-	d->draw = true;
+	k->draw = true;
 	
-	if ( d->project && !d->timer->isActive() )
+	if ( k->project && !k->timer->isActive() )
 	{
-		if( !d->isRendered ) render();
-		d->timer->start(1000 / d->fps);
+		if( !k->isRendered ) render();
+		k->timer->start(1000 / k->fps);
 	}
 	
 // 	emit toStatusBar( tr("Playing... "), 2000 );
@@ -128,65 +130,65 @@ void KTAnimationArea::play()
 
 void KTAnimationArea::stop()
 {
-	dDebug("camera") << "Stopping";
-	d->timer->stop();
+	kDebug("camera") << "Stopping";
+	k->timer->stop();
 	
-	foreach(KTSoundLayer *sound, d->sounds)
+	foreach(KTSoundLayer *sound, k->sounds)
 	{
 		sound->stop();
 	}
 	
-// 	d->draw = false;
-	d->currentFramePosition = 0;
-// 	d->currentFrame = 0;
+// 	k->draw = false;
+	k->currentFramePosition = 0;
+// 	k->currentFrame = 0;
 	repaint();
 }
 
 void KTAnimationArea::nextFrame()
 {
-	if ( ! d->isRendered )
+	if ( ! k->isRendered )
 		render();
 	
-	if ( d->currentFramePosition >= d->photograms.count() ) return;
+	if ( k->currentFramePosition >= k->photograms.count() ) return;
 	
-	d->currentFramePosition += 1;
+	k->currentFramePosition += 1;
 	repaint();
 }
 
 void KTAnimationArea::previousFrame()
 {
-	if ( ! d->isRendered ) render();
+	if ( ! k->isRendered ) render();
 	
-	if ( d->currentFramePosition < 1 ) return;
-	d->currentFramePosition -= 1;
+	if ( k->currentFramePosition < 1 ) return;
+	k->currentFramePosition -= 1;
 	repaint();
 }
 
 
 void KTAnimationArea::advance()
 {
-	if ( d->project )
+	if ( k->project )
 	{
-		if (d->ciclicAnimation && d->currentFramePosition >= d->photograms.count())
+		if (k->ciclicAnimation && k->currentFramePosition >= k->photograms.count())
 		{
-			d->currentFramePosition = 0;
+			k->currentFramePosition = 0;
 		}
 		
-		if( d->currentFramePosition == 0 )
+		if( k->currentFramePosition == 0 )
 		{
-			foreach(KTSoundLayer *sound, d->sounds)
+			foreach(KTSoundLayer *sound, k->sounds)
 			{
 				sound->play();
 			}
 		}
 		
-		if ( d->currentFramePosition < d->photograms.count() )
+		if ( k->currentFramePosition < k->photograms.count() )
 		{
 			
 			repaint();
-			d->currentFramePosition++;
+			k->currentFramePosition++;
 		}
-		else if ( !d->ciclicAnimation)
+		else if ( !k->ciclicAnimation)
 		{
 			stop();
 		}
@@ -203,7 +205,7 @@ void KTAnimationArea::layerResponse(KTLayerResponse *)
 
 void KTAnimationArea::sceneResponse(KTSceneResponse *event)
 {
-	D_FUNCINFOX("animation");
+	K_FUNCINFOX("animation");
 	switch(event->action())
 	{
 		case KTProjectRequest::Select:
@@ -213,11 +215,11 @@ void KTAnimationArea::sceneResponse(KTSceneResponse *event)
 		break;
 		case KTProjectRequest::Remove:
 		{
-			if ( event->sceneIndex() == d->currentSceneIndex )
+			if ( event->sceneIndex() == k->currentSceneIndex )
 			{
-				if(d->currentSceneIndex != 0)
+				if(k->currentSceneIndex != 0)
 				{
-					setCurrentScene( d->currentSceneIndex-1 );
+					setCurrentScene( k->currentSceneIndex-1 );
 				}
 			}
 		}
@@ -240,18 +242,18 @@ void KTAnimationArea::libraryResponse(KTLibraryResponse *)
 
 void KTAnimationArea::render()
 {
-	KTScene *scene = d->project->scene( d->currentSceneIndex );
+	KTScene *scene = k->project->scene( k->currentSceneIndex );
 	
 	if (!scene) return;
 	
-	d->sounds.clear();
+	k->sounds.clear();
 	
 	foreach(KTSoundLayer *layer, scene->soundLayers().values() )
 	{
-		d->sounds << layer;
+		k->sounds << layer;
 	}
 	
-	d->photograms.clear();
+	k->photograms.clear();
 	
 	KTAnimationRenderer renderer;
 	renderer.setScene(scene);
@@ -266,15 +268,15 @@ void KTAnimationArea::render()
 		
 		renderer.render(&painter);
 		
-		d->photograms << renderized;
+		k->photograms << renderized;
 	}
 	
-	d->isRendered = true;
+	k->isRendered = true;
 }
 
 QSize KTAnimationArea::sizeHint() const
 {
-	return d->renderCamera.size();
+	return k->renderCamera.size();
 }
 
 
@@ -283,26 +285,26 @@ void  KTAnimationArea::resizeEvent ( QResizeEvent * e)
 	QFrame::resizeEvent(e);
 	
 	stop();
-	d->renderCamera = QImage(size(), QImage::Format_RGB32);
-	d->renderCamera.fill(qRgb(255, 255, 255));
+	k->renderCamera = QImage(size(), QImage::Format_RGB32);
+	k->renderCamera.fill(qRgb(255, 255, 255));
 	
-	d->isRendered = false;
+	k->isRendered = false;
 	update();
 }
 
 void KTAnimationArea::setLoop(bool l)
 {
-	d->ciclicAnimation = l;
+	k->ciclicAnimation = l;
 }
 
 void KTAnimationArea::setCurrentScene(int index)
 {
-	d->currentSceneIndex = index;
+	k->currentSceneIndex = index;
 	
 }
 
 KTScene *KTAnimationArea::currentScene() const
 {
-	return d->project->scene( d->currentSceneIndex );
+	return k->project->scene( k->currentSceneIndex );
 }
 

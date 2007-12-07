@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,7 +28,7 @@
 
 struct KTPenWidget::Private
 {
-	DEditSpinBox *thickness;
+	KEditSpinBox *thickness;
 	QComboBox *capStyle;
 	QComboBox *joinStyle;
 	QComboBox *style;
@@ -34,46 +36,46 @@ struct KTPenWidget::Private
 };
 
 
-KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), d(new Private)
+KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Private)
 {
 	setWindowTitle( tr("Pen"));
 	
-	d->thickness = new DEditSpinBox( 3, 1, 100, 1, tr("Thickness") );
+	k->thickness = new KEditSpinBox( 3, 1, 100, 1, tr("Thickness") );
 	
-	connect(d->thickness, SIGNAL(valueChanged( int )), this, SLOT(setThickness(int)));
+	connect(k->thickness, SIGNAL(valueChanged( int )), this, SLOT(setThickness(int)));
 	
-	addChild( d->thickness );
+	addChild( k->thickness );
 	
-	d->style = new QComboBox();
+	k->style = new QComboBox();
 	
-	d->style->addItem(tr("No pen"), Qt::NoPen);
-	d->style->addItem( tr("Solid"), Qt::SolidLine);
-	d->style->addItem( tr("Dash"), Qt::DashLine );
-	d->style->addItem( tr("Dot"), Qt::DotLine );
-	d->style->addItem( tr("Dash dot"), Qt::DashDotLine);
-	d->style->addItem( tr("Dash dot dot"), Qt::DashDotDotLine);
+	k->style->addItem(tr("No pen"), Qt::NoPen);
+	k->style->addItem( tr("Solid"), Qt::SolidLine);
+	k->style->addItem( tr("Dash"), Qt::DashLine );
+	k->style->addItem( tr("Dot"), Qt::DotLine );
+	k->style->addItem( tr("Dash dot"), Qt::DashDotLine);
+	k->style->addItem( tr("Dash dot dot"), Qt::DashDotDotLine);
 	
-	addChild(d->style);
+	addChild(k->style);
 	
-	connect(d->style, SIGNAL(currentIndexChanged( int )), this, SLOT(setStyle(int)) );
+	connect(k->style, SIGNAL(currentIndexChanged( int )), this, SLOT(setStyle(int)) );
 	
-	d->capStyle = new QComboBox();
+	k->capStyle = new QComboBox();
 	
-	d->capStyle->addItem( tr("Flat"), Qt::FlatCap);
-	d->capStyle->addItem( tr("Square"), Qt::SquareCap);
-	d->capStyle->addItem( tr("Round"), Qt::RoundCap);
+	k->capStyle->addItem( tr("Flat"), Qt::FlatCap);
+	k->capStyle->addItem( tr("Square"), Qt::SquareCap);
+	k->capStyle->addItem( tr("Round"), Qt::RoundCap);
 	
-	addChild(d->capStyle);
-	connect(d->capStyle, SIGNAL(currentIndexChanged( int )), this, SLOT(setCapStyle(int)) );
+	addChild(k->capStyle);
+	connect(k->capStyle, SIGNAL(currentIndexChanged( int )), this, SLOT(setCapStyle(int)) );
 	
-	d->joinStyle = new QComboBox();
+	k->joinStyle = new QComboBox();
 	
-	d->joinStyle->addItem( tr("Miter"), Qt::MiterJoin );
-	d->joinStyle->addItem( tr("Bevel"), Qt::BevelJoin);
-	d->joinStyle->addItem( tr("Round"), Qt::RoundJoin);
+	k->joinStyle->addItem( tr("Miter"), Qt::MiterJoin );
+	k->joinStyle->addItem( tr("Bevel"), Qt::BevelJoin);
+	k->joinStyle->addItem( tr("Round"), Qt::RoundJoin);
 	
-	addChild( d->joinStyle );
-	connect(d->joinStyle, SIGNAL(currentIndexChanged( int )), this, SLOT(setJoinStyle(int)) );
+	addChild( k->joinStyle );
+	connect(k->joinStyle, SIGNAL(currentIndexChanged( int )), this, SLOT(setJoinStyle(int)) );
 	
 	boxLayout()->addStretch(2);
 	
@@ -85,56 +87,56 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), d(new Pr
 
 KTPenWidget::~KTPenWidget()
 {
-	delete d;
+	delete k;
 }
 
 
 void KTPenWidget::setThickness(int value)
 {
-	d->pen.setWidth(value);
+	k->pen.setWidth(value);
 	emitPenChanged();
 }
 
 void KTPenWidget::setStyle(int s)
 {
-	d->pen.setStyle( Qt::PenStyle(d->style->itemData(s).toInt()) );
+	k->pen.setStyle( Qt::PenStyle(k->style->itemData(s).toInt()) );
 	emitPenChanged();
 }
 
 void KTPenWidget::setJoinStyle(int s)
 {
-	d->pen.setJoinStyle(Qt::PenJoinStyle(d->joinStyle->itemData(s).toInt()) );
+	k->pen.setJoinStyle(Qt::PenJoinStyle(k->joinStyle->itemData(s).toInt()) );
 	emitPenChanged();
 }
 
 void KTPenWidget::setCapStyle(int s )
 {
-	d->pen.setCapStyle(Qt::PenCapStyle(d->capStyle->itemData(s).toInt()) );
+	k->pen.setCapStyle(Qt::PenCapStyle(k->capStyle->itemData(s).toInt()) );
 	emitPenChanged();
 }
 
 void KTPenWidget::reset()
 {
 	blockSignals(true);
-	d->capStyle->setCurrentIndex( 2 );
-	d->joinStyle->setCurrentIndex( 2 );
+	k->capStyle->setCurrentIndex( 2 );
+	k->joinStyle->setCurrentIndex( 2 );
 	setThickness( 3 );
 	blockSignals(false);
-	d->style->setCurrentIndex( 1 );
+	k->style->setCurrentIndex( 1 );
 	
-	d->pen.setColor(QColor() ); // invalid color
+	k->pen.setColor(QColor() ); // invalid color
 }
 
 QPen KTPenWidget::pen() const
 {
-	return d->pen;
+	return k->pen;
 }
 
 void KTPenWidget::emitPenChanged()
 {
-	emit penChanged( d->pen );
+	emit penChanged( k->pen );
 	
-	KTPaintAreaEvent event(KTPaintAreaEvent::ChangePen, d->pen);
+	KTPaintAreaEvent event(KTPaintAreaEvent::ChangePen, k->pen);
 	emit paintAreaEventTriggered( &event );
 }
 

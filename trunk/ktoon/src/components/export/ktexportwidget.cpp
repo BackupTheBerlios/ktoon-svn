@@ -337,7 +337,7 @@ ExportTo::ExportTo(const KTProject *project) : KWizardPage(tr("")), m_currentExp
 	QHBoxLayout *configureLayout = new QHBoxLayout(configure);
 	configureLayout->addStretch();
 	
-	m_size = new DXYSpinBox(tr("Size") );
+	m_size = new KXYSpinBox(tr("Size") );
 	m_size->setMaximum( 1024 );
 	m_size->setModifyTogether(true);
 	
@@ -507,20 +507,20 @@ void ExportTo::exportIt()
 		
 		if ( file.isNull() ) return;
 		
-		dDebug("export") << "Exporting to file: " << file;
+		kDebug("export") << "Exporting to file: " << file;
 		
 		QList<KTScene *> scenes = scenesToExport();
 		
-		dDebug("export") << "Exporting " << scenes.count() << " scenes";
+		kDebug("export") << "Exporting " << scenes.count() << " scenes";
 		
 		if ( scenes.count() > 0)
 		{
-			m_currentExporter->exportToFormat( file, scenes, m_currentFormat, QSize(m_size->x(),m_size->x()), m_fps->value()  );
+			m_currentExporter->exportToFormat( file, scenes, m_currentFormat, QSize((int)m_size->x(),(int)m_size->x()), m_fps->value()  );
 		}
 	}
 	else
 	{
-		DOsd::self()->display( tr("Please choose the format before export"), DOsd::Error );
+		KOsd::self()->display( tr("Please choose the format before export"), KOsd::Error );
 	}
 }
 
@@ -536,7 +536,7 @@ QList<KTScene *> ExportTo::scenesToExport() const
 }
 
 
-KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : DWizard(parent), m_project(project)
+KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KWizard(parent), m_project(project)
 {
 	KINIT;
 	setWindowTitle(tr("Export"));

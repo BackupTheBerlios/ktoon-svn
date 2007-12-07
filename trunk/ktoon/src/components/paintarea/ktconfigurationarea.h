@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DCONFIGURATIONAREA_H
-#define DCONFIGURATIONAREA_H
+#ifndef KCONFIGURATIONAREA_H
+#define KCONFIGURATIONAREA_H
 
 #include <QDockWidget>
 
@@ -56,7 +58,7 @@ class KTConfigurationArea : public QDockWidget
 		
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 #endif

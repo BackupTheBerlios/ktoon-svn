@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,22 +30,22 @@ struct KTDocumentRuler::Private
 	QPoint dragStartPosition;
 };
 
-KTDocumentRuler::KTDocumentRuler(Qt::Orientation orientation, QWidget *parent) : DRulerBase(orientation, parent), d( new Private)
+KTDocumentRuler::KTDocumentRuler(Qt::Orientation orientation, QWidget *parent) : KRulerBase(orientation, parent), k( new Private)
 {
-	d->oldPos = QPointF(0.0,0.0);
+	k->oldPos = QPointF(0.0,0.0);
 	setDrawPointer(true);
 }
 
 
 KTDocumentRuler::~KTDocumentRuler()
 {
-	delete d;
+	delete k;
 }
 
 void KTDocumentRuler::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton)
-		d->dragStartPosition = event->pos();
+		k->dragStartPosition = event->pos();
 }
 
 void KTDocumentRuler::mouseMoveEvent(QMouseEvent *event)
@@ -53,7 +55,7 @@ void KTDocumentRuler::mouseMoveEvent(QMouseEvent *event)
 		return;
 	}
 	
-	if ((event->pos() - d->dragStartPosition).manhattanLength()	< QApplication::startDragDistance())
+	if ((event->pos() - k->dragStartPosition).manhattanLength()	< QApplication::startDragDistance())
 	{
 		return;
 	}
@@ -75,7 +77,7 @@ void KTDocumentRuler::mouseMoveEvent(QMouseEvent *event)
 	drag->setMimeData(mimeData);
 
 	Qt::DropAction dropAction = drag->start(Qt::CopyAction | Qt::MoveAction);
-	DRulerBase::mouseMoveEvent(event);
+	KRulerBase::mouseMoveEvent(event);
 	
 }
 
@@ -84,17 +86,16 @@ void KTDocumentRuler::movePointers(const QPointF &pos)
 	// FIXME
 	if(orientation() == Qt::Horizontal)
 	{
-		translateArrow(-d->oldPos.x(), 0);
+		translateArrow(-k->oldPos.x(), 0);
 		translateArrow(zero().x() + pos.x(), 0);
 	}
 	else if(orientation() == Qt::Vertical)
 	{
-		translateArrow(0, -d->oldPos.y());
+		translateArrow(0, -k->oldPos.y());
 		translateArrow(0,zero().y() + pos.y());
 	}
 	
-	d->oldPos = zero() + pos;
+	k->oldPos = zero() + pos;
 	repaint();
 }
-
 

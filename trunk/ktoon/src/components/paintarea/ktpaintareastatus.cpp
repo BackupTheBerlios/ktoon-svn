@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -95,7 +97,7 @@ BrushStatus::BrushStatus()
 	m_brush = new ColorWidget;
 	
 	layout->addWidget(m_pen);
-	layout->addWidget( new DSeparator(Qt::Vertical ) );
+	layout->addWidget( new KSeparator(Qt::Vertical ) );
 	layout->addWidget(m_brush);
 }
 
@@ -124,10 +126,10 @@ struct KTPaintAreaStatus::Private
 	QComboBox *rotation;
 };
 
-KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent), d( new Private)
+KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent), k( new Private)
 {
 	setSizeGripEnabled(false);
-	d->viewDocument = parent;
+	k->viewDocument = parent;
 	QWidget *rotContainer = new QWidget;
 	QHBoxLayout *rotLayout = new QHBoxLayout(rotContainer);
 	rotLayout->setSpacing(3);
@@ -135,97 +137,93 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 	
 	rotLayout->addWidget(new QLabel(tr("Rotate")));
 	
-	d->rotation = new QComboBox();
-	d->rotation->setDuplicatesEnabled(false);
-	d->rotation->setEditable(true);
+	k->rotation = new QComboBox();
+	k->rotation->setDuplicatesEnabled(false);
+	k->rotation->setEditable(true);
 	
 	
 	for(int i = 0; i < 360; i+=30)
 	{
-		d->rotation->addItem(QString::number(i), i);
+		k->rotation->addItem(QString::number(i), i);
 	}
 	
-	d->rotation->setValidator(new QIntValidator(-360, 360,this));
+	k->rotation->setValidator(new QIntValidator(-360, 360,this));
 	
-	rotLayout->addWidget( d->rotation);
+	rotLayout->addWidget( k->rotation);
 	
 	addPermanentWidget(rotContainer);
 	
-	connect(d->rotation, SIGNAL(activated(const QString &)), this, SLOT(applyRotationFromItem(const QString &)));
-	
-	
-	
-	
-	
+	connect(k->rotation, SIGNAL(activated(const QString &)), this, SLOT(applyRotationFromItem(const QString &)));
+		
 	///////
 	
-	d->antialiasHint = new QPushButton;
-	d->antialiasHint->setFocusPolicy( Qt::NoFocus);
+	k->antialiasHint = new QPushButton;
+	k->antialiasHint->setFocusPolicy( Qt::NoFocus);
 	
-	d->antialiasHint->setText(tr("Antialiasing"));
-	d->antialiasHint->setCheckable(true);
+	k->antialiasHint->setText(tr("Antialiasing"));
+	k->antialiasHint->setCheckable(true);
 	
-	d->antialiasHint->setChecked( parent->renderHints() & QPainter::Antialiasing );
+	k->antialiasHint->setChecked( parent->renderHints() & QPainter::Antialiasing );
 	
-	addPermanentWidget(d->antialiasHint/*,1*/);
+	addPermanentWidget(k->antialiasHint/*,1*/);
 	
 	
-	d->renderer = new QComboBox;
+	k->renderer = new QComboBox;
 #ifdef QT_OPENGL_LIB
-	d->renderer->addItem(tr("OpenGL"), KToon::OpenGL );
+	k->renderer->addItem(tr("OpenGL"), KToon::OpenGL );
 #endif
-	d->renderer->addItem(tr("Native"), KToon::Native );
+	k->renderer->addItem(tr("Native"), KToon::Native );
 	
-	d->renderer->setCurrentIndex(1);
+	k->renderer->setCurrentIndex(1);
 	
-	addPermanentWidget(d->renderer/*,1*/);
+	addPermanentWidget(k->renderer/*,1*/);
 	
 	
-	d->brushStatus = new BrushStatus;
-	addPermanentWidget(d->brushStatus);
+	k->brushStatus = new BrushStatus;
+	addPermanentWidget(k->brushStatus);
 	
-	connect(d->antialiasHint, SIGNAL(toggled(bool)), this, SLOT(selectAntialiasingHint(bool) ));
-	connect(d->renderer, SIGNAL(activated(int)), this, SLOT(selectRenderer(int)));
+	connect(k->antialiasHint, SIGNAL(toggled(bool)), this, SLOT(selectAntialiasingHint(bool) ));
+	connect(k->renderer, SIGNAL(activated(int)), this, SLOT(selectRenderer(int)));
 	
-	d->brushStatus->setBackground( d->viewDocument->brushManager()->brush() );
-	d->brushStatus->setForeground( d->viewDocument->brushManager()->pen() );
+	k->brushStatus->setBackground( k->viewDocument->brushManager()->brush() );
+	k->brushStatus->setForeground( k->viewDocument->brushManager()->pen() );
 }
 
 
 KTPaintAreaStatus::~KTPaintAreaStatus()
 {
-	delete d;
+	delete k;
 }
 
 
 void KTPaintAreaStatus::selectAntialiasingHint(bool use)
 {
-	d->viewDocument->setAntialiasing( use ); 
+	k->viewDocument->setAntialiasing( use ); 
 }
 
 void KTPaintAreaStatus::selectRenderer(int id)
 {
-	KToon::RenderType type = KToon::RenderType(d->renderer->itemData(id ).toInt());
+	KToon::RenderType type = KToon::RenderType(k->renderer->itemData(id ).toInt());
 	
 	if ( type == KToon::OpenGL )
 	{
-		d->viewDocument->setOpenGL( true );
+		k->viewDocument->setOpenGL( true );
 	}
 	else
 	{
-		d->viewDocument->setOpenGL( false );
+		k->viewDocument->setOpenGL( false );
 	}
 }
 
 
 void KTPaintAreaStatus::setBrush(const QBrush &brush)
 {
-	d->brushStatus->setBackground( brush );
+	k->brushStatus->setBackground( brush );
 }
 
 void KTPaintAreaStatus::setPen(const QPen &pen)
 {
-	d->brushStatus->setForeground( pen );
+	k->brushStatus->setForeground( pen );
 }
 
 
@@ -238,7 +236,6 @@ void KTPaintAreaStatus::applyRotationFromItem(const QString & text)
 		angle += 360;
 	}
 	
-	d->viewDocument->setRotationAngle(angle);
+	k->viewDocument->setRotationAngle(angle);
 }
-
 

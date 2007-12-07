@@ -1,8 +1,11 @@
 /***************************************************************************
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
  *   Copyright (C) 2005 by Jorge Cuadrado                                  *
  *   kuadrosx@toonka.com                                                   *
  *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                   *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -65,12 +68,10 @@ struct KTPaintArea::Private
 	QStringList copiesXml;
 };
 
-
-
-KTPaintArea::KTPaintArea(const KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), d(new Private)
+KTPaintArea::KTPaintArea(const KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
 {
-	d->project = project;
-	d->currentSceneIndex = 0;
+	k->project = project;
+	k->currentSceneIndex = 0;
 	
 	setCurrentScene( 0 );
 	if ( graphicsScene()->scene() )
@@ -81,22 +82,22 @@ KTPaintArea::KTPaintArea(const KTProject *project, QWidget * parent) : KTPaintAr
 
 KTPaintArea::~KTPaintArea()
 {
-	delete d;
+	delete k;
 }
 
 void KTPaintArea::setCurrentScene(int index)
 {
-	D_FUNCINFOX("paintarea") << index;
-	KTScene *sscene = d->project->scene(index);
+	K_FUNCINFOX("paintarea") << index;
+	KTScene *sscene = k->project->scene(index);
 	if ( sscene )
 	{
-		d->currentSceneIndex = index;
+		k->currentSceneIndex = index;
 		graphicsScene()->setCurrentScene(sscene);
 	}
 	else
 	{
 		setDragMode(QGraphicsView::NoDrag);
-		d->currentSceneIndex = -1;
+		k->currentSceneIndex = -1;
 		graphicsScene()->setCurrentScene(0);
 	}
 }
@@ -113,8 +114,8 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
 		
 		QMenu *menu = new QMenu(tr("Drawing area"));
 		
-		menu->addAction(dApp->findGlobalAction("undo"));
-		menu->addAction(dApp->findGlobalAction("redo"));
+		menu->addAction(kApp->findGlobalAction("undo"));
+		menu->addAction(kApp->findGlobalAction("redo"));
 		
 		menu->addSeparator();
 		
@@ -146,7 +147,7 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
 			copy->setEnabled(false);
 		}
 		
-		if ( d->copiesXml.isEmpty() )
+		if ( k->copiesXml.isEmpty() )
 		{
 			paste->setEnabled(false);
 		}
@@ -183,7 +184,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 			sscene->drawPhotogram(event->frameIndex());
 			setCurrentScene( event->sceneIndex() );
 			
-			dDebug("paintarea") << "frame: " << event->frameIndex() << " " << "layer: " << event->layerIndex();
+			kDebug("paintarea") << "frame: " << event->frameIndex() << " " << "layer: " << event->layerIndex();
 		}
 		break;
 		case KTProjectRequest::Lock:
@@ -228,7 +229,7 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
 
 void KTPaintArea::sceneResponse(KTSceneResponse *event)
 {
-	D_FUNCINFOX("paintarea");
+	K_FUNCINFOX("paintarea");
 	
 	if( graphicsScene()->isDrawing() ) return;
 	
@@ -241,9 +242,9 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 		break;
 		case KTProjectRequest::Remove:
 		{
-			if ( event->sceneIndex() == d->currentSceneIndex )
+			if ( event->sceneIndex() == k->currentSceneIndex )
 			{
-				setCurrentScene( d->currentSceneIndex-1 );
+				setCurrentScene( k->currentSceneIndex-1 );
 			}
 		}
 		break;
@@ -395,8 +396,8 @@ void KTPaintArea::ungroupItems()
 
 void KTPaintArea::copyItems()
 {
-	D_FUNCINFOX("paintarea");
-	d->copiesXml.clear();
+	K_FUNCINFOX("paintarea");
+	k->copiesXml.clear();
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
 	if(!selecteds.isEmpty())
 	{
@@ -408,7 +409,7 @@ void KTPaintArea::copyItems()
 			{
 				QDomDocument orig;
 				orig.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( orig ));
-				d->copiesXml << orig.toString();
+				k->copiesXml << orig.toString();
 				
 				// Paint it to clipbard
 				QPixmap toPixmap(item->boundingRect().size().toSize());
@@ -446,10 +447,10 @@ void KTPaintArea::copyItems()
 
 void KTPaintArea::pasteItems()
 {
-	D_FUNCINFOX("paintarea");
+	K_FUNCINFOX("paintarea");
 	KTGraphicsScene* currentScene = graphicsScene();
 	
-	foreach(QString xml, d->copiesXml)
+	foreach(QString xml, k->copiesXml)
 	{
 		KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->graphics().count(), KTProjectRequest::Add, xml);
 		
@@ -459,7 +460,7 @@ void KTPaintArea::pasteItems()
 
 void KTPaintArea::cutItems()
 {
-	D_FUNCINFOX("paintarea");
+	K_FUNCINFOX("paintarea");
 	copyItems();
 	deleteItems();
 }
@@ -482,13 +483,13 @@ void KTPaintArea::setPreviousFramesOnionSkinCount(int n)
 
 void KTPaintArea::addSelectedItemsToLibrary()
 {
-	dDebug("paintarea") << "Adding to library";
+	kDebug("paintarea") << "Adding to library";
 	
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
 	
 	if ( selecteds.isEmpty() )
 	{
-		DOsd::self()->display(tr("No items selected"), DOsd::Error);
+		KOsd::self()->display(tr("No items selected"), KOsd::Error);
 		return;
 	}
 	
@@ -521,13 +522,13 @@ void KTPaintArea::addSelectedItemsToLibrary()
 
 void KTPaintArea::requestMoveSelectedItems(QAction *action)
 {
-	D_FUNCINFOX("paintarea");
+	K_FUNCINFOX("paintarea");
 	
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
 	
 	if ( selecteds.isEmpty() )
 	{
-		DOsd::self()->display(tr("No items selected"), DOsd::Error);
+		KOsd::self()->display(tr("No items selected"), KOsd::Error);
 		return;
 	}
 	
@@ -572,6 +573,3 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
 		}
 	}
 }
-
-
-

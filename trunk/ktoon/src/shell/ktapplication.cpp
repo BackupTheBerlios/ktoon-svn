@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,8 +27,7 @@
 #include <kcore/kapplicationproperties.h>
 #include <kcore/kdebug.h>
 
-KTApplication::KTApplication(int &argc, char **argv)
- : DApplication(argc, argv)
+KTApplication::KTApplication(int &argc, char **argv) : KApplication(argc, argv)
 {
 	setApplicationName("ktoon");
 	
@@ -45,15 +46,15 @@ bool KTApplication::firstRun()
 
 	if ( firstDialog->exec() != QDialog::Rejected )
 	{
-		dAppProp->setHomeDir( firstDialog->home() );
+		kAppProp->setHomeDir( firstDialog->home() );
 		createCache(firstDialog->cache());
 		
-		DCONFIG->beginGroup("General");
+		KCONFIG->beginGroup("General");
 		
-		DCONFIG->setValue( "Home", HOME_DIR);
-		DCONFIG->setValue( "Cache", CACHE_DIR);
+		KCONFIG->setValue( "Home", HOME_DIR);
+		KCONFIG->setValue( "Cache", CACHE_DIR);
 		
-		DCONFIG->sync();
+		KCONFIG->sync();
 		
 		delete firstDialog;
 		
@@ -70,13 +71,12 @@ void KTApplication::createCache(const QString &cacheDir)
 	QDir cache(cacheDir);
 	if ( ! cache.exists() )
 	{
-		dDebug() << tr("Initializing repository %1").arg(cacheDir);
+		kDebug() << tr("Initializing repository %1").arg(cacheDir);
 		if ( ! cache.mkdir(cacheDir) )
 		{
-			dError() << tr("I cannot create the repository");
+			kError() << tr("I cannot create the repository");
 		}
 	}
 	
-	dAppProp->setCacheDir(cacheDir);
+	kAppProp->setCacheDir(cacheDir);
 }
-

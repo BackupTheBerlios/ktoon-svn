@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,7 +29,6 @@
 KTPaletteImporter::KTPaletteImporter() : m_document(0)
 {
 }
-
 
 KTPaletteImporter::~KTPaletteImporter()
 {
@@ -56,7 +57,7 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 		
 		if ( ! stream.readLine().contains("GIMP Palette") )
 		{
-			dError() << "Don't contains \"GIMP Palette\"";
+			kError() << "Don't contains \"GIMP Palette\"";
 			return;
 		}
 		
@@ -102,11 +103,11 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 				}
 				else
 				{
-					dError() << "Bad color";
+					kError() << "Bad color";
 				}
 			}
 			else
-				dError() << "No find";
+				kError() << "No find";
 		}
 	}
 }

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -43,7 +45,7 @@
 #include "crashhandler.h"
 
 #ifdef ENABLE_KTOONSTYLE
-#include "dwaitstyle.h"
+#include "kwaitstyle.h"
 #endif
 
 #include <QPlastiqueStyle>
@@ -68,7 +70,7 @@ int main( int argc, char ** argv )
 	CrashHandler::init();
 	
 #ifdef ENABLE_KTOONSTYLE
-	QApplication::setStyle(new DWaitStyle());
+	QApplication::setStyle(new KWaitStyle());
 #elif defined(Q_OS_LINUX)
 	QApplication::setStyle(new QPlastiqueStyle());
 #endif
@@ -80,35 +82,35 @@ int main( int argc, char ** argv )
 		return 0;
 	}
 	
-	DCONFIG->beginGroup("General");
+	KCONFIG->beginGroup("General");
 	
-	if ( ! DCONFIG->isOk() )
+	if ( ! KCONFIG->isOk() )
 	{
-		DCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("KTOON_HOME")));
-		DCONFIG->setValue("Cache", QDir::tempPath() );
+		KCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("KTOON_HOME")));
+		KCONFIG->setValue("Cache", QDir::tempPath() );
 	}
 	
-	dAppProp->setHomeDir(DCONFIG->value("Home").toString());
-	application.createCache(DCONFIG->value("Cache").toString());
+	kAppProp->setHomeDir(KCONFIG->value("Home").toString());
+	application.createCache(KCONFIG->value("Cache").toString());
 
-	if ( dAppProp->homeDir().isEmpty() || application.isArg("r") || application.isArg("reconfigure") )
+	if ( kAppProp->homeDir().isEmpty() || application.isArg("r") || application.isArg("reconfigure") )
 	{
 		if ( ! application.firstRun() )
 		{
-			dFatal () << "**********************You need configure the application" << endl;
+			kFatal () << "**********************You need configure the application" << endl;
 			QMessageBox::critical(0, QObject::tr("Missing..."), QObject::tr("You need configure the application"));
 			application.exit(-1);
 			return -1;
 		}
 		
 		
-		dAppProp->setHomeDir(DCONFIG->value("Home").toString());
-		application.createCache(DCONFIG->value("Cache").toString());
+		kAppProp->setHomeDir(KCONFIG->value("Home").toString());
+		application.createCache(KCONFIG->value("Cache").toString());
 	}
 	
-	dAppProp->setVersion(VERSION_STR);
+	kAppProp->setVersion(VERSION_STR);
 	
-	QString themefile = DCONFIG->value("ThemeFile").toString();
+	QString themefile = KCONFIG->value("ThemeFile").toString();
 	if ( ! themefile.isEmpty() )
 	{
 		application.applyTheme(themefile);
@@ -171,10 +173,10 @@ int main( int argc, char ** argv )
 void usage()
 {
 #if defined(Q_OS_UNIX)
-	puts(QString("\033[1;33m"+QApplication::applicationName() + dAppProp->version()).toLocal8Bit());
+	puts(QString("\033[1;33m"+QApplication::applicationName() + kAppProp->version()).toLocal8Bit());
 	puts(QString(QObject::tr("2D Animation tool kit")+"\033[0;0m" ).toLocal8Bit());
 
-	puts(QString("\033[1;34m"+QObject::tr("Usage: %1 [option]").arg(dApp->argv()[0])+"\033[0;0m").toLocal8Bit());
+	puts(QString("\033[1;34m"+QObject::tr("Usage: %1 [option]").arg(kApp->argv()[0])+"\033[0;0m").toLocal8Bit());
 	
 	puts(QString("\033[1;31m"+QObject::tr("Options: ")).toLocal8Bit());
 	
@@ -183,9 +185,9 @@ void usage()
 	
 	puts("\033[0;0m");
 #else
-	puts(QString(QApplication::applicationName() + dApp->version()).toLocal8Bit());
+	puts(QString(QApplication::applicationName() + kApp->version()).toLocal8Bit());
 
-	puts(QObject::tr("Usage: %1 [option]").arg(dApp->argv()[0]).toLocal8Bit());
+	puts(QObject::tr("Usage: %1 [option]").arg(kApp->argv()[0]).toLocal8Bit());
 	
 	puts(QObject::tr("Options: ").toLocal8Bit());
 	

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -43,13 +45,13 @@ struct KTConfigurationArea::Private
 	QPoint mousePos;
 };
 
-KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent), d(new Private)
+KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent), k(new Private)
 {
-	d->toolTipShowed = false;
+	k->toolTipShowed = false;
 	setAllowedAreas ( Qt::RightDockWidgetArea );
 	
 // 	connect(&d->locker, SIGNAL(timeout()), this, SLOT(toggleLock()));
-	connect(&d->shower, SIGNAL(timeout()), this, SLOT(showConfigurator()));
+	connect(&k->shower, SIGNAL(timeout()), this, SLOT(showConfigurator()));
 }
 
 KTConfigurationArea::~KTConfigurationArea()
@@ -59,7 +61,7 @@ KTConfigurationArea::~KTConfigurationArea()
 		widget()->hide();
 		widget()->setParent(0);
 	}
-	delete d;
+	delete k;
 }
 
 QSize  KTConfigurationArea::sizeHint() const
@@ -92,18 +94,18 @@ void KTConfigurationArea::setConfigurator(QWidget *w)
 
 void KTConfigurationArea::toggleLock()
 {
-	d->locker.stop();
+	k->locker.stop();
 	hideConfigurator();
 }
 
 void KTConfigurationArea::shrink()
 {
-	D_FUNCINFO;
+	K_FUNCINFO;
 	
 	QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parentWidget());
 	if ( !mainWindow || ! widget() )
 	{
-		D_FUNCINFO << "Fatal error";
+		K_FUNCINFO << "Fatal error";
 		return;
 	}
 	
@@ -209,26 +211,26 @@ void KTConfigurationArea::shrink()
 
 void KTConfigurationArea::enterEvent(QEvent *)
 {
-	if ( d->locker.isActive()) d->locker.stop();
+	if ( k->locker.isActive()) k->locker.stop();
 	
-	if ( d->shower.isActive() )
+	if ( k->shower.isActive() )
 	{
 		return;
 	}
 	
-	d->shower.start(300);
+	k->shower.start(300);
 }
 
 void KTConfigurationArea::leaveEvent(QEvent *)
 {
-	if ( d->shower.isActive()) d->shower.stop();
+	if ( k->shower.isActive()) k->shower.stop();
 	
-	if ( d->locker.isActive() || rect().contains(mapFromGlobal(QCursor::pos())) || hasFocus() )
+	if ( k->locker.isActive() || rect().contains(mapFromGlobal(QCursor::pos())) || hasFocus() )
 	{
 		return;
 	}
 	
-	d->locker.start(1000);
+	k->locker.start(1000);
 }
 
 void KTConfigurationArea::showConfigurator()
@@ -250,9 +252,9 @@ void KTConfigurationArea::showConfigurator()
 		
 	}
 	
-	d->shower.stop();
+	k->shower.stop();
 	
-	d->mousePos = QCursor::pos();
+	k->mousePos = QCursor::pos();
 }
 
 void KTConfigurationArea::hideConfigurator()
@@ -281,14 +283,14 @@ void KTConfigurationArea::hideConfigurator()
 		shrink();
 		
 		
-		if ( !d->toolTipShowed )
+		if ( !k->toolTipShowed )
 		{
-			QToolTip::showText (d->mousePos, tr("Cursor here for expand"), this );
-			d->toolTipShowed = true;
+			QToolTip::showText (k->mousePos, tr("Cursor here for expand"), this );
+			k->toolTipShowed = true;
 		}
 	}
 	
-	d->mousePos = QCursor::pos();
+	k->mousePos = QCursor::pos();
 }
 
 void KTConfigurationArea::paintEvent (QPaintEvent *e)
@@ -355,9 +357,4 @@ void KTConfigurationArea::paintEvent (QPaintEvent *e)
 // 		painter.drawText(QPointF(height()/2-fm.width(text)/2, -(width()-fm.height()/2) ), text );
 	}
 }
-
-
-
-
-
 

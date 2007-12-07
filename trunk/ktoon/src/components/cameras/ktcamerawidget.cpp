@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -35,7 +37,7 @@ KTCameraWidget::KTCameraWidget(KTProject *project, QWidget *parent) : KTModuleWi
 	m_viewCamera = new KTViewCamera(project);
 	
 	m_fps = new QSpinBox;
-	boxLayout()->addLayout(DFormFactory::makeGrid( QStringList() << "FPS", QWidgetList() << m_fps ));
+	boxLayout()->addLayout(KFormFactory::makeGrid( QStringList() << "FPS", QWidgetList() << m_fps ));
 	connect(m_fps, SIGNAL(valueChanged(int)), this, SLOT(setFPS(int)));
 	
 	m_fps->setValue(14);

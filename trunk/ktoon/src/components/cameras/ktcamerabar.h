@@ -41,7 +41,7 @@ class KTCameraBar : public QFrame
 		void setPalette(const QPalette &);
 		
 	private:
-		DImageButton *m_rew, *m_play, *m_stop, *m_ff;
+		KImageButton *m_rew, *m_play, *m_stop, *m_ff;
 		
 	signals:
 		void play();

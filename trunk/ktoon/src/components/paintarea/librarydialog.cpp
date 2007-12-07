@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -39,19 +41,15 @@ struct LibraryDialog::Private
 		QMap<int, QLineEdit *> tabs;
 };
 
-LibraryDialog::LibraryDialog()
-	: QDialog(), d(new Private)
+LibraryDialog::LibraryDialog() : QDialog(), k(new Private)
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	
+	k->toolBox = new QToolBox;
 	
-	d->toolBox = new QToolBox;
-	
-	
-	layout->addWidget(d->toolBox);
+	layout->addWidget(k->toolBox);
 	
 	QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Help | QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal );
-	
 	
 	connect(buttons, SIGNAL(accepted ()), this, SLOT(checkNames()));
 	connect(buttons, SIGNAL(rejected ()), this, SLOT(reject()));
@@ -62,7 +60,7 @@ LibraryDialog::LibraryDialog()
 
 LibraryDialog::~LibraryDialog()
 {
-	delete d;
+	delete k;
 }
 
 void LibraryDialog::addItem(QGraphicsItem *item)
@@ -79,35 +77,33 @@ void LibraryDialog::addItem(QGraphicsItem *item)
 	QLineEdit *name = new QLineEdit;
 	connect(name, SIGNAL(returnPressed()), this, SLOT(checkNames()));
 	
-	QLayout *grid = DFormFactory::makeGrid( QStringList() << tr("Name"), QWidgetList() << name );
+	QLayout *grid = KFormFactory::makeGrid( QStringList() << tr("Name"), QWidgetList() << name );
 	
 	layout->addLayout(grid);
 	
-	int index = d->toolBox->addItem(container, tr("Item %1").arg(d->toolBox->count()+1));
+	int index = k->toolBox->addItem(container, tr("Item %1").arg(k->toolBox->count()+1));
 	
-	d->symbolNames.insert(item, name);
-	d->tabs.insert(index, name);
+	k->symbolNames.insert(item, name);
+	k->tabs.insert(index, name);
 }
 
 QString LibraryDialog::symbolName(QGraphicsItem *item) const
 {
-	return d->symbolNames[item]->text();
+	return k->symbolNames[item]->text();
 }
 
 void LibraryDialog::checkNames()
 {
-	for(int i = 0; i < d->toolBox->count(); i++)
+	for(int i = 0; i < k->toolBox->count(); i++)
 	{
-		if ( d->tabs[i]->text().isEmpty())
+		if ( k->tabs[i]->text().isEmpty())
 		{
-			d->toolBox->setCurrentIndex (i);
-			d->tabs[i]->setFocus();
+			k->toolBox->setCurrentIndex (i);
+			k->tabs[i]->setFocus();
 			return;
 		}
 	}
 	
 	accept();
 }
-
-
 

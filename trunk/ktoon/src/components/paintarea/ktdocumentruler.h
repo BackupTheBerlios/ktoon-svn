@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,6 +19,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef KTDOCUMENTRULER_H
 #define KTDOCUMENTRULER_H
 
@@ -26,7 +29,7 @@
  * @author Jorge Cuadrado
 */
 
-class KTDocumentRuler : public DRulerBase
+class KTDocumentRuler : public KRulerBase
 {
 	Q_OBJECT
 	public:
@@ -43,7 +46,7 @@ class KTDocumentRuler : public DRulerBase
 		
 	private:
 		struct Private;
-		Private * const d;
+		Private * const k;
 };
 
 #endif
