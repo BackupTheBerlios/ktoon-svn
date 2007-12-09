@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -44,7 +46,7 @@ class ViewTool: public KTToolPlugin
 		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
 		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
 
-		virtual QMap<QString, DAction *> actions() const;
+		virtual QMap<QString, KAction *> actions() const;
 		
 		int toolType() const;
 		
@@ -56,7 +58,7 @@ class ViewTool: public KTToolPlugin
 		void setupActions();
 		
 	private:
-		QMap<QString, DAction *> m_actions;
+		QMap<QString, KAction *> m_actions;
 		
 		QGraphicsRectItem *m_rect;
 		KTGraphicsScene *m_scene;

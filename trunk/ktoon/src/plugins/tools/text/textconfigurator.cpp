@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -33,7 +35,7 @@ TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this );
 	setLayout(layout);
 	
-	m_fontChooser = new DFontChooser;
+	m_fontChooser = new KFontChooser;
 	layout->addWidget(m_fontChooser);
 
 	m_text = new QTextEdit(this);
@@ -46,7 +48,7 @@ TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
 	
 	connect(m_fontChooser, SIGNAL(fontChanged()), this, SLOT(changeFont()));
 	
-	new DSpellHighlighter(m_text->document());
+	new KSpellHighlighter(m_text->document());
 }
 
 

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               * 
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -32,21 +34,20 @@ struct KTRequestParser::Private
 	KTProjectResponse *response;
 };
 
-KTRequestParser::KTRequestParser()
-	: KTXmlParserBase(), d(new Private())
+KTRequestParser::KTRequestParser() : KTXmlParserBase(), k(new Private())
 {
-	d->response = 0;
+	k->response = 0;
 }
 
 
 KTRequestParser::~KTRequestParser()
 {
-	delete d;
+	delete k;
 }
 
 void KTRequestParser::initialize()
 {
-	d->response = 0;
+	k->response = 0;
 }
 
 
@@ -54,15 +55,15 @@ bool KTRequestParser::startTag(const QString& qname, const QXmlAttributes& atts)
 {
 	if( qname == "request" )
 	{
-		d->sign = atts.value("sign");
+		k->sign = atts.value("sign");
 	}
 	else if ( qname == "item" )
 	{
-		static_cast<KTItemResponse *>(d->response)->setItemIndex(atts.value("index").toInt());
+		static_cast<KTItemResponse *>(k->response)->setItemIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "frame" )
 	{
-		static_cast<KTFrameResponse *>(d->response)->setFrameIndex(atts.value("index").toInt());
+		static_cast<KTFrameResponse *>(k->response)->setFrameIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "data" )
 	{
@@ -70,20 +71,20 @@ bool KTRequestParser::startTag(const QString& qname, const QXmlAttributes& atts)
 	}
 	else if ( qname == "layer" )
 	{
-		static_cast<KTLayerResponse *>(d->response)->setLayerIndex(atts.value("index").toInt());
+		static_cast<KTLayerResponse *>(k->response)->setLayerIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "scene" )
 	{
-		static_cast<KTSceneResponse *>(d->response)->setSceneIndex(atts.value("index").toInt());
+		static_cast<KTSceneResponse *>(k->response)->setSceneIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "symbol" )
 	{
-		static_cast<KTLibraryResponse*>(d->response)->setSymbolType(atts.value("type").toInt());
+		static_cast<KTLibraryResponse*>(k->response)->setSymbolType(atts.value("type").toInt());
 	}
 	else if ( qname == "action" )
 	{
-		d->response = KTProjectResponseFactory::create( atts.value("part").toInt(), atts.value("id").toInt());
-		d->response->setArg(atts.value("arg"));
+		k->response = KTProjectResponseFactory::create( atts.value("part").toInt(), atts.value("id").toInt());
+		k->response->setArg(atts.value("arg"));
 	}
 	
 	return true;
@@ -98,16 +99,16 @@ void KTRequestParser::text( const QString &ch )
 {
 	if ( currentTag() == "data" )
 	{
-		d->response->setData( QByteArray::fromBase64( QByteArray(ch.toLocal8Bit()) ) );
+		k->response->setData( QByteArray::fromBase64( QByteArray(ch.toLocal8Bit()) ) );
 	}
 }
 
 KTProjectResponse *KTRequestParser::response() const
 {
-	return d->response;
+	return k->response;
 }
 
 QString KTRequestParser::sign() const
 {
-	return d->sign;
+	return k->sign;
 }

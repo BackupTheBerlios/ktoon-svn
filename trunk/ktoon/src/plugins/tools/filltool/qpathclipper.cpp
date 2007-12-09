@@ -72,9 +72,9 @@ class PathVertex
 {
 public:
     enum Degeneracy {
-        DNone,
-        DIntersect,
-        DDegenerate
+        KNone,
+        KIntersect,
+        KDegenerate
     };
 
     enum TraversalFlag {
@@ -399,12 +399,12 @@ PathVertex::Direction PathVertex::turnBackwardEat()
 void PathVertex::setIntersect(Degeneracy d)
 {
     //don't want to reset the degenerate flag
-    if (intersect == DNone || intersect == DIntersect)
+    if (intersect == KNone || intersect == KIntersect)
         intersect = d;
 }
 
 PathVertex::PathVertex(qreal xi, qreal yi, Type t)
-    : next(0), prev(0), intersect(DNone),
+    : next(0), prev(0), intersect(KNone),
       code(TNone), neighbor(0),
       cross_transfer(false),
       x(xi), y(yi), alpha(0), type(t)
@@ -776,7 +776,7 @@ static inline bool isBezierBetween(const PathVertex *prev,
 
 static inline bool vertexAlreadyIntersected(PathVertex *v, qreal alpha)
 {
-    return (v->intersect != PathVertex::DNone &&
+    return (v->intersect != PathVertex::KNone &&
             (qFuzzyCompare(alpha, qreal(1.)) ||
              qFuzzyCompare(alpha, qreal(0.))));
 }
@@ -1046,7 +1046,7 @@ public:
                                            const QPainterPath & B_p,
                                            PointTest op)
     {
-        if (cur->intersect == PathVertex::DNone)
+        if (cur->intersect == PathVertex::KNone)
             return PathVertex::TNone;
 
         PointLocation  prev_s;
@@ -1312,7 +1312,7 @@ public:
                 v->alpha = alpha;
                 one = one->next;
                 while (one && one != two &&
-                       (one->intersect != PathVertex::DNone &&
+                       (one->intersect != PathVertex::KNone &&
                         alpha > one->alpha))
                     one = one->next;
                 if (one)
@@ -1329,8 +1329,8 @@ public:
                                         qFuzzyCompare(alpha_q, 0) ||
                                         qFuzzyCompare(alpha_p, 1) ||
                                         qFuzzyCompare(alpha_q, 1))
-                                       ? PathVertex::DDegenerate
-                                       : PathVertex::DIntersect;
+                                       ? PathVertex::KDegenerate
+                                       : PathVertex::KIntersect;
             bool  newlyCreated1 = false, newlyCreated2 = false;
             PathVertex *sinter = intersection(alpha_p, p1, p2, *pList, newlyCreated1);
             PathVertex *cinter = intersection(alpha_q, q1, q2, *qList, newlyCreated2);
@@ -1452,10 +1452,10 @@ public:
                         PathVertex *c, PathVertex *d)
     {
 #ifdef QDEBUG_CLIPPER
-        Q_ASSERT(a->intersect == PathVertex::DNone);
-        Q_ASSERT(b->intersect == PathVertex::DNone);
-        Q_ASSERT(c->intersect == PathVertex::DNone);
-        Q_ASSERT(d->intersect == PathVertex::DNone);
+        Q_ASSERT(a->intersect == PathVertex::KNone);
+        Q_ASSERT(b->intersect == PathVertex::KNone);
+        Q_ASSERT(c->intersect == PathVertex::KNone);
+        Q_ASSERT(d->intersect == PathVertex::KNone);
 #endif
 
         if (b->isCurveTo() || d->isCurveTo()) {
@@ -1468,10 +1468,10 @@ public:
                           PathVertex *c, PathVertex *d)
     {
 #ifdef QDEBUG_CLIPPER
-        Q_ASSERT(a->intersect == PathVertex::DNone);
-        Q_ASSERT(b->intersect == PathVertex::DNone);
-        Q_ASSERT(c->intersect == PathVertex::DNone);
-        Q_ASSERT(d->intersect == PathVertex::DNone);
+        Q_ASSERT(a->intersect == PathVertex::KNone);
+        Q_ASSERT(b->intersect == PathVertex::KNone);
+        Q_ASSERT(c->intersect == PathVertex::KNone);
+        Q_ASSERT(d->intersect == PathVertex::KNone);
 #endif
 
         if (b->isCurveTo() || d->isCurveTo()) {
@@ -1667,14 +1667,14 @@ public:
 };
 
 QPathClipper::QPathClipper()
-    : d(new Private)
+    : k(new Private)
 {
 }
 
 
 QPathClipper::QPathClipper(const QPainterPath &subject,
                            const QPainterPath &clip)
-    : d(new Private)
+    : k(new Private)
 {
     setSubjectPath(subject);
     setClipPath(clip);
@@ -1682,103 +1682,103 @@ QPathClipper::QPathClipper(const QPainterPath &subject,
 
 QPathClipper::~QPathClipper()
 {
-    delete d;
-    d = 0;
+    delete k;
+    k = 0;
 }
 
 void QPathClipper::setSubjectPath(const QPainterPath &path)
 {
-    d->subjectPath = path;
-    delete d->subject;
-    d->subject = VertexList::fromPainterPath(path);
+    k->subjectPath = path;
+    delete k->subject;
+    k->subject = VertexList::fromPainterPath(path);
 }
 
 
 QPainterPath QPathClipper::subjectPath() const
 {
-    return d->subjectPath;
+    return k->subjectPath;
 }
 
 
 void QPathClipper::setClipPath(const QPainterPath &path)
 {
-    d->clipPath = path;
-    delete d->clipper;
-    d->clipper = VertexList::fromPainterPath(path);
+    k->clipPath = path;
+    delete k->clipper;
+    k->clipper = VertexList::fromPainterPath(path);
 }
 
 
 QPainterPath QPathClipper::clipPath() const
 {
-    return d->clipPath;
+    return k->clipPath;
 }
 
 QPainterPath QPathClipper::clip(Operation op)
 {
-    d->op = op;
+    k->op = op;
 
 #ifdef QDEBUG_CLIPPER
     qDebug("xxxxxxxxxxxxxxxxxxxxxxxxx");
-    d->subject->dump();
-    d->clipper->dump();
+    k->subject->dump();
+    k->clipper->dump();
     qDebug("uuuuuyyyyyyyyyyyyyyyyyyyyy");
 #endif
 
-    d->findIntersections();
+    k->findIntersections();
 
-    if (d->intersections.isEmpty()) { //no intersections
-        bool clipInSubject = d->subjectPath.contains(d->clipPath.elementAt(0));
-        bool subjectInClip = d->clipPath.contains(d->subjectPath.elementAt(0));
+    if (k->intersections.isEmpty()) { //no intersections
+        bool clipInSubject = k->subjectPath.contains(k->clipPath.elementAt(0));
+        bool subjectInClip = k->clipPath.contains(k->subjectPath.elementAt(0));
         QPainterPath result;
-        switch(d->op) {
+        switch(k->op) {
         case QPathClipper::BoolAnd:
             if (clipInSubject)
-                result = d->clipPath;
+                result = k->clipPath;
             else if (subjectInClip)
-                result = d->subjectPath;
+                result = k->subjectPath;
             break;
         case QPathClipper::BoolOr:
             if (clipInSubject)
-                result = d->subjectPath;
+                result = k->subjectPath;
             else if (subjectInClip)
-                result = d->clipPath;
+                result = k->clipPath;
             else {
-                result.addPath(d->subjectPath);
-                result.addPath(d->clipPath);
+                result.addPath(k->subjectPath);
+                result.addPath(k->clipPath);
             }
             break;
         case QPathClipper::BoolSub:
             if (subjectInClip) {
                 return QPainterPath();
             } else if (clipInSubject) {
-                result = d->subjectPath;
-                result.addPath(d->clipPath);
+                result = k->subjectPath;
+                result.addPath(k->clipPath);
             } else {
-                result = d->subjectPath;
+                result = k->subjectPath;
             }
             break;
         case QPathClipper::BoolInSub:
             if (clipInSubject || subjectInClip) {
-                result = d->clipPath;
-                result.addPath(d->subjectPath);
+                result = k->clipPath;
+                result.addPath(k->subjectPath);
             } else {
-                result = d->clipPath;
+                result = k->clipPath;
             }
             break;
         }
         return result;
     }
 
-    d->markForBooleanOperation();
+    k->markForBooleanOperation();
 
-    d->findCouplesAndCrossTransfers();
+    k->findCouplesAndCrossTransfers();
 
 #ifdef QDEBUG_CLIPPER
-    d->subject->dump();
-    d->clipper->dump();
+    k->subject->dump();
+    k->clipper->dump();
 #endif
 
-    d->makeRing();
+    k->makeRing();
 
     PathVertex *current, *start, *prev_code_owner = 0;
 
@@ -1787,9 +1787,9 @@ QPainterPath QPathClipper::clip(Operation op)
     while (true) {
         current = 0;
 
-        d->breakRing();
-        current = d->getUnprocessed();
-        d->makeRing();
+        k->breakRing();
+        current = k->getUnprocessed();
+        k->makeRing();
 
         if (!current) break;
 
@@ -1802,7 +1802,7 @@ QPainterPath QPathClipper::clip(Operation op)
         QList<PathVertex*> vertices;
         while (not_over)
 		{
-            not_over = d->walkResultingPath(start, prev_code_owner,
+            not_over = k->walkResultingPath(start, prev_code_owner,
                                             current, traversal_stat, vertices);
 			if( count >= 2000 )
 			{
@@ -1811,22 +1811,22 @@ QPainterPath QPathClipper::clip(Operation op)
 			count++;
 		}
 
-        result.addPath(d->pathFromList(vertices));
+        result.addPath(k->pathFromList(vertices));
     }
 
-    d->breakRing();
+    k->breakRing();
 
     return result;
 }
 
 bool QPathClipper::intersect()
 {
-    return d->areIntersecting();
+    return k->areIntersecting();
 }
 
 bool QPathClipper::contains()
 {
-    bool intersect = d->areIntersecting();
+    bool intersect = k->areIntersecting();
 
     //we have an intersection clearly we can't be fully contained
     if (intersect)
@@ -1835,6 +1835,6 @@ bool QPathClipper::contains()
     //if there's no intersections the path is already completely outside
     //or fully inside. if the first element of the clip is inside then
     //due to no intersections, the rest will be inside as well...
-    return d->subjectPath.contains(d->clipPath.elementAt(0));
+    return k->subjectPath.contains(k->clipPath.elementAt(0));
 }
 

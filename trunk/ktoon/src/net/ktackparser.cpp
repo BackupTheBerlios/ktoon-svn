@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2007 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,14 +28,14 @@ struct KTAckParser::Private
 	QString sign;
 };
 
-KTAckParser::KTAckParser() : KTXmlParserBase(), d(new Private())
+KTAckParser::KTAckParser() : KTXmlParserBase(), k(new Private())
 {
 }
 
 
 KTAckParser::~KTAckParser()
 {
-	delete d;
+	delete k;
 }
 
 bool KTAckParser::startTag(const QString &tag, const QXmlAttributes &atts)
@@ -59,22 +61,22 @@ void KTAckParser::text(const QString &msg)
 {
 	if( currentTag() == "motd" )
 	{
-		d->motd = msg;
+		k->motd = msg;
 	}
 	else if ( currentTag() == "sign" )
 	{
-		d->sign = msg;
+		k->sign = msg;
 	}
 }
 
 QString KTAckParser::sign() const
 {
-	return d->sign;
+	return k->sign;
 }
 
 
 QString KTAckParser::motd() const
 {
-	return d->motd;
+	return k->motd;
 }
 

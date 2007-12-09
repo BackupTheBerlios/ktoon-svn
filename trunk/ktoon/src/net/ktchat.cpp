@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -46,47 +48,47 @@ class KTChat::Private
 		
 };
 
-KTChat::KTChat(QWidget *parent) : QWidget(parent), d(new Private)
+KTChat::KTChat(QWidget *parent) : QWidget(parent), k(new Private)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	QGridLayout *layout = new QGridLayout(this);
 	
 	setWindowTitle("chat");
 	
-	d->browser = new QTextBrowser;
-	layout->addWidget(d->browser, 0, 0 );
+	k->browser = new QTextBrowser;
+	layout->addWidget(k->browser, 0, 0 );
 	
 	
 	QHBoxLayout *box = new QHBoxLayout;
 	
-	d->lineEdit = new QLineEdit;
-	box->addWidget(d->lineEdit);
+	k->lineEdit = new QLineEdit;
+	box->addWidget(k->lineEdit);
 	
-	d->send = new QPushButton(tr("Send"));
-	box->addWidget(d->send);
+	k->send = new QPushButton(tr("Send"));
+	box->addWidget(k->send);
 	
 	layout->addLayout( box, 1, 0);
 	
-	connect(d->lineEdit, SIGNAL(returnPressed()), d->send, SLOT(animateClick()));
-	connect(d->send, SIGNAL(clicked()), this, SLOT(sendMessage()));
+	connect(k->lineEdit, SIGNAL(returnPressed()), k->send, SLOT(animateClick()));
+	connect(k->send, SIGNAL(clicked()), this, SLOT(sendMessage()));
 }
 
 
 KTChat::~KTChat()
 {
-	delete d;
+	delete k;
 }
 
 
 void KTChat::addMessage(const QString &from, const QString &message)
 {
-	d->browser->append(QString("<%1> %2").arg(from).arg(message));
+	k->browser->append(QString("<%1> %2").arg(from).arg(message));
 }
 
 void KTChat::sendMessage()
 {
-	QString text = d->lineEdit->text();
-	d->lineEdit->clear();
+	QString text = k->lineEdit->text();
+	k->lineEdit->clear();
 	if(!text.isEmpty())
 	{
 		emit requestSendMessage(text);

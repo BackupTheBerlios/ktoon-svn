@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -219,15 +221,15 @@ struct KTFramesTable::Private
 	KTTLRuler *ruler;
 };
 
-KTFramesTable::KTFramesTable(QWidget *parent) : QTableWidget(0, 100, parent), d(new Private)
+KTFramesTable::KTFramesTable(QWidget *parent) : QTableWidget(0, 100, parent), k(new Private)
 {
-	d->ruler = new KTTLRuler;
+	k->ruler = new KTTLRuler;
 	setup();
 }
 
 KTFramesTable::~KTFramesTable()
 {
-	delete d;
+	delete k;
 }
 
 void KTFramesTable::setup()
@@ -237,8 +239,8 @@ void KTFramesTable::setup()
 	setSelectionBehavior(QAbstractItemView::SelectItems);
 	setSelectionMode (QAbstractItemView::SingleSelection);
 	
-	setHorizontalHeader(d->ruler);
-	connect(d->ruler, SIGNAL(logicalSectionSelected( int )), this, SLOT(emitFrameSelected( int )));
+	setHorizontalHeader(k->ruler);
+	connect(k->ruler, SIGNAL(logicalSectionSelected( int )), this, SLOT(emitFrameSelected( int )));
 	connect(this, SIGNAL(currentItemChanged( QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(emitFrameSelected(QTableWidgetItem *, QTableWidgetItem *)));
 	verticalHeader()->hide();
 	
@@ -280,18 +282,18 @@ void KTFramesTable::emitFrameSelected(QTableWidgetItem *curr, QTableWidgetItem *
 
 void KTFramesTable::setItemSize(int w, int h)
 {
-	d->rectHeight = h;
-	d->rectWidth = w;
+	k->rectHeight = h;
+	k->rectWidth = w;
 	
 	fixSize();
 }
 
 bool KTFramesTable::isSoundLayer(int row)
 {
-	if( row < 0 && row >= d->layers.count() )
+	if( row < 0 && row >= k->layers.count() )
 		return false;
 	
-	return d->layers[row].sound;
+	return k->layers[row].sound;
 }
 
 void KTFramesTable::insertLayer(int pos, const QString &name)
@@ -300,7 +302,7 @@ void KTFramesTable::insertLayer(int pos, const QString &name)
 	
 	Private::LayerItem layer;
 	layer.sound = false;
-	d->layers.insert(pos, layer);
+	k->layers.insert(pos, layer);
 	
 // 	selectCell( pos, 0 );
 	
@@ -313,7 +315,7 @@ void KTFramesTable::insertSoundLayer(int layerPos, const QString &name)
 	
 	Private::LayerItem layer;
 	layer.sound = true;
-	d->layers.insert(layerPos, layer);
+	k->layers.insert(layerPos, layer);
 	
 	fixSize();
 }
@@ -328,7 +330,7 @@ void KTFramesTable::removeLayer(int pos)
 {
 	pos = verticalHeader()->logicalIndex(pos);
 	removeRow( pos );
-	d->layers.removeAt(pos);
+	k->layers.removeAt(pos);
 }
 
 void KTFramesTable::moveLayer(int position, int newPosition)
@@ -372,11 +374,11 @@ void KTFramesTable::moveLayer(int position, int newPosition)
 int KTFramesTable::lastFrameByLayer(int layerPos)
 {
 	int pos = verticalHeader()->logicalIndex(layerPos);
-	if ( pos < 0 || pos > d->layers.count() )
+	if ( pos < 0 || pos > k->layers.count() )
 	{
 		return -1;
 	}
-	return d->layers[pos].lastItem;
+	return k->layers[pos].lastItem;
 }
 
 // FRAMES
@@ -384,19 +386,19 @@ int KTFramesTable::lastFrameByLayer(int layerPos)
 
 void KTFramesTable::insertFrame(int layerPos, const QString &name)
 {
-	if ( layerPos < 0 || layerPos >= d->layers.count() ) return;
+	if ( layerPos < 0 || layerPos >= k->layers.count() ) return;
 	
 	layerPos = verticalHeader()->logicalIndex(layerPos);
 	
-	d->layers[layerPos].lastItem++;
+	k->layers[layerPos].lastItem++;
 	
-	if ( d->layers[layerPos].lastItem >= columnCount() )
+	if ( k->layers[layerPos].lastItem >= columnCount() )
 	{
-		insertColumn( d->layers[layerPos].lastItem );
+		insertColumn( k->layers[layerPos].lastItem );
 	}
 	
-	setAttribute( layerPos, d->layers[layerPos].lastItem, KTFramesTableItem::IsUsed, true);
-	setAttribute( layerPos, d->layers[layerPos].lastItem, KTFramesTableItem::IsSound, d->layers[layerPos].sound);
+	setAttribute( layerPos, k->layers[layerPos].lastItem, KTFramesTableItem::IsUsed, true);
+	setAttribute( layerPos, k->layers[layerPos].lastItem, KTFramesTableItem::IsSound, k->layers[layerPos].sound);
 	
 	viewport()->update();
 }
@@ -423,16 +425,16 @@ void KTFramesTable::removeFrame(int layerPos, int position)
 // 		setAttribute( layerPos, position, KTFramesTableItem::IsUsed, false);
 // 	}
 	
-	if ( layerPos < 0 || layerPos >= d->layers.count() )
+	if ( layerPos < 0 || layerPos >= k->layers.count() )
 	{
 		return;
 	}
 	
 	layerPos = verticalHeader()->logicalIndex(layerPos);
 	
-	setAttribute( layerPos, d->layers[layerPos].lastItem, KTFramesTableItem::IsUsed, false );
+	setAttribute( layerPos, k->layers[layerPos].lastItem, KTFramesTableItem::IsUsed, false );
 	
-	d->layers[layerPos].lastItem--;
+	k->layers[layerPos].lastItem--;
 	
 // 	viewport()->update( visualRect(indexFromItem( item(layerPos, position) )) );
 	viewport()->update();
@@ -440,7 +442,7 @@ void KTFramesTable::removeFrame(int layerPos, int position)
 
 void KTFramesTable::lockFrame(int layerPos, int position, bool lock)
 {
-	if ( layerPos < 0 || layerPos >= d->layers.count() )
+	if ( layerPos < 0 || layerPos >= k->layers.count() )
 	{
 		return;
 	}
@@ -470,11 +472,11 @@ void KTFramesTable::fixSize()
 {
 	for(int column = 0; column < columnCount(); column++)
 	{
-		horizontalHeader()->resizeSection(column, d->rectWidth);
+		horizontalHeader()->resizeSection(column, k->rectWidth);
 	}
 	for( int row = 0; row < rowCount(); row++)
 	{
-		verticalHeader()->resizeSection(row, d->rectHeight);
+		verticalHeader()->resizeSection(row, k->rectHeight);
 	}
 }
 

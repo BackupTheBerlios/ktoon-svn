@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2007 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,7 +30,7 @@ struct KTComunicationParser::Private
 };
 
 
-KTComunicationParser::KTComunicationParser() : KTXmlParserBase(), d(new Private())
+KTComunicationParser::KTComunicationParser() : KTXmlParserBase(), k(new Private())
 {
 	
 }
@@ -46,8 +48,8 @@ bool KTComunicationParser::startTag(const QString &tag, const QXmlAttributes &at
 	{
 		if ( tag == "message" )
 		{
-			d->message = atts.value("text");
-			d->login = atts.value("from");
+			k->message = atts.value("text");
+			k->login = atts.value("from");
 		}
 	}
 	
@@ -66,11 +68,11 @@ void KTComunicationParser::text(const QString &)
 
 QString KTComunicationParser::message() const
 {
-	return d->message;
+	return k->message;
 }
 
 QString KTComunicationParser::login() const
 {
-	return d->login;
+	return k->login;
 }
 

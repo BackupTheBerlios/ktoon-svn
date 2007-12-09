@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -33,7 +35,7 @@
 
 ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 {
-	DINIT;
+	KINIT;
 	QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 	
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
@@ -84,12 +86,12 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 	
 	QBoxLayout *buttonLayout = new QBoxLayout(QBoxLayout::LeftToRight);
 	
-	DImageButton *add = new DImageButton(QIcon(THEME_DIR+"/icons/plussign.png"),22, 0, false);
+	KImageButton *add = new KImageButton(QIcon(THEME_DIR+"/icons/plussign.png"),22, 0, false);
 	buttonLayout->addWidget(add);
 	
 	connect(add, SIGNAL(clicked()), this, SLOT(addCurrentValue()));
 	
-	DImageButton *del = new DImageButton(QIcon(THEME_DIR+"/icons/minussign.png"), 22, 0, false);
+	KImageButton *del = new KImageButton(QIcon(THEME_DIR+"/icons/minussign.png"), 22, 0, false);
 	
 	connect(del, SIGNAL(clicked()), this, SLOT(removeCurrentValue()));
 	
@@ -97,8 +99,8 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 	
 	mainLayout->addLayout(buttonLayout);
 	
-	DCONFIG->beginGroup("Brush tool");
-	double smoothness = DCONFIG->value("smoothness", -1).toDouble();
+	KCONFIG->beginGroup("Brush tool");
+	double smoothness = KCONFIG->value("smoothness", -1).toDouble();
 	
 	if ( smoothness > 0 )
 	{
@@ -110,8 +112,8 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 
 ExactnessConfigurator::~ExactnessConfigurator()
 {
-	DCONFIG->beginGroup("Brush tool");
-	DCONFIG->setValue("smoothness", m_exactness->value());
+	KCONFIG->beginGroup("Brush tool");
+	KCONFIG->setValue("smoothness", m_exactness->value());
 }
 
 double ExactnessConfigurator::exactness() const

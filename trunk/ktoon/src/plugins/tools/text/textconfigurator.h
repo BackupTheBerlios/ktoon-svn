@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,7 +28,7 @@
 
 #include <QTextEdit>
 
-class DFontChooser;
+class KFontChooser;
 class QCheckBox;
 
 /**
@@ -51,7 +53,7 @@ class TextConfigurator : public QWidget
 		
 	private:
 		QTextEdit *m_text;
-		DFontChooser *m_fontChooser;
+		KFontChooser *m_fontChooser;
 		QCheckBox *m_isHtml;
 };
 

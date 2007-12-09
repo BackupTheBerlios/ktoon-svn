@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,68 +29,68 @@ struct KTBrushManager::Private
 	QBrush brush;
 };
 
-KTBrushManager::KTBrushManager(QObject * parent) : QObject(parent), d(new Private)
+KTBrushManager::KTBrushManager(QObject * parent) : QObject(parent), k(new Private)
 {
 }
 
-KTBrushManager::KTBrushManager(const QPen &pen, const QBrush &brush, QObject * parent) : QObject(parent), d(new Private)
+KTBrushManager::KTBrushManager(const QPen &pen, const QBrush &brush, QObject * parent) : QObject(parent), k(new Private)
 {
-	d->pen = pen;
-	d->brush = brush;
+	k->pen = pen;
+	k->brush = brush;
 }
 
 KTBrushManager::~KTBrushManager()
 {
-	delete d;
+	delete k;
 }
 
 void KTBrushManager::setPen(const QPen &pen)
 {
-	d->pen = pen;
+	k->pen = pen;
 	emit penChanged( pen );
 }
 
 void KTBrushManager::setPenBrush(const QBrush &brush)
 {
-	d->pen.setBrush(brush);
-	emit penChanged( d->pen );
+	k->pen.setBrush(brush);
+	emit penChanged( k->pen );
 }
 
 
 QPen KTBrushManager::pen() const
 {
-	return d->pen;
+	return k->pen;
 }
 
 void KTBrushManager::setBrush(const QBrush &brush)
 {
-	d->brush = brush;
+	k->brush = brush;
 	emit brushChanged( brush );
 }
 
 QBrush KTBrushManager::brush() const
 {
-	return d->brush;
+	return k->brush;
 }
 
 
 int KTBrushManager::penWidth() const
 {
-	return d->pen.width();
+	return k->pen.width();
 }
 
 QColor KTBrushManager::penColor() const
 {
-	return d->pen.color();
+	return k->pen.color();
 }
 
 QBrush KTBrushManager::penBrush() const
 {
-	return d->pen.brush();
+	return k->pen.brush();
 }
 
 QBrush KTBrushManager::brushColor() const
 {
-	return d->brush.color();
+	return k->brush.color();
 }
 

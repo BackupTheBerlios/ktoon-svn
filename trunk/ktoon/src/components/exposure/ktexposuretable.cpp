@@ -537,7 +537,7 @@ void KTExposureTable::removeFrame(int indexLayer, int indexFrame)
 	QTableWidgetItem *i  = takeItem (  indexFrame, indexLayer );
 	if(i)
 	{
-		for(int index = indexFrame+1; index < d->header->lastFrame(indexLayer); index++ )
+		for(int index = indexFrame+1; index < k->header->lastFrame(indexLayer); index++ )
 		{
 			QTableWidgetItem * idx  = takeItem (  index, indexLayer );
 			if(idx)

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                           	   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -182,7 +184,7 @@ bool CrashHandler::containsSignalEntry(int signal)
 
 void CrashHandler::setConfig(const QString &filePath)
 {
-	D_FUNCINFO;
+	K_FUNCINFO;
 	SHOW_VAR(filePath);
 	QDomDocument doc;
 	QFile file(filePath);

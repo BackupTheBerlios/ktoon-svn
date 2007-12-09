@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *    
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -34,27 +36,27 @@ class KTProjectResponse::Private
 		bool isExternal;
 };
 
-KTProjectResponse::KTProjectResponse(int part, int action) : d(new Private(part, action))
+KTProjectResponse::KTProjectResponse(int part, int action) : k(new Private(part, action))
 {
 }
 
 
 KTProjectResponse::~KTProjectResponse()
 {
-	delete d;
+	delete k;
 }
 
 
 int KTProjectResponse::part() const
 {
-	return d->part;
+	return k->part;
 }
 
 int KTProjectResponse::action() const
 {
-	if( d->mode == Undo )
+	if( k->mode == Undo )
 	{
-		switch(d->action)
+		switch(k->action)
 		{
 			case KTProjectRequest::Add:
 			{
@@ -128,56 +130,53 @@ int KTProjectResponse::action() const
 		}
 	}
 	
-	return d->action;
+	return k->action;
 }
 
 int KTProjectResponse::originalAction() const
 {
-	return d->action;
+	return k->action;
 }
 
 void KTProjectResponse::setMode(Mode mode)
 {
-	d->mode = mode;
+	k->mode = mode;
 }
 
 void KTProjectResponse::setExternal(bool e)
 {
-	d->isExternal = e;
+	k->isExternal = e;
 }
 
 bool KTProjectResponse::external() const
 {
-	return d->isExternal;
+	return k->isExternal;
 }
 
 KTProjectResponse::Mode KTProjectResponse::mode() const
 {
-	return d->mode;
+	return k->mode;
 }
 
 void KTProjectResponse::setArg(const QString &value)
 {
-	d->arg = value;
+	k->arg = value;
 }
 
 void KTProjectResponse::setData(const QByteArray &data)
 {
-	d->data = data;
+	k->data = data;
 }
 
 KTProjectRequestArgument KTProjectResponse::arg() const
 {
-	return d->arg;
+	return k->arg;
 }
 
 QByteArray KTProjectResponse::data() const
 {
-	return d->data;
+	return k->data;
 }
-
-
-
 
 // SCENE
 
@@ -336,9 +335,3 @@ KTProjectResponse *KTProjectResponseFactory::create(int part, int action)
 	
 	return new KTProjectResponse(part, action);
 }
-
-
-
-
-
-

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -36,7 +38,7 @@ void KTMainWindow::createGUI()
 // 	setDockOptions(QMainWindow::ForceTabbedDocks /*| QMainWindow::AnimatedDocks*/);
 	
 	m_colorPalette = new KTColorPalette;
-	DToolView *view = addToolView( m_colorPalette, Qt::LeftDockWidgetArea, Drawing );
+	KToolView *view = addToolView( m_colorPalette, Qt::LeftDockWidgetArea, Drawing );
 	
 	m_actionManager->insert( view->toggleViewAction(), "show palette");
 	addToPerspective(view->toggleViewAction(), Drawing);
@@ -66,8 +68,8 @@ void KTMainWindow::createGUI()
 	
 	connectToDisplays(m_libraryWidget);
 	
-	new DAction( QPixmap(), tr( "Import bitmap..." ), QKeySequence(), m_libraryWidget, SLOT(importBitmap()), m_actionManager, "importbitmap");
-	new DAction( QPixmap(), tr( "Import audio file..." ), QKeySequence(), m_libraryWidget, SLOT(importSound()), m_actionManager, "importaudiofile");
+	new KAction( QPixmap(), tr( "Import bitmap..." ), QKeySequence(), m_libraryWidget, SLOT(importBitmap()), m_actionManager, "importbitmap");
+	new KAction( QPixmap(), tr( "Import audio file..." ), QKeySequence(), m_libraryWidget, SLOT(importSound()), m_actionManager, "importaudiofile");
 	
 	ui4project( m_libraryWidget );
 	ui4localRequest(m_libraryWidget);
@@ -170,8 +172,8 @@ void KTMainWindow::setupMenu()
 	m_recentProjectsMenu = new QMenu(tr("Recents"), this );
 	connect( m_recentProjectsMenu, SIGNAL( activated(int) ), this, SLOT( openRecent( int ) ) );
 	
-	DCONFIG->beginGroup("General");
-	QStringList recents = DCONFIG->value("recents").toString().split(';');
+	KCONFIG->beginGroup("General");
+	QStringList recents = KCONFIG->value("recents").toString().split(';');
 	
 	updateOpenRecentMenu(m_recentProjectsMenu, recents);
 	
@@ -261,11 +263,11 @@ void KTMainWindow::setupMenu()
 
 void KTMainWindow::setupActions()
 {
-// 	DAction *next = new DAction( QPixmap(), tr( "Back Frame" ), QKeySequence(Qt::Key_PageUp), this, SLOT(selectBackFrame()), m_actionManager, "BackFrame");
+// 	KAction *next = new KAction( QPixmap(), tr( "Back Frame" ), QKeySequence(Qt::Key_PageUp), this, SLOT(selectBackFrame()), m_actionManager, "BackFrame");
 // 	next->setShortcutContext ( Qt::ApplicationShortcut );
 // 	
 // 	
-// 	DAction *back = new DAction( QPixmap(), tr( "Next Frame" ), QKeySequence(Qt::Key_PageDown), this, SLOT(selectNextFrame()), m_actionManager, "Next Frame");
+// 	KAction *back = new KAction( QPixmap(), tr( "Next Frame" ), QKeySequence(Qt::Key_PageDown), this, SLOT(selectNextFrame()), m_actionManager, "Next Frame");
 // 	back->setShortcutContext ( Qt::ApplicationShortcut );
 // 	
 // 	addAction(back);
@@ -275,80 +277,80 @@ void KTMainWindow::setupActions()
 
 void KTMainWindow::setupFileActions()
 {
-	DAction *newProject = new DAction( QPixmap( THEME_DIR+"/icons/project.png" ), tr( "New project" ), QKeySequence(), this, SLOT(newProject()), m_actionManager );
+	KAction *newProject = new KAction( QPixmap( THEME_DIR+"/icons/project.png" ), tr( "New project" ), QKeySequence(), this, SLOT(newProject()), m_actionManager );
 	newProject->setStatusTip(tr( "Opens a new project"));
 	m_actionManager->insert( newProject, "newproject", "file" );
 	
 	
-	DAction *openFile = new DAction( QPixmap(THEME_DIR+"/icons/open.png"), tr( "Open project" ), tr("Ctrl+O"), this, SLOT(openProject()), m_actionManager );
+	KAction *openFile = new KAction( QPixmap(THEME_DIR+"/icons/open.png"), tr( "Open project" ), tr("Ctrl+O"), this, SLOT(openProject()), m_actionManager );
 	m_actionManager->insert( openFile, "openproject", "file" );
 	openFile->setStatusTip(tr("Loads an existent project"));
 	
-	DAction *openNetFile = new DAction(QPixmap(THEME_DIR+"/icons/open.png"), tr("Open project from server..."), tr(""), this, SLOT(openProjectFromServer()), m_actionManager);
+	KAction *openNetFile = new KAction(QPixmap(THEME_DIR+"/icons/open.png"), tr("Open project from server..."), tr(""), this, SLOT(openProjectFromServer()), m_actionManager);
 	m_actionManager->insert(openNetFile, "opennetproject", "file");
 	
-	DAction *importNetFile = new DAction(QPixmap(THEME_DIR+""), tr("Import project to server..."), tr(""), this, SLOT(importProjectToServer()), m_actionManager);
+	KAction *importNetFile = new KAction(QPixmap(THEME_DIR+""), tr("Import project to server..."), tr(""), this, SLOT(importProjectToServer()), m_actionManager);
 	m_actionManager->insert(importNetFile, "importprojectserver", "file");
 	
-	DAction *save = new DAction( QPixmap(THEME_DIR+"/icons/save.png"), tr( "Save project" ),QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager);
+	KAction *save = new KAction( QPixmap(THEME_DIR+"/icons/save.png"), tr( "Save project" ),QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager);
 	m_actionManager->insert( save, "saveproject", "file" );
 	save->setStatusTip(tr("Saves the current project in the current location"));
 	
-	DAction *saveAs = new DAction( tr( "Save project &As..." ), m_actionManager);
+	KAction *saveAs = new KAction( tr( "Save project &As..." ), m_actionManager);
 	connect(saveAs, SIGNAL(triggered()), this, SLOT(saveAs()));
 	saveAs->setStatusTip(tr("Opens a dialog box to save the current project in any location"));
 	m_actionManager->insert( saveAs, "saveprojectas", "file" );
 	
-	DAction *close = new DAction(QPixmap(THEME_DIR+"/icons/close.png"), tr( "Cl&ose project" ), QKeySequence(tr("Ctrl+W")), m_actionManager);
+	KAction *close = new KAction(QPixmap(THEME_DIR+"/icons/close.png"), tr( "Cl&ose project" ), QKeySequence(tr("Ctrl+W")), m_actionManager);
 	connect(close, SIGNAL(triggered()), this, SLOT(closeProject()));
 	close->setStatusTip(tr("Closes the active project"));
 	m_actionManager->insert( close, "closeproject", "file" );
 	
 	//------
 	
-	DAction *importPalette = new DAction( QPixmap(THEME_DIR+"/icons/import.png"), tr( "&Import GIMP palettes..." ),  QKeySequence(), this, SLOT(importPalettes()), m_actionManager);
+	KAction *importPalette = new KAction( QPixmap(THEME_DIR+"/icons/import.png"), tr( "&Import GIMP palettes..." ),  QKeySequence(), this, SLOT(importPalettes()), m_actionManager);
 	importPalette->setStatusTip(tr("Imports palettes"));
 	m_actionManager->insert( importPalette, "importpalettes", "file" );
 	
 	// -----
-	DAction *exportProject = new DAction( QPixmap(THEME_DIR+"/icons/export.png"), tr( "&Export..." ),  QKeySequence(), this, SLOT(exportProject()), m_actionManager);
+	KAction *exportProject = new KAction( QPixmap(THEME_DIR+"/icons/export.png"), tr( "&Export..." ),  QKeySequence(), this, SLOT(exportProject()), m_actionManager);
 	exportProject->setStatusTip(tr("Exports project to different formats"));
 	m_actionManager->insert( exportProject, "export", "file" );
 	
-	DAction *exit = new DAction(QPixmap(THEME_DIR+"/icons/export.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")), qApp, SLOT(closeAllWindows ()), m_actionManager);
+	KAction *exit = new KAction(QPixmap(THEME_DIR+"/icons/export.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")), qApp, SLOT(closeAllWindows ()), m_actionManager);
 	exit->setStatusTip(tr("Closes the application"));
 	m_actionManager->insert( exit, "exit", "file" );
 }
 
 void KTMainWindow::setupSettingsActions()
 {
-	DAction *wizard = new DAction( tr( "Launch configuration wizard..." ), QKeySequence(), qobject_cast<KTApplication*>(qApp), SLOT(firstRun()), m_actionManager, "wizard");
+	KAction *wizard = new KAction( tr( "Launch configuration wizard..." ), QKeySequence(), qobject_cast<KTApplication*>(qApp), SLOT(firstRun()), m_actionManager, "wizard");
 	wizard->setStatusTip(tr("Launch first configuration wizard"));
 	
-	DAction * preferences = new DAction( tr( "Pr&eferences..." ), QKeySequence(), this, SLOT( preferences()), m_actionManager, "preferences");
+	KAction * preferences = new KAction( tr( "Pr&eferences..." ), QKeySequence(), this, SLOT( preferences()), m_actionManager, "preferences");
 	preferences->setStatusTip(tr("Opens the preferences dialog box"));
 }
 
 void KTMainWindow::setupHelpActions()
 {
-	new DAction(QPixmap(), tr("About KToon"), QKeySequence(), this, SLOT(aboutKToon()), m_actionManager, "about ktoon");
-	new DAction(QPixmap(), tr("Tip of day"), QKeySequence(), this, SLOT(showTipDialog()), m_actionManager, "tipofday");
+	new KAction(QPixmap(), tr("About KToon"), QKeySequence(), this, SLOT(aboutKToon()), m_actionManager, "about ktoon");
+	new KAction(QPixmap(), tr("Tip of day"), QKeySequence(), this, SLOT(showTipDialog()), m_actionManager, "tipofday");
 }
 
 void KTMainWindow::setupWindowActions()
 {
-#if defined(QT_GUI_LIB) && !defined(D_NODEBUG)
-	new DAction(QPixmap(), tr("Show debug dialog"), QKeySequence(), DDebug::browser(), SLOT(show()), m_actionManager, "show debug");
+#if defined(QT_GUI_LIB) && !defined(K_NODEBUG)
+	new KAction(QPixmap(), tr("Show debug dialog"), QKeySequence(), KDebug::browser(), SLOT(show()), m_actionManager, "show debug");
 #endif
 }
 
 void KTMainWindow::setupInsertActions()
 {
-	new DAction( QPixmap(THEME_DIR+"/icons/scene.png"), tr( "Insert scene" ), QKeySequence(), m_scenes, SLOT(emitRequestInsertScene()), m_actionManager, "InsertScene");
+	new KAction( QPixmap(THEME_DIR+"/icons/scene.png"), tr( "Insert scene" ), QKeySequence(), m_scenes, SLOT(emitRequestInsertScene()), m_actionManager, "InsertScene");
 	
-// 	new DAction( QPixmap(THEME_DIR+"/icons/layer.png"), tr( "Insert layer" ), QKeySequence(), m_exposureSheet, SLOT(createLayer()), m_actionManager, "InsertLayer");
+// 	new KAction( QPixmap(THEME_DIR+"/icons/layer.png"), tr( "Insert layer" ), QKeySequence(), m_exposureSheet, SLOT(createLayer()), m_actionManager, "InsertLayer");
 // 	
-// 	new DAction( QPixmap(THEME_DIR+"/icons/frame.png"), tr( "Insert frame" ), QKeySequence(), m_projectManager, SLOT(createFrame()), m_actionManager, "InsertFrame");
+// 	new KAction( QPixmap(THEME_DIR+"/icons/frame.png"), tr( "Insert frame" ), QKeySequence(), m_projectManager, SLOT(createFrame()), m_actionManager, "InsertFrame");
 }
 
 void KTMainWindow::setupToolBar()
@@ -374,8 +376,8 @@ void KTMainWindow::setupToolBar()
 	undo->setIcon( QPixmap(THEME_DIR+"/icons/undo.png" ));
 	redo->setIcon(QPixmap(THEME_DIR+"/icons/redo.png" ));
 	
-	dApp->insertGlobalAction(undo, "undo");
-	dApp->insertGlobalAction(redo, "redo");
+	kApp->insertGlobalAction(undo, "undo");
+	kApp->insertGlobalAction(redo, "redo");
 	
 }
 
@@ -396,7 +398,7 @@ void KTMainWindow::updateOpenRecentMenu(QMenu *menu, QStringList recents)
 
 void KTMainWindow::showWidgetPage()
 {
-// 	DAction *action = qobject_cast<DAction *>(sender());
+// 	KAction *action = qobject_cast<KAction *>(sender());
 // 	
 // 	if ( action )
 // 	{

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2007 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -49,38 +51,38 @@
 
 struct TweenerTranslate::Private
 {
-	QMap<QString, DAction *> actions;
+	QMap<QString, KAction *> actions;
 	Configurator *configurator;
 	KTGraphicsScene *scene;
 	bool creatingPath, selecting;
 	QGraphicsPathItem *path;
-	DNodeGroup *group;
+	KNodeGroup *group;
 };
 
-TweenerTranslate::TweenerTranslate() : KTToolPlugin(), d(new Private)
+TweenerTranslate::TweenerTranslate() : KTToolPlugin(), k(new Private)
 {
 	setupActions();
-	d->configurator = 0;
-	d->creatingPath = true;
-	d->selecting = false;
-	d->path = 0;
-	d->group = 0;
+	k->configurator = 0;
+	k->creatingPath = true;
+	k->selecting = false;
+	k->path = 0;
+	k->group = 0;
 }
 
 
 TweenerTranslate::~TweenerTranslate()
 {
-	delete d;
+	delete k;
 }
 
 void TweenerTranslate::init(KTGraphicsScene *scene)
 {
-	delete d->path;
-	d->path = 0;
-	delete d->group;
-	d->group = 0;
+	delete k->path;
+	k->path = 0;
+	delete k->group;
+	k->group = 0;
 	
-	d->scene = scene;
+	k->scene = scene;
 	setCreatePath();
 }
 
@@ -91,25 +93,25 @@ QStringList TweenerTranslate::keys() const
 
 void TweenerTranslate::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	if(d->creatingPath)
+	if(k->creatingPath)
 	{
-		if(!d->path)
+		if(!k->path)
 		{
-			d->path = new QGraphicsPathItem;
+			k->path = new QGraphicsPathItem;
 			QColor pen = Qt::black;
 			pen.setAlpha(125);
-			d->path->setPen(QPen(QBrush(pen),1, Qt::DotLine));
+			k->path->setPen(QPen(QBrush(pen),1, Qt::DotLine));
 			QPainterPath path;
 			path.moveTo(input->pos());
-			d->path->setPath(path);
-			scene->addItem(d->path);
+			k->path->setPath(path);
+			scene->addItem(k->path);
 		}
 		else
 		{
-			QPainterPath path = d->path->path();
+			QPainterPath path = k->path->path();
 // 			path.lineTo(input->pos());
 			path.cubicTo(input->pos(), input->pos(), input->pos());
-			d->path->setPath(path);
+			k->path->setPath(path);
 		}
 	}
 }
@@ -120,25 +122,25 @@ void TweenerTranslate::move(const KTInputDeviceInformation *input, KTBrushManage
 
 void TweenerTranslate::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	if(d->creatingPath)
+	if(k->creatingPath)
 	{
-		if(!d->group)
+		if(!k->group)
 		{
-			d->group = new DNodeGroup(d->path, scene);
-			connect(d->group, SIGNAL(nodeClicked()), SLOT(updatePath()));
-			d->group->clearChangesNodes();
+			k->group = new KNodeGroup(k->path, scene);
+			connect(k->group, SIGNAL(nodeClicked()), SLOT(updatePath()));
+			k->group->clearChangesNodes();
 		}
 		else
 		{
-			d->group->createNodes(d->path);
+			k->group->createNodes(k->path);
 		}
-		d->configurator->updateSteps(d->path);
+		k->configurator->updateSteps(k->path);
 	}
 }
 
-QMap<QString, DAction *> TweenerTranslate::actions() const
+QMap<QString, KAction *> TweenerTranslate::actions() const
 {
-	return d->actions;
+	return k->actions;
 }
 
 int TweenerTranslate::toolType() const
@@ -149,14 +151,14 @@ int TweenerTranslate::toolType() const
 
 QWidget *TweenerTranslate::configurator()
 {
-	if(!d->configurator)
+	if(!k->configurator)
 	{
-		d->configurator = new Configurator;
-		connect(d->configurator, SIGNAL(clikedCreatePath()), this, SLOT(setCreatePath()));
-		connect(d->configurator, SIGNAL(clikedSelect()), this, SLOT(setSelect()));
-		connect(d->configurator, SIGNAL(clikedApplyTweener()), this, SLOT(applyTweener()));
+		k->configurator = new Configurator;
+		connect(k->configurator, SIGNAL(clikedCreatePath()), this, SLOT(setCreatePath()));
+		connect(k->configurator, SIGNAL(clikedSelect()), this, SLOT(setSelect()));
+		connect(k->configurator, SIGNAL(clikedApplyTweener()), this, SLOT(applyTweener()));
 	}
-	return d->configurator;
+	return k->configurator;
 }
 
 void TweenerTranslate::aboutToChangeScene(KTGraphicsScene *)
@@ -165,10 +167,10 @@ void TweenerTranslate::aboutToChangeScene(KTGraphicsScene *)
 
 void TweenerTranslate::aboutToChangeTool()
 {
-	delete d->group;
-	d->group = 0;
-	delete d->path;
-	d->path = 0;
+	delete k->group;
+	k->group = 0;
+	delete k->path;
+	k->path = 0;
 	setCreatePath();
 }
 
@@ -179,25 +181,25 @@ bool TweenerTranslate::isComplete() const
 
 void TweenerTranslate::setupActions()
 {
-	DAction *translater = new DAction( QIcon(), tr("Tweener Translater"), this);
-	d->actions.insert( "TweenerTranslater", translater );
+	KAction *translater = new KAction( QIcon(), tr("Tweener Translater"), this);
+	k->actions.insert( "TweenerTranslater", translater );
 }
 
 
 void TweenerTranslate::setCreatePath()
 {
-	if(d->path)
+	if(k->path)
 	{
-		d->scene->addItem(d->path);
+		k->scene->addItem(k->path);
 	}
-	d->creatingPath = true;
-	d->selecting = false;
-	foreach(QGraphicsView * view, d->scene->views())
+	k->creatingPath = true;
+	k->selecting = false;
+	foreach(QGraphicsView * view, k->scene->views())
 	{
 		view->setDragMode (QGraphicsView::NoDrag);
 		foreach(QGraphicsItem *item, view->scene()->items() )
 		{
-			if(item != d->path)
+			if(item != k->path)
 			{
 				item->setFlag(QGraphicsItem::ItemIsSelectable, false);
 			}
@@ -207,19 +209,19 @@ void TweenerTranslate::setCreatePath()
 
 void TweenerTranslate::setSelect()
 {
-	d->creatingPath = false;
-	d->selecting = true;
-	if(d->path)
+	k->creatingPath = false;
+	k->selecting = true;
+	if(k->path)
 	{
-		delete d->group;
-		d->group = 0;
+		delete k->group;
+		k->group = 0;
 	}
-	foreach(QGraphicsView * view, d->scene->views())
+	foreach(QGraphicsView * view, k->scene->views())
 	{
 		view->setDragMode (QGraphicsView::RubberBandDrag);
 		foreach(QGraphicsItem *item, view->scene()->items() )
 		{
-			if(item != d->path)
+			if(item != k->path)
 			{
 				item->setFlags(QGraphicsItem::ItemIsSelectable);
 			}
@@ -229,30 +231,30 @@ void TweenerTranslate::setSelect()
 
 void TweenerTranslate::applyTweener()
 {
-	if(d->path)
+	if(k->path)
 	{
-		foreach(QGraphicsItem *item, d->scene->selectedItems())
+		foreach(QGraphicsItem *item, k->scene->selectedItems())
 		{
 			
 			KTProjectRequest request = KTRequestBuilder::createItemRequest(
-					d->scene->currentSceneIndex(),
-					d->scene->currentLayerIndex(),
-					d->scene->currentFrameIndex(),
-					d->scene->currentFrame()->visualIndexOf(item),
-					KTProjectRequest::Tweening, d->configurator->steps()
+					k->scene->currentSceneIndex(),
+					k->scene->currentLayerIndex(),
+					k->scene->currentFrameIndex(),
+					k->scene->currentFrame()->visualIndexOf(item),
+					KTProjectRequest::Tweening, k->configurator->steps()
 					);
 			emit requested(&request);
 			
-			if(KTLayer *layer = d->scene->scene()->layer(d->scene->currentLayerIndex()))
+			if(KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex()))
 			{
 				int frames = layer->frames().count();
 			
 			
-				int newFrames = d->configurator->totalSteps() + d->scene->currentFrameIndex() - frames;
+				int newFrames = k->configurator->totalSteps() + k->scene->currentFrameIndex() - frames;
 			 
 				for(int i = frames; i < newFrames; i++)
 				{
-					KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(d->scene->currentSceneIndex(), d->scene->currentLayerIndex(), i, KTProjectRequest::Add);
+					KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), i, KTProjectRequest::Add);
 					emit requested(&requestFrame);
 				}
 			}
@@ -262,7 +264,7 @@ void TweenerTranslate::applyTweener()
 
 void TweenerTranslate::updatePath()
 {
-	d->configurator->updateSteps(d->path);
+	k->configurator->updateSteps(k->path);
 }
 
 Q_EXPORT_PLUGIN2(kt_tweenertranslate, TweenerTranslate );

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -41,7 +43,7 @@ KTSplash::KTSplash() : QSplashScreen( 0 ), m_size(3), m_state(0), m_position(0)
 // 	DImageEffect::hash( image, DImageEffect::SouthLite, 1);
 	
 	setPixmap(QPixmap::fromImage(image));
-	m_version = tr("Version ")+dAppProp->version();
+	m_version = tr("Version ")+kAppProp->version();
 	
 	m_timer = new QTimer( this );
 	connect(m_timer, SIGNAL(timeout()), this, SLOT(animate()));

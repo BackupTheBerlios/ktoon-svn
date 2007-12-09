@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -43,98 +45,98 @@ struct KTInputDeviceInformation::Private
 	Qt::KeyboardModifiers keyModifiers;
 };
 
-KTInputDeviceInformation::KTInputDeviceInformation(QObject *parent) : QObject(parent), d(new Private)
+KTInputDeviceInformation::KTInputDeviceInformation(QObject *parent) : QObject(parent), k(new Private)
 {
-	d->mouseInfo.button = Qt::NoButton;
-	d->mouseInfo.buttons = Qt::NoButton;
+	k->mouseInfo.button = Qt::NoButton;
+	k->mouseInfo.buttons = Qt::NoButton;
 	
-	d->tabletInfo.pressure = -1;
-	d->tabletInfo.rotation = 0;
-	d->tabletInfo.tangentialPressure = -1;
+	k->tabletInfo.pressure = -1;
+	k->tabletInfo.rotation = 0;
+	k->tabletInfo.tangentialPressure = -1;
 	
-	d->keyModifiers = Qt::NoModifier;
+	k->keyModifiers = Qt::NoModifier;
 }
 
 
 KTInputDeviceInformation::~KTInputDeviceInformation()
 {
-	delete d;
+	delete k;
 }
 
 void KTInputDeviceInformation::updateFromMouseEvent(QGraphicsSceneMouseEvent *event)
 {
-	d->mouseInfo.button = event->button();
-	d->mouseInfo.buttons = event->buttons();
+	k->mouseInfo.button = event->button();
+	k->mouseInfo.buttons = event->buttons();
 	
-	d->position = event->scenePos();
+	k->position = event->scenePos();
 	
-	d->keyModifiers = event->modifiers();
+	k->keyModifiers = event->modifiers();
 	
-	d->tabletInfo.pressure = -1;
-	d->tabletInfo.rotation = 0;
-	d->tabletInfo.tangentialPressure = -1;
+	k->tabletInfo.pressure = -1;
+	k->tabletInfo.rotation = 0;
+	k->tabletInfo.tangentialPressure = -1;
 }
 
 void KTInputDeviceInformation::updateFromMouseEvent(QMouseEvent *event)
 {
-	d->mouseInfo.button = event->button();
-	d->mouseInfo.buttons = event->buttons();
+	k->mouseInfo.button = event->button();
+	k->mouseInfo.buttons = event->buttons();
 	
-	d->position = event->pos();
+	k->position = event->pos();
 	
-	d->keyModifiers = event->modifiers();
+	k->keyModifiers = event->modifiers();
 	
-	d->tabletInfo.pressure = -1;
-	d->tabletInfo.rotation = 0;
-	d->tabletInfo.tangentialPressure = -1;
+	k->tabletInfo.pressure = -1;
+	k->tabletInfo.rotation = 0;
+	k->tabletInfo.tangentialPressure = -1;
 }
 
 void KTInputDeviceInformation::updateFromTabletEvent(QTabletEvent *event)
 {
-	d->tabletInfo.pressure = event->pressure();
-	d->tabletInfo.rotation = event->rotation();
-	d->tabletInfo.tangentialPressure = event->tangentialPressure();
+	k->tabletInfo.pressure = event->pressure();
+	k->tabletInfo.rotation = event->rotation();
+	k->tabletInfo.tangentialPressure = event->tangentialPressure();
 	
-	d->position = event->pos();
+	k->position = event->pos();
 	
-	d->keyModifiers = event->modifiers();
+	k->keyModifiers = event->modifiers();
 }
 
 
 double KTInputDeviceInformation::pressure() const
 {
-	return d->tabletInfo.pressure;
+	return k->tabletInfo.pressure;
 }
 
 double KTInputDeviceInformation::rotation() const
 {
-	return d->tabletInfo.rotation;
+	return k->tabletInfo.rotation;
 }
 
 double KTInputDeviceInformation::tangentialPressure() const
 {
-	return d->tabletInfo.tangentialPressure;
+	return k->tabletInfo.tangentialPressure;
 }
 
 Qt::MouseButton KTInputDeviceInformation::button() const
 {
-	return d->mouseInfo.button;
+	return k->mouseInfo.button;
 }
 
 Qt::MouseButtons KTInputDeviceInformation::buttons() const
 {
-	return d->mouseInfo.buttons;
+	return k->mouseInfo.buttons;
 }
 
 
 QPointF KTInputDeviceInformation::pos() const
 {
-	return d->position;
+	return k->position;
 }
 
 Qt::KeyboardModifiers KTInputDeviceInformation::keyModifiers() const
 {
-	return d->keyModifiers;
+	return k->keyModifiers;
 }
 
 

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by Jorge Cuadrado <kuadrox@toonka.com>             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,27 +30,27 @@ struct KTItemGroup::Private
 	QList<QGraphicsItem *> childs;
 };
 
-KTItemGroup::KTItemGroup(QGraphicsItem *parent , QGraphicsScene *scene) : QGraphicsItemGroup(parent, scene), d(new Private)
+KTItemGroup::KTItemGroup(QGraphicsItem *parent , QGraphicsScene *scene) : QGraphicsItemGroup(parent, scene), k(new Private)
 {
 }
 
 
 KTItemGroup::~KTItemGroup()
 {
-	delete d;
+	delete k;
 }
 
 QVariant KTItemGroup::itemChange ( GraphicsItemChange change, const QVariant & value )
 {
 	if ( change == QGraphicsItem::ItemChildRemovedChange )
 	{
-// 		d->childs.removeAll( qvariant_cast<QGraphicsItem *>(value) );
+// 		k->childs.removeAll( qvariant_cast<QGraphicsItem *>(value) );
 	}
 	else if ( change == QGraphicsItem::ItemChildAddedChange )
 	{
-		if(!d->childs.contains(qvariant_cast<QGraphicsItem *>(value)))
+		if(!k->childs.contains(qvariant_cast<QGraphicsItem *>(value)))
 		{
-			d->childs << qvariant_cast<QGraphicsItem *>(value);
+			k->childs << qvariant_cast<QGraphicsItem *>(value);
 		}
 	}
 	
@@ -58,7 +60,7 @@ QVariant KTItemGroup::itemChange ( GraphicsItemChange change, const QVariant & v
 
 void KTItemGroup::recoverChilds()
 {
-	foreach(QGraphicsItem *item, d->childs )
+	foreach(QGraphicsItem *item, k->childs )
 	{
 		if ( KTItemGroup *child = qgraphicsitem_cast<KTItemGroup *>(item) )
 		{
@@ -74,7 +76,7 @@ void KTItemGroup::recoverChilds()
 
 QList<QGraphicsItem *> KTItemGroup::childs()
 {
-	return d->childs;
+	return k->childs;
 }
 
 void KTItemGroup::fromXml(const QString &)

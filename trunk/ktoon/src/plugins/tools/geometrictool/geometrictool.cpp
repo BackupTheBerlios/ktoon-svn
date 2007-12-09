@@ -1,6 +1,8 @@
-/**************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+/***************************************************************************
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -65,20 +67,20 @@ void GeometricTool::init(KTGraphicsScene *scene)
 
 void GeometricTool::setupActions()
 {
-	DAction *action1 = new DAction( QIcon(THEME_DIR+"/icons/square.png"), tr("Rectangle"), this);
+	KAction *action1 = new KAction( QIcon(THEME_DIR+"/icons/square.png"), tr("Rectangle"), this);
 	action1->setShortcut( QKeySequence(tr("Ctrl+R")) );
 	action1->setCursor( QCursor(THEME_DIR+"/cursors/square.png") );
 	
 	m_actions.insert( tr("Rectangle"), action1 );
 	
-	DAction *action2 = new DAction(QIcon(THEME_DIR+"/icons/ellipse.png"), tr("Ellipse"), this);
+	KAction *action2 = new KAction(QIcon(THEME_DIR+"/icons/ellipse.png"), tr("Ellipse"), this);
 	action2->setShortcut( QKeySequence(tr("Ctrl+E")) );
 	action2->setCursor( QCursor(THEME_DIR+"/cursors/circle.png") );
 	
 	m_actions.insert(tr("Ellipse"), action2);
 	
 	
-	DAction *action3 = new DAction( QIcon(THEME_DIR+"/icons/line.png"), tr("Line"), this);
+	KAction *action3 = new KAction( QIcon(THEME_DIR+"/icons/line.png"), tr("Line"), this);
 	action3->setShortcut( QKeySequence(tr("Ctrl+L")) );
 	m_actions.insert(tr("Line"), action3);
 }
@@ -195,7 +197,7 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
 	emit requested(&event);
 }
 
-QMap<QString, DAction *> GeometricTool::actions() const
+QMap<QString, KAction *> GeometricTool::actions() const
 {
 	return m_actions;
 }

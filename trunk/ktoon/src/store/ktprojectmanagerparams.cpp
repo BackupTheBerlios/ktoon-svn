@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,46 +29,42 @@ struct KTProjectManagerParams::Private
 	QString description;
 };
 
-
-
-KTProjectManagerParams::KTProjectManagerParams(): d(new Private)
+KTProjectManagerParams::KTProjectManagerParams(): k(new Private)
 {
 }
-
 
 KTProjectManagerParams::~KTProjectManagerParams()
 {
 }
 
-
 void KTProjectManagerParams::setProjectName(const QString &name)
 {
-	d->projectName = name;
+	k->projectName = name;
 }
 
 QString KTProjectManagerParams::projectName() const
 {
-	return d->projectName;
+	return k->projectName;
 }
 
 
 void KTProjectManagerParams::setAuthor(const QString &author)
 {
-	d->author = author;
+	k->author = author;
 }
 
 QString KTProjectManagerParams::author() const
 {
-	return d->author;
+	return k->author;
 }
 
 
 void KTProjectManagerParams::setDescription(const QString &description)
 {
-	d->description = description;
+	k->description = description;
 }
 
 QString KTProjectManagerParams::description() const
 {
-	return d->description;
+	return k->description;
 }

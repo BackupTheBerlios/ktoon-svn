@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               * 
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -31,33 +33,33 @@ struct KTPaintAreaRotator::Private
 	QTimer timer;
 };
 
-KTPaintAreaRotator::KTPaintAreaRotator(QObject *parent, KTPaintAreaBase *view) : QObject(parent), d(new Private)
+KTPaintAreaRotator::KTPaintAreaRotator(QObject *parent, KTPaintAreaBase *view) : QObject(parent), k(new Private)
 {
-	d->view = view;
-	connect(&d->timer, SIGNAL(timeout()), this, SLOT(applyRotation()));
+	k->view = view;
+	connect(&k->timer, SIGNAL(timeout()), this, SLOT(applyRotation()));
 }
 
 
 KTPaintAreaRotator::~KTPaintAreaRotator()
 {
-	delete d;
+	delete k;
 }
 
 
 void KTPaintAreaRotator::rotateTo(int angle)
 {
-	d->rotationAngle = angle;
+	k->rotationAngle = angle;
 	
-	if ( !d->timer.isActive() )
+	if ( !k->timer.isActive() )
 	{
-		d->timer.start(50);
+		k->timer.start(50);
 	}
 }
 
 
 void KTPaintAreaRotator::applyRotation()
 {
-	d->view->setRotationAngle(d->rotationAngle);
-	d->timer.stop();
+	k->view->setRotationAngle(k->rotationAngle);
+	k->timer.stop();
 }
 

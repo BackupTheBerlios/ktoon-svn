@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -33,35 +35,35 @@ struct KTPaintAreaCommand::Private
 	QVariant oldData;
 };
 
-KTPaintAreaCommand::KTPaintAreaCommand(KTPaintArea *area, const KTPaintAreaEvent *event) : QUndoCommand(), d(new Private)
+KTPaintAreaCommand::KTPaintAreaCommand(KTPaintArea *area, const KTPaintAreaEvent *event) : QUndoCommand(), k(new Private)
 {
-	d->paintArea = area;
-	d->event = event->clone();
+	k->paintArea = area;
+	k->event = event->clone();
 }
 
 
 KTPaintAreaCommand::~KTPaintAreaCommand()
 {
-	delete d;
+	delete k;
 }
 
 void KTPaintAreaCommand::undo()
 {
-	switch(d->event->action() )
+	switch(k->event->action() )
 	{
 		case KTPaintAreaEvent::ChangePen:
 		{
-			d->paintArea->brushManager()->setPen( qvariant_cast<QPen>(d->oldData));
+			k->paintArea->brushManager()->setPen( qvariant_cast<QPen>(k->oldData));
 		}
 		break;
 		case KTPaintAreaEvent::ChangePenBrush:
 		{
-			d->paintArea->brushManager()->setPenBrush( qvariant_cast<QBrush>(d->oldData));
+			k->paintArea->brushManager()->setPenBrush( qvariant_cast<QBrush>(k->oldData));
 		}
 		break;
 		case KTPaintAreaEvent::ChangeBrush:
 		{
-			d->paintArea->brushManager()->setBrush( qvariant_cast<QBrush>(d->oldData));
+			k->paintArea->brushManager()->setBrush( qvariant_cast<QBrush>(k->oldData));
 		}
 		break;
 		
@@ -71,38 +73,38 @@ void KTPaintAreaCommand::undo()
 
 void KTPaintAreaCommand::redo()
 {
-	switch(d->event->action() )
+	switch(k->event->action() )
 	{
 		case KTPaintAreaEvent::ChangePen:
 		{
-			d->oldData = d->paintArea->brushManager()->pen();
+			k->oldData = k->paintArea->brushManager()->pen();
 			
-			QPen pen = qvariant_cast<QPen>(d->event->data());
+			QPen pen = qvariant_cast<QPen>(k->event->data());
 			if ( !pen.color().isValid() )
 			{
-				QPen old = d->paintArea->brushManager()->pen();
+				QPen old = k->paintArea->brushManager()->pen();
 				pen.setColor( old.color() );
 				pen.setBrush( old.brush() );
 			}
 			
-			d->paintArea->brushManager()->setPen( pen );
+			k->paintArea->brushManager()->setPen( pen );
 		}
 		break;
 		case KTPaintAreaEvent::ChangePenBrush:
 		{
-			d->oldData = d->paintArea->brushManager()->pen().brush();
+			k->oldData = k->paintArea->brushManager()->pen().brush();
 			
 			
-			d->paintArea->brushManager()->setPenBrush( qvariant_cast<QBrush>(d->event->data()));
+			k->paintArea->brushManager()->setPenBrush( qvariant_cast<QBrush>(k->event->data()));
 			
 		}
 		break;
 		case KTPaintAreaEvent::ChangeBrush:
 		{
-			d->oldData = d->paintArea->brushManager()->brush();
+			k->oldData = k->paintArea->brushManager()->brush();
 			
 			
-			d->paintArea->brushManager()->setBrush( qvariant_cast<QBrush>(d->event->data()));
+			k->paintArea->brushManager()->setBrush( qvariant_cast<QBrush>(k->event->data()));
 		}
 		break;
 		

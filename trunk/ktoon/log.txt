@@ -1,556 +1,757 @@
 cd 3rdparty && make -f Makefile 
-make[1]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/3rdparty'
+make[1]: se ingresa al directorio `/data/ktoon/ktoon/3rdparty'
 cd quazip && make -f Makefile 
-make[2]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/3rdparty/quazip'
+make[2]: se ingresa al directorio `/data/ktoon/ktoon/3rdparty/quazip'
 make[2]: No se hace nada para `first'.
-make[2]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/3rdparty/quazip'
+make[2]: se sale del directorio `/data/ktoon/ktoon/3rdparty/quazip'
 cd potrace && make -f Makefile 
-make[2]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/3rdparty/potrace'
+make[2]: se ingresa al directorio `/data/ktoon/ktoon/3rdparty/potrace'
 make[2]: No se hace nada para `first'.
-make[2]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/3rdparty/potrace'
-make[1]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/3rdparty'
+make[2]: se sale del directorio `/data/ktoon/ktoon/3rdparty/potrace'
+make[1]: se sale del directorio `/data/ktoon/ktoon/3rdparty'
 cd src && make -f Makefile 
-make[1]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src'
+make[1]: se ingresa al directorio `/data/ktoon/ktoon/src'
 cd themes && make -f Makefile 
-make[2]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/themes'
+make[2]: se ingresa al directorio `/data/ktoon/ktoon/src/themes'
 cd default && make -f Makefile 
-make[3]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/themes/default'
+make[3]: se ingresa al directorio `/data/ktoon/ktoon/src/themes/default'
 cd icons && make -f Makefile 
-make[4]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/themes/default/icons'
+make[4]: se ingresa al directorio `/data/ktoon/ktoon/src/themes/default/icons'
 make[4]: No se hace nada para `first'.
-make[4]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/themes/default/icons'
+make[4]: se sale del directorio `/data/ktoon/ktoon/src/themes/default/icons'
 cd cursors && make -f Makefile 
-make[4]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/themes/default/cursors'
+make[4]: se ingresa al directorio `/data/ktoon/ktoon/src/themes/default/cursors'
 make[4]: No se hace nada para `first'.
-make[4]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/themes/default/cursors'
+make[4]: se sale del directorio `/data/ktoon/ktoon/src/themes/default/cursors'
 cd images && make -f Makefile 
-make[4]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/themes/default/images'
+make[4]: se ingresa al directorio `/data/ktoon/ktoon/src/themes/default/images'
 make[4]: No se hace nada para `first'.
-make[4]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/themes/default/images'
-make[3]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/themes/default'
-make[2]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/themes'
+make[4]: se sale del directorio `/data/ktoon/ktoon/src/themes/default/images'
+make[3]: se sale del directorio `/data/ktoon/ktoon/src/themes/default'
+make[2]: se sale del directorio `/data/ktoon/ktoon/src/themes'
 cd libktoon && make -f Makefile 
-make[2]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/libktoon'
+make[2]: se ingresa al directorio `/data/ktoon/ktoon/src/libktoon'
 make[2]: No se hace nada para `first'.
-make[2]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/libktoon'
+make[2]: se sale del directorio `/data/ktoon/ktoon/src/libktoon'
 cd store && make -f Makefile 
-make[2]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/store'
+make[2]: se ingresa al directorio `/data/ktoon/ktoon/src/store'
 make[2]: No se hace nada para `first'.
-make[2]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/store'
+make[2]: se sale del directorio `/data/ktoon/ktoon/src/store'
 cd net && make -f Makefile 
-make[2]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/net'
+make[2]: se ingresa al directorio `/data/ktoon/ktoon/src/net'
 make[2]: No se hace nada para `first'.
-make[2]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/net'
+make[2]: se sale del directorio `/data/ktoon/ktoon/src/net'
 cd libbase && make -f Makefile 
-make[2]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/libbase'
+make[2]: se ingresa al directorio `/data/ktoon/ktoon/src/libbase'
 make[2]: No se hace nada para `first'.
-make[2]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/libbase'
+make[2]: se sale del directorio `/data/ktoon/ktoon/src/libbase'
 cd libktui && make -f Makefile 
-make[2]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/libktui'
+make[2]: se ingresa al directorio `/data/ktoon/ktoon/src/libktui'
 make[2]: No se hace nada para `first'.
-make[2]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/libktui'
+make[2]: se sale del directorio `/data/ktoon/ktoon/src/libktui'
 cd components && make -f Makefile 
-make[2]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components'
+make[2]: se ingresa al directorio `/data/ktoon/ktoon/src/components'
 cd scenes && make -f Makefile 
-make[3]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/scenes'
+make[3]: se ingresa al directorio `/data/ktoon/ktoon/src/components/scenes'
 make[3]: No se hace nada para `first'.
-make[3]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/scenes'
+make[3]: se sale del directorio `/data/ktoon/ktoon/src/components/scenes'
 cd colorpalette && make -f Makefile 
-make[3]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/colorpalette'
+make[3]: se ingresa al directorio `/data/ktoon/ktoon/src/components/colorpalette'
 make[3]: No se hace nada para `first'.
-make[3]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/colorpalette'
+make[3]: se sale del directorio `/data/ktoon/ktoon/src/components/colorpalette'
 cd library && make -f Makefile 
-make[3]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/library'
+make[3]: se ingresa al directorio `/data/ktoon/ktoon/src/components/library'
 make[3]: No se hace nada para `first'.
-make[3]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/library'
+make[3]: se sale del directorio `/data/ktoon/ktoon/src/components/library'
 cd timeline && make -f Makefile 
-make[3]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/timeline'
+make[3]: se ingresa al directorio `/data/ktoon/ktoon/src/components/timeline'
 make[3]: No se hace nada para `first'.
-make[3]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/timeline'
+make[3]: se sale del directorio `/data/ktoon/ktoon/src/components/timeline'
 cd exposure && make -f Makefile 
-make[3]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/exposure'
+make[3]: se ingresa al directorio `/data/ktoon/ktoon/src/components/exposure'
 make[3]: No se hace nada para `first'.
-make[3]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/exposure'
+make[3]: se sale del directorio `/data/ktoon/ktoon/src/components/exposure'
 cd export && make -f Makefile 
-make[3]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/export'
+make[3]: se ingresa al directorio `/data/ktoon/ktoon/src/components/export'
 make[3]: No se hace nada para `first'.
-make[3]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/export'
+make[3]: se sale del directorio `/data/ktoon/ktoon/src/components/export'
 cd import && make -f Makefile 
-make[3]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/import'
+make[3]: se ingresa al directorio `/data/ktoon/ktoon/src/components/import'
 make[3]: No se hace nada para `first'.
-make[3]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/import'
+make[3]: se sale del directorio `/data/ktoon/ktoon/src/components/import'
 cd help && make -f Makefile 
-make[3]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/help'
+make[3]: se ingresa al directorio `/data/ktoon/ktoon/src/components/help'
 make[3]: No se hace nada para `first'.
-make[3]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/help'
+make[3]: se sale del directorio `/data/ktoon/ktoon/src/components/help'
 cd kinas && make -f Makefile 
-make[3]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/kinas'
+make[3]: se ingresa al directorio `/data/ktoon/ktoon/src/components/kinas'
 make[3]: No se hace nada para `first'.
-make[3]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/kinas'
+make[3]: se sale del directorio `/data/ktoon/ktoon/src/components/kinas'
 cd pen && make -f Makefile 
-make[3]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/pen'
+make[3]: se ingresa al directorio `/data/ktoon/ktoon/src/components/pen'
 make[3]: No se hace nada para `first'.
-make[3]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/pen'
+make[3]: se sale del directorio `/data/ktoon/ktoon/src/components/pen'
 cd paintarea && make -f Makefile 
-make[3]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/paintarea'
+make[3]: se ingresa al directorio `/data/ktoon/ktoon/src/components/paintarea'
 make[3]: No se hace nada para `first'.
-make[3]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/paintarea'
+make[3]: se sale del directorio `/data/ktoon/ktoon/src/components/paintarea'
 cd cameras && make -f Makefile 
-make[3]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/cameras'
+make[3]: se ingresa al directorio `/data/ktoon/ktoon/src/components/cameras'
 make[3]: No se hace nada para `first'.
-make[3]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components/cameras'
-make[2]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/components'
+make[3]: se sale del directorio `/data/ktoon/ktoon/src/components/cameras'
+make[2]: se sale del directorio `/data/ktoon/ktoon/src/components'
 cd shell && make -f Makefile 
-make[2]: se ingresa al directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/shell'
-g++ -Wl,-rpath,/usr/lib/qt4.2.2/lib -o ../../bin/ktoon.bin .obj/main.o .obj/ktmainwindow.o .obj/ktstatusbar.o .obj/ktnewproject.o .obj/ktsplash.o .obj/crashhandler.o .obj/crashwidget.o .obj/ktapplication.o .obj/configwizard.o .obj/ktmainwindow_gui.o .obj/ktlocalprojectmanagerhandler.o .obj/moc_ktmainwindow.o .obj/moc_ktstatusbar.o .obj/moc_ktnewproject.o .obj/moc_ktsplash.o .obj/moc_crashwidget.o .obj/moc_ktapplication.o .obj/moc_configwizard.o .obj/moc_ktlocalprojectmanagerhandler.o    -L/usr/lib/qt4.2.2/lib -L/usr/X11R6/lib -L../../src/components/colorpalette -lcolorpalette -L../../src/components/paintarea -lpaintarea -L../../src/components/cameras -lcameras -L../../src/components/pen -lpen -L../../src/components/kinas -lkinas -L../../src/components/help -lhelp -L../../src/components/import -limport -L../../src/components/export -lexport -L../../src/components/exposure -lexposure -L../../src/components/timeline -ltimeline -L../../src/components/library -llibrary -L../../src/components/scenes -lscenes -L../../src/libktui -lktui -L../../src/store -lstore -L../../src/libktoon -lktoon -L../../3rdparty/quazip -lquazip -L../../src/libbase -lktbase -L../../src/net -lktnet -laspell -lavcodec -lavformat -lgstreamer-0.10 -lgobject-2.0 -lgmodule-2.0 -lgthread-2.0 -lxml2 -lz -Wl,--export-dynamic -pthread -ldgui -ldcore -ldsound -L/usr/local/lib -lQtSvg -L/usr/local/src/qt-x11-opensource-src-4.2.2/lib -L/usr/X11R6/lib -lQtXml -lQtOpenGL -lQtGui -lSM -lICE -lXi -lXrender -lXrandr -lXfixes -lXcursor -lXinerama -lfreetype -lfontconfig -lXext -lX11 -lQtNetwork -lQtCore -lm -lglib-2.0 -ldl -lGLU -lGL -lpthread
-.obj/main.o: En funciñon `main':main.cpp:(.text+0x194e): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:main.cpp:(.text+0x19a1): referencia a `DDebug::~DDebug()' sin definir
-:main.cpp:(.text+0x2497): referencia a `DDebug::~DDebug()' sin definir
-.obj/ktmainwindow.o: En funciñon `KTMainWindow::newViewDocument(QString const&)':ktmainwindow.cpp:(.text+0x27f): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktmainwindow.cpp:(.text+0x35f): referencia a `DDebug::~DDebug()' sin definir
-:ktmainwindow.cpp:(.text+0x3b3): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktmainwindow.cpp:(.text+0x40d): referencia a `DDebug::~DDebug()' sin definir
-:ktmainwindow.cpp:(.text+0x890): referencia a `DDebug::~DDebug()' sin definir
-:ktmainwindow.cpp:(.text+0x8cd): referencia a `DDebug::~DDebug()' sin definir
-.obj/ktmainwindow.o: En funciñon `KTMainWindow::save()':ktmainwindow.cpp:(.text+0xaac): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktmainwindow.cpp:(.text+0xafc): referencia a `DDebug::~DDebug()' sin definir
-:ktmainwindow.cpp:(.text+0xb59): referencia a `DDebug::~DDebug()' sin definir
-.obj/ktmainwindow.o: En funciñon `KTMainWindow::~KTMainWindow()':ktmainwindow.cpp:(.text+0xddc): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktmainwindow.cpp:(.text+0xebf): referencia a `DDebug::~DDebug()' sin definir
-:ktmainwindow.cpp:(.text+0xf93): referencia a `DDebug::~DDebug()' sin definir
-.obj/ktmainwindow.o: En funciñon `KTMainWindow::~KTMainWindow()':ktmainwindow.cpp:(.text+0x1040): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktmainwindow.cpp:(.text+0x1123): referencia a `DDebug::~DDebug()' sin definir
-:ktmainwindow.cpp:(.text+0x11f6): referencia a `DDebug::~DDebug()' sin definir
-.obj/ktmainwindow.o: En funciñon `KTMainWindow::~KTMainWindow()':ktmainwindow.cpp:(.text+0x12a4): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktmainwindow.cpp:(.text+0x1387): referencia a `DDebug::~DDebug()' sin definir
-:ktmainwindow.cpp:(.text+0x1463): referencia a `DDebug::~DDebug()' sin definir
-.obj/ktmainwindow.o: En funciñon `KTMainWindow::showHelpPage(QString const&, QString const&)':ktmainwindow.cpp:(.text+0x1900): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktmainwindow.cpp:(.text+0x19e0): referencia a `DDebug::~DDebug()' sin definir
-:ktmainwindow.cpp:(.text+0x1be2): referencia a `DDebug::~DDebug()' sin definir
-.obj/ktmainwindow.o: En funciñon `KTMainWindow::openProject(QString const&)':ktmainwindow.cpp:(.text+0x2b53): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktmainwindow.cpp:(.text+0x2c3c): referencia a `DDebug::~DDebug()' sin definir
-:ktmainwindow.cpp:(.text+0x3416): referencia a `DDebug::~DDebug()' sin definir
-.obj/ktmainwindow.o: En funciñon `KTMainWindow::KTMainWindow(KTSplash*)':ktmainwindow.cpp:(.text+0x390d): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktmainwindow.cpp:(.text+0x39fc): referencia a `DDebug::~DDebug()' sin definir
-:ktmainwindow.cpp:(.text+0x432b): referencia a `DDebug::~DDebug()' sin definir
-.obj/ktmainwindow.o: En funciñon `KTMainWindow::KTMainWindow(KTSplash*)':ktmainwindow.cpp:(.text+0x4477): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktmainwindow.cpp:(.text+0x4566): referencia a `DDebug::~DDebug()' sin definir
-:ktmainwindow.cpp:(.text+0x4e91): referencia a `DDebug::~DDebug()' sin definir
-.obj/crashhandler.o: En funciñon `CrashHandler::setConfig(QString const&)':crashhandler.cpp:(.text+0x17f4): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:crashhandler.cpp:(.text+0x18dd): referencia a `DDebug::~DDebug()' sin definir
-:crashhandler.cpp:(.text+0x192d): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:crashhandler.cpp:(.text+0x1a67): referencia a `DDebug::~DDebug()' sin definir
-:crashhandler.cpp:(.text+0x29ab): referencia a `DDebug::~DDebug()' sin definir
-:crashhandler.cpp:(.text+0x29ed): referencia a `DDebug::~DDebug()' sin definir
-.obj/crashwidget.o: En funciñon `CrashWidget::addBacktracePage(QString const&, QString const&)':crashwidget.cpp:(.text+0x1ad0): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:crashwidget.cpp:(.text+0x1d2a): referencia a `DDebug::~DDebug()' sin definir
-:crashwidget.cpp:(.text+0x1ff3): referencia a `DDebug::~DDebug()' sin definir
-.obj/ktapplication.o: En funciñon `KTApplication::createCache(QString const&)':ktapplication.cpp:(.text+0x237): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktapplication.cpp:(.text+0x2c6): referencia a `DDebug::~DDebug()' sin definir
-:ktapplication.cpp:(.text+0x3c4): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktapplication.cpp:(.text+0x465): referencia a `DDebug::~DDebug()' sin definir
-:ktapplication.cpp:(.text+0x4d2): referencia a `DDebug::~DDebug()' sin definir
-:ktapplication.cpp:(.text+0x560): referencia a `DDebug::~DDebug()' sin definir
-.obj/ktmainwindow_gui.o: En funciñon `KTMainWindow::setupWindowActions()':ktmainwindow_gui.cpp:(.text+0x44b2): referencia a `DDebug::browser()' sin definir
-.obj/ktlocalprojectmanagerhandler.o: En funciñon `KTLocalProjectManagerHandler::handleProjectRequest(KTProjectRequest const*)':ktlocalprojectmanagerhandler.cpp:(.text+0x31b): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlocalprojectmanagerhandler.cpp:(.text+0x3fe): referencia a `DDebug::~DDebug()' sin definir
-:ktlocalprojectmanagerhandler.cpp:(.text+0x477): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlocalprojectmanagerhandler.cpp:(.text+0x5fc): referencia a `DDebug::~DDebug()' sin definir
-:ktlocalprojectmanagerhandler.cpp:(.text+0x6d8): referencia a `DDebug::~DDebug()' sin definir
-:ktlocalprojectmanagerhandler.cpp:(.text+0x776): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktcolorpalette.o): En funciñon `KTColorPalette::~KTColorPalette()':ktcolorpalette.cpp:(.text+0x15b): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcolorpalette.cpp:(.text+0x247): referencia a `DDebug::~DDebug()' sin definir
-:ktcolorpalette.cpp:(.text+0x4c3): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktcolorpalette.o): En funciñon `KTColorPalette::~KTColorPalette()':ktcolorpalette.cpp:(.text+0x5ab): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcolorpalette.cpp:(.text+0x697): referencia a `DDebug::~DDebug()' sin definir
-:ktcolorpalette.cpp:(.text+0x913): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktcolorpalette.o): En funciñon `KTColorPalette::~KTColorPalette()':ktcolorpalette.cpp:(.text+0x9fb): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcolorpalette.cpp:(.text+0xae7): referencia a `DDebug::~DDebug()' sin definir
-:ktcolorpalette.cpp:(.text+0xd6e): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktcolorpalette.o): En funciñon `KTColorPalette::KTColorPalette(QWidget*)':ktcolorpalette.cpp:(.text+0x1b90): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcolorpalette.cpp:(.text+0x1c85): referencia a `DDebug::~DDebug()' sin definir
-:ktcolorpalette.cpp:(.text+0x220a): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktcolorpalette.o): En funciñon `KTColorPalette::KTColorPalette(QWidget*)':ktcolorpalette.cpp:(.text+0x2462): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcolorpalette.cpp:(.text+0x2557): referencia a `DDebug::~DDebug()' sin definir
-:ktcolorpalette.cpp:(.text+0x2adc): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktviewcolorcells.o): En funciñon `KTViewColorCells::readPaletteFile(QString const&)':ktviewcolorcells.cpp:(.text+0x86f): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewcolorcells.cpp:(.text+0x944): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcolorcells.cpp:(.text+0xa03): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktviewcolorcells.o): En funciñon `KTViewColorCells::changeColor(QTableWidgetItem*)':ktviewcolorcells.cpp:(.text+0xe4a): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewcolorcells.cpp:(.text+0xf33): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcolorcells.cpp:(.text+0xfd0): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktviewcolorcells.o): En funciñon `KTViewColorCells::~KTViewColorCells()':ktviewcolorcells.cpp:(.text+0x16c1): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewcolorcells.cpp:(.text+0x1778): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcolorcells.cpp:(.text+0x1a08): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewcolorcells.cpp:(.text+0x1afd): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcolorcells.cpp:(.text+0x1c25): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcolorcells.cpp:(.text+0x1d1b): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktviewcolorcells.o): En funciñon `KTViewColorCells::~KTViewColorCells()':ktviewcolorcells.cpp:(.text+0x20c1): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewcolorcells.cpp:(.text+0x2178): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcolorcells.cpp:(.text+0x2408): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewcolorcells.cpp:(.text+0x24fd): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcolorcells.cpp:(.text+0x2625): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcolorcells.cpp:(.text+0x271b): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktviewcolorcells.o): En funciñon `KTViewColorCells::~KTViewColorCells()':ktviewcolorcells.cpp:(.text+0x2ac1): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewcolorcells.cpp:(.text+0x2b78): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcolorcells.cpp:(.text+0x2e08): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewcolorcells.cpp:(.text+0x2efd): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcolorcells.cpp:(.text+0x3030): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcolorcells.cpp:(.text+0x3125): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktviewcolorcells.o): En funciñon `KTViewColorCells::readPalettes(QString const&)':ktviewcolorcells.cpp:(.text+0x32e2): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewcolorcells.cpp:(.text+0x33d4): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcolorcells.cpp:(.text+0x3686): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktluminancepicker.o): En funciñon `KTLuminancePicker::~KTLuminancePicker()':ktluminancepicker.cpp:(.text+0x8b8): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktluminancepicker.cpp:(.text+0x9a1): referencia a `DDebug::~DDebug()' sin definir
-:ktluminancepicker.cpp:(.text+0xa06): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktluminancepicker.o): En funciñon `KTLuminancePicker::~KTLuminancePicker()':ktluminancepicker.cpp:(.text+0xaee): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktluminancepicker.cpp:(.text+0xbd7): referencia a `DDebug::~DDebug()' sin definir
-:ktluminancepicker.cpp:(.text+0xc3c): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktluminancepicker.o): En funciñon `KTLuminancePicker::~KTLuminancePicker()':ktluminancepicker.cpp:(.text+0xd22): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktluminancepicker.cpp:(.text+0xe0b): referencia a `DDebug::~DDebug()' sin definir
-:ktluminancepicker.cpp:(.text+0xe7b): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktpaletteparser.o): En funciñon `KTPaletteParser::startTag(QString const&, QXmlAttributes const&)':ktpaletteparser.cpp:(.text+0x1306): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktpaletteparser.cpp:(.text+0x1361): referencia a `DDebug::~DDebug()' sin definir
-:ktpaletteparser.cpp:(.text+0x1463): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktpaletteparser.cpp:(.text+0x151d): referencia a `DDebug::~DDebug()' sin definir
-:ktpaletteparser.cpp:(.text+0x2226): referencia a `DDebug::~DDebug()' sin definir
-:ktpaletteparser.cpp:(.text+0x244b): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktcolorvalue.o): En funciñon `KTColorValue::~KTColorValue()':ktcolorvalue.cpp:(.text+0xaf0): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcolorvalue.cpp:(.text+0xbd9): referencia a `DDebug::~DDebug()' sin definir
-:ktcolorvalue.cpp:(.text+0xc3e): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktcolorvalue.o): En funciñon `KTColorValue::~KTColorValue()':ktcolorvalue.cpp:(.text+0xd06): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcolorvalue.cpp:(.text+0xdef): referencia a `DDebug::~DDebug()' sin definir
-:ktcolorvalue.cpp:(.text+0xe54): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktcolorvalue.o): En funciñon `KTColorValue::~KTColorValue()':ktcolorvalue.cpp:(.text+0xf16): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcolorvalue.cpp:(.text+0xfff): referencia a `DDebug::~DDebug()' sin definir
-:ktcolorvalue.cpp:(.text+0x106f): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktcolorvalue.o): En funciñon `KTColorValue::KTColorValue(QWidget*)':ktcolorvalue.cpp:(.text+0x1b14): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcolorvalue.cpp:(.text+0x1bfd): referencia a `DDebug::~DDebug()' sin definir
-:ktcolorvalue.cpp:(.text+0x1c9d): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktcolorvalue.o): En funciñon `KTColorValue::KTColorValue(QWidget*)':ktcolorvalue.cpp:(.text+0x1d98): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcolorvalue.cpp:(.text+0x1e81): referencia a `DDebug::~DDebug()' sin definir
-:ktcolorvalue.cpp:(.text+0x1f21): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktcolorpicker.o): En funciñon `KTColorPicker::~KTColorPicker()':ktcolorpicker.cpp:(.text+0xf68): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcolorpicker.cpp:(.text+0x1051): referencia a `DDebug::~DDebug()' sin definir
-:ktcolorpicker.cpp:(.text+0x10b6): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktcolorpicker.o): En funciñon `KTColorPicker::~KTColorPicker()':ktcolorpicker.cpp:(.text+0x119e): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcolorpicker.cpp:(.text+0x1287): referencia a `DDebug::~DDebug()' sin definir
-:ktcolorpicker.cpp:(.text+0x12ec): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/colorpalette/libcolorpalette.a(ktcolorpicker.o): En funciñon `KTColorPicker::~KTColorPicker()':ktcolorpicker.cpp:(.text+0x13d2): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcolorpicker.cpp:(.text+0x14bb): referencia a `DDebug::~DDebug()' sin definir
-:ktcolorpicker.cpp:(.text+0x152b): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/paintarea/libpaintarea.a(ktviewdocument.o): En funciñon `KTViewDocument::loadPlugins()':ktviewdocument.cpp:(.text+0x90f): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewdocument.cpp:(.text+0xa13): referencia a `DDebug::~DDebug()' sin definir
-:ktviewdocument.cpp:(.text+0xdad): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewdocument.cpp:(.text+0xeab): referencia a `DDebug::~DDebug()' sin definir
-:ktviewdocument.cpp:(.text+0x104a): referencia a `DDebug::~DDebug()' sin definir
-:ktviewdocument.cpp:(.text+0x1129): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/paintarea/libpaintarea.a(ktviewdocument.o): En funciñon `KTViewDocument::selectTool()':ktviewdocument.cpp:(.text+0x11f0): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewdocument.cpp:(.text+0x12d9): referencia a `DDebug::~DDebug()' sin definir
-:ktviewdocument.cpp:(.text+0x1784): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/paintarea/libpaintarea.a(ktviewdocument.o): En funciñon `KTViewDocument::selectToolFromMenu(QAction*)':ktviewdocument.cpp:(.text+0x1852): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewdocument.cpp:(.text+0x193b): referencia a `DDebug::~DDebug()' sin definir
-:ktviewdocument.cpp:(.text+0x19cf): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/paintarea/libpaintarea.a(ktviewdocument.o): En funciñon `KTViewDocument::KTViewDocument(KTProject*, QWidget*)':ktviewdocument.cpp:(.text+0x8506): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewdocument.cpp:(.text+0x8557): referencia a `DDebug::~DDebug()' sin definir
-:ktviewdocument.cpp:(.text+0x885c): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/paintarea/libpaintarea.a(ktviewdocument.o): En funciñon `KTViewDocument::KTViewDocument(KTProject*, QWidget*)':ktviewdocument.cpp:(.text+0x8dcc): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewdocument.cpp:(.text+0x8e1d): referencia a `DDebug::~DDebug()' sin definir
-:ktviewdocument.cpp:(.text+0x9122): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): En funciñon `KTPaintArea::setCurrentScene(int)':ktpaintarea.cpp:(.text+0x8bc): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktpaintarea.cpp:(.text+0x9ec): referencia a `DDebug::~DDebug()' sin definir
-:ktpaintarea.cpp:(.text+0xab6): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): En funciñon `KTPaintArea::frameResponse(KTFrameResponse*)':ktpaintarea.cpp:(.text+0x1918): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktpaintarea.cpp:(.text+0x1a8f): referencia a `DDebug::~DDebug()' sin definir
-:ktpaintarea.cpp:(.text+0x1ad5): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): En funciñon `KTPaintArea::sceneResponse(KTSceneResponse*)':ktpaintarea.cpp:(.text+0x1bd4): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktpaintarea.cpp:(.text+0x1cbd): referencia a `DDebug::~DDebug()' sin definir
-:ktpaintarea.cpp:(.text+0x1d75): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): En funciñon `KTPaintArea::pasteItems()':ktpaintarea.cpp:(.text+0x21a3): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktpaintarea.cpp:(.text+0x228c): referencia a `DDebug::~DDebug()' sin definir
-:ktpaintarea.cpp:(.text+0x2525): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): En funciñon `KTPaintArea::requestMoveSelectedItems(QAction*)':ktpaintarea.cpp:(.text+0x25fa): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktpaintarea.cpp:(.text+0x26e6): referencia a `DDebug::~DDebug()' sin definir
-:ktpaintarea.cpp:(.text+0x2ac6): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): En funciñon `KTPaintArea::copyItems()':ktpaintarea.cpp:(.text+0x3759): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktpaintarea.cpp:(.text+0x384e): referencia a `DDebug::~DDebug()' sin definir
-:ktpaintarea.cpp:(.text+0x3dfb): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): En funciñon `KTPaintArea::cutItems()':ktpaintarea.cpp:(.text+0x3f56): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktpaintarea.cpp:(.text+0x403f): referencia a `DDebug::~DDebug()' sin definir
-:ktpaintarea.cpp:(.text+0x409a): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): En funciñon `KTPaintArea::addSelectedItemsToLibrary()':ktpaintarea.cpp:(.text+0x4156): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktpaintarea.cpp:(.text+0x41ae): referencia a `DDebug::~DDebug()' sin definir
-:ktpaintarea.cpp:(.text+0x475b): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/paintarea/libpaintarea.a(ktconfigurationarea.o): En funciñon `KTConfigurationArea::shrink()':ktconfigurationarea.cpp:(.text+0x695): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktconfigurationarea.cpp:(.text+0x79c): referencia a `DDebug::~DDebug()' sin definir
-:ktconfigurationarea.cpp:(.text+0xc49): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktconfigurationarea.cpp:(.text+0xd6b): referencia a `DDebug::~DDebug()' sin definir
-:ktconfigurationarea.cpp:(.text+0x1075): referencia a `DDebug::~DDebug()' sin definir
-:ktconfigurationarea.cpp:(.text+0x117a): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/cameras/libcameras.a(ktviewcamera.o): En funciñon `KTViewCamera::KTViewCamera(KTProject*, QWidget*)':ktviewcamera.cpp:(.text+0xce4): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewcamera.cpp:(.text+0xdd0): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcamera.cpp:(.text+0x14a6): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/cameras/libcameras.a(ktviewcamera.o): En funciñon `KTViewCamera::KTViewCamera(KTProject*, QWidget*)':ktviewcamera.cpp:(.text+0x15c6): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewcamera.cpp:(.text+0x16b2): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcamera.cpp:(.text+0x1d88): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/cameras/libcameras.a(ktviewcamera.o): En funciñon `KTViewCamera::~KTViewCamera()':ktviewcamera.cpp:(.text+0x1e82): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewcamera.cpp:(.text+0x1f6b): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcamera.cpp:(.text+0x1fd0): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/cameras/libcameras.a(ktviewcamera.o): En funciñon `KTViewCamera::~KTViewCamera()':ktviewcamera.cpp:(.text+0x2096): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewcamera.cpp:(.text+0x217f): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcamera.cpp:(.text+0x21e4): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/cameras/libcameras.a(ktviewcamera.o): En funciñon `KTViewCamera::~KTViewCamera()':ktviewcamera.cpp:(.text+0x22a6): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktviewcamera.cpp:(.text+0x238f): referencia a `DDebug::~DDebug()' sin definir
-:ktviewcamera.cpp:(.text+0x23ff): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/cameras/libcameras.a(ktcamerabar.o): En funciñon `KTCameraBar::~KTCameraBar()':ktcamerabar.cpp:(.text+0x6a): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcamerabar.cpp:(.text+0x153): referencia a `DDebug::~DDebug()' sin definir
-:ktcamerabar.cpp:(.text+0x1b8): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/cameras/libcameras.a(ktcamerabar.o): En funciñon `KTCameraBar::~KTCameraBar()':ktcamerabar.cpp:(.text+0x27a): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcamerabar.cpp:(.text+0x363): referencia a `DDebug::~DDebug()' sin definir
-:ktcamerabar.cpp:(.text+0x3c8): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/cameras/libcameras.a(ktcamerabar.o): En funciñon `KTCameraBar::~KTCameraBar()':ktcamerabar.cpp:(.text+0x48a): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcamerabar.cpp:(.text+0x573): referencia a `DDebug::~DDebug()' sin definir
-:ktcamerabar.cpp:(.text+0x5e3): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/cameras/libcameras.a(ktcamerabar.o): En funciñon `KTCameraBar::KTCameraBar(QWidget*)':ktcamerabar.cpp:(.text+0x6cf): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcamerabar.cpp:(.text+0x7c4): referencia a `DDebug::~DDebug()' sin definir
-:ktcamerabar.cpp:(.text+0x1125): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/cameras/libcameras.a(ktcamerabar.o): En funciñon `KTCameraBar::KTCameraBar(QWidget*)':ktcamerabar.cpp:(.text+0x12e3): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktcamerabar.cpp:(.text+0x13d8): referencia a `DDebug::~DDebug()' sin definir
-:ktcamerabar.cpp:(.text+0x1d39): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/cameras/libcameras.a(ktanimationarea.o): En funciñon `KTAnimationArea::play()':ktanimationarea.cpp:(.text+0x69e): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktanimationarea.cpp:(.text+0x6f3): referencia a `DDebug::~DDebug()' sin definir
-:ktanimationarea.cpp:(.text+0x7b0): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/cameras/libcameras.a(ktanimationarea.o): En funciñon `KTAnimationArea::sceneResponse(KTSceneResponse*)':ktanimationarea.cpp:(.text+0x808): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktanimationarea.cpp:(.text+0x8f1): referencia a `DDebug::~DDebug()' sin definir
-:ktanimationarea.cpp:(.text+0x9cc): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/cameras/libcameras.a(ktanimationarea.o): En funciñon `KTAnimationArea::stop()':ktanimationarea.cpp:(.text+0xc46): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktanimationarea.cpp:(.text+0xc9b): referencia a `DDebug::~DDebug()' sin definir
-:ktanimationarea.cpp:(.text+0xd86): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/import/libimport.a(ktpaletteimporter.o): En funciñon `KTPaletteImporter::importGimpPalette(QString const&)':ktpaletteimporter.cpp:(.text+0x73a): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktpaletteimporter.cpp:(.text+0x795): referencia a `DDebug::~DDebug()' sin definir
-:ktpaletteimporter.cpp:(.text+0x7f0): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktpaletteimporter.cpp:(.text+0x857): referencia a `DDebug::~DDebug()' sin definir
-:ktpaletteimporter.cpp:(.text+0x8db): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktpaletteimporter.cpp:(.text+0x936): referencia a `DDebug::~DDebug()' sin definir
-:ktpaletteimporter.cpp:(.text+0xa37): referencia a `DDebug::~DDebug()' sin definir
-:ktpaletteimporter.cpp:(.text+0xb8f): referencia a `DDebug::~DDebug()' sin definir
-:ktpaletteimporter.cpp:(.text+0xc0e): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/export/libexport.a(ktexportwidget.o): En funciñon `ExportTo::exportIt()':ktexportwidget.cpp:(.text+0x40bb): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexportwidget.cpp:(.text+0x41b0): referencia a `DDebug::~DDebug()' sin definir
-:ktexportwidget.cpp:(.text+0x42c7): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexportwidget.cpp:(.text+0x43c5): referencia a `DDebug::~DDebug()' sin definir
-:ktexportwidget.cpp:(.text+0x444a): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexportwidget.cpp:(.text+0x4536): referencia a `DDebug::~DDebug()' sin definir
-:ktexportwidget.cpp:(.text+0x46bb): referencia a `DDebug::~DDebug()' sin definir
-:ktexportwidget.cpp:(.text+0x475d): referencia a `DDebug::~DDebug()' sin definir
-:ktexportwidget.cpp:(.text+0x47fa): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/export/libexport.a(ktexportwidget.o): En funciñon `KTExportWidget::~KTExportWidget()':ktexportwidget.cpp:(.text+0x49c7): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexportwidget.cpp:(.text+0x4ab0): referencia a `DDebug::~DDebug()' sin definir
-:ktexportwidget.cpp:(.text+0x4b61): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/export/libexport.a(ktexportwidget.o): En funciñon `KTExportWidget::~KTExportWidget()':ktexportwidget.cpp:(.text+0x4c95): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexportwidget.cpp:(.text+0x4d7e): referencia a `DDebug::~DDebug()' sin definir
-:ktexportwidget.cpp:(.text+0x4e2f): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/export/libexport.a(ktexportwidget.o): En funciñon `KTExportWidget::~KTExportWidget()':ktexportwidget.cpp:(.text+0x4f63): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexportwidget.cpp:(.text+0x504c): referencia a `DDebug::~DDebug()' sin definir
-:ktexportwidget.cpp:(.text+0x510b): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/export/libexport.a(ktexportwidget.o): En funciñon `KTExportWidget::loadPlugins()':ktexportwidget.cpp:(.text+0x55c2): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexportwidget.cpp:(.text+0x56c0): referencia a `DDebug::~DDebug()' sin definir
-:ktexportwidget.cpp:(.text+0x587a): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/export/libexport.a(ktexportwidget.o): En funciñon `KTExportWidget::KTExportWidget(KTProject const*, QWidget*)':ktexportwidget.cpp:(.text+0x5969): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexportwidget.cpp:(.text+0x5a52): referencia a `DDebug::~DDebug()' sin definir
-:ktexportwidget.cpp:(.text+0x5dd8): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/export/libexport.a(ktexportwidget.o): En funciñon `KTExportWidget::KTExportWidget(KTProject const*, QWidget*)':ktexportwidget.cpp:(.text+0x5f17): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexportwidget.cpp:(.text+0x6000): referencia a `DDebug::~DDebug()' sin definir
-:ktexportwidget.cpp:(.text+0x6386): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuresheet.o): En funciñon `KTExposureSheet::~KTExposureSheet()':ktexposuresheet.cpp:(.text+0x599): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuresheet.cpp:(.text+0x682): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0x6e2): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuresheet.o): En funciñon `KTExposureSheet::~KTExposureSheet()':ktexposuresheet.cpp:(.text+0x7e9): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuresheet.cpp:(.text+0x8d2): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0x932): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuresheet.o): En funciñon `KTExposureSheet::~KTExposureSheet()':ktexposuresheet.cpp:(.text+0xa39): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuresheet.cpp:(.text+0xb22): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0xb8d): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuresheet.o): En funciñon `KTExposureSheet::KTExposureSheet(QWidget*)':ktexposuresheet.cpp:(.text+0x1344): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuresheet.cpp:(.text+0x142d): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0x1782): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuresheet.o): En funciñon `KTExposureSheet::KTExposureSheet(QWidget*)':ktexposuresheet.cpp:(.text+0x18b4): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuresheet.cpp:(.text+0x199d): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0x1cf2): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuresheet.o): En funciñon `KTExposureSheet::addScene(int, QString const&)':ktexposuresheet.cpp:(.text+0x1dbe): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuresheet.cpp:(.text+0x201f): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0x21c4): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuresheet.o): En funciñon `KTExposureSheet::setScene(int)':ktexposuresheet.cpp:(.text+0x232a): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuresheet.cpp:(.text+0x2413): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0x24e2): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuresheet.o): En funciñon `KTExposureSheet::emitRequestExpandCurrentFrame()':ktexposuresheet.cpp:(.text+0x2824): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuresheet.cpp:(.text+0x290d): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0x2a26): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuresheet.o): En funciñon `KTExposureSheet::applyAction(int)':ktexposuresheet.cpp:(.text+0x2fd7): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuresheet.cpp:(.text+0x3163): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0x33bc): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuresheet.cpp:(.text+0x3417): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0x3a38): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0x3ab7): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuresheet.o): En funciñon `KTExposureSheet::closeAllScenes()':ktexposuresheet.cpp:(.text+0x3d5c): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuresheet.cpp:(.text+0x3e45): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0x3ebe): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuresheet.o): En funciñon `KTExposureSheet::sceneResponse(KTSceneResponse*)':ktexposuresheet.cpp:(.text+0x3f70): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuresheet.cpp:(.text+0x4059): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0x4257): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuresheet.cpp:(.text+0x42f3): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0x4376): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuresheet.cpp:(.text+0x4420): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuresheet.o): En funciñon `KTExposureSheet::frameResponse(KTFrameResponse*)':ktexposuresheet.cpp:(.text+0x4818): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuresheet.cpp:(.text+0x4904): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuresheet.o): En funciñon `.L1214':ktexposuresheet.cpp:(.text+0x5032): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuretable.o): En funciñon `KTExposureTable::frameIsLocked(int, int)':ktexposuretable.cpp:(.text+0x2bc6): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuretable.cpp:(.text+0x2d3d): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuretable.cpp:(.text+0x2db9): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/exposure/libexposure.a(ktexposuretable.o): En funciñon `KTExposureTable::currentLayer() const':ktexposuretable.cpp:(.text+0x2e7a): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktexposuretable.cpp:(.text+0x2f63): referencia a `DDebug::~DDebug()' sin definir
-:ktexposuretable.cpp:(.text+0x2fc7): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(kttimeline.o): En funciñon `KTTimeLine::KTTimeLine(QWidget*)':kttimeline.cpp:(.text+0x10a7): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:kttimeline.cpp:(.text+0x1190): referencia a `DDebug::~DDebug()' sin definir
-:kttimeline.cpp:(.text+0x14d1): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(kttimeline.o): En funciñon `KTTimeLine::KTTimeLine(QWidget*)':kttimeline.cpp:(.text+0x1605): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:kttimeline.cpp:(.text+0x16ee): referencia a `DDebug::~DDebug()' sin definir
-:kttimeline.cpp:(.text+0x1a31): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(kttimeline.o): En funciñon `KTTimeLine::~KTTimeLine()':kttimeline.cpp:(.text+0x1b23): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:kttimeline.cpp:(.text+0x1c0c): referencia a `DDebug::~DDebug()' sin definir
-:kttimeline.cpp:(.text+0x1c7f): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(kttimeline.o): En funciñon `KTTimeLine::~KTTimeLine()':kttimeline.cpp:(.text+0x1d4f): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:kttimeline.cpp:(.text+0x1e38): referencia a `DDebug::~DDebug()' sin definir
-:kttimeline.cpp:(.text+0x1eab): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(kttimeline.o): En funciñon `KTTimeLine::~KTTimeLine()':kttimeline.cpp:(.text+0x1f77): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:kttimeline.cpp:(.text+0x2060): referencia a `DDebug::~DDebug()' sin definir
-:kttimeline.cpp:(.text+0x20de): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(kttimeline.o): En funciñon `KTTimeLine::sceneResponse(KTSceneResponse*)':kttimeline.cpp:(.text+0x2190): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:kttimeline.cpp:(.text+0x2279): referencia a `DDebug::~DDebug()' sin definir
-:kttimeline.cpp:(.text+0x23a6): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(kttimeline.o): En funciñon `KTTimeLine::libraryResponse(KTLibraryResponse*)':kttimeline.cpp:(.text+0x2ad8): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:kttimeline.cpp:(.text+0x2c08): referencia a `DDebug::~DDebug()' sin definir
-:kttimeline.cpp:(.text+0x2e7f): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(kttimeline.o): En funciñon `KTTimeLine::requestCommand(int)':kttimeline.cpp:(.text+0x30d2): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:kttimeline.cpp:(.text+0x3127): referencia a `DDebug::~DDebug()' sin definir
-:kttimeline.cpp:(.text+0x317e): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(kttimeline.o): En funciñon `KTTimeLine::emitRequestRenameLayer(int, QString const&)':kttimeline.cpp:(.text+0x3202): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:kttimeline.cpp:(.text+0x3388): referencia a `DDebug::~DDebug()' sin definir
-:kttimeline.cpp:(.text+0x3474): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(ktlayermanager.o): En funciñon `KTLayerManager::KTLayerManager(QWidget*)':ktlayermanager.cpp:(.text+0x1d78): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlayermanager.cpp:(.text+0x1e64): referencia a `DDebug::~DDebug()' sin definir
-:ktlayermanager.cpp:(.text+0x21de): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(ktlayermanager.o): En funciñon `KTLayerManager::KTLayerManager(QWidget*)':ktlayermanager.cpp:(.text+0x233a): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlayermanager.cpp:(.text+0x2426): referencia a `DDebug::~DDebug()' sin definir
-:ktlayermanager.cpp:(.text+0x27a0): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(ktlayermanager.o): En funciñon `KTLayerManager::~KTLayerManager()':ktlayermanager.cpp:(.text+0x28ae): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlayermanager.cpp:(.text+0x2997): referencia a `DDebug::~DDebug()' sin definir
-:ktlayermanager.cpp:(.text+0x2a0a): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(ktlayermanager.o): En funciñon `KTLayerManager::~KTLayerManager()':ktlayermanager.cpp:(.text+0x2acc): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlayermanager.cpp:(.text+0x2bb5): referencia a `DDebug::~DDebug()' sin definir
-:ktlayermanager.cpp:(.text+0x2c28): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(ktlayermanager.o): En funciñon `KTLayerManager::~KTLayerManager()':ktlayermanager.cpp:(.text+0x2cea): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlayermanager.cpp:(.text+0x2dd3): referencia a `DDebug::~DDebug()' sin definir
-:ktlayermanager.cpp:(.text+0x2e51): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(kttlruler.o): En funciñon `KTTLRuler::KTTLRuler(QWidget*)':kttlruler.cpp:(.text+0x698): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:kttlruler.cpp:(.text+0x781): referencia a `DDebug::~DDebug()' sin definir
-:kttlruler.cpp:(.text+0x82c): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(kttlruler.o): En funciñon `KTTLRuler::KTTLRuler(QWidget*)':kttlruler.cpp:(.text+0x908): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:kttlruler.cpp:(.text+0x9f1): referencia a `DDebug::~DDebug()' sin definir
-:kttlruler.cpp:(.text+0xa9c): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(kttlruler.o): En funciñon `KTTLRuler::~KTTLRuler()':kttlruler.cpp:(.text+0xb5e): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:kttlruler.cpp:(.text+0xc47): referencia a `DDebug::~DDebug()' sin definir
-:kttlruler.cpp:(.text+0xcac): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(kttlruler.o): En funciñon `KTTLRuler::~KTTLRuler()':kttlruler.cpp:(.text+0xd6e): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:kttlruler.cpp:(.text+0xe57): referencia a `DDebug::~DDebug()' sin definir
-:kttlruler.cpp:(.text+0xebc): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/timeline/libtimeline.a(kttlruler.o): En funciñon `KTTLRuler::~KTTLRuler()':kttlruler.cpp:(.text+0xf7e): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:kttlruler.cpp:(.text+0x1067): referencia a `DDebug::~DDebug()' sin definir
-:kttlruler.cpp:(.text+0x10d7): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/library/liblibrary.a(ktlibrarywidget.o): En funciñon `KTLibraryWidget::~KTLibraryWidget()':ktlibrarywidget.cpp:(.text+0x11b): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlibrarywidget.cpp:(.text+0x204): referencia a `DDebug::~DDebug()' sin definir
-:ktlibrarywidget.cpp:(.text+0x279): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/library/liblibrary.a(ktlibrarywidget.o): En funciñon `KTLibraryWidget::~KTLibraryWidget()':ktlibrarywidget.cpp:(.text+0x359): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlibrarywidget.cpp:(.text+0x442): referencia a `DDebug::~DDebug()' sin definir
-:ktlibrarywidget.cpp:(.text+0x4b7): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/library/liblibrary.a(ktlibrarywidget.o): En funciñon `KTLibraryWidget::~KTLibraryWidget()':ktlibrarywidget.cpp:(.text+0x597): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlibrarywidget.cpp:(.text+0x680): referencia a `DDebug::~DDebug()' sin definir
-:ktlibrarywidget.cpp:(.text+0x700): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/library/liblibrary.a(ktlibrarywidget.o): En funciñon `KTLibraryWidget::previewItem(QTreeWidgetItem*, int)':ktlibrarywidget.cpp:(.text+0x7c3): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlibrarywidget.cpp:(.text+0x8b8): referencia a `DDebug::~DDebug()' sin definir
-:ktlibrarywidget.cpp:(.text+0xa27): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlibrarywidget.cpp:(.text+0xa82): referencia a `DDebug::~DDebug()' sin definir
-:ktlibrarywidget.cpp:(.text+0xb0b): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlibrarywidget.cpp:(.text+0xbad): referencia a `DDebug::~DDebug()' sin definir
-:ktlibrarywidget.cpp:(.text+0xd38): referencia a `DDebug::~DDebug()' sin definir
-:ktlibrarywidget.cpp:(.text+0xe09): referencia a `DDebug::~DDebug()' sin definir
-:ktlibrarywidget.cpp:(.text+0xe5a): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/library/liblibrary.a(ktlibrarywidget.o): En funciñon `KTLibraryWidget::KTLibraryWidget(QWidget*)':ktlibrarywidget.cpp:(.text+0x13fc): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlibrarywidget.cpp:(.text+0x14f1): referencia a `DDebug::~DDebug()' sin definir
-:ktlibrarywidget.cpp:(.text+0x234e): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/library/liblibrary.a(ktlibrarywidget.o): En funciñon `KTLibraryWidget::KTLibraryWidget(QWidget*)':ktlibrarywidget.cpp:(.text+0x277a): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktlibrarywidget.cpp:(.text+0x286f): referencia a `DDebug::~DDebug()' sin definir
-:ktlibrarywidget.cpp:(.text+0x36cc): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/scenes/libscenes.a(ktsceneswidget.o): En funciñon `KTScenesWidget::~KTScenesWidget()':ktsceneswidget.cpp:(.text+0x9d): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktsceneswidget.cpp:(.text+0x186): referencia a `DDebug::~DDebug()' sin definir
-:ktsceneswidget.cpp:(.text+0x1f9): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/scenes/libscenes.a(ktsceneswidget.o): En funciñon `KTScenesWidget::~KTScenesWidget()':ktsceneswidget.cpp:(.text+0x2c5): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktsceneswidget.cpp:(.text+0x3ae): referencia a `DDebug::~DDebug()' sin definir
-:ktsceneswidget.cpp:(.text+0x421): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/scenes/libscenes.a(ktsceneswidget.o): En funciñon `KTScenesWidget::~KTScenesWidget()':ktsceneswidget.cpp:(.text+0x4ef): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktsceneswidget.cpp:(.text+0x5d8): referencia a `DDebug::~DDebug()' sin definir
-:ktsceneswidget.cpp:(.text+0x656): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/scenes/libscenes.a(ktsceneswidget.o): En funciñon `KTScenesWidget::KTScenesWidget(QWidget*)':ktsceneswidget.cpp:(.text+0xc71): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktsceneswidget.cpp:(.text+0xd5a): referencia a `DDebug::~DDebug()' sin definir
-:ktsceneswidget.cpp:(.text+0xfa1): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/scenes/libscenes.a(ktsceneswidget.o): En funciñon `KTScenesWidget::KTScenesWidget(QWidget*)':ktsceneswidget.cpp:(.text+0x10b1): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktsceneswidget.cpp:(.text+0x119a): referencia a `DDebug::~DDebug()' sin definir
-:ktsceneswidget.cpp:(.text+0x13e1): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/scenes/libscenes.a(ktsceneswidget.o): En funciñon `KTScenesWidget::sceneDobleClick(QTreeWidgetItem*, int)':ktsceneswidget.cpp:(.text+0x15be): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktsceneswidget.cpp:(.text+0x16a7): referencia a `DDebug::~DDebug()' sin definir
-:ktsceneswidget.cpp:(.text+0x16ec): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/scenes/libscenes.a(ktsceneswidget.o): En funciñon `KTScenesWidget::emitRequestInsertScene()':ktsceneswidget.cpp:(.text+0x1796): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktsceneswidget.cpp:(.text+0x187f): referencia a `DDebug::~DDebug()' sin definir
-:ktsceneswidget.cpp:(.text+0x1a19): referencia a `DDebug::~DDebug()' sin definir
-../../src/components/scenes/libscenes.a(ktsceneswidget.o): En funciñon `KTScenesWidget::sceneResponse(KTSceneResponse*)':ktsceneswidget.cpp:(.text+0x1c56): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktsceneswidget.cpp:(.text+0x1d3f): referencia a `DDebug::~DDebug()' sin definir
-:ktsceneswidget.cpp:(.text+0x1f36): referencia a `DDebug::~DDebug()' sin definir
-../../src/libktui/libktui.a(ktabout.o): En funciñon `KTAbout::KTAbout(QWidget*)':ktabout.cpp:(.text+0xee9): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktabout.cpp:(.text+0xfd4): referencia a `DDebug::~DDebug()' sin definir
-:ktabout.cpp:(.text+0x151d): referencia a `DDebug::~DDebug()' sin definir
-../../src/libktui/libktui.a(ktabout.o): En funciñon `KTAbout::KTAbout(QWidget*)':ktabout.cpp:(.text+0x26b5): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktabout.cpp:(.text+0x27a0): referencia a `DDebug::~DDebug()' sin definir
-:ktabout.cpp:(.text+0x2ce0): referencia a `DDebug::~DDebug()' sin definir
-../../src/libktui/libktui.a(ktthemeselector.o): En funciñon `KTThemeSelector::loadSchemaFromListView(QTreeWidgetItem*, int)':ktthemeselector.cpp:(.text+0x1b78): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktthemeselector.cpp:(.text+0x1c58): referencia a `DDebug::~DDebug()' sin definir
-:ktthemeselector.cpp:(.text+0x2176): referencia a `DDebug::~DDebug()' sin definir
-../../src/net/libktnet.a(ktnetprojectmanagerhandler.o): En funciñon `KTNetProjectManagerHandler::handleProjectRequest(KTProjectRequest const*)':ktnetprojectmanagerhandler.cpp:(.text+0xf2d): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x1006): referencia a `DDebug::~DDebug()' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x1128): referencia a `DDebug::~DDebug()' sin definir
-../../src/net/libktnet.a(ktnetprojectmanagerhandler.o): En funciñon `KTNetProjectManagerHandler::initialize(KTProjectManagerParams*)':ktnetprojectmanagerhandler.cpp:(.text+0x13a6): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x1506): referencia a `DDebug::~DDebug()' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x175c): referencia a `DDebug::~DDebug()' sin definir
-../../src/net/libktnet.a(ktnetprojectmanagerhandler.o): En funciñon `KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams*)':ktnetprojectmanagerhandler.cpp:(.text+0x1910): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x1a30): referencia a `DDebug::~DDebug()' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x1d40): referencia a `DDebug::~DDebug()' sin definir
-../../src/net/libktnet.a(ktnetprojectmanagerhandler.o): En funciñon `KTNetProjectManagerHandler::handlePackage(QString const&, QString const&)':ktnetprojectmanagerhandler.cpp:(.text+0x1e5d): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x1f6d): referencia a `DDebug::~DDebug()' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x2751): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x27ac): referencia a `DDebug::~DDebug()' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x2e65): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x2f66): referencia a `DDebug::~DDebug()' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x3609): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x375a): referencia a `DDebug::~DDebug()' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x3bcd): referencia a `DDebug::~DDebug()' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x3dfe): referencia a `DDebug::~DDebug()' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x3fb9): referencia a `DDebug::~DDebug()' sin definir
-:ktnetprojectmanagerhandler.cpp:(.text+0x4299): referencia a `DDebug::~DDebug()' sin definir
-../../src/net/libktnet.a(ktnetsocket.o): En funciñon `KTNetSocket::readed(QString const&)':ktnetsocket.cpp:(.text+0x15a): referencia a `DDebug::DDebug(DebugType, QString const&, DebugOutput)' sin definir
-:ktnetsocket.cpp:(.text+0x24c): referencia a `DDebug::~DDebug()' sin definir
-:ktnetsocket.cpp:(.text+0x398): referencia a `DDebug::~DDebug()' sin definir
+make[2]: se ingresa al directorio `/data/ktoon/ktoon/src/shell'
+linking ../../bin/ktoon.bin
+.obj/main.o: In function `main':
+main.cpp:(.text+0x1958): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+main.cpp:(.text+0x19ab): undefined reference to `KDebug::~KDebug()'
+main.cpp:(.text+0x20b2): undefined reference to `KDebug::~KDebug()'
+.obj/ktmainwindow.o: In function `KTMainWindow::save()':
+ktmainwindow.cpp:(.text+0x97e): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktmainwindow.cpp:(.text+0x9ce): undefined reference to `KDebug::~KDebug()'
+ktmainwindow.cpp:(.text+0xa2b): undefined reference to `KDebug::~KDebug()'
+.obj/ktmainwindow.o: In function `KTMainWindow::newViewDocument(QString const&)':
+ktmainwindow.cpp:(.text+0x1bab): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktmainwindow.cpp:(.text+0x1c8b): undefined reference to `KDebug::~KDebug()'
+ktmainwindow.cpp:(.text+0x1cdf): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktmainwindow.cpp:(.text+0x1d39): undefined reference to `KDebug::~KDebug()'
+ktmainwindow.cpp:(.text+0x21b4): undefined reference to `KDebug::~KDebug()'
+ktmainwindow.cpp:(.text+0x21f1): undefined reference to `KDebug::~KDebug()'
+.obj/ktmainwindow.o: In function `KTMainWindow::openProject(QString const&)':
+ktmainwindow.cpp:(.text+0x253b): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktmainwindow.cpp:(.text+0x2624): undefined reference to `KDebug::~KDebug()'
+ktmainwindow.cpp:(.text+0x2ed4): undefined reference to `KDebug::~KDebug()'
+.obj/ktmainwindow.o: In function `KTMainWindow::~KTMainWindow()':
+ktmainwindow.cpp:(.text+0x347e): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktmainwindow.cpp:(.text+0x3561): undefined reference to `KDebug::~KDebug()'
+ktmainwindow.cpp:(.text+0x363c): undefined reference to `KDebug::~KDebug()'
+.obj/ktmainwindow.o: In function `KTMainWindow::~KTMainWindow()':
+ktmainwindow.cpp:(.text+0x36ee): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktmainwindow.cpp:(.text+0x37d1): undefined reference to `KDebug::~KDebug()'
+ktmainwindow.cpp:(.text+0x38a4): undefined reference to `KDebug::~KDebug()'
+.obj/ktmainwindow.o: In function `KTMainWindow::~KTMainWindow()':
+ktmainwindow.cpp:(.text+0x395e): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktmainwindow.cpp:(.text+0x3a41): undefined reference to `KDebug::~KDebug()'
+ktmainwindow.cpp:(.text+0x3b14): undefined reference to `KDebug::~KDebug()'
+.obj/ktmainwindow.o: In function `KTMainWindow::showHelpPage(QString const&, QString const&)':
+ktmainwindow.cpp:(.text+0x3bb8): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktmainwindow.cpp:(.text+0x3c98): undefined reference to `KDebug::~KDebug()'
+ktmainwindow.cpp:(.text+0x3e9d): undefined reference to `KDebug::~KDebug()'
+.obj/ktmainwindow.o: In function `KTMainWindow::KTMainWindow(KTSplash*)':
+ktmainwindow.cpp:(.text+0x3feb): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktmainwindow.cpp:(.text+0x40da): undefined reference to `KDebug::~KDebug()'
+ktmainwindow.cpp:(.text+0x4a0b): undefined reference to `KDebug::~KDebug()'
+.obj/ktmainwindow.o: In function `KTMainWindow::KTMainWindow(KTSplash*)':
+ktmainwindow.cpp:(.text+0x4b5b): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktmainwindow.cpp:(.text+0x4c4a): undefined reference to `KDebug::~KDebug()'
+ktmainwindow.cpp:(.text+0x557b): undefined reference to `KDebug::~KDebug()'
+.obj/crashhandler.o: In function `CrashHandler::setConfig(QString const&)':
+crashhandler.cpp:(.text+0x1a44): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+crashhandler.cpp:(.text+0x1b2d): undefined reference to `KDebug::~KDebug()'
+crashhandler.cpp:(.text+0x1b7d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+crashhandler.cpp:(.text+0x1cb7): undefined reference to `KDebug::~KDebug()'
+crashhandler.cpp:(.text+0x2bfb): undefined reference to `KDebug::~KDebug()'
+crashhandler.cpp:(.text+0x2c3d): undefined reference to `KDebug::~KDebug()'
+.obj/crashwidget.o: In function `CrashWidget::addBacktracePage(QString const&, QString const&)':
+crashwidget.cpp:(.text+0x1b68): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+crashwidget.cpp:(.text+0x1dc2): undefined reference to `KDebug::~KDebug()'
+crashwidget.cpp:(.text+0x208d): undefined reference to `KDebug::~KDebug()'
+.obj/ktapplication.o: In function `KTApplication::createCache(QString const&)':
+ktapplication.cpp:(.text+0x261): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktapplication.cpp:(.text+0x2f4): undefined reference to `KDebug::~KDebug()'
+ktapplication.cpp:(.text+0x3f5): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktapplication.cpp:(.text+0x496): undefined reference to `KDebug::~KDebug()'
+ktapplication.cpp:(.text+0x503): undefined reference to `KDebug::~KDebug()'
+ktapplication.cpp:(.text+0x590): undefined reference to `KDebug::~KDebug()'
+.obj/ktlocalprojectmanagerhandler.o: In function `KTLocalProjectManagerHandler::handleProjectRequest(KTProjectRequest const*)':
+ktlocalprojectmanagerhandler.cpp:(.text+0x37b): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlocalprojectmanagerhandler.cpp:(.text+0x45e): undefined reference to `KDebug::~KDebug()'
+ktlocalprojectmanagerhandler.cpp:(.text+0x4d9): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlocalprojectmanagerhandler.cpp:(.text+0x65e): undefined reference to `KDebug::~KDebug()'
+ktlocalprojectmanagerhandler.cpp:(.text+0x738): undefined reference to `KDebug::~KDebug()'
+ktlocalprojectmanagerhandler.cpp:(.text+0x7d6): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktcolorpalette.o): In function `KTColorPalette::KTColorPalette(QWidget*)':
+ktcolorpalette.cpp:(.text+0x1e7a): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcolorpalette.cpp:(.text+0x1f6f): undefined reference to `KDebug::~KDebug()'
+ktcolorpalette.cpp:(.text+0x2500): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktcolorpalette.o): In function `KTColorPalette::~KTColorPalette()':
+ktcolorpalette.cpp:(.text+0x2713): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcolorpalette.cpp:(.text+0x27ff): undefined reference to `KDebug::~KDebug()'
+ktcolorpalette.cpp:(.text+0x2a86): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktcolorpalette.o): In function `KTColorPalette::KTColorPalette(QWidget*)':
+ktcolorpalette.cpp:(.text+0x2bba): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcolorpalette.cpp:(.text+0x2caf): undefined reference to `KDebug::~KDebug()'
+ktcolorpalette.cpp:(.text+0x3240): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktcolorpalette.o): In function `KTColorPalette::~KTColorPalette()':
+ktcolorpalette.cpp:(.text+0x3453): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcolorpalette.cpp:(.text+0x353f): undefined reference to `KDebug::~KDebug()'
+ktcolorpalette.cpp:(.text+0x37bb): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktcolorpalette.o): In function `KTColorPalette::~KTColorPalette()':
+ktcolorpalette.cpp:(.text+0x38a3): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcolorpalette.cpp:(.text+0x398f): undefined reference to `KDebug::~KDebug()'
+ktcolorpalette.cpp:(.text+0x3c0b): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktviewcolorcells.o): In function `KTViewColorCells::changeColor(QTableWidgetItem*)':
+ktviewcolorcells.cpp:(.text+0xfc4): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewcolorcells.cpp:(.text+0x10ad): undefined reference to `KDebug::~KDebug()'
+ktviewcolorcells.cpp:(.text+0x114f): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktviewcolorcells.o): In function `KTViewColorCells::readPaletteFile(QString const&)':
+ktviewcolorcells.cpp:(.text+0x12f0): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewcolorcells.cpp:(.text+0x13c9): undefined reference to `KDebug::~KDebug()'
+ktviewcolorcells.cpp:(.text+0x148d): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktviewcolorcells.o): In function `KTViewColorCells::~KTViewColorCells()':
+ktviewcolorcells.cpp:(.text+0x172f): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewcolorcells.cpp:(.text+0x17e6): undefined reference to `KDebug::~KDebug()'
+ktviewcolorcells.cpp:(.text+0x1a95): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewcolorcells.cpp:(.text+0x1b8a): undefined reference to `KDebug::~KDebug()'
+ktviewcolorcells.cpp:(.text+0x1cb8): undefined reference to `KDebug::~KDebug()'
+ktviewcolorcells.cpp:(.text+0x1dc9): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktviewcolorcells.o): In function `KTViewColorCells::readPalettes(QString const&)':
+ktviewcolorcells.cpp:(.text+0x258e): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewcolorcells.cpp:(.text+0x2680): undefined reference to `KDebug::~KDebug()'
+ktviewcolorcells.cpp:(.text+0x294e): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktviewcolorcells.o): In function `KTViewColorCells::~KTViewColorCells()':
+ktviewcolorcells.cpp:(.text+0x366f): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewcolorcells.cpp:(.text+0x3726): undefined reference to `KDebug::~KDebug()'
+ktviewcolorcells.cpp:(.text+0x39d5): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewcolorcells.cpp:(.text+0x3aca): undefined reference to `KDebug::~KDebug()'
+ktviewcolorcells.cpp:(.text+0x3c06): undefined reference to `KDebug::~KDebug()'
+ktviewcolorcells.cpp:(.text+0x3d17): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktviewcolorcells.o): In function `KTViewColorCells::~KTViewColorCells()':
+ktviewcolorcells.cpp:(.text+0x40ff): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewcolorcells.cpp:(.text+0x41b6): undefined reference to `KDebug::~KDebug()'
+ktviewcolorcells.cpp:(.text+0x4465): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewcolorcells.cpp:(.text+0x455a): undefined reference to `KDebug::~KDebug()'
+ktviewcolorcells.cpp:(.text+0x4688): undefined reference to `KDebug::~KDebug()'
+ktviewcolorcells.cpp:(.text+0x4799): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktluminancepicker.o): In function `KTLuminancePicker::~KTLuminancePicker()':
+ktluminancepicker.cpp:(.text+0x918): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktluminancepicker.cpp:(.text+0xa01): undefined reference to `KDebug::~KDebug()'
+ktluminancepicker.cpp:(.text+0xa66): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktluminancepicker.o): In function `KTLuminancePicker::~KTLuminancePicker()':
+ktluminancepicker.cpp:(.text+0xb58): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktluminancepicker.cpp:(.text+0xc41): undefined reference to `KDebug::~KDebug()'
+ktluminancepicker.cpp:(.text+0xcb1): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktluminancepicker.o): In function `KTLuminancePicker::~KTLuminancePicker()':
+ktluminancepicker.cpp:(.text+0xda8): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktluminancepicker.cpp:(.text+0xe91): undefined reference to `KDebug::~KDebug()'
+ktluminancepicker.cpp:(.text+0xef6): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktpaletteparser.o): In function `KTPaletteParser::startTag(QString const&, QXmlAttributes const&)':
+ktpaletteparser.cpp:(.text+0x10df): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktpaletteparser.cpp:(.text+0x113a): undefined reference to `KDebug::~KDebug()'
+ktpaletteparser.cpp:(.text+0x123c): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktpaletteparser.cpp:(.text+0x12f6): undefined reference to `KDebug::~KDebug()'
+ktpaletteparser.cpp:(.text+0x2006): undefined reference to `KDebug::~KDebug()'
+ktpaletteparser.cpp:(.text+0x222b): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktcolorvalue.o): In function `KTColorValue::KTColorValue(QWidget*)':
+ktcolorvalue.cpp:(.text+0x1556): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcolorvalue.cpp:(.text+0x163f): undefined reference to `KDebug::~KDebug()'
+ktcolorvalue.cpp:(.text+0x16df): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktcolorvalue.o): In function `KTColorValue::~KTColorValue()':
+ktcolorvalue.cpp:(.text+0x17b4): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcolorvalue.cpp:(.text+0x189d): undefined reference to `KDebug::~KDebug()'
+ktcolorvalue.cpp:(.text+0x190d): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktcolorvalue.o): In function `KTColorValue::~KTColorValue()':
+ktcolorvalue.cpp:(.text+0x19e4): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcolorvalue.cpp:(.text+0x1acd): undefined reference to `KDebug::~KDebug()'
+ktcolorvalue.cpp:(.text+0x1b32): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktcolorvalue.o): In function `KTColorValue::KTColorValue(QWidget*)':
+ktcolorvalue.cpp:(.text+0x1c36): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcolorvalue.cpp:(.text+0x1d1f): undefined reference to `KDebug::~KDebug()'
+ktcolorvalue.cpp:(.text+0x1dbf): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktcolorvalue.o): In function `KTColorValue::~KTColorValue()':
+ktcolorvalue.cpp:(.text+0x1e94): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcolorvalue.cpp:(.text+0x1f7d): undefined reference to `KDebug::~KDebug()'
+ktcolorvalue.cpp:(.text+0x1fe2): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktcolorpicker.o): In function `KTColorPicker::~KTColorPicker()':
+ktcolorpicker.cpp:(.text+0xd58): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcolorpicker.cpp:(.text+0xe41): undefined reference to `KDebug::~KDebug()'
+ktcolorpicker.cpp:(.text+0xea6): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktcolorpicker.o): In function `KTColorPicker::~KTColorPicker()':
+ktcolorpicker.cpp:(.text+0xf98): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcolorpicker.cpp:(.text+0x1081): undefined reference to `KDebug::~KDebug()'
+ktcolorpicker.cpp:(.text+0x10f1): undefined reference to `KDebug::~KDebug()'
+../../src/components/colorpalette/libcolorpalette.a(ktcolorpicker.o): In function `KTColorPicker::~KTColorPicker()':
+ktcolorpicker.cpp:(.text+0x11e8): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcolorpicker.cpp:(.text+0x12d1): undefined reference to `KDebug::~KDebug()'
+ktcolorpicker.cpp:(.text+0x1336): undefined reference to `KDebug::~KDebug()'
+../../src/components/paintarea/libpaintarea.a(ktviewdocument.o): In function `KTViewDocument::selectToolFromMenu(QAction*)':
+ktviewdocument.cpp:(.text+0x2364): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewdocument.cpp:(.text+0x244d): undefined reference to `KDebug::~KDebug()'
+ktviewdocument.cpp:(.text+0x24e1): undefined reference to `KDebug::~KDebug()'
+../../src/components/paintarea/libpaintarea.a(ktviewdocument.o): In function `KTViewDocument::selectTool()':
+ktviewdocument.cpp:(.text+0x2594): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewdocument.cpp:(.text+0x267d): undefined reference to `KDebug::~KDebug()'
+ktviewdocument.cpp:(.text+0x2b29): undefined reference to `KDebug::~KDebug()'
+../../src/components/paintarea/libpaintarea.a(ktviewdocument.o): In function `KTViewDocument::loadPlugins()':
+ktviewdocument.cpp:(.text+0x2d16): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewdocument.cpp:(.text+0x2e1a): undefined reference to `KDebug::~KDebug()'
+ktviewdocument.cpp:(.text+0x31d3): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewdocument.cpp:(.text+0x32d1): undefined reference to `KDebug::~KDebug()'
+ktviewdocument.cpp:(.text+0x3570): undefined reference to `KDebug::~KDebug()'
+ktviewdocument.cpp:(.text+0x364f): undefined reference to `KDebug::~KDebug()'
+../../src/components/paintarea/libpaintarea.a(ktviewdocument.o): In function `KTViewDocument::KTViewDocument(KTProject*, QWidget*)':
+ktviewdocument.cpp:(.text+0x8643): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewdocument.cpp:(.text+0x8694): undefined reference to `KDebug::~KDebug()'
+ktviewdocument.cpp:(.text+0x8993): undefined reference to `KDebug::~KDebug()'
+../../src/components/paintarea/libpaintarea.a(ktviewdocument.o): In function `KTViewDocument::KTViewDocument(KTProject*, QWidget*)':
+ktviewdocument.cpp:(.text+0x8f13): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewdocument.cpp:(.text+0x8f64): undefined reference to `KDebug::~KDebug()'
+ktviewdocument.cpp:(.text+0x9263): undefined reference to `KDebug::~KDebug()'
+../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): In function `KTPaintArea::addSelectedItemsToLibrary()':
+ktpaintarea.cpp:(.text+0x2174): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktpaintarea.cpp:(.text+0x21cc): undefined reference to `KDebug::~KDebug()'
+ktpaintarea.cpp:(.text+0x266f): undefined reference to `KDebug::~KDebug()'
+../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): In function `KTPaintArea::setCurrentScene(int)':
+ktpaintarea.cpp:(.text+0x27ce): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktpaintarea.cpp:(.text+0x28fe): undefined reference to `KDebug::~KDebug()'
+ktpaintarea.cpp:(.text+0x29ad): undefined reference to `KDebug::~KDebug()'
+../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): In function `KTPaintArea::pasteItems()':
+ktpaintarea.cpp:(.text+0x2c84): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktpaintarea.cpp:(.text+0x2d70): undefined reference to `KDebug::~KDebug()'
+ktpaintarea.cpp:(.text+0x2fef): undefined reference to `KDebug::~KDebug()'
+../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): In function `KTPaintArea::sceneResponse(KTSceneResponse*)':
+ktpaintarea.cpp:(.text+0x30ce): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktpaintarea.cpp:(.text+0x31b7): undefined reference to `KDebug::~KDebug()'
+ktpaintarea.cpp:(.text+0x326f): undefined reference to `KDebug::~KDebug()'
+../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): In function `KTPaintArea::copyItems()':
+ktpaintarea.cpp:(.text+0x3337): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktpaintarea.cpp:(.text+0x342c): undefined reference to `KDebug::~KDebug()'
+ktpaintarea.cpp:(.text+0x3a1e): undefined reference to `KDebug::~KDebug()'
+../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): In function `KTPaintArea::cutItems()':
+ktpaintarea.cpp:(.text+0x3b3e): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktpaintarea.cpp:(.text+0x3c27): undefined reference to `KDebug::~KDebug()'
+ktpaintarea.cpp:(.text+0x3c82): undefined reference to `KDebug::~KDebug()'
+../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): In function `KTPaintArea::requestMoveSelectedItems(QAction*)':
+ktpaintarea.cpp:(.text+0x3d44): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktpaintarea.cpp:(.text+0x3e30): undefined reference to `KDebug::~KDebug()'
+ktpaintarea.cpp:(.text+0x4226): undefined reference to `KDebug::~KDebug()'
+../../src/components/paintarea/libpaintarea.a(ktpaintarea.o): In function `KTPaintArea::frameResponse(KTFrameResponse*)':
+ktpaintarea.cpp:(.text+0x445f): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktpaintarea.cpp:(.text+0x45d6): undefined reference to `KDebug::~KDebug()'
+ktpaintarea.cpp:(.text+0x461c): undefined reference to `KDebug::~KDebug()'
+../../src/components/paintarea/libpaintarea.a(ktconfigurationarea.o): In function `KTConfigurationArea::shrink()':
+ktconfigurationarea.cpp:(.text+0x68d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktconfigurationarea.cpp:(.text+0x794): undefined reference to `KDebug::~KDebug()'
+ktconfigurationarea.cpp:(.text+0xc49): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktconfigurationarea.cpp:(.text+0xd6b): undefined reference to `KDebug::~KDebug()'
+ktconfigurationarea.cpp:(.text+0x1087): undefined reference to `KDebug::~KDebug()'
+ktconfigurationarea.cpp:(.text+0x1178): undefined reference to `KDebug::~KDebug()'
+../../src/components/cameras/libcameras.a(ktviewcamera.o): In function `KTViewCamera::~KTViewCamera()':
+ktviewcamera.cpp:(.text+0xd54): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewcamera.cpp:(.text+0xe3d): undefined reference to `KDebug::~KDebug()'
+ktviewcamera.cpp:(.text+0xea2): undefined reference to `KDebug::~KDebug()'
+../../src/components/cameras/libcameras.a(ktviewcamera.o): In function `KTViewCamera::KTViewCamera(KTProject*, QWidget*)':
+ktviewcamera.cpp:(.text+0xf9a): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewcamera.cpp:(.text+0x1086): undefined reference to `KDebug::~KDebug()'
+ktviewcamera.cpp:(.text+0x176b): undefined reference to `KDebug::~KDebug()'
+../../src/components/cameras/libcameras.a(ktviewcamera.o): In function `KTViewCamera::KTViewCamera(KTProject*, QWidget*)':
+ktviewcamera.cpp:(.text+0x188a): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewcamera.cpp:(.text+0x1976): undefined reference to `KDebug::~KDebug()'
+ktviewcamera.cpp:(.text+0x205b): undefined reference to `KDebug::~KDebug()'
+../../src/components/cameras/libcameras.a(ktviewcamera.o): In function `KTViewCamera::~KTViewCamera()':
+ktviewcamera.cpp:(.text+0x2154): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewcamera.cpp:(.text+0x223d): undefined reference to `KDebug::~KDebug()'
+ktviewcamera.cpp:(.text+0x22a2): undefined reference to `KDebug::~KDebug()'
+../../src/components/cameras/libcameras.a(ktviewcamera.o): In function `KTViewCamera::~KTViewCamera()':
+ktviewcamera.cpp:(.text+0x2374): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktviewcamera.cpp:(.text+0x245d): undefined reference to `KDebug::~KDebug()'
+ktviewcamera.cpp:(.text+0x24cd): undefined reference to `KDebug::~KDebug()'
+../../src/components/cameras/libcameras.a(ktcamerabar.o): In function `KTCameraBar::~KTCameraBar()':
+ktcamerabar.cpp:(.text+0x74): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcamerabar.cpp:(.text+0x15d): undefined reference to `KDebug::~KDebug()'
+ktcamerabar.cpp:(.text+0x1cd): undefined reference to `KDebug::~KDebug()'
+../../src/components/cameras/libcameras.a(ktcamerabar.o): In function `KTCameraBar::~KTCameraBar()':
+ktcamerabar.cpp:(.text+0x2a4): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcamerabar.cpp:(.text+0x38d): undefined reference to `KDebug::~KDebug()'
+ktcamerabar.cpp:(.text+0x3f2): undefined reference to `KDebug::~KDebug()'
+../../src/components/cameras/libcameras.a(ktcamerabar.o): In function `KTCameraBar::~KTCameraBar()':
+ktcamerabar.cpp:(.text+0x4c4): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcamerabar.cpp:(.text+0x5ad): undefined reference to `KDebug::~KDebug()'
+ktcamerabar.cpp:(.text+0x612): undefined reference to `KDebug::~KDebug()'
+../../src/components/cameras/libcameras.a(ktcamerabar.o): In function `KTCameraBar::KTCameraBar(QWidget*)':
+ktcamerabar.cpp:(.text+0x70d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcamerabar.cpp:(.text+0x802): undefined reference to `KDebug::~KDebug()'
+ktcamerabar.cpp:(.text+0x1143): undefined reference to `KDebug::~KDebug()'
+../../src/components/cameras/libcameras.a(ktcamerabar.o): In function `KTCameraBar::KTCameraBar(QWidget*)':
+ktcamerabar.cpp:(.text+0x130d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktcamerabar.cpp:(.text+0x1402): undefined reference to `KDebug::~KDebug()'
+ktcamerabar.cpp:(.text+0x1d43): undefined reference to `KDebug::~KDebug()'
+../../src/components/cameras/libcameras.a(ktanimationarea.o): In function `KTAnimationArea::play()':
+ktanimationarea.cpp:(.text+0x74e): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktanimationarea.cpp:(.text+0x7a3): undefined reference to `KDebug::~KDebug()'
+ktanimationarea.cpp:(.text+0x866): undefined reference to `KDebug::~KDebug()'
+../../src/components/cameras/libcameras.a(ktanimationarea.o): In function `KTAnimationArea::sceneResponse(KTSceneResponse*)':
+ktanimationarea.cpp:(.text+0x8ce): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktanimationarea.cpp:(.text+0x9b7): undefined reference to `KDebug::~KDebug()'
+ktanimationarea.cpp:(.text+0xa95): undefined reference to `KDebug::~KDebug()'
+../../src/components/cameras/libcameras.a(ktanimationarea.o): In function `KTAnimationArea::stop()':
+ktanimationarea.cpp:(.text+0xb2e): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktanimationarea.cpp:(.text+0xb83): undefined reference to `KDebug::~KDebug()'
+ktanimationarea.cpp:(.text+0xc63): undefined reference to `KDebug::~KDebug()'
+../../src/components/import/libimport.a(ktpaletteimporter.o): In function `KTPaletteImporter::importGimpPalette(QString const&)':
+ktpaletteimporter.cpp:(.text+0x796): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktpaletteimporter.cpp:(.text+0x7f1): undefined reference to `KDebug::~KDebug()'
+ktpaletteimporter.cpp:(.text+0x84c): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktpaletteimporter.cpp:(.text+0x8a7): undefined reference to `KDebug::~KDebug()'
+ktpaletteimporter.cpp:(.text+0x92b): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktpaletteimporter.cpp:(.text+0x986): undefined reference to `KDebug::~KDebug()'
+ktpaletteimporter.cpp:(.text+0xa80): undefined reference to `KDebug::~KDebug()'
+ktpaletteimporter.cpp:(.text+0xba1): undefined reference to `KDebug::~KDebug()'
+ktpaletteimporter.cpp:(.text+0xc1e): undefined reference to `KDebug::~KDebug()'
+../../src/components/export/libexport.a(ktexportwidget.o): In function `KTExportWidget::~KTExportWidget()':
+ktexportwidget.cpp:(.text+0x44b7): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexportwidget.cpp:(.text+0x45a0): undefined reference to `KDebug::~KDebug()'
+ktexportwidget.cpp:(.text+0x4675): undefined reference to `KDebug::~KDebug()'
+../../src/components/export/libexport.a(ktexportwidget.o): In function `KTExportWidget::~KTExportWidget()':
+ktexportwidget.cpp:(.text+0x4797): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexportwidget.cpp:(.text+0x4880): undefined reference to `KDebug::~KDebug()'
+ktexportwidget.cpp:(.text+0x4940): undefined reference to `KDebug::~KDebug()'
+../../src/components/export/libexport.a(ktexportwidget.o): In function `KTExportWidget::~KTExportWidget()':
+ktexportwidget.cpp:(.text+0x4a67): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexportwidget.cpp:(.text+0x4b50): undefined reference to `KDebug::~KDebug()'
+ktexportwidget.cpp:(.text+0x4c10): undefined reference to `KDebug::~KDebug()'
+../../src/components/export/libexport.a(ktexportwidget.o): In function `ExportTo::exportIt()':
+ktexportwidget.cpp:(.text+0x4d1d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexportwidget.cpp:(.text+0x4e12): undefined reference to `KDebug::~KDebug()'
+ktexportwidget.cpp:(.text+0x4f4c): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexportwidget.cpp:(.text+0x5035): undefined reference to `KDebug::~KDebug()'
+ktexportwidget.cpp:(.text+0x50ab): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexportwidget.cpp:(.text+0x5194): undefined reference to `KDebug::~KDebug()'
+ktexportwidget.cpp:(.text+0x5331): undefined reference to `KDebug::~KDebug()'
+ktexportwidget.cpp:(.text+0x5399): undefined reference to `KDebug::~KDebug()'
+ktexportwidget.cpp:(.text+0x546b): undefined reference to `KDebug::~KDebug()'
+../../src/components/export/libexport.a(ktexportwidget.o): In function `KTExportWidget::loadPlugins()':
+ktexportwidget.cpp:(.text+0x59e5): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexportwidget.cpp:(.text+0x5ae3): undefined reference to `KDebug::~KDebug()'
+ktexportwidget.cpp:(.text+0x5cbc): undefined reference to `KDebug::~KDebug()'
+../../src/components/export/libexport.a(ktexportwidget.o): In function `KTExportWidget::KTExportWidget(KTProject const*, QWidget*)':
+ktexportwidget.cpp:(.text+0x5dc5): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexportwidget.cpp:(.text+0x5eae): undefined reference to `KDebug::~KDebug()'
+ktexportwidget.cpp:(.text+0x6229): undefined reference to `KDebug::~KDebug()'
+../../src/components/export/libexport.a(ktexportwidget.o): In function `KTExportWidget::KTExportWidget(KTProject const*, QWidget*)':
+ktexportwidget.cpp:(.text+0x6375): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexportwidget.cpp:(.text+0x645e): undefined reference to `KDebug::~KDebug()'
+ktexportwidget.cpp:(.text+0x67d9): undefined reference to `KDebug::~KDebug()'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `KTExposureSheet::emitRequestPasteInCurrentFrame()':
+ktexposuresheet.cpp:(.text+0x6b3): undefined reference to `KTExposureTable::currentLayer() const'
+ktexposuresheet.cpp:(.text+0x6c8): undefined reference to `KTExposureTable::numUsed(int) const'
+ktexposuresheet.cpp:(.text+0x6f4): undefined reference to `KTExposureTable::currentLayer() const'
+ktexposuresheet.cpp:(.text+0x709): undefined reference to `KTExposureTable::numUsed(int) const'
+ktexposuresheet.cpp:(.text+0x76b): undefined reference to `KTExposureTable::currentLayer() const'
+ktexposuresheet.cpp:(.text+0x7c2): undefined reference to `KTExposureTable::currentLayer() const'
+ktexposuresheet.cpp:(.text+0x887): undefined reference to `KTExposureTable::currentFrame() const'
+ktexposuresheet.cpp:(.text+0x89a): undefined reference to `KTExposureTable::currentLayer() const'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `KTExposureSheet::emitRequestCopyCurrentFrame()':
+ktexposuresheet.cpp:(.text+0xa51): undefined reference to `KTExposureTable::currentFrame() const'
+ktexposuresheet.cpp:(.text+0xa65): undefined reference to `KTExposureTable::currentLayer() const'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `KTExposureSheet::KTExposureSheet(QWidget*)':
+ktexposuresheet.cpp:(.text+0x13ed): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexposuresheet.cpp:(.text+0x14d6): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x1828): undefined reference to `KDebug::~KDebug()'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `KTExposureSheet::~KTExposureSheet()':
+ktexposuresheet.cpp:(.text+0x1943): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexposuresheet.cpp:(.text+0x1a2c): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x1a91): undefined reference to `KDebug::~KDebug()'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `KTExposureSheet::~KTExposureSheet()':
+ktexposuresheet.cpp:(.text+0x1ba3): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexposuresheet.cpp:(.text+0x1c8c): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x1cf1): undefined reference to `KDebug::~KDebug()'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `KTExposureSheet::KTExposureSheet(QWidget*)':
+ktexposuresheet.cpp:(.text+0x1e1d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexposuresheet.cpp:(.text+0x1f06): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x2258): undefined reference to `KDebug::~KDebug()'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `KTExposureSheet::~KTExposureSheet()':
+ktexposuresheet.cpp:(.text+0x2373): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexposuresheet.cpp:(.text+0x245c): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x24c7): undefined reference to `KDebug::~KDebug()'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `KTExposureSheet::setScene(int)':
+ktexposuresheet.cpp:(.text+0x2584): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexposuresheet.cpp:(.text+0x266d): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x2741): undefined reference to `KDebug::~KDebug()'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `KTExposureSheet::frameResponse(KTFrameResponse*)':
+ktexposuresheet.cpp:(.text+0x27fa): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexposuresheet.cpp:(.text+0x28e6): undefined reference to `KDebug::~KDebug()'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L839':
+ktexposuresheet.cpp:(.text+0x29f8): undefined reference to `KTExposureTable::removeFrame(int, int)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L754':
+ktexposuresheet.cpp:(.text+0x2a27): undefined reference to `KTExposureTable::numUsed(int) const'
+ktexposuresheet.cpp:(.text+0x2ae6): undefined reference to `KTExposureTable::setUseFrame(int, int, QString const&, bool)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L753':
+ktexposuresheet.cpp:(.text+0x2b3c): undefined reference to `KTExposureTable::frameName(int, int)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L750':
+ktexposuresheet.cpp:(.text+0x2bda): undefined reference to `KTExposureTable::setFrameName(int, int, QString const&)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L752':
+ktexposuresheet.cpp:(.text+0x2ca5): undefined reference to `KTExposureTable::frameName(int, int)'
+ktexposuresheet.cpp:(.text+0x2ce6): undefined reference to `KTExposureTable::setUseFrame(int, int, QString const&, bool)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L751':
+ktexposuresheet.cpp:(.text+0x2d4f): undefined reference to `KTExposureTable::selectFrame(int, int)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L748':
+ktexposuresheet.cpp:(.text+0x2dde): undefined reference to `KTExposureTable::moveFrame(int, int, int, int, bool)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L747':
+ktexposuresheet.cpp:(.text+0x2e74): undefined reference to `KTExposureTable::setUseFrame(int, int, QString const&, bool)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L749':
+ktexposuresheet.cpp:(.text+0x2efd): undefined reference to `KTExposureTable::setLockFrame(int, int, bool)'
+ktexposuresheet.cpp:(.text+0x3017): undefined reference to `KDebug::~KDebug()'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L856':
+ktexposuresheet.cpp:(.text+0x31ca): undefined reference to `KTExposureTable::selectFrame(int, int)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L857':
+ktexposuresheet.cpp:(.text+0x321b): undefined reference to `KTExposureTable::setVisibilityChanged(int, bool)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L851':
+ktexposuresheet.cpp:(.text+0x323f): undefined reference to `KTExposureTable::removeLayer(int)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L855':
+ktexposuresheet.cpp:(.text+0x328c): undefined reference to `KTExposureTable::setLayerName(int, QString const&)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L854':
+ktexposuresheet.cpp:(.text+0x32f5): undefined reference to `KTExposureTable::setLockLayer(int, bool)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L853':
+ktexposuresheet.cpp:(.text+0x3343): undefined reference to `KTExposureTable::moveLayer(int, int)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `.L852':
+ktexposuresheet.cpp:(.text+0x339b): undefined reference to `KTExposureTable::insertLayer(int, QString const&)'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `KTExposureSheet::closeAllScenes()':
+ktexposuresheet.cpp:(.text+0x34b4): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexposuresheet.cpp:(.text+0x359d): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x3616): undefined reference to `KDebug::~KDebug()'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `KTExposureSheet::applyAction(int)':
+ktexposuresheet.cpp:(.text+0x36cd): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexposuresheet.cpp:(.text+0x3859): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x38cd): undefined reference to `KTExposureTable::currentFrame() const'
+ktexposuresheet.cpp:(.text+0x38f9): undefined reference to `KTExposureTable::frameIsLocked(int, int)'
+ktexposuresheet.cpp:(.text+0x392e): undefined reference to `KTExposureTable::currentFrame() const'
+ktexposuresheet.cpp:(.text+0x3945): undefined reference to `KTExposureTable::currentLayer() const'
+ktexposuresheet.cpp:(.text+0x3a12): undefined reference to `KTExposureTable::numUsed(int) const'
+ktexposuresheet.cpp:(.text+0x3a25): undefined reference to `KTExposureTable::currentFrame() const'
+ktexposuresheet.cpp:(.text+0x3a41): undefined reference to `KTExposureTable::currentLayer() const'
+ktexposuresheet.cpp:(.text+0x3ab6): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexposuresheet.cpp:(.text+0x3b11): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x3b52): undefined reference to `KTExposureTable::currentFrame() const'
+ktexposuresheet.cpp:(.text+0x3b75): undefined reference to `KTExposureTable::currentFrame() const'
+ktexposuresheet.cpp:(.text+0x3b8c): undefined reference to `KTExposureTable::currentLayer() const'
+ktexposuresheet.cpp:(.text+0x3c6e): undefined reference to `KTExposureTable::currentLayer() const'
+ktexposuresheet.cpp:(.text+0x3d19): undefined reference to `KTExposureTable::currentFrame() const'
+ktexposuresheet.cpp:(.text+0x3d3c): undefined reference to `KTExposureTable::currentFrame() const'
+ktexposuresheet.cpp:(.text+0x3d53): undefined reference to `KTExposureTable::currentLayer() const'
+ktexposuresheet.cpp:(.text+0x3e1b): undefined reference to `KTExposureTable::currentFrame() const'
+ktexposuresheet.cpp:(.text+0x3e32): undefined reference to `KTExposureTable::currentLayer() const'
+ktexposuresheet.cpp:(.text+0x3ed8): undefined reference to `KTExposureTable::currentLayer() const'
+ktexposuresheet.cpp:(.text+0x4012): undefined reference to `KTExposureTable::currentLayer() const'
+ktexposuresheet.cpp:(.text+0x4137): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x41b6): undefined reference to `KDebug::~KDebug()'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `KTExposureSheet::emitRequestExpandCurrentFrame()':
+ktexposuresheet.cpp:(.text+0x446e): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexposuresheet.cpp:(.text+0x4557): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x459e): undefined reference to `KTExposureTable::currentFrame() const'
+ktexposuresheet.cpp:(.text+0x45b2): undefined reference to `KTExposureTable::currentLayer() const'
+ktexposuresheet.cpp:(.text+0x4673): undefined reference to `KDebug::~KDebug()'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `KTExposureSheet::addScene(int, QString const&)':
+ktexposuresheet.cpp:(.text+0x4764): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexposuresheet.cpp:(.text+0x49c5): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x49f4): undefined reference to `KTExposureTable::KTExposureTable(QWidget*)'
+ktexposuresheet.cpp:(.text+0x4a09): undefined reference to `KTExposureTable::setMenu(QMenu*)'
+ktexposuresheet.cpp:(.text+0x4b71): undefined reference to `KDebug::~KDebug()'
+../../src/components/exposure/libexposure.a(ktexposuresheet.o): In function `KTExposureSheet::sceneResponse(KTSceneResponse*)':
+ktexposuresheet.cpp:(.text+0x4cee): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexposuresheet.cpp:(.text+0x4dd7): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x4fde): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktexposuresheet.cpp:(.text+0x507a): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x50fd): undefined reference to `KDebug::~KDebug()'
+ktexposuresheet.cpp:(.text+0x51a7): undefined reference to `KDebug::~KDebug()'
+../../src/components/exposure/libexposure.a(moc_ktexposuretable.o): In function `.L29':
+moc_ktexposuretable.cpp:(.text+0x2f1): undefined reference to `KTExposureTable::emitRequestMoveLayer(int, int, int)'
+../../src/components/exposure/libexposure.a(moc_ktexposuretable.o): In function `.L28':
+moc_ktexposuretable.cpp:(.text+0x328): undefined reference to `KTExposureTable::emitRequestSelectFrame(int, int, int, int)'
+../../src/components/exposure/libexposure.a(moc_ktexposuretable.o): In function `.L27':
+moc_ktexposuretable.cpp:(.text+0x344): undefined reference to `KTExposureTable::emitRequestRenameFrame(QTableWidgetItem*)'
+../../src/components/exposure/libexposure.a(moc_ktexposuretable.o): In function `.L26':
+moc_ktexposuretable.cpp:(.text+0x369): undefined reference to `KTExposureTable::emitRequestSetUsedFrame(int, int)'
+../../src/components/exposure/libexposure.a(moc_ktexposuretable.o):(.data.rel.ro._ZTV15KTExposureTable[vtable for KTExposureTable]+0x14): undefined reference to `KTExposureTable::~KTExposureTable()'
+../../src/components/exposure/libexposure.a(moc_ktexposuretable.o):(.data.rel.ro._ZTV15KTExposureTable[vtable for KTExposureTable]+0x18): undefined reference to `KTExposureTable::~KTExposureTable()'
+../../src/components/exposure/libexposure.a(moc_ktexposuretable.o):(.data.rel.ro._ZTV15KTExposureTable[vtable for KTExposureTable]+0x50): undefined reference to `KTExposureTable::mousePressEvent(QMouseEvent*)'
+../../src/components/exposure/libexposure.a(moc_ktexposuretable.o):(.data.rel.ro._ZTV15KTExposureTable[vtable for KTExposureTable]+0x14c): undefined reference to `KTExposureTable::commitData(QWidget*)'
+../../src/components/exposure/libexposure.a(moc_ktexposuretable.o):(.data.rel.ro._ZTV15KTExposureTable[vtable for KTExposureTable]+0x170): undefined reference to `KTExposureTable::edit(QModelIndex const&, QAbstractItemView::EditTrigger, QEvent*)'
+../../src/components/exposure/libexposure.a(moc_ktexposuretable.o):(.data.rel.ro._ZTV15KTExposureTable[vtable for KTExposureTable]+0x198): undefined reference to `non-virtual thunk to KTExposureTable::~KTExposureTable()'
+../../src/components/exposure/libexposure.a(moc_ktexposuretable.o):(.data.rel.ro._ZTV15KTExposureTable[vtable for KTExposureTable]+0x19c): undefined reference to `non-virtual thunk to KTExposureTable::~KTExposureTable()'
+../../src/components/timeline/libtimeline.a(kttimeline.o): In function `KTTimeLine::requestCommand(int)':
+kttimeline.cpp:(.text+0x18cb): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+kttimeline.cpp:(.text+0x1920): undefined reference to `KDebug::~KDebug()'
+kttimeline.cpp:(.text+0x1966): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(kttimeline.o): In function `KTTimeLine::emitRequestRenameLayer(int, QString const&)':
+kttimeline.cpp:(.text+0x19f4): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+kttimeline.cpp:(.text+0x1b7a): undefined reference to `KDebug::~KDebug()'
+kttimeline.cpp:(.text+0x1c65): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(kttimeline.o): In function `KTTimeLine::libraryResponse(KTLibraryResponse*)':
+kttimeline.cpp:(.text+0x1dbc): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+kttimeline.cpp:(.text+0x1eec): undefined reference to `KDebug::~KDebug()'
+kttimeline.cpp:(.text+0x2163): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(kttimeline.o): In function `KTTimeLine::sceneResponse(KTSceneResponse*)':
+kttimeline.cpp:(.text+0x223e): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+kttimeline.cpp:(.text+0x2327): undefined reference to `KDebug::~KDebug()'
+kttimeline.cpp:(.text+0x2454): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(kttimeline.o): In function `KTTimeLine::KTTimeLine(QWidget*)':
+kttimeline.cpp:(.text+0x2572): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+kttimeline.cpp:(.text+0x265b): undefined reference to `KDebug::~KDebug()'
+kttimeline.cpp:(.text+0x2997): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(kttimeline.o): In function `KTTimeLine::~KTTimeLine()':
+kttimeline.cpp:(.text+0x2a8d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+kttimeline.cpp:(.text+0x2b76): undefined reference to `KDebug::~KDebug()'
+kttimeline.cpp:(.text+0x2bf4): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(kttimeline.o): In function `KTTimeLine::KTTimeLine(QWidget*)':
+kttimeline.cpp:(.text+0x2d12): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+kttimeline.cpp:(.text+0x2dfb): undefined reference to `KDebug::~KDebug()'
+kttimeline.cpp:(.text+0x3137): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(kttimeline.o): In function `KTTimeLine::~KTTimeLine()':
+kttimeline.cpp:(.text+0x322d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+kttimeline.cpp:(.text+0x3316): undefined reference to `KDebug::~KDebug()'
+kttimeline.cpp:(.text+0x3389): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(kttimeline.o): In function `KTTimeLine::~KTTimeLine()':
+kttimeline.cpp:(.text+0x345d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+kttimeline.cpp:(.text+0x3546): undefined reference to `KDebug::~KDebug()'
+kttimeline.cpp:(.text+0x35b9): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(ktlayermanager.o): In function `KTLayerManager::~KTLayerManager()':
+ktlayermanager.cpp:(.text+0xd34): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlayermanager.cpp:(.text+0xe1d): undefined reference to `KDebug::~KDebug()'
+ktlayermanager.cpp:(.text+0xe90): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(ktlayermanager.o): In function `KTLayerManager::~KTLayerManager()':
+ktlayermanager.cpp:(.text+0x18f4): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlayermanager.cpp:(.text+0x19dd): undefined reference to `KDebug::~KDebug()'
+ktlayermanager.cpp:(.text+0x1a50): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(ktlayermanager.o): In function `KTLayerManager::KTLayerManager(QWidget*)':
+ktlayermanager.cpp:(.text+0x21f0): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlayermanager.cpp:(.text+0x22dc): undefined reference to `KDebug::~KDebug()'
+ktlayermanager.cpp:(.text+0x2658): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(ktlayermanager.o): In function `KTLayerManager::KTLayerManager(QWidget*)':
+ktlayermanager.cpp:(.text+0x27c0): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlayermanager.cpp:(.text+0x28ac): undefined reference to `KDebug::~KDebug()'
+ktlayermanager.cpp:(.text+0x2c28): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(ktlayermanager.o): In function `KTLayerManager::~KTLayerManager()':
+ktlayermanager.cpp:(.text+0x2d44): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlayermanager.cpp:(.text+0x2e2d): undefined reference to `KDebug::~KDebug()'
+ktlayermanager.cpp:(.text+0x2eab): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(kttlruler.o): In function `KTTLRuler::~KTTLRuler()':
+kttlruler.cpp:(.text+0x6b4): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+kttlruler.cpp:(.text+0x79d): undefined reference to `KDebug::~KDebug()'
+kttlruler.cpp:(.text+0x80d): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(kttlruler.o): In function `KTTLRuler::~KTTLRuler()':
+kttlruler.cpp:(.text+0x8e4): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+kttlruler.cpp:(.text+0x9cd): undefined reference to `KDebug::~KDebug()'
+kttlruler.cpp:(.text+0xa32): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(kttlruler.o): In function `KTTLRuler::~KTTLRuler()':
+kttlruler.cpp:(.text+0xb04): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+kttlruler.cpp:(.text+0xbed): undefined reference to `KDebug::~KDebug()'
+kttlruler.cpp:(.text+0xc52): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(kttlruler.o): In function `KTTLRuler::KTTLRuler(QWidget*)':
+kttlruler.cpp:(.text+0xd3e): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+kttlruler.cpp:(.text+0xe27): undefined reference to `KDebug::~KDebug()'
+kttlruler.cpp:(.text+0xed2): undefined reference to `KDebug::~KDebug()'
+../../src/components/timeline/libtimeline.a(kttlruler.o): In function `KTTLRuler::KTTLRuler(QWidget*)':
+kttlruler.cpp:(.text+0xfbe): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+kttlruler.cpp:(.text+0x10a7): undefined reference to `KDebug::~KDebug()'
+kttlruler.cpp:(.text+0x1152): undefined reference to `KDebug::~KDebug()'
+../../src/components/library/liblibrary.a(ktlibrarywidget.o): In function `KTLibraryWidget::previewItem(QTreeWidgetItem*, int)':
+ktlibrarywidget.cpp:(.text+0x56d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlibrarywidget.cpp:(.text+0x662): undefined reference to `KDebug::~KDebug()'
+ktlibrarywidget.cpp:(.text+0x7e0): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlibrarywidget.cpp:(.text+0x83b): undefined reference to `KDebug::~KDebug()'
+ktlibrarywidget.cpp:(.text+0x8c8): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlibrarywidget.cpp:(.text+0x96a): undefined reference to `KDebug::~KDebug()'
+ktlibrarywidget.cpp:(.text+0xaf6): undefined reference to `KDebug::~KDebug()'
+ktlibrarywidget.cpp:(.text+0xbc2): undefined reference to `KDebug::~KDebug()'
+ktlibrarywidget.cpp:(.text+0xc16): undefined reference to `KDebug::~KDebug()'
+../../src/components/library/liblibrary.a(ktlibrarywidget.o): In function `KTLibraryWidget::~KTLibraryWidget()':
+ktlibrarywidget.cpp:(.text+0xcdd): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlibrarywidget.cpp:(.text+0xdc6): undefined reference to `KDebug::~KDebug()'
+ktlibrarywidget.cpp:(.text+0xe46): undefined reference to `KDebug::~KDebug()'
+../../src/components/library/liblibrary.a(ktlibrarywidget.o): In function `KTLibraryWidget::~KTLibraryWidget()':
+ktlibrarywidget.cpp:(.text+0xf2d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlibrarywidget.cpp:(.text+0x1016): undefined reference to `KDebug::~KDebug()'
+ktlibrarywidget.cpp:(.text+0x108e): undefined reference to `KDebug::~KDebug()'
+../../src/components/library/liblibrary.a(ktlibrarywidget.o): In function `KTLibraryWidget::~KTLibraryWidget()':
+ktlibrarywidget.cpp:(.text+0x117d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlibrarywidget.cpp:(.text+0x1266): undefined reference to `KDebug::~KDebug()'
+ktlibrarywidget.cpp:(.text+0x12de): undefined reference to `KDebug::~KDebug()'
+../../src/components/library/liblibrary.a(ktlibrarywidget.o): In function `KTLibraryWidget::KTLibraryWidget(QWidget*)':
+ktlibrarywidget.cpp:(.text+0x145e): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlibrarywidget.cpp:(.text+0x1553): undefined reference to `KDebug::~KDebug()'
+ktlibrarywidget.cpp:(.text+0x2332): undefined reference to `KDebug::~KDebug()'
+../../src/components/library/liblibrary.a(ktlibrarywidget.o): In function `KTLibraryWidget::KTLibraryWidget(QWidget*)':
+ktlibrarywidget.cpp:(.text+0x3aee): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktlibrarywidget.cpp:(.text+0x3be3): undefined reference to `KDebug::~KDebug()'
+ktlibrarywidget.cpp:(.text+0x49c2): undefined reference to `KDebug::~KDebug()'
+../../src/components/scenes/libscenes.a(ktsceneswidget.o): In function `KTScenesWidget::sceneResponse(KTSceneResponse*)':
+ktsceneswidget.cpp:(.text+0x4de): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktsceneswidget.cpp:(.text+0x5c7): undefined reference to `KDebug::~KDebug()'
+ktsceneswidget.cpp:(.text+0x7bd): undefined reference to `KDebug::~KDebug()'
+../../src/components/scenes/libscenes.a(ktsceneswidget.o): In function `KTScenesWidget::emitRequestInsertScene()':
+ktsceneswidget.cpp:(.text+0x884): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktsceneswidget.cpp:(.text+0x97f): undefined reference to `KDebug::~KDebug()'
+ktsceneswidget.cpp:(.text+0xb03): undefined reference to `KDebug::~KDebug()'
+../../src/components/scenes/libscenes.a(ktsceneswidget.o): In function `KTScenesWidget::sceneDobleClick(QTreeWidgetItem*, int)':
+ktsceneswidget.cpp:(.text+0xc14): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktsceneswidget.cpp:(.text+0xcfd): undefined reference to `KDebug::~KDebug()'
+ktsceneswidget.cpp:(.text+0xd42): undefined reference to `KDebug::~KDebug()'
+../../src/components/scenes/libscenes.a(ktsceneswidget.o): In function `KTScenesWidget::~KTScenesWidget()':
+ktsceneswidget.cpp:(.text+0x113d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktsceneswidget.cpp:(.text+0x1226): undefined reference to `KDebug::~KDebug()'
+ktsceneswidget.cpp:(.text+0x12a4): undefined reference to `KDebug::~KDebug()'
+../../src/components/scenes/libscenes.a(ktsceneswidget.o): In function `KTScenesWidget::~KTScenesWidget()':
+ktsceneswidget.cpp:(.text+0x137d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktsceneswidget.cpp:(.text+0x1466): undefined reference to `KDebug::~KDebug()'
+ktsceneswidget.cpp:(.text+0x14d9): undefined reference to `KDebug::~KDebug()'
+../../src/components/scenes/libscenes.a(ktsceneswidget.o): In function `KTScenesWidget::KTScenesWidget(QWidget*)':
+ktsceneswidget.cpp:(.text+0x15db): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktsceneswidget.cpp:(.text+0x16c4): undefined reference to `KDebug::~KDebug()'
+ktsceneswidget.cpp:(.text+0x1906): undefined reference to `KDebug::~KDebug()'
+../../src/components/scenes/libscenes.a(ktsceneswidget.o): In function `KTScenesWidget::KTScenesWidget(QWidget*)':
+ktsceneswidget.cpp:(.text+0x1a1b): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktsceneswidget.cpp:(.text+0x1b04): undefined reference to `KDebug::~KDebug()'
+ktsceneswidget.cpp:(.text+0x1d46): undefined reference to `KDebug::~KDebug()'
+../../src/components/scenes/libscenes.a(ktsceneswidget.o): In function `KTScenesWidget::~KTScenesWidget()':
+ktsceneswidget.cpp:(.text+0x1e2d): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktsceneswidget.cpp:(.text+0x1f16): undefined reference to `KDebug::~KDebug()'
+ktsceneswidget.cpp:(.text+0x1f89): undefined reference to `KDebug::~KDebug()'
+../../src/libktui/libktui.a(ktabout.o): In function `KTAbout::KTAbout(QWidget*)':
+ktabout.cpp:(.text+0xf52): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktabout.cpp:(.text+0x103d): undefined reference to `KDebug::~KDebug()'
+ktabout.cpp:(.text+0x1552): undefined reference to `KDebug::~KDebug()'
+../../src/libktui/libktui.a(ktabout.o): In function `KTAbout::KTAbout(QWidget*)':
+ktabout.cpp:(.text+0x2732): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktabout.cpp:(.text+0x281d): undefined reference to `KDebug::~KDebug()'
+ktabout.cpp:(.text+0x2d32): undefined reference to `KDebug::~KDebug()'
+../../src/libktui/libktui.a(ktthemeselector.o): In function `KTThemeSelector::loadSchemaFromListView(QTreeWidgetItem*, int)':
+ktthemeselector.cpp:(.text+0x5ab6): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktthemeselector.cpp:(.text+0x5b96): undefined reference to `KDebug::~KDebug()'
+ktthemeselector.cpp:(.text+0x6244): undefined reference to `KDebug::~KDebug()'
+../../src/net/libktnet.a(ktnetprojectmanagerhandler.o): In function `KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams*)':
+ktnetprojectmanagerhandler.cpp:(.text+0x11b6): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktnetprojectmanagerhandler.cpp:(.text+0x12d6): undefined reference to `KDebug::~KDebug()'
+ktnetprojectmanagerhandler.cpp:(.text+0x157f): undefined reference to `KDebug::~KDebug()'
+../../src/net/libktnet.a(ktnetprojectmanagerhandler.o): In function `KTNetProjectManagerHandler::handlePackage(QString const&, QString const&)':
+ktnetprojectmanagerhandler.cpp:(.text+0x1703): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktnetprojectmanagerhandler.cpp:(.text+0x1813): undefined reference to `KDebug::~KDebug()'
+ktnetprojectmanagerhandler.cpp:(.text+0x1fec): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktnetprojectmanagerhandler.cpp:(.text+0x2047): undefined reference to `KDebug::~KDebug()'
+ktnetprojectmanagerhandler.cpp:(.text+0x2714): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktnetprojectmanagerhandler.cpp:(.text+0x2815): undefined reference to `KDebug::~KDebug()'
+ktnetprojectmanagerhandler.cpp:(.text+0x2ea7): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktnetprojectmanagerhandler.cpp:(.text+0x2ff8): undefined reference to `KDebug::~KDebug()'
+ktnetprojectmanagerhandler.cpp:(.text+0x3273): undefined reference to `KDebug::~KDebug()'
+ktnetprojectmanagerhandler.cpp:(.text+0x3843): undefined reference to `KDebug::~KDebug()'
+ktnetprojectmanagerhandler.cpp:(.text+0x389e): undefined reference to `KDebug::~KDebug()'
+ktnetprojectmanagerhandler.cpp:(.text+0x3973): undefined reference to `KDebug::~KDebug()'
+../../src/net/libktnet.a(ktnetprojectmanagerhandler.o): In function `KTNetProjectManagerHandler::handleProjectRequest(KTProjectRequest const*)':
+ktnetprojectmanagerhandler.cpp:(.text+0x3db2): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktnetprojectmanagerhandler.cpp:(.text+0x3e8b): undefined reference to `KDebug::~KDebug()'
+ktnetprojectmanagerhandler.cpp:(.text+0x3fa8): undefined reference to `KDebug::~KDebug()'
+../../src/net/libktnet.a(ktnetprojectmanagerhandler.o): In function `KTNetProjectManagerHandler::initialize(KTProjectManagerParams*)':
+ktnetprojectmanagerhandler.cpp:(.text+0x40c0): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktnetprojectmanagerhandler.cpp:(.text+0x4220): undefined reference to `KDebug::~KDebug()'
+ktnetprojectmanagerhandler.cpp:(.text+0x445d): undefined reference to `KDebug::~KDebug()'
+../../src/net/libktnet.a(ktnetsocket.o): In function `KTNetSocket::readed(QString const&)':
+ktnetsocket.cpp:(.text+0x18e): undefined reference to `KDebug::KDebug(DebugType, QString const&, DebugOutput)'
+ktnetsocket.cpp:(.text+0x280): undefined reference to `KDebug::~KDebug()'
+ktnetsocket.cpp:(.text+0x3d0): undefined reference to `KDebug::~KDebug()'
 collect2: ld devolvió el estado de salida 1
 make[2]: *** [../../bin/ktoon.bin] Error 1
-make[2]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src/shell'
+make[2]: se sale del directorio `/data/ktoon/ktoon/src/shell'
 make[1]: *** [sub-shell-make_default] Error 2
-make[1]: se sale del directorio `/home/spy/Proyectos/ktoon/0.9/ktoon/src'
+make[1]: se sale del directorio `/data/ktoon/ktoon/src'
 make: *** [sub-src-make_default] Error 2

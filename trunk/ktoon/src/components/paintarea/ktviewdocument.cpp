@@ -463,7 +463,7 @@ void KTViewDocument::createTools()
 	
 	k->toolsView = new QMenu(tr( "View" ), k->toolbar );
 	k->toolsView->setIcon(QPixmap(THEME_DIR+"/icons/magnifying.png"));
-	connect( d->toolsView, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
+	connect( k->toolsView, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	
 	k->toolsView->addAction(QPixmap(THEME_DIR+"/icons/magnifying.png"), tr("&Magnifying Glass" ), k->paintArea, SLOT( slotMagnifyingGlass()), tr("M"));
 	

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -53,13 +55,13 @@ QStringList ViewTool::keys() const
 
 void ViewTool::setupActions()
 {
-	DAction *action1 = new DAction( QIcon(THEME_DIR+"/icons/magnifying.png"), tr("Zoom"), this);
+	KAction *action1 = new KAction( QIcon(THEME_DIR+"/icons/magnifying.png"), tr("Zoom"), this);
 	action1->setShortcut( QKeySequence(tr("")) );
 // 	action1->setCursor( QCursor(THEME_DIR+"/cursors/square.png") );
 	
 	m_actions.insert( tr("Zoom"), action1 );
 	
-	DAction *action2 = new DAction( QIcon(THEME_DIR+"/icons/hand.png"), tr("Hand"), this);
+	KAction *action2 = new KAction( QIcon(THEME_DIR+"/icons/hand.png"), tr("Hand"), this);
 	m_actions.insert( tr("Hand"), action2 );
 	
 }
@@ -140,7 +142,7 @@ void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 	}
 }
 
-QMap<QString, DAction *> ViewTool::actions() const
+QMap<QString, KAction *> ViewTool::actions() const
 {
 	return m_actions;
 }

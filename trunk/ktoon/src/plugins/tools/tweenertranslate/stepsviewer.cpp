@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2007 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -33,7 +35,7 @@ struct StepsViewer::Private
 	QList<int> frames;
 };
 
-StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), d(new Private)
+StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), k(new Private)
 {
 	setColumnCount(2);
 	setHorizontalHeaderLabels(QStringList() << tr("interval") << tr("frames"));
@@ -42,7 +44,7 @@ StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), d(new Private)
 
 StepsViewer::~StepsViewer()
 {
-	delete d;
+	delete k;
 }
 
 void StepsViewer::setPath(const QGraphicsPathItem *path)
@@ -51,11 +53,11 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
 	
 	if(points.count() > 2)
 	{
-		d->points.clear();
-		d->frames.clear();
+		k->points.clear();
+		k->frames.clear();
 		
 		points.pop_back();
-		d->points = points;
+		k->points = points;
 		points.pop_front();
 		
 		int count = 1;
@@ -68,7 +70,7 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
 			{
 				if(e.type  == QPainterPath::CurveToDataElement && path->path().elementAt(i-1).type  == QPainterPath::CurveToElement) continue;
 				
-				d->stops << e;
+				k->stops << e;
 				
 				int frames = 0;
 				
@@ -86,7 +88,7 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
 						it = points.erase(it);
 					}
 				}
-				d->frames << frames;
+				k->frames << frames;
 				setRowCount(rowCount()+1);
 				QTableWidgetItem *item = new QTableWidgetItem(QString::number(count));
 				item->setText(QString::number(count));
@@ -105,7 +107,7 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
 QVector<KTTweenerStep *> StepsViewer::steps()
 {
 	QVector<KTTweenerStep *> s;
-	QVectorIterator<QPointF> point(d->points);
+	QVectorIterator<QPointF> point(k->points);
 	int count = 0;
 	
 	KTTweenerStep *step = new KTTweenerStep(0);
@@ -114,10 +116,10 @@ QVector<KTTweenerStep *> StepsViewer::steps()
 	
 	for(int i = 0; i < rowCount(); i++)
 	{
-		for(int j = 0; j < d->frames[i]; j++)
+		for(int j = 0; j < k->frames[i]; j++)
 		{
 			int frames = item(i,1)->text().toInt();
-			count += (int)::ceil(frames /d->frames[i]);
+			count += (int)::ceil(frames /k->frames[i]);
 			KTTweenerStep *step = new KTTweenerStep(count);
 			step->setPosition(point.next());
 			s << step;
@@ -135,5 +137,4 @@ int StepsViewer::totalSteps()
 	}
 	return total;
 }
-
 

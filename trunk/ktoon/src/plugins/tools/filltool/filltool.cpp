@@ -1,6 +1,8 @@
-/**************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+/***************************************************************************
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -74,20 +76,20 @@ QStringList FillTool::keys() const
 
 void FillTool::setupActions()
 {
-	DAction *action1 = new DAction( QIcon(THEME_DIR+"/icons/fill.png"), tr("Fill"), this);
+	KAction *action1 = new KAction( QIcon(THEME_DIR+"/icons/fill.png"), tr("Fill"), this);
 	action1->setShortcut( QKeySequence(tr("Ctrl+F")) );
 	action1->setCursor( QCursor(THEME_DIR+"/cursors/paint.png") );
 	
 	m_actions.insert( tr("Fill"), action1 );
 	
-	DAction *action2 = new DAction( QIcon(THEME_DIR+"/icons/fillcolor.png"), tr("Shape fill"), this);
+	KAction *action2 = new KAction( QIcon(THEME_DIR+"/icons/fillcolor.png"), tr("Shape fill"), this);
 // 	action2->setShortcut( QKeySequence(tr("Ctrl+F")) );
 	action2->setCursor( QCursor(THEME_DIR+"/cursors/paint.png") );
 	
 	m_actions.insert( tr("Shape fill"), action2 );
 
 	
-	DAction *action3 = new DAction( QIcon(THEME_DIR+"/icons/fill.png"), tr("Contour fill"), this);
+	KAction *action3 = new KAction( QIcon(THEME_DIR+"/icons/fill.png"), tr("Contour fill"), this);
 // 	action3->setShortcut( QKeySequence(tr("Ctrl+F")) );
 	action3->setCursor( QCursor(THEME_DIR+"/cursors/contour_fill.png") );
 	
@@ -146,7 +148,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 					
 					res = ClipHelper::subtract(res, subs);
 					
-					QList<QPainterPath> subpaths = DPathHelper::toSubpaths(res);
+					QList<QPainterPath> subpaths = KPathHelper::toSubpaths(res);
 					
 					if( subpaths.count() > 1 )
 					{
@@ -216,7 +218,7 @@ void FillTool::release(const KTInputDeviceInformation *, KTBrushManager *, KTGra
 {
 }
 
-QMap<QString, DAction *> FillTool::actions() const
+QMap<QString, KAction *> FillTool::actions() const
 {
 	return m_actions;
 }

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,8 +32,7 @@ struct KTSocketBase::Private
 	QQueue<QString> queue;
 };
 
-KTSocketBase::KTSocketBase(QObject *parent)
- : QTcpSocket(parent), d(new Private)
+KTSocketBase::KTSocketBase(QObject *parent) : QTcpSocket(parent), k(new Private)
 {
 	connect(this, SIGNAL(readyRead ()), this, SLOT(readFromServer()) );
 	connect(this, SIGNAL(connected()), this, SLOT(sendQueue()));
@@ -41,16 +42,16 @@ KTSocketBase::KTSocketBase(QObject *parent)
 
 KTSocketBase::~KTSocketBase()
 {
-	delete d;
+	delete k;
 }
 
 void KTSocketBase::sendQueue()
 {
-	while( d->queue.count() > 0 )
+	while( k->queue.count() > 0 )
 	{
 		if ( state() == QAbstractSocket::ConnectedState )
 		{
-			send(d->queue.dequeue());
+			send(k->queue.dequeue());
 		}
 		else break;
 	}
@@ -58,7 +59,7 @@ void KTSocketBase::sendQueue()
 
 void KTSocketBase::clearQueue()
 {
-	d->queue.clear();
+	k->queue.clear();
 }
 
 void KTSocketBase::send(const QString &str)
@@ -70,7 +71,7 @@ void KTSocketBase::send(const QString &str)
 	}
 	else
 	{
-		d->queue.enqueue(str);
+		k->queue.enqueue(str);
 	}
 }
 

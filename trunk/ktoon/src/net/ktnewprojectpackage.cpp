@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2007 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,18 +27,18 @@ struct KTNewProjectPackage::Private
 	QDomText name, author, description;
 };
 
-KTNewProjectPackage::KTNewProjectPackage(const QString & name, const QString & author, const QString & description ): QDomDocument(), d(new Private)
+KTNewProjectPackage::KTNewProjectPackage(const QString & name, const QString & author, const QString & description ): QDomDocument(), k(new Private)
 {
 	QDomElement root = createElement("newproject");
 	root.setAttribute("version", "0");
 	
-	d->name = createTextNode(name);
-	d->author = createTextNode(author);
-	d->description = createTextNode(description);
+	k->name = createTextNode(name);
+	k->author = createTextNode(author);
+	k->description = createTextNode(description);
 	
-	root.appendChild(createElement("name")).appendChild(d->name);
-	root.appendChild(createElement("author")).appendChild(d->author);
-	root.appendChild(createElement("description")).appendChild(d->description);
+	root.appendChild(createElement("name")).appendChild(k->name);
+	root.appendChild(createElement("author")).appendChild(k->author);
+	root.appendChild(createElement("description")).appendChild(k->description);
 	appendChild(root);
 }
 
@@ -48,16 +50,15 @@ KTNewProjectPackage::~KTNewProjectPackage()
 
 void KTNewProjectPackage::setName(const QString & name)
 {
-	d->name.setData(name);
+	k->name.setData(name);
 }
 
 void KTNewProjectPackage::setAuthor(const QString & author)
 {
-	d->author.setData(author);
+	k->author.setData(author);
 }
 
 void KTNewProjectPackage::setDescription(const QString & description)
 {
-	d->description.setData(description);
+	k->description.setData(description);
 }
-

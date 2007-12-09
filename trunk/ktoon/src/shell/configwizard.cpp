@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@toonka.com   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -35,7 +37,7 @@
 #include <kgui/kimageeffect.h>
 #include <kcore/kglobal.h>
 
-ConfigWizard::ConfigWizard() : DWizard(0)
+ConfigWizard::ConfigWizard() : KWizard(0)
 {
 	setModal(true);
 	
@@ -66,7 +68,7 @@ QString ConfigWizard::cache() const
 }
 
 // CWFirstPage
-CWFirstPage::CWFirstPage(QWidget *parent) : DWizardPage(tr("Welcome"), parent)
+CWFirstPage::CWFirstPage(QWidget *parent) : KWizardPage(tr("Welcome"), parent)
 {
 	QImage img(wizard1_xpm);
 	
@@ -90,18 +92,18 @@ CWFirstPage::~ CWFirstPage()
 
 
 // CWFSecondPage
-CWSecondPage::CWSecondPage(QWidget *parent) : DWizardPage(tr("Configure KToon"), parent)
+CWSecondPage::CWSecondPage(QWidget *parent) : KWizardPage(tr("Configure KToon"), parent)
 {
 	setPixmap( QPixmap(wizard2_xpm) );
 	
-	DVHBox *container = new DVHBox(0, Qt::Vertical);
+	KVHBox *container = new KVHBox(0, Qt::Vertical);
 	container->boxLayout()->setAlignment(Qt::AlignTop);
 	
 	new QLabel(tr("<h3>Step 1<h3>"), container);
 	
 	new QLabel(tr("Choose your KToon installation directory"), container);
 	
-	DVHBox *hbox1 = new DVHBox(container, Qt::Horizontal);
+	KVHBox *hbox1 = new KVHBox(container, Qt::Horizontal);
 	
 	m_kthome = new QLineEdit(QString::fromLocal8Bit(::getenv("KTOON_HOME")), hbox1);
 	
@@ -120,7 +122,7 @@ CWSecondPage::CWSecondPage(QWidget *parent) : DWizardPage(tr("Configure KToon"),
 	
 	new QLabel(tr("Choose a temporal directory"), container);
 	
-	DVHBox *hbox2 = new DVHBox(container, Qt::Horizontal);
+	KVHBox *hbox2 = new KVHBox(container, Qt::Horizontal);
 	
 	m_ktrepos = new QLineEdit(QDir::tempPath(),hbox2);
 	

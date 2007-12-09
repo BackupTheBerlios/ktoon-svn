@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2007 by David Cuadrado <krawek@gmail.com>               *                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -62,54 +64,54 @@ int KTAnimationRenderer::Private::calculateTotalPhotograms(KTScene *scene)
 	return total;
 }
 
-KTAnimationRenderer::KTAnimationRenderer() : d(new Private)
+KTAnimationRenderer::KTAnimationRenderer() : k(new Private)
 {
-	d->scene = new KTGraphicsScene;
-	d->scene->setBackgroundBrush(Qt::white);
+	k->scene = new KTGraphicsScene;
+	k->scene->setBackgroundBrush(Qt::white);
 }
 
 
 KTAnimationRenderer::~KTAnimationRenderer()
 {
-	delete d;
+	delete k;
 }
 
 void KTAnimationRenderer::setScene(KTScene *scene)
 {
-	d->scene->setCurrentScene(scene);
-	d->scene->setSceneRect(QRectF(QPointF(0,0), QSizeF( 500, 400 ) )); // FIXME: this isn't real size
+	k->scene->setCurrentScene(scene);
+	k->scene->setSceneRect(QRectF(QPointF(0,0), QSizeF( 500, 400 ) )); // FIXME: this isn't real size
 	
-	d->scene->drawPhotogram(0); // ###: Why whithout this don't work?
-	d->currentPhotogram = -1;
+	k->scene->drawPhotogram(0); // ###: Why whithout this don't work?
+	k->currentPhotogram = -1;
 	
-	d->totalPhotograms = d->calculateTotalPhotograms(scene);
+	k->totalPhotograms = k->calculateTotalPhotograms(scene);
 }
 
 bool KTAnimationRenderer::nextPhotogram()
 {
-	if( d->totalPhotograms < 0 ) return false;
+	if( k->totalPhotograms < 0 ) return false;
 	
-	d->currentPhotogram++;
+	k->currentPhotogram++;
 	
-	if( d->currentPhotogram == d->totalPhotograms )
+	if( k->currentPhotogram == k->totalPhotograms )
 		return false;
 	
-	d->scene->drawPhotogram(d->currentPhotogram);
+	k->scene->drawPhotogram(k->currentPhotogram);
 	return true;
 }
 
 void KTAnimationRenderer::render(QPainter *painter)
 {
-	d->scene->render(painter, QRect(0, 0, painter->device()->width(), painter->device()->height()), d->scene->sceneRect().toRect(), Qt::IgnoreAspectRatio );
+	k->scene->render(painter, QRect(0, 0, painter->device()->width(), painter->device()->height()), k->scene->sceneRect().toRect(), Qt::IgnoreAspectRatio );
 }
 
 int KTAnimationRenderer::currentPhotogram() const
 {
-	return d->currentPhotogram;
+	return k->currentPhotogram;
 }
 
 int KTAnimationRenderer::totalPhotograms() const
 {
-	return d->totalPhotograms;
+	return k->totalPhotograms;
 }
 

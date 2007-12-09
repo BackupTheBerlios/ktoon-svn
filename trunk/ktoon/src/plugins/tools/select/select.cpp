@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -47,30 +49,30 @@
 
 struct Select::Private
 {
-	QMap<QString, DAction *> actions;
+	QMap<QString, KAction *> actions;
 	QList<NodeManager*> nodeManagers;
 	KTGraphicsScene *scene;
 	NodeManager* changedManager;
 };
 
-Select::Select(): d(new Private)
+Select::Select(): k(new Private)
 {
-	d->changedManager = 0;
+	k->changedManager = 0;
 	setupActions();
 }
 
 
 Select::~Select()
 {
-	delete d;
+	delete k;
 }
 
 void Select::init(KTGraphicsScene *scene)
 {
-	D_FUNCINFOX("tools");
-	qDeleteAll(d->nodeManagers);
-	d->nodeManagers.clear();
-	d->changedManager = 0;
+	K_FUNCINFOX("tools");
+	qDeleteAll(k->nodeManagers);
+	k->nodeManagers.clear();
+	k->changedManager = 0;
 	
 	foreach(QGraphicsView * view, scene->views())
 	{
@@ -92,14 +94,14 @@ QStringList Select::keys() const
 
 void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	D_FUNCINFOX("tools");
+	K_FUNCINFOX("tools");
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
 	
 	
-	if(d->changedManager)
+	if(k->changedManager)
 	{
-		d->changedManager = 0;
+		k->changedManager = 0;
 	}
 	
 // 	foreach(QGraphicsView * view, scene->views())
@@ -109,18 +111,18 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 	
 	if ( input->keyModifiers() != Qt::ControlModifier )
 	{
-		foreach(NodeManager *nodeManager, d->nodeManagers)
+		foreach(NodeManager *nodeManager, k->nodeManagers)
 		{
 			if(scene->mouseGrabberItem() == nodeManager->parentItem())
 			{
 				nodeManager->toggleAction();
-				d->changedManager = nodeManager;
+				k->changedManager = nodeManager;
 				break;
 			}
 			else if(!nodeManager->isPress())
 			{
 				nodeManager->parentItem()->setSelected(false);
-				d->nodeManagers.removeAll(nodeManager);
+				k->nodeManagers.removeAll(nodeManager);
 				delete nodeManager;
 			}
 		}
@@ -137,7 +139,7 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 		if(item && dynamic_cast<KTAbstractSerializable* > (item) )
 		{
 			bool finded = false;
-			foreach(NodeManager *nodeManager, d->nodeManagers)
+			foreach(NodeManager *nodeManager, k->nodeManagers)
 			{
 				if(nodeManager->parentItem() == nodeManager->parentItem())
 				{
@@ -149,12 +151,12 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 			if(!finded )
 			{
 				NodeManager *manager = new NodeManager(item, scene);
-				d->nodeManagers << manager;
+				k->nodeManagers << manager;
 			}
 		}
 	}
 	
-	d->scene = scene;
+	k->scene = scene;
 }
 
 void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -163,10 +165,10 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
-	if(d->changedManager)
+	if(k->changedManager)
 	{
-		d->changedManager->toggleAction();
-		d->changedManager = 0;
+		k->changedManager->toggleAction();
+		k->changedManager = 0;
 	}
 	
 	if(input->buttons() == Qt::LeftButton && scene->selectedItems().count() > 0)
@@ -177,7 +179,7 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 
 void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	D_FUNCINFOX("tools") << scene->selectedItems().count();
+	K_FUNCINFOX("tools") << scene->selectedItems().count();
 	
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
@@ -185,8 +187,8 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 	if(scene->selectedItems().count() > 0)
 	{
 		QList<QGraphicsItem *> selecteds = scene->selectedItems();
-		QList<NodeManager *>::iterator it = d->nodeManagers.begin();
-		QList<NodeManager *>::iterator itEnd = d->nodeManagers.end();
+		QList<NodeManager *>::iterator it = k->nodeManagers.begin();
+		QList<NodeManager *>::iterator itEnd = k->nodeManagers.end();
 		while(it != itEnd)
 		{
 			int parentIndex = scene->selectedItems().indexOf((*it)->parentItem() );
@@ -197,7 +199,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 			}
 			else
 			{
-				delete d->nodeManagers.takeAt(d->nodeManagers.indexOf((*it)));
+				delete k->nodeManagers.takeAt(k->nodeManagers.indexOf((*it)));
 			}
 			++it;
 		}
@@ -207,11 +209,11 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 			if(item && dynamic_cast<KTAbstractSerializable* > (item) )
 			{
 				NodeManager *manager = new NodeManager(item, scene);
-				d->nodeManagers << manager;
+				k->nodeManagers << manager;
 			}
 		}
 		
-		foreach(NodeManager *manager, d->nodeManagers)
+		foreach(NodeManager *manager, k->nodeManagers)
 		{
 			if(manager->isModified())
 			{
@@ -233,32 +235,32 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				}
 				else
 				{
-					dDebug("selection") << "position is " << position; 
+					kDebug("selection") << "position is " << position; 
 				}
 			}
 		}
 	}
 	else
 	{
-		qDeleteAll(d->nodeManagers);
-		d->nodeManagers.clear();
+		qDeleteAll(k->nodeManagers);
+		k->nodeManagers.clear();
 	}
 }
 
 void Select::setupActions()
 {
-	DAction *select = new DAction( QIcon(), tr("Select"), this);
+	KAction *select = new KAction( QIcon(), tr("Select"), this);
 // 	pencil->setShortcut( QKeySequence(tr("")) );
 	
 // 	QPixmap pix(THEME_DIR+"/cursors/pencil.png");
 // 	select->setCursor( QCursor(pix, 0, pix.height()) );
 	
-	d->actions.insert( tr("Select"), select );
+	k->actions.insert( tr("Select"), select );
 }
 
-QMap<QString, DAction *> Select::actions() const
+QMap<QString, KAction *> Select::actions() const
 {
-	return d->actions;
+	return k->actions;
 }
 
 int Select::toolType() const
@@ -273,28 +275,28 @@ QWidget *Select::configurator()
 
 void Select::aboutToChangeScene(KTGraphicsScene *scene)
 {
-	D_FUNCINFOX("tools");
+	K_FUNCINFOX("tools");
 	init(scene);
 }
 
 void Select::aboutToChangeTool()
 {
-	D_FUNCINFOX("tools");
-	qDeleteAll(d->nodeManagers);
-	d->nodeManagers.clear();
+	K_FUNCINFOX("tools");
+	qDeleteAll(k->nodeManagers);
+	k->nodeManagers.clear();
 }
 
 
 void Select::itemResponse(const KTItemResponse *event)
 {
-	D_FUNCINFOX("tools");
+	K_FUNCINFOX("tools");
 	
 	QGraphicsItem *item = 0;
 	KTScene *scene = 0;
 	KTLayer *layer = 0;
 	KTFrame *frame = 0;
 	
-	KTProject *project = d->scene->scene()->project();
+	KTProject *project = k->scene->scene()->project();
 	
 	if(project)
 	{
@@ -316,7 +318,7 @@ void Select::itemResponse(const KTItemResponse *event)
 	}
 	else
 	{
-		dFatal() << "Project not exist";
+		kFatal() << "Project not exist";
 	}
 	
 	
@@ -327,11 +329,11 @@ void Select::itemResponse(const KTItemResponse *event)
 			
 			if ( item )
 			{
-				foreach(QGraphicsView * view, d->scene->views())
+				foreach(QGraphicsView * view, k->scene->views())
 				{
 					view->setUpdatesEnabled(true);
 				}
-				foreach(NodeManager* node, d->nodeManagers)
+				foreach(NodeManager* node, k->nodeManagers)
 				{
 					node->show();
 					node->syncNodesFromParent();
@@ -351,7 +353,7 @@ void Select::itemResponse(const KTItemResponse *event)
 
 void Select::syncNodes()
 {
-	foreach(NodeManager* node, d->nodeManagers)
+	foreach(NodeManager* node, k->nodeManagers)
 	{
 		if(node)
 		{

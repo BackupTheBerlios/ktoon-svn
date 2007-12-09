@@ -60,7 +60,7 @@ public:
 private:
     Q_DISABLE_COPY(QPathClipper)
     class Private;
-    Private *d;
+    Private *k;
 };
 
 QT_END_HEADER

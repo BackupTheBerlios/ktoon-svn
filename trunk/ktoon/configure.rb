@@ -5,7 +5,6 @@ require 'qonf/info'
 require 'qonf/komconfig'
 
 begin
-	print "Init script...\n"
 	conf = RQonf::Configure.new(ARGV)
 
 	if conf.hasArgument?("help") or conf.hasArgument?("h")
@@ -27,8 +26,6 @@ _EOH_
 	
 	conf.runTests(config)
 
-	print "Tests done...\n"
-	
 	config.addModule("core")
 	config.addModule("gui")
 	config.addModule("svg")

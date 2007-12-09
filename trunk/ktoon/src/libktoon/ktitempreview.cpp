@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -33,22 +35,22 @@ struct KTItemPreview::Private
 	KTProxyItem *proxy;
 };
 
-KTItemPreview::KTItemPreview(QWidget *parent) : QWidget(parent), d(new Private)
+KTItemPreview::KTItemPreview(QWidget *parent) : QWidget(parent), k(new Private)
 {
-	d->proxy = 0;
+	k->proxy = 0;
 }
 
 
 KTItemPreview::~KTItemPreview()
 {
-	delete d;
+	delete k;
 }
 
 QSize KTItemPreview::sizeHint() const
 {
-	if ( d->proxy )
+	if ( k->proxy )
 	{
-		return d->proxy->boundingRect().size().toSize() + QSize(10,10);
+		return k->proxy->boundingRect().size().toSize() + QSize(10,10);
 	}
 	
 	return QWidget::sizeHint().expandedTo(QSize(100,100));
@@ -57,10 +59,10 @@ QSize KTItemPreview::sizeHint() const
 
 void KTItemPreview::render(QGraphicsItem *item)
 {
-	if ( !d->proxy )
-		d->proxy = new KTProxyItem(item);
+	if ( !k->proxy )
+		k->proxy = new KTProxyItem(item);
 	else
-		d->proxy->setItem(item);
+		k->proxy->setItem(item);
 	
 	update();
 }
@@ -70,18 +72,18 @@ void KTItemPreview::paintEvent(QPaintEvent *)
 	QPainter p(this);
 	p.setRenderHint(QPainter::Antialiasing, true);
 	
-	if ( d->proxy )
+	if ( k->proxy )
 	{
 		QStyleOptionGraphicsItem opt;
 		opt.state = QStyle::State_None;
 		
-		if (d->proxy->isEnabled())
+		if (k->proxy->isEnabled())
 			opt.state |= QStyle::State_Enabled;
 		
-		opt.exposedRect = QRectF(QPointF(0,0), d->proxy->boundingRect().size());
+		opt.exposedRect = QRectF(QPointF(0,0), k->proxy->boundingRect().size());
 		opt.levelOfDetail = 1;
 		
-		QMatrix matrix = d->proxy->sceneMatrix();
+		QMatrix matrix = k->proxy->sceneMatrix();
 		
 		QRect r(15,15, rect().width()-15 , rect().height()-15);
 // 		p.drawRect(r);
@@ -98,15 +100,11 @@ void KTItemPreview::paintEvent(QPaintEvent *)
 		
 		p.translate( (rect().width() - opt.exposedRect.width())/2, (rect().height() - opt.exposedRect.height())/2 );
 		
-		if( QGraphicsPathItem *path = qgraphicsitem_cast<QGraphicsPathItem *>(d->proxy->item()) )
+		if( QGraphicsPathItem *path = qgraphicsitem_cast<QGraphicsPathItem *>(k->proxy->item()) )
 		{
 			p.translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
 		}
 		
-		d->proxy->paint ( &p, &opt, this ); // paint isn't const...
+		k->proxy->paint ( &p, &opt, this ); // paint isn't const...
 	}
 }
-
-
-
-

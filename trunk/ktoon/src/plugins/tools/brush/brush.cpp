@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -175,7 +177,7 @@ void Brush::smoothPath(QPainterPath &path, double smoothness, int from, int to)
 
 void Brush::setupActions()
 {
-	DAction *pencil = new DAction( QIcon(brush_xpm), tr("Pencil"), this);
+	KAction *pencil = new KAction( QIcon(brush_xpm), tr("Pencil"), this);
 	pencil->setShortcut( QKeySequence(tr("Ctrl+B")) );
 	
 	QPixmap pix(THEME_DIR+"/cursors/pencil.png");
@@ -184,7 +186,7 @@ void Brush::setupActions()
 	m_actions.insert( tr("Pencil"), pencil );
 }
 
-QMap<QString, DAction *> Brush::actions() const
+QMap<QString, KAction *> Brush::actions() const
 {
 	return m_actions;
 }

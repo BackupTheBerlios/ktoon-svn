@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -50,13 +52,13 @@
 
 struct ContourSelection::Private
 {
-	QMap<QString, DAction *> actions;
-	QList<DNodeGroup*> nodeGroups; 
+	QMap<QString, KAction *> actions;
+	QList<KNodeGroup*> nodeGroups; 
 	KTGraphicsScene *scene;
 
 };
 
-ContourSelection::ContourSelection(): d( new Private)
+ContourSelection::ContourSelection(): k( new Private)
 {
 	setupActions();
 }
@@ -64,19 +66,19 @@ ContourSelection::ContourSelection(): d( new Private)
 
 ContourSelection::~ContourSelection()
 {
-	delete d;
+	delete k;
 }
 
 void ContourSelection::init(KTGraphicsScene *scene)
 {
-	qDeleteAll(d->nodeGroups);
-	d->nodeGroups.clear();
+	qDeleteAll(k->nodeGroups);
+	k->nodeGroups.clear();
 	foreach(QGraphicsView * view, scene->views())
 	{
 		view->setDragMode (QGraphicsView::RubberBandDrag);
 		foreach(QGraphicsItem *item, view->scene()->items())
 		{
-			if(!qgraphicsitem_cast<DControlNode *>(item))
+			if(!qgraphicsitem_cast<KControlNode *>(item))
 			{
 				item->setFlags (QGraphicsItem::ItemIsSelectable);
 			}
@@ -98,7 +100,7 @@ void ContourSelection::press(const KTInputDeviceInformation *input, KTBrushManag
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	
-	d->scene = scene;
+	k->scene = scene;
 }
 
 void ContourSelection::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -116,8 +118,8 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 	if(scene->selectedItems().count() > 0)
 	{
 		QList<QGraphicsItem *> selecteds = scene->selectedItems();
-		QList<DNodeGroup *>::iterator it = d->nodeGroups.begin();
-		QList<DNodeGroup *>::iterator itEnd = d->nodeGroups.end();
+		QList<KNodeGroup *>::iterator it = k->nodeGroups.begin();
+		QList<KNodeGroup *>::iterator itEnd = k->nodeGroups.end();
 		while(it != itEnd)
 		{
 			int parentIndex = scene->selectedItems().indexOf((*it)->parentItem() );
@@ -127,7 +129,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 			}
 			else
 			{
-				delete d->nodeGroups.takeAt(d->nodeGroups.indexOf((*it)));
+				delete k->nodeGroups.takeAt(k->nodeGroups.indexOf((*it)));
 			}
 			++it;
 		}
@@ -135,7 +137,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 		{
 			if(item  )
 			{
-				if(!qgraphicsitem_cast<DControlNode *>(item))
+				if(!qgraphicsitem_cast<KControlNode *>(item))
 				{
 					if( !qgraphicsitem_cast<KTPathItem*>(item) )
 					{
@@ -144,13 +146,13 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 					}
 					else
 					{
-						d->nodeGroups << new DNodeGroup(item, scene);
+						k->nodeGroups << new KNodeGroup(item, scene);
 					}
 				}
 			}
 		}
 		
-		foreach(DNodeGroup *group, d->nodeGroups)
+		foreach(KNodeGroup *group, k->nodeGroups)
 		{
 			if(!group->changedNodes().isEmpty() )
 			{
@@ -172,7 +174,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 				}
 				else
 				{
-					dDebug("selection") << "position is " << position; 
+					kDebug("selection") << "position is " << position; 
 				}
 				group->clearChangesNodes();
 			}
@@ -180,15 +182,15 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 	}
 	else
 	{
-		qDeleteAll(d->nodeGroups);
-		d->nodeGroups.clear();
+		qDeleteAll(k->nodeGroups);
+		k->nodeGroups.clear();
 	}
 }
 
 void ContourSelection::itemResponse(const KTItemResponse *response)
 {
-	D_FUNCINFOX("selection");
-	KTProject *project = d->scene->scene()->project();
+	K_FUNCINFOX("selection");
+	KTProject *project = k->scene->scene()->project();
 	QGraphicsItem *item = 0;
 	KTScene *scene = 0;
 	KTLayer *layer = 0;
@@ -214,7 +216,7 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
 	}
 	else
 	{
-		dFatal() << "Project not exist";
+		kFatal() << "Project not exist";
 	}
 	
 	switch(response->action())
@@ -224,8 +226,8 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
 		{
 			if ( item && scene)
 			{
-				DNodeGroup *node = new DNodeGroup(item, d->scene);
-				d->nodeGroups << node;
+				KNodeGroup *node = new KNodeGroup(item, k->scene);
+				k->nodeGroups << node;
 			}
 		}
 		break;
@@ -233,11 +235,11 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
 		{
 			if ( item )
 			{
-				foreach(QGraphicsView * view, d->scene->views())
+				foreach(QGraphicsView * view, k->scene->views())
 				{
 					view->setUpdatesEnabled(true);
 				}
-				foreach(DNodeGroup* group, d->nodeGroups)
+				foreach(KNodeGroup* group, k->nodeGroups)
 				{
 					if(qgraphicsitem_cast<QGraphicsPathItem *>(group->parentItem()) == item)
 					{
@@ -252,7 +254,7 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
 		break;
 		default:
 		{
-			foreach(DNodeGroup* node, d->nodeGroups )
+			foreach(KNodeGroup* node, k->nodeGroups )
 			{
 				if(node)
 				{
@@ -279,7 +281,7 @@ void ContourSelection::keyPressEvent(QKeyEvent *event)
 	
 	bool deleted = false;
 	
-	foreach(DNodeGroup *nodegroup, d->nodeGroups )
+	foreach(KNodeGroup *nodegroup, k->nodeGroups )
 	{
 		deleted = deleted || (nodegroup->removeSelectedNodes() > 0);
 	}
@@ -292,15 +294,15 @@ void ContourSelection::keyPressEvent(QKeyEvent *event)
 
 void ContourSelection::setupActions()
 {
-	DAction *select = new DAction( QIcon(), tr("Contour selection"), this);
+	KAction *select = new KAction( QIcon(), tr("Contour selection"), this);
 // 	select->setShortcut( QKeySequence(tr("")) );
 
-	d->actions.insert( tr("ContourSelection"), select );
+	k->actions.insert( tr("ContourSelection"), select );
 }
 
-QMap<QString, DAction *> ContourSelection::actions() const
+QMap<QString, KAction *> ContourSelection::actions() const
 {
-	return d->actions;
+	return k->actions;
 }
 
 int ContourSelection::toolType() const
@@ -322,8 +324,8 @@ void ContourSelection::aboutToChangeScene(KTGraphicsScene *scene)
 void ContourSelection::aboutToChangeTool()
 {
 // 	d->view->setDragMode (QGraphicsView::NoDrag);
-	qDeleteAll(d->nodeGroups);
-	d->nodeGroups.clear();
+	qDeleteAll(k->nodeGroups);
+	k->nodeGroups.clear();
 }
 
 

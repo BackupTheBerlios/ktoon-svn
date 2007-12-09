@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2007 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -31,38 +33,37 @@
 
 struct Configurator::Private
 {
-	DRadioButtonGroup *options;
+	KRadioButtonGroup *options;
 	StepsViewer *stepViewer;
 };
 
-Configurator::Configurator(QWidget *parent)
-	: QFrame(parent), d(new Private)
+Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
 {
 	
-	d->options = new DRadioButtonGroup(tr("options"), Qt::Vertical);
-	d->options->addItems(QStringList() << tr("Create path"));
-	d->options->addItems(QStringList() << tr("Select object"));
-	connect(d->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
+	k->options = new KRadioButtonGroup(tr("options"), Qt::Vertical);
+	k->options->addItems(QStringList() << tr("Create path"));
+	k->options->addItems(QStringList() << tr("Select object"));
+	connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
 	
 	QPushButton *button = new QPushButton(tr("apply"));
 	connect(button, SIGNAL(clicked()), this, SIGNAL(clikedApplyTweener()));
 	
-	d->stepViewer = new StepsViewer;
+	k->stepViewer = new StepsViewer;
 	QVBoxLayout *layout = new QVBoxLayout;
-	layout->addWidget(d->options);
-	layout->addWidget(d->stepViewer);
+	layout->addWidget(k->options);
+	layout->addWidget(k->stepViewer);
 	layout->addWidget(button);
 	setLayout(layout);
 }
 
 Configurator::~Configurator()
 {
-	delete d;
+	delete k;
 }
 
 void Configurator::updateSteps(const QGraphicsPathItem *path)
 {
-	d->stepViewer->setPath(path);
+	k->stepViewer->setPath(path);
 }
 
 void Configurator::emitOptionChanged(int option)
@@ -84,11 +85,11 @@ void Configurator::emitOptionChanged(int option)
 
 QString Configurator::steps()
 {
-	return KTTweenerStep::createXml(d->stepViewer->totalSteps(), d->stepViewer->steps()).toString(); // FIXME: no usar createXml, usar KTItemTweener::toXml
+	return KTTweenerStep::createXml(k->stepViewer->totalSteps(), k->stepViewer->steps()).toString(); // FIXME: no usar createXml, usar KTItemTweener::toXml
 }
 
 
 int Configurator::totalSteps()
 {
-	return d->stepViewer->totalSteps();
+	return k->stepViewer->totalSteps();
 }

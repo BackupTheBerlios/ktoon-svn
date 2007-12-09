@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2005 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,11 +27,9 @@ struct KTProjectsParser::Private
 	QList<KTProjectsParser::ProjectInfo> projectsInfo;
 };
 
-KTProjectsParser::KTProjectsParser()
-	: KTXmlParserBase(), d( new Private())
+KTProjectsParser::KTProjectsParser() : KTXmlParserBase(), k( new Private())
 {
 }
-
 
 KTProjectsParser::~KTProjectsParser()
 {
@@ -45,7 +45,7 @@ bool KTProjectsParser::startTag(const QString &tag, const QXmlAttributes &atts)
 			info.name = atts.value("name");
 			info.author = atts.value("author");
 			info.description = atts.value("description");
-			d->projectsInfo << info;
+			k->projectsInfo << info;
 		}
 	}
 	return true;
@@ -63,5 +63,5 @@ void KTProjectsParser::text(const QString &text)
 
 QList<KTProjectsParser::ProjectInfo> KTProjectsParser::projectsInfo()
 {
-	return d->projectsInfo;
+	return k->projectsInfo;
 }
