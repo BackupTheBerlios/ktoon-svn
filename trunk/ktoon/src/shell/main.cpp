@@ -52,11 +52,17 @@
 
 #ifndef CONFIG_H
 #define CONFIG_H
-#define HAVE_SOUND
 #define HAVE_LIBGIF
-#define HAVE_FFMPEG
 #define VERSION 0.9+svn
 #define VERSION_STR "0.9+svn"
+#endif
+
+#ifndef HAVE_SOUND
+#define HAVE_SOUND
+#endif
+
+#ifndef HAVE_FFMPEG
+#define HAVE_FFMPEG
 #endif
 
 void usage();
@@ -152,8 +158,9 @@ int main( int argc, char ** argv )
 	mainWindow.showMaximized();
 	
 	delete splash;
-	
-	QApplication::addLibraryPath (HOME_DIR+"/plugins");
+
+	kWarning() << "Loading plugins from: " << HOME_DIR << " + /plugins";
+	QApplication::addLibraryPath (HOME_DIR + "/plugins");
 	
 
 #ifdef Q_OS_UNIX

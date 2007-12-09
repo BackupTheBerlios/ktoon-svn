@@ -108,8 +108,6 @@ void KTMainWindow::createGUI()
 	
 	///////////////////////
 	
-	
-	
 	//////////////////////
 	m_timeLine = new KTTimeLine;
 	m_timeLine->setLibrary(m_projectManager->project()->library());
@@ -131,7 +129,11 @@ void KTMainWindow::createGUI()
 #endif
 		
 	//////////////
-	
+
+        KTExportWidget *m_exportWidget = new KTExportWidget(m_projectManager->project());
+        view = addToolView(m_exportWidget, Qt::BottomDockWidgetArea, Drawing);
+        connectToDisplays(m_exportWidget);
+
 	/////////////////////
 	
 	m_cameraWidget = new KTCameraWidget(m_projectManager->project());

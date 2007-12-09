@@ -74,7 +74,7 @@ void KTApplication::createCache(const QString &cacheDir)
 		kDebug() << tr("Initializing repository %1").arg(cacheDir);
 		if ( ! cache.mkdir(cacheDir) )
 		{
-			kError() << tr("I cannot create the repository");
+			kError() << tr("Can not create the projects repository");
 		}
 	}
 	
