@@ -38,44 +38,44 @@ struct KApplicationProperties::Private
 	QString cacheDir;
 };
 
-KApplicationProperties::KApplicationProperties() : d(new Private)
+KApplicationProperties::KApplicationProperties() : k(new Private)
 {
 }
 
 
 KApplicationProperties::~KApplicationProperties()
 {
-	delete d;
+	delete k;
 }
 
 void KApplicationProperties::setDataDir(const QString &v)
 {
-	d->dataDir = v;
+	k->dataDir = v;
 }
 
 void KApplicationProperties::setHomeDir(const QString &v)
 {
-	d->homeDir = v;
+	k->homeDir = v;
 }
 
 void KApplicationProperties::setThemeDir(const QString &v)
 {
-	d->themeDir = v;
+	k->themeDir = v;
 }
 
 void KApplicationProperties::setCacheDir(const QString &v)
 {
-	d->cacheDir = v;
+	k->cacheDir = v;
 }
 
 void KApplicationProperties::setVersion(const QString &v)
 {
-	d->version = v;
+	k->version = v;
 }
 
 QString KApplicationProperties::dataDir() const
 {
-	if ( d->dataDir.isEmpty() )
+	if ( k->dataDir.isEmpty() )
 	{
 		QString locale = QString(QLocale::system().name()).left(2);
 	
@@ -84,25 +84,25 @@ QString KApplicationProperties::dataDir() const
 			locale = "en";
 		}
 		
-		return d->homeDir+"/data/"+locale+"/";
+		return k->homeDir+"/data/"+locale+"/";
 	}
 	
-	return d->dataDir;
+	return k->dataDir;
 }
 
 QString KApplicationProperties::homeDir() const
 {
-	return d->homeDir;
+	return k->homeDir;
 }
 
 QString KApplicationProperties::themeDir() const
 {
-	if ( d->themeDir.isEmpty() )
+	if ( k->themeDir.isEmpty() )
 	{
-		return d->homeDir+"/themes/default";
+		return k->homeDir+"/themes/default";
 	}
 	
-	return d->themeDir;
+	return k->themeDir;
 }
 
 QString KApplicationProperties::configDir() const
@@ -112,12 +112,12 @@ QString KApplicationProperties::configDir() const
 
 QString KApplicationProperties::cacheDir() const
 {
-	return d->cacheDir;
+	return k->cacheDir;
 }
 
 QString KApplicationProperties::version() const
 {
-	return d->version;
+	return k->version;
 }
 
 KApplicationProperties *KApplicationProperties::instance()
@@ -129,5 +129,4 @@ KApplicationProperties *KApplicationProperties::instance()
 	
 	return s_instance;
 }
-
 

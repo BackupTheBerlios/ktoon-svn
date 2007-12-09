@@ -48,7 +48,7 @@ class Q_GUI_EXPORT SettingsContainer : public QScrollArea
 	private:
 		Q_DISABLE_COPY( SettingsContainer );
 		class Private;
-		Private *d;
+		Private *k;
 };
 
 /**
@@ -80,7 +80,7 @@ class Q_GUI_EXPORT CollapsibleWidget : public QWidget
 	private:
 		Q_DISABLE_COPY( CollapsibleWidget );
 		class Private;
-		Private *d;
+		Private *k;
 };
 
 #endif // COLLAPSIBLEWIDGET_H

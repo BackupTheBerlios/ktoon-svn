@@ -56,7 +56,7 @@ class K_CORE_EXPORT KApplicationProperties
 		static KApplicationProperties *s_instance;
 		
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 #define kAppProp KApplicationProperties::instance()

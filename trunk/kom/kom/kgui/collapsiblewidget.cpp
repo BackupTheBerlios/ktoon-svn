@@ -163,13 +163,12 @@ class SettingsContainer::Private
  * Implementation
  *****************************************************************/
 
-SettingsContainer::SettingsContainer(QWidget *parent)
-	: QScrollArea( parent ), d(new SettingsContainer::Private)
+SettingsContainer::SettingsContainer(QWidget *parent) : QScrollArea( parent ), k(new SettingsContainer::Private)
 {
 	QWidget *w = new QWidget;
 	QVBoxLayout *helperLay = new QVBoxLayout(w);
-	d->layout = new QVBoxLayout;
-	helperLay->addLayout( d->layout );
+	k->layout = new QVBoxLayout;
+	helperLay->addLayout( k->layout );
 	helperLay->addStretch(2);
 	setWidget(w);
 	setWidgetResizable(true);
@@ -177,16 +176,15 @@ SettingsContainer::SettingsContainer(QWidget *parent)
 
 SettingsContainer::~SettingsContainer()
 {
-	delete d;
+	delete k;
 }
 
 CollapsibleWidget::CollapsibleWidget(QWidget *parent)
-	: QWidget(parent), d(new CollapsibleWidget::Private)
+	: QWidget(parent), k(new CollapsibleWidget::Private)
 {
 	init();
 }
-CollapsibleWidget::CollapsibleWidget(const QString& caption, QWidget *parent)
-	: QWidget(parent), d(new CollapsibleWidget::Private)
+CollapsibleWidget::CollapsibleWidget(const QString& caption, QWidget *parent) : QWidget(parent), k(new CollapsibleWidget::Private)
 {
 	init();
 	setCaption(caption);
@@ -202,32 +200,32 @@ CollapsibleWidget* SettingsContainer::insertWidget( QWidget *w, const QString& n
 	}
 
 	CollapsibleWidget *cw = new CollapsibleWidget( name );
-	d->layout->addWidget( cw );
+	k->layout->addWidget( cw );
 	cw->setInnerWidget( w );
 	return cw;
 }
 
 void CollapsibleWidget::init()
 {
-	d->innerWidget = 0;
-	d->gridLayout = new QGridLayout( this );
-	d->gridLayout->setMargin(0);
+	k->innerWidget = 0;
+	k->gridLayout = new QGridLayout( this );
+	k->gridLayout->setMargin(0);
 
-	d->colButton = new ArrowButton;
-	d->colButton->setCheckable(true);
+	k->colButton = new ArrowButton;
+	k->colButton->setCheckable(true);
 
-	d->label = new ClickableLabel;
-	d->label->setSizePolicy(QSizePolicy::MinimumExpanding, 
+	k->label = new ClickableLabel;
+	k->label->setSizePolicy(QSizePolicy::MinimumExpanding, 
 				QSizePolicy::Preferred);
 
-	d->gridLayout->addWidget(d->colButton, 1, 1);
-	d->gridLayout->addWidget(d->label, 1, 2);
+	k->gridLayout->addWidget(k->colButton, 1, 1);
+	k->gridLayout->addWidget(k->label, 1, 2);
 
 
-	connect(d->label, SIGNAL(clicked()), 
-		d->colButton, SLOT(click()));
+	connect(k->label, SIGNAL(clicked()), 
+		k->colButton, SLOT(click()));
 
-	connect(d->colButton, SIGNAL(toggled(bool)), 
+	connect(k->colButton, SIGNAL(toggled(bool)), 
 		SLOT(setExpanded(bool)));
 
 	setExpanded(false);
@@ -236,12 +234,12 @@ void CollapsibleWidget::init()
 
 CollapsibleWidget::~CollapsibleWidget()
 {
-	delete d;
+	delete k;
 }
 
 QWidget* CollapsibleWidget::innerWidget() const
 {
-	return d->innerWidget;
+	return k->innerWidget;
 }
 
 void CollapsibleWidget::setInnerWidget(QWidget *w)
@@ -251,38 +249,38 @@ void CollapsibleWidget::setInnerWidget(QWidget *w)
 	QGroupBox *container = new QGroupBox(this);
 	w->setParent(container);
 	QVBoxLayout *containerLayout = new QVBoxLayout(container);
-	d->innerWidget = w;
+	k->innerWidget = w;
 	
 	containerLayout->addWidget(w);
 
-	d->gridLayout->addWidget(container, 2, 2);
-	d->gridLayout->setRowStretch(2, 1);
+	k->gridLayout->addWidget(container, 2, 2);
+	k->gridLayout->setRowStretch(2, 1);
 	setEnabled( true );
 	setExpanded(isExpanded());
 }
 
 void CollapsibleWidget::setCaption(const QString& caption)
 {
-	d->label->setText(QString("<b>%1</b>").arg(caption));
+	k->label->setText(QString("<b>%1</b>").arg(caption));
 }
 
 QString CollapsibleWidget::caption() const
 {
-	return d->label->text();
+	return k->label->text();
 }
 
 void CollapsibleWidget::setExpanded(bool expanded)
 {
-	if ( d->innerWidget )
+	if ( k->innerWidget )
 	{
-		d->innerWidget->parentWidget()->setVisible(expanded);
-		d->innerWidget->setVisible(expanded);
+		k->innerWidget->parentWidget()->setVisible(expanded);
+		k->innerWidget->setVisible(expanded);
 	}
 }
 
 bool CollapsibleWidget::isExpanded() const
 {
-	return d->colButton->isChecked();
+	return k->colButton->isChecked();
 }
 
 #include "collapsiblewidget.moc"

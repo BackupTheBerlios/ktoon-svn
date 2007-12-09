@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2007 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,19 +20,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DINDICATORDRAWER_H
-#define DINDICATORDRAWER_H
+#ifndef KINDICATORDRAWER_H
+#define KINDICATORDRAWER_H
 
 #include<QPainter>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DIndicatorDrawer
+class KIndicatorDrawer
 {
 	public:
-		DIndicatorDrawer();
-		~DIndicatorDrawer();
+		KIndicatorDrawer();
+		~KIndicatorDrawer();
 		
 		void paint(QPainter *painter, const QRectF& rect, const QColor &color, const QColor &fg = Qt::white);
 		
@@ -38,9 +40,7 @@ class DIndicatorDrawer
 		
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 #endif
-
-

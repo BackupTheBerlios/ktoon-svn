@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2007 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,25 +28,25 @@
 #include <cmath> //abs
 
 
-struct DIndicatorDrawer::Private
+struct KIndicatorDrawer::Private
 {
 	int face;
 };
 
-DIndicatorDrawer::DIndicatorDrawer(): d(new Private)
+KIndicatorDrawer::KIndicatorDrawer(): k(new Private)
 {
-	d->face = 1;
+	k->face = 1;
 }
 
 
-DIndicatorDrawer::~DIndicatorDrawer()
+KIndicatorDrawer::~KIndicatorDrawer()
 {
-	delete d;
+	delete k;
 }
 
 
 
-void DIndicatorDrawer::paint(QPainter *painter, const QRectF & rect, const QColor &color, const QColor &fg)
+void KIndicatorDrawer::paint(QPainter *painter, const QRectF & rect, const QColor &color, const QColor &fg)
 {
 	painter->save();
 	
@@ -59,7 +61,7 @@ void DIndicatorDrawer::paint(QPainter *painter, const QRectF & rect, const QColo
 	{
 		painter->save();
 		
-		int alpha = 31*(8-(std::abs(8+d->face-i)%8));
+		int alpha = 31*(8-(std::abs(8 + k->face - i)%8));
 		
 		QColor bg(r, g, b, alpha);
 		
@@ -90,9 +92,8 @@ void DIndicatorDrawer::paint(QPainter *painter, const QRectF & rect, const QColo
 	painter->restore();
 }
 
-void DIndicatorDrawer::advance()
+void KIndicatorDrawer::advance()
 {
-	d->face = (d->face+1) % 8;
+	k->face = (k->face+1) % 8;
 }
-
 
