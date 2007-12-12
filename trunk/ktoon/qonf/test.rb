@@ -29,7 +29,7 @@ class Test
 		
 		@optional = parser.optional
 		
-		Info.info << "Checkiiing for " << parser.name << "... "
+		Info.info << "Checking for " << parser.name << "... "
 		
 		dir = "#{File.dirname(@rules)}/#{parser.dir}"
 		

@@ -50,7 +50,8 @@ _EOH_
 	unix.addVariable("MOC_DIR", ".moc")
 	unix.addVariable("UI_DIR", ".ui")
 	unix.addVariable("OBJECTS_DIR", ".obj")
-	
+
+ 	# The file ktconfig.pri contains all the global variables for the compilation process		
 	config.save("ktconfig.pri")
 	conf.createMakefiles
 	

@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *    
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -42,7 +44,7 @@ FFMpegPlugin::~FFMpegPlugin()
 
 QString FFMpegPlugin::key() const
 {
-	return "FFMpeg";
+	return "Video Formats";
 }
 
 KTExportInterface::Formats FFMpegPlugin::availableFormats()
@@ -52,43 +54,43 @@ KTExportInterface::Formats FFMpegPlugin::availableFormats()
 
 void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
 {
-	DFFMpegMovieGenerator *generator = 0;
+	KFFMpegMovieGenerator *generator = 0;
 	
 	switch(format)
 	{
 		case KTExportInterface::SWF:
 		{
-			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::SWF, size, fps);
+			generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::SWF, size, fps);
 		}
 		break;
 		case KTExportInterface::MPEG:
 		{
-			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::MPEG, size, fps);
+			generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::MPEG, size, fps);
 		}
 		break;
 		case KTExportInterface::AVI:
 		{
-			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::AVI, size, fps);
+			generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::AVI, size, fps);
 		}
 		break;
 		case KTExportInterface::RM:
 		{
-			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::RM, size, fps);
+			generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::RM, size, fps);
 		}
 		break;
 		case KTExportInterface::MOV:
 		{
-			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::MOV, size, fps);
+			generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::MOV, size, fps);
 		}
 		break;
 		case KTExportInterface::ASF:
 		{
-			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::ASF, size, fps);
+			generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::ASF, size, fps);
 		}
 		break;
 		case KTExportInterface::GIF:
 		{
-			generator = new DFFMpegMovieGenerator(DFFMpegMovieGenerator::GIF, size, fps);
+			generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::GIF, size, fps);
 		}
 		break;
 		default: return;

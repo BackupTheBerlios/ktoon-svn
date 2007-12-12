@@ -3,16 +3,16 @@
 # Subdir relative project main directory: ./src/plugins/export
 # Target is a subdirs project 
 
+include(../../../ktconfig.pri)
+
 SUBDIRS += genericexportplugin \
            smilexportplugin 
 
 contains(DEFINES, HAVE_FFMPEG) {
-	SUBDIRS += ffmpegplugin
+        SUBDIRS += ffmpegplugin
 }
 
-contains(DEFINES, HAVE_MING) {
-	SUBDIRS += mingplugin
-}
+KDEV_QTVER = 4
 
 CONFIG += release \
           warn_on 
