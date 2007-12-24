@@ -26,6 +26,8 @@
 #include <kgui/kapplication.h>
 
 /**
+ * Support Class for main.cpp
+ * This class contains some of the basic methods required when KToon is launched
  * @author David Cuadrado <krawek@toonka.com>
 */
 class KTApplication : public KApplication
@@ -39,23 +41,23 @@ class KTApplication : public KApplication
 	public slots:
 		/**
 		 * @if english
-		 * Translate
+		 * Opens a settings wizard the first time KToon is launched
 		 * @endif
 		 * @if spanish
 		 * Lanza un wizard de configuracion la primera vez que se inicia la aplicacion
 		 * @endif
-		 * @return 
+		 * @return true/false if the application has the settings file created
 		 */
 		virtual bool firstRun();
 
 		/**
 		 * @if english
-		 * Translate
+		 * Creates a cache directory with the path defined at cacheDir variable
 		 * @endif
 		 * @if spanish
-		 * Crea el cache en la ruta especificada por repository
+		 * Crea el cache en la ruta especificada por la variable cacheDir
 		 * @endif
-		 * @param repository 
+		 * @param cacheDir the path for the repository dir
 		 */
 		void createCache(const QString &cacheDir);
 };

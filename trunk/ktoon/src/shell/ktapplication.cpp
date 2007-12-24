@@ -23,7 +23,7 @@
 #include "ktapplication.h"
 #include "configwizard.h"
 
-// KOM
+// Including some KOM headers
 #include <kcore/kapplicationproperties.h>
 #include <kcore/kdebug.h>
 

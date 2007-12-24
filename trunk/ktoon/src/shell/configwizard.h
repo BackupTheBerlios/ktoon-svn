@@ -37,7 +37,7 @@ class QLineEdit;
  * This class helps to config KToon!
  * @endif
  * @if spanish
- * @brief la clase ConfigWizard provee el dialogo para configurar los directorios principales de ktoon.
+ * @brief la clase ConfigWizard provee el dialogo para configurar los directorios principales de KToon.
  * El home que es el directorio donde esta instalado ktoon y el repositorio que es el directorio en donde se guardaran todos los proyectos del usuario
  * 
  * @endif

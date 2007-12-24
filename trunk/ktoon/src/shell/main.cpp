@@ -65,7 +65,20 @@
 #define HAVE_FFMPEG
 #endif
 
+/**
+ * Main class of the application. 
+ * This is the code where KToon application starts.
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+
+/** 
+ * This method defines the console line options to run KToon
+ */
 void usage();
+
+/** 
+ * This method is the first one invoked when KToon is launched
+ */
 
 int main( int argc, char ** argv )
 {
@@ -104,7 +117,8 @@ int main( int argc, char ** argv )
 		if ( ! application.firstRun() )
 		{
 			kFatal () << "**********************You need configure the application" << endl;
-			QMessageBox::critical(0, QObject::tr("Missing..."), QObject::tr("You need configure the application"));
+			QMessageBox::critical(0, QObject::tr("Missing..."), 
+					      QObject::tr("You need configure the application"));
 			application.exit(-1);
 			return -1;
 		}
@@ -152,8 +166,7 @@ int main( int argc, char ** argv )
 	
 	splash->setMessage( QObject::tr( "Loaded!" ) );
 
-// 	splash->finish( &mainWindow );
-	
+        // 	splash->finish( &mainWindow );
 	
 	mainWindow.showMaximized();
 	
@@ -177,11 +190,16 @@ int main( int argc, char ** argv )
 	return application.exec();
 }
 
+/** 
+ * This method defines the console line options to run KToon
+ */
+
 void usage()
 {
 #if defined(Q_OS_UNIX)
+        // Characters \033[1;33m and \033[1;34m are useful for colored messages
 	puts(QString("\033[1;33m"+QApplication::applicationName() + kAppProp->version()).toLocal8Bit());
-	puts(QString(QObject::tr("2D Animation tool kit")+"\033[0;0m" ).toLocal8Bit());
+	puts(QString(QObject::tr("2D Animation Toolkit")+"\033[0;0m" ).toLocal8Bit());
 
 	puts(QString("\033[1;34m"+QObject::tr("Usage: %1 [option]").arg(kApp->argv()[0])+"\033[0;0m").toLocal8Bit());
 	
