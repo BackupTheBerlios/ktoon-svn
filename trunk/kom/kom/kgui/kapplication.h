@@ -52,7 +52,7 @@ typedef QMap<QString, QString> ParseArgs;
 
 /**
  * @if english
- * Translate
+ * This class manages the main settings for the others classes and modules of the application
  * @endif
  * @if spanish
  * Esta clase sirve para controlar y proveer informacion a las demas clases y modulos de la aplicacion
@@ -69,13 +69,14 @@ class K_GUI_EXPORT KApplication : public QApplication
 		enum ColorSchema { DarkBlue };
 		/**
 		 * @if english
-		 * Translate
+		 * Builds KApplication with the args and the args number received from the command line
 		 * @endif
 		 * @if spanish
-		 * Construye DApplication con los argumentos y el numero de argumentos que recibe la aplicacion por la linea de comandos
+		 * Construye KApplication con los argumentos y el numero de argumentos que recibe la aplicacion 
+                 * por la linea de comandos
 		 * @endif
-		 * @param argc 
-		 * @param argv 
+		 * @param argc arguments from the command line
+		 * @param argv number of arguments from the command line
 		 * @return 
 		 */
 		KApplication(int & argc, char ** argv);
@@ -89,107 +90,144 @@ class K_GUI_EXPORT KApplication : public QApplication
 		
 		/**
 		 * @if english
-		 * Translate
+		 * Checks and validates the command line arguments
 		 * @endif
 		 * @if spanish
 		 * Analiza los argumentos de entrada
 		 * @endif
-		 * @param argc 
-		 * @param argv 
+		 * @param argc arguments from the command line
+		 * @param argv number of arguments from the command line
 		 */
 		void parseArgs( int &argc, char **argv);
 		
 		/**
 		 * @if english
-		 * Translate
+		 * Applies pre-defined colors
 		 * @endif
 		 * @if spanish
 		 * Aplica colores predefinidos
 		 * @endif
-		 * @param cs 
+		 * @param cs the color schema
 		 */
 		void applyColors(ColorSchema cs);
 		
 		/**
 		 * @if english
-		 * Translate
+		 * Applies a color pallete to the whole application
 		 * @endif
 		 * @if spanish
 		 * Aplica una paleta a toda la aplicacion
 		 * @endif 
-		 * @param p 
+		 * @param p QPalette variable
 		 */
 		void applyPalette( const QPalette &p );
 		
 		/**
 		 * @if english
-		 * Translate
+		 * Applies a theme to the whole application, reading the info from a path
 		 * @endif
 		 * @if spanish
-		 * Aplica un theme a toda la aplicacion desde una ruta
+		 * Aplica un tema a toda la aplicacion desde una ruta
 		 * @endif 
-		 * @param file 
+		 * @param file the theme path
 		 */
 		void applyTheme(const QString &file);
 		
 		/**
-		 * * @if english
-		 * Translate
+		 * @if english
+		 * Applies a theme to the whole application, reading the info from a XML document
 		 * @endif
 		 * @if spanish
-		 * Aplica un theme a toda la aplicacion desde un documento XML
+		 * Aplica un tema a toda la aplicacion desde un documento XML
 		 * @endif
-		 * @param dd 
+		 * @param kd KThemeDocument variable
 		 */
 		void applyTheme(const KThemeDocument &kd);
 		
 		/**
 		 * @if english
-		 * Translate
+		 * This method returns true if the argument given comes from the command line
 		 * @endif
 		 * @if spanish
 		 * Esta funcion retorna verdadero si el argumento fue suministrado por la linea de comandos
 		 * @endif 
-		 * @param arg 
+		 * @param arg command line argument
 		 * @return 
 		 */
 		bool isArg(const QString &arg);
 		
 		/**
 		 * @if english
-		 * Translate
+		 * Gets the parameter assigned to an argument
 		 * @endif
 		 * @if spanish
 		 * Obtiene el parametro suministrado a un argumento
 		 * @endif
-		 * @param arg 
+		 * @param arg the argument that contains the parameter
 		 * @return 
 		 */
 		QString getParam(const QString &arg);
 		
 		/**
 		 * @if english
-		 * Translate
+		 * Changes the font type for the whole application
 		 * @endif
 		 * @if spanish
-		 * Cambia la letra de toda la aplicacion
+		 * Cambia el tipo de letra de toda la aplicacion
 		 * @endif
-		 * @param font 
+		 * @param font QFont variable
 		 */
 		void changeFont(const QFont &font); // static?
-		
-		
+
+		/**
+		 * @if english
+		 * 
+		 * @endif
+		 * @if spanish
+		 * 
+		 * @endif
+		 * @param group 
+		 */	
 		KConfig *config(const QString &group = "General");
-		
-		
+
+		/**
+		 * @if english
+		 * 
+		 * @endif
+		 * @if spanish
+		 * 
+		 * @endif
+		 * @param action
+		 * @param id
+		 */			
 		bool insertGlobalAction(QAction *action, const QString& id);
+
+		/**
+		 * @if english
+		 * 
+		 * @endif
+		 * @if spanish
+		 * 
+		 * @endif
+		 * @param action
+		 */			
 		void removeGlobalAction(QAction *action);
+
+		/**
+		 * @if english
+		 * 
+		 * @endif
+		 * @if spanish
+		 * 
+		 * @endif
+		 * @param action
+		 */			
 		QAction *findGlobalAction(const QString &id);
 		
 	public slots:
 		/**
 		 * @if english
-		 * Translate
+		 * Opens a settings wizard the first time the application is launched
 		 * @endif
 		 * @if spanish
 		 * Lanza un wizard de configuracion la primera vez que se inicia la aplicacion

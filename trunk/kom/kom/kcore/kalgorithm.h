@@ -29,7 +29,7 @@
 #include "kglobal.h"
 
 /**
- * Class that contains generic useful algorithms
+ * Class that contains generic useful algorithms about random values
  * @author David Cuadrado <krawek@gmail.com>
 */
 
