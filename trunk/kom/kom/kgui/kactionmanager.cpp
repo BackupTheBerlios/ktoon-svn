@@ -32,7 +32,7 @@
  */
 KActionManager::KActionManager(QObject *parent) : QObject(parent)
 {
-	setObjectName( "DActionManager"+parent->objectName() );
+	setObjectName( "KActionManager"+parent->objectName() );
 }
 
 /**
@@ -52,7 +52,7 @@ bool KActionManager::insert(QAction *action, const QString &_id, const QString &
 	QString id = _id.toLower();
 	if ( id.isEmpty() || container.isEmpty() )
 	{
-// 		dWarning() << tr("Cannot insert action with null id or container");
+// 		kWarning() << tr("Cannot insert action with null id or container");
 		return false;
 	}
 	
