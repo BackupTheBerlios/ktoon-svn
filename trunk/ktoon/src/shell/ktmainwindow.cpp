@@ -186,7 +186,7 @@ void KTMainWindow::createNewProject()
 	
 	if( !m_isNetworkProject )
 	{
-		newViewDocument(tr("Document"));
+		viewNewDocument(tr("Document"));
 	}
 }
 
@@ -199,7 +199,7 @@ void KTMainWindow::createNewProject()
  * @endif
 */
 
-void KTMainWindow::newViewDocument(const QString &title)
+void KTMainWindow::viewNewDocument(const QString &title)
 {
 	K_FUNCINFO;
 	kDebug() << m_projectManager->isOpen();
@@ -392,7 +392,7 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 	if ( closeProject() )
 	{
 		KTNetProjectManagerHandler *netProjectManagerHandler =  new KTNetProjectManagerHandler;
-		connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(newViewDocument(const QString&)));
+		connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(viewNewDocument(const QString&)));
 		m_projectManager->setHandler( netProjectManagerHandler );
 		m_projectManager->setParams(params);
 		m_isNetworkProject = true;
@@ -506,7 +506,7 @@ void KTMainWindow::openProject(const QString &path)
 				m_fileName = path;
 			}
 			
-			newViewDocument( m_projectManager->project()->projectName() );
+			viewNewDocument( m_projectManager->project()->projectName() );
 			
 			// TODO: move this code to the project manager class
 			KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Select);
@@ -540,6 +540,7 @@ void KTMainWindow::openProject(const QString &path)
 			
 			setUpdatesEnabled(true);
 			
+			// Showing a info message in a bubble
 			KOsd::self()->display( tr("Project %1 opened!").arg(m_projectManager->project()->projectName()) );
 		}
 		else

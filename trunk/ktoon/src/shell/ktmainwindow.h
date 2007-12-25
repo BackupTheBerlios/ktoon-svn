@@ -142,7 +142,7 @@ class KTMainWindow : public KTabbedMainWindow
 		void openProject(const QString &path);
 		
 	private slots:
-		void newViewDocument(const QString &name = QString::null);
+		void viewNewDocument(const QString &name = QString::null);
 		void createNewProject();
 		void newProject();
 		bool closeProject();
