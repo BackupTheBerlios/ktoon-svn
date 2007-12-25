@@ -37,7 +37,6 @@ class KTApplication : public KApplication
 		KTApplication(int &argc, char **argv);
 		~KTApplication();
 		
-		
 	public slots:
 		/**
 		 * @if english

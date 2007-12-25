@@ -49,7 +49,6 @@
 #include "kthelpwidget.h"
 #include "ktexportwidget.h"
 
-
 #include "ktviewdocument.h"
 
 #include <kgui/ktabbedmainwindow.h>
@@ -58,7 +57,7 @@
 #include <kgui/kosd.h>
 #include <kgui/ktoolview.h>
 
-// Projects
+// Including headers about projects management
 #include "ktprojectmanager.h"
 #include "ktsplash.h"
 
@@ -69,7 +68,7 @@ class KTNetProjectManagerParams;
 class KTProjectResponse;
 
 /**
- * Ventana principal de la aplicaci�n
+ * This class defines the main window application
  * @author David Cuadrado <krawek@toonka.com>
 */
 
@@ -90,7 +89,7 @@ class KTMainWindow : public KTabbedMainWindow
 		
 	private:
 		/**
-		 * Create the file action 
+		 * Creates the file action 
 		 */
 		void setupFileActions();
 		void setupSettingsActions();
@@ -98,12 +97,12 @@ class KTMainWindow : public KTabbedMainWindow
 		void setupInsertActions();
 		
 		/**
-		 * Setup the actions in the toolbar
+		 * Sets up the actions in the toolbar
 		 */
 		void setupToolBar();
 		
 		/**
-		 * Setup he actions in the menu
+		 * Sets up he actions in the menu
 		 */
 		void setupMenu();
 		
@@ -130,9 +129,10 @@ class KTMainWindow : public KTabbedMainWindow
 		void closeEvent( QCloseEvent *event );
 		
 		/**
-		 *  Creates the application GUI according to the information of the data classes
+		 *  Creates the application GUI according to the information from the data classes
 		 */
 		virtual void createGUI();
+
 		/**
 		 *  Updates the open recent menu item names according to the @a recent_names list of file names
 		 */
@@ -193,7 +193,7 @@ class KTMainWindow : public KTabbedMainWindow
 		
 		QMenu *m_recentProjectsMenu;
 		
-	private: // Network
+	private: // Network variables
 		bool m_isNetworkProject;
 		KToolView *m_viewChat;
 		

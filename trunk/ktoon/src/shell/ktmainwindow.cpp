@@ -31,7 +31,7 @@
 #include "ktpaletteimporter.h"
 #include "ktpaintareacommand.h"
 
-// KOM
+// Including some KOM headers
 #include <kgui/ktipdialog.h>
 #include <kcore/kdebug.h>
 #include <kgui/kimageeffect.h>
@@ -66,55 +66,82 @@
 #include <QDesktopServices>
 //
 
+/**
+ * This class defines the main window application.
+ * Here is where all the KToon GUI is initialized 
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
+/**
+ * @if english
+ * This is the constructor method for this class.
+ * @endif
+ * @if spanish
+ * Este es el metodo constructor para esta clase.
+ * @endif
+ * @return 
+*/
 
 KTMainWindow::KTMainWindow(KTSplash *splash) : KTabbedMainWindow(),  m_projectManager(0), m_viewDoc(0), m_animationSpace(0),  m_viewChat(0), m_exposureSheet(0),  m_scenes(0)
 {
 	KINIT;
 	
-	KAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: ponerlo en la configuraci�n
+	// Loading audio player plugin
+	KAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: Move this to the settings 
 	
 	setObjectName("KTMainWindow_");
 	
+	// Defining the status bar
 	m_statusBar = new KTStatusBar(this);
 	setStatusBar( m_statusBar );
 	
-	setWindowTitle( tr("KToon: 2D animation toolkit" ) );
+	// Naming the main frame...
+	setWindowTitle( tr("KToon: 2D Animation Toolkit" ) );
+
+	// Defining the render type for the drawings
 	m_renderType = KToon::RenderType(KCONFIG->value("RenderType").toInt());
 	
-	
+	// Calling out the project manager
 	m_projectManager = new KTProjectManager(this);
 	m_projectManager->setHandler( new KTLocalProjectManagerHandler );
 	
-// 	setProjectManager( projectManager );
+	// setProjectManager( projectManager );
 	
 	splash->setMessage( tr("Setting up the project manager") );
-	
+
+	// Calling out the events/actions manager
 	splash->setMessage( tr("Loading action manager...") );
 	m_actionManager = new KActionManager(this);
 	
+	// Defining the menu bar
 	splash->setMessage( tr("Creating menu bar...") );
 	setupActions();
 	
 	splash->setMessage( tr("Creating GUI...") );
 	
-	createGUI();
+	// Setting up all the GUI...
+	createGUI(); // This method is called from the ktmainwindow_gui class
 	setupMenu();
 	setupToolBar();
 	
+	// Check if user wants to see a KToon tip for every time he launches the program
 	KCONFIG->beginGroup("TipOfDay");
 	bool showTips = qvariant_cast<bool>(KCONFIG->value("ShowOnStart", true ));
 	
-	
+	// If option is enabled, then, show a little dialog with a nice tip
 	if ( showTips )
 	{
 		QTimer::singleShot(0, this, SLOT(showTipDialog()));
 	}
 	
+	// Time to load plugins... 
 	KTPluginManager::instance()->loadPlugins();
+
+	// Defining the Drawing view, as the first interface to show up	
 	setCurrentPerspective( Drawing );
 	
 	KCONFIG->beginGroup("General");
-	
+	// check if into the config file, user always wants to start opening his last project created
 	bool openLast = KCONFIG->value("OpenLastProject", true).toBool();
 	
 	if ( openLast )
@@ -123,7 +150,14 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : KTabbedMainWindow(),  m_projectMa
 	}
 }
 
-
+/**
+ * @if english
+ * This is the destructor method for this class.
+ * @endif
+ * @if spanish
+ * Este es el metodo destructor para esta clase.
+ * @endif
+*/
 KTMainWindow::~KTMainWindow()
 {
 	KEND;
@@ -131,10 +165,18 @@ KTMainWindow::~KTMainWindow()
 	delete KOsd::self();
 }
 
-// Modal
+/**
+ * @if english
+ * This method cleans and set the whole interface to start a new project.
+ * @endif
+ * @if spanish
+ * Este metodo limpia y configura toda la interfaz para iniciar un nuevo proyecto.
+ * @endif
+*/
 
 void KTMainWindow::createNewProject()
 {
+	// Modal
 	if(!closeProject())
 	{
 		return;
@@ -143,8 +185,19 @@ void KTMainWindow::createNewProject()
 	m_projectManager->setupNewProject();
 	
 	if( !m_isNetworkProject )
+	{
 		newViewDocument(tr("Document"));
+	}
 }
+
+/**
+ * @if english
+ * This method supports all the low level tasks for the method createNewProject().
+ * @endif
+ * @if spanish
+ * Este metodo soporta todas las tareas de bajo nivel para el metodo createNewProject().
+ * @endif
+*/
 
 void KTMainWindow::newViewDocument(const QString &title)
 {
@@ -159,7 +212,7 @@ void KTMainWindow::newViewDocument(const QString &title)
 		
 		connectToDisplays( m_viewDoc );
 		
-// 		m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
+		// m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
 		m_viewDoc->setWindowTitle(tr("Illustration: %1").arg(title) );
 		addWidget( m_viewDoc, true, Drawing);
 		connectToDisplays( m_viewDoc );
@@ -183,25 +236,44 @@ void KTMainWindow::newViewDocument(const QString &title)
 	}
 }
 
+/**
+ * @if english
+ * This method is the first level instruction called when a new project is requested.
+ * @endif
+ * @if spanish
+ * Este metodo es la instruccion de primer nivel llamada cuando un nuevo proyecto es solicitado.
+ * @endif
+*/
+
 void KTMainWindow::newProject()
 {
 	KTNewProject *wizard = new KTNewProject;
-// 	connectToDisplays(wizard);
+	// connectToDisplays(wizard);
 	if ( wizard->exec() != QDialog::Rejected )
 	{
 		if ( wizard->useNetwork() )
 		{
-			setupNetworkProject( wizard->params());
+			setupNetworkProject( wizard->params() );
 		}
 		else
 		{
-			setupLocalProject(wizard->params() );
+			setupLocalProject( wizard->params() );
 		}
 		
 		createNewProject();
 	}
 	delete wizard;
 }
+
+/**
+ * @if english
+ * This method handles all the tasks required to close a project session.
+ * @endif
+ * @if spanish
+ * Este metodo se encarga de todas las tareas requeridas para cerrar un proyecto en sesion.
+ * @endif
+ * @return true if the project is closed successfully
+*/
 
 bool KTMainWindow::closeProject()
 {
@@ -217,6 +289,7 @@ bool KTMainWindow::closeProject()
 			QMessageBox::Yes | QMessageBox::Default,
 			QMessageBox::No,
 			QMessageBox::Cancel | QMessageBox::Escape);
+
 		mb.setButtonText(QMessageBox::Yes, tr("Save"));
 		mb.setButtonText(QMessageBox::No, tr("Discard"));
 		
@@ -242,7 +315,10 @@ bool KTMainWindow::closeProject()
 	setUpdatesEnabled(false);
 	
 	if( m_viewDoc )
+	{
 		m_viewDoc->closeArea();
+	}
+
 	m_animationSpace->closeAllWindows();
 	
 	removeWidget(m_animationSpace, true);
@@ -253,8 +329,7 @@ bool KTMainWindow::closeProject()
 	
 	m_projectManager->closeProject();
 	
-	// Clean widgets
-	
+	// Cleaning widgets
 	m_exposureSheet->closeAllScenes();
 	m_timeLine->closeAllScenes();
 	m_scenes->closeAllScenes();
@@ -266,13 +341,27 @@ bool KTMainWindow::closeProject()
 	return true;
 }
 
+/**
+ * @if english
+ * This method sets up a KToon network project.
+ * @endif
+ * @if spanish
+ * Este metodo configura un proyecto para trabajo en red de KToon.
+ * @endif
+ * @return true if the network project can be configured
+*/
+
 bool KTMainWindow::setupNetworkProject(const QString& projectName  ,const QString &server, int port)
 {
 	KTConnectDialog cndialog;
 	if( !server.isEmpty() )
+	{
 		cndialog.setServer(server);
+	}
 	if ( port != -1 )
+	{
 		cndialog.setPort(port);
+	}
 	
 	KTNetProjectManagerParams *params = new KTNetProjectManagerParams;
 	
@@ -287,6 +376,16 @@ bool KTMainWindow::setupNetworkProject(const QString& projectName  ,const QStrin
 	}
 	return false;
 }
+
+/**
+ * @if english
+ * This method sets up a KToon network project.
+ * @endif
+ * @if spanish
+ * Este metodo configura un proyecto para trabajo en red de KToon.
+ * @endif
+ * @return 
+*/
 
 bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 {
@@ -306,12 +405,21 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 		m_viewChat = addToolView( netProjectManagerHandler->comunicationWidget(),  Qt::RightDockWidgetArea, All);
 		m_viewChat->setVisible(false);
 		
-		
 		return true;
 	}
 	
 	return false;
 }
+
+/**
+ * @if english
+ * This method sets up a KToon local/single project.
+ * @endif
+ * @if spanish
+ * Este metodo configura un proyecto local/individual de KToon.
+ * @endif
+ * @return true if the local project can be configured
+*/
 
 bool KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
 {
@@ -328,20 +436,45 @@ bool KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
 	return false;
 }
 
+/**
+ * @if english
+ * This method opens a KToon project. 
+ * @endif
+ * @if spanish
+ * Este metodo abre un proyecto de KToon.
+ * @endif
+*/
+
 void KTMainWindow::openProject()
 {
-	QString package = QFileDialog::getOpenFileName( this, tr("Import project package"), CACHE_DIR, tr("KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)"));
+	QString package = QFileDialog::getOpenFileName( this, tr("Import project package"), CACHE_DIR, 
+							tr("KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)"));
 	
-	if( package.isEmpty() ) return;
+	if( package.isEmpty() ) 
+	{
+		return;
+	}
 	
 	openProject( package );
 }
+
+/**
+ * @if english
+ * This method does all the tasks required to open a project.
+ * @endif
+ * @if spanish
+ * Este metodo realiza todas las tareas requeridas para abrir un proyecto.
+ * @endif
+*/
 
 void KTMainWindow::openProject(const QString &path)
 {
 	kWarning() << "Opening project: " << path;
 	
-	if(path.isEmpty() ) return;
+	if( path.isEmpty() ) 
+	{
+		return;
+	}
 	
 	if ( path.endsWith(".ktnet"))
 	{
@@ -375,7 +508,7 @@ void KTMainWindow::openProject(const QString &path)
 			
 			newViewDocument( m_projectManager->project()->projectName() );
 			
-			// TODO: move to project manager
+			// TODO: move this code to the project manager class
 			KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Select);
 			response.setFrameIndex(0);
 			response.setSceneIndex(0);
@@ -417,44 +550,79 @@ void KTMainWindow::openProject(const QString &path)
 	}
 }
 
+/**
+ * @if english
+ * This method opens an animation project from a KToon Server.
+ * @endif
+ * @if spanish
+ * Este metodo abre un proyecto de animacion desde un servidor de KToon.
+ * @endif
+*/
+
 void KTMainWindow::openProjectFromServer()
 {
 	if ( setupNetworkProject() )
 	{
-		KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>(m_projectManager->handler());
-		
+		KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>
+										(m_projectManager->handler());
 		if ( handler->isValid() )
 		{
 			KTListProjectsPackage package;
-			
 			handler->sendPackage(package);
 		}
 	}
 }
+
+/**
+ * @if english
+ * This method sends a local KToon project into the animations server.
+ * @endif
+ * @if spanish
+ * Este metodo envia un proyecto local de KToon en el servidor de animaciones.
+ * @endif
+*/
 
 void KTMainWindow::importProjectToServer()
 {
 	if ( setupNetworkProject() )
 	{
-		KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>(m_projectManager->handler());
+		KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>
+							(m_projectManager->handler());
 		
 		if ( handler->isValid() )
 		{
 			
-			QString file = QFileDialog::getOpenFileName( this, tr("Import project package"), CACHE_DIR, tr("KToon Project Package (*.ktn)"));
-			KTImportProjectPackage package(file);
-			
+			QString file = QFileDialog::getOpenFileName( this, tr("Import project package"), 
+									CACHE_DIR, tr("KToon Project Package (*.ktn)"));
+			KTImportProjectPackage package(file);		
 			handler->sendPackage(package);
 		}
 	}
 }
 
+/**
+ * @if english
+ * This method calls the methods required to save the current project.
+ * @endif
+ * @if spanish
+ * Este metodo llama a los metodos requeridos para salvar el proyecto actual.
+ * @endif
+*/
 
 void KTMainWindow::save()
 {
 	kDebug("project") << "Saving..";
 	QTimer::singleShot(0, this, SLOT(saveProject()));
 }
+
+/**
+ * @if english
+ * This method opens the KToon preferences dialog.
+ * @endif
+ * @if spanish
+ * Este metodo abre el dialogo de preferencias de KToon.
+ * @endif
+*/
 
 void KTMainWindow::preferences()
 {
@@ -465,6 +633,15 @@ void KTMainWindow::preferences()
 	delete preferences;
 }
 
+/**
+ * @if english
+ * This method opens the "About KToon" dialog.
+ * @endif
+ * @if spanish
+ * Este metodo abre el dialogo "Acerca de KToon".
+ * @endif
+*/
+
 void KTMainWindow::aboutKToon()
 {
 	KTAbout *about = new KTAbout(this);
@@ -473,16 +650,34 @@ void KTMainWindow::aboutKToon()
 	delete about;
 }
 
+/**
+ * @if english
+ * This method opens the tips dialog.
+ * @endif
+ * @if spanish
+ * Este metodo abre el dialogo de consejos utiles.
+ * @endif
+*/
 void KTMainWindow::showTipDialog()
 {
 	KTipDialog *tipDialog = new KTipDialog(DATA_DIR+"/tips", this);
 	tipDialog->show();
-// 	tipDialog.exec();
+	// tipDialog.exec();
 }
+
+/**
+ * @if english
+ * This method imports Gimp color palettes for KToon.
+ * @endif
+ * @if spanish
+ * Este metodo importa paletas de colores de Gimp para KToon.
+ * @endif
+*/
 
 void KTMainWindow::importPalettes()
 {
-	QStringList files = QFileDialog::getOpenFileNames( this, tr("Import gimp palettes"), QString(), "Gimp Palette (*.gpl)");
+	QStringList files = QFileDialog::getOpenFileNames( this, tr("Import gimp palettes"), QString(), 
+							   "Gimp Palette (*.gpl)");
 	
 	m_statusBar->setStatus( tr("Importing palettes"));
 	QStringList::ConstIterator it = files.begin();
@@ -501,29 +696,78 @@ void KTMainWindow::importPalettes()
 	}
 }
 
+/**
+ * @if english
+ * This method defines the events handlers for the project opened.
+ * @endif
+ * @if spanish
+ * Este metodo define los manejadores de eventos para el proyecto abierto.
+ * @endif
+*/
+
 void KTMainWindow::ui4project(QWidget *widget)
 {
-	connect(widget, SIGNAL(requestTriggered(const KTProjectRequest *)), m_projectManager, SLOT(handleProjectRequest(const KTProjectRequest *)));
+	connect(widget, SIGNAL(requestTriggered(const KTProjectRequest *)), m_projectManager, 
+				SLOT(handleProjectRequest(const KTProjectRequest *)));
 	
-	connect(m_projectManager, SIGNAL(responsed( KTProjectResponse* )), widget, SLOT(handleProjectResponse(KTProjectResponse *)));
+	connect(m_projectManager, SIGNAL(responsed( KTProjectResponse* )), widget, 
+					  SLOT(handleProjectResponse(KTProjectResponse *)));
 	
 	connect(widget, SIGNAL(postPage(QWidget *)), this, SLOT(addPage(QWidget *)));
 }
 
+/**
+ * @if english
+ * This method defines the events handlers for the paint area.
+ * @endif
+ * @if spanish
+ * Este metodo define los manejadores de eventos para el area de dibujo.
+ * @endif
+*/
+
 void KTMainWindow::ui4paintArea(QWidget *widget)
 {
-	connect(widget, SIGNAL(paintAreaEventTriggered(const KTPaintAreaEvent *)), this, SLOT(createCommand(const KTPaintAreaEvent *)));
+	connect(widget, SIGNAL(paintAreaEventTriggered(const KTPaintAreaEvent *)), this, 
+				SLOT(createCommand(const KTPaintAreaEvent *)));
 }
+
+/**
+ * @if english
+ * This method defines the events handlers for the local requests.
+ * @endif
+ * @if spanish
+ * Este metodo define los manejadores de eventos para las solicitudes locales.
+ * @endif
+*/
 
 void KTMainWindow::ui4localRequest(QWidget *widget)
 {
-	connect(widget, SIGNAL(localRequestTriggered(const KTProjectRequest *)), m_projectManager, SLOT(handleLocalRequest(const KTProjectRequest *)));
+	connect(widget, SIGNAL(localRequestTriggered(const KTProjectRequest *)), m_projectManager, 
+				SLOT(handleLocalRequest(const KTProjectRequest *)));
 }
+
+/**
+ * @if english
+ * This method sets a message into the status bar.
+ * @endif
+ * @if spanish
+ * Este metodo asigna un mensaje a la barra de estados.
+ * @endif
+*/
 
 void KTMainWindow::messageToStatus(const QString &msg)
 {
 	m_statusBar->setStatus(msg, msg.length() * 90);
 }
+
+/**
+ * @if english
+ * This method display a help page.
+ * @endif
+ * @if spanish
+ * Este metodo despliega una pagina de ayuda.
+ * @endif
+*/
 
 void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 {
@@ -531,15 +775,25 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 	KTHelpBrowser *page = new KTHelpBrowser(this);
 	page->setDataDirs( QStringList() << m_helper->helpPath() );
 	
-// 	page->setDocument( document );
+	// page->setDocument( document );
 	page->setSource( filePath );
 	page->setWindowTitle(tr("Help:%1").arg(title));
 	addWidget( page, false, All );
 }
 
+/**
+ * @if english 
+ * This method is in charge of the function "Save as" for KToon projects.
+ * @endif
+ * @if spanish
+ * Este metodo se encarga de la funcion "Salvar como" para proyectos de KToon.
+ * @endif
+*/
+
 void KTMainWindow::saveAs()
 {
-	QString fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), CACHE_DIR, "KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)");
+	QString fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), CACHE_DIR, 
+				"KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)");
 	
 	if ( fileName.isEmpty() )
 	{
@@ -549,6 +803,15 @@ void KTMainWindow::saveAs()
 	m_fileName = fileName;
 	save();
 }
+
+/**
+ * @if english 
+ * This method does all the tasks required to save a KToon Project.
+ * @endif
+ * @if spanish
+ * Este metodo se encarga de todas las tareas necesarias para guardar un proyecto.
+ * @endif
+*/
 
 void KTMainWindow::saveProject()
 {
@@ -568,6 +831,15 @@ void KTMainWindow::saveProject()
 	}
 }
 
+/**
+ * @if english 
+ * This method opens a recent project.
+ * @endif
+ * @if spanish
+ * Este metodo abre un proyecto reciente.
+ * @endif
+*/
+
 void KTMainWindow::openRecentProject()
 {
 	QAction *action = qobject_cast<QAction *>(sender());
@@ -577,6 +849,15 @@ void KTMainWindow::openRecentProject()
 	}
 }
 
+/**
+ * @if english 
+ * This method shows the Animation module menu.
+ * @endif
+ * @if spanish
+ * Este metodo muestra el menu del modulo de Animacion.
+ * @endif
+*/
+
 void KTMainWindow::showAnimationMenu(const QPoint &p)
 {
 	QMenu *menu = new QMenu(tr("Animation"), m_animationSpace);
@@ -585,6 +866,14 @@ void KTMainWindow::showAnimationMenu(const QPoint &p)
 	delete menu;
 }
 
+/**
+ * @if english 
+ * This method redefines the closeEvent method for the main window.
+ * @endif
+ * @if spanish
+ * Este metodo redefine el metodo closeEvent para el marco principal de la interfaz.
+ * @endif
+*/
 
 void KTMainWindow::closeEvent( QCloseEvent *event )
 {
@@ -603,9 +892,21 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 	KMainWindow::closeEvent(event);
 }
 
+/**
+ * @if english 
+ * This method creates a command for the paint area and include it into the undo/redo history.
+ * @endif
+ * @if spanish
+ * Este metodo crea un comando para el area de dibujo y lo incluye en el historial de hacer/deshacer.
+ * @endif
+*/
+
 void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 {
-	if ( !m_viewDoc ) return;
+	if ( !m_viewDoc ) 
+	{
+		return;
+	}
 	
 	KTPaintAreaCommand *command = m_viewDoc->createCommand(event);
 	
@@ -615,16 +916,31 @@ void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 	}
 }
 
+/**
+ * @if english 
+ * This method adds a page/tab to the main window.
+ * @endif
+ * @if spanish
+ * Este metodo adiciona una pagina/tab a la ventana principal.
+ * @endif
+*/
+
 void KTMainWindow::addPage(QWidget *widget)
 {
 	addWidget(widget);
 }
+
+/**
+ * @if english 
+ * This method export an animation project to a video/image format.
+ * @endif
+ * @if spanish
+ * Este metodo exporta un proyecto de animacion a un formato de video/imagen.
+ * @endif
+*/
 
 void KTMainWindow::exportProject()
 {
 	KTExportWidget exportWidget(m_projectManager->project(), this);
 	exportWidget.exec();
 }
-
-
-

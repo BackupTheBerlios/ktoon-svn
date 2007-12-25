@@ -27,11 +27,16 @@
 #include <kcore/kapplicationproperties.h>
 #include <kcore/kdebug.h>
 
+/**
+ * Support Class for main.cpp
+ * This class contains some of the basic methods required when KToon is launched
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
 KTApplication::KTApplication(int &argc, char **argv) : KApplication(argc, argv)
 {
 	setApplicationName("ktoon");
-	
-// 	applyColors(Default);
+	// applyColors(Default);
 }
 
 
