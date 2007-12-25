@@ -71,18 +71,13 @@ SelectPlugin::SelectPlugin() : KWizardPage(tr("Select plugin"))
 	QWidget *container = new QWidget;
 	QHBoxLayout *layout = new QHBoxLayout(container);
 	
-	
 	m_exporterList = new QListWidget;
 	connect(m_exporterList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selectedPluginItem(QListWidgetItem *)));
-	
-	
 	layout->addWidget(m_exporterList);
 	
 	m_formatList = new QListWidget;
 	connect(m_formatList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selectedFormatItem(QListWidgetItem *)));
-	
 	layout->addWidget(m_formatList);
-	
 	
 	setWidget(container);
 	
@@ -226,7 +221,7 @@ class SelectScenes : public KWizardPage
 		KItemSelector *m_selector;
 };
 
-SelectScenes::SelectScenes() : KWizardPage(tr(""))
+SelectScenes::SelectScenes() : KWizardPage(tr("Select Scenes"))
 {
 	m_selector = new KItemSelector;
 	
@@ -311,13 +306,14 @@ class ExportTo : public KWizardPage
 		KXYSpinBox *m_size;
 };
 
-ExportTo::ExportTo(const KTProject *project) : KWizardPage(tr("")), m_currentExporter(0), m_currentFormat(KTExportInterface::NONE), m_project(project)
+ExportTo::ExportTo(const KTProject *project) : KWizardPage(tr("Export to File")), m_currentExporter(0), 
+		   m_currentFormat(KTExportInterface::NONE), m_project(project)
 {
 	QWidget *container = new QWidget;
 	QVBoxLayout *layout = new QVBoxLayout(container);
 	
-	
 	////////////////
+
 	QHBoxLayout *filePathLayout = new QHBoxLayout;
 	filePathLayout->addWidget(new QLabel(tr("File: ")));
 	
@@ -329,8 +325,9 @@ ExportTo::ExportTo(const KTProject *project) : KWizardPage(tr("")), m_currentExp
 	button->setIcon(QIcon(THEME_DIR+"/icons/open.png"));
 	connect(button, SIGNAL(clicked()), this, SLOT(chooseFile()));
 	filePathLayout->addWidget(button);
-	
+
 	layout->addLayout(filePathLayout);
+
 	/////////////////
 	
 	QWidget *configure = new QWidget;
@@ -493,7 +490,6 @@ void ExportTo::updateState(const QString &)
 void ExportTo::chooseFile()
 {
 	QString fileName = QFileDialog::getSaveFileName( this, tr("Choose a file name..."));
-	
 	m_filePath->setText(fileName);
 }
 
@@ -505,7 +501,10 @@ void ExportTo::exportIt()
 	{
 		QString file = fileToExport();
 		
-		if ( file.isNull() ) return;
+		if ( file.isNull() ) 
+		{
+			return;
+		}
 		
 		kDebug("export") << "Exporting to file: " << file;
 		
@@ -515,7 +514,8 @@ void ExportTo::exportIt()
 		
 		if ( scenes.count() > 0)
 		{
-			m_currentExporter->exportToFormat( file, scenes, m_currentFormat, QSize((int)m_size->x(),(int)m_size->x()), m_fps->value()  );
+			m_currentExporter->exportToFormat( file, scenes, m_currentFormat, QSize((int)m_size->x(),
+							   (int)m_size->x()), m_fps->value()  );
 		}
 	}
 	else
@@ -555,7 +555,8 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KWiz
 	
 	connect(m_pluginSelectionPage, SIGNAL(selectedPlugin(const QString &)), this, SLOT(setExporter(const QString &)));
 	connect(m_pluginSelectionPage, SIGNAL(formatSelected(int)), m_exportToPage, SLOT(setCurrentFormat(int)));
-	connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportToPage, SLOT(setScenesIndexes(const QList<int> &)));
+	connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportToPage, 
+		SLOT(setScenesIndexes(const QList<int> &)));
 	
 	loadPlugins();
 }
