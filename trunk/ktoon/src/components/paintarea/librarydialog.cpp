@@ -46,17 +46,15 @@ LibraryDialog::LibraryDialog() : QDialog(), k(new Private)
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	
 	k->toolBox = new QToolBox;
-	
 	layout->addWidget(k->toolBox);
 	
-	QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Help | QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal );
-	
+	QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Help | QDialogButtonBox::Ok 
+								| QDialogButtonBox::Cancel, Qt::Horizontal );	
 	connect(buttons, SIGNAL(accepted ()), this, SLOT(checkNames()));
 	connect(buttons, SIGNAL(rejected ()), this, SLOT(reject()));
 	
 	layout->addWidget(buttons);
 }
-
 
 LibraryDialog::~LibraryDialog()
 {
@@ -65,8 +63,7 @@ LibraryDialog::~LibraryDialog()
 
 void LibraryDialog::addItem(QGraphicsItem *item)
 {
-	KTItemPreview *preview = new KTItemPreview;
-	
+	KTItemPreview *preview = new KTItemPreview;	
 	preview->render( item );
 	
 	QWidget *container = new QWidget;
@@ -77,12 +74,10 @@ void LibraryDialog::addItem(QGraphicsItem *item)
 	QLineEdit *name = new QLineEdit;
 	connect(name, SIGNAL(returnPressed()), this, SLOT(checkNames()));
 	
-	QLayout *grid = KFormFactory::makeGrid( QStringList() << tr("Name"), QWidgetList() << name );
-	
+	QLayout *grid = KFormFactory::makeGrid( QStringList() << tr("Name"), QWidgetList() << name );	
 	layout->addLayout(grid);
 	
 	int index = k->toolBox->addItem(container, tr("Item %1").arg(k->toolBox->count()+1));
-	
 	k->symbolNames.insert(item, name);
 	k->tabs.insert(index, name);
 }
@@ -106,4 +101,3 @@ void LibraryDialog::checkNames()
 	
 	accept();
 }
-

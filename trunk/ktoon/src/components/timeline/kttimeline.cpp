@@ -24,6 +24,7 @@
 #include <QHeaderView>
 
 #include "kttimeline.h"
+// KOM
 #include <kgui/kapplication.h>
 #include <kcore/kdebug.h>
 
@@ -121,12 +122,16 @@ void KTTimeLine::insertScene(int position, const QString &name)
 	framesTable->setItemSize( 10, 20);
 	layerManager->setRowHeight( 20 );
 	
-	connect(framesTable, SIGNAL(frameRequest(int, int, int, int, const QVariant&)), this, SLOT(requestFrameAction(int, int, int, int, const QVariant&)));
+	connect(framesTable, SIGNAL(frameRequest(int, int, int, int, const QVariant&)), this, 
+		SLOT(requestFrameAction(int, int, int, int, const QVariant&)));
 	
-	connect(layerManager->verticalScrollBar(), SIGNAL(valueChanged (int)), framesTable->verticalScrollBar(), SLOT(setValue(int)));
-	connect(framesTable->verticalScrollBar(), SIGNAL(valueChanged (int)), layerManager->verticalScrollBar(), SLOT(setValue(int)));
+	connect(layerManager->verticalScrollBar(), SIGNAL(valueChanged (int)), framesTable->verticalScrollBar(), 
+		SLOT(setValue(int)));
+	connect(framesTable->verticalScrollBar(), SIGNAL(valueChanged (int)), layerManager->verticalScrollBar(), 
+		SLOT(setValue(int)));
 	
-	connect(layerManager, SIGNAL(requestRenameEvent( int, const QString& )), this, SLOT(emitRequestRenameLayer(int, const QString &))); // FIXME
+	connect(layerManager, SIGNAL(requestRenameEvent( int, const QString& )), this, SLOT(emitRequestRenameLayer(int,
+		const QString &))); // FIXME
 	
 	k->container->insertTab(position, splitter, name );
 }
@@ -136,7 +141,7 @@ void KTTimeLine::removeScene(int position)
 	if ( position >= 0 && position < k->container->count() )
 	{
 		QWidget *w = k->container->widget(position);
-// 		d->container->removeWidget(w);
+		// d->container->removeWidget(w);
 		k->container->removeTab(position);
 		
 		delete w;
@@ -324,13 +329,14 @@ void KTTimeLine::libraryResponse(KTLibraryResponse *response)
 				KTLayerManager *layerManager = this->layerManager(response->sceneIndex());
 				if(layerManager)
 				{
-					layerManager->insertSoundLayer(response->layerIndex()+1, response->arg().toString() );
-					
+					layerManager->insertSoundLayer(response->layerIndex()+1, 
+									response->arg().toString() );
 					
 					KTFramesTable *framesTable = this->framesTable( response->sceneIndex() );
 					if( framesTable )
 					{
-						framesTable->insertSoundLayer(response->layerIndex()+1, response->arg().toString() );
+						framesTable->insertSoundLayer(response->layerIndex()+1, 
+										response->arg().toString() );
 						framesTable->insertFrame( response->layerIndex()+1,"" );
 					}
 				}
@@ -349,7 +355,6 @@ void KTTimeLine::requestCommand(int action)
 	if ( scenePos >= 0 )
 	{
 		layerPos = layerManager(scenePos)->verticalHeader()->visualIndex(layerManager( scenePos )->currentRow());
-		
 		framePos = framesTable( scenePos )->lastFrameByLayer(layerPos);
 	}
 	
@@ -377,7 +382,8 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
 	{
 		if ( layerPos < 0 )
 		{
-			layerPos = layerManager(scenePos)->verticalHeader()->visualIndex(layerManager( scenePos )->currentRow());
+			layerPos = layerManager(scenePos)->verticalHeader()->visualIndex(
+										layerManager( scenePos )->currentRow());
 		}
 		
 		if ( framePos < 0 )
@@ -390,7 +396,8 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
 	{
 		case KTProjectActionBar::InsertFrame:
 		{
-			KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos+1, KTProjectRequest::Add, arg);
+			KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos + 1,
+											KTProjectRequest::Add, arg);
 			
 			emit requestTriggered( &event );
 			
@@ -399,7 +406,8 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
 		break;
 		case KTProjectActionBar::RemoveFrame:
 		{
-			KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos, KTProjectRequest::Remove, arg);
+			KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos,
+										KTProjectRequest::Remove, arg);
 			
 			emit requestTriggered( &event );
 			return true;
@@ -407,14 +415,16 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
 		break;
 		case KTProjectActionBar::MoveFrameUp:
 		{
-			KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos, KTProjectRequest::Move, framePos-1 );
+			KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos,
+										KTProjectRequest::Move, framePos-1 );
 			emit requestTriggered(&event);
 			return true;
 		}
 		break;
 		case KTProjectActionBar::MoveFrameDown:
 		{
-			KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos, KTProjectRequest::Move, framePos+1 );
+			KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos,
+										KTProjectRequest::Move, framePos+1 );
 			
 			emit requestTriggered(&event);
 			return true;
@@ -423,7 +433,8 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
 		
 		case KTProjectRequest::Select:
 		{
-			KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos, KTProjectRequest::Select, arg);
+			KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos,
+										KTProjectRequest::Select, arg);
 		
 			emit localRequestTriggered( &event );
 			return true;
@@ -445,7 +456,8 @@ bool KTTimeLine::requestLayerAction(int action, int layerPos, int scenePos, cons
 	{
 		if ( layerPos < 0 )
 		{
-			layerPos = layerManager(scenePos)->verticalHeader()->visualIndex(layerManager( scenePos )->currentRow());
+			layerPos = layerManager(scenePos)->verticalHeader()->visualIndex(
+									layerManager( scenePos )->currentRow());
 		}
 	}
 	
@@ -453,14 +465,16 @@ bool KTTimeLine::requestLayerAction(int action, int layerPos, int scenePos, cons
 	{
 		case KTProjectActionBar::InsertLayer:
 		{
-			KTProjectRequest event = KTRequestBuilder::createLayerRequest( scenePos, layerPos+1, KTProjectRequest::Add, arg );
+			KTProjectRequest event = KTRequestBuilder::createLayerRequest( scenePos, layerPos + 1,
+										KTProjectRequest::Add, arg );
 			emit requestTriggered( &event );
 			return true;
 		}
 		break;
 		case KTProjectActionBar::RemoveLayer:
 		{
-			KTProjectRequest event = KTRequestBuilder::createLayerRequest(scenePos, layerPos, KTProjectRequest::Remove, arg);
+			KTProjectRequest event = KTRequestBuilder::createLayerRequest(scenePos, layerPos, 
+										KTProjectRequest::Remove, arg);
 			
 			emit requestTriggered( &event );
 			return true;
@@ -468,14 +482,16 @@ bool KTTimeLine::requestLayerAction(int action, int layerPos, int scenePos, cons
 		break;
 		case KTProjectActionBar::MoveLayerUp:
 		{
-			KTProjectRequest event = KTRequestBuilder::createLayerRequest(scenePos, layerPos, KTProjectRequest::Move, layerPos-1 );
+			KTProjectRequest event = KTRequestBuilder::createLayerRequest(scenePos, layerPos, 
+										KTProjectRequest::Move, layerPos - 1 );
 			emit requestTriggered(&event);
 			return true;
 		}
 		break;
 		case KTProjectActionBar::MoveLayerDown:
 		{
-			KTProjectRequest event = KTRequestBuilder::createLayerRequest(scenePos, layerPos, KTProjectRequest::Move, layerPos+1 );
+			KTProjectRequest event = KTRequestBuilder::createLayerRequest(scenePos, layerPos, 
+										KTProjectRequest::Move, layerPos + 1 );
 			emit requestTriggered(&event);
 			return true;
 		}
@@ -496,7 +512,8 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
 	{
 		case KTProjectActionBar::InsertScene:
 		{
-			KTProjectRequest event = KTRequestBuilder::createSceneRequest( scenePos+1, KTProjectRequest::Add, arg);
+			KTProjectRequest event = KTRequestBuilder::createSceneRequest( scenePos + 1, 
+											KTProjectRequest::Add, arg);
 			
 			emit requestTriggered( &event );
 			
@@ -505,7 +522,8 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
 		break;
 		case KTProjectActionBar::RemoveScene:
 		{
-			KTProjectRequest event = KTRequestBuilder::createSceneRequest(scenePos, KTProjectRequest::Remove, arg);
+			KTProjectRequest event = KTRequestBuilder::createSceneRequest(scenePos, 
+											KTProjectRequest::Remove, arg);
 			
 			emit requestTriggered( &event );
 			return true;
@@ -513,14 +531,16 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
 		break;
 		case KTProjectActionBar::MoveSceneUp:
 		{
-			KTProjectRequest event = KTRequestBuilder::createSceneRequest(scenePos, KTProjectRequest::Move, scenePos+1 );
+			KTProjectRequest event = KTRequestBuilder::createSceneRequest(scenePos, KTProjectRequest::Move,
+											scenePos + 1 );
 			emit requestTriggered(&event);
 			return true;
 		}
 		break;
 		case KTProjectActionBar::MoveSceneDown:
 		{
-			KTProjectRequest event = KTRequestBuilder::createSceneRequest(scenePos, KTProjectRequest::Move, scenePos-1 );
+			KTProjectRequest event = KTRequestBuilder::createSceneRequest(scenePos, KTProjectRequest::Move,
+											scenePos - 1 );
 			emit requestTriggered(&event);
 			return true;
 		}

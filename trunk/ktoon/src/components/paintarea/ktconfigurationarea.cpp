@@ -50,7 +50,7 @@ KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent),
 	k->toolTipShowed = false;
 	setAllowedAreas ( Qt::RightDockWidgetArea );
 	
-// 	connect(&d->locker, SIGNAL(timeout()), this, SLOT(toggleLock()));
+	// connect(&d->locker, SIGNAL(timeout()), this, SLOT(toggleLock()));
 	connect(&k->shower, SIGNAL(timeout()), this, SLOT(showConfigurator()));
 }
 
@@ -79,16 +79,17 @@ void KTConfigurationArea::setConfigurator(QWidget *w)
 	Q_CHECK_PTR(w);
 	QWidget *old = widget();
 	
-	if ( !w || old == w ) return;
+	if ( !w || old == w ) 
+	{
+		return;
+	}
 	
 	if ( old )
 	{
 		old->hide();
 	}
 	
-	
 	setWidget(w);
-	
 	showConfigurator();
 }
 
@@ -211,7 +212,10 @@ void KTConfigurationArea::shrink()
 
 void KTConfigurationArea::enterEvent(QEvent *)
 {
-	if ( k->locker.isActive()) k->locker.stop();
+	if ( k->locker.isActive()) 
+	{	
+		k->locker.stop();
+	}
 	
 	if ( k->shower.isActive() )
 	{
@@ -223,7 +227,10 @@ void KTConfigurationArea::enterEvent(QEvent *)
 
 void KTConfigurationArea::leaveEvent(QEvent *)
 {
-	if ( k->shower.isActive()) k->shower.stop();
+	if ( k->shower.isActive()) 
+	{
+		k->shower.stop();
+	}
 	
 	if ( k->locker.isActive() || rect().contains(mapFromGlobal(QCursor::pos())) || hasFocus() )
 	{
@@ -239,17 +246,14 @@ void KTConfigurationArea::showConfigurator()
 	
 	if ( widget && !isFloating () )
 	{
-// 		widget->setMinimumWidth(0);
+		// widget->setMinimumWidth(0);
 		widget->setVisible(true);
 		
 		QPalette pal = parentWidget()->palette();
 		setPalette(pal);
-		
 		setAutoFillBackground(false);
 		
 		setFeatures(QDockWidget::AllDockWidgetFeatures );
-		
-		
 	}
 	
 	k->shower.stop();
@@ -263,7 +267,7 @@ void KTConfigurationArea::hideConfigurator()
 	
 	if ( widget && !isFloating () )
 	{
-// 		widget->setMinimumWidth(10);
+		// widget->setMinimumWidth(10);
 		widget->setVisible(false);
 		setFeatures(QDockWidget::NoDockWidgetFeatures );
 		
@@ -275,13 +279,13 @@ void KTConfigurationArea::hideConfigurator()
 		
 		setAutoFillBackground(true);
 		
-		
 		//==================
 		
-		for (int i = 0; i < 2; ++i)
+		for (int i = 0; i < 2; ++i) 
+		{
 			qApp->processEvents();
+		}
 		shrink();
-		
 		
 		if ( !k->toolTipShowed )
 		{
@@ -321,16 +325,15 @@ void KTConfigurationArea::paintEvent (QPaintEvent *e)
 		painter.setRenderHint(QPainter::Antialiasing, true);
 		painter.setRenderHint(QPainter::TextAntialiasing, true);
 		
-// 		painter.setBrush( palette().highlight() );
-// 		QPainterPath path;
-// 		
-// 		QPolygon pol;
-// 		pol << rect().topRight()-QPoint(0,-40) << QPoint(2, height()/2) << rect().bottomRight()-QPoint(0,40);
-// 		path.addPolygon(pol);
-// 		
-// 		painter.drawPath(path);
-		
-// 		painter.rotate(-90);
+		// painter.setBrush( palette().highlight() );
+		// QPainterPath path;
+		// 		
+		// QPolygon pol;
+		// pol << rect().topRight()-QPoint(0,-40) << QPoint(2, height()/2) << rect().bottomRight()-QPoint(0,40);
+		// path.addPolygon(pol);
+		// 		
+		// painter.drawPath(path);
+		// painter.rotate(-90);
 		
 		QFont font("Times", 16, QFont::Bold);
 		
@@ -342,7 +345,8 @@ void KTConfigurationArea::paintEvent (QPaintEvent *e)
 		buttonOption.text = tr("Properties");
 		buttonOption.icon = QIcon();
 		buttonOption.palette = palette();
-// 		buttonOption.rect = QRect(rect().x(), rect().y()+(rect().width()-rect().y()), rect().height(), rect().width());
+		// buttonOption.rect = QRect(rect().x(), rect().y()+(rect().width()-rect().y()), 
+		// 		       rect().height(), rect().width());
 		buttonOption.rect = rect();
 		buttonOption.state = QStyle::State_On;
 		
@@ -350,11 +354,10 @@ void KTConfigurationArea::paintEvent (QPaintEvent *e)
 		
 		style()->drawControl( QStyle::CE_PushButton, &buttonOption, &painter, this );
 		
-// 		QString text = tr("Properties");
-// 		
-// 		QFontMetricsF fm(painter.font());
-// 		
-// 		painter.drawText(QPointF(height()/2-fm.width(text)/2, -(width()-fm.height()/2) ), text );
+		// QString text = tr("Properties");
+		// 		
+		// QFontMetricsF fm(painter.font());
+		// 		
+		// painter.drawText(QPointF(height()/2-fm.width(text)/2, -(width()-fm.height()/2) ), text );
 	}
 }
-

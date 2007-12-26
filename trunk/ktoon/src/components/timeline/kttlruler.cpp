@@ -31,11 +31,10 @@ KTTLRuler::KTTLRuler(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
 	KINIT;
 	
 	setHighlightSections ( true );
-// 	setSelectionMode ( QAbstractItemView::SingleSelection );
-// 	setSelectionBehavior ( QAbstractItemView::SelectColumns );
+	// setSelectionMode ( QAbstractItemView::SingleSelection );
+	// setSelectionBehavior ( QAbstractItemView::SelectColumns );
 	
-	setClickable (true);
-	
+	setClickable (true);	
 	connect(this, SIGNAL(sectionClicked(int)), this, SLOT(updateSelected(int)));
 }
 
@@ -66,10 +65,11 @@ void KTTLRuler::paintSection ( QPainter * painter, const QRect & rect, int logic
 		
 		QString number = QString::number(logicalIndex+1);
 		
-		painter->drawText( (int)(rect.center().x()-(fm.width(number)/2)), (int)(rect.center().y() +(fm.height()/2)) ,number);
+		painter->drawText( (int)(rect.center().x() - (fm.width(number)/2)), (int)(rect.center().y() 
+					+ (fm.height()/2)) ,number);
 	}
 	
-	painter->drawLine(rect.bottomLeft(), rect.bottomLeft()- QPointF(0, 4));
+	painter->drawLine(rect.bottomLeft(), rect.bottomLeft() - QPointF(0, 4));
 	painter->drawLine(rect.topLeft(), rect.topLeft()+ QPointF(0, 4));
 	
 	QPen pen = painter->pen();
@@ -88,14 +88,12 @@ void KTTLRuler::updateSelected(int logical)
 	emit logicalSectionSelected(logical);
 }
 
-
 void KTTLRuler::select(int logical)
 {
 	selectionModel()->select( model()->index(0, logical), QItemSelectionModel::ClearAndSelect);
 	
 	viewport()->update(QRect(sectionViewportPosition(logical), 0, sectionSize(logical),viewport()->height()) );
 }
-
 
 void KTTLRuler::mouseMoveEvent(QMouseEvent *e)
 {
@@ -106,5 +104,3 @@ void KTTLRuler::mouseMoveEvent(QMouseEvent *e)
 	
 	QHeaderView::mouseMoveEvent(e);
 }
-
-
