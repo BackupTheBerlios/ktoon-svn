@@ -28,6 +28,11 @@
 
 #include <QVariant>
 
+/**
+ * This class defines the undo/redo functions for the paint area
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
 struct KTPaintAreaCommand::Private
 {
 	KTPaintArea *paintArea;
@@ -40,7 +45,6 @@ KTPaintAreaCommand::KTPaintAreaCommand(KTPaintArea *area, const KTPaintAreaEvent
 	k->paintArea = area;
 	k->event = event->clone();
 }
-
 
 KTPaintAreaCommand::~KTPaintAreaCommand()
 {
@@ -93,8 +97,6 @@ void KTPaintAreaCommand::redo()
 		case KTPaintAreaEvent::ChangePenBrush:
 		{
 			k->oldData = k->paintArea->brushManager()->pen().brush();
-			
-			
 			k->paintArea->brushManager()->setPenBrush( qvariant_cast<QBrush>(k->event->data()));
 			
 		}
@@ -102,8 +104,6 @@ void KTPaintAreaCommand::redo()
 		case KTPaintAreaEvent::ChangeBrush:
 		{
 			k->oldData = k->paintArea->brushManager()->brush();
-			
-			
 			k->paintArea->brushManager()->setBrush( qvariant_cast<QBrush>(k->event->data()));
 		}
 		break;

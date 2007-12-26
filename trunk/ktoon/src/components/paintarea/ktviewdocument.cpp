@@ -58,6 +58,11 @@
 
 #include "ktpaintareastatus.h"
 
+/**
+ * This class defines all the environment for the Ilustration interface.
+ * Here is where all the tools for Ilustration are defined.
+ * @author David Cuadrado <krawek@toonka.com>
+*/
 
 struct KTViewDocument::Private
 {

@@ -61,6 +61,12 @@
 #include "ktscene.h"
 #include "ktproject.h"
 
+/**
+ * This class defines all the behavior for the main paint area at ilustration module
+ * Here is where all events about the paint area are processed.
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
 struct KTPaintArea::Private
 {
 	const KTProject *project;
@@ -167,17 +173,23 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
 
 void KTPaintArea::frameResponse(KTFrameResponse *event)
 {
-	if( graphicsScene()->isDrawing() ) return;
+	if( graphicsScene()->isDrawing() ) 
+	{
+		return;
+	}
 	
 	switch(event->action())
 	{
 		case KTProjectRequest::Paste:
 		case KTProjectRequest::Select:
 		{
-			
 			KTGraphicsScene *sscene = graphicsScene();
 			
-			if( !sscene->scene() ) return;
+			if( !sscene->scene() ) 
+			{
+				return;
+			}
+
 			setUpdatesEnabled(true);
 			
 			sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
@@ -191,7 +203,10 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 		{
 			KTGraphicsScene *sscene = graphicsScene();
 			
-			if( !sscene->scene() ) return;
+			if( !sscene->scene() ) 
+			{
+				return;
+			}
 			
 			if ( sscene->currentFrameIndex() == event->frameIndex() )
 			{
@@ -209,11 +224,17 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 
 void KTPaintArea::layerResponse(KTLayerResponse *event)
 {
-	if( graphicsScene()->isDrawing() ) return;
+	if( graphicsScene()->isDrawing() ) 
+	{	
+		return;
+	}
 	
 	KTGraphicsScene *sscene = graphicsScene();
 	
-	if( !sscene->scene() ) return;
+	if( !sscene->scene() ) 
+	{
+		return;
+	}
 	
 	if( event->action() == KTProjectRequest::View)
 	{
@@ -231,7 +252,9 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 {
 	K_FUNCINFOX("paintarea");
 	
-	if( graphicsScene()->isDrawing() ) return;
+	if( graphicsScene()->isDrawing() ) {
+		return;
+	}	
 	
 	switch(event->action())
 	{
@@ -259,15 +282,15 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 	{
 		switch(event->action())
 		{
-	// 		case KTProjectRequest::Add:
-	// 		{
-	// 		}
-	// 		break;
-	// 		case KTProjectRequest::Remove:
-	// 		{
-	// 			
-	// 		}
-	// 		break;
+			// 	case KTProjectRequest::Add:
+			// 		{
+			// 		}
+			// 		break;
+			// 		case KTProjectRequest::Remove:
+			// 		{
+			// 			
+			// 		}
+			// 		break;
 			case KTProjectRequest::Transform:
 			{
 				viewport()->update();
@@ -290,7 +313,10 @@ void KTPaintArea::projectResponse(KTProjectResponse *)
 
 void KTPaintArea::libraryResponse(KTLibraryResponse *request)
 {
-	if( graphicsScene()->isDrawing() ) return;
+	if( graphicsScene()->isDrawing() ) 
+	{
+		return;
+	}
 	
 	switch(request->action())
 	{
@@ -310,7 +336,10 @@ bool KTPaintArea::canPaint() const
 			
 	if( sscene->scene() )
 	{
-		if (sscene->currentFrameIndex() >= 0 && sscene->currentLayerIndex() >= 0) return true;
+		if (sscene->currentFrameIndex() >= 0 && sscene->currentLayerIndex() >= 0) 
+		{
+			return true;
+		}
 	}
 	
 	return false;
@@ -318,7 +347,7 @@ bool KTPaintArea::canPaint() const
 
 void KTPaintArea::deleteItems()
 {
-// 	D_FUNCINFO;
+	// K_FUNCINFO;
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems ();
 	
 	if(!selecteds.empty())
@@ -332,7 +361,11 @@ void KTPaintArea::deleteItems()
 			foreach(QGraphicsItem *item, selecteds)
 			{
 				
-				KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->visualIndexOf(item), KTProjectRequest::Remove );
+				KTProjectRequest event = KTRequestBuilder::createItemRequest( 
+					currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
+					currentScene->currentFrameIndex(), 
+					currentScene->currentFrame()->visualIndexOf(item),
+					KTProjectRequest::Remove );
 				emit requestTriggered(&event);
 			}
 		}
@@ -341,7 +374,7 @@ void KTPaintArea::deleteItems()
 
 void KTPaintArea::groupItems()
 {
-// 	D_FUNCINFO;
+	// K_FUNCINFO;
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
 	if(!selecteds.isEmpty())
 	{
@@ -357,12 +390,14 @@ void KTPaintArea::groupItems()
 				{
 					if(strItems.isEmpty())
 					{
-						strItems +="("+ QString::number(currentScene->currentFrame()->visualIndexOf(item)) ;
-						firstItem = currentScene->currentFrame()->visualIndexOf(item);
+					     strItems +="("+ 
+						        QString::number(currentScene->currentFrame()->visualIndexOf(item));
+					     firstItem = currentScene->currentFrame()->visualIndexOf(item);
 					}
 					else
 					{
-						strItems += " , "+ QString::number(currentScene->currentFrame()->visualIndexOf(item));
+						strItems += " , " + 
+							QString::number(currentScene->currentFrame()->visualIndexOf(item));
 					}
 				}
 			}
@@ -370,7 +405,10 @@ void KTPaintArea::groupItems()
 		}
 		if(strItems != ")")
 		{
-			KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, KTProjectRequest::Group, strItems );
+			KTProjectRequest event = KTRequestBuilder::createItemRequest( 
+						currentScene->currentSceneIndex(), currentScene->currentLayerIndex(),
+						currentScene->currentFrameIndex(), firstItem, 
+						KTProjectRequest::Group, strItems );
 			emit requestTriggered(&event);
 		}
 	}
@@ -386,7 +424,12 @@ void KTPaintArea::ungroupItems()
 		{
 			foreach(QGraphicsItem *item, selecteds)
 			{
-				KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->visualIndexOf(item), KTProjectRequest::Ungroup);
+				KTProjectRequest event = KTRequestBuilder::createItemRequest( 
+								currentScene->currentSceneIndex(), 
+								currentScene->currentLayerIndex(), 
+								currentScene->currentFrameIndex(), 
+								currentScene->currentFrame()->visualIndexOf(item),
+								KTProjectRequest::Ungroup);
 				emit requestTriggered(&event);
 			}
 		}
@@ -452,8 +495,11 @@ void KTPaintArea::pasteItems()
 	
 	foreach(QString xml, k->copiesXml)
 	{
-		KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->graphics().count(), KTProjectRequest::Add, xml);
-		
+		KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
+							currentScene->currentLayerIndex(), 
+							currentScene->currentFrameIndex(), 
+							currentScene->currentFrame()->graphics().count(), 
+							KTProjectRequest::Add, xml);
 		emit requestTriggered(&event);
 	}
 }
@@ -513,7 +559,8 @@ void KTPaintArea::addSelectedItemsToLibrary()
 			QDomDocument doc;
 			doc.appendChild(itemSerializable->toXml(doc));
 			
-			KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName, KTLibraryObject::Item, doc.toString().toLocal8Bit());
+			KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, 
+							symName, KTLibraryObject::Item, doc.toString().toLocal8Bit());
 			
 			emit requestTriggered(&request);
 		}
@@ -568,7 +615,9 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
 				break;
 				default: return;
 			}
-			KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), value, KTProjectRequest::Move, newPos );
+			KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->currentSceneIndex(),
+						currentScene->currentLayerIndex(), currentScene->currentFrameIndex(),
+						value, KTProjectRequest::Move, newPos );
 			emit requestTriggered(&event);
 		}
 	}

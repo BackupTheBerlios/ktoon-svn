@@ -34,6 +34,11 @@
 #include "ktglobal.h"
 #include "ktbrushmanager.h"
 
+/**
+ * This class defines the options panel in the bottom of the paint area.
+ * Controls for Rotation, Antialising and OpenGL
+ * @author David Cuadrado <krawek@toonka.com>
+*/
 
 class ColorWidget : public QWidget
 {
@@ -58,7 +63,6 @@ QSize ColorWidget::sizeHint() const
 	return size;
 }
 
-
 void ColorWidget::setBrush(const QBrush &brush)
 {
 	m_brush = brush;
@@ -68,7 +72,6 @@ void ColorWidget::setBrush(const QBrush &brush)
 void ColorWidget::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
-	
 	painter.fillRect(rect(), m_brush);
 }
 
@@ -93,7 +96,6 @@ BrushStatus::BrushStatus()
 	layout->setSpacing(2);
 	
 	m_pen = new ColorWidget;
-	
 	m_brush = new ColorWidget;
 	
 	layout->addWidget(m_pen);

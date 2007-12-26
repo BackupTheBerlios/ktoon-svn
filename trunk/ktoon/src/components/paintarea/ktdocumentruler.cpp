@@ -30,7 +30,8 @@ struct KTDocumentRuler::Private
 	QPoint dragStartPosition;
 };
 
-KTDocumentRuler::KTDocumentRuler(Qt::Orientation orientation, QWidget *parent) : KRulerBase(orientation, parent), k( new Private)
+KTDocumentRuler::KTDocumentRuler(Qt::Orientation orientation, QWidget *parent) : KRulerBase(orientation, parent), 
+										 k( new Private)
 {
 	k->oldPos = QPointF(0.0,0.0);
 	setDrawPointer(true);
@@ -45,7 +46,9 @@ KTDocumentRuler::~KTDocumentRuler()
 void KTDocumentRuler::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton)
+	{
 		k->dragStartPosition = event->pos();
+	}
 }
 
 void KTDocumentRuler::mouseMoveEvent(QMouseEvent *event)
@@ -55,7 +58,7 @@ void KTDocumentRuler::mouseMoveEvent(QMouseEvent *event)
 		return;
 	}
 	
-	if ((event->pos() - k->dragStartPosition).manhattanLength()	< QApplication::startDragDistance())
+	if ((event->pos() - k->dragStartPosition).manhattanLength() < QApplication::startDragDistance())
 	{
 		return;
 	}
@@ -78,7 +81,6 @@ void KTDocumentRuler::mouseMoveEvent(QMouseEvent *event)
 
 	Qt::DropAction dropAction = drag->start(Qt::CopyAction | Qt::MoveAction);
 	KRulerBase::mouseMoveEvent(event);
-	
 }
 
 void KTDocumentRuler::movePointers(const QPointF &pos)
