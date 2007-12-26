@@ -77,7 +77,6 @@ KRulerBase::KRulerBase(Qt::Orientation orientation, QWidget *parent) : QFrame(pa
 		setMaximumWidth(20);
 		setMinimumWidth(20);
 		
-		
 		k->width = height();
 		k->height =  width();
 		
@@ -302,9 +301,6 @@ void KRulerBase::showMenu(KRulerBase *ruler, QPoint pos)
 		k->menu->popup(pos);
 	}
 }
-
-
-
 
 void KRulerBase::slide(int value)
 {
