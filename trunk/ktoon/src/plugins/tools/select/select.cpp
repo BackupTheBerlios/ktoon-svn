@@ -61,7 +61,6 @@ Select::Select(): k(new Private)
 	setupActions();
 }
 
-
 Select::~Select()
 {
 	delete k;
@@ -98,16 +97,15 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
 	
-	
 	if(k->changedManager)
 	{
 		k->changedManager = 0;
 	}
 	
-// 	foreach(QGraphicsView * view, scene->views())
-// 	{
-// 		view->setDragMode (QGraphicsView::RubberBandDrag);
-// 	}
+	// foreach(QGraphicsView * view, scene->views())
+	// {
+	// 	view->setDragMode (QGraphicsView::RubberBandDrag);
+	// }
 	
 	if ( input->keyModifiers() != Qt::ControlModifier )
 	{
@@ -161,7 +159,7 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 
 void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-// 	D_FUNCINFOX("tools");
+	// K_FUNCINFOX("tools");
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
@@ -230,7 +228,11 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 					}
 					manager->restoreItem();
 					
-					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::Transform, doc.toString() );
+					KTProjectRequest event = KTRequestBuilder::createItemRequest( 
+									scene->currentSceneIndex(), 
+									scene->currentLayerIndex(), 
+									scene->currentFrameIndex(), position,
+									KTProjectRequest::Transform, doc.toString() );
 					emit requested(&event);
 				}
 				else
@@ -250,10 +252,10 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 void Select::setupActions()
 {
 	KAction *select = new KAction( QIcon(), tr("Select"), this);
-// 	pencil->setShortcut( QKeySequence(tr("")) );
+	// pencil->setShortcut( QKeySequence(tr("")) );
 	
-// 	QPixmap pix(THEME_DIR+"/cursors/pencil.png");
-// 	select->setCursor( QCursor(pix, 0, pix.height()) );
+	// QPixmap pix(THEME_DIR+"/cursors/pencil.png");
+	// select->setCursor( QCursor(pix, 0, pix.height()) );
 	
 	k->actions.insert( tr("Select"), select );
 }

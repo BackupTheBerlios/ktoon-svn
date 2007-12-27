@@ -26,7 +26,8 @@
 
 #include <kcore/kdebug.h>
 
-NodeManager::NodeManager(QGraphicsItem * parent, QGraphicsScene  *scene): m_parent(parent), m_scene(scene), m_anchor(0,0), m_press(false), m_rotation(0)
+NodeManager::NodeManager(QGraphicsItem * parent, QGraphicsScene  *scene): m_parent(parent), m_scene(scene), 
+									  m_anchor(0,0), m_press(false), m_rotation(0)
 {
 	QRectF rect = parent->sceneBoundingRect();
 	Node *topLeft = new Node(Node::TopLeft, Node::Scale, rect.topLeft(), this, parent, scene);
@@ -114,7 +115,7 @@ void NodeManager::syncNodes(const QRectF &sbr)
 					if((*it)->scenePos() != sbr.center() )
 					{
 						(*it)->setPos( sbr.center() );
-// 						m_modify = true;
+						// m_modify = true;
 					}
 					break;
 				}
@@ -154,7 +155,6 @@ void NodeManager::restoreItem()
 	m_parent->setPos(m_origPos);
 }
 
-
 void NodeManager::setAnchor(const QPointF& point)
 {
 	m_anchor = point;
@@ -168,11 +168,11 @@ QPointF NodeManager::anchor() const
 void NodeManager::scale(float sx, float sy)
 {
 	QMatrix m;
-// 	m.rotate(m_parent->data(KTGraphicObject::Rotate).toDouble());
+	// m.rotate(m_parent->data(KTGraphicObject::Rotate).toDouble());
 	m.translate(m_anchor.x(),m_anchor.y());
 	m.scale(sx,sy);
 	m.translate(-m_anchor.x(),-m_anchor.y());
-// 	m.rotate(-m_parent->data(KTGraphicObject::Rotate).toDouble());
+	// m.rotate(-m_parent->data(KTGraphicObject::Rotate).toDouble());
 	m_parent->setMatrix(m, true);
 	syncNodesFromParent();
 }
@@ -184,12 +184,9 @@ void NodeManager::rotate(double a)
 	m.rotate(m_rotation-a);
 	m.translate(-m_anchor.x(),-m_anchor.y());
 	m_parent->setMatrix(m);
-	
 	m_parent->setData( KTGraphicObject::Rotate,m_rotation- a);
 	
-	
 	syncNodesFromParent();
-	
 	m_rotation = a;
 	
 }
@@ -229,7 +226,6 @@ void NodeManager::toggleAction()
 		}
 	}
 }
-
 
 void NodeManager::setActionNode(Node::ActionNode action)
 {

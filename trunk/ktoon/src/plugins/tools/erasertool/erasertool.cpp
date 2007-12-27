@@ -63,21 +63,21 @@ QStringList EraserTool::keys() const
 void EraserTool::setupActions()
 {
 	KAction *action1 = new KAction( QIcon(THEME_DIR+"/icons/eraser.png"), tr("Eraser"), this);
-// 	action1->setShortcut( QKeySequence(tr("Ctrl+F")) );
+	// action1->setShortcut( QKeySequence(tr("Ctrl+F")) );
 	action1->setCursor( QCursor(THEME_DIR+"/cursors/eraser.png") );
 	
 	m_actions.insert( tr("Eraser"), action1 );
 	
-// 	KAction *action2 = new KAction(QIcon(THEME_DIR+"/icons/ellipse.png"), tr("Ellipse"), this);
-// 	action2->setShortcut( QKeySequence(tr("Ctrl+E")) );
-// 	action2->setCursor( QCursor(THEME_DIR+"/cursors/circle.png") );
-// 	
-// 	m_actions.insert(tr("Ellipse"), action2);
-// 	
-// 	
-// 	KAction *action3 = new KAction( QIcon(THEME_DIR+"/icons/line.png"), tr("Line"), this);
-// 	action3->setShortcut( QKeySequence(tr("Ctrl+L")) );
-// 	m_actions.insert(tr("Line"), action3);
+	// KAction *action2 = new KAction(QIcon(THEME_DIR+"/icons/ellipse.png"), tr("Ellipse"), this);
+	// action2->setShortcut( QKeySequence(tr("Ctrl+E")) );
+	// action2->setCursor( QCursor(THEME_DIR+"/cursors/circle.png") );
+	// 	
+	// m_actions.insert(tr("Ellipse"), action2);
+	// 	
+	// 	
+	// KAction *action3 = new KAction( QIcon(THEME_DIR+"/icons/line.png"), tr("Line"), this);
+	// action3->setShortcut( QKeySequence(tr("Ctrl+L")) );
+	// m_actions.insert(tr("Line"), action3);
 }
 
 void EraserTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -139,22 +139,22 @@ void EraserTool::itemPressed(QGraphicsItem *item, const KTBrushManager *brush, c
 	
 	if ( collides.count() == 0)
 	{
-		QRect intersectRect(pos.x()-(brush->pen().width()/2), pos.y()-(brush->pen().width())/2, brush->pen().width(), brush->pen().width());
+		QRect intersectRect(pos.x() - (brush->pen().width()/2), pos.y() - (brush->pen().width())/2, 
+					brush->pen().width(), brush->pen().width());
 		
 		KTPathItem *path = qgraphicsitem_cast<KTPathItem*>(item);
 		
 		if ( !path )
 		{
-// 			QString conv = "<convert type=\"2\" />"; // to path type
-// 			KTProjectRequest *event = new KTProjectRequest(KTProjectRequest::Convert, scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().indexOf(item), conv);
-// 			addProjectRequest(event);
+			// QString conv = "<convert type=\"2\" />"; // to path type
+			// KTProjectRequest *event = new KTProjectRequest(KTProjectRequest::Convert, 
+			// scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), 
+			// scene->currentFrame()->graphics().indexOf(item), conv);
+			// addProjectRequest(event);
 		}
 		else
 		{
 			QPainterPath ppath = path->path();
-			
-			
-			
 		}
 	}
 }

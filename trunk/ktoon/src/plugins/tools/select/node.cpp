@@ -43,7 +43,8 @@
 
 struct Node::Private
 {
-	Private(TypeNode node, ActionNode action, NodeManager *manager, QGraphicsItem * parent) : typeNode(node), action(action), notChange(false), parent(parent), manager(manager)
+	Private(TypeNode node, ActionNode action, NodeManager *manager, QGraphicsItem * parent) : typeNode(node),
+						action(action), notChange(false), parent(parent), manager(manager)
 	{
 	}
 	
@@ -54,10 +55,11 @@ struct Node::Private
 	NodeManager *manager;
 };
 
-Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *manager, QGraphicsItem * parent,  QGraphicsScene * scene   ) : QGraphicsItem(0, scene), k(new Private(node, action, manager, parent))
+Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *manager, QGraphicsItem * parent,
+		QGraphicsScene * scene   ) : QGraphicsItem(0, scene), k(new Private(node, action, manager, parent))
 {
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
-// 	setParentItem(d->parent);
+	// setParentItem(k->parent);
 	setFlag(ItemIsSelectable, false);
 	setFlag(ItemIsMovable, true);
 	
@@ -145,7 +147,7 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	K_FUNCINFO;
-// 	update();
+	// update();
 	k->manager->setPress( true);
 	
 	QGraphicsItem::mousePressEvent(event);
@@ -160,7 +162,7 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	K_FUNCINFO;
-// 	update();
+	// update();
 	QGraphicsItem::mouseReleaseEvent(event);
 	k->parent->setSelected(true);
 	k->manager->setPress(false);
@@ -182,10 +184,9 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 			QRectF br1  = k->parent->boundingRect();
 			
 			//Debug
-// 			scene()->addRect(rect, QPen(Qt::red));
-// 			scene()->addRect(br, QPen(Qt::green));
+			//scene()->addRect(rect, QPen(Qt::red));
+			//scene()->addRect(br, QPen(Qt::green));
 			//Debug
-			
 			
 			switch(k->typeNode)
 			{
@@ -244,7 +245,7 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 			
 			if(k->typeNode != Center)
 			{
-// 				d->manager->setVisible(false);
+				// k->manager->setVisible(false);
 				QPointF p1 = newPos;
 				QPointF p2 = k->parent->sceneBoundingRect().center();
 				k->manager->setAnchor( k->parent->boundingRect().center() );
@@ -265,7 +266,7 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 void Node::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * e)
 {
 	K_FUNCINFO;
-// 	update();
+	// update();
 	k->manager->toggleAction();
 	e->setAccepted (false);
 	QGraphicsItem::mouseDoubleClickEvent(e);
