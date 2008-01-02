@@ -27,7 +27,6 @@
 #include <QPixmap>
 #include <QLabel>
 #include <QScrollArea>
-
 #include <QTextBrowser>
 
 #include "ktabout.h"
@@ -38,16 +37,20 @@
 
 #define DEBUG_ABOUT 1
 
+/**
+ * This class defines the About dialog of KToon.
+ * Here is where the dialog tabs are setted.
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
 KTAbout::KTAbout( QWidget *parent ) : KTabDialog( Cancel, parent )
 {
-//	Q_INIT_RESOURCE(ktui_images);
-	
-// 	tabWidget()->setTabPosition(QTabWidget::West);
+	// Q_INIT_RESOURCE(ktui_images);
+	// tabWidget()->setTabPosition(QTabWidget::West);
 	
 	setWindowTitle( tr( "About" ) + QString( " KToon..." ) );
 
     	//1: Credits
-
 	QFile creditsFile( DATA_DIR+"/credits.txt" );
 	QString creditsText;
 	if ( creditsFile.open( QIODevice::ReadOnly ) )
@@ -65,7 +68,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTabDialog( Cancel, parent )
 		kError() << "Error while trying to read " << creditsFile.fileName();
 	}
 	
-	QImage credits = QImage(DATA_DIR+"/images/credits.png" );
+	QImage credits = QImage(DATA_DIR+"/images/credits.png");
 	
 	KImageEffect::fade(credits, 0.25, palette().background().color());
     
@@ -76,7 +79,6 @@ KTAbout::KTAbout( QWidget *parent ) : KTabDialog( Cancel, parent )
 	pal.setColor(QPalette::Foreground, 0x686868);
 	
 	m_credits->setPalette(pal);
-	
 	m_credits->setFont(QFont("verdana", 24));
 
     	// 2: Ack
@@ -113,8 +115,8 @@ KTAbout::KTAbout( QWidget *parent ) : KTabDialog( Cancel, parent )
     	// 6: Licence
 
 	QTextBrowser *licenceText = new QTextBrowser;
-// 	scrollLicence->setWidget( licenceText );
-// 	QString licence = "";
+	// scrollLicence->setWidget( licenceText );
+	// QString licence = "";
 	QFile licenceFile( DATA_DIR+"/COPYING" );
 	if ( licenceFile.open( QIODevice::ReadOnly  | QIODevice::Text) )
 	{
@@ -122,16 +124,15 @@ KTAbout::KTAbout( QWidget *parent ) : KTabDialog( Cancel, parent )
 		while ( ! stream.atEnd() )
 		{
 			QString line = stream.readLine();
-// 			licence += line+"\n";
+			// licence += line+"\n";
 			licenceText->append(line);
 		}
 		licenceFile.close();
 	}
 	
-// 	licenceText -> setText( licence );
+	// licenceText -> setText( licence );
 
 	addTab( licenceText, tr( "License Agreement" ) );
-	
 	setButtonText( Cancel, tr("Close"));
 }
 

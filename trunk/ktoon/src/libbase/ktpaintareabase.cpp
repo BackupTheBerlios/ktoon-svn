@@ -41,6 +41,7 @@
 #include "ktgraphicsscene.h"
 #include "ktgraphicalgorithm.h"
 
+// KOM
 #include <kcore/kconfig.h>
 #include <kcore/kdebug.h>
 #include <kgui/kapplication.h>
@@ -48,11 +49,16 @@
 
 #include <cmath>
 
-
 #ifdef QT_OPENGL_LIB
 
 #include <QGLWidget>
 #include <QGLFramebufferObject>
+
+/**
+ * This class defines the global paint area behavoir in the Ilustration Mode.
+ * Here is where general events about the paint area are processed.
+ * @author David Cuadrado & Jorge Cuadrado
+*/
 
 class GLDevice : public QGLWidget
 {
@@ -93,9 +99,8 @@ struct KTPaintAreaBase::Private
 KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), k(new Private)
 {
 	k->scene = new KTGraphicsScene();
-	
 	k->grid = 0;
-	
+
 	k->drawGrid = false;
 	k->angle = 0;
 	
@@ -141,7 +146,9 @@ void KTPaintAreaBase::setAntialiasing(bool use)
 	if ( QGLWidget *gl = dynamic_cast<QGLWidget *>(viewport() ) )
 	{
 		gl->setUpdatesEnabled(false); // works better
-		gl->setFormat(QGLFormat(QGL::SampleBuffers | QGL::HasOverlay /*| QGL::DirectRendering | QGL::AccumBuffer | QGL::Rgba */));
+		// gl->setFormat(QGLFormat(QGL::SampleBuffers | QGL::HasOverlay /*| QGL::DirectRendering 
+		// | QGL::AccumBuffer | QGL::Rgba */));
+		gl->setFormat(QGLFormat(QGL::SampleBuffers | QGL::HasOverlay));
 		gl->setUpdatesEnabled(true);
 	}
 #endif
@@ -167,7 +174,7 @@ void KTPaintAreaBase::setUseOpenGL(bool opengl)
 	}
 	else
 	{
-// 		setViewport( new KTImageDevice() );
+		// setViewport( new KTImageDevice() );
 	}
 #else
 	Q_UNUSED(opengl);
@@ -185,22 +192,27 @@ void KTPaintAreaBase::setUseOpenGL(bool opengl)
 void KTPaintAreaBase::setDrawGrid(bool draw)
 {
 	k->drawGrid = draw;
-// 	resetCachedContent();
+	// resetCachedContent();
 	viewport()->update();
 }
 
 void KTPaintAreaBase::setTool(KTToolPlugin *tool )
 {
-	if ( !scene() ) return;
+	if ( !scene() ) 
+	{
+		return;
+	}
 	
 	if ( tool )
 	{
-		disconnect(tool,SIGNAL(requested(const KTProjectRequest *)), this, SIGNAL(requestTriggered( const KTProjectRequest* )));
+		disconnect(tool,SIGNAL(requested(const KTProjectRequest *)), this, SIGNAL(requestTriggered( 
+											const KTProjectRequest* )));
 	}
 	
 	k->scene->setTool(tool);
 	
-	connect(tool,SIGNAL(requested(const KTProjectRequest *)), this, SIGNAL(requestTriggered( const KTProjectRequest* )));
+	connect(tool,SIGNAL(requested(const KTProjectRequest *)), this, 
+							SIGNAL(requestTriggered( const KTProjectRequest* )));
 }
 
 bool KTPaintAreaBase::drawGrid() const
@@ -210,7 +222,10 @@ bool KTPaintAreaBase::drawGrid() const
 
 void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
 {
-	if ( !canPaint() ) return;
+	if ( !canPaint() ) 
+	{
+		return;
+	}
 	
 	k->scene->aboutToMousePress();
 	QGraphicsView::mousePressEvent(event);
@@ -218,13 +233,16 @@ void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
 
 void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )
 {
-	if ( !canPaint()) return;
+	if ( !canPaint()) 
+	{
+		return;
+	}
 	
 	// Rotate
-	if( !k->scene->isDrawing() && event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
+	if( !k->scene->isDrawing() && event->buttons() == Qt::LeftButton &&  
+						(event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
 	{
 		setUpdatesEnabled(false);
-		
 		setDragMode(QGraphicsView::NoDrag);
 		
 		QPointF p1 = event->pos();
@@ -247,7 +265,7 @@ void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )
 			mouseEvent.setButton(event->button());
 			mouseEvent.setModifiers(event->modifiers());
 			mouseEvent.setAccepted(false);
-// 			QApplication::sendEvent(d->scene, &mouseEvent);
+			// QApplication::sendEvent(k->scene, &mouseEvent);
 			k->scene->mouseMoved(&mouseEvent);
 		}
 	}
@@ -269,7 +287,7 @@ void KTPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
 		mouseEvent.setButton(event->button());
 		mouseEvent.setModifiers(event->modifiers());
 		mouseEvent.setAccepted(false);
-// 		QApplication::sendEvent(d->scene, &mouseEvent);
+		// QApplication::sendEvent(k->scene, &mouseEvent);
 		k->scene->mouseReleased(&mouseEvent);
 	}
 }
@@ -282,7 +300,6 @@ void KTPaintAreaBase::tabletEvent( QTabletEvent * event )
 void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	QGraphicsView::drawBackground(painter, rect);
-	
 	painter->save();
 	
 	bool hasAntialiasing = painter->renderHints() & QPainter::Antialiasing;
@@ -313,7 +330,6 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 	
 	painter->setRenderHint(QPainter::Antialiasing, hasAntialiasing);
 	
-	
 	painter->restore();
 }
 
@@ -329,7 +345,8 @@ void KTPaintAreaBase::drawForeground( QPainter *painter, const QRectF &rect )
 			QFontMetricsF fm(painter->font());
 			QString text = tr("Locked");
 			
-			painter->drawText(QPointF(k->scene->sceneRect().topRight().x() - fm.width(text), (k->scene->sceneRect().topRight().y() + fm.height()) / 2), text);
+			painter->drawText(QPointF(k->scene->sceneRect().topRight().x() - fm.width(text), 
+						(k->scene->sceneRect().topRight().y() + fm.height()) / 2), text);
 		}
 	}
 }
@@ -385,8 +402,9 @@ void KTPaintAreaBase::scaleView(qreal scaleFactor)
 {
 	qreal factor = matrix().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
 	if (factor < 0.07 || factor > 100)
+	{
 		return;
-
+	}
 	scale(scaleFactor, scaleFactor);
 	
 	emit scaled(scaleFactor);

@@ -31,10 +31,15 @@
 #include "ktpluginmanager.h"
 #include "kttoolplugin.h"
 
+// KOM 
 #include <kgui/kaction.h>
-
 #include <kcore/kdebug.h>
 
+/**
+ * This class defines the toolbar at the left side of the paint area.
+ * Here is where tool plugins are loaded and where the toolbar is created.
+ * @author David Cuadrado <krawek@gmail.com>
+*/
 
 class View : public QGraphicsView
 {
@@ -50,7 +55,6 @@ View::View()
 View::~View()
 {
 }
-
 
 struct KTSymbolEditor::Private
 {
@@ -170,7 +174,5 @@ void KTSymbolEditor::selectTool()
 	{
 		KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
 		tool->setCurrentTool( action->text() );
-		
-		
 	}
 }

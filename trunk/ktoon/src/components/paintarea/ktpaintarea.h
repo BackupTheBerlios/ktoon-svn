@@ -38,10 +38,9 @@ class KTProject;
 class KTPaintAreaRotator;
 
 /**
- * Esta clase provee un area para realizar diferentes trazos
+ * This class provides an area to make different kind of traces
  * @author Jorge Cuadrado \<kuadrosx@toonka.com\> - David Cuadrado \<krawek@toonka.com\>
 */
-
 
 class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHandler
 {

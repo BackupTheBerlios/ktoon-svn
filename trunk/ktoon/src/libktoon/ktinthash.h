@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2007 by David Cuadrado <krawek@toonka.com>              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -48,16 +50,16 @@ class KTIntHash
 		void clear(bool alsoDelete = false)
 		{
 			if( alsoDelete )
-				qDeleteAll(d->logicalIndices);
-			d->logicalIndices.clear();
-			d->visualIndices.clear();
+				qDeleteAll(k->logicalIndices);
+			k->logicalIndices.clear();
+			k->visualIndices.clear();
 			
-			d->counter = 0;
+			k->counter = 0;
 		}
 		
 		int count() const
 		{
-			return d->logicalIndices.count();
+			return k->logicalIndices.count();
 		}
 		
 		bool contains(int pos);
@@ -81,7 +83,7 @@ class KTIntHash
 		
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 template<typename T>
@@ -96,22 +98,22 @@ struct KTIntHash<T>::Private
 };
 
 template<typename T>
-KTIntHash<T>::KTIntHash() : d(new Private)
+KTIntHash<T>::KTIntHash() : k(new Private)
 {
 }
 
 template<typename T>
-KTIntHash<T>::KTIntHash(const KTIntHash<T> &other) : d(new Private)
+KTIntHash<T>::KTIntHash(const KTIntHash<T> &other) : k(new Private)
 {
-	d->visualIndices = other.d->visualIndices;
-	d->logicalIndices = other.d->logicalIndices;
-	d->counter = other.d->counter;
+	k->visualIndices = other.k->visualIndices;
+	k->logicalIndices = other.k->logicalIndices;
+	k->counter = other.k->counter;
 }
 
 template<typename T>
 KTIntHash<T>::~KTIntHash()
 {
-	delete d;
+	delete k;
 }
 
 template<typename T>
@@ -119,22 +121,22 @@ void KTIntHash<T>::removeVisual(int pos)
 {
 	if( containsVisual(pos) )
 	{
-		int logicalIndex = d->visualIndices.takeAt(pos);
-		d->logicalIndices.remove(logicalIndex);
+		int logicalIndex = k->visualIndices.takeAt(pos);
+		k->logicalIndices.remove(logicalIndex);
 	}
 }
 
 template<typename T>
 bool KTIntHash<T>::contains(int pos)
 {
-	return d->logicalIndices.contains(pos);
+	return k->logicalIndices.contains(pos);
 }
 
 template<typename T>
 void KTIntHash<T>::remove(int pos)
 {
-	d->logicalIndices.remove(pos);
-	d->visualIndices.removeAll(pos);
+	k->logicalIndices.remove(pos);
+	k->visualIndices.removeAll(pos);
 }
 
 template<typename T>
@@ -142,23 +144,23 @@ void KTIntHash<T>::moveVisual(int from, int to)
 {
 	if( containsVisual(from) && containsVisual(to) )
 	{
-		int val = d->visualIndices.takeAt(from);
-		d->visualIndices.insert(to, val);
+		int val = k->visualIndices.takeAt(from);
+		k->visualIndices.insert(to, val);
 	}
 }
 
 template<typename T>
 bool KTIntHash<T>::containsVisual(int pos)
 {
-	return pos >= 0 && pos < d->visualIndices.count();
+	return pos >= 0 && pos < k->visualIndices.count();
 }
 
 template<typename T>
 KTIntHash<T> &KTIntHash<T>::operator=(const KTIntHash<T> &other)
 {
-	d->visualIndices = other.d->visualIndices;
-	d->logicalIndices = other.d->logicalIndices;
-	d->counter = other.d->counter;
+	k->visualIndices = other.k->visualIndices;
+	k->logicalIndices = other.k->logicalIndices;
+	k->counter = other.k->counter;
 	
 	return *this;
 }
@@ -166,13 +168,13 @@ KTIntHash<T> &KTIntHash<T>::operator=(const KTIntHash<T> &other)
 template<typename T>
 int KTIntHash<T>::logicalIndex(T val)
 {
-	return d->logicalIndices.key(val);
+	return k->logicalIndices.key(val);
 }
 
 template<typename T>
 int KTIntHash<T>::visualIndex(T val)
 {
-	return d->visualIndices.indexOf( d->logicalIndices.key(val) );
+	return k->visualIndices.indexOf( k->logicalIndices.key(val) );
 }
 
 template<typename T>
@@ -180,10 +182,10 @@ T KTIntHash<T>::visualValue(int pos)
 {
 	if( containsVisual(pos) )
 	{
-		return d->logicalIndices.value(d->visualIndices[pos]);
+		return k->logicalIndices.value(k->visualIndices[pos]);
 	}
 	
-	return d->logicalIndices.value(-1);
+	return k->logicalIndices.value(-1);
 }
 
 template<typename T>
@@ -191,48 +193,48 @@ T KTIntHash<T>::takeVisual(int pos)
 {
 	if( containsVisual(pos) )
 	{
-		int logicalIndex = d->visualIndices.takeAt(pos);
-		return d->logicalIndices.take(logicalIndex);
+		int logicalIndex = k->visualIndices.takeAt(pos);
+		return k->logicalIndices.take(logicalIndex);
 	}
 	
-	return d->logicalIndices.take(-1);
+	return k->logicalIndices.take(-1);
 }
 
 template<typename T>
 void KTIntHash<T>::insert(int pos, T value)
 {
-	if ( d->logicalIndices.contains(pos) )
+	if ( k->logicalIndices.contains(pos) ) {
 		qDebug("###########################     OVERRIDING!! %d", pos);
-	d->logicalIndices.insert(d->counter, value);
-	d->visualIndices.insert(pos, d->counter);
+	}
+	k->logicalIndices.insert(k->counter, value);
+	k->visualIndices.insert(pos, k->counter);
 	
-	d->counter++;
+	k->counter++;
 }
 
 template<typename T>
 void KTIntHash<T>::add(T value)
 {
-	this->insert(d->counter, value);
+	this->insert(k->counter, value);
 }
 
 template<typename T>
 void KTIntHash<T>::expandValue(int index)
 {
-	int value = d->visualIndices[index];
-	d->visualIndices.insert(index+1, value);
+	int value = k->visualIndices[index];
+	k->visualIndices.insert(index+1, value);
 }
-
 
 template<typename T>
 T KTIntHash<T>::value(int index) const
 {
-	return d->visualIndices.value(index);
+	return k->visualIndices.value(index);
 }
 
 template<typename T>
 T KTIntHash<T>::operator[](int index) const
 {
-	return d->logicalIndices.value(index);
+	return k->logicalIndices.value(index);
 }
 
 template<typename T>
@@ -240,11 +242,10 @@ QList<T> KTIntHash<T>::visualValues() const
 {
 	QList<T> visualValues;
 	
-	foreach(int pos, d->visualIndices)
+	foreach(int pos, k->visualIndices)
 	{
-		visualValues << d->logicalIndices.value(pos);
+		visualValues << k->logicalIndices.value(pos);
 	}
-	
 	
 	return visualValues;
 }
@@ -252,21 +253,19 @@ QList<T> KTIntHash<T>::visualValues() const
 template<typename T>
 QList<T> KTIntHash<T>::values() const
 {
-	return d->logicalIndices.values();
+	return k->logicalIndices.values();
 }
-
 
 template<typename T>
 QList<int> KTIntHash<T>::visualIndices() const
 {
-	return d->visualIndices;
+	return k->visualIndices;
 }
 
 template<typename T>
 bool KTIntHash<T>::isEmpty()
 {
-	return d->logicalIndices.isEmpty();
+	return k->logicalIndices.isEmpty();
 }
 
 #endif
-

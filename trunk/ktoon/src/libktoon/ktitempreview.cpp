@@ -60,9 +60,13 @@ QSize KTItemPreview::sizeHint() const
 void KTItemPreview::render(QGraphicsItem *item)
 {
 	if ( !k->proxy )
+	{	
 		k->proxy = new KTProxyItem(item);
+	}
 	else
+	{
 		k->proxy->setItem(item);
+	}
 	
 	update();
 }
@@ -78,7 +82,9 @@ void KTItemPreview::paintEvent(QPaintEvent *)
 		opt.state = QStyle::State_None;
 		
 		if (k->proxy->isEnabled())
+		{
 			opt.state |= QStyle::State_Enabled;
+		}
 		
 		opt.exposedRect = QRectF(QPointF(0,0), k->proxy->boundingRect().size());
 		opt.levelOfDetail = 1;
@@ -86,14 +92,14 @@ void KTItemPreview::paintEvent(QPaintEvent *)
 		QMatrix matrix = k->proxy->sceneMatrix();
 		
 		QRect r(15,15, rect().width()-15 , rect().height()-15);
-// 		p.drawRect(r);
-// 		QRectF br = d->proxy->boundingRect();
-// 		double offset = qMin(br.width(), br.height());
+		// p.drawRect(r);
+		// QRectF br = d->proxy->boundingRect();
+		// double offset = qMin(br.width(), br.height());
 		
-// 		matrix.translate((-d->proxy->pos().x()-br.center().x())+r.center().x(), (-d->proxy->pos().y()-br.center().y())+r.center().y());
-// 		scale(r.width()/offset, r.height()/offset);
-		
-// 		opt.matrix = matrix;
+		// matrix.translate((-d->proxy->pos().x()-br.center().x())+r.center().x(), 
+		// (-d->proxy->pos().y()-br.center().y())+r.center().y());
+		// scale(r.width()/offset, r.height()/offset);
+		// opt.matrix = matrix;
 		
 		opt.palette = palette();
 		p.setMatrix(matrix);

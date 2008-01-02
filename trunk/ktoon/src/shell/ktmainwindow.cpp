@@ -214,7 +214,7 @@ void KTMainWindow::viewNewDocument(const QString &title)
 		
 		// m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
 		m_viewDoc->setWindowTitle(tr("Illustration: %1").arg(title) );
-		addWidget( m_viewDoc, true, Drawing);
+		addWidget( m_viewDoc, true, Drawing );
 		connectToDisplays( m_viewDoc );
 		ui4project( m_viewDoc );
 		ui4localRequest(m_viewDoc );
@@ -224,7 +224,7 @@ void KTMainWindow::viewNewDocument(const QString &title)
 		m_animationSpace->setScrollBarsEnabled ( true );
 		
 		m_animationSpace->setWindowTitle(tr("Animation"));
-		addWidget(m_animationSpace, true, Animation);
+		addWidget( m_animationSpace, true, Animation );
 		
 		KTViewCamera *viewCamera = m_cameraWidget->viewCamera();
 		ui4project( viewCamera );

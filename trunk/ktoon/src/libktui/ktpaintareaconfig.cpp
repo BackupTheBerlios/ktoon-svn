@@ -30,6 +30,12 @@
 #include <kgui/kcolorbutton.h>
 #include <kcore/kconfig.h>
 
+/**
+ * This class handles the preferences dialog for the paint area settings.
+ * Here is where the forms about paint area parameters are defined.
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
 KTPaintAreaConfig::KTPaintAreaConfig(QWidget *parent) : QWidget(parent)
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -79,7 +85,8 @@ void KTPaintAreaConfig::setupPage()
 	m_onionSkinBackground = new KColorButton;
 	pageLayout->addWidget(m_onionSkinBackground, 3, 1);
 	
-	m_onionSkinBackground->setColor(qvariant_cast<QColor>(KCONFIG->value("OnionSkinBackground", QColor(Qt::lightGray))));
+	m_onionSkinBackground->setColor(qvariant_cast<QColor>(KCONFIG->value("OnionSkinBackground", 
+					QColor(Qt::lightGray))));
 	
 	layout()->addWidget(page);
 }

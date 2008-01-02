@@ -47,6 +47,12 @@
 
 #define RETURN_IF_NOT_LIBRARY if( !k->library ) return;
 
+/**
+ * This class defines the Library widget.
+ * Here is where events around the Library widget are handled.
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
 struct KTLibraryWidget::Private
 {
 	Private() : library(0)
@@ -88,7 +94,8 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 	
 	k->libraryTree = new KTGCTable(this);
 
-	connect(k->libraryTree, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(previewItem(QTreeWidgetItem *, int)));
+	connect(k->libraryTree, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(previewItem(QTreeWidgetItem *,
+													int)));
 	connect(k->libraryTree, SIGNAL(itemRenamed( QTreeWidgetItem* )), this, SLOT(renameObject( QTreeWidgetItem* )));
 	
 	QGroupBox *buttons = new QGroupBox(this);
@@ -168,11 +175,11 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 				{
 					k->display->render( qvariant_cast<QGraphicsItem *>(object->data()));
 					
-#if 0 // test
-					KTSymbolEditor *editor = new KTSymbolEditor;
-					editor->setSymbol(object);
-					emit postPage(editor);
-#endif
+					#if 0 // test
+						KTSymbolEditor *editor = new KTSymbolEditor;
+						editor->setSymbol(object);
+						emit postPage(editor);
+					#endif
 				}
 			}
 			break;
@@ -196,21 +203,31 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 
 void KTLibraryWidget::emitSelectedComponent()
 {
-	if ( !k->libraryTree->currentItem() ) return;
+	if ( !k->libraryTree->currentItem() ) 
+	{	
+		return;
+	}
 	
 	QString symKey = k->libraryTree->currentItem()->text(0);
 	
-	KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::AddSymbolToProject, symKey, KTLibraryObject::Type(k->libraryTree->currentItem()->data(0, 3216).toInt()), 0, k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
+	KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::AddSymbolToProject, symKey,
+					KTLibraryObject::Type(k->libraryTree->currentItem()->data(0, 3216).toInt()), 0, 
+					k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
 	
 	emit requestTriggered( &request);
 }
 
 void KTLibraryWidget::removeCurrentGraphic()
 {
-	if ( !k->libraryTree->currentItem() ) return;
+	if ( !k->libraryTree->currentItem() ) 
+	{
+		return;
+	}
+
 	QString symKey = k->libraryTree->currentItem()->text(0);
 	
-	KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Remove, symKey, KTLibraryObject::Type(k->libraryTree->currentItem()->data(0, 3216).toInt()), 0 );
+	KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Remove, symKey,
+					KTLibraryObject::Type(k->libraryTree->currentItem()->data(0, 3216).toInt()), 0 );
 	
 	emit requestTriggered( &request );
 }
@@ -219,7 +236,7 @@ void KTLibraryWidget::renameObject( QTreeWidgetItem* item)
 {
 // 	if ( item )
 // 	{
-// 		KTGraphicComponent *graphic = d->graphics[item];
+// 		KTGraphicComponent *graphic = k->graphics[item];
 // 		
 // 		if ( graphic )
 // 		{
@@ -227,14 +244,14 @@ void KTLibraryWidget::renameObject( QTreeWidgetItem* item)
 // 		}
 // 		else // A Folder
 // 		{
-// 			foreach( QTreeWidgetItem *folder, d->libraryTree->topLevelItems() )
+// 			foreach( QTreeWidgetItem *folder, k->libraryTree->topLevelItems() )
 // 			{
 // 				if ( folder != item && folder->text(0) == item->text(0) )
 // 				{
 // 					// Invalid name
 // 					item->setFlags(item->flags() | Qt::ItemIsEditable );
 // 					item->setText(0, item->text(0)+QString::number(() % 999) );
-// 					d->libraryTree->editItem( item, 0);
+// 					k->libraryTree->editItem( item, 0);
 // 					break;
 // 				}
 // 			}
@@ -244,9 +261,13 @@ void KTLibraryWidget::renameObject( QTreeWidgetItem* item)
 
 void KTLibraryWidget::importBitmap()
 {
-	QString image = QFileDialog::getOpenFileName ( this, tr("Import an image..."), QDir::homePath(),  tr("Images")+" (*.png *.xpm *.jpg)" );
+	QString image = QFileDialog::getOpenFileName ( this, tr("Import an image..."), QDir::homePath(),  
+							tr("Images") + " (*.png *.xpm *.jpg)" );
 	
-	if( image.isEmpty() ) return;
+	if( image.isEmpty() ) 
+	{
+		return;
+	}	
 	
 	QFile f(image);
 	QFileInfo finfo(f);
@@ -258,7 +279,8 @@ void KTLibraryWidget::importBitmap()
 		QByteArray data = f.readAll();
 		f.close();
 		
-		KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName, KTLibraryObject::Image, data);
+		KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
+								KTLibraryObject::Image, data);
 		
 		emit requestTriggered(&request);
 	}
@@ -270,9 +292,13 @@ void KTLibraryWidget::importBitmap()
 
 void KTLibraryWidget::importSound()
 {
-	QString sound = QFileDialog::getOpenFileName ( this, tr("Import an audio file..."), QDir::homePath(),  tr("Sound file")+" (*.ogg *.wav *.mp3)" );
+	QString sound = QFileDialog::getOpenFileName ( this, tr("Import an audio file..."), QDir::homePath(),
+							tr("Sound file")+" (*.ogg *.wav *.mp3)" );
 	
-	if( sound.isEmpty() ) return;
+	if( sound.isEmpty() ) 
+	{
+		return;
+	}
 	
 	QFile f(sound);
 	
@@ -284,7 +310,8 @@ void KTLibraryWidget::importSound()
 		QByteArray data = f.readAll();
 		f.close();
 		
-		KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName, KTLibraryObject::Sound, data);
+		KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
+										KTLibraryObject::Sound, data);
 		
 		emit requestTriggered(&request);
 	}
@@ -344,10 +371,11 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 						++it;
 			}
 			
-			QList<QTreeWidgetItem *> selecteds = k->libraryTree->selectedItems();
-			if( !selecteds.isEmpty() )
+			QList<QTreeWidgetItem *> selectedGroup = k->libraryTree->selectedItems();
+			if( !selectedGroup.isEmpty() )
 			{
-				k->display->render( qvariant_cast<QGraphicsItem *>(k->library->findObject( selecteds[0]->text(0))->data() ));
+				k->display->render( qvariant_cast<QGraphicsItem *>(k->library->findObject(
+										selectedGroup[0]->text(0))->data() ));
 			}
 			else
 			{
@@ -373,4 +401,3 @@ void KTLibraryWidget::frameResponse(KTFrameResponse *response)
 		k->currentFrame.scene = response->sceneIndex();
 	}
 }
-

@@ -22,7 +22,6 @@
 #ifndef KTNEWPROYECT_H
 #define KTNEWPROYECT_H
 
-
 #include <kgui/kosd.h>
 #include <kgui/ktabdialog.h>
 #include <kgui/kwizard.h>
@@ -40,9 +39,9 @@ class KTNewProject : public KTabDialog
 	public:
 		KTNewProject(QWidget *parent = 0);
 		~KTNewProject();
-// 		QString projectName() const;
-// 		QSize dimension() const;
-// 		int fps() const;
+		// QString projectName() const;
+		// QSize dimension() const;
+		// int fps() const;
 		
 		KTProjectManagerParams *params();
 		

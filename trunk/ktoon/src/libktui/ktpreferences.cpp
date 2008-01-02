@@ -25,7 +25,6 @@
 #include <qtextcodec.h>
 
 #include "ktpreferences.h"
-
 #include "ktpaintareaconfig.h"
 
 #include <kcore/kglobal.h>
@@ -38,6 +37,12 @@
 #include <QComboBox>
 #include <QCheckBox>
 
+/**
+ * This class handles the preferences dialog for KToon.
+ * Here is where the forms of the KToon preferences dialog are defined.
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
 class KTPreferences::GeneralPage : public QWidget
 {
 	Q_OBJECT
@@ -45,23 +50,21 @@ class KTPreferences::GeneralPage : public QWidget
 		GeneralPage();
 		~GeneralPage();
 		void saveValues();
-		
-// 		KToon::RenderType m_renderType;
+		// KToon::RenderType m_renderType;
 		
 	private:
 		QLineEdit *m_home, *m_repository, *m_browser;
 		QComboBox *m_renderType;
 		QCheckBox *m_openLastProject;
 		
-		
-// 	private slots:
-// 		void syncRenderType(int index);
+	// private slots:
+	// void syncRenderType(int index);
 };
 
 KTPreferences::GeneralPage::GeneralPage()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
-// 	m_renderType = KToon::RenderType(0);
+	// m_renderType = KToon::RenderType(0);
 	KCONFIG->beginGroup("General");
 	
 	m_home = new QLineEdit;
@@ -102,10 +105,11 @@ KTPreferences::GeneralPage::GeneralPage()
 	m_openLastProject = new QCheckBox();
 	m_openLastProject->setChecked(openLast);
 
-	QLayout *form = KFormFactory::makeGrid( QStringList() << tr("KToon Home") << tr("Cache") << tr("Browser") << tr("Render Type") << tr("Open last project"), QWidgetList() << m_home << m_repository << m_browser << m_renderType << m_openLastProject);
+	QLayout *form = KFormFactory::makeGrid( QStringList() << tr("KToon Home") << tr("Cache") << tr("Browser") 
+					<< tr("Render Type") << tr("Open last project"), QWidgetList() << m_home 
+					<< m_repository << m_browser << m_renderType << m_openLastProject);
 	
 	layout->addLayout(form);
-	
 	layout->addStretch(3);
 }
 
@@ -136,9 +140,7 @@ void KTPreferences::GeneralPage::saveValues()
 	}
 	
 	KCONFIG->setValue("RenderType", QString::number((m_renderType->itemData(m_renderType->currentIndex ()).toInt())));
-	
 	KCONFIG->setValue("OpenLastProject", m_openLastProject->isChecked());
-	
 	KCONFIG->sync();
 }
 
@@ -165,13 +167,10 @@ KTPreferences::FontPage::~FontPage()
 {
 }
 
-
 QFont KTPreferences::FontPage::currentFont() const
 {
 	return m_fontChooser->currentFont();
 }
-
-
 
 //--------------- CONSTRUCTOR --------------------
 
@@ -191,7 +190,7 @@ KTPreferences::KTPreferences( QWidget *parent ) : KConfigurationDialog(parent )
 	m_drawingAreaProperties = new KTPaintAreaConfig;
 	addPage(m_drawingAreaProperties, tr("Paint area"), QIcon(THEME_DIR+"/icons/drawing_area.png") );
 	
-// 	resize(400,400);
+	// resize(400,400);
 }
 
 //-------------- DESTRUCTOR -----------------

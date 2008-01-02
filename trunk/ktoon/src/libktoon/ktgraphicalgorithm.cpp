@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -31,8 +33,6 @@
 
 #include "ktgraphicalgorithm.h"
 
-
-
 #include <cmath>
 
 #ifndef M_PI
@@ -41,7 +41,6 @@
 
 #include <kcore/kdebug.h>
 #include <QDebug>
-
 
 #define MAXPOINTS	1000		/* The most points you can have */
 
@@ -522,7 +521,6 @@ QPointF *fitCubic(QPolygonF &points,int first,int last,FitVector tHat1,FitVector
 		return curve;
 	}
 
-
 	/*  If error not too large, try some reparameterization  */
 	/*  and iteration */
 	if (maxError < iterationError)
@@ -568,6 +566,7 @@ QPointF *fitCubic(QPolygonF &points,int first,int last,FitVector tHat1,FitVector
 	delete[] cu1;
 	delete[] cu2;
 	width=w1+w2;
+
 	return newcurve;
 }
 
@@ -740,11 +739,11 @@ char KTGraphicalAlgorithm::calculateCode(const QPointF &point, const QRectF &win
 
 bool KTGraphicalAlgorithm::intersectLine(const QPointF &from, const QPointF& to, const QRectF& window )
 {
-// 	qDebug() << from << " -> "<< to << "intersect" << window ;
+	// qDebug() << from << " -> "<< to << "intersect" << window ;
 	
 	//FIXME 
 	char code = calculateCode(from, window) & calculateCode( to, window);
-// 	printCode(code);
+	// printCode(code);
 	if ( code == (Bit1 & Bit2 & Bit3 & Bit4 ) )
 	{
 		return true;

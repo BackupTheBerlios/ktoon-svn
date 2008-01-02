@@ -26,6 +26,12 @@
 
 #include <kcore/kglobal.h>
 
+/**
+ * This class provides some methods for the KTLibraryWidget.
+ * Here is where folder methods are defined for the Library widget.
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
 KTGCTable::KTGCTable(QWidget *parent)
 	: KTreeListWidget(parent), m_currentFolder(0)
 {

@@ -22,17 +22,22 @@
 
 #include "ktpackagehandler.h"
 
-#include <kcore/kdebug.h>
-
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
 
+#include "kcore/kdebug.h"
 #include "kcore/kglobal.h"
 #include "kcore/kapplicationproperties.h"
 
 #include "quazip.h"
 #include "quazipfile.h"
+
+/**
+ * This class manages the file format for KToon projects.
+ * Here is where methods to handle KToon files are defined.
+ * @author David Cuadrado <krawek@toonka.com>
+*/
 
 struct KTPackageHandler::Private
 {
@@ -42,7 +47,6 @@ struct KTPackageHandler::Private
 KTPackageHandler::KTPackageHandler() : k(new Private)
 {
 }
-
 
 KTPackageHandler::~KTPackageHandler()
 {
@@ -105,7 +109,8 @@ bool KTPackageHandler::compress(QuaZip *zip, const QString &path)
 			continue;
 		}
 		
-		if(!outFile.open(QIODevice::WriteOnly, QuaZipNewInfo(stripRepositoryFromPath(filePath), stripRepositoryFromPath(filePath) ))) 
+		if(!outFile.open(QIODevice::WriteOnly, QuaZipNewInfo(stripRepositoryFromPath(filePath),
+									stripRepositoryFromPath(filePath) ))) 
 		{
 			return false;
 		}
@@ -182,7 +187,7 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 			name.remove(name.count()-1, 1);
 		}
 		
-// 		if( name.endsWith(".ktp") )
+		// if( name.endsWith(".ktp") )
 		{
 			k->importedProjectPath = QFileInfo(name).path();
 		}
@@ -194,7 +199,7 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 		}
 		
 		createPath( name );
-		out.setFileName(name);
+		out.setFileName( name );
 		
 		if ( ! out.open(QIODevice::WriteOnly) )
 		{

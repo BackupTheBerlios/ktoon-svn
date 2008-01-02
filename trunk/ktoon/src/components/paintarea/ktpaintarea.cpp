@@ -94,11 +94,11 @@ KTPaintArea::~KTPaintArea()
 void KTPaintArea::setCurrentScene(int index)
 {
 	K_FUNCINFOX("paintarea") << index;
-	KTScene *sscene = k->project->scene(index);
-	if ( sscene )
+	KTScene *scene = k->project->scene(index);
+	if ( scene )
 	{
 		k->currentSceneIndex = index;
-		graphicsScene()->setCurrentScene(sscene);
+		graphicsScene()->setCurrentScene(scene);
 	}
 	else
 	{

@@ -22,6 +22,12 @@
 
 #include "ktbrushmanager.h"
 
+/**
+ * This class handles the set of brushes for painting.
+ * Here is where methods to set/unset brushes are defined.
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
 struct KTBrushManager::Private
 {
 	Private() : pen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap)), brush(Qt::transparent) {}
@@ -55,7 +61,6 @@ void KTBrushManager::setPenBrush(const QBrush &brush)
 	k->pen.setBrush(brush);
 	emit penChanged( k->pen );
 }
-
 
 QPen KTBrushManager::pen() const
 {
@@ -93,4 +98,3 @@ QBrush KTBrushManager::brushColor() const
 {
 	return k->brush.color();
 }
-

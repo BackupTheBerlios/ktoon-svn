@@ -29,6 +29,11 @@
 
 #define LIBRARY_DIR CONFIG_DIR+"/libraries"
 
+/**
+ * This class defines enumerations used in the whole code of the project.
+ *
+ * @author David Cuadrado <krawek@toonka.com>
+*/
 
 namespace KToon
 {
@@ -47,8 +52,6 @@ namespace KToon
 		Critical
 	};
 };
-
-
 
 #endif
 

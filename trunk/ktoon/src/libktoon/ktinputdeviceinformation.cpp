@@ -25,6 +25,11 @@
 #include <QMouseEvent>
 #include <QTabletEvent>
 
+/**
+ * This class captures and process all the mouse/tablet events.
+ *
+ * @author David Cuadrado <krawek@toonka.com>
+*/
 
 struct KTInputDeviceInformation::Private
 {

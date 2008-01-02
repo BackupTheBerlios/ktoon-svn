@@ -38,7 +38,6 @@ KTXmlParserBase::KTXmlParserBase() : QXmlDefaultHandler(), k(new Private)
 {
 }
 
-
 KTXmlParserBase::~KTXmlParserBase()
 {
 	delete k;
@@ -47,7 +46,6 @@ KTXmlParserBase::~KTXmlParserBase()
 void KTXmlParserBase::initialize()
 {
 }
-
 
 bool KTXmlParserBase::startDocument()
 {
@@ -70,7 +68,10 @@ bool KTXmlParserBase::endDocument()
 
 bool KTXmlParserBase::startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
 {
-	if ( k->ignore ) return true;
+	if ( k->ignore ) 
+	{
+		return true;
+	}
 	
 	if ( k->root.isEmpty() )
 	{
@@ -78,7 +79,6 @@ bool KTXmlParserBase::startElement(const QString& , const QString& , const QStri
 	}
 	
 	bool r = startTag(qname, atts);
-	
 	k->currentTag = qname;
 	
 	return r;
@@ -93,7 +93,10 @@ bool KTXmlParserBase::endElement( const QString&, const QString& , const QString
 
 bool KTXmlParserBase::characters(const QString & ch)
 {
-	if ( k->ignore ) return true;
+	if ( k->ignore ) 
+	{
+		return true;
+	}
 	
 	if ( k->readText )
 	{

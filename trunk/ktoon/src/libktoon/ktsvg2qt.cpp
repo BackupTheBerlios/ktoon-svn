@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@toonka.com>              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -32,12 +34,9 @@ KTSvg2Qt::KTSvg2Qt()
 {
 }
 
-
 KTSvg2Qt::~KTSvg2Qt()
 {
 }
-
-
 
 // SVG PATH 2 PAINTER PATH
 
@@ -454,7 +453,8 @@ bool KTSvg2Qt::svgpath2qtpath(const QString &data, QPainterPath &path)
 					qreal ey = arg[6] + offsetY;
 					qreal curx = x;
 					qreal cury = y;
-					pathArc(path, rx, ry, xAxisRotation, int(largeArcFlag), int(sweepFlag), ex, ey, curx, cury);
+					pathArc(path, rx, ry, xAxisRotation, int(largeArcFlag), int(sweepFlag), ex, ey,
+						curx, cury);
 
 					x = ex;
 					y = ey;
@@ -475,7 +475,8 @@ bool KTSvg2Qt::svgpath2qtpath(const QString &data, QPainterPath &path)
 					qreal ey = arg[6];
 					qreal curx = x;
 					qreal cury = y;
-					pathArc(path, rx, ry, xAxisRotation, int(largeArcFlag), int(sweepFlag), ex, ey, curx, cury);
+					pathArc(path, rx, ry, xAxisRotation, int(largeArcFlag), int(sweepFlag), ex, ey,
+						curx, cury);
 					x = ex;
 					y = ey;
 					arg.pop_front(); arg.pop_front();
@@ -601,8 +602,8 @@ bool KTSvg2Qt::parseBrush(QBrush &brush, const QXmlAttributes &attributes)
 		if (value.startsWith(QLatin1String("url"))) 
 		{
 			value = value.remove(0, 3);
-// 			QString id = idFromUrl(value);
-			// FIXME: falta parsear
+			// QString id = idFromUrl(value);
+			// FIXME: parsing is missing 
 		} 
 		else if (value != QLatin1String("none")) 
 		{
@@ -668,31 +669,30 @@ bool KTSvg2Qt::svgmatrix2qtmatrix(const QString &data, QMatrix &matrix)
 
 bool KTSvg2Qt::parsePointF(const QString &pointstr, QPointF &point)
 {
-// 	QRegExp reg("\\(\\s*(\\d+\\.{0,1}\\d+)\\s*\\,\\s*(\\d+\\.{0,1}\\d+)\\s*\\)");
-	
-// 	if ( reg.indexIn(pointstr) > -1 )
-// 	{
-// 		QStringList texts = reg.capturedTexts();
+	// QRegExp reg("\\(\\s*(\\d+\\.{0,1}\\d+)\\s*\\,\\s*(\\d+\\.{0,1}\\d+)\\s*\\)");
+
+	// if ( reg.indexIn(pointstr) > -1 )
+	// {
+	//  QStringList texts = reg.capturedTexts();
+	//  if ( texts.count() != 3 ) return false;
+	//       point.setX(texts[1].toDouble());
+	//       point.setY(texts[2].toDouble());
 		
-// 		if ( texts.count() != 3 ) return false;
+	QString::const_iterator itr = pointstr.constBegin();
+	QList<qreal> points = parseNumbersList(++itr);
 		
-// 		point.setX(texts[1].toDouble());
-// 		point.setY(texts[2].toDouble());
+	if ( points.count() != 2 ) 
+	{
+		return false;
+	}
 		
-		QString::const_iterator itr = pointstr.constBegin();
-		QList<qreal> points = parseNumbersList(++itr);
-		
-		if ( points.count() != 2 ) return false;
-		
-		point.setX(points[0]);
-		point.setY(points[1]);
-// 	}
-// 	else
-// 	{
-// 		return false;
-// 	}
-	
+	point.setX(points[0]);
+	point.setY(points[1]);
+	// }
+	// else
+	// {
+	// 	return false;
+	// }	
+
 	return true;
 }
-
-
