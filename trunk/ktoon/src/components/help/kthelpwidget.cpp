@@ -27,13 +27,13 @@
 #include <qfile.h>
 #include <qmap.h>
 
-#include <kcore/kdebug.h>
-
 #include <QLocale>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
 
+// KOM
+#include <kcore/kdebug.h>
 #include <kcore/kglobal.h>
 
 KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidgetBase(parent)
@@ -55,17 +55,18 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
 	contentsListView->setHeaderLabels ( QStringList() << tr("") );
 	contentsListView->header()->hide();
 	
-	connect(contentsListView, SIGNAL(itemClicked ( QTreeWidgetItem *, int )), this, SLOT(tryToLoadPage(QTreeWidgetItem *, int)));
+	connect(contentsListView, SIGNAL(itemClicked ( QTreeWidgetItem *, int )), this, 
+									SLOT(tryToLoadPage(QTreeWidgetItem *, int)));
 	
-// 	contentsListView->setRootIsDecorated(true);
-// 	contentsListView->addColumn(tr("Topics"));
+	// contentsListView->setRootIsDecorated(true);
+	// contentsListView->addColumn(tr("Topics"));
 	
 	addChild( contentsListView);
 	
 	QDomDocument document;
 	QFile file( m_helpPath.path()+"/help.xml" );
 	
-// 	dDebug() << "Help path: " << m_helpPath.path();
+	// kDebug() << "Help path: " << m_helpPath.path();
 	if ( file.open( QIODevice::ReadOnly ) )
 	{
 		if ( document.setContent(&file) )
@@ -91,9 +92,10 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
 							{
 								if ( element2.tagName() == "SubSection" )
 								{
-									QTreeWidgetItem *subitem = new QTreeWidgetItem(item);
+									QTreeWidgetItem *subitem = 
+												new QTreeWidgetItem(item);
+
 									subitem->setText(0, element2.attribute("title"));
-									
 									m_files.insert(subitem, element2.attribute("file"));
 								}
 							}
@@ -136,8 +138,9 @@ void KTHelpWidget::tryToLoadPage(QTreeWidgetItem *item, int)
 
 void KTHelpWidget::loadPage(const QString &title, const QString &filePath)
 {
-// 	dDebug() << "Loading: "+filePath;
-/*	
+/*
+ 	kDebug() << "Loading: "+filePath;
+	
 	QFile file(filePath);
 	QFileInfo finfo(file);
 	
@@ -153,10 +156,10 @@ void KTHelpWidget::loadPage(const QString &title, const QString &filePath)
 		
 		file.close();
 		
-		if ( document != "" )*/
+		if ( document != "" )
+*/
 	emit pageLoaded(title, filePath);
-// 	}
-	
+// 	}	
 }
 
 QString KTHelpWidget::helpPath () const

@@ -98,7 +98,6 @@ void KTPluginManager::unloadPlugins()
 	}
 }
 
-
 QObjectList KTPluginManager::tools() const
 {
 	return m_tools;
@@ -108,9 +107,3 @@ QObjectList KTPluginManager::filters() const
 {
 	return m_filters;
 }
-
-
-
-
-
-

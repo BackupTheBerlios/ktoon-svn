@@ -39,12 +39,10 @@ KTPaintAreaRotator::KTPaintAreaRotator(QObject *parent, KTPaintAreaBase *view) :
 	connect(&k->timer, SIGNAL(timeout()), this, SLOT(applyRotation()));
 }
 
-
 KTPaintAreaRotator::~KTPaintAreaRotator()
 {
 	delete k;
 }
-
 
 void KTPaintAreaRotator::rotateTo(int angle)
 {
@@ -55,7 +53,6 @@ void KTPaintAreaRotator::rotateTo(int angle)
 		k->timer.start(50);
 	}
 }
-
 
 void KTPaintAreaRotator::applyRotation()
 {

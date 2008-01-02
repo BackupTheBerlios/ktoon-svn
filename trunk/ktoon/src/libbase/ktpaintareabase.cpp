@@ -81,20 +81,15 @@ class GLDevice : public QGLWidget
 struct KTPaintAreaBase::Private
 {
 	QGraphicsRectItem *grid;
-	
 	QRectF drawingRect;
 	
 	bool drawGrid;
 	double angle;
 	
 	KTPaintAreaRotator *rotator;
-	
 	QStringList copiesXml;
-	
 	KTGraphicsScene *scene;
 };
-
-
 
 KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), k(new Private)
 {
@@ -329,7 +324,6 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 	}
 	
 	painter->setRenderHint(QPainter::Antialiasing, hasAntialiasing);
-	
 	painter->restore();
 }
 

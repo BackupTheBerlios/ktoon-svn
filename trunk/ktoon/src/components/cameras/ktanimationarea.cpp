@@ -22,7 +22,6 @@
 
 #include "ktanimationarea.h"
 
-
 #include <QGraphicsItem>
 
 #include "ktprojectresponse.h"
@@ -31,7 +30,6 @@
 #include "ktanimationrenderer.h"
 
 #include "ktsoundlayer.h"
-
 #include <kcore/kdebug.h>
 
 struct KTAnimationArea::Private
@@ -99,7 +97,6 @@ void KTAnimationArea::setFPS(int fps)
 	}
 }
 
-
 void KTAnimationArea::paintEvent(QPaintEvent *)
 {
 	if ( k->currentFramePosition >= 0 && k->currentFramePosition < k->photograms.count() )
@@ -125,7 +122,7 @@ void KTAnimationArea::play()
 		k->timer->start(1000 / k->fps);
 	}
 	
-// 	emit toStatusBar( tr("Playing... "), 2000 );
+	// emit toStatusBar( tr("Playing... "), 2000 );
 }
 
 void KTAnimationArea::stop()
@@ -138,18 +135,23 @@ void KTAnimationArea::stop()
 		sound->stop();
 	}
 	
-// 	k->draw = false;
+	// k->draw = false;
 	k->currentFramePosition = 0;
-// 	k->currentFrame = 0;
+	// k->currentFrame = 0;
 	repaint();
 }
 
 void KTAnimationArea::nextFrame()
 {
 	if ( ! k->isRendered )
+	{
 		render();
+	}
 	
-	if ( k->currentFramePosition >= k->photograms.count() ) return;
+	if ( k->currentFramePosition >= k->photograms.count() ) 
+	{
+		return;
+	}
 	
 	k->currentFramePosition += 1;
 	repaint();
@@ -157,9 +159,16 @@ void KTAnimationArea::nextFrame()
 
 void KTAnimationArea::previousFrame()
 {
-	if ( ! k->isRendered ) render();
+	if ( ! k->isRendered ) 
+	{
+		render();
+	}
 	
-	if ( k->currentFramePosition < 1 ) return;
+	if ( k->currentFramePosition < 1 ) 
+	{
+		return;
+	}
+
 	k->currentFramePosition -= 1;
 	repaint();
 }
@@ -184,7 +193,6 @@ void KTAnimationArea::advance()
 		
 		if ( k->currentFramePosition < k->photograms.count() )
 		{
-			
 			repaint();
 			k->currentFramePosition++;
 		}
@@ -244,7 +252,10 @@ void KTAnimationArea::render()
 {
 	KTScene *scene = k->project->scene( k->currentSceneIndex );
 	
-	if (!scene) return;
+	if (!scene) 
+	{
+		return;
+	}
 	
 	k->sounds.clear();
 	
@@ -279,7 +290,6 @@ QSize KTAnimationArea::sizeHint() const
 	return k->renderCamera.size();
 }
 
-
 void  KTAnimationArea::resizeEvent ( QResizeEvent * e)
 {
 	QFrame::resizeEvent(e);
@@ -300,7 +310,6 @@ void KTAnimationArea::setLoop(bool l)
 void KTAnimationArea::setCurrentScene(int index)
 {
 	k->currentSceneIndex = index;
-	
 }
 
 KTScene *KTAnimationArea::currentScene() const

@@ -47,6 +47,12 @@
 
 #include "ktguideline.h"
 
+/**
+ * This class defines the data structure and methods for handling animation scenes.
+ * Here is where the set of photograms of one scene are processed.
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
 struct KTGraphicsScene::Private
 {
 	KTToolPlugin *tool;
@@ -126,9 +132,8 @@ void KTGraphicsScene::drawCurrentPhotogram()
 	drawPhotogram( k->framePosition.frame );
 }
 
-
-
-void KTGraphicsScene::drawItems(QPainter *painter, int numItems, QGraphicsItem *items[], const QStyleOptionGraphicsItem options[], QWidget *widget)
+void KTGraphicsScene::drawItems(QPainter *painter, int numItems, QGraphicsItem *items[], 
+					const QStyleOptionGraphicsItem options[], QWidget *widget)
 {
 	for (int i = 0; i < numItems; ++i)
 	{
@@ -150,7 +155,10 @@ void KTGraphicsScene::drawItems(QPainter *painter, int numItems, QGraphicsItem *
 
 void KTGraphicsScene::drawPhotogram(int photogram)
 {
-	if ( photogram < 0 || !k->scene ) return;
+	if ( photogram < 0 || !k->scene ) 
+	{	
+		return;
+	}
 	
 	clean();
 	
@@ -166,7 +174,8 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 				
 				double opacity = 0.6;
 				
-				for(int frameIndex = photogram-1; frameIndex > photogram-k->onionSkin.previous-1; frameIndex-- )
+				for(int frameIndex = photogram-1; frameIndex > photogram-k->onionSkin.previous-1;
+													frameIndex-- )
 				{
 					KTFrame * frame = layer->frame(frameIndex);
 					if(frame)
@@ -295,7 +304,10 @@ int KTGraphicsScene::currentLayerIndex() const
 
 int KTGraphicsScene::currentSceneIndex() const
 {
-	if( !k->scene ) return -1;
+	if( !k->scene ) 
+	{
+		return -1;
+	}
 	
 	return k->scene->visualIndex();
 }
@@ -309,7 +321,6 @@ void KTGraphicsScene::setNextOnionSkinCount(int n)
 void KTGraphicsScene::setPreviousOnionSkinCount(int n)
 {
 	k->onionSkin.previous = n;
-	
 	drawCurrentPhotogram();
 }
 
@@ -329,7 +340,6 @@ KTFrame *KTGraphicsScene::currentFrame()
 	return 0;
 }
 
-
 void KTGraphicsScene::setCurrentScene(KTScene *scene)
 {
 	Q_CHECK_PTR(scene);
@@ -342,7 +352,6 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
 	qDeleteAll(k->lines);
 	k->lines.clear();
 	
-
 	clean();
 	k->scene = scene;
 	
@@ -351,7 +360,10 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
 
 void KTGraphicsScene::setLayerVisible(int layerIndex, bool visible)
 {
-	if( !k->scene ) return;
+	if( !k->scene ) 
+	{
+		return;
+	}
 	
 	if( KTLayer *layer = k->scene->layer(layerIndex) )
 	{
@@ -402,17 +414,18 @@ KTToolPlugin *KTGraphicsScene::currentTool() const
 void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsScene::mousePressEvent(event);
-	
 	k->inputInformation->updateFromMouseEvent(event);
-	
 	k->isDrawing = false;
 	
 	if( event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
 	{
 	}
-	else if (k->tool )
+	else if (k->tool)
 	{
-		if( k->tool->toolType() == KTToolPlugin::Brush && event->isAccepted() ) return;
+		if( k->tool->toolType() == KTToolPlugin::Brush && event->isAccepted() )
+		{
+			return;
+		}
 		if(currentFrame())
 		{
 			if ( event->buttons() == Qt::LeftButton && !currentFrame()->isLocked() )
@@ -491,7 +504,9 @@ void KTGraphicsScene::keyPressEvent(QKeyEvent *event)
 void KTGraphicsScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
 {
 	if (event->mimeData()->hasFormat("ktoon-ruler"))
+	{		
 		event->acceptProposedAction();
+	}
 	
 	KTLineGuide *line = 0;
 	if(event->mimeData()->data("ktoon-ruler") == "verticalLine")
@@ -538,19 +553,17 @@ void KTGraphicsScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 	}
 }
 
-
 bool KTGraphicsScene::event(QEvent *e)
 {
 	return QGraphicsScene::event(e);
 }
-
 
 void KTGraphicsScene::itemResponse(KTItemResponse *event)
 {
 	K_FUNCINFOX("scene");
 	if ( k->tool )
 	{
-		//d->tool->init(this); //FIXME:d->tool->init(this); in itemResponse ???
+		//k->tool->init(this); //FIXME:k->tool->init(this); in itemResponse ???
 		k->tool->itemResponse(event);
 	}
 }
@@ -578,7 +591,8 @@ void KTGraphicsScene::aboutToMousePress()
 		}
 		else
 		{
-			it.key()->setAcceptedMouseButtons( Qt::LeftButton | Qt::RightButton | Qt::MidButton | Qt::XButton1 | Qt::XButton2 );
+			it.key()->setAcceptedMouseButtons( Qt::LeftButton | Qt::RightButton | Qt::MidButton | Qt::XButton1
+								| Qt::XButton2 );
 		}
 
 		++it;

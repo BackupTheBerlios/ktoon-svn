@@ -40,14 +40,10 @@ KTLineGuide::KTLineGuide(Qt::Orientation o ,QGraphicsScene *scene): QGraphicsIte
 {
 	k->orientation = o;
 	k->enabled = true;
-// 	setAcceptsHoverEvents(true);
-// 	setAcceptedMouseButtons(0);
-	
-// 	setFlag(QGraphicsItem::ItemIsFocusable, false);
-	
+	// setAcceptsHoverEvents(true);
+	// setAcceptedMouseButtons(0);
+	// setFlag(QGraphicsItem::ItemIsFocusable, false);
 }
-
-
 
 KTLineGuide::~KTLineGuide()
 {
@@ -70,11 +66,13 @@ void KTLineGuide::paint( QPainter * painter, const QStyleOptionGraphicsItem * , 
 	painter->setPen(QPen(Qt::black, 1, Qt::DashLine));
 	if(k->orientation == Qt::Vertical)
 	{
-		painter->drawLine((int)boundingRect().center().x(), 0, (int)boundingRect().center().x(), (int)boundingRect().height());
+		painter->drawLine((int)boundingRect().center().x(), 0, (int)boundingRect().center().x(), 
+											(int)boundingRect().height());
 	}
 	else
 	{
-		painter->drawLine( 0, (int)boundingRect().center().y(), (int)boundingRect().width(), (int)boundingRect().center().y());
+		painter->drawLine( 0, (int)boundingRect().center().y(), (int)boundingRect().width(), 
+		(int)boundingRect().center().y());
 	}
 }
 
@@ -99,20 +97,22 @@ QVariant KTLineGuide::itemChange( GraphicsItemChange change, const QVariant & va
 	return QGraphicsItem::itemChange(change, value );
 }
 
-// void KTLineGuide::hoverEnterEvent(QGraphicsSceneHoverEvent * e)
-// {
-// 	QGraphicsSceneMouseEvent *event = new QGraphicsSceneMouseEvent(QEvent::GraphicsSceneMousePress);
-// 	event->setButtons(Qt::LeftButton);
-// 	event->setButton(Qt::LeftButton);
-// 	
-// 	mousePressEvent(event);
-// 	
-// 	delete event;
-// 	
-// 	setAcceptsHoverEvents(false);
-// 	
-// 	syncCursor();
-// }
+/* 
+void KTLineGuide::hoverEnterEvent(QGraphicsSceneHoverEvent * e)
+ {
+ 	QGraphicsSceneMouseEvent *event = new QGraphicsSceneMouseEvent(QEvent::GraphicsSceneMousePress);
+ 	event->setButtons(Qt::LeftButton);
+ 	event->setButton(Qt::LeftButton);
+ 	
+ 	mousePressEvent(event);
+ 	
+ 	delete event;
+ 	
+ 	setAcceptsHoverEvents(false);
+ 	
+ 	syncCursor();
+ }
+*/
 
 void KTLineGuide::mouseMoveEvent(QGraphicsSceneMouseEvent * e)
 {
@@ -128,24 +128,26 @@ void KTLineGuide::mouseMoveEvent(QGraphicsSceneMouseEvent * e)
 
 bool KTLineGuide::sceneEvent(QEvent *e)
 {
-// 	switch(e->type())
-// 	{
-// 		case QEvent::GraphicsSceneMouseMove:
-// 		case QEvent::GraphicsSceneHoverEnter:
-// 		case QEvent::GraphicsSceneHoverLeave:
-// 		case QEvent::GraphicsSceneHoverMove:
-// 		{
-// 			QGraphicsSceneMouseEvent *event = new QGraphicsSceneMouseEvent(QEvent::GraphicsSceneMousePress);
-// 			event->setButtons(Qt::LeftButton);
-// 			event->setButton(Qt::LeftButton);
-// 			
-// 			mousePressEvent(event);
-// 			
-// 			delete event;
-// 		}
-// 		break;
-// 		default: break;
-// 	}
+/*
+ 	switch(e->type())
+	{
+ 		case QEvent::GraphicsSceneMouseMove:
+ 		case QEvent::GraphicsSceneHoverEnter:
+ 		case QEvent::GraphicsSceneHoverLeave:
+ 		case QEvent::GraphicsSceneHoverMove:
+ 		{
+ 			QGraphicsSceneMouseEvent *event = new QGraphicsSceneMouseEvent(QEvent::GraphicsSceneMousePress);
+ 			event->setButtons(Qt::LeftButton);
+ 			event->setButton(Qt::LeftButton);
+ 			
+ 			mousePressEvent(event);
+ 			
+ 			delete event;
+ 		}
+ 		break;
+ 		default: break;
+ 	}
+*/
 	
 	return QGraphicsItem::sceneEvent(e);
 }
@@ -182,6 +184,4 @@ void KTLineGuide::syncCursor()
 			QCursor::setPos((int)QCursor::pos().x(), (int)globalPos.y()+2);
 		}
 	}
-
 }
-

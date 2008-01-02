@@ -35,7 +35,6 @@ struct KTPenWidget::Private
 	QPen pen;
 };
 
-
 KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Private)
 {
 	setWindowTitle( tr("Pen"));

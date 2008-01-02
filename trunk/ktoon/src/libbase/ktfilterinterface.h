@@ -49,7 +49,7 @@ class KTOON_EXPORT AFilterInterface
 	public:
 		virtual ~AFilterInterface() {}
 		virtual QStringList keys() const = 0;
-// 		virtual void filter(const QString &filter, const QList<KTGraphicComponent *> &frame) = 0;
+		// virtual void filter(const QString &filter, const QList<KTGraphicComponent *> &frame) = 0;
 		
 		virtual QHash<QString, KAction *>actions() = 0;
 };

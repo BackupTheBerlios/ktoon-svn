@@ -37,12 +37,12 @@ struct KTModuleWidgetBase::Private
 	QObjectList childs;
 };
 
-KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), KTAbstractProjectResponseHandler(), k( new Private )
+KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent),
+									KTAbstractProjectResponseHandler(), k( new Private )
 {
 	setObjectName(name);
 
 	k->container = new QVBoxLayout(this);
-	
 	k->container->setMargin(5);
 	k->container->setSpacing(1);
 	
@@ -59,7 +59,6 @@ KTModuleWidgetBase::~KTModuleWidgetBase()
 void KTModuleWidgetBase::addChild(QWidget* child, Qt::Alignment alignment)
 {
 	k->childs.append(child);
-	
 	k->container->invalidate();
 	k->container->addWidget(child, 0,alignment);
 }

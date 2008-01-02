@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 #include "kttoolplugin.h"
-
 #include <QGraphicsView>
 
 #include "ktbrushmanager.h"

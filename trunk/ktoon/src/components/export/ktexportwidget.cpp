@@ -428,9 +428,7 @@ ExportTo::ExportTo(const KTProject *project) : KWizardPage(tr("Export to File"))
 	configureLayout->addWidget(configuration);
 	
 	configureLayout->addStretch();
-	
 	layout->addWidget(configure);
-	
 	layout->addStretch();
 	
 	setWidget(container);

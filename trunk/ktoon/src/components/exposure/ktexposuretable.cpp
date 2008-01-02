@@ -44,7 +44,7 @@ struct LayerItem
 };
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.co>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
  */
 class KTExposureHeader: public QHeaderView
 {
@@ -70,7 +70,7 @@ class KTExposureHeader: public QHeaderView
 		
 	protected:
 		virtual void mousePressEvent ( QMouseEvent * event );
-// 		
+
 	private:
 		QVector<LayerItem> m_layers;
 		
@@ -82,18 +82,19 @@ class KTExposureHeader: public QHeaderView
 		void visiblityChanged(int indexLayer, bool visibility );
 };
 
-KTExposureHeader::KTExposureHeader(QWidget * parent ) : QHeaderView(Qt::Horizontal , parent), m_sectionEdited(-1), m_blockSectionMoved(false)
+KTExposureHeader::KTExposureHeader(QWidget * parent ) : QHeaderView(Qt::Horizontal , parent), m_sectionEdited(-1),
+												m_blockSectionMoved(false)
 {
 	setClickable(true);
 	setMovable(true);
 	
-// 	connect(this, SIGNAL(sectionClicked(int)), this, SLOT(emitVisiblityChanged(int)));
+	// connect(this, SIGNAL(sectionClicked(int)), this, SLOT(emitVisiblityChanged(int)));
 	connect(this, SIGNAL(sectionDoubleClicked( int )), this, SLOT(showEditorName(int)));
 	
 	m_editor = new QLineEdit(this);
 	m_editor->setFocusPolicy( Qt::ClickFocus);
 	m_editor->setInputMask("");
-// 	connect (m_editor, SIGNAL( returnPressed ()), this, SLOT(hideEditorName()));
+	// connect (m_editor, SIGNAL( returnPressed ()), this, SLOT(hideEditorName()));
 	connect (m_editor, SIGNAL( editingFinished () ), this, SLOT(hideEditorName()));
 	m_editor->hide();
 }
@@ -110,9 +111,9 @@ void KTExposureHeader::emitVisiblityChanged(int section)
 
 void KTExposureHeader::setVisibilityChanged(int logicalndex, bool visibility)
 {
-// 	Q_UNUSED(visibility);
-	//FIXME: in ktexpousertable.cpp visibility or !m_layers[logicalndex].isVisible
-// 	m_layers[logicalndex].isVisible = !m_layers[logicalndex].isVisible;
+	// Q_UNUSED(visibility);
+	// FIXME: in ktexpousertable.cpp visibility or !m_layers[logicalndex].isVisible
+	// m_layers[logicalndex].isVisible = !m_layers[logicalndex].isVisible;
 	m_layers[logicalndex].isVisible = visibility;
 	updateSection(logicalndex);
 }
@@ -151,7 +152,6 @@ void KTExposureHeader::insertLayer(int logicalIndex, const QString &text)
 void KTExposureHeader::setLayerName(int logicalIndex, const QString &text)
 {
 	m_layers[logicalIndex].title = text;
-	
 	updateSection(logicalIndex);
 }
 
@@ -206,7 +206,10 @@ void KTExposureHeader::mousePressEvent ( QMouseEvent * event )
 
 void KTExposureHeader::paintSection ( QPainter * painter, const QRect & rect, int logicalIndex ) const
 {
-	if ( !rect.isValid() ) return;
+	if ( !rect.isValid() ) 
+	{
+		return;
+	}
 	
 	QStyleOptionHeader headerOption;
 	headerOption.rect = rect;
@@ -216,11 +219,14 @@ void KTExposureHeader::paintSection ( QPainter * painter, const QRect & rect, in
 	
 	QStyle::State state = QStyle::State_None;
 	if (isEnabled())
+	{
 		state |= QStyle::State_Enabled;
+	}
+
 	if (window()->isActiveWindow())
+	{
 		state |= QStyle::State_Active;
-	
-	
+	}
 	
 	style()->drawControl ( QStyle::CE_HeaderSection, &headerOption, painter );
 	
@@ -235,7 +241,6 @@ void KTExposureHeader::paintSection ( QPainter * painter, const QRect & rect, in
 	int y = fm.height() + ( rect.y() / 2);
 	
 	painter->drawText( x, y, text);
-	
 	
 	QStyleOptionButton buttonOption;
 	
@@ -271,9 +276,9 @@ void KTExposureHeader::paintSection ( QPainter * painter, const QRect & rect, in
 class KTExposureItemDelegate : public QItemDelegate
 {
 	public:
-		KTExposureItemDelegate(QObject * parent = 0 );
-		~KTExposureItemDelegate();
-		virtual void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+	   KTExposureItemDelegate(QObject * parent = 0 );
+	   ~KTExposureItemDelegate();
+	   virtual void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
 };
 
 KTExposureItemDelegate::KTExposureItemDelegate(QObject * parent) :  QItemDelegate(parent)
@@ -283,8 +288,6 @@ KTExposureItemDelegate::KTExposureItemDelegate(QObject * parent) :  QItemDelegat
 KTExposureItemDelegate::~KTExposureItemDelegate()
 {
 }
-
-
 
 void KTExposureItemDelegate::paint( QPainter *painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
@@ -310,7 +313,6 @@ void KTExposureItemDelegate::paint( QPainter *painter, const QStyleOptionViewIte
 	}
 }
 
-
 ////////////////////////
 
 struct KTExposureTable::Private
@@ -321,26 +323,21 @@ struct KTExposureTable::Private
 
 KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new Private)
 {
-	
 	setItemDelegate(new KTExposureItemDelegate(this));
-	
+
 	QTableWidgetItem *prototype = new QTableWidgetItem();
 	
-	prototype->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable );
-	
-	prototype->setTextAlignment(Qt::AlignCenter);
-	
+	prototype->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable );	
+	prototype->setTextAlignment(Qt::AlignCenter);	
 	setItemPrototype(prototype);
 	
 	setRowCount( 100 );
 	
 	k->header = new KTExposureHeader(this);
 	connect(k->header, SIGNAL(visiblityChanged ( int, bool )), this, SIGNAL(requestChangeVisiblityLayer( int, bool )));
-	connect(k->header, SIGNAL(changedName ( int, const QString & )), this, SIGNAL(requestRenameLayer( int, const QString & )));
-	
-	
+	connect(k->header, SIGNAL(changedName ( int, const QString & )), this, SIGNAL(requestRenameLayer( int, 
+													const QString & )));
 	connect(k->header, SIGNAL(sectionMoved ( int , int , int  )), this, SLOT(emitRequestMoveLayer( int, int , int )));
-	
 	
 	setHorizontalHeader( k->header);
 	
@@ -376,8 +373,6 @@ void KTExposureTable::emitRequestMoveLayer( int , int oldVisualIndex, int newVis
 	}
 }
 
-
-
 KTExposureTable::~KTExposureTable()
 {
 	delete k;
@@ -391,7 +386,6 @@ QString KTExposureTable::frameName(int indexLayer, int indexFrame)
 		return frame->text();
 	}
 }
-
 
 void KTExposureTable::setFrameName(int indexLayer, int indexFrame,const QString & name)
 {
@@ -424,12 +418,10 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
 	return false;
 }
 
-
 void KTExposureTable::selectFrame( int indexLayer, int indexFrame)
 {
 	setCurrentCell(indexFrame,  k->header->logicalIndex(indexLayer));
 }
-
 
 void KTExposureTable::setMenu(QMenu *menu)
 {
@@ -517,7 +509,6 @@ void KTExposureTable::setLockLayer(int indexLayer,  bool locked)
 	k->header->setLockLayer ( indexLayer, locked);
 }
 
-
 void KTExposureTable::setVisibilityChanged(int visualIndex, bool visibility)
 {
 	k->header->setVisibilityChanged(k->header->logicalIndex(visualIndex), visibility);
@@ -557,7 +548,7 @@ void KTExposureTable::moveFrame(  int oldPosLayer, int oldPosFrame, int newPosLa
 	
 	setItem(newPosFrame, newPosLayer, oldItem);
 	setItem(oldPosFrame, oldPosLayer, newItem);
-	//FIXME remover esto
+	//FIXME remove this
 	
 	if(!external)
 	{
@@ -569,7 +560,6 @@ void KTExposureTable::moveLayer( int oldPosLayer, int newPosLayer )
 {
 	k->header->moveLayer( oldPosLayer, newPosLayer );
 }
-
 
 void KTExposureTable::emitRequestSetUsedFrame( int indexFrame,  int indexLayer)
 {
@@ -608,7 +598,6 @@ bool KTExposureTable::edit( const QModelIndex & index, EditTrigger trigger, QEve
 
 void KTExposureTable::mousePressEvent(QMouseEvent * event)
 {
-	
 	QTableWidget::mousePressEvent(event);
 	if(event->button() == Qt::RightButton)
 	{
