@@ -38,8 +38,13 @@
 
 #include "ktgraphicobject.h"
 
-
 #define DEBUG 0
+
+/**
+ * This class defines the data structure for a node, and all the methods required to manipulate it.
+ * 
+ * @author David Cuadrado <krawek@toonka.com>
+*/
 
 struct Node::Private
 {
@@ -67,12 +72,10 @@ Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *m
 	setZValue(1000);
 }
 
-
 Node::~Node()
 {
 	delete k;
 }
-
 
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w )
 {

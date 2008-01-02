@@ -39,7 +39,6 @@ KTApplication::KTApplication(int &argc, char **argv) : KApplication(argc, argv)
 	// applyColors(Default);
 }
 
-
 KTApplication::~KTApplication()
 {
 }

@@ -26,6 +26,12 @@
 // KOM
 #include <kcore/kdebug.h>
 
+/**
+ * This class handles the methods required to manipulate a set of nodes.
+ * 
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+*/
+
 NodeManager::NodeManager(QGraphicsItem * parent, QGraphicsScene  *scene): m_parent(parent), m_scene(scene), 
 									  m_anchor(0,0), m_press(false), m_rotation(0)
 {

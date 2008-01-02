@@ -23,10 +23,15 @@
 #include "ktlocalprojectmanagerhandler.h"
 #include "ktprojectrequest.h"
 #include "ktprojectcommand.h"
-
 #include "ktsaveproject.h"
 
 #include <kcore/kdebug.h>
+
+/**
+ * This class handles all the procedures related to the projects local format for KToon.
+ *
+ * @author David Cuadrado <krawek@toonka.com>
+*/
 
 KTLocalProjectManagerHandler::KTLocalProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent)
 {
@@ -36,7 +41,6 @@ KTLocalProjectManagerHandler::KTLocalProjectManagerHandler(QObject *parent) : KT
 KTLocalProjectManagerHandler::~KTLocalProjectManagerHandler()
 {
 }
-
 
 void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *request)
 {
@@ -54,7 +58,6 @@ void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *
 bool KTLocalProjectManagerHandler::saveProject(const QString &fileName, const KTProject *project)
 {
 	bool result = false;
-	
 	QString fn = fileName;
 	
 	if ( !fileName.endsWith(".ktn") )
@@ -62,9 +65,7 @@ bool KTLocalProjectManagerHandler::saveProject(const QString &fileName, const KT
 		fn+=".ktn";
 	}
 	
-	
 	KTSaveProject *saver = new KTSaveProject;
-	
 	result = saver->save(fn, project);
 	
 	delete saver;
@@ -75,7 +76,6 @@ bool KTLocalProjectManagerHandler::saveProject(const QString &fileName, const KT
 bool KTLocalProjectManagerHandler::loadProject(const QString &fileName, KTProject *project)
 {
 	bool result = false;
-	
 	KTSaveProject *loader = 0;
 	
 	if ( fileName.endsWith(".ktn") )
@@ -97,5 +97,3 @@ void KTLocalProjectManagerHandler::setProject(KTProject *)
 {
 	
 }
-
-
