@@ -21,9 +21,9 @@
  ***************************************************************************/
 
 #include "nodemanager.h"
-
 #include "ktgraphicobject.h"
 
+// KOM
 #include <kcore/kdebug.h>
 
 NodeManager::NodeManager(QGraphicsItem * parent, QGraphicsScene  *scene): m_parent(parent), m_scene(scene), 
@@ -44,8 +44,6 @@ NodeManager::NodeManager(QGraphicsItem * parent, QGraphicsScene  *scene): m_pare
 	beginToEdit();
 }
 
-
-
 NodeManager::~NodeManager()
 {
 	foreach(Node *node, m_nodes)
@@ -61,7 +59,6 @@ NodeManager::~NodeManager()
 		node = 0;
 	}
 	m_nodes.clear();
-	
 }
 
 void NodeManager::syncNodes(const QRectF &sbr)
@@ -247,5 +244,3 @@ double NodeManager::rotation()
 {
 	return m_rotation;
 }
-
-

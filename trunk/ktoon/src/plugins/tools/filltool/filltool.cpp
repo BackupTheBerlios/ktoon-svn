@@ -83,14 +83,14 @@ void FillTool::setupActions()
 	m_actions.insert( tr("Fill"), action1 );
 	
 	KAction *action2 = new KAction( QIcon(THEME_DIR+"/icons/fillcolor.png"), tr("Shape fill"), this);
-// 	action2->setShortcut( QKeySequence(tr("Ctrl+F")) );
+	// action2->setShortcut( QKeySequence(tr("Ctrl+F")) );
 	action2->setCursor( QCursor(THEME_DIR+"/cursors/paint.png") );
 	
 	m_actions.insert( tr("Shape fill"), action2 );
 
 	
 	KAction *action3 = new KAction( QIcon(THEME_DIR+"/icons/fill.png"), tr("Contour fill"), this);
-// 	action3->setShortcut( QKeySequence(tr("Ctrl+F")) );
+	// action3->setShortcut( QKeySequence(tr("Ctrl+F")) );
 	action3->setCursor( QCursor(THEME_DIR+"/cursors/contour_fill.png") );
 	
 	m_actions.insert( tr("Contour fill"), action3 );
@@ -106,7 +106,10 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 		{
 			KTPathItem *item = KTItemConverter::convertToPath(clickedItem);
 			
-			if( ! item ) return;
+			if( ! item ) 
+			{
+				return;
+			}
 			
 			QList<QGraphicsItem *> colls = clickedItem->collidingItems();
 			QPainterPath res = mapPath(item);
@@ -120,7 +123,8 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 					if( path )
 					{
 						QPointF localPoint = xit->mapFromScene(input->pos());
-						if( path->shape().contains( localPoint ) && path->scenePos() != item->scenePos() )
+						if( path->shape().contains( localPoint ) && 
+										path->scenePos() != item->scenePos() )
 						{
 							res = ClipHelper::intersect(res, mapPath(path));
 						}
@@ -176,12 +180,16 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 			QDomDocument doc;
 			doc.appendChild(intersection->toXml( doc ));
 		
-			KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
+			KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), 
+							scene->currentLayerIndex(), scene->currentFrameIndex(), 
+							scene->currentFrame()->graphics().count(), KTProjectRequest::Add, 
+							doc.toString()); // Adds to end
 			emit requested(&event);
 		}
 		else
 		{
-			if( QAbstractGraphicsShapeItem *shape = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(clickedItem) )
+			if( QAbstractGraphicsShapeItem *shape = 
+							qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(clickedItem) )
 			{
 				int position  = scene->currentFrame()->visualIndexOf(shape);
 				
@@ -201,7 +209,11 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 					QDomDocument doc;
 					doc.appendChild(KTSerializer::properties( shape, doc ));
 					
-					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::Transform, doc.toString() );
+					KTProjectRequest event = KTRequestBuilder::createItemRequest( 
+								scene->currentSceneIndex(), scene->currentLayerIndex(),
+								scene->currentFrameIndex(), position, 
+								KTProjectRequest::Transform, doc.toString() );
+
 					emit requested(&event);
 				}
 			}
@@ -233,7 +245,6 @@ QWidget  *FillTool::configurator()
 	return  0;
 }
 
-
 void FillTool::aboutToChangeScene(KTGraphicsScene *)
 {
 }
@@ -242,7 +253,6 @@ void FillTool::aboutToChangeTool()
 {
 	
 }
-
 
 QPainterPath FillTool::mapPath(const QPainterPath &path, const QPointF &pos)
 {
@@ -259,8 +269,6 @@ QPainterPath FillTool::mapPath(const QGraphicsPathItem *item)
 {
 	return mapPath(item->path(), item->pos());
 }
-
-
 
 Q_EXPORT_PLUGIN2( kt_fill, FillTool )
 

@@ -79,7 +79,6 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 	Q_UNUSED(w);
 	
 	bool antialiasing =  painter->renderHints() & QPainter::Antialiasing;
-	
 	painter->setRenderHint(QPainter::Antialiasing, false);
 	
 	QColor c;
@@ -126,7 +125,6 @@ QRectF Node::boundingRect() const
 	QRectF r(QPointF( -size.width()/2, -size.height()/2), size);
 	return r;
 }
-
 
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 {
@@ -270,7 +268,6 @@ void Node::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * e)
 	k->manager->toggleAction();
 	e->setAccepted (false);
 	QGraphicsItem::mouseDoubleClickEvent(e);
-	
 }
 
 int Node::typeNode() const

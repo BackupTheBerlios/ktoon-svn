@@ -46,9 +46,14 @@ class FillTool : public KTToolPlugin
 
 		void init(KTGraphicsScene *scene);
 		
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, 
+					KTGraphicsScene *scene);
+
+		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, 
+					KTGraphicsScene *scene);
+
+		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, 
+					KTGraphicsScene *scene);
 		
 		KTPathItem *itemPressed(QGraphicsItem *item, const KTBrushManager *brush);
 		
