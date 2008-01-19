@@ -46,72 +46,6 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KWizard(parent), m_project(project)
-{
-	KINIT;
-	setWindowTitle(tr("Export"));
-	setWindowIcon(QIcon(THEME_DIR+"/icons/export.png"));
-	
-	m_pluginSelectionPage = new SelectPlugin();
-	addPage(m_pluginSelectionPage);
-	
-	m_scenesSelectionPage = new SelectScenes();
-	m_scenesSelectionPage->setScenes(project->scenes().values());
-	
-	addPage(m_scenesSelectionPage);
-	
-	m_exportToPage = new ExportTo(project);
-	addPage(m_exportToPage);
-	
-	connect(m_pluginSelectionPage, SIGNAL(selectedPlugin(const QString &)), this, SLOT(setExporter(const QString &)));
-	connect(m_pluginSelectionPage, SIGNAL(formatSelected(int)), m_exportToPage, SLOT(setCurrentFormat(int)));
-	connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportToPage, 
-		SLOT(setScenesIndexes(const QList<int> &)));
-	
-	loadPlugins();
-}
-
-KTExportWidget::~KTExportWidget()
-{
-	KEND;
-	qDeleteAll(m_plugins);
-}
-
-void KTExportWidget::loadPlugins()
-{
-	QDir pluginDirectory = QDir(HOME_DIR+"/plugins/");
-
-	foreach (QString fileName, pluginDirectory.entryList(QDir::Files))
-	{
-		QPluginLoader loader(pluginDirectory.absoluteFilePath(fileName));
-		KTExportPluginObject *plugin = qobject_cast<KTExportPluginObject*>(loader.instance());
-		
-		if (plugin)
-		{
-			KTExportInterface *exporter = qobject_cast<KTExportInterface *>(plugin);
-			
-			if (exporter)
-			{
-				m_pluginSelectionPage->addPlugin(exporter->key());
-				m_plugins.insert(exporter->key(), exporter);
-			}
-			else
-				kError() << "Can't load: " << fileName;
-		}
-	}
-}
-
-void KTExportWidget::setExporter(const QString &plugin)
-{
-	if ( m_plugins.contains(plugin) )
-	{
-		KTExportInterface* currentExporter = m_plugins[plugin];
-		m_pluginSelectionPage->setFormats(currentExporter->availableFormats());
-		
-		m_exportToPage->setCurrentExporter(currentExporter);
-	}
-}
-
 class SelectPlugin : public KWizardPage
 {
 	Q_OBJECT;
@@ -603,6 +537,72 @@ QList<KTScene *> ExportTo::scenesToExport() const
 	}
 	
 	return scenes;
+}
+
+KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KWizard(parent), m_project(project)
+{
+	KINIT;
+	setWindowTitle(tr("Export"));
+	setWindowIcon(QIcon(THEME_DIR+"/icons/export.png"));
+	
+	m_pluginSelectionPage = new SelectPlugin();
+	addPage(m_pluginSelectionPage);
+	
+	m_scenesSelectionPage = new SelectScenes();
+	m_scenesSelectionPage->setScenes(project->scenes().values());
+	
+	addPage(m_scenesSelectionPage);
+	
+	m_exportToPage = new ExportTo(project);
+	addPage(m_exportToPage);
+	
+	connect(m_pluginSelectionPage, SIGNAL(selectedPlugin(const QString &)), this, SLOT(setExporter(const QString &)));
+	connect(m_pluginSelectionPage, SIGNAL(formatSelected(int)), m_exportToPage, SLOT(setCurrentFormat(int)));
+	connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportToPage, 
+		SLOT(setScenesIndexes(const QList<int> &)));
+	
+	loadPlugins();
+}
+
+KTExportWidget::~KTExportWidget()
+{
+	KEND;
+	qDeleteAll(m_plugins);
+}
+
+void KTExportWidget::loadPlugins()
+{
+	QDir pluginDirectory = QDir(HOME_DIR+"/plugins/");
+
+	foreach (QString fileName, pluginDirectory.entryList(QDir::Files))
+	{
+		QPluginLoader loader(pluginDirectory.absoluteFilePath(fileName));
+		KTExportPluginObject *plugin = qobject_cast<KTExportPluginObject*>(loader.instance());
+		
+		if (plugin)
+		{
+			KTExportInterface *exporter = qobject_cast<KTExportInterface *>(plugin);
+			
+			if (exporter)
+			{
+				m_pluginSelectionPage->addPlugin(exporter->key());
+				m_plugins.insert(exporter->key(), exporter);
+			}
+			else
+				kError() << "Can't load: " << fileName;
+		}
+	}
+}
+
+void KTExportWidget::setExporter(const QString &plugin)
+{
+	if ( m_plugins.contains(plugin) )
+	{
+		KTExportInterface* currentExporter = m_plugins[plugin];
+		m_pluginSelectionPage->setFormats(currentExporter->availableFormats());
+		
+		m_exportToPage->setCurrentExporter(currentExporter);
+	}
 }
 
 #include "ktexportwidget.moc"

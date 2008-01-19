@@ -35,6 +35,7 @@
 
 #include <kcore/kapplicationproperties.h>
 #include <kcore/kdebug.h>
+
 #include <kgui/kcollapsiblewidget.h>
 #include <ksound/kaudioplayer.h>
 
