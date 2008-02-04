@@ -36,7 +36,7 @@
 #include <kcore/kconfig.h>
 #include <kgui/kformfactory.h>
 
-class KTConnectDialog::Private
+struct KTConnectDialog::Private
 {
 	public:
 		Private() {}
@@ -59,6 +59,7 @@ class KTConnectDialog::Private
 
 KTConnectDialog::KTConnectDialog(QWidget *parent) : QDialog(parent), k(new Private())
 {
+	setWindowTitle(tr("Connection Dialog"));
 	k->login = new QLineEdit;
 	k->password = new QLineEdit;
 	k->password->setEchoMode( QLineEdit::Password);
@@ -105,7 +106,6 @@ void KTConnectDialog::setPort(int port)
 {
 	k->port->setValue(port);
 }
-
 
 QString KTConnectDialog::login() const
 {

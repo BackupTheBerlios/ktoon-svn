@@ -86,7 +86,6 @@ class KTMainWindow : public KTabbedMainWindow
 		KTMainWindow(KTSplash *splash = 0);
 		~KTMainWindow();
 		
-		
 	private:
 		/**
 		 * Creates the file action 

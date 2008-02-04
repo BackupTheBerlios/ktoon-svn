@@ -247,7 +247,9 @@ void KTMainWindow::viewNewDocument(const QString &title)
 
 void KTMainWindow::newProject()
 {
-	KTNewProject *wizard = new KTNewProject;
+
+	kWarning() << "Creating new project...";
+	KTNewProject *wizard = new KTNewProject(this);
 	// connectToDisplays(wizard);
 	if ( wizard->exec() != QDialog::Rejected )
 	{
@@ -351,26 +353,26 @@ bool KTMainWindow::closeProject()
  * @return true if the network project can be configured
 */
 
-bool KTMainWindow::setupNetworkProject(const QString& projectName  ,const QString &server, int port)
+bool KTMainWindow::setupNetworkProject(const QString& projectName ,const QString &server , int port)
 {
-	KTConnectDialog cndialog;
+	KTConnectDialog *cndialog = new KTConnectDialog(this);
 	if( !server.isEmpty() )
 	{
-		cndialog.setServer(server);
+		cndialog->setServer(server);
 	}
 	if ( port != -1 )
 	{
-		cndialog.setPort(port);
+		cndialog->setPort(port);
 	}
 	
-	KTNetProjectManagerParams *params = new KTNetProjectManagerParams;
+	KTNetProjectManagerParams *params = new KTNetProjectManagerParams();
 	
-	if ( cndialog.exec() == QDialog::Accepted )
+	if ( cndialog->exec() == QDialog::Accepted )
 	{
-		params->setServer(cndialog.server());
-		params->setPort(cndialog.port());
-		params->setLogin(cndialog.login());
-		params->setPassword(cndialog.password());
+		params->setServer(cndialog->server());
+		params->setPort(cndialog->port());
+		params->setLogin(cndialog->login());
+		params->setPassword(cndialog->password());
 		params->setProjectName( projectName );
 		return setupNetworkProject(params);
 	}

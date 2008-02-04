@@ -114,7 +114,7 @@ Makefile: gif.pro  /usr/lib/qt4/mkspecs/linux-g++/qmake.conf /usr/lib/qt4/mkspec
 		/usr/lib/qt4/lib/libQtGui.prl \
 		/usr/lib/qt4/lib/libQtCore.prl
 	$(QMAKE) -unix -o Makefile gif.pro
-	/usr/bin/ruby1.8 /home/xtingray/ktoon/ktoon/configure.status /home/xtingray/ktoon/ktoon/configure.tests/gif/Makefile
+	/usr/bin/ruby1.8 /usr/local/src/ktoon/ktoon/configure.status /usr/local/src/ktoon/ktoon/configure.tests/gif/Makefile
 /usr/lib/qt4/mkspecs/common/g++.conf:
 /usr/lib/qt4/mkspecs/common/linux.conf:
 /usr/lib/qt4/mkspecs/qconfig.pri:

@@ -19,6 +19,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <qdesktopwidget.h>
+//#include <QSize>
+#include <QRect>
 
 #include "ktapplication.h"
 #include "configwizard.h"
@@ -45,7 +48,16 @@ KTApplication::~KTApplication()
 
 bool KTApplication::firstRun()
 {
-	ConfigWizard *firstDialog = new ConfigWizard;
+    	QDesktopWidget *screen = QApplication::desktop();
+    	int screenW = screen->width();     // returns desktop width
+    	int screenH = screen->height();    // returns desktop height
+
+	ConfigWizard *firstDialog = new ConfigWizard();
+	QRect size = firstDialog->frameGeometry();
+	int configH = size.height();
+	int configW = size.width(); 
+	firstDialog->move((screenW-configW)/2,(screenH-configH)/2);
+
 	QApplication::setActiveWindow(firstDialog);
 
 	if ( firstDialog->exec() != QDialog::Rejected )
