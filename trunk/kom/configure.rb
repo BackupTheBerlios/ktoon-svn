@@ -47,6 +47,8 @@ end
 	if not conf.hasArgument?("with-debug")
 		config.addDefine("K_NODEBUG")
 		config.addOption("silent")
+	else
+                config.addDefine("K_DEBUG")
 	end
 
 	config.addDefine(%@KLIB_PREFIX='\\\\"'#{conf.destdir}'\\\\"'@)
