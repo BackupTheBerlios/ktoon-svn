@@ -202,7 +202,9 @@ struct KTLayerManager::Private
 
 KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), k(new Private)
 {
-	KINIT;
+	#ifdef K_DEBUG
+		KINIT;
+	#endif
 	
 	QTableWidgetItem *prototype = new QTableWidgetItem;
 	prototype->setTextAlignment(Qt::AlignCenter);
@@ -224,7 +226,10 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), k(
 
 KTLayerManager::~KTLayerManager()
 {
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
+
 	delete k;
 }
 

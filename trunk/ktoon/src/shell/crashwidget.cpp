@@ -139,7 +139,10 @@ CrashWidget::~CrashWidget ()
 
 void CrashWidget::addBacktracePage(const QString &execInfo, const QString &backtrace)
 {
-	K_FUNCINFO << execInfo << " " << backtrace;
+	#ifdef K_DEBUG
+		K_FUNCINFO << execInfo << " " << backtrace;
+	#endif
+
 	QWidget *btPage = new QWidget;
 	QVBoxLayout *layout = new QVBoxLayout(btPage);
 	

@@ -28,7 +28,9 @@
 
 KTTLRuler::KTTLRuler(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
 {
-	KINIT;
+	#ifdef K_DEBUG
+		KINIT;
+	#endif
 	
 	setHighlightSections ( true );
 	// setSelectionMode ( QAbstractItemView::SingleSelection );
@@ -40,7 +42,9 @@ KTTLRuler::KTTLRuler(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
 
 KTTLRuler::~KTTLRuler()
 {
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 }
 
 void KTTLRuler::paintSection ( QPainter * painter, const QRect & rect, int logicalIndex ) const

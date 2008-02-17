@@ -99,7 +99,9 @@ KTColorPicker::KTColorPicker(QWidget* parent) : QFrame(parent), k( new Private)
 KTColorPicker::~KTColorPicker()
 {
 	delete k;
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 }
 
 QSize KTColorPicker::sizeHint() const

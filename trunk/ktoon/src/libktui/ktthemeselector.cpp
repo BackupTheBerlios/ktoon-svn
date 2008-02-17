@@ -315,7 +315,9 @@ void KTThemeSelector::loadSchemaFromListView(QTreeWidgetItem *item, int)
 		
 		if ( ! item->text(0).isEmpty() )
 		{
-			K_FUNCINFO;
+			#ifdef K_DEBUG
+				K_FUNCINFO;
+			#endif
 			KCONFIG->beginGroup("General");
 			KCONFIG->setValue( "ThemeFile", CONFIG_DIR+"/themes/"+item->text(0) );
 			m_lastFile = CONFIG_DIR+"/themes/"+item->text(0);

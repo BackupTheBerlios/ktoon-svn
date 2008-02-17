@@ -57,7 +57,9 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 		
 		if ( ! stream.readLine().contains("GIMP Palette") )
 		{
-			kError() << "Don't contains \"GIMP Palette\"";
+			#ifdef K_DEBUG
+				kError() << "Don't contains \"GIMP Palette\"";
+			#endif
 			return;
 		}
 		
@@ -74,7 +76,7 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 		
 		if ( ! string.contains("#") )
 		{
-// 			dDebug("palette") << "Don't have \'#\' " << string;
+// 			K_DEBUG("palette") << "Don't have \'#\' " << string;
 // 			return;
 			stream.readLine();
 		}
@@ -103,11 +105,16 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 				}
 				else
 				{
-					kError() << "Bad color";
+					#ifdef K_DEBUG
+						kError() << "Bad color";
+					#endif
 				}
 			}
-			else
-				kError() << "No find";
+			else {
+				#ifdef K_DEBUG
+					kError() << "No find";
+				#endif
+			}
 		}
 	}
 }

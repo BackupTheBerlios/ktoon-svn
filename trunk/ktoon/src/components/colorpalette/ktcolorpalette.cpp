@@ -83,7 +83,10 @@ struct KTColorPalette::Private
 
 KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(new Private)
 {
-	KINIT;
+	#ifdef K_DEBUG
+		KINIT;
+	#endif
+
 	k->currentOutlineColor = Qt::black;
 	k->currentFillColor = Qt::transparent;
 	k->flagGradient = true;
@@ -112,8 +115,10 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
 
 KTColorPalette::~KTColorPalette()
 {
-	KEND;
-	
+	#ifdef K_DEBUG
+		KEND;
+	#endif	
+
 	KCONFIG->beginGroup("ColorPalette");
 	KCONFIG->setValue("LastForegroundColor", color().first);
 	KCONFIG->setValue("LastBackgroundColor", color().second);

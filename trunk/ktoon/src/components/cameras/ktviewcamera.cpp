@@ -106,7 +106,9 @@ void KTViewCamera::Status::addWidget(QWidget *widget, int stretch )
 
 KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(parent)
 {
-	KINIT;
+	#ifdef KDEBUG
+		K_DEBUG;
+	#endif
 	
 	m_status = new Status;
 	
@@ -180,7 +182,9 @@ KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(pa
 
 KTViewCamera::~KTViewCamera()
 {
-	KEND;
+	#ifdef KDEBUG
+		KEND;
+	#endif
 }
 
 void KTViewCamera::showSceneInfo(const KTScene *scene)

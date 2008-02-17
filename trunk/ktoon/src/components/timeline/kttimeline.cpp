@@ -54,7 +54,9 @@ struct KTTimeLine::Private
 
 KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine"), k(new Private)
 {
-	KINIT;
+	#ifdef K_DEBUG
+		KINIT;
+	#endif
 	
 	setWindowTitle(tr("Time Line"));
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/time_line.png"));
@@ -74,7 +76,9 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
 
 KTTimeLine::~KTTimeLine()
 {
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 	delete k;
 }
 
@@ -141,7 +145,7 @@ void KTTimeLine::removeScene(int position)
 	if ( position >= 0 && position < k->container->count() )
 	{
 		QWidget *w = k->container->widget(position);
-		// d->container->removeWidget(w);
+		// k->container->removeWidget(w);
 		k->container->removeTab(position);
 		
 		delete w;
@@ -163,7 +167,10 @@ void KTTimeLine::setLibrary(const KTLibrary *library)
 
 void KTTimeLine::sceneResponse(KTSceneResponse *response)
 {
-	K_FUNCINFOX("timeline");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("timeline");
+	#endif
+
 	switch(response->action())
 	{
 		case KTProjectRequest::Add:
@@ -318,8 +325,10 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
 
 void KTTimeLine::libraryResponse(KTLibraryResponse *response)
 {
-	K_FUNCINFOX("timeline") << response->symbolType();
-	
+	#ifdef K_DEBUG
+		K_FUNCINFOX("timeline") << response->symbolType();	
+	#endif
+
 	if(response->action() == KTProjectRequest::AddSymbolToProject )
 	{
 		switch(response->symbolType())
@@ -364,7 +373,9 @@ void KTTimeLine::requestCommand(int action)
 		{
 			if ( !requestSceneAction(action, scenePos) )
 			{
-				kFatal("timeline") << "Can't handle action";
+				#ifdef K_DEBUG
+					kFatal("timeline") << "Can't handle action";
+				#endif
 			}
 		}
 	}
@@ -553,7 +564,9 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
 
 void KTTimeLine::emitRequestRenameLayer(int layer, const QString &name)
 {
-	K_FUNCINFO << name;
+	#ifdef K_DEBUG
+		K_FUNCINFO << name;
+	#endif
 	int scenePos = k->container->currentIndex();
 	
 	KTProjectRequest event = KTRequestBuilder::createLayerRequest( scenePos, layer, KTProjectRequest::Rename, name );

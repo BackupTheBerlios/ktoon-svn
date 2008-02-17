@@ -65,7 +65,9 @@ KTAbout::KTAbout( QWidget *parent ) : KTabDialog( Cancel, parent )
 	}
 	else
 	{
-		kError() << "Error while trying to read " << creditsFile.fileName();
+		#ifdef K_DEBUG
+			kError() << "Error while trying to read " << creditsFile.fileName();
+		#endif
 	}
 	
 	QImage credits = QImage(DATA_DIR+"/images/credits.png");

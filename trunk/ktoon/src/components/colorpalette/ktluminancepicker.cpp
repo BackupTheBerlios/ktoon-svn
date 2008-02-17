@@ -63,7 +63,9 @@ KTLuminancePicker::KTLuminancePicker(QWidget* parent)
 KTLuminancePicker::~KTLuminancePicker()
 {
 	delete k;
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 }
 
 void KTLuminancePicker::mouseMoveEvent(QMouseEvent *m)

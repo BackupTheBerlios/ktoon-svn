@@ -47,7 +47,10 @@ struct KTExposureSheet::Private
 
 KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet"), k(new Private)
 {
-	KINIT;
+	#ifdef K_DEBUG
+		KINIT;
+	#endif
+
 	k->currentTable = 0;
 	setWindowTitle( tr( "&Exposure Sheet" ) );
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/exposure_sheet.png"));
@@ -73,7 +76,9 @@ KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, 
 KTExposureSheet::~KTExposureSheet()
 {
 	delete k;
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 }
 
 void KTExposureSheet::createMenu()
@@ -94,7 +99,11 @@ void KTExposureSheet::createMenu()
 
 void KTExposureSheet::addScene(int index, const QString &name)
 {
-	K_FUNCINFO << " index: " << index << " name: " << name;
+
+	#ifdef K_DEBUG
+		K_FUNCINFO << " index: " << index << " name: " << name;
+	#endif
+
 	KTExposureTable *newScene = new KTExposureTable;
 	newScene->setMenu(k->menu);
 	k->scenes->insertTab(index, newScene, name);
@@ -121,10 +130,15 @@ void KTExposureSheet::renameScene( int index, const QString &name)
 
 void KTExposureSheet::applyAction(int action)
 {
-	K_FUNCINFO<< "action: " << action;
+	#ifdef K_DEBUG
+		K_FUNCINFO<< "action: " << action;
+	#endif
+
 	if (  k->currentTable == 0 )
 	{
-		kFatal() << "KTExposureSheet::applyAction: No layer view!!" << endl;
+		#ifdef K_DEBUG
+			kFatal() << "KTExposureSheet::applyAction: No layer view!!" << endl;
+		#endif
 		return;
 	}
 	k->currentTable = static_cast<KTExposureTable*>( k->scenes->currentWidget());	
@@ -208,7 +222,9 @@ void KTExposureSheet::applyAction(int action)
 
 void KTExposureSheet::setScene(int index)
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	if(k->scenes->count() >= index)
 	{
 		k->scenes->blockSignals(true);
@@ -274,7 +290,10 @@ void KTExposureSheet::emitRequestPasteInCurrentFrame()
 
 void KTExposureSheet::emitRequestExpandCurrentFrame()
 {
-	K_FUNCINFOX("exposure");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("exposure");
+	#endif
+
 	KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
 									k->currentTable->currentLayer(), 
 									k->currentTable->currentFrame(), 
@@ -338,7 +357,9 @@ void KTExposureSheet::actionTiggered(QAction *action)
 
 void KTExposureSheet::closeAllScenes()
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	
 	delete k->currentTable;
 	k->scenes->removeAllTabs();
@@ -348,7 +369,9 @@ void KTExposureSheet::closeAllScenes()
 
 void KTExposureSheet::sceneResponse(KTSceneResponse *e)
 {
+	#ifdef K_DEBUG
 	K_FUNCINFOX("exposure");
+	#endif
 	switch(e->action() )
 	{
 		case KTProjectRequest::Add:
@@ -382,7 +405,9 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
 		break;
 		case KTProjectRequest::Select:
 		{
-			kFatal() << "Select scene " << e->sceneIndex();
+			#ifdef K_DEBUG
+				kFatal() << "Select scene " << e->sceneIndex();
+			#endif
 			setScene( e->sceneIndex() );
 		}
 		break;
@@ -439,7 +464,10 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
 
 void KTExposureSheet::frameResponse(KTFrameResponse *e)
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
+
 	KTExposureTable *scene = dynamic_cast<KTExposureTable*>(k->scenes->widget((e->sceneIndex())));
 	if(scene)
 	{

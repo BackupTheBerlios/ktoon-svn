@@ -421,7 +421,7 @@ void KTMainWindow::setupHelpActions()
 
 void KTMainWindow::setupWindowActions()
 {
-#if defined(QT_GUI_LIB) && !defined(K_NODEBUG)
+#if defined(QT_GUI_LIB) && defined(K_DEBUG)
 	new KAction(QPixmap(), tr("Show debug dialog"), QKeySequence(), KDebug::browser(), SLOT(show()), m_actionManager,
 			"show debug");
 #endif

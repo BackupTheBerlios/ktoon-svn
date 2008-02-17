@@ -41,7 +41,10 @@ KTNetSocket::~KTNetSocket()
 
 void KTNetSocket::readed(const QString &readed)
 {
-	kDebug("net") << "READED: " << readed;
+	#ifdef K_DEBUG
+		K_DEBUG("net") << "READED: " << readed;
+	#endif
+
 	QDomDocument doc;
 	
 	if ( doc.setContent(readed) )

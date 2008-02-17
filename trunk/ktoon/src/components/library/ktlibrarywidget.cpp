@@ -80,8 +80,9 @@ struct KTLibraryWidget::Private
 
 KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Private)
 {
-	KINIT;
-	
+	#ifdef K_DEBUG
+		KINIT;
+	#endif
 	k->childCount = 0;
 	
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/library.png"));
@@ -135,7 +136,9 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 
 KTLibraryWidget::~KTLibraryWidget()
 {
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 	delete k;
 }
 
@@ -151,7 +154,9 @@ void KTLibraryWidget::addFolder(const QString &name)
 
 void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	
 	RETURN_IF_NOT_LIBRARY;
 	
@@ -161,7 +166,9 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 		
 		if ( !object )
 		{
-			kDebug("library") << "Cannot find the object";
+			#ifdef K_DEBUG
+				kDebug("library") << "Cannot find the object";
+			#endif
 			return;
 		}
 		
@@ -194,7 +201,9 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 			break;
 			default:
 			{
-				kDebug("library") << "Unknown symbol id: " << object->type();
+				#ifdef K_DEBUG
+					kDebug("library") << "Unknown symbol id: " << object->type();
+				#endif
 			}
 			break;
 		}

@@ -184,8 +184,11 @@ bool CrashHandler::containsSignalEntry(int signal)
 
 void CrashHandler::setConfig(const QString &filePath)
 {
-	K_FUNCINFO;
-	SHOW_VAR(filePath);
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+		SHOW_VAR(filePath);
+	#endif
+
 	QDomDocument doc;
 	QFile file(filePath);
 	

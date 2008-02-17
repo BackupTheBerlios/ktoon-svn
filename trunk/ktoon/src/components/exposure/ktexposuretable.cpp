@@ -413,7 +413,9 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
 	}
 	else
 	{
-		kWarning() << "frame " << indexLayer << "," << indexFrame << " not exist";
+		#ifdef K_DEBUG
+			kWarning() << "frame " << indexLayer << "," << indexFrame << " not exist";
+		#endif
 	}
 	return false;
 }
@@ -430,7 +432,9 @@ void KTExposureTable::setMenu(QMenu *menu)
 
 int KTExposureTable::currentLayer() const
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	return k->header->visualIndex(currentColumn());
 }
 

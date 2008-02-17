@@ -103,12 +103,15 @@ struct KTColorValue::Private
 
 KTColorValue::KTColorValue(QWidget *parent) : QFrame(parent), k(new Private)
 {
-	KINIT;
+	#ifdef K_DEBUG
+		KINIT;
+	#endif
+
 	k->ok = true;
 	
 	setLayout(new QVBoxLayout());
-// 	d->layout = new QGridLayout;
-// 	setLayout(d->layout);
+	// 	k->layout = new QGridLayout;
+	// 	setLayout(k->layout);
 	
 	setupForm();
 }
@@ -116,7 +119,9 @@ KTColorValue::KTColorValue(QWidget *parent) : QFrame(parent), k(new Private)
 
 KTColorValue::~KTColorValue()
 {
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 }
 
 void KTColorValue::setupForm()

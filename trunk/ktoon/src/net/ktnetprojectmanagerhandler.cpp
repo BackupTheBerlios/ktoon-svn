@@ -119,7 +119,9 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 	
 	if ( k->socket->state() == QAbstractSocket::ConnectedState )
 	{
-		kDebug("net") << "SENDING: " << request->xml();
+		#ifdef K_DEBUG
+			K_DEBUG("net") << "SENDING: " << request->xml();
+		#endif
 		k->socket->send( request->xml() );
 	}
 }
@@ -171,8 +173,10 @@ bool KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
 	
 	k->params = netparams;
 	
-	kDebug("net") << "Connecting to " << netparams->server() << ":" << netparams->port();
-	
+	#ifdef K_DEBUG
+		K_DEBUG("net") << "Connecting to " << netparams->server() << ":" << netparams->port();
+	#endif	
+
 	k->socket->connectToHost(k->params->server(), k->params->port());
 	
 	bool connected = k->socket->waitForConnected(1000);
@@ -191,7 +195,10 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 	
 	if ( ! netparams ) return false;
 	
-	SHOW_VAR(netparams->projectName());
+	#ifdef K_DEBUG
+		SHOW_VAR(netparams->projectName());
+	#endif	
+
 	k->projectName = netparams->projectName();
 	k->author = netparams->author();
 	
@@ -222,7 +229,10 @@ void KTNetProjectManagerHandler::emitRequest(KTProjectRequest *request, bool toS
 
 void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QString &package )
 {
-	K_FUNCINFOX("net");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("net");
+	#endif
+
 	if ( root == "request" )
 	{
 		KTRequestParser parser;
@@ -256,7 +266,9 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 		}
 		else // TODO: mostrar error
 		{
-			kError() << "Error parsing";
+			#ifdef K_DEBUG
+				kError() << "Error parsing";
+			#endif
 		}
 	}
 	else if( root == "ack")
@@ -313,7 +325,9 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 			}
 			if(dialog.exec () == QDialog::Accepted && !dialog.currentProject().isEmpty())
 			{
-				kDebug() << "opening " << dialog.currentProject() << "project";
+				#ifdef K_DEBUG
+					K_DEBUG() << "opening " << dialog.currentProject() << "project";
+				#endif
 				loadProjectFromServer(dialog.currentProject() );
 			}
 			else
@@ -352,7 +366,9 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 	}
 	else
 	{
-		kDebug("net") << "Unknown package: " << root;
+		#ifdef K_DEBUG
+			K_DEBUG("net") << "Unknown package: " << root;
+		#endif
 	}
 }
 

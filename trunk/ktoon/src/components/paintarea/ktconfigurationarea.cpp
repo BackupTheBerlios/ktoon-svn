@@ -101,12 +101,16 @@ void KTConfigurationArea::toggleLock()
 
 void KTConfigurationArea::shrink()
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	
 	QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parentWidget());
 	if ( !mainWindow || ! widget() )
 	{
-		K_FUNCINFO << "Fatal error";
+		#ifdef K_DEBUG
+			K_FUNCINFO << "Fatal error";
+		#endif
 		return;
 	}
 	

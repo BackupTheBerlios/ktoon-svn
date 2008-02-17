@@ -44,14 +44,19 @@ KTLocalProjectManagerHandler::~KTLocalProjectManagerHandler()
 
 void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *request)
 {
-	K_FUNCINFO;
+
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	if ( request->isValid() )
 	{
 		emit sendCommand( request, true );
 	}
 	else
 	{
-		kfDebug << "INVALID REQUEST! ID: " << request->id();
+		#ifdef K_DEBUG
+			kfDebug << "INVALID REQUEST! ID: " << request->id();
+		#endif
 	}
 }
 

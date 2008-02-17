@@ -499,7 +499,9 @@ void ExportTo::chooseFile()
 
 void ExportTo::exportIt()
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	
 	if( m_currentExporter && m_currentFormat != KTExportInterface::NONE )
 	{
@@ -509,12 +511,15 @@ void ExportTo::exportIt()
 		{
 			return;
 		}
-		
-		kDebug("export") << "Exporting to file: " << file;
+		#ifdef K_DEBUG
+			K_DEBUG("export") << "Exporting to file: " << file;
+		#endif
 		
 		QList<KTScene *> scenes = scenesToExport();
 		
-		kDebug("export") << "Exporting " << scenes.count() << " scenes";
+		#ifdef K_DEBUG
+			K_DEBUG("export") << "Exporting " << scenes.count() << " scenes";
+		#endif
 		
 		if ( scenes.count() > 0)
 		{
@@ -541,7 +546,10 @@ QList<KTScene *> ExportTo::scenesToExport() const
 
 KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KWizard(parent), m_project(project)
 {
-	KINIT;
+	#ifdef K_DEBUG
+		KINIT;
+	#endif
+
 	setWindowTitle(tr("Export"));
 	setWindowIcon(QIcon(THEME_DIR+"/icons/export.png"));
 	
@@ -566,7 +574,9 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KWiz
 
 KTExportWidget::~KTExportWidget()
 {
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 	qDeleteAll(m_plugins);
 }
 
@@ -588,8 +598,11 @@ void KTExportWidget::loadPlugins()
 				m_pluginSelectionPage->addPlugin(exporter->key());
 				m_plugins.insert(exporter->key(), exporter);
 			}
-			else
-				kError() << "Can't load: " << fileName;
+			else {
+				#ifdef K_DEBUG
+					kError() << "Can't load: " << fileName;
+				#endif
+			}
 		}
 	}
 }

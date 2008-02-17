@@ -82,7 +82,9 @@ bool KTPaletteParser::startTag(const QString &tag, const QXmlAttributes &atts)
 			}
 			else
 			{
-				kError() << "Invalid Color";
+				#ifdef K_DEBUG
+					kError() << "Invalid Color";
+				#endif
 			}
 		}
 		else if(tag == "Gradient" )
@@ -113,7 +115,9 @@ bool KTPaletteParser::startTag(const QString &tag, const QXmlAttributes &atts)
 				break;
 				default:
 				{
+					#ifdef K_DEBUG
 					kFatal() << "No gradient type: " << type;
+					#endif
 				}
 				break;
 				

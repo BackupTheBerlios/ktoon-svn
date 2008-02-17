@@ -84,7 +84,9 @@
 
 KTMainWindow::KTMainWindow(KTSplash *splash) : KTabbedMainWindow(),  m_projectManager(0), m_viewDoc(0), m_animationSpace(0),  m_viewChat(0), m_exposureSheet(0),  m_scenes(0)
 {
-	KINIT;
+	#ifdef K_DEBUG
+		KINIT;
+	#endif
 	
 	// Loading audio player plugin
 	KAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: Move this to the settings 
@@ -160,7 +162,9 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : KTabbedMainWindow(),  m_projectMa
 */
 KTMainWindow::~KTMainWindow()
 {
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 	delete KTPluginManager::instance();
 	delete KOsd::self();
 }
@@ -201,8 +205,11 @@ void KTMainWindow::createNewProject()
 
 void KTMainWindow::viewNewDocument(const QString &title)
 {
-	K_FUNCINFO;
-	kDebug() << m_projectManager->isOpen();
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+		kDebug() << m_projectManager->isOpen();
+	#endif
+
 	if ( m_projectManager->isOpen())
 	{
 		messageToStatus(tr("Opening a new paint area..."));
@@ -247,8 +254,10 @@ void KTMainWindow::viewNewDocument(const QString &title)
 
 void KTMainWindow::newProject()
 {
+	#ifdef K_DEBUG
+		kWarning() << "Creating new project...";
+	#endif
 
-	kWarning() << "Creating new project...";
 	KTNewProject *wizard = new KTNewProject(this);
 	// connectToDisplays(wizard);
 	if ( wizard->exec() != QDialog::Rejected )
@@ -471,7 +480,10 @@ void KTMainWindow::openProject()
 
 void KTMainWindow::openProject(const QString &path)
 {
-	kWarning() << "Opening project: " << path;
+
+	#ifdef K_DEBUG
+		kWarning() << "Opening project: " << path;
+	#endif
 	
 	if( path.isEmpty() ) 
 	{
@@ -614,7 +626,9 @@ void KTMainWindow::importProjectToServer()
 
 void KTMainWindow::save()
 {
-	kDebug("project") << "Saving..";
+	#ifdef K_DEBUG
+		kDebug("project") << "Saving..";
+	#endif
 	QTimer::singleShot(0, this, SLOT(saveProject()));
 }
 
@@ -774,7 +788,9 @@ void KTMainWindow::messageToStatus(const QString &msg)
 
 void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	KTHelpBrowser *page = new KTHelpBrowser(this);
 	page->setDataDirs( QStringList() << m_helper->helpPath() );
 	

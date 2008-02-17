@@ -29,7 +29,10 @@
 KTCameraBar::KTCameraBar(QWidget *parent)
  : QFrame(parent)
 {
-	KINIT;
+	#ifdef K_DEBUG
+		KINIT;
+	#endif
+
 	setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
 	setMidLineWidth(2);
 	setLineWidth (1);
@@ -62,7 +65,9 @@ KTCameraBar::KTCameraBar(QWidget *parent)
 
 KTCameraBar::~KTCameraBar()
 {
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 }
 
 void KTCameraBar::setPalette(const QPalette &)

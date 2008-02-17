@@ -112,7 +112,9 @@ void KTAnimationArea::paintEvent(QPaintEvent *)
 
 void KTAnimationArea::play()
 {
-	kDebug("camera") << "Playing!";
+	#ifdef K_DEBUG
+		K_DEBUG("camera") << "Playing!";
+	#endif
 	
 	k->draw = true;
 	
@@ -127,7 +129,10 @@ void KTAnimationArea::play()
 
 void KTAnimationArea::stop()
 {
-	kDebug("camera") << "Stopping";
+	#ifdef K_DEBUG
+		K_DEBUG("camera") << "Stopping";
+	#endif
+
 	k->timer->stop();
 	
 	foreach(KTSoundLayer *sound, k->sounds)
@@ -213,7 +218,10 @@ void KTAnimationArea::layerResponse(KTLayerResponse *)
 
 void KTAnimationArea::sceneResponse(KTSceneResponse *event)
 {
-	K_FUNCINFOX("animation");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("animation");
+	#endif
+
 	switch(event->action())
 	{
 		case KTProjectRequest::Select:

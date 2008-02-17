@@ -67,8 +67,10 @@ KTViewColorCells::~KTViewColorCells()
 		brushesDir.mkdir(brushesDir.path() );
 	}
 	
-	kDebug("palette") << brushesDir.path();
-	
+	#ifdef K_DEBUG
+		K_DEBUG("palette") << brushesDir.path();
+	#endif
+
 	for(int i = 0; i < k->containerPalette->count(); i++)
 	{
 		KTCellsColor *palette = qobject_cast<KTCellsColor *>(k->containerPalette->widget(i) );
@@ -83,7 +85,9 @@ KTViewColorCells::~KTViewColorCells()
 	
 	delete k;
 	
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 }
 
 void KTViewColorCells::setupForm()
@@ -140,7 +144,9 @@ void KTViewColorCells::setupForm()
 
 void KTViewColorCells::readPalettes(const QString &paletteDir)
 {
-	kDebug("palette") << "Reading palettes from: " << paletteDir;
+	#ifdef K_DEBUG
+		K_DEBUG("palette") << "Reading palettes from: " << paletteDir;
+	#endif
 	QDir dir(paletteDir);
 	
 	if(dir.exists ())
@@ -169,7 +175,9 @@ void KTViewColorCells::readPaletteFile(const QString &file)
 	}
 	else
 	{
-		kError() << "Error while parse palette file: " << file;
+		#ifdef K_DEBUG
+			kError() << "Error while parse palette file: " << file;
+		#endif
 	}
 }
 
@@ -223,7 +231,10 @@ void KTViewColorCells::addPalette(KTCellsColor *palette)
 
 void KTViewColorCells::changeColor(QTableWidgetItem* item)
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
+
 	if(item)
 	{
 		emit selectColor(item->background());

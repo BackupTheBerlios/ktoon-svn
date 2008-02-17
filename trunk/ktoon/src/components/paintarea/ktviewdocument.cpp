@@ -116,7 +116,10 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 		break;
 		default:
 		{
-			kWarning() << "Unsopported render, switching to native!";
+			#ifdef K_DEBUG
+				kWarning() << "Unsopported render, switching to native!";
+			#endif
+
 			k->paintArea->setUseOpenGL( false );
 		}
 		break;
@@ -616,8 +619,10 @@ void KTViewDocument::loadPlugins()
 			
 		for (it = keys.begin(); it != keys.end(); ++it)
 		{
-			kDebug("plugins") << "*******Tool Loaded: " << *it;
-			
+			#ifdef K_DEBUG
+				K_DEBUG("plugins") << "*******Tool Loaded: " << *it;
+			#endif
+
 			KAction *act = tool->actions()[*it];
 			if ( act )
 			{
@@ -685,7 +690,9 @@ void KTViewDocument::loadPlugins()
 				
 		for (it = keys.begin(); it != keys.end(); ++it)
 		{
-			kDebug("plugins") << "*******Filter Loaded: " << *it;
+			#ifdef K_DEBUG
+				K_DEBUG("plugins") << "*******Filter Loaded: " << *it;
+			#endif
 					
 			KAction *act = filter->actions()[*it];
 			if ( act )
@@ -699,7 +706,9 @@ void KTViewDocument::loadPlugins()
 
 void KTViewDocument::selectTool()
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	KAction *action = qobject_cast<KAction *>(sender());
 	
 	if ( action )
@@ -781,7 +790,9 @@ void KTViewDocument::selectTool()
 
 void KTViewDocument::selectToolFromMenu(QAction *action)
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	
 	QMenu *menu = qobject_cast<QMenu *>(action->parent());
 	if (menu )

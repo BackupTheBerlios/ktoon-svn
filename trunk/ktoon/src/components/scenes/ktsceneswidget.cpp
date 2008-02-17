@@ -48,7 +48,9 @@ struct KTScenesWidget::Private
 
 KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "KTScenesWidget"), k(new Private)
 {
-	KINIT;
+	#ifdef K_DEBUG
+		KINIT;
+	#endif
 	
 	setWindowTitle( tr( "Sce&nes manager" ) );
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/scenes.png"));
@@ -59,7 +61,9 @@ KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "
 
 KTScenesWidget::~KTScenesWidget()
 {
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 	delete k;
 }
 
@@ -120,12 +124,16 @@ void KTScenesWidget::selectScene(const QString & name, int index)
 
 void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int )
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 }
 
 void KTScenesWidget::emitRequestInsertScene()
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	
 	int index = k->tableScenes->indexCurrentScene() + 1;
 	
@@ -155,7 +163,10 @@ void KTScenesWidget::closeAllScenes()
 
 void KTScenesWidget::sceneResponse(KTSceneResponse *e)
 {
-	K_FUNCINFOX("scenes");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("scenes");
+	#endif
+
 	switch(e->action() )
 	{
 		case KTProjectRequest::Add:

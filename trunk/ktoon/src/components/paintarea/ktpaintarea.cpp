@@ -93,7 +93,10 @@ KTPaintArea::~KTPaintArea()
 
 void KTPaintArea::setCurrentScene(int index)
 {
-	K_FUNCINFOX("paintarea") << index;
+	#ifdef K_DEBUG
+		K_FUNCINFOX("paintarea") << index;
+	#endif
+	
 	KTScene *scene = k->project->scene(index);
 	if ( scene )
 	{
@@ -196,7 +199,9 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 			sscene->drawPhotogram(event->frameIndex());
 			setCurrentScene( event->sceneIndex() );
 			
-			kDebug("paintarea") << "frame: " << event->frameIndex() << " " << "layer: " << event->layerIndex();
+			#ifdef K_DEBUG
+				K_DEBUG("paintarea") << "frame: " << event->frameIndex() << " " << "layer: " << event->layerIndex();
+			#endif
 		}
 		break;
 		case KTProjectRequest::Lock:
@@ -250,7 +255,9 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
 
 void KTPaintArea::sceneResponse(KTSceneResponse *event)
 {
-	K_FUNCINFOX("paintarea");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("paintarea");
+	#endif
 	
 	if( graphicsScene()->isDrawing() ) {
 		return;
@@ -439,7 +446,10 @@ void KTPaintArea::ungroupItems()
 
 void KTPaintArea::copyItems()
 {
-	K_FUNCINFOX("paintarea");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("paintarea");
+	#endif
+
 	k->copiesXml.clear();
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
 	if(!selecteds.isEmpty())
@@ -490,7 +500,10 @@ void KTPaintArea::copyItems()
 
 void KTPaintArea::pasteItems()
 {
-	K_FUNCINFOX("paintarea");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("paintarea");
+	#endif
+
 	KTGraphicsScene* currentScene = graphicsScene();
 	
 	foreach(QString xml, k->copiesXml)
@@ -506,7 +519,9 @@ void KTPaintArea::pasteItems()
 
 void KTPaintArea::cutItems()
 {
-	K_FUNCINFOX("paintarea");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("paintarea");
+	#endif
 	copyItems();
 	deleteItems();
 }
@@ -529,7 +544,9 @@ void KTPaintArea::setPreviousFramesOnionSkinCount(int n)
 
 void KTPaintArea::addSelectedItemsToLibrary()
 {
-	kDebug("paintarea") << "Adding to library";
+	#ifdef K_DEBUG
+		K_DEBUG("paintarea") << "Adding to library";
+	#endif
 	
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
 	
@@ -569,7 +586,9 @@ void KTPaintArea::addSelectedItemsToLibrary()
 
 void KTPaintArea::requestMoveSelectedItems(QAction *action)
 {
-	K_FUNCINFOX("paintarea");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("paintarea");
+	#endif
 	
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
 	

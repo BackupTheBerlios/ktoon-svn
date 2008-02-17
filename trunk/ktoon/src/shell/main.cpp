@@ -125,7 +125,10 @@ int main( int argc, char ** argv )
 		if ( ! application.firstRun() )
 		{
 			// If dialog is canceled or KToon can not be configured, kill the whole application
-			kFatal () << "**********************You need configure the application" << endl;
+			#ifdef K_DEBUG
+				kFatal () << "**********************You need configure the application" << endl;
+			#endif
+			
 			QMessageBox::critical(0, QObject::tr("Missing..."), 
 					      QObject::tr("You need configure the application"));
 			application.exit(-1);
@@ -185,7 +188,9 @@ int main( int argc, char ** argv )
 	delete splash;
 
 	// Looking for plugins for KToon
-	kWarning() << "Loading plugins from: " << HOME_DIR << " + /plugins";
+	#ifdef K_DEBUG
+		kWarning() << "Loading plugins from: " << HOME_DIR << " + /plugins";
+	#endif
 	QApplication::addLibraryPath (HOME_DIR + "/plugins");
 
 	// Loading visual components required for the Crash Handler
