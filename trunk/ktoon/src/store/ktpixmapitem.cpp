@@ -43,5 +43,3 @@ QDomElement KTPixmapItem::toXml(QDomDocument &doc) const
 	return root;
 }
 
-
-

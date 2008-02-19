@@ -68,11 +68,15 @@ void KTGraphicLibraryItem::setObject(KTLibraryObject *object)
 {
 	if( !object)
 	{
-		kWarning("library") << "Setting null library object";
+		#ifdef K_DEBUG
+			kWarning("library") << "Setting null library object";
+		#endif
 		return;
 	}
 	
-	K_FUNCINFOX("library") << object->symbolName();
+	#ifdef K_DEBUG
+		K_FUNCINFOX("library") << object->symbolName();
+	#endif
 	
 	k->symbolName = object->symbolName();
 	switch(object->type())

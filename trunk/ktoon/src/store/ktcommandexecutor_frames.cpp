@@ -58,7 +58,9 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 		
 		if (!name.isEmpty())
 		{
-			kDebug("items") << name;
+			#ifdef K_DEBUG
+				kDebug("items") << name;
+			#endif
 			frame->setFrameName( name );
 		}
 		else
@@ -134,7 +136,9 @@ bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
 	{
 		if ( ! layer->moveFrame(position, newPosition) )
 		{
-			kWarning() << "Failed moving frame";
+			#ifdef K_DEBUG
+				kWarning() << "Failed moving frame";
+			#endif
 			return false;
 		}
 		else
@@ -335,5 +339,3 @@ bool KTCommandExecutor::pasteFrame( KTFrameResponse *response)
 	}
 	return false;
 }
-
-

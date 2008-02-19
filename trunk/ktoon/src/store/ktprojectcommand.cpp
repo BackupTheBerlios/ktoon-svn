@@ -103,7 +103,9 @@ void KTProjectCommand::initText()
 		
 		default:
 		{
-			kfDebug << "CAN'T HANDLE ID: " << k->response->part();
+			#ifdef K_DEBUG
+				kfDebug << "CAN'T HANDLE ID: " << k->response->part();
+			#endif
 		}
 		break;
 	}
@@ -178,8 +180,10 @@ KTProjectCommand::~KTProjectCommand()
 
 void KTProjectCommand::redo()
 {
-	K_FUNCINFO << k->response->part();
-	
+	#ifdef K_DEBUG
+		K_FUNCINFO << k->response->part();
+	#endif	
+
 	if ( k->executed )
 	{
 		k->response->setMode( KTProjectResponse::Redo );
@@ -194,7 +198,9 @@ void KTProjectCommand::redo()
 	{
 		case KTProjectRequest::Project:
 		{
-			kDebug() << "Project response isn't handle";
+			#ifdef K_DEBUG
+				kDebug() << "Project response isn't handle";
+			#endif
 		}
 		break;
 		case KTProjectRequest::Frame:
@@ -224,7 +230,9 @@ void KTProjectCommand::redo()
 		break;
 		default:
 		{
-			K_FUNCINFO << ("Unknown project response!");
+			#ifdef K_DEBUG
+				K_FUNCINFO << ("Unknown project response!");
+			#endif
 		}
 		break;
 	}
@@ -238,7 +246,9 @@ void KTProjectCommand::undo()
 	{
 		case KTProjectRequest::Project:
 		{
-			kDebug() << "Project response isn't handle";
+			#ifdef K_DEBUG
+				kDebug() << "Project response isn't handle";
+			#endif
 		}
 		break;
 		case KTProjectRequest::Frame:
@@ -269,7 +279,9 @@ void KTProjectCommand::undo()
 		break;
 		default:
 		{
-			K_FUNCINFO << ("Unknown project response!");
+			#ifdef K_DEBUG
+				K_FUNCINFO << ("Unknown project response!");
+			#endif
 		}
 		break;
 	}
@@ -277,7 +289,10 @@ void KTProjectCommand::undo()
 
 void KTProjectCommand::frameCommand()
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
+
 	KTFrameResponse *response = static_cast<KTFrameResponse *>(k->response);
 	switch(response->action())
 	{
@@ -424,7 +439,9 @@ void KTProjectCommand::sceneCommand()
 
 void KTProjectCommand::itemCommand()
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	
 	KTItemResponse *response = static_cast<KTItemResponse *>(k->response);
 	switch(response->action())
@@ -498,7 +515,10 @@ void KTProjectCommand::itemCommand()
 
 void KTProjectCommand::libraryCommand()
 {
-	K_FUNCINFO;
+
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	
 	KTLibraryResponse *response = static_cast<KTLibraryResponse *>(k->response);
 	switch(response->action())

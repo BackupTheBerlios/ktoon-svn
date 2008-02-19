@@ -30,11 +30,9 @@
 #include "ktprojectresponse.h"
 
 
-
 KTRequestBuilder::KTRequestBuilder()
 {
 }
-
 
 KTRequestBuilder::~KTRequestBuilder()
 {
@@ -62,8 +60,7 @@ KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIn
 	action.setAttribute( "id", actionId);
 	action.setAttribute( "arg", arg.toString());
 	action.setAttribute( "part", KTProjectRequest::Item );
-	
-	
+		
 	KTRequestBuilder::appendData( doc, action, data);
 	root.appendChild( action );
 	frame.appendChild(item);
@@ -250,7 +247,9 @@ KTProjectRequest KTRequestBuilder::fromResponse(KTProjectResponse *response)
 		break;
 		default:
 		{
-			kWarning() << "Unknown response";
+			#ifdef K_DEBUG
+				kWarning() << "Unknown response";
+			#endif
 		}
 	}
 	return request;

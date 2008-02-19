@@ -117,7 +117,9 @@ QGraphicsItem* KTItemFactory::createItem(const QString &root)
 
 bool KTItemFactory::startTag( const QString& qname, const QXmlAttributes& atts)
 {
-	K_FUNCINFOX("items") << qname;
+	#ifdef K_DEBUG
+		K_FUNCINFOX("items") << qname;
+	#endif
 	if ( qname == "path" )
 	{
 		QPainterPath path;
@@ -193,7 +195,7 @@ bool KTItemFactory::startTag( const QString& qname, const QXmlAttributes& atts)
 		
 		if( k->addToGroup )
 		{
-// 			d->groups.last()->addToGroup( createItem( qname ) );
+// 			k->groups.last()->addToGroup( createItem( qname ) );
 		}
 	}
 	else if ( qname == "text" )
@@ -351,7 +353,10 @@ void KTItemFactory::text ( const QString & ch )
 
 bool KTItemFactory::endTag(const QString& qname)
 {
-	K_FUNCINFOX("items") << qname;
+	#ifdef K_DEBUG
+		K_FUNCINFOX("items") << qname;
+	#endif
+
 	if ( qname == "path" )
 	{
 		if(k->addToGroup)
@@ -438,7 +443,9 @@ bool KTItemFactory::endTag(const QString& qname)
 	}
 	else
 	{
-		kWarning("items") << "Unhandled: " << qname;
+		#ifdef K_DEBUG
+			kWarning("items") << "Unhandled: " << qname;
+		#endif
 	}
 	
 	return true;

@@ -142,7 +142,9 @@ KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
 		}
 	}
 	
-	kDebug() << "Cannot find symbol with id: " << id;
+	#ifdef K_DEBUG
+		kDebug() << "Cannot find symbol with id: " << id;
+	#endif
 	
 	return 0;
 }
@@ -245,6 +247,3 @@ QDomElement KTLibraryFolder::toXml(QDomDocument &doc) const
 	
 	return folder;
 }
-
-
-

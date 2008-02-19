@@ -131,9 +131,6 @@ void KTPathItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * op
 	QGraphicsPathItem::paint(painter, option,widget );
 }
 
-
-
-
 bool KTPathItem::contains ( const QPointF & point ) const
 {
 #if 0
@@ -207,6 +204,4 @@ void KTPathItem::dropEvent(QGraphicsSceneDragDropEvent *event)
 	}
 	update();
 }
-
-
 

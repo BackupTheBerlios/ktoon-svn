@@ -57,7 +57,9 @@ KTScene::KTScene(KTProject *parent) : QObject(parent), k(new Private)
 
 KTScene::~KTScene()
 {
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 	
 	k->layers.clear(true);
 	
@@ -114,11 +116,15 @@ void KTScene::setLayers(const Layers &layers)
 
 KTLayer *KTScene::createLayer(int position, bool loaded)
 {
-	K_FUNCINFO << position;
+	#ifdef K_DEBUG
+		K_FUNCINFO << position;
+	#endif
 	
 	if ( position < 0 || position > k->layers.count() )
 	{
-		kDebug() << "Error in createLayer";
+		#ifdef K_DEBUG
+			kDebug() << "Error in createLayer";
+		#endif
 		return 0;
 	}
 	
@@ -140,7 +146,9 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
 
 KTSoundLayer *KTScene::createSoundLayer(int position, bool loaded)
 {
-	K_FUNCINFO << position;
+	#ifdef K_DEBUG
+		K_FUNCINFO << position;
+	#endif
 	
 	if ( position < 0 || position > k->soundLayers.count() )
 	{
@@ -188,7 +196,9 @@ KTLayer *KTScene::layer(int position) const
 {
 	if ( position < 0 || position >= k->layers.count() )
 	{
-		K_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+		#ifdef K_DEBUG
+			K_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+		#endif
 		return 0;
 	}
 	
@@ -199,7 +209,9 @@ KTSoundLayer *KTScene::soundLayer(int position) const
 {
 	if ( position < 0 || position >= k->soundLayers.count() )
 	{
-		K_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+		#ifdef K_DEBUG
+			K_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+		#endif
 		return 0;
 	}
 	

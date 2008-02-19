@@ -24,7 +24,6 @@ KTPaintAreaEvent::KTPaintAreaEvent(Action action, const QVariant &data) : m_acti
 {
 }
 
-
 KTPaintAreaEvent::~KTPaintAreaEvent()
 {
 }

@@ -111,15 +111,18 @@ KTPathItem *KTItemConverter::convertToPath(QGraphicsItem *item)
 		break;
 		case KTItemGroup::Type:
 		{
-			kWarning() << "KTItemConverter::convertToPath no support groups";
+			#ifdef K_DEBUG
+				kWarning() << "KTItemConverter::convertToPath no support groups";
+			#endif
 			delete path;
 			return 0;
 		}
 		break;
 		default:
 		{
-			kWarning() << "KTItemConverter::convertToPath use default";
-			
+			#ifdef K_DEBUG
+				kWarning() << "KTItemConverter::convertToPath use default";
+			#endif
 			ppath = item->shape(); // TODO
 		}
 		break;

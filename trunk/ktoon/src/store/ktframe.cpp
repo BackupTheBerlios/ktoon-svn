@@ -202,7 +202,9 @@ void KTFrame::insertItem(int position, QGraphicsItem *item)
 
 QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group )
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	
 	qSort(group.begin(), group.end());
 	
@@ -261,7 +263,10 @@ void KTFrame::replaceItem(int position, QGraphicsItem *item)
 
 bool KTFrame::moveItem(int currentPosition, int newPosition)
 {
-	K_FUNCINFO << "current "<< currentPosition << " new "  << newPosition;
+	#ifdef K_DEBUG
+		K_FUNCINFO << "current "<< currentPosition << " new "  << newPosition;
+	#endif
+
 	if(currentPosition == newPosition || currentPosition < 0 || currentPosition >= k->graphics.count() || newPosition < 0 || newPosition >= k->graphics.count())
 	{
 		return false;
@@ -347,7 +352,10 @@ KTGraphicObject *KTFrame::graphic(int position) const
 {
 	if ( position < 0 || position >= k->graphics.count() )
 	{
-		K_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+		#ifdef K_DEBUG
+			K_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+		#endif
+
 		return 0;
 	}
 	

@@ -37,7 +37,6 @@ KTSaveProject::KTSaveProject() : QObject()
 {
 }
 
-
 KTSaveProject::~KTSaveProject()
 {
 }
@@ -46,13 +45,17 @@ bool KTSaveProject::save(const QString &fileName, const KTProject *project)
 {
 	QDir projectDir = CACHE_DIR + "/" + project->projectName();
 	
-	kDebug("project") << "Saving project to: " << projectDir.absolutePath();
+	#ifdef K_DEBUG
+		kDebug("project") << "Saving project to: " << projectDir.absolutePath();
+	#endif
 	
 	if ( !projectDir.exists() )
 	{
 		if ( ! projectDir.mkdir(projectDir.path()) )
 		{
-			kFatal() <<("Can't create");
+			#ifdef K_DEBUG
+				kFatal() <<("Can't create");
+			#endif
 			return false;
 		}
 	}
@@ -122,7 +125,9 @@ bool KTSaveProject::save(const QString &fileName, const KTProject *project)
 	
 	if ( ok )
 	{
-		kWarning() << tr("Project saved in %1!").arg(fileName);
+		#ifdef K_DEBUG
+			kWarning() << tr("Project saved in %1!").arg(fileName);
+		#endif
 	}
 	
 	return ok;
@@ -130,7 +135,10 @@ bool KTSaveProject::save(const QString &fileName, const KTProject *project)
 
 bool KTSaveProject::load(const QString &fileName, KTProject *project)
 {
-	K_FUNCINFO << fileName;
+	#ifdef K_DEBUG
+		K_FUNCINFO << fileName;
+	#endif
+
 	KTPackageHandler packageHandler;
 	
 	if ( packageHandler.importPackage(fileName) )
@@ -146,7 +154,9 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
 		}
 		else
 		{
-			kFatal() << "Can't find project file!!";
+			#ifdef K_DEBUG
+				kFatal() << "Can't find project file!!";
+			#endif
 			return false;
 		}
 		

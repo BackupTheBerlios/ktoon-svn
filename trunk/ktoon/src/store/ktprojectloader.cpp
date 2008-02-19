@@ -30,7 +30,6 @@ KTProjectLoader::KTProjectLoader()
 {
 }
 
-
 KTProjectLoader::~KTProjectLoader()
 {
 }
@@ -105,5 +104,3 @@ void KTProjectLoader::createSymbol(KTLibraryObject::Type type, const QString &na
 	
 	project->emitResponse(&response);
 }
-
-

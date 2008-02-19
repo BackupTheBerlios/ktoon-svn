@@ -66,7 +66,9 @@ struct KTProject::Private
  */
 KTProject::KTProject(QObject *parent) : QObject(parent), k(new Private)
 {
-	KINIT;
+	#ifdef K_DEBUG
+		KINIT;
+	#endif
 	
 	k->sceneCounter = 0;
 	k->isOpen = false;
@@ -79,8 +81,9 @@ KTProject::KTProject(QObject *parent) : QObject(parent), k(new Private)
  */
 KTProject::~KTProject()
 {
-	KEND;
-	
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 	deleteDataDir();
 	
 	k->scenes.clear(true);
@@ -101,7 +104,9 @@ void KTProject::loadLibrary(const QString &filename)
 	}
 	else
 	{
-		kFatal("library") << "Cannot open library from: " << filename;
+		#ifdef K_DEBUG
+			kFatal("library") << "Cannot open library from: " << filename;
+		#endif
 	}
 }
 
@@ -175,7 +180,9 @@ QString KTProject::description() const
 
 KTScene *KTProject::createScene(int position, bool loaded )
 {
-	kDebug("project") << "Creating scene " << position;
+	#ifdef K_DEBUG
+		kDebug("project") << "Creating scene " << position;
+	#endif
 	if( position < 0 || position > k->scenes.count() )
 	{
 		return 0;
@@ -197,7 +204,9 @@ KTScene *KTProject::createScene(int position, bool loaded )
 
 bool KTProject::removeScene(int position)
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	KTScene *toRemove = scene(position);
 	
 	if ( toRemove )
@@ -220,7 +229,9 @@ bool KTProject::moveScene(int position, int newPosition)
 {
 	if ( position < 0 || position >= k->scenes.count() || newPosition < 0 || newPosition >= k->scenes.count() )
 	{
-		kWarning() << "Failed moving scene!";
+		#ifdef K_DEBUG
+			kWarning() << "Failed moving scene!";
+		#endif
 		return false;
 	}
 	
@@ -231,10 +242,15 @@ bool KTProject::moveScene(int position, int newPosition)
 
 KTScene *KTProject::scene(int position) const
 {
-	K_FUNCINFOX("project")<< position;
+	#ifdef K_DEBUG
+		K_FUNCINFOX("project")<< position;
+	#endif
+
 	if( position < 0 || position >= k->scenes.count() )
 	{
-		K_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+		#ifdef K_DEBUG
+			K_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+		#endif
 		return 0;
 	}
 	return k->scenes.visualValue(position);
@@ -347,7 +363,9 @@ bool KTProject::removeSymbol(const QString &name)
 
 bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int layerIndex, int frameIndex)
 {
-	kDebug() << sceneIndex << " " << layerIndex << " " << frameIndex;
+	#ifdef K_DEBUG
+		kDebug() << sceneIndex << " " << layerIndex << " " << frameIndex;
+	#endif
 	
 	KTLibraryObject *object = k->library->findObject(name);
 	
@@ -391,7 +409,9 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
 
 bool KTProject::removeSymbolFromProject(const QString &name, int scene, int layer, int frame)
 {
-	kFatal("project") << "removeSymbolFromProject::Find me in ktproject.cpp";
+	#ifdef K_DEBUG
+		kFatal("project") << "removeSymbolFromProject::Find me in ktproject.cpp";
+	#endif
 	
 	return false;
 }
@@ -424,7 +444,9 @@ bool KTProject::deleteDataDir()
 		
 		if( dir.exists("audio") && dir.exists("video") && dir.exists("images") || dir.exists("project.ktp") )
 		{
-			kDebug("project") << "Removing " << dir.absolutePath() << "...";
+			#ifdef K_DEBUG
+				kDebug("project") << "Removing " << dir.absolutePath() << "...";
+			#endif
 			
 			dir.remove("project.ktp");
 			dir.remove("library.ktl");
@@ -460,7 +482,9 @@ bool KTProject::deleteDataDir()
 			
 			if( ! dir.rmdir(dir.absolutePath()) )
 			{
-				kError("project") << "Cannot remove project data directory!";
+				#ifdef K_DEBUG
+					kError("project") << "Cannot remove project data directory!";
+				#endif
 			}
 		}
 		return true;

@@ -130,6 +130,3 @@ void KTPaletteDocument::setElements(const QList<QBrush > &brushes)
 		}
 	}
 }
-
-
-

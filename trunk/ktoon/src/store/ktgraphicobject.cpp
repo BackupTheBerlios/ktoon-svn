@@ -44,7 +44,9 @@ struct KTGraphicObject::Private
 KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
 	: QObject(parent), k(new Private)
 {
-	KINIT;
+	#ifdef K_DEBUG
+		KINIT;
+	#endif
 	
 	k->item = item;
 	k->tweener = 0;
@@ -56,7 +58,9 @@ KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
 
 KTGraphicObject::~KTGraphicObject()
 {
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
 	if( k->item )
 	{
 // 		if ( QGraphicsScene *scene = d->item->scene() )

@@ -48,7 +48,9 @@
 
 bool KTCommandExecutor::createItem(KTItemResponse *response)
 {
-	K_FUNCINFOX("items");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("items");
+	#endif
 	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
@@ -80,19 +82,25 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
 			}
 			else
 			{
-				kError() << tr("Frame doesn't exists!");
+				#ifdef K_DEBUG
+					kError() << tr("Frame doesn't exists!");
+				#endif
 				return false;
 			}
 		}
 		else
 		{
-			kError() << tr("Layer doesn't exists!");
+			#ifdef K_DEBUG
+				kError() << tr("Layer doesn't exists!");
+			#endif
 			return false;
 		}
 	}
 	else
 	{
-		kError() << tr("Scene doesn't exists!");
+		#ifdef K_DEBUG
+			kError() << tr("Scene doesn't exists!");
+		#endif
 		return false;
 	}
 	
@@ -143,7 +151,10 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
 
 bool KTCommandExecutor::moveItem(KTItemResponse *response)
 {
-	K_FUNCINFOX("items");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("items");
+	#endif
+
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -181,7 +192,9 @@ bool KTCommandExecutor::moveItem(KTItemResponse *response)
 
 bool KTCommandExecutor::groupItems(KTItemResponse *response)
 {
-	K_FUNCINFOX("items");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("items");
+	#endif
 // 	response->setAction(KTProjectRequest::Group);
 	
 	int scenePosition = response->sceneIndex();
@@ -214,7 +227,9 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
 
 bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 {
-	K_FUNCINFOX("items");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("items");
+	#endif
 	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
@@ -292,7 +307,9 @@ static QGraphicsItem * convert(QGraphicsItem *item, int toType)
 		break;
 		default:
 		{
-			kWarning() << "unknown item " << toType ;
+			#ifdef K_DEBUG
+				kWarning() << "unknown item " << toType ;
+			#endif
 		}
 		break;
 	}
@@ -301,7 +318,11 @@ static QGraphicsItem * convert(QGraphicsItem *item, int toType)
 
 bool KTCommandExecutor::convertItem(KTItemResponse *response)
 {
-	K_FUNCINFOX("items");
+
+	#ifdef K_DEBUG
+		K_FUNCINFOX("items");
+	#endif
+
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -346,7 +367,10 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 
 bool KTCommandExecutor::transformItem(KTItemResponse *response)
 {
-	K_FUNCINFOX("items");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("items");
+	#endif
+
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -390,13 +414,20 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
 
 bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 {
-	K_FUNCINFOX("items");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("items");
+	#endif
+	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
 	int position = response->itemIndex();
 	QString xml = response->arg().toString();
-	SHOW_VAR(xml);
+
+	#ifdef K_DEBUG
+		SHOW_VAR(xml);
+	#endif
+
 	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
@@ -419,7 +450,9 @@ bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 							orig.appendChild(ktpath->toXml(orig));
 						}
 						QString current = orig.toString();
-						SHOW_VAR(current);
+						#ifdef K_DEBUG
+							SHOW_VAR(current);
+						#endif
 						
 						QDomDocument doc;
 						doc.setContent( xml);
@@ -439,7 +472,10 @@ bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 
 bool KTCommandExecutor::createTweening(KTItemResponse *response)
 {
-	K_FUNCINFOX("items");
+	#ifdef K_DEBUG
+		K_FUNCINFOX("items");
+	#endif
+
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -471,5 +507,3 @@ bool KTCommandExecutor::createTweening(KTItemResponse *response)
 	
 	return false;
 }
-
-

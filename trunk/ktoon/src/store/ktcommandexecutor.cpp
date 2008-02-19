@@ -40,10 +40,11 @@ KTCommandExecutor::~KTCommandExecutor()
 {
 }
 
-
 bool KTCommandExecutor::createScene(KTSceneResponse *response)
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	
 	int position = response->sceneIndex();
 	QString name = response->arg().toString();
@@ -80,8 +81,10 @@ bool KTCommandExecutor::createScene(KTSceneResponse *response)
 
 bool KTCommandExecutor::removeScene(KTSceneResponse *response)
 {
-	K_FUNCINFO;
-	
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif	
+
 	int position = response->sceneIndex();
 	
 	KTScene *toRemove = m_project->scene(position);
@@ -127,8 +130,11 @@ bool KTCommandExecutor::lockScene(KTSceneResponse *response)
 {
 	int position = response->sceneIndex();
 	bool lock = response->arg().toBool();
-	kWarning() << "Lock scene: " << lock;
-	
+
+	#ifdef K_DEBUG
+		kWarning() << "Lock scene: " << lock;
+	#endif	
+
 	KTScene *scene = m_project->scene(position);
 	
 	if ( !scene)

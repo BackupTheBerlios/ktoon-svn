@@ -28,7 +28,6 @@ KTLibrary::KTLibrary(const QString &id, KTProject *parent) : KTLibraryFolder(id,
 {
 }
 
-
 KTLibrary::~KTLibrary()
 {
 }

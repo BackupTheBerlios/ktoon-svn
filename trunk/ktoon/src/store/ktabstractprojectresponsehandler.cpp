@@ -30,7 +30,6 @@ KTAbstractProjectResponseHandler::KTAbstractProjectResponseHandler()
 {
 }
 
-
 KTAbstractProjectResponseHandler::~KTAbstractProjectResponseHandler()
 {
 }

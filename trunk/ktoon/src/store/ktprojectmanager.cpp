@@ -76,8 +76,10 @@ class KTProjectManager::Private
 
 KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), k(new Private())
 {
-	KINIT;
-	
+	#ifdef K_DEBUG
+		KINIT;
+	#endif
+
 	k->isModified = false;
 	k->handler = 0;
 	
@@ -94,7 +96,10 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), k(new Pri
 
 KTProjectManager::~KTProjectManager()
 {
-	KEND;
+	#ifdef K_DEBUG
+		KEND;
+	#endif
+
 	delete k;
 }
 
@@ -138,7 +143,9 @@ KTAbstractProjectHandler *KTProjectManager::handler() const
 
 void KTProjectManager::setupNewProject()
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	
 	if ( !k->handler || !k->params)
 	{
@@ -208,7 +215,9 @@ bool KTProjectManager::loadProject(const QString &fileName)
 {
 	if ( ! k->handler )
 	{
-		kFatal() << "NO HANDLER!";
+		#ifdef K_DEBUG
+			kFatal() << "NO HANDLER!";
+		#endif
 		return false;
 	}
 	
@@ -273,10 +282,11 @@ void KTProjectManager::setupProjectDir()
  */
 void KTProjectManager::handleProjectRequest(const KTProjectRequest *request)
 {
-	K_FUNCINFO;
-	
-	kWarning() << request->xml();
-	
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+		kWarning() << request->xml();
+	#endif
+		
 	// TODO: el handler debe decir cuando construir el comando
 	
 	if ( k->handler )
@@ -344,7 +354,9 @@ void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
  */
 void KTProjectManager::createCommand(const KTProjectRequest *request, bool addToStack)
 {
-	K_FUNCINFO;
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
 	
 	if ( request->isValid() )
 	{
@@ -361,7 +373,9 @@ void KTProjectManager::createCommand(const KTProjectRequest *request, bool addTo
 	}
 	else
 	{
-		kWarning() << "invalid request";
+		#ifdef K_DEBUG
+			kWarning() << "invalid request";
+		#endif
 	}
 }
 
@@ -380,7 +394,9 @@ QUndoStack *KTProjectManager::undoHistory() const
 
 void KTProjectManager::emitResponse( KTProjectResponse *response)
 {
-	K_FUNCINFO << response->action();
+	#ifdef K_DEBUG
+		K_FUNCINFO << response->action();
+	#endif
 	
 	if( response->action() != KTProjectRequest::Select )
 	{
@@ -396,5 +412,3 @@ void KTProjectManager::emitResponse( KTProjectResponse *response)
 		emit responsed( response );
 	}
 }
-
-

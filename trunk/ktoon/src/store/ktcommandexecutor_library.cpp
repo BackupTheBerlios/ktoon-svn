@@ -76,5 +76,3 @@ bool KTCommandExecutor::removeSymbolFromProject(KTLibraryResponse *response)
 {
 	return false;
 }
-
-

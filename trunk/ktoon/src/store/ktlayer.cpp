@@ -174,7 +174,9 @@ KTFrame *KTLayer::frame(int position) const
 {
 	if ( position < 0 || position >= k->frames.count() )
 	{
-		K_FUNCINFO << " FATAL ERROR: index out of bound";
+		#ifdef K_DEBUG
+			K_FUNCINFO << " FATAL ERROR: index out of bound";
+		#endif
 		return 0;
 	}
 	

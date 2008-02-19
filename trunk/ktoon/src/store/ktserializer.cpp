@@ -158,8 +158,6 @@ QDomElement KTSerializer::gradient(const QGradient *gradient, QDomDocument &doc)
 }
 
 
-
-
 QGradient * KTSerializer::createGradient(const QXmlAttributes &atts)
 {
 	

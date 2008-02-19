@@ -27,7 +27,6 @@ KTAbstractProjectHandler::KTAbstractProjectHandler(QObject *parent) : QObject(pa
 {
 }
 
-
 KTAbstractProjectHandler::~KTAbstractProjectHandler()
 {
 }

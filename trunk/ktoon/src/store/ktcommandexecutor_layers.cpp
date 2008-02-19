@@ -113,7 +113,9 @@ bool KTCommandExecutor::moveLayer(KTLayerResponse *response)
 	
 	if ( ! scene->moveLayer(position, newPosition) )
 	{
+		#ifdef K_DEBUG
 		kWarning() << "Failed moving layer";
+		#endif
 		return false;
 	}
 	else
@@ -159,7 +161,9 @@ bool KTCommandExecutor::renameLayer(KTLayerResponse *response)
 	int position = response->layerIndex();
 	QString newName = response->arg().toString();
 	
-	kWarning() << "Renombrando layer: " << newName;
+	#ifdef K_DEBUG
+	kWarning() << "Renamed layer: " << newName;
+	#endif
 	
 	QString oldName;
 	
