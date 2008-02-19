@@ -44,11 +44,11 @@ end
 	config.addModule("xml")
 	config.addModule("network")
 	
-	if not conf.hasArgument?("with-debug")
-		config.addDefine("K_NODEBUG")
-		config.addOption("silent")
+	if conf.hasArgument?("with-debug")
+		config.addDefine("K_DEBUG")
 	else
-                config.addDefine("K_DEBUG")
+                config.addDefine("K_NODEBUG")
+                config.addOption("silent")
 	end
 
 	config.addDefine(%@KLIB_PREFIX='\\\\"'#{conf.destdir}'\\\\"'@)
