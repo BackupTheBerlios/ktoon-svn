@@ -43,7 +43,7 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 	layout->addWidget(label);
 	m_exactness = new QDoubleSpinBox();
 	
-	m_exactness->setValue(0.1);
+	m_exactness->setValue(4.0);
 	m_exactness->setDecimals ( 2 );
 	m_exactness->setSingleStep ( 0.1 );
 	m_exactness->setMaximum ( 100 );

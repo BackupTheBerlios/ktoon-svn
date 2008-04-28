@@ -761,7 +761,11 @@ Longueur:</translation>
         <translation type="unfinished">Animation</translation>
     </message>
     <message>
-        <source>Do you want to save?</source>
+        <source>The document has been modified.\n</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to save your project?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

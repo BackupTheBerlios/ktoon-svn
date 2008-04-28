@@ -295,6 +295,33 @@ bool KTMainWindow::closeProject()
 	
 	if ( m_projectManager->isModified() )
 	{
+
+                int ret = QMessageBox::warning(this, QApplication::applicationName (),
+                   tr("The document has been modified.\n"
+                      "Do you want to save your project?"),
+                   QMessageBox::Save | QMessageBox::Discard
+                   | QMessageBox::Cancel,
+                   QMessageBox::Save);
+
+		switch(ret)
+		{
+			case QMessageBox::Save:
+			{
+				saveProject();
+			}
+			break;
+			case QMessageBox::Discard:
+			{
+			}
+			break;
+			case QMessageBox::Cancel:
+			{
+				return false;
+			}
+			break;
+		}
+
+		/*
 		QMessageBox mb(QApplication::applicationName (), tr("Do you want to save?"),
 			QMessageBox::Information,
 			QMessageBox::Yes | QMessageBox::Default,
@@ -320,7 +347,7 @@ bool KTMainWindow::closeProject()
 				return false;
 			}
 			break;
-		}
+		}*/
 	}
 	
 	setUpdatesEnabled(false);

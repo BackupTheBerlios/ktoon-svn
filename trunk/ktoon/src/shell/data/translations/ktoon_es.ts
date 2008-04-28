@@ -110,7 +110,11 @@
         <translation>Animación</translation>
     </message>
     <message>
-        <source>Do you want to save?</source>
+        <source>The document has been modified.\n</source>
+        <translation>El documento ha sido modificado.\n</translation>
+    </message>
+    <message>
+        <source>Do you want to save your project?</source>
         <translation>Desea guardar su trabajo?</translation>
     </message>
     <message>
