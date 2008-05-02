@@ -978,7 +978,7 @@ void KTMainWindow::addPage(QWidget *widget)
 
 /**
  * @if english 
- * This method export an animation project to a video/image format.
+ * This method exports the animation project to a video/image format.
  * @endif
  * @if spanish
  * Este metodo exporta un proyecto de animacion a un formato de video/imagen.

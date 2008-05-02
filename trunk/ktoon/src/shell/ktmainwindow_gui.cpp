@@ -365,11 +365,11 @@ void KTMainWindow::setupFileActions()
 	// Export Project action
 	KAction *exportProject = new KAction( QPixmap(THEME_DIR+"/icons/export.png"), tr( "&Export..." ),  QKeySequence(),
 						this, SLOT(exportProject()), m_actionManager);
-	exportProject->setStatusTip(tr("Exports project to different formats"));
+	exportProject->setStatusTip(tr("Export project to different formats"));
 	m_actionManager->insert( exportProject, "export", "file" );
 	
 	// Exit action
-	KAction *exit = new KAction(QPixmap(THEME_DIR+"/icons/export.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")),
+	KAction *exit = new KAction(QPixmap(THEME_DIR+"/icons/close.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")),
 					qApp, SLOT(closeAllWindows ()), m_actionManager);
 	exit->setStatusTip(tr("Closes the application"));
 	m_actionManager->insert( exit, "exit", "file" );

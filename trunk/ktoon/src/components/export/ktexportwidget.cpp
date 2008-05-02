@@ -46,11 +46,11 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class SelectPlugin : public KWizardPage
+class SelectPlugin : public KExportWizardPage
 {
 	Q_OBJECT;
 	public:
-		SelectPlugin();
+		SelectPlugin(const KTExportWidget *kt);
 		~SelectPlugin();
 		
 		bool isComplete() const;
@@ -62,6 +62,7 @@ class SelectPlugin : public KWizardPage
 	public slots:
 		void selectedPluginItem(QListWidgetItem *);
 		void selectedFormatItem(QListWidgetItem *);
+		void clean();
 		
 	signals:
 		void selectedPlugin(const QString &plugin);
@@ -72,7 +73,7 @@ class SelectPlugin : public KWizardPage
 		QListWidget *m_formatList;
 };
 
-SelectPlugin::SelectPlugin() : KWizardPage(tr("Select plugin"))
+SelectPlugin::SelectPlugin(const KTExportWidget *kt) : KExportWizardPage(tr("Select plugin"))
 {
 	QWidget *container = new QWidget;
 	QHBoxLayout *layout = new QHBoxLayout(container);
@@ -84,6 +85,8 @@ SelectPlugin::SelectPlugin() : KWizardPage(tr("Select plugin"))
 	m_formatList = new QListWidget;
 	connect(m_formatList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selectedFormatItem(QListWidgetItem *)));
 	layout->addWidget(m_formatList);
+
+	connect(kt, SIGNAL(cancelled()), this, SLOT(clean()));
 	
 	setWidget(container);
 	
@@ -103,6 +106,12 @@ void SelectPlugin::reset()
 {
 	m_exporterList->clearSelection();
 	m_formatList->clearSelection();
+}
+
+void SelectPlugin::clean()
+{
+	reset();
+	m_formatList->clear();
 }
 
 void SelectPlugin::addPlugin(const QString &plugin)
@@ -203,11 +212,11 @@ void SelectPlugin::selectedFormatItem(QListWidgetItem *item)
 	}
 }
 
-class SelectScenes : public KWizardPage
+class SelectScenes : public KExportWizardPage
 {
 	Q_OBJECT;
 	public:
-		SelectScenes();
+		SelectScenes(const KTExportWidget *kt, const KTProject *project);
 		~SelectScenes();
 		
 		bool isComplete() const;
@@ -219,6 +228,7 @@ class SelectScenes : public KWizardPage
 		
 	private slots:
 		void updateState();
+		void updateScenesList();
 		
 	signals:
 		void selectedScenes(const QList<int> &scenes);
@@ -227,12 +237,13 @@ class SelectScenes : public KWizardPage
 		KItemSelector *m_selector;
 };
 
-SelectScenes::SelectScenes() : KWizardPage(tr("Select Scenes"))
+SelectScenes::SelectScenes(const KTExportWidget *kt) : KExportWizardPage(tr("Select Scenes"))
 {
 	m_selector = new KItemSelector;
 	
 	connect(m_selector, SIGNAL(changed()), this, SLOT(updateState()));
-	
+	connect(kt, SIGNAL(updateScenes()), this, SLOT(updateScenesList()));
+
 	setWidget(m_selector);
 }
 
@@ -251,14 +262,25 @@ void SelectScenes::reset()
 
 void SelectScenes::setScenes(const QList<KTScene *> &scenes)
 {
+	#ifdef K_DEBUG
+		K_FUNCINFO;
+	#endif
+
 	m_selector->clear();
 	
 	int pos = 1;
 	foreach(KTScene *scene, scenes)
 	{
+		#ifdef K_DEBUG
+		K_DEBUG("export") << "Adding " << scene->sceneName();
+		#endif
 		m_selector->addItem(QString("%1: ").arg(pos)+scene->sceneName());
 		pos++;
 	}
+
+	#ifdef K_DEBUG
+	K_DEBUG("export") << "Loop: " << pos;
+	#endif
 }
 
 void SelectScenes::aboutToNextPage()
@@ -271,7 +293,11 @@ void SelectScenes::updateState()
 	emit completed();
 }
 
-class ExportTo : public KWizardPage
+void SelectScenes::updateScenesList() {
+	setScenes();
+}
+
+class ExportTo : public KExportWizardPage
 {
 	Q_OBJECT;
 	public:
@@ -312,7 +338,7 @@ class ExportTo : public KWizardPage
 		KXYSpinBox *m_size;
 };
 
-ExportTo::ExportTo(const KTProject *project) : KWizardPage(tr("Export to File")), m_currentExporter(0), 
+ExportTo::ExportTo(const KTProject *project) : KExportWizardPage(tr("Export to File")), m_currentExporter(0), 
 		   m_currentFormat(KTExportInterface::NONE), m_project(project)
 {
 	QWidget *container = new QWidget;
@@ -544,7 +570,7 @@ QList<KTScene *> ExportTo::scenesToExport() const
 	return scenes;
 }
 
-KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KWizard(parent), m_project(project)
+KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KExportWizard(parent), m_project(project)
 {
 	#ifdef K_DEBUG
 		KINIT;
@@ -553,10 +579,10 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KWiz
 	setWindowTitle(tr("Export"));
 	setWindowIcon(QIcon(THEME_DIR+"/icons/export.png"));
 	
-	m_pluginSelectionPage = new SelectPlugin();
+	m_pluginSelectionPage = new SelectPlugin(this);
 	addPage(m_pluginSelectionPage);
 	
-	m_scenesSelectionPage = new SelectScenes();
+	m_scenesSelectionPage = new SelectScenes(this,project);
 	m_scenesSelectionPage->setScenes(project->scenes().values());
 	
 	addPage(m_scenesSelectionPage);
@@ -568,7 +594,7 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KWiz
 	connect(m_pluginSelectionPage, SIGNAL(formatSelected(int)), m_exportToPage, SLOT(setCurrentFormat(int)));
 	connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportToPage, 
 		SLOT(setScenesIndexes(const QList<int> &)));
-	
+
 	loadPlugins();
 }
 

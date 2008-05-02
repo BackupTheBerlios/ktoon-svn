@@ -334,7 +334,6 @@ QDomElement KTProject::toXml(QDomDocument &doc) const
 	QDomElement description = doc.createElement("description");
 	description.appendChild(doc.createTextNode(k->description));
 	
-	
 	meta.appendChild(author);
 	meta.appendChild(description);
 	project.appendChild(meta);

@@ -31,7 +31,7 @@
 
 #include "ktexportpluginobject.h"
 
-#include "kgui/kwizard.h"
+#include "kgui/kexportwizard.h"
 
 class QButtonGroup;
 class QLineEdit;
@@ -42,7 +42,7 @@ class ExportTo;
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTExportWidget : public KWizard
+class KTExportWidget : public KExportWizard
 {
 	Q_OBJECT
 	public:

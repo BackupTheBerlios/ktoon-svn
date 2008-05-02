@@ -60,6 +60,9 @@ KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIn
 	action.setAttribute( "id", actionId);
 	action.setAttribute( "arg", arg.toString());
 	action.setAttribute( "part", KTProjectRequest::Item );
+
+	//qDebug( "* SCANNING APP - actionId: %d",actionId); 
+        //qDebug( "* Item =>: %d",KTProjectRequest::Item);
 		
 	KTRequestBuilder::appendData( doc, action, data);
 	root.appendChild( action );
