@@ -72,6 +72,7 @@ HEADERS += collapsiblewidget.h \
            kwaitstyle.h \
            kwidgetlistview.h \
            kwizard.h \
+           kexportwizard.h \
            kworkspacemainwindow.h \
            kxyspinbox.h \
            dcolorarrow.xpm \
@@ -137,6 +138,7 @@ SOURCES += collapsiblewidget.cpp \
            kwaitstyle.cpp \
            kwidgetlistview.cpp \
            kwizard.cpp \
+           kexportwizard.cpp \
            kworkspacemainwindow.cpp \
            kxyspinbox.cpp
 

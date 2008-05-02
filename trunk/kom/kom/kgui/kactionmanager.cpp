@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 #include "kactionmanager.h"
-#include "kdebug.h"
+#include "kcore/kdebug.h"
 
 #include <QMenuBar>
 #include <QToolBar>

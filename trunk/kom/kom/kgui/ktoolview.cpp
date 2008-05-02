@@ -60,10 +60,13 @@ void KToolView::setup()
 	connect(toggleViewAction(), SIGNAL(toggled(bool)), this, SLOT(saveSize(bool)));
 }
 
-
 KViewButton *KToolView::button() const
 {
 	return m_button;
+}
+
+void KToolView::expand() {
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 }
 
 void KToolView::saveSize(bool checked)
