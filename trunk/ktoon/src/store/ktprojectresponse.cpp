@@ -22,6 +22,9 @@
 
 #include "ktprojectresponse.h"
 
+// This class returns information about data structure of a KToon project 
+// It is used from signals in the KTProject class to send data to anothers classes
+
 class KTProjectResponse::Private
 {
 	public:
@@ -206,6 +209,10 @@ void KTSceneResponse::setState(const QString &state)
 QString KTSceneResponse::state() const
 {
 	return m_state;
+}
+
+void KTSceneResponse::setScenes(Scenes scenes) {
+	m_scenes = scenes;
 }
 
 // LAYER

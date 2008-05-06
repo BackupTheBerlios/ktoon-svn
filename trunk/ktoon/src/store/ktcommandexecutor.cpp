@@ -40,6 +40,12 @@ KTCommandExecutor::~KTCommandExecutor()
 {
 }
 
+void KTCommandExecutor::getScenes(KTSceneResponse *response)
+{
+	response->setScenes(m_project->scenes());
+	emit responsed( response );
+}
+
 bool KTCommandExecutor::createScene(KTSceneResponse *response)
 {
 	#ifdef K_DEBUG

@@ -25,6 +25,7 @@
 
 #include "ktglobal_store.h"
 #include "ktprojectrequest.h"
+#include "ktscene.h"
 
 /**
  * Response to request (aka KTProjectRequest)
@@ -76,10 +77,12 @@ class KTSceneResponse : public KTProjectResponse
 		
 		void setState(const QString &state);
 		QString state() const;
+		void setScenes(Scenes scenes);
 		
 	private:
 		int m_sceneIndex;
 		QString m_state;
+		Scenes m_scenes;
 };
 
 class KTLayerResponse : public KTSceneResponse

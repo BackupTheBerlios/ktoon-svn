@@ -397,6 +397,10 @@ void KTProjectCommand::sceneCommand()
 	KTSceneResponse *response = static_cast<KTSceneResponse *>(k->response);
 	switch(response->action())
 	{
+		case KTProjectRequest::GetInfo:
+		{
+			k->executor->getScenes( response );
+		}
 		case KTProjectRequest::Add:
 		{
 			k->executor->createScene( response );

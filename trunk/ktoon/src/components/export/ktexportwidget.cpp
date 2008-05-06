@@ -216,7 +216,7 @@ class SelectScenes : public KExportWizardPage
 {
 	Q_OBJECT;
 	public:
-		SelectScenes(const KTExportWidget *kt, const KTProject *project);
+		SelectScenes(const KTExportWidget *kt);
 		~SelectScenes();
 		
 		bool isComplete() const;
@@ -228,7 +228,6 @@ class SelectScenes : public KExportWizardPage
 		
 	private slots:
 		void updateState();
-		void updateScenesList();
 		
 	signals:
 		void selectedScenes(const QList<int> &scenes);
@@ -291,10 +290,6 @@ void SelectScenes::aboutToNextPage()
 void SelectScenes::updateState()
 {
 	emit completed();
-}
-
-void SelectScenes::updateScenesList() {
-	setScenes();
 }
 
 class ExportTo : public KExportWizardPage
@@ -582,7 +577,7 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KExp
 	m_pluginSelectionPage = new SelectPlugin(this);
 	addPage(m_pluginSelectionPage);
 	
-	m_scenesSelectionPage = new SelectScenes(this,project);
+	m_scenesSelectionPage = new SelectScenes(this);
 	m_scenesSelectionPage->setScenes(project->scenes().values());
 	
 	addPage(m_scenesSelectionPage);

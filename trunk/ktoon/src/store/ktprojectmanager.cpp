@@ -47,6 +47,7 @@
 #include <kcore/kalgorithm.h>
 #include <kcore/kdebug.h>
 
+// This class handles the current animation project 
 
 class KTProjectManager::Private
 {
