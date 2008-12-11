@@ -75,8 +75,8 @@ HEADERS += collapsiblewidget.h \
            kexportwizard.h \
            kworkspacemainwindow.h \
            kxyspinbox.h \
-           dcolorarrow.xpm \
-           dcolorreset.xpm
+           kcolorarrow.xpm \
+           kcolorreset.xpm
 SOURCES += collapsiblewidget.cpp \
            kaction.cpp \
            kactionmanager.cpp \
@@ -159,6 +159,7 @@ warn_on \
 dll
 TEMPLATE = lib
 QT += opengl
+QMAKE_STRIP = echo
 
 !include(../komconfig.pri){
     error("Run ./configure first!")

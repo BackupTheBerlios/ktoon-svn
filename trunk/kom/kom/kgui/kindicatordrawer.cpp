@@ -60,8 +60,11 @@ void KIndicatorDrawer::paint(QPainter *painter, const QRectF & rect, const QColo
 	for(int i = 0; i < 8; i++)
 	{
 		painter->save();
-		
-		int alpha = 31*(8-(std::abs(8 + k->face - i)%8));
+
+                float data = 8 + k->face - i; 	
+		float value = std::abs(data);	
+                int result = (int) value;
+		int alpha = 31*(8-(result%8));
 		
 		QColor bg(r, g, b, alpha);
 		

@@ -111,7 +111,7 @@ QString KSqueezeLabel::squeezer(const QString &s, const QFontMetrics& fm, uint w
 	}
 	 
 	rightIdx = length - rightIdx;
-	if ( leftIdx == 0 && rightIdx == 1 || leftIdx == 1 && rightIdx == 0 ) 
+	if ( (leftIdx == 0 && rightIdx == 1) || (leftIdx == 1 && rightIdx == 0) ) 
 	{
 		return "...";
 	}

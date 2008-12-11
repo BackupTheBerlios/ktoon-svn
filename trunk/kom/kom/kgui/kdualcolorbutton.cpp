@@ -19,8 +19,8 @@
 
 #include "kdualcolorbutton.h"
 
-#include "dcolorarrow.xpm"
-#include "dcolorreset.xpm"
+#include "kcolorarrow.xpm"
+#include "kcolorreset.xpm"
 
 #include <qpainter.h>
 #include <qbitmap.h>

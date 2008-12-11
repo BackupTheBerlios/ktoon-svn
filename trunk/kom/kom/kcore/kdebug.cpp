@@ -222,13 +222,13 @@ void DebugBrowserHighlighter::highlightBlock ( const QString &text )
 
 static void kDebugOutput(DebugType t, DebugOutput o, const char *data)
 {
-	if ( o == KBoxOutput || o == KBrowserOutput && configReader.forceDisableGUI )
+	if ( (o == KBoxOutput) || (o == KBrowserOutput && configReader.forceDisableGUI) )
 	{
 		o = KShellOutput;
 		configReader.defaultOutput = KShellOutput;
 	}
 	
-	char *output = "%s\n";
+	char const *output = "%s\n";
 	
 	if( configReader.colorize )
 	{
@@ -350,7 +350,7 @@ KDebug::KDebug(const KDebug & k ) : streamer(k.streamer), m_type(k.m_type), m_ou
 
 KDebug::~KDebug()
 {
-	if ( m_area.isEmpty() && configReader.showAll || configReader.areas.contains(m_area )  )
+	if ( (m_area.isEmpty() && configReader.showAll) || configReader.areas.contains(m_area )  )
 	{
 		::kDebugOutput( m_type, m_output, streamer->buffer.toLocal8Bit().data() );
 	}

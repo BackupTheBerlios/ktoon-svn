@@ -9,7 +9,13 @@ INSTALLS += target  \
 headers
 target.path = /lib/ 
 
-INCLUDEPATH += ../ 
+INCLUDEPATH += ../kcore ../
+
+LIBS += -L../kcore -lkcore
+
+linux-g{
+    TARGETDEPS += ../kcore/libkcore.so
+}
 
 CONFIG += release \
           warn_on \
@@ -23,6 +29,7 @@ SOURCES += kaudioplayer.cpp
 
 include(../komconfig.pri)
 
+QMAKE_STRIP = echo
 
 headers.path = /include/ksound
 headers.files += *.h

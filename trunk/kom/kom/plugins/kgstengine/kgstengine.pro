@@ -5,7 +5,15 @@
 
 INSTALLS += target 
 target.path = /lib/kom/plugins/ 
-INCLUDEPATH += ../../ 
+INCLUDEPATH += ../../ ../../kcore
+QMAKE_STRIP = echo
+
+LIBS += -L../../kcore -lkcore
+
+linux-g{
+    TARGETDEPS += ../../kcore/libkcore.so
+}
+
 CONFIG += release \
           warn_on \
           plugin 

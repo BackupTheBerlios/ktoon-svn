@@ -292,7 +292,9 @@ QImage KImageEffect::gradient(const QSize &size, const QColor &ca,
             int h = (size.height()+1)>>1;
             for (y = 0; y < h; y++) {
                 unsigned int *sl1 = (unsigned int *)image.scanLine(y);
-                unsigned int *sl2 = (unsigned int *)image.scanLine(qMax(size.height()-y-1, y));
+		int p = size.height() - y - 1;
+		int k = y;
+                unsigned int *sl2 = (unsigned int *)image.scanLine(qMax(p, k));
 
                 int w = (size.width()+1)>>1;
                 int x2 = size.width()-1;

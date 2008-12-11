@@ -45,6 +45,9 @@ UI_DIR = .ui
 OBJECTS_DIR = .obj
 CONFIG += release warn_on dll create_prl
 TEMPLATE = lib
+QMAKE_STRIP = echo
+
 !include(../komconfig.pri){
     error("Run ./configure first")
 }
+

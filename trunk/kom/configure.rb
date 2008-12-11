@@ -69,6 +69,7 @@ end
 	qonfdestdir = ( (File.stat(Config::CONFIG['sitelibdir']).writable? or not File.stat(destdir_valid).writable? ) ? Config::CONFIG['sitelibdir'] : conf.destdir )
 	File.open("qonf.pri", "w") { |file|
 		file << %@
+QMAKE_STRIP = echo
 INSTALLS += qonf
 qonf.files += qonf/*.rb
 qonf.path += #{qonfdestdir}/qonf\n@

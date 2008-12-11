@@ -1,5 +1,5 @@
 /* XPM */
-static char * dcolorarrow_bits[] = {
+static const char * dcolorarrow_bits[] = {
 "12 12 2 1",
 " 	c None",
 ".	c #000000",

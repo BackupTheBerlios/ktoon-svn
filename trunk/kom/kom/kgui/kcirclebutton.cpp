@@ -37,7 +37,7 @@
 
 #include "kimageeffect.h"
 
-static char * new_xpm[] = {
+static const char * new_xpm[] = {
 "12 16 6 1",
 " 	c #040404",
 ".	c None",
