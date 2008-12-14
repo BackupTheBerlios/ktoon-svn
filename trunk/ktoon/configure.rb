@@ -35,6 +35,7 @@ _EOH_
 	config.addLib("-lkgui")
 	config.addLib("-lkcore")
 	config.addLib("-lksound")
+        config.addLib("-lz")
 	
 	config.addLib("-L#{RQonf::CONFIG["libdir"]}")
 	config.addIncludePath(RQonf::CONFIG["includepath"])
