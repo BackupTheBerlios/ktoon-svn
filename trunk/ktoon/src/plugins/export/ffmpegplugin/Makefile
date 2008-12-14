@@ -132,7 +132,7 @@ Makefile: ffmpegplugin.pro  /usr/share/qt4/mkspecs/linux-g++/qmake.conf /usr/sha
 		/usr/share/qt4/mkspecs/features/yacc.prf \
 		/usr/share/qt4/mkspecs/features/lex.prf
 	$(QMAKE) -unix -o Makefile ffmpegplugin.pro
-	/usr/bin/ruby1.8 /home/xtingray/Proyectos/ktoon/sources/ktoon/configure.status /home/xtingray/Proyectos/ktoon/sources/ktoon/src/plugins/export/ffmpegplugin/Makefile
+	/usr/bin/ruby1.8 /home/xtingray/Projects/ktoon/code/ktoon/configure.status /home/xtingray/Projects/ktoon/code/ktoon/src/plugins/export/ffmpegplugin/Makefile
 /usr/share/qt4/mkspecs/common/unix.conf:
 /usr/share/qt4/mkspecs/common/linux.conf:
 /usr/share/qt4/mkspecs/qconfig.pri:
