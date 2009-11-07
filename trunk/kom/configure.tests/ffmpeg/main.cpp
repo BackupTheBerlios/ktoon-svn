@@ -1,5 +1,9 @@
-#include <ffmpeg/avformat.h>
-#include <ffmpeg/avcodec.h>
+#ifdef __cplusplus
+extern "C" {
+#include "libavformat/avformat.h"
+#include "libavcodec/avcodec.h"
+}
+#endif
 
 #include <iostream>
 
@@ -8,7 +12,8 @@ int main()
 	av_register_all();
 	AVOutputFormat *fmt = guess_format("mpeg", NULL, NULL);
 	
-	AVFormatContext *oc = av_alloc_format_context();
+	//AVFormatContext *oc = av_alloc_format_context();
+        AVFormatContext *oc = avformat_alloc_context();
 	
 	oc->oformat = fmt;
 	
