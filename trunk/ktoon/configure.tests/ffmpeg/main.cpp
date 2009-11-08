@@ -1,5 +1,9 @@
-#include <ffmpeg/avformat.h>
-#include <ffmpeg/avcodec.h>
+#ifdef __cplusplus
+extern "C" {
+#include "libavformat/avformat.h"
+#include "libavcodec/avcodec.h"
+}
+#endif
 
 #include <iostream>
 

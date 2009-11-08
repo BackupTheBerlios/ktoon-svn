@@ -93,10 +93,12 @@ class KTViewDocument : public QMainWindow
 		Private *const k;
 		
 	private:
-		void createActions();
-		void setupViewActions();
-		void setupEditActions();
-		void setupOrderActions();
+		//void createActions();
+
+		void setupDrawActions();
+
+		//void setupEditActions();
+		//void setupOrderActions();
 		
 		void createToolBar();
 		void createMenu();

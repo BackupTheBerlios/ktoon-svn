@@ -124,7 +124,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : KTabbedMainWindow(),  m_projectMa
 	// Setting up all the GUI...
 	createGUI(); // This method is called from the ktmainwindow_gui class
 	setupMenu();
-	setupToolBar();
+	//setupToolBar();
 	
 	// Check if user wants to see a KToon tip for every time he launches the program
 	KCONFIG->beginGroup("TipOfDay");
@@ -225,6 +225,8 @@ void KTMainWindow::viewNewDocument(const QString &title)
 		connectToDisplays( m_viewDoc );
 		ui4project( m_viewDoc );
 		ui4localRequest(m_viewDoc );
+
+                m_viewDoc->setAntialiasing(true);
 		
 		m_animationSpace = new KTWorkspace;
 		m_animationSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/animation_mode.png"));
@@ -757,7 +759,8 @@ void KTMainWindow::ui4project(QWidget *widget)
 	connect(m_projectManager, SIGNAL(responsed( KTProjectResponse* )), widget, 
 					  SLOT(handleProjectResponse(KTProjectResponse *)));
 	
-	connect(widget, SIGNAL(postPage(QWidget *)), this, SLOT(addPage(QWidget *)));
+        // PENDING TO CHECK
+	//connect(widget, SIGNAL(postPage(QWidget *)), this, SLOT(addPage(QWidget *)));
 }
 
 /**

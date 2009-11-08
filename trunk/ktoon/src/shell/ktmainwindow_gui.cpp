@@ -457,6 +457,7 @@ void KTMainWindow::setupInsertActions()
  * @endif
 */
 
+/*
 void KTMainWindow::setupToolBar()
 {
 	QToolBar * toolbar = new QToolBar(tr("Bar Actions"), this);
@@ -479,6 +480,7 @@ void KTMainWindow::setupToolBar()
 	kApp->insertGlobalAction(undo, "undo");
 	kApp->insertGlobalAction(redo, "redo");
 }
+*/
 
 /**
  * @if english

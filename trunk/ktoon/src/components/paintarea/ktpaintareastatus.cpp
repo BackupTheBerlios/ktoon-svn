@@ -165,7 +165,8 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 	k->antialiasHint->setText(tr("Antialiasing"));
 	k->antialiasHint->setCheckable(true);
 	
-	k->antialiasHint->setChecked( parent->renderHints() & QPainter::Antialiasing );
+	//k->antialiasHint->setChecked( parent->renderHints() & QPainter::Antialiasing );
+        k->antialiasHint->setChecked(true);
 	
 	addPermanentWidget(k->antialiasHint/*,1*/);
 	

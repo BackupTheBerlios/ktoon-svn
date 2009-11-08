@@ -60,20 +60,18 @@ void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KT
 	}
 	
 	m_baseName = fileInfo.baseName();
-	char *fmt = "PNG";
+	const char *fmt = "PNG";
 	
 	switch( format )
 	{
 		case KTExportInterface::JPEG:
-		{
 			fmt = "JPEG";
-		}
-		break;
+		        break;
 		case KTExportInterface::XPM:
-		{
 			fmt = "XPM";
-		}
-		break;
+		        break;
+                default:
+                        break;
 	}
 	
 	KTAnimationRenderer renderer;

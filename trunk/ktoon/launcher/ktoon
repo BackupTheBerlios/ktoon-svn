@@ -1,20 +1,6 @@
 #!/bin/bash
 
-LAUNCHER=$0
-OUTPUT=`ls -l $LAUNCHER | egrep '\-> (\w*\W*)+' -o | awk '{ print $2 }'`
-
-if [ "$OUTPUT" == "" ]
-then
-	KTOON_HOME=`dirname $LAUNCHER`
-elif [ "${OUTPUT::1}" == "/" ]
-then
-	KTOON_HOME=`dirname ${OUTPUT}`
-else 
-	LNCH="`dirname $LAUNCHER`/${OUTPUT}"
-	KTOON_HOME=`dirname $LNCH`
-fi
-
-export KTOON_HOME
-export LD_LIBRARY_PATH="${KTOON_HOME}/lib:/usr/lib/kom/lib:$LD_LIBRARY_PATH"
+export KTOON_HOME="/usr/local/ktoon"
+export LD_LIBRARY_PATH="${KTOON_HOME}/lib:/usr/lib/kom/plugins:$LD_LIBRARY_PATH"
 exec ${KTOON_HOME}/bin/ktoon.bin $*
 

@@ -1,5 +1,5 @@
 /* XPM */
-static char *wizard2_xpm[] = {
+const char *wizard2_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "110 360 256 2",
 "   c #100800",

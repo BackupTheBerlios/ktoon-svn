@@ -228,6 +228,7 @@ class SelectScenes : public KExportWizardPage
 		
 	private slots:
 		void updateState();
+                void updateScenesList();
 		
 	signals:
 		void selectedScenes(const QList<int> &scenes);
@@ -290,6 +291,11 @@ void SelectScenes::aboutToNextPage()
 void SelectScenes::updateState()
 {
 	emit completed();
+}
+
+void SelectScenes::updateScenesList()
+{
+        // Add code pending
 }
 
 class ExportTo : public KExportWizardPage

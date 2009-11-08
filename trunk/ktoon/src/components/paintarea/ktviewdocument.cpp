@@ -138,10 +138,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	connect(k->paintArea, SIGNAL(requestTriggered(const KTProjectRequest* )), this, 
 				     SIGNAL(requestTriggered(const KTProjectRequest *)));
 	
-	createActions();
-	setupEditActions();
-	setupViewActions();
-	setupOrderActions();
+	setupDrawActions();
 	
 	k->configurationArea = new KTConfigurationArea;
 	addDockWidget(Qt::RightDockWidgetArea, k->configurationArea);
@@ -197,125 +194,35 @@ void KTViewDocument::showPos(const QPointF &p)
 	emit sendToStatus ( message ) ;
 }
 
-void KTViewDocument::createActions()
+void KTViewDocument::setupDrawActions()
 {
-	// KAction *undo = k->history->undoAction();
-	// undo->setIcon( QPixmap(THEME_DIR+"/icons/undo.png" ));
-	// k->actionManager->insert(undo);
-	
-	// KAction *redo = k->history->redoAction();
-	// redo->setIcon(QPixmap(THEME_DIR+"/icons/redo.png" ));
-	// k->actionManager->insert(redo);
-}
-
-void KTViewDocument::setupEditActions()
-{
-#if 0
-	k->editGroup = new QActionGroup( parent() );
-	KAction *a = new KAction( QPixmap(THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  QKeySequence(tr("Ctrl+X")), 
-				  k->paintArea, SLOT(cut()),k->actionManager, "cut" );
-	a->setShortcutContext ( Qt::ApplicationShortcut );
-	k->editGroup->addAction(a);
-	
-	a = new KAction( QPixmap(THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  QKeySequence(tr("Ctrl+C")), k->paintArea,
-			 SLOT(copy()), k->actionManager, "copy");
-	
-	a->setShortcutContext ( Qt::ApplicationShortcut );
-	k->editGroup->addAction(a);
-	
-	a->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
-	
-	a = new KAction( QPixmap(THEME_DIR+"/icons/paste.png" ), tr( "&Paste" ),   QKeySequence(tr("Ctrl+V")), 
-				 k->paintArea, SLOT(paste()), k->actionManager, "paste");
-	
-	a->setShortcutContext ( Qt::ApplicationShortcut );
-	k->editGroup->addAction(a);
-	a->setStatusTip(tr("Pastes the clipboard into the current document"));
-	
-	a = new KAction( QPixmap(THEME_DIR+"/icons/delete.png" ), tr( "&Delete" ), QKeySequence( Qt::Key_Delete ), 
-			 k->paintArea, SLOT(removeSelectsGraphics()), k->actionManager, "delete");
-	// k->editGroup->addAction(a);
-	a->setShortcutContext ( Qt::ApplicationShortcut );
-	a->setStatusTip(tr("Deletes the selected object"));
-	
-	
-	a = new KAction( QPixmap(THEME_DIR+"/icons/group.png" ), tr( "&Group" ),   QKeySequence(  ), k->paintArea, 
-			 SLOT(group()), k->actionManager, "group");
-	a->setShortcut ( QKeySequence(tr("Ctrl+G")) );
-
-	k->editGroup->addAction(a);
-	a->setStatusTip(tr("Group the selected objects into a single one"));
-	
-	a = new KAction( QPixmap(THEME_DIR+"/icons/ungroup.png" ), tr( "&Ungroup" ),   QKeySequence(  ), k->paintArea, 
-			 SLOT(ungroup()), k->actionManager, "ungroup");
-	a->setShortcut ( QKeySequence(tr("Ctrl+Shift+G")) );
-	k->editGroup->addAction(a);
-	a->setStatusTip(tr("Ungroups the selected object"));
-	
-	a = new KAction( QPixmap(THEME_DIR+"/icons/" ), tr( "Select &All" ),   QKeySequence(tr("Ctrl+A")), k->paintArea,
-			 SLOT(selectAll()), k->actionManager, "selectAll");
-	a->setStatusTip(tr("selected all object"));
-	
-	KAction *flipV = new KAction(  QPixmap(THEME_DIR+"/icons/flip-vertical.png" ), tr("Flip Vertical"), 
-				       QKeySequence(tr(" Ctrl + Alt + V")), k->paintArea, SLOT(flipVCurrentElement()), 
-				       k->actionManager, "flipv");
-	
-	KAction *flipH = new KAction( QPixmap(THEME_DIR+"/icons/flip-horizontal.png" ),  tr("Flip Horizontal"), 
-				      QKeySequence(tr(" Ctrl + Alt + H")), k->paintArea, SLOT(flipHCurrentElement()), 
-				      k->actionManager, "fliph");
-	
-	a = new KAction( tr("Properties..."), QKeySequence(), this, SLOT(configure()), k->actionManager, "properties");
-	a->setStatusTip(tr("Configure the paint area"));
-#endif
-}
-
-void KTViewDocument::setupOrderActions()
-{
-#if 0
-	KAction *bringtoFront = new KAction(QPixmap(THEME_DIR+"/icons/bring_to_front.png" ), tr( "&Bring to Front" ),
-					    QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_Up), k->paintArea, 
-					    SLOT(bringToFromSelected()), k->actionManager, "bringToFront" );
-	
-	bringtoFront->setShortcutContext ( Qt::ApplicationShortcut );
-	bringtoFront->setStatusTip(tr("Brings the selected object to the front"));
-	
-	
-	KAction *sendToBack = new KAction(QPixmap(THEME_DIR+"/icons/send_to_back.png" ), tr( "&Send to Back" ),
-						  QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_Down), k->paintArea, 
-						  SLOT(sendToBackSelected()), k->actionManager, "sendToBack" );
-	
-	sendToBack->setShortcutContext ( Qt::ApplicationShortcut );
-	sendToBack->setStatusTip(tr("Sends the selected objects to the back"));
-	
-	KAction *oneStepForward = new KAction(QPixmap(THEME_DIR+"/icons/one_forward.png" ), tr( "One Step &Forward" ), 
-					      QKeySequence(Qt::CTRL+Qt::Key_Up), k->paintArea, 
-					      SLOT(oneStepForwardSelected()), k->actionManager, "oneStepForward" );
-	
-	oneStepForward->setShortcutContext ( Qt::ApplicationShortcut );
-	oneStepForward->setStatusTip(tr("Moves the selected object one step forward"));
-	
-	
-	KAction *oneStepBackward = new KAction(QPixmap(THEME_DIR+"/icons/one_backward.png" ), tr( "One Step B&ackward" ),
-					       QKeySequence(Qt::CTRL+Qt::Key_Down), k->paintArea, 
-					       SLOT(oneStepBackwardSelected()), k->actionManager, "oneStepBackward" );
-	
-	oneStepBackward->setShortcutContext ( Qt::ApplicationShortcut );
-	oneStepBackward->setStatusTip(tr("Moves the selected object one step backward"));
-#endif
-	
-}
-
-void KTViewDocument::setupViewActions()
-{
-	KAction *showGrid = new KAction( QPixmap(THEME_DIR+"/icons/subgrid.png" ), tr( "Show grid" ), QKeySequence(), this,
+	KAction *showGrid = new KAction( QPixmap(THEME_DIR+"/icons/subgrid.png" ), tr( "Show grid" ), QKeySequence(tr("Ctrl+L")), this,
 					 SLOT(toggleShowGrid()), k->actionManager, "show_grid" );
 	showGrid->setCheckable(true);
+
+        KAction *undo = new KAction( QPixmap(THEME_DIR+"/icons/undo.png" ), tr( "&Undo" ),  QKeySequence(tr("Ctrl+U")), this,
+                                     SLOT(undo()), k->actionManager, "undo" );
+        undo->setStatusTip(tr("Undo last operation"));
+
+        KAction *redo = new KAction( QPixmap(THEME_DIR+"/icons/redo.png" ), tr( "&Redo" ),  QKeySequence(tr("Ctrl+R")), this,
+                                     SLOT(redo()), k->actionManager, "redo" );
+        redo->setStatusTip(tr("Redo last operation"));
+
+        KAction *copy = new KAction( QPixmap(THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  QKeySequence(tr("Ctrl+C")),
+                                     k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
+        copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
+
+        KAction *paste = new KAction( QPixmap(THEME_DIR+"/icons/paste.png" ), tr( "&Paste" ),   QKeySequence(tr("Ctrl+V")),
+                                      k->paintArea, SLOT(pasteItems()), k->actionManager, "paste");
+        paste->setStatusTip(tr("Pastes the clipboard into the current document"));
+
+        KAction *cut = new KAction( QPixmap(THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  QKeySequence(tr("Ctrl+X")),
+                                    k->paintArea, SLOT(cutItems()),k->actionManager, "cut" );
+        cut->setStatusTip(tr("Cuts the selected items"));
+
 	
 	KAction *del = new KAction( QPixmap(THEME_DIR+"/icons/delete.png" ), tr( "Delete" ), 
 				    QKeySequence( Qt::Key_Delete ), k->paintArea, SLOT(deleteItems()), k->actionManager, "delete" );
-	
-	// del->setShortcutContext(Qt::WidgetShortcut);
-	// k->paintArea->addAction(del);
 	
 	del->setStatusTip(tr("Deletes the selected object"));
 	
@@ -329,21 +236,8 @@ void KTViewDocument::setupViewActions()
 					QKeySequence(tr("Ctrl+Shift+G")) , k->paintArea, SLOT(ungroupItems()), 
 					k->actionManager, "ungroup");
 	ungroup->setStatusTip(tr("Ungroups the selected object"));
-	
-	KAction *copy = new KAction( QPixmap(THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  QKeySequence(tr("Ctrl+C")), 
-				     k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
-	copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
-	
-	KAction *paste = new KAction( QPixmap(THEME_DIR+"/icons/paste.png" ), tr( "&Paste" ),   QKeySequence(tr("Ctrl+V")),
-				      k->paintArea, SLOT(pasteItems()), k->actionManager, "paste");
-	paste->setStatusTip(tr("Pastes the clipboard into the current document"));
-	
-	
-	KAction *cut = new KAction( QPixmap(THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  QKeySequence(tr("Ctrl+X")), 
-				    k->paintArea, SLOT(cutItems()),k->actionManager, "cut" );
-	cut->setStatusTip(tr("Cuts the selected items"));
-	
-#if 0
+
+/*
 	KAction *zoomIn = new KAction( QPixmap(THEME_DIR+"/icons/zood->in.png" ), tr( "Zoom In" ), 
 				       QKeySequence(Qt::CTRL+Qt::Key_Plus), k->paintArea, SLOT(zoomIn()), k->actionManager,
 				       "zood->in" );
@@ -362,7 +256,8 @@ void KTViewDocument::setupViewActions()
 					k->actionManager, "zood->out" );
 	// k->viewPreviousGroup->addAction(zoomOut);
 	
-#endif
+*/
+
 	k->viewPreviousGroup = new QActionGroup( this );
 	k->viewPreviousGroup->setExclusive( true );
 	KAction *noPrevious = new KAction( QPixmap(THEME_DIR+"/icons/no_previous.png" ), tr( "No Previous" ), 
@@ -476,7 +371,7 @@ void KTViewDocument::createTools()
 	
 	k->toolbar->addAction(k->viewToolMenu->menuAction());
 	
-#if 0
+/*
 	k->toolsSelection->addAction(QPixmap(THEME_DIR+"/icons/nodes.png"), tr( "Con&tour Selection" ), k->paintArea, 
 				     SLOT( slotContourSelection()), tr("T") );
 	
@@ -605,7 +500,7 @@ void KTViewDocument::createTools()
 	k->toolbar->addAction(k->toolsOrder->menuAction());
 	k->toolbar->addAction(k->toolsAlign->menuAction());
 	k->toolbar->addAction(k->toolsTransform->menuAction());
-#endif
+*/
 }
 
 void KTViewDocument::loadPlugins()
@@ -846,13 +741,20 @@ void KTViewDocument::createToolBar()
 	addToolBar(k->barGrid);
 	
 	k->barGrid->addAction(k->actionManager->find("show_grid"));
+        k->barGrid->addSeparator();
+
+        k->barGrid->addAction(k->actionManager->find("undo"));
+        k->barGrid->addAction(k->actionManager->find("redo"));
+        k->barGrid->addSeparator();
+
+        k->barGrid->addAction(k->actionManager->find("copy"));
+        k->barGrid->addAction(k->actionManager->find("paste"));
+        k->barGrid->addAction(k->actionManager->find("cut"));
 	k->barGrid->addAction(k->actionManager->find("delete"));
+        k->barGrid->addSeparator();
+
 	k->barGrid->addAction(k->actionManager->find("group"));
 	k->barGrid->addAction(k->actionManager->find("ungroup"));
-	k->barGrid->addAction(k->actionManager->find("copy"));
-	k->barGrid->addAction(k->actionManager->find("paste"));
-	
-	k->barGrid->addAction(k->actionManager->find("cut"));
 	
 	// k->barGrid->addSeparator();
 	// k->barGrid->addAction(d->actionManager->find("undo"));
@@ -1032,28 +934,30 @@ void KTViewDocument::changeRulerOrigin(const QPointF &zero)
 	k->horizontalRuler->setZeroAt(zero);
 }
 
-// void KTViewDocument::configure()
-// {
-// 	KTPaintAreaConfig properties;
-// 	
-// 	if ( properties.exec() != QDialog::Rejected )
-// 	{
-// 		KTPaintAreaProperties areaProperties;
-// 		
-// 		areaProperties.gridColor = properties.gridColor();
-// 		areaProperties.backgroundColor = properties.backgroundColor();
-// 		areaProperties.onionSkinColor = properties.onionSkinColor();
-// 		areaProperties.onionSkinBackground = properties.onionSkinBackground();
-// 		areaProperties.gridSeparation = properties.gridSeparation();
-// 		
-// // 		k->paintArea->setProperties(areaProperties);
-// 	}
-// }
+/*
+ void KTViewDocument::configure()
+ {
+ 	KTPaintAreaConfig properties;
+ 	
+ 	if ( properties.exec() != QDialog::Rejected )
+ 	{
+ 		KTPaintAreaProperties areaProperties;
+ 		
+ 		areaProperties.gridColor = properties.gridColor();
+ 		areaProperties.backgroundColor = properties.backgroundColor();
+ 		areaProperties.onionSkinColor = properties.onionSkinColor();
+ 		areaProperties.onionSkinBackground = properties.onionSkinBackground();
+ 		areaProperties.gridSeparation = properties.gridSeparation();
+ 		
+		k->paintArea->setProperties(areaProperties);
+ 	}
+ }
 
-// void KTViewDocument::closeEvent(QCloseEvent *e)
-// {
-// 	
-// }
+ void KTViewDocument::closeEvent(QCloseEvent *e)
+ {
+ 	
+ }
+*/
 
 QSize KTViewDocument::sizeHint() const
 {
