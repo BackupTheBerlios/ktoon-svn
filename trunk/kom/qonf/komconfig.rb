@@ -1,7 +1,7 @@
 
 module RQonf
 	CONFIG = {}
-	CONFIG["prefix"] = "/usr/local/ktoon"
-	CONFIG["libdir"] = "/usr/local/ktoon/lib"
-	CONFIG["includepath"] = "/usr/local/ktoon/include"
+	CONFIG["prefix"] = "/usr"
+	CONFIG["libdir"] = "/usr/lib"
+	CONFIG["includepath"] = "/usr/include"
 end
