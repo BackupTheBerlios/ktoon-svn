@@ -114,7 +114,7 @@ Makefile: ming.pro  /usr/lib/qt4/mkspecs/linux-g++/qmake.conf /usr/lib/qt4/mkspe
 		/usr/lib/qt4/lib/libQtGui.prl \
 		/usr/lib/qt4/lib/libQtCore.prl
 	$(QMAKE) -unix -o Makefile ming.pro
-	/usr/bin/ruby1.8 /home/xtingray/Projects/ktoon/devel/ktoon/configure.status /home/xtingray/Projects/ktoon/devel/ktoon/configure.tests/ming/Makefile
+	/usr/bin/ruby1.8 /home/xtingray/tmp/ktoon/configure.status /home/xtingray/tmp/ktoon/configure.tests/ming/Makefile
 /usr/lib/qt4/mkspecs/common/g++.conf:
 /usr/lib/qt4/mkspecs/common/linux.conf:
 /usr/lib/qt4/mkspecs/qconfig.pri:

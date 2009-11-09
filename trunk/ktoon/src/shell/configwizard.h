@@ -45,65 +45,65 @@ class QLineEdit;
  */
 class ConfigWizard : public KWizard
 {
-	Q_OBJECT
-	public:
-    		/**
-	 	 * Crea el dialogo configuracion.
-		 */
-		ConfigWizard();
-    		/**
-		 * destuctor
-		 */
-		~ConfigWizard();
-		
-		/**
-		 * Pone los directorios por defecto en el dialogo.
-		 * @param home 
-		 * @param repos 
-		 */
-		void setInitialData(const QString &home, const QString &repos);
-		
-		/**
-		 * @return la ruta del directorio home
-		 */
-		QString home() const;
-		
-		/**
-		 * @return la ruta del directorio repository
-		 */
-		QString cache() const;
+    Q_OBJECT
+    public:
+           /**
+            * Crea el dialogo configuracion.
+            */
+            ConfigWizard();
+           /**
+            * destuctor
+            */
+            ~ConfigWizard();
 
-	private:
-		CWFirstPage *m_firstPage;
-		CWSecondPage *m_secondPage;
-		
-		QString kthome;
-		QString ktrepos;
+           /**
+            * Pone los directorios por defecto en el dialogo.
+            * @param home 
+            * @param repos 
+            */
+            void setInitialData(const QString &home, const QString &repos);
+
+           /**
+            * @return la ruta del directorio home
+            */
+            QString home() const;
+
+           /**
+            * @return la ruta del directorio repository
+            */
+            String cache() const;
+
+            private:
+               CWFirstPage *m_firstPage;
+               CWSecondPage *m_secondPage;
+
+               QString kthome;
+               QString ktrepos;
 };
 
 class CWFirstPage : public KWizardPage
 {
-	Q_OBJECT
-	public:
-		CWFirstPage(QWidget *parent = 0);
-		~CWFirstPage();
+     Q_OBJECT
+     public:
+            CWFirstPage(QWidget *parent = 0);
+            ~CWFirstPage();
 
-		bool isComplete() const { return true; };
-		void reset() { };
+            bool isComplete() const { return true; };
+            void reset() { };
 };
 
 class CWSecondPage : public KWizardPage
 {
-	Q_OBJECT
-	public:
-		CWSecondPage(QWidget *parent = 0);
-		~CWSecondPage();
-		void setData(const QString &home, const QString &repos);
-		QString home() const;
-		QString repository() const;
-		
-		bool isComplete() const;
-		void reset();
+        Q_OBJECT
+        public:
+                CWSecondPage(QWidget *parent = 0);
+                ~CWSecondPage();
+                void setData(const QString &home, const QString &repos);
+                QString home() const;
+                QString repository() const;
+
+                bool isComplete() const;
+                void reset();
 		
 	private slots:
 		void verify(const QString &);
