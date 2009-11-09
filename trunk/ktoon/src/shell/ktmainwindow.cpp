@@ -84,72 +84,68 @@
 
 KTMainWindow::KTMainWindow(KTSplash *splash) : KTabbedMainWindow(),  m_projectManager(0), m_viewDoc(0), m_animationSpace(0),  m_viewChat(0), m_exposureSheet(0),  m_scenes(0)
 {
-	#ifdef K_DEBUG
-		KINIT;
-	#endif
-	
-	// Loading audio player plugin
-	KAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: Move this to the settings 
-	
-	setObjectName("KTMainWindow_");
-	
-	// Defining the status bar
-	m_statusBar = new KTStatusBar(this);
-	setStatusBar( m_statusBar );
-	
-	// Naming the main frame...
-	setWindowTitle( tr("KToon: 2D Animation Toolkit" ) );
+    #ifdef K_DEBUG
+       KINIT;
+    #endif
 
-	// Defining the render type for the drawings
-	m_renderType = KToon::RenderType(KCONFIG->value("RenderType").toInt());
-	
-	// Calling out the project manager
-	m_projectManager = new KTProjectManager(this);
-	m_projectManager->setHandler( new KTLocalProjectManagerHandler );
-	
-	// setProjectManager( projectManager );
-	
-	splash->setMessage( tr("Setting up the project manager") );
+    // Loading audio player plugin
+    KAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: Move this to the settings 
 
-	// Calling out the events/actions manager
-	splash->setMessage( tr("Loading action manager...") );
-	m_actionManager = new KActionManager(this);
-	
-	// Defining the menu bar
-	splash->setMessage( tr("Creating menu bar...") );
-	setupActions();
-	
-	splash->setMessage( tr("Creating GUI...") );
-	
-	// Setting up all the GUI...
-	createGUI(); // This method is called from the ktmainwindow_gui class
-	setupMenu();
-	//setupToolBar();
-	
-	// Check if user wants to see a KToon tip for every time he launches the program
-	KCONFIG->beginGroup("TipOfDay");
-	bool showTips = qvariant_cast<bool>(KCONFIG->value("ShowOnStart", true ));
-	
-	// If option is enabled, then, show a little dialog with a nice tip
-	if ( showTips )
-	{
-		QTimer::singleShot(0, this, SLOT(showTipDialog()));
-	}
-	
-	// Time to load plugins... 
-	KTPluginManager::instance()->loadPlugins();
+    setObjectName("KTMainWindow_");
 
-	// Defining the Drawing view, as the first interface to show up	
-	setCurrentPerspective( Drawing );
+    // Defining the status bar
+    m_statusBar = new KTStatusBar(this);
+    setStatusBar( m_statusBar );
+
+    // Naming the main frame...
+    setWindowTitle( tr("KToon: 2D Animation Toolkit" ) );
+
+    // Defining the render type for the drawings
+    m_renderType = KToon::RenderType(KCONFIG->value("RenderType").toInt());
+
+    // Calling out the project manager
+    m_projectManager = new KTProjectManager(this);
+    m_projectManager->setHandler( new KTLocalProjectManagerHandler );
+
+    // setProjectManager( projectManager );
 	
-	KCONFIG->beginGroup("General");
-	// check if into the config file, user always wants to start opening his last project created
-	bool openLast = KCONFIG->value("OpenLastProject", true).toBool();
+    splash->setMessage( tr("Setting up the project manager") );
+
+    // Calling out the events/actions manager
+    splash->setMessage( tr("Loading action manager...") );
+    m_actionManager = new KActionManager(this);
 	
-	if ( openLast )
-	{
-		openProject(KCONFIG->value("LastProject").toString());
-	}
+    // Defining the menu bar
+    splash->setMessage( tr("Creating menu bar...") );
+    setupActions();
+	
+    splash->setMessage( tr("Creating GUI...") );
+	
+    // Setting up all the GUI...
+    createGUI(); // This method is called from the ktmainwindow_gui class
+    setupMenu();
+    //setupToolBar();
+	
+    // Check if user wants to see a KToon tip for every time he launches the program
+    KCONFIG->beginGroup("TipOfDay");
+    bool showTips = qvariant_cast<bool>(KCONFIG->value("ShowOnStart", true ));
+	
+    // If option is enabled, then, show a little dialog with a nice tip
+    if (showTips)
+        QTimer::singleShot(0, this, SLOT(showTipDialog()));
+	
+    // Time to load plugins... 
+    KTPluginManager::instance()->loadPlugins();
+
+    // Defining the Drawing view, as the first interface to show up	
+    setCurrentPerspective( Drawing );
+	
+    KCONFIG->beginGroup("General");
+    // check if into the config file, user always wants to start opening his last project created
+    bool openLast = KCONFIG->value("OpenLastProject", true).toBool();
+
+    if (openLast)
+        openProject(KCONFIG->value("LastProject").toString());
 }
 
 /**
@@ -162,11 +158,11 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : KTabbedMainWindow(),  m_projectMa
 */
 KTMainWindow::~KTMainWindow()
 {
-	#ifdef K_DEBUG
-		KEND;
-	#endif
-	delete KTPluginManager::instance();
-	delete KOsd::self();
+    #ifdef K_DEBUG
+       KEND;
+    #endif
+    delete KTPluginManager::instance();
+    delete KOsd::self();
 }
 
 /**
@@ -180,18 +176,14 @@ KTMainWindow::~KTMainWindow()
 
 void KTMainWindow::createNewProject()
 {
-	// Modal
-	if(!closeProject())
-	{
-		return;
-	}
-	
-	m_projectManager->setupNewProject();
-	
-	if( !m_isNetworkProject )
-	{
-		viewNewDocument(tr("Document"));
-	}
+    // Modal
+    if (!closeProject())
+        return;
+
+    m_projectManager->setupNewProject();
+
+    if (!m_isNetworkProject)
+        viewNewDocument(tr("Document"));
 }
 
 /**
@@ -205,44 +197,42 @@ void KTMainWindow::createNewProject()
 
 void KTMainWindow::viewNewDocument(const QString &title)
 {
-	#ifdef K_DEBUG
-		K_FUNCINFO;
-		kDebug() << m_projectManager->isOpen();
-	#endif
+    #ifdef K_DEBUG
+       K_FUNCINFO;
+       kDebug() << m_projectManager->isOpen();
+    #endif
 
-	if ( m_projectManager->isOpen())
-	{
-		messageToStatus(tr("Opening a new paint area..."));
-		KOsd::self()->display(tr("Opening a new document..."));
-		
-		m_viewDoc = new KTViewDocument(m_projectManager->project());
-		
-		connectToDisplays( m_viewDoc );
-		
-		// m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
-		m_viewDoc->setWindowTitle(tr("Illustration: %1").arg(title) );
-		addWidget( m_viewDoc, true, Drawing );
-		connectToDisplays( m_viewDoc );
-		ui4project( m_viewDoc );
-		ui4localRequest(m_viewDoc );
+    if (m_projectManager->isOpen()) {
+        messageToStatus(tr("Opening a new paint area..."));
+        KOsd::self()->display(tr("Opening a new document..."));
 
-                m_viewDoc->setAntialiasing(true);
-		
-		m_animationSpace = new KTWorkspace;
-		m_animationSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/animation_mode.png"));
-		m_animationSpace->setScrollBarsEnabled ( true );
-		
-		m_animationSpace->setWindowTitle(tr("Animation"));
-		addWidget( m_animationSpace, true, Animation );
-		
-		KTViewCamera *viewCamera = m_cameraWidget->viewCamera();
-		ui4project( viewCamera );
-		
-		m_animationSpace->addWindow(viewCamera);
-		viewCamera->showMaximized();
-		
-		setCurrentPerspective( Drawing );
-	}
+        m_viewDoc = new KTViewDocument(m_projectManager->project());
+        connectToDisplays( m_viewDoc );
+        // m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
+
+        m_viewDoc->setWindowTitle(tr("Illustration: %1").arg(title) );
+        addWidget( m_viewDoc, true, Drawing );
+        connectToDisplays( m_viewDoc );
+        ui4project( m_viewDoc );
+        ui4localRequest(m_viewDoc );
+      
+        m_viewDoc->setAntialiasing(true);
+
+        m_animationSpace = new KTWorkspace;
+        m_animationSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/animation_mode.png"));
+        m_animationSpace->setScrollBarsEnabled ( true );
+
+        m_animationSpace->setWindowTitle(tr("Animation"));
+        addWidget( m_animationSpace, true, Animation );
+
+        KTViewCamera *viewCamera = m_cameraWidget->viewCamera();
+        ui4project( viewCamera );
+
+        m_animationSpace->addWindow(viewCamera);
+        viewCamera->showMaximized();
+
+        setCurrentPerspective( Drawing );
+    }
 }
 
 /**
@@ -256,26 +246,21 @@ void KTMainWindow::viewNewDocument(const QString &title)
 
 void KTMainWindow::newProject()
 {
-	#ifdef K_DEBUG
-		kWarning() << "Creating new project...";
-	#endif
+    #ifdef K_DEBUG
+       kWarning() << "Creating new project...";
+    #endif
 
-	KTNewProject *wizard = new KTNewProject(this);
-	// connectToDisplays(wizard);
-	if ( wizard->exec() != QDialog::Rejected )
-	{
-		if ( wizard->useNetwork() )
-		{
-			setupNetworkProject( wizard->params() );
-		}
-		else
-		{
-			setupLocalProject( wizard->params() );
-		}
-		
-		createNewProject();
-	}
-	delete wizard;
+    KTNewProject *wizard = new KTNewProject(this);
+    // connectToDisplays(wizard);
+    if (wizard->exec() != QDialog::Rejected) {
+       if (wizard->useNetwork())
+           setupNetworkProject( wizard->params() );
+       else
+           setupLocalProject( wizard->params() );
+       createNewProject();
+    }
+
+    delete wizard;
 }
 
 /**
@@ -290,95 +275,52 @@ void KTMainWindow::newProject()
 
 bool KTMainWindow::closeProject()
 {
-	if(!m_projectManager->isOpen())
-	{
-		return true;
-	}
+    if (!m_projectManager->isOpen())
+        return true;
 	
-	if ( m_projectManager->isModified() )
-	{
+    if (m_projectManager->isModified()) {
+        int ret = QMessageBox::warning(this, QApplication::applicationName (),
+                                       tr("The document has been modified.\n"
+                                       "Do you want to save your project?"),
+                                       QMessageBox::Save | QMessageBox::Discard
+                                       | QMessageBox::Cancel,
+                                       QMessageBox::Save);
+        switch (ret) {
+            case QMessageBox::Save:
+                 saveProject();
+                 break;
+            case QMessageBox::Discard:
+                 break;
+            case QMessageBox::Cancel:
+                 return false;
+                 break;
+        }
 
-                int ret = QMessageBox::warning(this, QApplication::applicationName (),
-                   tr("The document has been modified.\n"
-                      "Do you want to save your project?"),
-                   QMessageBox::Save | QMessageBox::Discard
-                   | QMessageBox::Cancel,
-                   QMessageBox::Save);
+    }
 
-		switch(ret)
-		{
-			case QMessageBox::Save:
-			{
-				saveProject();
-			}
-			break;
-			case QMessageBox::Discard:
-			{
-			}
-			break;
-			case QMessageBox::Cancel:
-			{
-				return false;
-			}
-			break;
-		}
+    setUpdatesEnabled(false);
 
-		/*
-		QMessageBox mb(QApplication::applicationName (), tr("Do you want to save?"),
-			QMessageBox::Information,
-			QMessageBox::Yes | QMessageBox::Default,
-			QMessageBox::No,
-			QMessageBox::Cancel | QMessageBox::Escape);
+    if (m_viewDoc)
+        m_viewDoc->closeArea();
 
-		mb.setButtonText(QMessageBox::Yes, tr("Save"));
-		mb.setButtonText(QMessageBox::No, tr("Discard"));
-		
-		switch(mb.exec())
-		{
-			case QMessageBox::Yes:
-			{
-				saveProject();
-			}
-			break;
-			case QMessageBox::No:
-			{
-			}
-			break;
-			case QMessageBox::Cancel:
-			{
-				return false;
-			}
-			break;
-		}*/
-	}
-	
-	setUpdatesEnabled(false);
-	
-	if( m_viewDoc )
-	{
-		m_viewDoc->closeArea();
-	}
+    m_animationSpace->closeAllWindows();
 
-	m_animationSpace->closeAllWindows();
+    removeWidget(m_animationSpace, true);
+    removeWidget(m_viewDoc, true);
+    delete m_viewDoc;
+    m_viewDoc = 0;
 	
-	removeWidget(m_animationSpace, true);
-	
-	removeWidget(m_viewDoc, true);
-	delete m_viewDoc;
-	m_viewDoc = 0;
-	
-	m_projectManager->closeProject();
-	
-	// Cleaning widgets
-	m_exposureSheet->closeAllScenes();
-	m_timeLine->closeAllScenes();
-	m_scenes->closeAllScenes();
-	
-	m_fileName = QString();
-	
-	setUpdatesEnabled(true);
-	
-	return true;
+    m_projectManager->closeProject();
+
+    // Cleaning widgets
+    m_exposureSheet->closeAllScenes();
+    m_timeLine->closeAllScenes();
+    m_scenes->closeAllScenes();
+
+    m_fileName = QString();
+    setUpdatesEnabled(true);
+
+    return true;
 }
 
 /**
@@ -393,28 +335,27 @@ bool KTMainWindow::closeProject()
 
 bool KTMainWindow::setupNetworkProject(const QString& projectName ,const QString &server , int port)
 {
-	KTConnectDialog *cndialog = new KTConnectDialog(this);
-	if( !server.isEmpty() )
-	{
-		cndialog->setServer(server);
-	}
-	if ( port != -1 )
-	{
-		cndialog->setPort(port);
-	}
-	
-	KTNetProjectManagerParams *params = new KTNetProjectManagerParams();
-	
-	if ( cndialog->exec() == QDialog::Accepted )
-	{
-		params->setServer(cndialog->server());
-		params->setPort(cndialog->port());
-		params->setLogin(cndialog->login());
-		params->setPassword(cndialog->password());
-		params->setProjectName( projectName );
-		return setupNetworkProject(params);
-	}
-	return false;
+    KTConnectDialog *cndialog = new KTConnectDialog(this);
+
+    if (!server.isEmpty())
+        cndialog->setServer(server);
+
+    if (port != -1)
+        cndialog->setPort(port);
+
+    KTNetProjectManagerParams *params = new KTNetProjectManagerParams();
+
+    if (cndialog->exec() == QDialog::Accepted) {
+        params->setServer(cndialog->server());
+        params->setPort(cndialog->port());
+        params->setLogin(cndialog->login());
+        params->setPassword(cndialog->password());
+        params->setProjectName( projectName );
+
+        return setupNetworkProject(params);
+    }
+
+    return false;
 }
 
 /**
@@ -429,26 +370,25 @@ bool KTMainWindow::setupNetworkProject(const QString& projectName ,const QString
 
 bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 {
-	if ( closeProject() )
-	{
-		KTNetProjectManagerHandler *netProjectManagerHandler =  new KTNetProjectManagerHandler;
-		connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(viewNewDocument(const QString&)));
-		m_projectManager->setHandler( netProjectManagerHandler );
-		m_projectManager->setParams(params);
-		m_isNetworkProject = true;
-		
-		if(m_viewChat)
-		{
-			removeToolView(m_viewChat);
-			delete m_viewChat;
-		}
-		m_viewChat = addToolView( netProjectManagerHandler->comunicationWidget(),  Qt::RightDockWidgetArea, All);
-		m_viewChat->setVisible(false);
-		
-		return true;
-	}
-	
-	return false;
+    if (closeProject()) {
+        KTNetProjectManagerHandler *netProjectManagerHandler =  new KTNetProjectManagerHandler;
+        connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(viewNewDocument(const QString&)));
+        m_projectManager->setHandler( netProjectManagerHandler );
+        m_projectManager->setParams(params);
+        m_isNetworkProject = true;
+
+        if (m_viewChat) {
+            removeToolView(m_viewChat);
+            delete m_viewChat;
+        }
+
+        m_viewChat = addToolView( netProjectManagerHandler->comunicationWidget(),  Qt::RightDockWidgetArea, All);
+        m_viewChat->setVisible(false);
+
+        return true;
+    }
+
+    return false;
 }
 
 /**
@@ -463,17 +403,15 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 
 bool KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
 {
-	if ( closeProject() )
-	{
-		m_projectManager->setHandler( new KTLocalProjectManagerHandler );
-		m_projectManager->setParams(params);
-		
-		m_isNetworkProject = false;
-		
-		return true;
-	}
-	
-	return false;
+    if (closeProject()) {
+        m_projectManager->setHandler( new KTLocalProjectManagerHandler );
+        m_projectManager->setParams(params);
+
+        m_isNetworkProject = false;
+        return true;
+    }
+
+    return false;
 }
 
 /**
@@ -487,15 +425,13 @@ bool KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
 
 void KTMainWindow::openProject()
 {
-	QString package = QFileDialog::getOpenFileName( this, tr("Import project package"), CACHE_DIR, 
-							tr("KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)"));
-	
-	if( package.isEmpty() ) 
-	{
-		return;
-	}
-	
-	openProject( package );
+     QString package = QFileDialog::getOpenFileName( this, tr("Import project package"), CACHE_DIR, 
+                       tr("KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)"));
+
+     if (package.isEmpty()) 
+         return;
+
+     openProject( package );
 }
 
 /**
@@ -509,89 +445,66 @@ void KTMainWindow::openProject()
 
 void KTMainWindow::openProject(const QString &path)
 {
+    #ifdef K_DEBUG
+       kWarning() << "Opening project: " << path;
+    #endif
 
-	#ifdef K_DEBUG
-		kWarning() << "Opening project: " << path;
-	#endif
-	
-	if( path.isEmpty() ) 
-	{
-		return;
-	}
-	
-	if ( path.endsWith(".ktnet"))
-	{
-		KTSaveNetProject loader;
-		KTNetProjectManagerParams *params = loader.params(path);
-		
-		setupNetworkProject(params->projectName(), params->server(), params->port());
-		delete params;
-	}
-	else if ( path.endsWith(".ktn") )
-	{
-		m_projectManager->setHandler( new KTLocalProjectManagerHandler );
-		m_isNetworkProject = false;
-	}
-	
-	if ( closeProject() )
-	{
-		setUpdatesEnabled(false);
-		tabWidget()->setCurrentWidget(m_viewDoc);
-		
-		if ( m_projectManager->loadProject( path ) )
-		{
-			if ( QDir::isRelativePath(path) )
-			{
-				m_fileName = QDir::currentPath()+"/"+path;
-			}
-			else
-			{
-				m_fileName = path;
-			}
+    if (path.isEmpty())
+        return;
+
+    if (path.endsWith(".ktnet")) {
+        KTSaveNetProject loader;
+        KTNetProjectManagerParams *params = loader.params(path);
+
+        setupNetworkProject(params->projectName(), params->server(), params->port());
+        delete params;
+    } else if (path.endsWith(".ktn")) {
+               m_projectManager->setHandler( new KTLocalProjectManagerHandler );
+               m_isNetworkProject = false;
+    }
+
+    if (closeProject()) {
+        setUpdatesEnabled(false);
+        tabWidget()->setCurrentWidget(m_viewDoc);
+
+        if (m_projectManager->loadProject( path )) {
+            if (QDir::isRelativePath(path))
+                m_fileName = QDir::currentPath()+"/"+path;
+            else
+                m_fileName = path;
+
+            viewNewDocument( m_projectManager->project()->projectName() );
 			
-			viewNewDocument( m_projectManager->project()->projectName() );
-			
-			// TODO: move this code to the project manager class
-			KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Select);
-			response.setFrameIndex(0);
-			response.setSceneIndex(0);
-			response.setLayerIndex(0);
-			m_viewDoc->handleProjectResponse(&response);
-			m_exposureSheet->handleProjectResponse(&response);
-			m_timeLine->handleProjectResponse(&response);
-			
-			{
-				int pos = m_recentProjects.indexOf(m_fileName);
-				if ( pos == -1 )
-				{
-					if ( m_recentProjects.count() <= 6 )
-					{
-						m_recentProjects << m_fileName;
-					}
-					else
-					{
-						m_recentProjects.push_front(m_fileName);
-					}
-				}
-				else
-				{
-					m_recentProjects.push_front(m_recentProjects.takeAt(pos));
-				}
-				
-				updateOpenRecentMenu(m_recentProjectsMenu, m_recentProjects);
-			}
-			
-			setUpdatesEnabled(true);
-			
-			// Showing a info message in a bubble
-			KOsd::self()->display( tr("Project %1 opened!").arg(m_projectManager->project()->projectName()) );
-		}
-		else
-		{
-			setUpdatesEnabled(true);
-			KOsd::self()->display( tr("Cannot open project!"), KOsd::Error );
-		}
-	}
+            // TODO: move this code to the project manager class
+            KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Select);
+            response.setFrameIndex(0);
+            response.setSceneIndex(0);
+            response.setLayerIndex(0);
+            m_viewDoc->handleProjectResponse(&response);
+            m_exposureSheet->handleProjectResponse(&response);
+            m_timeLine->handleProjectResponse(&response);
+
+            int pos = m_recentProjects.indexOf(m_fileName);
+
+            if (pos == -1) {
+                if (m_recentProjects.count() <= 6)
+                    m_recentProjects << m_fileName;
+                else
+                    m_recentProjects.push_front(m_fileName);
+            } else {
+                    m_recentProjects.push_front(m_recentProjects.takeAt(pos));
+            }
+
+            updateOpenRecentMenu(m_recentProjectsMenu, m_recentProjects);
+            setUpdatesEnabled(true);
+
+            // Showing a info message in a bubble
+            KOsd::self()->display( tr("Project %1 opened!").arg(m_projectManager->project()->projectName()) );
+        } else {
+                 setUpdatesEnabled(true);
+                 KOsd::self()->display( tr("Cannot open project!"), KOsd::Error );
+        }
+    }
 }
 
 /**
@@ -605,16 +518,14 @@ void KTMainWindow::openProject(const QString &path)
 
 void KTMainWindow::openProjectFromServer()
 {
-	if ( setupNetworkProject() )
-	{
-		KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>
-										(m_projectManager->handler());
-		if ( handler->isValid() )
-		{
-			KTListProjectsPackage package;
-			handler->sendPackage(package);
-		}
-	}
+    if (setupNetworkProject()) {
+        KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>
+                                              (m_projectManager->handler());
+        if (handler->isValid()) {
+            KTListProjectsPackage package;
+            handler->sendPackage(package);
+        }
+    }
 }
 
 /**
@@ -628,20 +539,17 @@ void KTMainWindow::openProjectFromServer()
 
 void KTMainWindow::importProjectToServer()
 {
-	if ( setupNetworkProject() )
-	{
-		KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>
-							(m_projectManager->handler());
-		
-		if ( handler->isValid() )
-		{
-			
-			QString file = QFileDialog::getOpenFileName( this, tr("Import project package"), 
-									CACHE_DIR, tr("KToon Project Package (*.ktn)"));
-			KTImportProjectPackage package(file);		
-			handler->sendPackage(package);
-		}
-	}
+     if (setupNetworkProject()) {
+         KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>
+                                               (m_projectManager->handler());
+
+         if (handler->isValid()) {
+             QString file = QFileDialog::getOpenFileName(this, tr("Import project package"), 
+                                                     CACHE_DIR, tr("KToon Project Package (*.ktn)"));
+             KTImportProjectPackage package(file);		
+             handler->sendPackage(package);
+         }
+     }
 }
 
 /**
@@ -655,10 +563,10 @@ void KTMainWindow::importProjectToServer()
 
 void KTMainWindow::save()
 {
-	#ifdef K_DEBUG
-		kDebug("project") << "Saving..";
-	#endif
-	QTimer::singleShot(0, this, SLOT(saveProject()));
+    #ifdef K_DEBUG
+       kDebug("project") << "Saving..";
+    #endif
+    QTimer::singleShot(0, this, SLOT(saveProject()));
 }
 
 /**
@@ -672,11 +580,11 @@ void KTMainWindow::save()
 
 void KTMainWindow::preferences()
 {
-	m_statusBar->setStatus( tr( "Preferences Dialog Opened" ), 2000 );
-	KTPreferences *preferences = new KTPreferences( this );
-	preferences->exec();
-	
-	delete preferences;
+    m_statusBar->setStatus( tr( "Preferences Dialog Opened" ), 2000 );
+    KTPreferences *preferences = new KTPreferences( this );
+    preferences->exec();
+
+    delete preferences;
 }
 
 /**
@@ -690,10 +598,10 @@ void KTMainWindow::preferences()
 
 void KTMainWindow::aboutKToon()
 {
-	KTAbout *about = new KTAbout(this);
-	about->exec();
-	
-	delete about;
+    KTAbout *about = new KTAbout(this);
+    about->exec();
+
+    delete about;
 }
 
 /**
@@ -706,9 +614,9 @@ void KTMainWindow::aboutKToon()
 */
 void KTMainWindow::showTipDialog()
 {
-	KTipDialog *tipDialog = new KTipDialog(DATA_DIR+"/tips", this);
-	tipDialog->show();
-	// tipDialog.exec();
+    KTipDialog *tipDialog = new KTipDialog(DATA_DIR+"/tips", this);
+    tipDialog->show();
+    // tipDialog.exec();
 }
 
 /**
@@ -722,24 +630,21 @@ void KTMainWindow::showTipDialog()
 
 void KTMainWindow::importPalettes()
 {
-	QStringList files = QFileDialog::getOpenFileNames( this, tr("Import gimp palettes"), QString(), 
-							   "Gimp Palette (*.gpl)");
+    QStringList files = QFileDialog::getOpenFileNames( this, tr("Import gimp palettes"), QString(), 
+                                                       "Gimp Palette (*.gpl)");
+    m_statusBar->setStatus( tr("Importing palettes"));
+    QStringList::ConstIterator it = files.begin();
 	
-	m_statusBar->setStatus( tr("Importing palettes"));
-	QStringList::ConstIterator it = files.begin();
-	
-	int progress = 1;
-	while( it != files.end() )
-	{
-		KTPaletteImporter importer;
-		importer.import( *it, KTPaletteImporter::Gimp);
-		++it;
-		importer.saveFile(CONFIG_DIR+"/palettes");
-		
-		m_colorPalette->parsePaletteFile( importer.filePath() );
-		
-		m_statusBar->advance( progress++, files.count());
-	}
+    int progress = 1;
+    while (it != files.end()) {
+           KTPaletteImporter importer;
+           importer.import( *it, KTPaletteImporter::Gimp);
+           ++it;
+
+           importer.saveFile(CONFIG_DIR+"/palettes");
+           m_colorPalette->parsePaletteFile( importer.filePath() );
+           m_statusBar->advance( progress++, files.count());
+    }
 }
 
 /**
@@ -753,14 +658,14 @@ void KTMainWindow::importPalettes()
 
 void KTMainWindow::ui4project(QWidget *widget)
 {
-	connect(widget, SIGNAL(requestTriggered(const KTProjectRequest *)), m_projectManager, 
-				SLOT(handleProjectRequest(const KTProjectRequest *)));
-	
-	connect(m_projectManager, SIGNAL(responsed( KTProjectResponse* )), widget, 
-					  SLOT(handleProjectResponse(KTProjectResponse *)));
-	
-        // PENDING TO CHECK
-	//connect(widget, SIGNAL(postPage(QWidget *)), this, SLOT(addPage(QWidget *)));
+    connect(widget, SIGNAL(requestTriggered(const KTProjectRequest *)), m_projectManager, 
+            SLOT(handleProjectRequest(const KTProjectRequest *)));
+
+    connect(m_projectManager, SIGNAL(responsed( KTProjectResponse* )), widget, 
+            SLOT(handleProjectResponse(KTProjectResponse *)));
+
+    // PENDING TO CHECK
+    //connect(widget, SIGNAL(postPage(QWidget *)), this, SLOT(addPage(QWidget *)));
 }
 
 /**
@@ -774,8 +679,8 @@ void KTMainWindow::ui4project(QWidget *widget)
 
 void KTMainWindow::ui4paintArea(QWidget *widget)
 {
-	connect(widget, SIGNAL(paintAreaEventTriggered(const KTPaintAreaEvent *)), this, 
-				SLOT(createCommand(const KTPaintAreaEvent *)));
+    connect(widget, SIGNAL(paintAreaEventTriggered(const KTPaintAreaEvent *)), this, 
+            SLOT(createCommand(const KTPaintAreaEvent *)));
 }
 
 /**
@@ -789,8 +694,8 @@ void KTMainWindow::ui4paintArea(QWidget *widget)
 
 void KTMainWindow::ui4localRequest(QWidget *widget)
 {
-	connect(widget, SIGNAL(localRequestTriggered(const KTProjectRequest *)), m_projectManager, 
-				SLOT(handleLocalRequest(const KTProjectRequest *)));
+    connect(widget, SIGNAL(localRequestTriggered(const KTProjectRequest *)), m_projectManager, 
+            SLOT(handleLocalRequest(const KTProjectRequest *)));
 }
 
 /**
@@ -804,7 +709,7 @@ void KTMainWindow::ui4localRequest(QWidget *widget)
 
 void KTMainWindow::messageToStatus(const QString &msg)
 {
-	m_statusBar->setStatus(msg, msg.length() * 90);
+    m_statusBar->setStatus(msg, msg.length() * 90);
 }
 
 /**
@@ -818,16 +723,16 @@ void KTMainWindow::messageToStatus(const QString &msg)
 
 void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 {
-	#ifdef K_DEBUG
-		K_FUNCINFO;
-	#endif
-	KTHelpBrowser *page = new KTHelpBrowser(this);
-	page->setDataDirs( QStringList() << m_helper->helpPath() );
-	
-	// page->setDocument( document );
-	page->setSource( filePath );
-	page->setWindowTitle(tr("Help:%1").arg(title));
-	addWidget( page, false, All );
+    #ifdef K_DEBUG
+       K_FUNCINFO;
+    #endif
+    KTHelpBrowser *page = new KTHelpBrowser(this);
+    page->setDataDirs( QStringList() << m_helper->helpPath() );
+
+    // page->setDocument( document );
+    page->setSource( filePath );
+    page->setWindowTitle(tr("Help:%1").arg(title));
+    addWidget( page, false, All );
 }
 
 /**
@@ -841,16 +746,14 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 
 void KTMainWindow::saveAs()
 {
-	QString fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), CACHE_DIR, 
-				"KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)");
-	
-	if ( fileName.isEmpty() )
-	{
-		return;
-	}
-	
-	m_fileName = fileName;
-	save();
+    QString fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), CACHE_DIR, 
+                       "KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)");
+
+    if (fileName.isEmpty())
+        return;
+
+    m_fileName = fileName;
+    save();
 }
 
 /**
@@ -864,20 +767,15 @@ void KTMainWindow::saveAs()
 
 void KTMainWindow::saveProject()
 {
-	if ( m_fileName.isEmpty() )
-	{
-		saveAs();
-		return;
-	}
-	
-	if ( m_projectManager->saveProject(m_fileName) )
-	{
-		KOsd::self()->display(tr("Project %1 saved").arg(m_projectManager->project()->projectName()), KOsd::Info);
-	}
-	else
-	{
-		KOsd::self()->display(tr("Cannot save the project!"), KOsd::Error );
-	}
+    if (m_fileName.isEmpty()) {
+        saveAs();
+        return;
+    }
+
+    if (m_projectManager->saveProject(m_fileName)) 
+        KOsd::self()->display(tr("Project %1 saved").arg(m_projectManager->project()->projectName()), KOsd::Info);
+    else
+        KOsd::self()->display(tr("Cannot save the project!"), KOsd::Error );
 }
 
 /**
@@ -891,11 +789,9 @@ void KTMainWindow::saveProject()
 
 void KTMainWindow::openRecentProject()
 {
-	QAction *action = qobject_cast<QAction *>(sender());
-	if ( action )
-	{
-		openProject( action->text() );
-	}
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (action)
+        openProject(action->text());
 }
 
 /**
@@ -909,10 +805,10 @@ void KTMainWindow::openRecentProject()
 
 void KTMainWindow::showAnimationMenu(const QPoint &p)
 {
-	QMenu *menu = new QMenu(tr("Animation"), m_animationSpace);
-	menu->addAction(tr("New camera"), this, SLOT(newViewCamera()));
-	menu->exec(p);
-	delete menu;
+    QMenu *menu = new QMenu(tr("Animation"), m_animationSpace);
+    menu->addAction(tr("New camera"), this, SLOT(newViewCamera()));
+    menu->exec(p);
+    delete menu;
 }
 
 /**
@@ -926,19 +822,18 @@ void KTMainWindow::showAnimationMenu(const QPoint &p)
 
 void KTMainWindow::closeEvent( QCloseEvent *event )
 {
-	QString lastProject = m_fileName;
-	
-	if (! closeProject() )
-	{
-		event->ignore();
-		return;
-	}
-	
-	KCONFIG->beginGroup("General");
-	KCONFIG->setValue("LastProject", lastProject);
-	KCONFIG->setValue("recents", m_recentProjects);
-	
-	KMainWindow::closeEvent(event);
+    QString lastProject = m_fileName;
+
+    if (!closeProject()) {
+        event->ignore();
+        return;
+    }
+
+    KCONFIG->beginGroup("General");
+    KCONFIG->setValue("LastProject", lastProject);
+    KCONFIG->setValue("recents", m_recentProjects);
+
+    KMainWindow::closeEvent(event);
 }
 
 /**
@@ -952,17 +847,14 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 
 void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 {
-	if ( !m_viewDoc ) 
-	{
-		return;
-	}
-	
-	KTPaintAreaCommand *command = m_viewDoc->createCommand(event);
-	
-	if ( command )
-	{
-		m_projectManager->undoHistory()->push(command);
-	}
+    if (!m_viewDoc) 
+        return;
+
+    KTPaintAreaCommand *command = m_viewDoc->createCommand(event);
+
+    if (command) 
+        m_projectManager->undoHistory()->push(command);
+
 }
 
 /**
@@ -976,7 +868,7 @@ void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 
 void KTMainWindow::addPage(QWidget *widget)
 {
-	addWidget(widget);
+    addWidget(widget);
 }
 
 /**
@@ -990,6 +882,7 @@ void KTMainWindow::addPage(QWidget *widget)
 
 void KTMainWindow::exportProject()
 {
-	KTExportWidget exportWidget(m_projectManager->project(), this);
-	exportWidget.exec();
+    KTExportWidget exportWidget(m_projectManager->project(), this);
+    exportWidget.exec();
 }
+

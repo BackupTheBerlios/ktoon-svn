@@ -66,271 +66,265 @@
 
 struct KTViewDocument::Private
 {
-	QActionGroup *gridGroup, *editGroup, *viewNextGroup, *viewZoomGroup, *viewPreviousGroup;
-	QMenu *brushesMenu, *selectionMenu, *fillMenu, *filterMenu, *viewToolMenu;
-	QMenu *toolsMenu, *editMenu, *viewMenu, *orderMenu;
-	QAction *aUndo, *aRedo, *aClose;
-	QToolBar *barGrid, *toolbar;
-	QDoubleSpinBox *zoomFactorSpin;
-	
-	KTPaintArea *paintArea;
-	
-	KTDocumentRuler *verticalRuler, *horizontalRuler;
-	KActionManager *actionManager;
-	KTConfigurationArea *configurationArea;
+    QActionGroup *gridGroup, *editGroup, *viewNextGroup, *viewZoomGroup, *viewPreviousGroup;
+    QMenu *brushesMenu, *selectionMenu, *fillMenu, *filterMenu, *viewToolMenu;
+    QMenu *toolsMenu, *editMenu, *viewMenu, *orderMenu;
+    QAction *aUndo, *aRedo, *aClose;
+    QToolBar *barGrid, *toolbar;
+    QDoubleSpinBox *zoomFactorSpin;
+
+    KTPaintArea *paintArea;
+
+    KTDocumentRuler *verticalRuler, *horizontalRuler;
+    KActionManager *actionManager;
+    KTConfigurationArea *configurationArea;
 };
 
 KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWindow(parent), k(new Private)
 {
-	setWindowIcon(QPixmap(THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
-	
-	k->actionManager = new KActionManager(this);
-	
-	QFrame *frame = new QFrame(this);
-	QGridLayout *layout = new QGridLayout(frame);
-	
-	k->paintArea = new KTPaintArea(project, frame);
-	connect(k->paintArea, SIGNAL(scaled(double)), this, SLOT(scaleRuler(double)));
-	
-	setCentralWidget( frame );
-	
-	layout->addWidget(k->paintArea, 1,1);
-	k->horizontalRuler = new KTDocumentRuler(Qt::Horizontal);
-	k->verticalRuler = new KTDocumentRuler(Qt::Vertical);
-	
-	layout->addWidget(k->horizontalRuler, 0, 1);
-	layout->addWidget(k->verticalRuler, 1, 0);
-	
-	KToon::RenderType renderType = KToon::RenderType(KCONFIG->value("RenderType").toInt()); 
-	switch(renderType)
-	{
-		case KToon::OpenGL:
-		{
-			k->paintArea->setUseOpenGL( true );
-		}
-		break;
-		case KToon::Native:
-		{
-			k->paintArea->setUseOpenGL( false );
-		}
-		break;
-		default:
-		{
-			#ifdef K_DEBUG
-				kWarning() << "Unsopported render, switching to native!";
-			#endif
+    setWindowIcon(QPixmap(THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
 
-			k->paintArea->setUseOpenGL( false );
-		}
-		break;
-	}
+    k->actionManager = new KActionManager(this);
+
+    QFrame *frame = new QFrame(this);
+    QGridLayout *layout = new QGridLayout(frame);
+ 
+    k->paintArea = new KTPaintArea(project, frame);
+    connect(k->paintArea, SIGNAL(scaled(double)), this, SLOT(scaleRuler(double)));
+
+    setCentralWidget( frame );
+
+    layout->addWidget(k->paintArea, 1,1);
+    k->horizontalRuler = new KTDocumentRuler(Qt::Horizontal);
+    k->verticalRuler = new KTDocumentRuler(Qt::Vertical);
+
+    layout->addWidget(k->horizontalRuler, 0, 1);
+    layout->addWidget(k->verticalRuler, 1, 0);
+
+    KToon::RenderType renderType = KToon::RenderType(KCONFIG->value("RenderType").toInt()); 
+
+    switch (renderType) {
+            case KToon::OpenGL:
+                 k->paintArea->setUseOpenGL( true );
+                 break;
+
+            case KToon::Native:
+                 k->paintArea->setUseOpenGL( false );
+                 break;
+            default:
+                 #ifdef K_DEBUG
+                        kWarning() << "Unsopported render, switching to native!";
+                 #endif
+                 k->paintArea->setUseOpenGL( false );
+            break;
+    }
 	
-	connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)),  this,  SLOT(showPos(const QPointF &)) );
+    connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)),  this,  SLOT(showPos(const QPointF &)) );
 	
-	connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), k->verticalRuler, 
-				     SLOT(movePointers(const QPointF&)));
+    connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), k->verticalRuler, 
+                          SLOT(movePointers(const QPointF&)));
 	
-	connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), k->horizontalRuler, 
-				     SLOT(movePointers(const QPointF&)));
+    connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), k->horizontalRuler, 
+                          SLOT(movePointers(const QPointF&)));
+
+    connect(k->paintArea, SIGNAL(changedZero(const QPointF&)), this, SLOT(changeRulerOrigin(const QPointF&)));
+
+    connect(k->paintArea, SIGNAL(requestTriggered(const KTProjectRequest* )), this, 
+                          SIGNAL(requestTriggered(const KTProjectRequest *)));
+
+    setupDrawActions();
+
+    k->configurationArea = new KTConfigurationArea;
+    addDockWidget(Qt::RightDockWidgetArea, k->configurationArea);
 	
-	connect(k->paintArea, SIGNAL(changedZero(const QPointF&)), this, SLOT(changeRulerOrigin(const QPointF&)));
+    createToolBar();
+    createTools();
 	
-	connect(k->paintArea, SIGNAL(requestTriggered(const KTProjectRequest* )), this, 
-				     SIGNAL(requestTriggered(const KTProjectRequest *)));
+    KTPaintAreaStatus *status = new KTPaintAreaStatus(this);
+    setStatusBar(status);
 	
-	setupDrawActions();
-	
-	k->configurationArea = new KTConfigurationArea;
-	addDockWidget(Qt::RightDockWidgetArea, k->configurationArea);
-	
-	createToolBar();
-	createTools();
-	
-	KTPaintAreaStatus *status = new KTPaintAreaStatus(this);
-	setStatusBar(status);
-	
-	connect(k->paintArea->brushManager(), SIGNAL(brushChanged( const QBrush& )), status, 
-						     SLOT(setBrush(const QBrush &)));
-	
-	connect(k->paintArea->brushManager(), SIGNAL(penChanged( const QPen& )), status, SLOT(setPen(const QPen &)));
-	
-	QTimer::singleShot(1000, this, SLOT(loadPlugins()));
+    connect(k->paintArea->brushManager(), SIGNAL(brushChanged( const QBrush& )), status, 
+            SLOT(setBrush(const QBrush &)));
+
+    connect(k->paintArea->brushManager(), SIGNAL(penChanged( const QPen& )), status, SLOT(setPen(const QPen &)));
+
+    QTimer::singleShot(1000, this, SLOT(loadPlugins()));
 }
 
 KTViewDocument::~KTViewDocument()
 {
-	delete k->configurationArea;
-	delete k;
+    delete k->configurationArea;
+    delete k;
 }
 
 void KTViewDocument::setAntialiasing(bool useIt )
 {
-	k->paintArea->setAntialiasing(useIt);
+    k->paintArea->setAntialiasing(useIt);
 }
 
 void KTViewDocument::setOpenGL(bool useIt)
 {
-	k->paintArea->setUseOpenGL( useIt );
+    k->paintArea->setUseOpenGL( useIt );
 }
 
 void KTViewDocument::setDrawGrid(bool draw)
 {
-	k->paintArea->setDrawGrid(draw);
+    k->paintArea->setDrawGrid(draw);
 }
 
 QPainter::RenderHints KTViewDocument::renderHints() const
 {
-	return k->paintArea->renderHints();
+    return k->paintArea->renderHints();
 }
 
 void KTViewDocument::setRotationAngle(int angle)
 {
-	k->paintArea->setRotationAngle(angle);
+    k->paintArea->setRotationAngle(angle);
 }
 
 void KTViewDocument::showPos(const QPointF &p)
 {
-	QString message =  "X: " +  QString::number(p.x()) + " Y: " + QString::number(p.y() );
-	emit sendToStatus ( message ) ;
+    QString message =  "X: " +  QString::number(p.x()) + " Y: " + QString::number(p.y() );
+    emit sendToStatus ( message ) ;
 }
 
 void KTViewDocument::setupDrawActions()
 {
-	KAction *showGrid = new KAction( QPixmap(THEME_DIR+"/icons/subgrid.png" ), tr( "Show grid" ), QKeySequence(tr("Ctrl+L")), this,
-					 SLOT(toggleShowGrid()), k->actionManager, "show_grid" );
-	showGrid->setCheckable(true);
+    KAction *showGrid = new KAction( QPixmap(THEME_DIR+"/icons/subgrid.png" ), tr( "Show grid" ), QKeySequence(tr("Ctrl+L")), 
+                                     this, SLOT(toggleShowGrid()), k->actionManager, "show_grid" );
+    showGrid->setCheckable(true);
 
-        KAction *undo = new KAction( QPixmap(THEME_DIR+"/icons/undo.png" ), tr( "&Undo" ),  QKeySequence(tr("Ctrl+U")), this,
-                                     SLOT(undo()), k->actionManager, "undo" );
-        undo->setStatusTip(tr("Undo last operation"));
+    KAction *undo = new KAction( QPixmap(THEME_DIR+"/icons/undo.png" ), tr( "&Undo" ),  QKeySequence(tr("Ctrl+U")), 
+                                 this, SLOT(undo()), k->actionManager, "undo" );
+    undo->setStatusTip(tr("Undo last operation"));
 
-        KAction *redo = new KAction( QPixmap(THEME_DIR+"/icons/redo.png" ), tr( "&Redo" ),  QKeySequence(tr("Ctrl+R")), this,
-                                     SLOT(redo()), k->actionManager, "redo" );
-        redo->setStatusTip(tr("Redo last operation"));
+    KAction *redo = new KAction( QPixmap(THEME_DIR+"/icons/redo.png" ), tr( "&Redo" ),  QKeySequence(tr("Ctrl+R")), 
+                                 this, SLOT(redo()), k->actionManager, "redo" );
+    redo->setStatusTip(tr("Redo last operation"));
 
-        KAction *copy = new KAction( QPixmap(THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  QKeySequence(tr("Ctrl+C")),
-                                     k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
-        copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
+    KAction *copy = new KAction( QPixmap(THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  QKeySequence(tr("Ctrl+C")),
+                                 k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
+    copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
 
-        KAction *paste = new KAction( QPixmap(THEME_DIR+"/icons/paste.png" ), tr( "&Paste" ),   QKeySequence(tr("Ctrl+V")),
-                                      k->paintArea, SLOT(pasteItems()), k->actionManager, "paste");
-        paste->setStatusTip(tr("Pastes the clipboard into the current document"));
+    KAction *paste = new KAction( QPixmap(THEME_DIR+"/icons/paste.png" ), tr( "&Paste" ),   QKeySequence(tr("Ctrl+V")),
+                                  k->paintArea, SLOT(pasteItems()), k->actionManager, "paste");
+    paste->setStatusTip(tr("Pastes the clipboard into the current document"));
 
-        KAction *cut = new KAction( QPixmap(THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  QKeySequence(tr("Ctrl+X")),
-                                    k->paintArea, SLOT(cutItems()),k->actionManager, "cut" );
-        cut->setStatusTip(tr("Cuts the selected items"));
+    KAction *cut = new KAction( QPixmap(THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  QKeySequence(tr("Ctrl+X")),
+                                k->paintArea, SLOT(cutItems()),k->actionManager, "cut" );
+    cut->setStatusTip(tr("Cuts the selected items"));
 
+    KAction *del = new KAction( QPixmap(THEME_DIR+"/icons/delete.png" ), tr( "Delete" ), 
+                                QKeySequence( Qt::Key_Delete ), k->paintArea, SLOT(deleteItems()), k->actionManager, "delete" );
 	
-	KAction *del = new KAction( QPixmap(THEME_DIR+"/icons/delete.png" ), tr( "Delete" ), 
-				    QKeySequence( Qt::Key_Delete ), k->paintArea, SLOT(deleteItems()), k->actionManager, "delete" );
-	
-	del->setStatusTip(tr("Deletes the selected object"));
-	
-	KAction *group = new KAction( QPixmap(THEME_DIR+"/icons/group.png" ), tr( "&Group" ),   
-				      QKeySequence(tr("Ctrl+G") ), k->paintArea, SLOT(groupItems()), k->actionManager,
-				      "group");
+    del->setStatusTip(tr("Deletes the selected object"));
 
-	group->setStatusTip(tr("Group the selected objects into a single one"));
-	
-	KAction *ungroup = new KAction( QPixmap(THEME_DIR+"/icons/ungroup.png" ), tr( "&Ungroup" ), 
-					QKeySequence(tr("Ctrl+Shift+G")) , k->paintArea, SLOT(ungroupItems()), 
-					k->actionManager, "ungroup");
-	ungroup->setStatusTip(tr("Ungroups the selected object"));
+    KAction *group = new KAction( QPixmap(THEME_DIR+"/icons/group.png" ), tr( "&Group" ),   
+                                  QKeySequence(tr("Ctrl+G") ), k->paintArea, SLOT(groupItems()), k->actionManager,
+                                  "group");
+
+    group->setStatusTip(tr("Group the selected objects into a single one"));
+
+    KAction *ungroup = new KAction( QPixmap(THEME_DIR+"/icons/ungroup.png" ), tr( "&Ungroup" ), 
+                                    QKeySequence(tr("Ctrl+Shift+G")) , k->paintArea, SLOT(ungroupItems()), 
+                                    k->actionManager, "ungroup");
+
+    ungroup->setStatusTip(tr("Ungroups the selected object"));
 
 /*
-	KAction *zoomIn = new KAction( QPixmap(THEME_DIR+"/icons/zood->in.png" ), tr( "Zoom In" ), 
-				       QKeySequence(Qt::CTRL+Qt::Key_Plus), k->paintArea, SLOT(zoomIn()), k->actionManager,
-				       "zood->in" );
-	
-	k->zoomFactorSpin = new QSpinBox();
-	k->zoomFactorSpin->setMaximum ( 200 );
-	k->zoomFactorSpin->setMinimum ( 26 );
-	k->zoomFactorSpin->setValue(100);
-	k->zoomFactorSpin->setSingleStep(5);
-	
-	k->zoomFactorSpin->setSuffix ( "%" );
-	connect( k->zoomFactorSpin, SIGNAL( valueChanged ( int  )), this, SLOT(setZoomFactor(int )));
-	
-	KAction *zoomOut = new KAction( QPixmap(THEME_DIR+"/icons/zood->out.png" ), tr( "Zoom Out" ), 
-					QKeySequence(Qt::CTRL+Qt::Key_Minus), k->paintArea, SLOT(zoomOut()), 
-					k->actionManager, "zood->out" );
-	// k->viewPreviousGroup->addAction(zoomOut);
-	
+    KAction *zoomIn = new KAction( QPixmap(THEME_DIR+"/icons/zood->in.png" ), tr( "Zoom In" ), 
+                                   QKeySequence(Qt::CTRL+Qt::Key_Plus), k->paintArea, SLOT(zoomIn()), k->actionManager,
+                                   "zood->in" );
+
+    k->zoomFactorSpin = new QSpinBox();
+    k->zoomFactorSpin->setMaximum ( 200 );
+    k->zoomFactorSpin->setMinimum ( 26 );
+    k->zoomFactorSpin->setValue(100);
+    k->zoomFactorSpin->setSingleStep(5);
+
+    k->zoomFactorSpin->setSuffix ( "%" );
+    connect( k->zoomFactorSpin, SIGNAL( valueChanged ( int  )), this, SLOT(setZoomFactor(int )));
+
+    KAction *zoomOut = new KAction( QPixmap(THEME_DIR+"/icons/zood->out.png" ), tr( "Zoom Out" ), 
+                                    QKeySequence(Qt::CTRL+Qt::Key_Minus), k->paintArea, SLOT(zoomOut()), 
+                                    k->actionManager, "zood->out" );
+    // k->viewPreviousGroup->addAction(zoomOut);
 */
 
-	k->viewPreviousGroup = new QActionGroup( this );
-	k->viewPreviousGroup->setExclusive( true );
-	KAction *noPrevious = new KAction( QPixmap(THEME_DIR+"/icons/no_previous.png" ), tr( "No Previous" ), 
-					   QKeySequence(Qt::Key_1), this, SLOT(disablePreviousOnionSkin()), 
-					   k->actionManager, "no_previous" );
-	
-	k->viewPreviousGroup->addAction(noPrevious);
-	
-	noPrevious->setCheckable ( true );
-	noPrevious->setStatusTip(tr("Disables previous onion skin visualization"));
-	
-	noPrevious->setChecked(true);
-	
-	KAction *onePrevious = new KAction( QPixmap(THEME_DIR+"/icons/previous.png" ), tr( "Previous One" ), 
-					    QKeySequence(Qt::Key_2), this, SLOT(onePreviousOnionSkin()), k->actionManager,
-					    "previews_one");
-	
-	k->viewPreviousGroup->addAction(onePrevious);
-	
-	onePrevious->setStatusTip(tr("Shows the previous onion skin" ));
-	onePrevious->setCheckable ( true );
-	
-	KAction *twoPrevious = new KAction( QPixmap(THEME_DIR+"/icons/previous2.png" ), tr( "Previous Two" ), 
-					    QKeySequence(Qt::Key_3), this, SLOT(twoPreviousOnionSkin()), k->actionManager,
-					    "previews_two");
-	k->viewPreviousGroup->addAction(twoPrevious);
-	twoPrevious->setStatusTip(tr("Shows the previous 2 onion skins" ));
-	twoPrevious->setCheckable ( true );
-	
-	KAction *threePrevious = new KAction( QPixmap(THEME_DIR+"/icons/previous3.png" ), tr( "Previous Three" ),
-					      QKeySequence(Qt::Key_4), this, SLOT(threePreviousOnionSkin()), 
-					      k->actionManager, "previews_three");
-	k->viewPreviousGroup->addAction(threePrevious);
-	threePrevious->setCheckable ( true );
-	threePrevious->setStatusTip(tr("Shows the previous 3 onion skins" ));
-	
+    k->viewPreviousGroup = new QActionGroup( this );
+    k->viewPreviousGroup->setExclusive( true );
+    KAction *noPrevious = new KAction( QPixmap(THEME_DIR+"/icons/no_previous.png" ), tr( "No Previous" ), 
+                                       QKeySequence(Qt::Key_1), this, SLOT(disablePreviousOnionSkin()), 
+                                       k->actionManager, "no_previous" );
 
-	// NEXT 
+    k->viewPreviousGroup->addAction(noPrevious);
+	
+    noPrevious->setCheckable ( true );
+    noPrevious->setStatusTip(tr("Disables previous onion skin visualization"));
 
-	k->viewNextGroup = new QActionGroup( this );
-	k->viewNextGroup->setExclusive( true );
+    noPrevious->setChecked(true);
+
+    KAction *onePrevious = new KAction( QPixmap(THEME_DIR+"/icons/previous.png" ), tr( "Previous One" ), 
+	                                QKeySequence(Qt::Key_2), this, SLOT(onePreviousOnionSkin()), k->actionManager,
+                                        "previews_one");
+
+    k->viewPreviousGroup->addAction(onePrevious);
+
+    onePrevious->setStatusTip(tr("Shows the previous onion skin" ));
+    onePrevious->setCheckable ( true );
 	
-	KAction *noNext = new KAction( QPixmap(THEME_DIR+"/icons/no_next.png" ), tr( "No Next" ), 
-				       QKeySequence(Qt::CTRL+Qt::Key_1), this, SLOT(disableNextOnionSkin()), 
-				       k->actionManager, "no_next");
-	k->viewNextGroup->addAction(noNext);
+    KAction *twoPrevious = new KAction( QPixmap(THEME_DIR+"/icons/previous2.png" ), tr( "Previous Two" ), 
+                                        QKeySequence(Qt::Key_3), this, SLOT(twoPreviousOnionSkin()), k->actionManager,
+                                        "previews_two");
+
+    k->viewPreviousGroup->addAction(twoPrevious);
+    twoPrevious->setStatusTip(tr("Shows the previous 2 onion skins" ));
+    twoPrevious->setCheckable ( true );
 	
-	noNext->setCheckable ( true );
-	noNext->setStatusTip(tr("Disables next onion skin visualization"));
+    KAction *threePrevious = new KAction( QPixmap(THEME_DIR+"/icons/previous3.png" ), tr( "Previous Three" ),
+                                          QKeySequence(Qt::Key_4), this, SLOT(threePreviousOnionSkin()), 
+                                          k->actionManager, "previews_three");
+
+    k->viewPreviousGroup->addAction(threePrevious);
+    threePrevious->setCheckable ( true );
+    threePrevious->setStatusTip(tr("Shows the previous 3 onion skins" ));
+
+    // NEXT 
+    k->viewNextGroup = new QActionGroup( this );
+    k->viewNextGroup->setExclusive( true );
 	
-	KAction *oneNext = new KAction( QPixmap(THEME_DIR+"/icons/next.png" ), tr( "Next One" ), 
-					QKeySequence(Qt::CTRL+Qt::Key_2), this, SLOT(oneNextOnionSkin()), k->actionManager,
-					"next_one");
-	k->viewNextGroup->addAction(oneNext);
+    KAction *noNext = new KAction( QPixmap(THEME_DIR+"/icons/no_next.png" ), tr( "No Next" ), 
+                                   QKeySequence(Qt::CTRL+Qt::Key_1), this, SLOT(disableNextOnionSkin()), 
+                                   k->actionManager, "no_next");
+
+    k->viewNextGroup->addAction(noNext);
+
+    noNext->setCheckable ( true );
+    noNext->setStatusTip(tr("Disables next onion skin visualization"));
 	
-	oneNext->setCheckable ( true );
-	oneNext->setStatusTip(tr("Shows the next onion skin"));
+    KAction *oneNext = new KAction( QPixmap(THEME_DIR+"/icons/next.png" ), tr( "Next One" ), 
+                                    QKeySequence(Qt::CTRL+Qt::Key_2), this, SLOT(oneNextOnionSkin()), k->actionManager,
+                                    "next_one");
+    k->viewNextGroup->addAction(oneNext);
+
+    oneNext->setCheckable ( true );
+    oneNext->setStatusTip(tr("Shows the next onion skin"));
 	
-	KAction *twoNext = new KAction( QPixmap(THEME_DIR+"/icons/next2.png" ), tr( "Next Two" ), 
-					QKeySequence(Qt::CTRL+Qt::Key_3), this, SLOT(twoNextOnionSkin()), k->actionManager,
-					"next_two");
-	k->viewNextGroup->addAction(twoNext);
+    KAction *twoNext = new KAction( QPixmap(THEME_DIR+"/icons/next2.png" ), tr( "Next Two" ), 
+                                    QKeySequence(Qt::CTRL+Qt::Key_3), this, SLOT(twoNextOnionSkin()), k->actionManager,
+                                    "next_two");
+    k->viewNextGroup->addAction(twoNext);
+
+    twoNext->setCheckable( true );
+    twoNext->setStatusTip(tr("Shows the next 2 onion skins"));
+
+    KAction *threeNext = new KAction( QPixmap(THEME_DIR+"/icons/next3.png" ), tr( "Next Three" ), 
+                                      QKeySequence(Qt::CTRL+Qt::Key_4), this, SLOT(threeNextOnionSkin()), 
+                                      k->actionManager, "next_three");
+    k->viewNextGroup->addAction(threeNext);
 	
-	twoNext->setCheckable( true );
-	twoNext->setStatusTip(tr("Shows the next 2 onion skins"));
-	
-	KAction *threeNext = new KAction( QPixmap(THEME_DIR+"/icons/next3.png" ), tr( "Next Three" ), 
-					  QKeySequence(Qt::CTRL+Qt::Key_4), this, SLOT(threeNextOnionSkin()), 
-					  k->actionManager, "next_three");
-	k->viewNextGroup->addAction(threeNext);
-	
-	threeNext->setCheckable(true );
-	threeNext->setStatusTip(tr("Shows the next 3 onion skins"));
+    threeNext->setCheckable(true );
+    threeNext->setStatusTip(tr("Shows the next 3 onion skins"));
 }
 
 
@@ -842,6 +836,16 @@ void KTViewDocument::closeArea()
 {
 	k->paintArea->setScene(0);
 	close();
+}
+
+void KTViewDocument::undo()
+{
+    puts("Adding undo support");
+}
+
+void KTViewDocument::redo()
+{
+    puts("Adding redo support");
 }
 
 void KTViewDocument::setCursor(const QCursor &)

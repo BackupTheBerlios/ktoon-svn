@@ -81,9 +81,7 @@ class KTViewDocument : public QMainWindow
 		void setNextOnionSkin(int n);
 		void setPreviousOnionSkin(int n);
 		void toggleShowGrid();
-		
-// 		void setScene(KTScene* scene);
-		
+	
 		void setZoomFactor(int porcent);
 		void scaleRuler(double factor);
 		void changeRulerOrigin(const QPointF &zero);
@@ -93,17 +91,10 @@ class KTViewDocument : public QMainWindow
 		Private *const k;
 		
 	private:
-		//void createActions();
-
 		void setupDrawActions();
-
-		//void setupEditActions();
-		//void setupOrderActions();
-		
 		void createToolBar();
 		void createMenu();
 		void createTools();
-		
 		
 	private slots: 
 		// Plugins
@@ -120,6 +111,8 @@ class KTViewDocument : public QMainWindow
 		void selectToolFromMenu(QAction *act);
 		
 	public slots:
+                void undo();
+                void redo();
 		void selectTool();
 		void applyFilter();
 		
