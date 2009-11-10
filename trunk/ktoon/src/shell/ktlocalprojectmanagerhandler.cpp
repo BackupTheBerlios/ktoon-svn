@@ -37,7 +37,6 @@ KTLocalProjectManagerHandler::KTLocalProjectManagerHandler(QObject *parent) : KT
 {
 }
 
-
 KTLocalProjectManagerHandler::~KTLocalProjectManagerHandler()
 {
 }
@@ -45,60 +44,52 @@ KTLocalProjectManagerHandler::~KTLocalProjectManagerHandler()
 void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *request)
 {
 
-	#ifdef K_DEBUG
-		K_FUNCINFO;
-	#endif
-	if ( request->isValid() )
-	{
-		emit sendCommand( request, true );
-	}
-	else
-	{
-		#ifdef K_DEBUG
-			kfDebug << "INVALID REQUEST! ID: " << request->id();
-		#endif
-	}
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
+    if (request->isValid()) {
+        emit sendCommand( request, true );
+    } else {
+        #ifdef K_DEBUG
+               kfDebug << "INVALID REQUEST! ID: " << request->id();
+        #endif
+    }
 }
 
 bool KTLocalProjectManagerHandler::saveProject(const QString &fileName, const KTProject *project)
 {
-	bool result = false;
-	QString fn = fileName;
-	
-	if ( !fileName.endsWith(".ktn") )
-	{
-		fn+=".ktn";
-	}
-	
-	KTSaveProject *saver = new KTSaveProject;
-	result = saver->save(fn, project);
-	
-	delete saver;
-	
-	return result;
+    bool result = false;
+    QString fn = fileName;
+
+    if (!fileName.endsWith(".ktn"))
+        fn+=".ktn";
+
+    KTSaveProject *saver = new KTSaveProject;
+    result = saver->save(fn, project);
+
+    delete saver;
+
+    return result;
 }
 
 bool KTLocalProjectManagerHandler::loadProject(const QString &fileName, KTProject *project)
 {
-	bool result = false;
-	KTSaveProject *loader = 0;
-	
-	if ( fileName.endsWith(".ktn") )
-	{
-		loader = new KTSaveProject;
-		result = loader->load(fileName, project);
-		
-		delete loader;
-	}
-	else
-	{
-		result = false;
-	}
-	
-	return result;
+    bool result = false;
+    KTSaveProject *loader = 0;
+
+    if (fileName.endsWith(".ktn")) {
+        loader = new KTSaveProject;
+        result = loader->load(fileName, project);
+        delete loader;
+    } else {
+        result = false;
+    }
+
+    return result;
 }
 
 void KTLocalProjectManagerHandler::setProject(KTProject *)
 {
-	
+
 }

@@ -74,141 +74,142 @@ class KTProjectResponse;
 
 class KTMainWindow : public KTabbedMainWindow
 {
-	Q_OBJECT;
-	public:
-		enum Perspective
-		{
-			Drawing = 0x01,
-			Animation = 0x02,
-			All = Drawing | Animation
-		};
-		
-		KTMainWindow(KTSplash *splash = 0);
-		~KTMainWindow();
-		
-	private:
-		/**
-		 * Creates the file action 
-		 */
-		void setupFileActions();
-		void setupSettingsActions();
-		void setupWindowActions();
-		void setupInsertActions();
-		
-		/**
-		 * Sets up the actions in the toolbar
-		 */
-		void setupToolBar();
-		
-		/**
-		 * Sets up he actions in the menu
-		 */
-		void setupMenu();
-		
-		void setupHelpActions();
-		void setupActions();
-		
-		void ui4project(QWidget *widget);
-		void ui4paintArea(QWidget *widget);
-		void ui4localRequest(QWidget *widget);
-		
-		
-	private:
-		bool setupNetworkProject(const QString& projectName = QString(), const QString &server = QString(), int port = -1);
-		bool setupNetworkProject(KTProjectManagerParams *params);
-		bool setupLocalProject(KTProjectManagerParams *params);
-		
-	protected:
-		/**
-	 	 *  Event for main window closing control
-	 	 *
-	 	 * Reimplemented from QWidget.
-	 	 * @param close_event The input event
-		 */
-		void closeEvent( QCloseEvent *event );
-		
-		/**
-		 *  Creates the application GUI according to the information from the data classes
-		 */
-		virtual void createGUI();
+    Q_OBJECT;
+    public:
+        enum Perspective {
+             Drawing = 0x01,
+             Animation = 0x02,
+             All = Drawing | Animation
+        };
 
-		/**
-		 *  Updates the open recent menu item names according to the @a recent_names list of file names
-		 */
-		void updateOpenRecentMenu(QMenu *menu, QStringList recents);
+        KTMainWindow(KTSplash *splash = 0);
+        ~KTMainWindow();
+
+    private:
+        /**
+         * Creates the file action 
+         */
+         void setupFileActions();
+         void setupSettingsActions();
+         void setupWindowActions();
+         void setupInsertActions();
+
+        /**
+         * Sets up the actions in the toolbar
+         */
+         void setupToolBar();
+
+        /**
+         * Sets up he actions in the menu
+         */
+         void setupMenu();
+
+         void setupHelpActions();
+         void setupActions();
+
+         void ui4project(QWidget *widget);
+         void ui4paintArea(QWidget *widget);
+         void ui4localRequest(QWidget *widget);
+
+    private:
+         bool setupNetworkProject(const QString& projectName = QString(), const QString &server = QString(), int port = -1);
+         bool setupNetworkProject(KTProjectManagerParams *params);
+         bool setupLocalProject(KTProjectManagerParams *params);
 		
-	public slots:
-		void openProject(const QString &path);
-		
-	private slots:
-		void viewNewDocument(const QString &name = QString::null);
-		void createNewProject();
-		void newProject();
-		bool closeProject();
-		void openProject();
-		void openProjectFromServer();
-		void importProjectToServer();
-		void exportProject();
-				
-		void save();
-		void saveAs();
-		
-		void showHelpPage(const QString &title, const QString &document);
-		void showWidgetPage();
-		
-		void showAnimationMenu(const QPoint &p);
-		
-		void changePerspective(QAction *a);
-		
-		void addPage(QWidget *widget);
-		
-	private slots:
-		void messageToStatus(const QString &);
-		void preferences();
-		void aboutKToon();
-		void showTipDialog();
-		void importPalettes();
-		void connectToDisplays(const QWidget *widget);
-		
-		void saveProject();
-		
-		void openRecentProject();
-		
-		void createCommand(const KTPaintAreaEvent *event);
-		
-		
-	private:
-		KTProjectManager *m_projectManager;
-		KToon::RenderType m_renderType;
-		QString m_fileName;
-		
-	private:
-		KTViewDocument *m_viewDoc;
-		KTWorkspace *m_animationSpace;
-		KTStatusBar *m_statusBar;
-		KActionManager *m_actionManager;
-		QMenu *m_fileMenu,*m_settingsMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
-		QStringList m_recentProjects;
-		
-		QMenu *m_recentProjectsMenu;
-		
-	private: // Network variables
-		bool m_isNetworkProject;
-		KToolView *m_viewChat;
-		
-	// Components
-	private:
-		KTExposureSheet *m_exposureSheet;
-		KTScenesWidget *m_scenes;
-		KTTimeLine *m_timeLine;
-		KTHelpWidget *m_helper;
-		KTLibraryWidget *m_libraryWidget;
-		KTColorPalette *m_colorPalette;
-		KTPenWidget *m_penWidget;
-		KTCameraWidget *m_cameraWidget;
-		
-	signals:
-		void responsed( KTProjectResponse *);
+    protected:
+         /**
+          *  Event for main window closing control
+          *
+          * Reimplemented from QWidget.
+          * @param close_event The input event
+          */
+          void closeEvent( QCloseEvent *event );
+
+         /**
+          *  Creates the application GUI according to the information from the data classes
+          */
+          virtual void createGUI();
+
+         /**
+          *  Updates the open recent menu item names according to the @a recent_names list of file names
+          */
+          void updateOpenRecentMenu(QMenu *menu, QStringList recents);
+
+    public slots:
+          void openProject(const QString &path);
+
+    private slots:
+          void viewNewDocument(const QString &name = QString::null);
+          void createNewProject();
+          void newProject();
+          bool closeProject();
+          void openProject();
+          void openProjectFromServer();
+          void importProjectToServer();
+          void exportProject();
+
+          void save();
+          void saveAs();
+
+          void showHelpPage(const QString &title, const QString &document);
+          void showWidgetPage();
+
+          void showAnimationMenu(const QPoint &p);
+
+          void changePerspective(QAction *a);
+
+          void addPage(QWidget *widget);
+
+    private slots:
+          void messageToStatus(const QString &);
+          void preferences();
+          void aboutKToon();
+          void showTipDialog();
+          void importPalettes();
+          void connectToDisplays(const QWidget *widget);
+          void saveProject();
+          void openRecentProject();
+          void createCommand(const KTPaintAreaEvent *event);
+
+    private:
+          KTProjectManager *m_projectManager;
+          KToon::RenderType m_renderType;
+          QString m_fileName;
+
+    private:
+          KTViewDocument *m_viewDoc;
+          KTWorkspace *m_animationSpace;
+          KTStatusBar *m_statusBar;
+          KActionManager *m_actionManager;
+          QMenu *m_fileMenu;
+          QMenu *m_settingsMenu;
+          QMenu *m_viewMenu;
+          QMenu *m_insertMenu;
+          QMenu *m_toolsMenu; 
+          QMenu *m_windowMenu,
+          QMenu *m_helpMenu;
+
+          QStringList m_recentProjects;
+
+          QMenu *m_recentProjectsMenu;
+
+    private: // Network variables
+          bool m_isNetworkProject;
+          KToolView *m_viewChat;
+
+    // Components
+    private:
+          KTExposureSheet *m_exposureSheet;
+          KTScenesWidget *m_scenes;
+          KTTimeLine *m_timeLine;
+          KTHelpWidget *m_helper;
+          KTLibraryWidget *m_libraryWidget;
+          KTColorPalette *m_colorPalette;
+          KTPenWidget *m_penWidget;
+          KTCameraWidget *m_cameraWidget;
+
+    signals:
+          void responsed( KTProjectResponse *);
 };
 
 #endif

@@ -38,8 +38,8 @@
 
 KTApplication::KTApplication(int &argc, char **argv) : KApplication(argc, argv)
 {
-	setApplicationName("ktoon");
-	// applyColors(Default);
+    setApplicationName("ktoon");
+    // applyColors(Default);
 }
 
 KTApplication::~KTApplication()
@@ -48,56 +48,50 @@ KTApplication::~KTApplication()
 
 bool KTApplication::firstRun()
 {
-    	QDesktopWidget *screen = QApplication::desktop();
-    	int screenW = screen->width();     // returns desktop width
-    	int screenH = screen->height();    // returns desktop height
+    QDesktopWidget *screen = QApplication::desktop();
+    int screenW = screen->width();     // returns desktop width
+    int screenH = screen->height();    // returns desktop height
 
-	ConfigWizard *firstDialog = new ConfigWizard();
-	QRect size = firstDialog->frameGeometry();
-	int configH = size.height();
-	int configW = size.width(); 
-	firstDialog->move((screenW-configW)/2,(screenH-configH)/2);
+    ConfigWizard *firstDialog = new ConfigWizard();
+    QRect size = firstDialog->frameGeometry();
+    int configH = size.height();
+    int configW = size.width(); 
+    firstDialog->move((screenW-configW)/2,(screenH-configH)/2);
 
-	QApplication::setActiveWindow(firstDialog);
+    QApplication::setActiveWindow(firstDialog);
 
-	if ( firstDialog->exec() != QDialog::Rejected )
-	{
-		kAppProp->setHomeDir( firstDialog->home() );
-		createCache(firstDialog->cache());
-		
-		KCONFIG->beginGroup("General");
-		
-		KCONFIG->setValue( "Home", HOME_DIR);
-		KCONFIG->setValue( "Cache", CACHE_DIR);
-		
-		KCONFIG->sync();
-		
-		delete firstDialog;
-		
-		return true;
-	}
-	
-	delete firstDialog;
-	
-	return false;
+    if (firstDialog->exec() != QDialog::Rejected) {
+        kAppProp->setHomeDir( firstDialog->home() );
+        createCache(firstDialog->cache());
+
+        KCONFIG->beginGroup("General");
+        KCONFIG->setValue( "Home", HOME_DIR);
+        KCONFIG->setValue( "Cache", CACHE_DIR);
+        KCONFIG->sync();
+
+        delete firstDialog;
+
+        return true;
+    }
+    delete firstDialog;
+
+    return false;
 }
 
 void KTApplication::createCache(const QString &cacheDir)
 {
-	QDir cache(cacheDir);
-	if ( ! cache.exists() )
-	{
-		#ifdef K_DEBUG
-			K_DEBUG() << tr("Initializing repository %1").arg(cacheDir);
-		#endif
+    QDir cache(cacheDir);
+    if (! cache.exists()) {
+        #ifdef K_DEBUG
+               K_DEBUG() << tr("Initializing repository %1").arg(cacheDir);
+        #endif
 
-		if ( ! cache.mkdir(cacheDir) )
-		{
-			#ifdef K_DEBUG
-				kError() << tr("Can not create the projects repository");
-			#endif
-		}
-	}
-	
-	kAppProp->setCacheDir(cacheDir);
+       if (! cache.mkdir(cacheDir)) {
+           #ifdef K_DEBUG
+                  kError() << tr("Can not create the projects repository");
+           #endif
+       }
+    }
+
+    kAppProp->setCacheDir(cacheDir);
 }

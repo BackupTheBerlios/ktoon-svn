@@ -32,21 +32,20 @@
 
 class CrashWidget : public QDialog
 {
-	Q_OBJECT
-	public:
-		CrashWidget (int sig);
-		~CrashWidget ();
-		
-		void addBacktracePage(const QString &execInfo, const QString &backtrace);
-		
-	public slots:
-		
-	private:
-		QVBoxLayout *m_layout;
-		QImage m_image;
-		int m_sig;
-		
-		QTabWidget *m_tabber;
+    Q_OBJECT
+    public:
+        CrashWidget (int sig);
+        ~CrashWidget ();
+        void addBacktracePage(const QString &execInfo, const QString &backtrace);
+
+    public slots:
+
+    private:
+        QVBoxLayout *m_layout;
+        QImage m_image;
+        int m_sig;
+
+        QTabWidget *m_tabber;
 };
 
 #endif

@@ -29,7 +29,6 @@
 #include <QColor>
 #include <QPair>
 #include <QImage>
-
 #include <csignal>
 
 class CrashHandler;
@@ -38,51 +37,50 @@ class CrashHandler;
 
 class CrashHandler
 {
-	protected:
-		CrashHandler();
+    protected:
+        CrashHandler();
+
+    public:
+        ~CrashHandler ();
+        void setConfig(const QString &filePath);
+
+        void setTrapper (void (*trapper)(int));
+        static CrashHandler *instance();
+        static void init();
+
+    public:
+        void setProgram (const QString &prog);
+        QString program () const;
+        void setImagePath(const QString &imagePath);
+        QString imagePath() const;
+
+        QString title() const;
+        QString message() const;
+        QColor messageColor() const;
+        QString buttonText() const;
+        QString defaultText() const;
+        QString defaultImage() const;
+        QString signalText(int signal);
+        QString signalImage(int signal);
+        bool containsSignalEntry(int signal);
 		
-	public:
-		~CrashHandler ();
-		void setConfig(const QString &filePath);
-		
-		void setTrapper (void (*trapper)(int));
-		static CrashHandler *instance();
-		static void init();
-		
-	public:
-		void setProgram (const QString &prog);
-		QString program () const;
-		void setImagePath(const QString &imagePath);
-		QString imagePath() const;
-		
-		QString title() const;
-		QString message() const;
-		QColor messageColor() const;
-		QString buttonText() const;
-		QString defaultText() const;
-		QString defaultImage() const;
-		QString signalText(int signal);
-		QString signalImage(int signal);
-		bool containsSignalEntry(int signal);
-		
-	private:
-		struct CrashHandlerConfig
-		{
-			QString title;
-			QString message;
-			QColor messageColor;
-			QString buttonText;
-			
-			QString defaultText;
-			QString defaultImage;
-			QMap<int, QPair<QString, QString> > signalEntry;
-			
-		} m_config;
-		
-		static CrashHandler *m_instance; // Singleton
-		QString m_program;
-		QString m_imagePath;
-		bool m_verbose;
+    private:
+        struct CrashHandlerConfig {
+               QString title;
+               QString message;
+               QColor messageColor;
+               QString buttonText;
+
+               QString defaultText;
+               QString defaultImage;
+               QMap<int, QPair<QString, QString> > signalEntry;
+
+        } m_config;
+
+        static CrashHandler *m_instance; // Singleton
+QString m_program;
+        QString m_imagePath;
+        bool m_verbose;
 };
 
 #define CHANDLER CrashHandler::instance()

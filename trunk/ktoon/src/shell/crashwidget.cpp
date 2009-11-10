@@ -40,13 +40,13 @@
 
 class TextArea : public QTextBrowser
 {
-	Q_OBJECT
-	public:
-		TextArea();
-		~TextArea();
-		
-	public slots:
-		void setSource ( const QUrl & name );
+    Q_OBJECT
+    public:
+        TextArea();
+        ~TextArea();
+
+    public slots:
+        void setSource ( const QUrl & name );
 };
 
 TextArea::TextArea()
@@ -59,77 +59,63 @@ TextArea::~ TextArea()
 
 void TextArea::setSource( const QUrl &name )
 {
-	if ( name.scheme() == "http" )
-	{
-		KCONFIG->beginGroup("General");
-		QString browser = KCONFIG->value("Browser").toString();
-
-		if ( !browser.isEmpty() )
-		{
-			QProcess::startDetached (browser, QStringList() << name.toString() );
-		}
-	}
-	else
-	{
-		QTextBrowser::setSource(name);
-	}
+    if (name.scheme() == "http") {
+        KCONFIG->beginGroup("General");
+        QString browser = KCONFIG->value("Browser").toString();
+        if (!browser.isEmpty())
+            QProcess::startDetached (browser, QStringList() << name.toString() );
+    } else {
+            QTextBrowser::setSource(name);
+    }
 }
 
 #include "crashwidget.moc"
 
 CrashWidget::CrashWidget (int sig) : QDialog(0), m_sig(sig)
 {
-	setModal(true);
-	
-	setWindowTitle( CHANDLER->title() );
-	
-	m_layout = new QVBoxLayout(this);
-	
-	
-	m_tabber = new QTabWidget(this);
-	
-	m_layout->addWidget(m_tabber);
-	
-	
-	QWidget *page1 = new QWidget;
-	
-	QVBoxLayout *page1layout = new QVBoxLayout(page1);
-	
-	QLabel *message = new QLabel("<font color="+CHANDLER->messageColor().name()+">"+ CHANDLER->message()+"</color>");
-	
-	page1layout->addWidget(message);
-	
-	
-	QHBoxLayout *hbox = new QHBoxLayout;
-	
-	QString text = CHANDLER->defaultText();
-	QImage img(CHANDLER->defaultImage());
+    setModal(true);
 
-	if ( CHANDLER->containsSignalEntry(sig) )
-	{
-		text = CHANDLER->signalText(sig);
-		img = QImage(CHANDLER->signalImage(sig));
-	}
-	
-	QLabel *sigImg = new QLabel;
-	sigImg->setPixmap(QPixmap::fromImage(img));
-	
-	hbox->addWidget(sigImg);
-	
-	TextArea *sigText = new TextArea();
-	sigText->setHtml(text);
-	hbox->addWidget(sigText);
-	
-	page1layout->addLayout(hbox);
-	
-	m_tabber->addTab(page1, tr("What's happen?"));
-	
-	QPushButton *end = new QPushButton( CHANDLER->buttonText(),this );
-	connect(end,SIGNAL(clicked()),SLOT(accept()));
-	m_layout->addWidget(end);
-	
-	
-	setLayout(m_layout);
+    setWindowTitle( CHANDLER->title() );
+
+    m_layout = new QVBoxLayout(this);
+    m_tabber = new QTabWidget(this);
+    m_layout->addWidget(m_tabber);
+
+
+    QWidget *page1 = new QWidget;
+    QVBoxLayout *page1layout = new QVBoxLayout(page1);
+    QLabel *message = new QLabel("<font color="+CHANDLER->messageColor().name()+">"+ CHANDLER->message()+"</color>");
+
+    page1layout->addWidget(message);
+
+    QHBoxLayout *hbox = new QHBoxLayout;
+
+    QString text = CHANDLER->defaultText();
+    QImage img(CHANDLER->defaultImage());
+
+    if (CHANDLER->containsSignalEntry(sig) ) {
+        text = CHANDLER->signalText(sig);
+        img = QImage(CHANDLER->signalImage(sig));
+    }
+
+    QLabel *sigImg = new QLabel;
+    sigImg->setPixmap(QPixmap::fromImage(img));
+
+    hbox->addWidget(sigImg);
+
+    TextArea *sigText = new TextArea();
+    sigText->setHtml(text);
+    hbox->addWidget(sigText);
+
+    page1layout->addLayout(hbox);
+
+    m_tabber->addTab(page1, tr("What happens?"));
+
+    QPushButton *end = new QPushButton( CHANDLER->buttonText(),this );
+    connect(end,SIGNAL(clicked()),SLOT(accept()));
+    m_layout->addWidget(end);
+
+    setLayout(m_layout);
 }
 
 
@@ -139,32 +125,27 @@ CrashWidget::~CrashWidget ()
 
 void CrashWidget::addBacktracePage(const QString &execInfo, const QString &backtrace)
 {
-	#ifdef K_DEBUG
-		K_FUNCINFO << execInfo << " " << backtrace;
-	#endif
+    #ifdef K_DEBUG
+        K_FUNCINFO << execInfo << " " << backtrace;
+    #endif
 
-	QWidget *btPage = new QWidget;
-	QVBoxLayout *layout = new QVBoxLayout(btPage);
-	
-	layout->addWidget(new QLabel(tr("Executable information")));
-	
-	TextArea *fileInfo = new TextArea;
-	
-// 	QFontMetrics fm(fileInfo->font());
-// 	QSize fileInfoSize = fm.size( Qt::TextWordWrap, execInfo);
-// 	fileInfo->setMaximumHeight(fileInfoSize.height());
-	
-	fileInfo->setHtml(execInfo);
-	
-	layout->addWidget(fileInfo);
-	
-	layout->addWidget(new QLabel(tr("Backtrace")));
-	TextArea *btInfo = new TextArea;
-	btInfo->setHtml(backtrace);
-	
-	layout->addWidget(btInfo);
-	
-	m_tabber->addTab(btPage, tr("Backtrace"));
+    QWidget *btPage = new QWidget;
+    QVBoxLayout *layout = new QVBoxLayout(btPage);
+    layout->addWidget(new QLabel(tr("Executable information")));
+
+    TextArea *fileInfo = new TextArea;
+
+    // QFontMetrics fm(fileInfo->font());
+    // QSize fileInfoSize = fm.size( Qt::TextWordWrap, execInfo);
+    // fileInfo->setMaximumHeight(fileInfoSize.height());
+
+    fileInfo->setHtml(execInfo);
+    layout->addWidget(fileInfo);
+    layout->addWidget(new QLabel(tr("Backtrace")));
+    TextArea *btInfo = new TextArea;
+    btInfo->setHtml(backtrace);
+
+    layout->addWidget(btInfo);
+
+    m_tabber->addTab(btPage, tr("Backtrace"));
 }
-
-

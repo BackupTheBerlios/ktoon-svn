@@ -49,132 +49,117 @@ void crashTrapper (int sig);
 
 CrashHandler::CrashHandler() : m_verbose(false)
 {
-	m_program = QCoreApplication::applicationName();
-	setTrapper(crashTrapper);
-	
-	m_config.title = QObject::tr("Fatal error");
-	m_config.message = QObject::tr("%1 is crashing...").arg( m_program );
-	m_config.buttonText = QObject::tr("Close");
-	m_config.defaultText = QObject::tr("This is a general failure");
+    m_program = QCoreApplication::applicationName();
+    setTrapper(crashTrapper);
+
+    m_config.title = QObject::tr("Fatal error");
+    m_config.message = QObject::tr("%1 is crashing...").arg( m_program );
+    m_config.buttonText = QObject::tr("Close");
+    m_config.defaultText = QObject::tr("This is a general failure");
 }
 
 
 CrashHandler::~CrashHandler ()
 {
-	if ( m_instance ) delete m_instance;
+    if (m_instance) 
+        delete m_instance;
 }
 
 CrashHandler *CrashHandler::instance()
 {
-	init();
-	return m_instance;
+    init();
+    return m_instance;
 }
 			
 void CrashHandler::init()
 {
-	if ( m_instance == 0 )
-	{
-		m_instance = new CrashHandler();	
-	}
+    if (m_instance == 0)
+        m_instance = new CrashHandler();	
 }
 
 void CrashHandler::setTrapper (void (*trapper)(int))
 {
 #ifdef Q_OS_UNIX
+    if (!trapper)
+        trapper = SIG_DFL;
 
-
-	if (!trapper)
-	{
-		trapper = SIG_DFL;
-	}
-	sigset_t mask;
-	sigemptyset(&mask);
-	
-	
-	signal(SIGSEGV,trapper);
-	sigaddset(&mask, SIGSEGV);
-	
-	signal(SIGFPE,trapper);
-	
-	signal(SIGILL,trapper);
-	sigaddset(&mask, SIGILL);
-	
-	signal (SIGABRT, trapper);
-	sigaddset(&mask, SIGABRT);
-	
-	signal(SIGBUS,trapper);
-	signal(SIGIOT,trapper);
-	
-	sigprocmask(SIG_UNBLOCK, &mask, 0);
+    sigset_t mask;
+    sigemptyset(&mask);
+    signal(SIGSEGV,trapper);
+    sigaddset(&mask, SIGSEGV);
+    signal(SIGFPE,trapper);
+    signal(SIGILL,trapper);
+    sigaddset(&mask, SIGILL);
+    signal(SIGABRT, trapper);
+    sigaddset(&mask, SIGABRT);
+    signal(SIGBUS,trapper);
+    signal(SIGIOT,trapper);
+    sigprocmask(SIG_UNBLOCK, &mask, 0);
 #endif
 }
 
-
 QString CrashHandler::program () const
 {
-	return m_program;
+    return m_program;
 }
-
 
 void CrashHandler::setProgram (const QString &prog)
 {
-	m_program = prog;
+    m_program = prog;
 }
 
 void CrashHandler::setImagePath(const QString &imagePath)
 {
-	m_imagePath = imagePath;
+    m_imagePath = imagePath;
 }
 
 QString CrashHandler::imagePath() const
 {
-	return m_imagePath;
+    return m_imagePath;
 }
 
 QString CrashHandler::title() const
 {
-	return m_config.title;
+    return m_config.title;
 }
 
 QString CrashHandler::message() const
 {
-	return m_config.message;
+    return m_config.message;
 }
 
 QColor CrashHandler::messageColor() const
 {
-	if( m_config.messageColor.isValid() )
-	{
-		return m_config.messageColor;
-	}
-	
-	return QApplication::palette().color(QPalette::Text);
+    if (m_config.messageColor.isValid())
+        return m_config.messageColor;
+
+    return QApplication::palette().color(QPalette::Text);
 }
 
 QString CrashHandler::buttonText() const
 {
-	return m_config.buttonText;
+    return m_config.buttonText;
 }
 
 QString CrashHandler::defaultText() const
 {
-	return m_config.defaultText;
+    return m_config.defaultText;
 }
 
 QString CrashHandler::defaultImage() const
 {
-	return m_imagePath +"/"+m_config.defaultImage;
+    return m_imagePath +"/"+m_config.defaultImage;
 }
 
 
 QString CrashHandler::signalText(int signal)
 {
-	return m_config.signalEntry[signal].first;
+    return m_config.signalEntry[signal].first;
 }
 
 QString CrashHandler::signalImage(int signal)
 {
-	return m_imagePath +"/"+m_config.signalEntry[signal].second;
+    return m_imagePath +"/"+m_config.signalEntry[signal].second;
 }
 
 bool CrashHandler::containsSignalEntry(int signal)
@@ -184,157 +169,126 @@ bool CrashHandler::containsSignalEntry(int signal)
 
 void CrashHandler::setConfig(const QString &filePath)
 {
-	#ifdef K_DEBUG
-		K_FUNCINFO;
-		SHOW_VAR(filePath);
-	#endif
+#ifdef K_DEBUG
+       K_FUNCINFO;
+       SHOW_VAR(filePath);
+#endif
 
-	QDomDocument doc;
-	QFile file(filePath);
+    QDomDocument doc;
+    QFile file(filePath);
+
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+    if (!doc.setContent(&file)) {
+        file.close();
+        return;
+    }
+    file.close();
 	
-	if (!file.open(QIODevice::ReadOnly))
-		return;
-	if (!doc.setContent(&file)) 
-	{
-		file.close();
-		return;
-	}
-	file.close();
-	
-	QDomElement docElem = doc.documentElement();
-	
-	if ( docElem.tagName() == "CrashHandler" )
-	{
-		QDomNode n = docElem.firstChild();
-		while( !n.isNull() ) 
-		{
-			QDomElement e = n.toElement();
-			if(!e.isNull()) 
-			{
-				if ( e.tagName() == "Title" )
-				{
-					m_config.title = e.attribute("text");
-				}
-				else if ( e.tagName() == "Message" )
-				{
-// 					<Message text="str" color="red" />
-					m_config.message = e.attribute("text");
-					m_config.messageColor = QColor(e.attribute("color"));
-				}
-				else if ( e.tagName() == "Button" )
-				{
-// 					<Button text="Ok" />
-					m_config.buttonText = e.attribute("text");
-				}
-				else if ( e.tagName() == "Default" )
-				{
-					m_config.defaultText = e.attribute("text");
-					m_config.defaultImage = e.attribute("image");
-				}
-				else if ( e.tagName() == "Signal" )
-				{
-					int signalId = e.attribute("id").toInt();
-					m_config.signalEntry.insert(signalId, qMakePair(e.attribute("text"), e.attribute("image")));
-				}
-			}
-			n = n.nextSibling();
-		}
-	}
+    QDomElement docElem = doc.documentElement();
+
+    if (docElem.tagName() == "CrashHandler") {
+        QDomNode n = docElem.firstChild();
+        while (!n.isNull()) {
+               QDomElement e = n.toElement();
+               if (!e.isNull()) {
+                   if (e.tagName() == "Title") {
+                       m_config.title = e.attribute("text");
+                   } else if (e.tagName() == "Message") {
+                              m_config.message = e.attribute("text");
+                              m_config.messageColor = QColor(e.attribute("color"));
+                   } else if (e.tagName() == "Button") {
+                              m_config.buttonText = e.attribute("text");
+                   } else if (e.tagName() == "Default") {
+                              m_config.defaultText = e.attribute("text");
+                              m_config.defaultImage = e.attribute("image");
+                   } else if (e.tagName() == "Signal") {
+                              int signalId = e.attribute("id").toInt();
+                              m_config.signalEntry.insert(signalId, qMakePair(e.attribute("text"), e.attribute("image")));
+                   }
+               }
+               n = n.nextSibling();
+        }
+    }
 }
 
 static QString runCommand( const QString &command )
 {
-	static const uint SIZE = 40960; //40 KiB
-	static char buf[ SIZE ];
+    static const uint SIZE = 40960; //40 KiB
+    static char buf[ SIZE ];
 	
-// 	dDebug() << "Running: " << command;
-	
-	FILE *process = ::popen( command.toLocal8Bit().data(), "r" );
-	buf[ std::fread( (void*)stdout, sizeof(char), SIZE-1, process ) ] = '\0';
-	::pclose( process );
+    // dDebug() << "Running: " << command;
 
-	return QString::fromLocal8Bit( buf );
+    FILE *process = ::popen( command.toLocal8Bit().data(), "r" );
+    buf[ std::fread( (void*)stdout, sizeof(char), SIZE-1, process ) ] = '\0';
+         ::pclose( process );
+
+    return QString::fromLocal8Bit( buf );
 }
-
 
 void crashTrapper (int sig)
 {
-	qDebug("%s is crashing with signal %d :(", CHANDLER->program().toLocal8Bit().data(), sig);
-	
-	CHANDLER->setTrapper(0); // Unactive crash handler
-	
-	bool isActive = true;
-	
-	QApplication* application = dynamic_cast<QApplication *>(QApplication::instance());
-// 	if (!application)
-	{
-		isActive = false;
-		int argc = 1;
-		char *argv[] = { CHANDLER->program().toUtf8().data(), 0  };
-		
-		application = new QApplication(argc, argv);
-	}
-	
-	const pid_t pid = ::fork();
-	
-	if( pid <= 0 )
-	{
-		QString bt;
-		QString execInfo;
-		
-		{
-			QTemporaryFile temp("qt_temp_file");
-			temp.setAutoRemove( true );
-			
-			temp.open();
-			
-			const int handle = temp.handle();
-	
-			const QString gdb_batch = "bt\n";
-	
-			::write( handle, gdb_batch.toLocal8Bit().data(), gdb_batch.length() );
-			::fsync( handle );
-	
-			// so we can read stderr too
-			::dup2( fileno( stdout ), fileno( stderr ) );
-		
-			QString gdb;
-			gdb  = "gdb --nw -n --batch -x ";
-			gdb += temp.fileName();
-			gdb += " "+HOME_DIR+"/bin/ktoon.bin ";
-			gdb += QString::number( ::getppid() );
-			
-			bt = runCommand( gdb );
-		}
-		
-		/// clean up
-		bt.remove( QRegExp("\\(no debugging symbols found\\)") );
-		bt = bt.simplified();
+    qDebug("%s is crashing with signal %d :(", CHANDLER->program().toLocal8Bit().data(), sig);
 
-		execInfo = runCommand( "file "+HOME_DIR+"/bin/ktoon.bin");
-		
-		/////// Widget
-		CrashWidget widget(sig);
-	
-		widget.addBacktracePage( execInfo, bt );
-	
-		widget.exec();
-	
-		if ( !isActive )
-		{
-			application->exec();
-		}
-		
-		::exit(255);
-	}
-	else
-	{
-		// Process crashed!
-		::alarm( 0 );
-		// wait for child to exit
-		::waitpid( pid, NULL, 0 );
-	}
-	
-	exit(128);
+    CHANDLER->setTrapper(0); // Unactive crash handler
+
+    bool isActive = true;
+
+    QApplication* application = dynamic_cast<QApplication *>(QApplication::instance());
+
+    isActive = false;
+    int argc = 1;
+    char *argv[] = { CHANDLER->program().toUtf8().data(), 0  };
+    application = new QApplication(argc, argv);
+
+    const pid_t pid = ::fork();
+
+    if (pid <= 0) {
+        QString bt;
+        QString execInfo;
+
+        QTemporaryFile temp("qt_temp_file");
+        temp.setAutoRemove( true );
+        temp.open();
+
+        const int handle = temp.handle();
+        const QString gdb_batch = "bt\n";
+
+        ::write( handle, gdb_batch.toLocal8Bit().data(), gdb_batch.length() );
+        ::fsync( handle );
+
+        // so we can read stderr too
+        ::dup2( fileno( stdout ), fileno( stderr ) );
+
+        QString gdb;
+        gdb  = "gdb --nw -n --batch -x ";
+        gdb += temp.fileName();
+        gdb += " "+HOME_DIR+"/bin/ktoon.bin ";
+        gdb += QString::number( ::getppid() );
+
+        bt = runCommand( gdb );
+
+        /// clean up
+        bt.remove( QRegExp("\\(no debugging symbols found\\)") );
+        bt = bt.simplified();
+
+        execInfo = runCommand( "file "+HOME_DIR+"/bin/ktoon.bin");
+
+        // Widget
+        CrashWidget widget(sig);
+        widget.addBacktracePage( execInfo, bt );
+        widget.exec();
+
+        if (!isActive)
+            application->exec();
+
+        ::exit(255);
+    } else {
+        // Process crashed!
+        ::alarm( 0 );
+        // wait for child to exit
+        ::waitpid( pid, NULL, 0 );
+    }
+
+    exit(128);
 }
-

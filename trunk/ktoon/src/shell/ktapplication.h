@@ -32,33 +32,33 @@
 */
 class KTApplication : public KApplication
 {
-	Q_OBJECT;
-	public:
-		KTApplication(int &argc, char **argv);
-		~KTApplication();
-		
-	public slots:
-		/**
-		 * @if english
-		 * Opens a settings wizard the first time KToon is launched
-		 * @endif
-		 * @if spanish
-		 * Lanza un wizard de configuracion la primera vez que se inicia la aplicacion
-		 * @endif
-		 * @return true/false if the application has the settings file created
-		 */
-		virtual bool firstRun();
+    Q_OBJECT;
+    public:
+        KTApplication(int &argc, char **argv);
+        ~KTApplication();
 
-		/**
-		 * @if english
-		 * Creates a cache directory with the path defined at cacheDir variable
-		 * @endif
-		 * @if spanish
-		 * Crea el cache en la ruta especificada por la variable cacheDir
-		 * @endif
-		 * @param cacheDir the path for the repository dir
-		 */
-		void createCache(const QString &cacheDir);
+    public slots:
+        /**
+         * @if english
+         * Opens a settings wizard the first time KToon is launched
+         * @endif
+         * @if spanish
+         * Lanza un wizard de configuracion la primera vez que se inicia la aplicacion
+         * @endif
+         * @return true/false if the application has the settings file created
+         */
+         virtual bool firstRun();
+
+        /**
+         * @if english
+         * Creates a cache directory with the path defined at cacheDir variable
+         * @endif
+         * @if spanish
+         * Crea el cache en la ruta especificada por la variable cacheDir
+         * @endif
+         * @param cacheDir the path for the repository dir
+         */
+         void createCache(const QString &cacheDir);
 };
 
 #endif

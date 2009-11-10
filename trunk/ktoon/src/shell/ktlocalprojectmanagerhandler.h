@@ -30,15 +30,15 @@
 */
 class KTLocalProjectManagerHandler : public KTAbstractProjectHandler
 {
-	Q_OBJECT;
-	public:
-		KTLocalProjectManagerHandler(QObject *parent = 0);
-		~KTLocalProjectManagerHandler();
-		
-		virtual void handleProjectRequest(const KTProjectRequest *request);
-		virtual bool saveProject(const QString &fileName, const KTProject *project);
-		virtual bool loadProject(const QString &fileName, KTProject *project);
-		virtual void setProject(KTProject *project);
+    Q_OBJECT;
+    public:
+        KTLocalProjectManagerHandler(QObject *parent = 0);
+        ~KTLocalProjectManagerHandler();
+
+        virtual void handleProjectRequest(const KTProjectRequest *request);
+        virtual bool saveProject(const QString &fileName, const KTProject *project);
+        virtual bool loadProject(const QString &fileName, KTProject *project);
+        virtual void setProject(KTProject *project);
 };
 
 #endif
