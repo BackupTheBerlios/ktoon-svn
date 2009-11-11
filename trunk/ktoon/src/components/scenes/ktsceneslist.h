@@ -30,35 +30,35 @@
 */
 class KTScenesList : public KTreeListWidget
 {
-	Q_OBJECT
-	public:
-		KTScenesList(QWidget *parent = 0);
-		~KTScenesList();
-		void addScene(const QString &name);
-		void insertScene(int index, const QString &name);
-		
-		int removeCurrentScene();
-		int indexCurrentScene();
-		QString nameCurrentScene();
-		
-		int scenesCount();
-		
-		void removeScene(int index);
-		void renameScene(int index, const QString &name);
-		
-		void selectScene(int index);
-		
-	private slots:
-		void changeCurrentScene();
-		void changeCurrentScene(QTreeWidgetItem *item, int c);
-		
-	public slots:
-		int moveCurrentSceneUp();
-		int moveCurrentSceneDown();
-		void changeCurrentName(QString name);
-		
-	signals:
-		void changeCurrent(QString name, int index);
+    Q_OBJECT
+    public:
+        KTScenesList(QWidget *parent = 0);
+        ~KTScenesList();
+        void addScene(const QString &name);
+        void insertScene(int index, const QString &name);
+
+        int removeCurrentScene();
+        int indexCurrentScene();
+        int scenesCount();
+
+        QString nameCurrentScene();
+
+        void removeScene(int index);
+        void renameScene(int index, const QString &name);
+
+        void selectScene(int index);
+
+    private slots:
+        void changeCurrentScene();
+        void changeCurrentScene(QTreeWidgetItem *item, int c);
+
+    public slots:
+        int moveCurrentSceneUp();
+        int moveCurrentSceneDown();
+        void changeCurrentName(QString name);
+
+    signals:
+        void changeCurrent(QString name, int index);
 };
 
 #endif

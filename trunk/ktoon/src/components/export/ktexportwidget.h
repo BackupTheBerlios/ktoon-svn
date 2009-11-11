@@ -44,25 +44,23 @@ class ExportTo;
 */
 class KTExportWidget : public KExportWizard
 {
-	Q_OBJECT
-	public:
-		KTExportWidget(const KTProject *project, QWidget *parent = 0);
-		~KTExportWidget();
+    Q_OBJECT
+    public:
+        KTExportWidget(const KTProject *project, QWidget *parent = 0);
+        ~KTExportWidget();
+
+    private slots:
+        void setExporter(const QString &plugin);
+	
+    private:
+        void loadPlugins();
 		
-	private slots:
-		void setExporter(const QString &plugin);
-		
-	private:
-		void loadPlugins();
-		
-	private:
-		SelectPlugin *m_pluginSelectionPage;
-		SelectScenes *m_scenesSelectionPage;
-		ExportTo *m_exportToPage;
-		
-		const KTProject *m_project;
-		
-		QHash<QString, KTExportInterface *> m_plugins;
+    private:
+        SelectPlugin *m_pluginSelectionPage;
+        SelectScenes *m_scenesSelectionPage;
+        ExportTo *m_exportToPage;
+        const KTProject *m_project;
+        QHash<QString, KTExportInterface *> m_plugins;
 };
 
 

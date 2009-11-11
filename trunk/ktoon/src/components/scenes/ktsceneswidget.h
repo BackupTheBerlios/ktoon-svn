@@ -37,39 +37,38 @@
 #include <QPixmap>
 #include <QList>
 
-
 class KTSceneResponse;
 
 class KTScenesWidget : public KTModuleWidgetBase
 {
-	Q_OBJECT
-	public:
-		KTScenesWidget( QWidget *parent = 0);
-		~KTScenesWidget();
-		
-	public slots:
-		void closeAllScenes();
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT
+    public:
+        KTScenesWidget( QWidget *parent = 0);
+        ~KTScenesWidget();
 
-	private:
-		void setupButtons();
-		void setupTableScenes();
-		
-	private slots:
-		void sceneDobleClick(QTreeWidgetItem * item, int col );
-		void emitRequestInsertScene();
-		void emitRequestRemoveScene();
-		void emitRequestRenameScene(QTreeWidgetItem *item);
-		
-	protected:
-		virtual void sceneResponse(KTSceneResponse *e);
-		
-	public slots:
-		void sendEvent(int action);
-		void selectScene(const QString & name, int index);
+    public slots:
+        void closeAllScenes();
+
+    private:
+        struct Private;
+        Private *const k;
+
+    private:
+        void setupButtons();
+        void setupTableScenes();
+
+    private slots:
+        void sceneDobleClick(QTreeWidgetItem * item, int col );
+        void emitRequestInsertScene();
+        void emitRequestRemoveScene();
+        void emitRequestRenameScene(QTreeWidgetItem *item);
+
+    protected:
+        virtual void sceneResponse(KTSceneResponse *e);
+
+    public slots:
+        void sendEvent(int action);
+        void selectScene(const QString & name, int index);
 };
 
 #endif
