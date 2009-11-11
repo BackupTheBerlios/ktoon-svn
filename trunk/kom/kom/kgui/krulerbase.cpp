@@ -149,34 +149,34 @@ void KRulerBase::drawScale(QPainter *painter)
         init = (int)k->zero.y();
     }
 
+    int ypos = k->height*fact;
+    int ytext = k->height/2;
+
     for (int i = 0; i < k->width; i += k->separation) {
+
          QSize sizeFont = fm.size(Qt::TextSingleLine, QString::number(i));
- 
          if (i % 100 == 0) { // FIX ME
-             painter->drawLine ( i, k->height*fact, i, 0 );
+             painter->drawLine ( i, ypos, i, 0 );
              if (k->orientation == Qt::Vertical)
-                 painter->drawText( QPoint(i + 3, k->height/2 - sizeFont.height()), QString::number(i));
+                 painter->drawText( QPoint(i + 3, ytext - sizeFont.height()), QString::number(i));
              else
-                 painter->drawText( QPoint(i + 3, k->height/2), QString::number(i));
+                 painter->drawText( QPoint(i + 3, ytext), QString::number(i));
          } else {
-                 painter->drawLine ( i, k->height*fact, i, k->height*fact - k->height/4*fact );
+                 painter->drawLine ( i, ypos, i, ypos - k->height/4*fact );
          }
     }
 
-    cout << "Var: " << init << endl;
-
-    for (int i = init; i > 0 ; i -= k->separation) {
+   for (int i = 0; i > -390 ; i -= k->separation) {
+         //cout << "Var: " << i << endl;
          QSize sizeFont = fm.size (Qt::TextSingleLine, QString::number(i));
          if (i % 100  == 0) { // FIX ME
-             // Numbers and marks
-             painter->drawLine ( -i, k->height*fact, -i, 0 );
+             painter->drawLine ( i, ypos, i, 0 );
              if (k->orientation == Qt::Vertical)
-                 painter->drawText(QPoint(-i, k->height/2 -sizeFont.height()), QString::number(-i));
+                 painter->drawText( QPoint(i + 3, ytext - sizeFont.height()), QString::number(i));
              else
-                 painter->drawText(-i, k->height/2,  QString::number(-i));
+                 painter->drawText( QPoint(i + 3, ytext), QString::number(i));
          } else {
-                 // Short Lines
-                 painter->drawLine ( -i, k->height*fact, -i, k->height*fact - k->height/4*fact );
+             painter->drawLine ( i, ypos, i, ypos - k->height/4*fact );
          }
     }
 
@@ -199,7 +199,7 @@ void KRulerBase::resizeEvent ( QResizeEvent * )
 void KRulerBase::mouseMoveEvent ( QMouseEvent * e )
 {
     if (k->drawPointer)
-        movePointers(e->pos()/*-QPoint(d->zero, d->zero)*/);
+        movePointers(e->pos());
 }
 
 void KRulerBase::setDrawPointer(bool yes)
