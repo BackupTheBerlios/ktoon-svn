@@ -124,7 +124,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : KTabbedMainWindow(),  m_projectMa
     // Setting up all the GUI...
     createGUI(); // This method is called from the ktmainwindow_gui class
     setupMenu();
-    //setupToolBar();
+    setupToolBar();
 	
     // Check if user wants to see a KToon tip for every time he launches the program
     KCONFIG->beginGroup("TipOfDay");

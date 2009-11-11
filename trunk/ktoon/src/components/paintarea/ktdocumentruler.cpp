@@ -26,78 +26,64 @@
 
 struct KTDocumentRuler::Private
 {
-	QPointF oldPos;
-	QPoint dragStartPosition;
+    QPointF oldPos;
+    QPoint dragStartPosition;
 };
 
 KTDocumentRuler::KTDocumentRuler(Qt::Orientation orientation, QWidget *parent) : KRulerBase(orientation, parent), 
 										 k( new Private)
 {
-	k->oldPos = QPointF(0.0,0.0);
-	setDrawPointer(true);
+    k->oldPos = QPointF(0.0,0.0);
+    setDrawPointer(true);
 }
 
 
 KTDocumentRuler::~KTDocumentRuler()
 {
-	delete k;
+    delete k;
 }
 
 void KTDocumentRuler::mousePressEvent(QMouseEvent *event)
 {
-	if (event->button() == Qt::LeftButton)
-	{
-		k->dragStartPosition = event->pos();
-	}
+    if (event->button() == Qt::LeftButton)
+        k->dragStartPosition = event->pos();
 }
 
 void KTDocumentRuler::mouseMoveEvent(QMouseEvent *event)
 {
-	if (!(event->buttons() & Qt::LeftButton))
-	{
-		return;
-	}
-	
-	if ((event->pos() - k->dragStartPosition).manhattanLength() < QApplication::startDragDistance())
-	{
-		return;
-	}
-	
-	QDrag *drag = new QDrag(this);
-	QMimeData *mimeData = new QMimeData;
-	
-	QString data;
-	if(orientation() == Qt::Vertical)
-	{
-		data = "verticalLine";
-	}
-	else
-	{
-		data = "horizontalLine";
-	}
-	
-	mimeData->setData("ktoon-ruler", data.toAscii () );
-	drag->setMimeData(mimeData);
+    if (!(event->buttons() & Qt::LeftButton))
+        return;
 
-	Qt::DropAction dropAction = drag->start(Qt::CopyAction | Qt::MoveAction);
-	KRulerBase::mouseMoveEvent(event);
+    if ((event->pos() - k->dragStartPosition).manhattanLength() < QApplication::startDragDistance())
+        return;
+
+    QDrag *drag = new QDrag(this);
+    QMimeData *mimeData = new QMimeData;
+
+    QString data;
+    if (orientation() == Qt::Vertical)
+        data = "verticalLine";
+    else
+        data = "horizontalLine";
+
+    mimeData->setData("ktoon-ruler", data.toAscii () );
+    drag->setMimeData(mimeData);
+
+    Qt::DropAction dropAction = drag->start(Qt::CopyAction | Qt::MoveAction);
+    KRulerBase::mouseMoveEvent(event);
 }
 
 void KTDocumentRuler::movePointers(const QPointF &pos)
 {
-	// FIXME
-	if(orientation() == Qt::Horizontal)
-	{
-		translateArrow(-k->oldPos.x(), 0);
-		translateArrow(zero().x() + pos.x(), 0);
-	}
-	else if(orientation() == Qt::Vertical)
-	{
-		translateArrow(0, -k->oldPos.y());
-		translateArrow(0,zero().y() + pos.y());
-	}
-	
-	k->oldPos = zero() + pos;
-	repaint();
-}
+    // FIXME
+    if (orientation() == Qt::Horizontal) {
+        translateArrow(-k->oldPos.x(), 0);
+        translateArrow(zero().x() + pos.x(), 0);
+    } else if (orientation() == Qt::Vertical) {
+               translateArrow(0, -k->oldPos.y());
+               translateArrow(0,zero().y() + pos.y());
+    }
 
+    k->oldPos = zero() + pos;
+    repaint();
+}

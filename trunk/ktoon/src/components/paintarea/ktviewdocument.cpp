@@ -111,6 +111,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
             case KToon::Native:
                  k->paintArea->setUseOpenGL( false );
                  break;
+
             default:
                  #ifdef K_DEBUG
                         kWarning() << "Unsopported render, switching to native!";
@@ -194,6 +195,7 @@ void KTViewDocument::setupDrawActions()
                                      this, SLOT(toggleShowGrid()), k->actionManager, "show_grid" );
     showGrid->setCheckable(true);
 
+    /*
     KAction *undo = new KAction( QPixmap(THEME_DIR+"/icons/undo.png" ), tr( "&Undo" ),  QKeySequence(tr("Ctrl+U")), 
                                  this, SLOT(undo()), k->actionManager, "undo" );
     undo->setStatusTip(tr("Undo last operation"));
@@ -201,6 +203,7 @@ void KTViewDocument::setupDrawActions()
     KAction *redo = new KAction( QPixmap(THEME_DIR+"/icons/redo.png" ), tr( "&Redo" ),  QKeySequence(tr("Ctrl+R")), 
                                  this, SLOT(redo()), k->actionManager, "redo" );
     redo->setStatusTip(tr("Redo last operation"));
+    */
 
     KAction *copy = new KAction( QPixmap(THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  QKeySequence(tr("Ctrl+C")),
                                  k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
@@ -330,40 +333,40 @@ void KTViewDocument::setupDrawActions()
 
 void KTViewDocument::createTools()
 {
-	k->toolbar = new QToolBar(tr("Draw tools"), this);
-	k->toolbar->setIconSize( QSize(16,16) );
-	addToolBar ( Qt::LeftToolBarArea, k->toolbar );
-	
-	connect(k->toolbar, SIGNAL(actionTriggered(QAction *)), this, SLOT(selectToolFromMenu(QAction *)));
-	
-	// Brushes menu
-	k->brushesMenu = new QMenu(tr("Brushes"), k->toolbar);
-	k->brushesMenu->setIcon( QPixmap(THEME_DIR+"/icons/brush.png") );
-	connect( k->brushesMenu, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
-	
-	k->toolbar->addAction(k->brushesMenu->menuAction());
-	
-	// Selection menu
-	
-	k->selectionMenu = new QMenu( tr("selection"), k->toolbar );
-	k->selectionMenu->setIcon(QPixmap(THEME_DIR+"/icons/selection.png"));
-	connect( k->selectionMenu, SIGNAL(triggered (QAction*)), this, SLOT(selectToolFromMenu( QAction*)));
-	
-	k->toolbar->addAction(k->selectionMenu->menuAction());
-	
-	// Fill menu
-	k->fillMenu = new QMenu(tr("Fill"), k->toolbar);
-	k->fillMenu->setIcon(QPixmap(THEME_DIR+"/icons/fill.png"));
-	connect(k->fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu( QAction* )));
-	
-	k->toolbar->addAction(k->fillMenu->menuAction());
-	
-	// View menu
-	k->viewToolMenu = new QMenu(tr("View"), k->toolbar);
-	k->viewToolMenu->setIcon(QPixmap(THEME_DIR+"/icons/magnifying.png"));
-	connect(k->fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu( QAction* )));
-	
-	k->toolbar->addAction(k->viewToolMenu->menuAction());
+    k->toolbar = new QToolBar(tr("Draw tools"), this);
+    k->toolbar->setIconSize( QSize(16,16) );
+    addToolBar ( Qt::LeftToolBarArea, k->toolbar );
+
+    connect(k->toolbar, SIGNAL(actionTriggered(QAction *)), this, SLOT(selectToolFromMenu(QAction *)));
+
+    // Brushes menu
+    k->brushesMenu = new QMenu(tr("Brushes"), k->toolbar);
+    k->brushesMenu->setIcon( QPixmap(THEME_DIR+"/icons/brush.png") );
+    connect( k->brushesMenu, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
+
+    k->toolbar->addAction(k->brushesMenu->menuAction());
+
+    // Selection menu
+
+    k->selectionMenu = new QMenu( tr("selection"), k->toolbar );
+    k->selectionMenu->setIcon(QPixmap(THEME_DIR+"/icons/selection.png"));
+    connect( k->selectionMenu, SIGNAL(triggered (QAction*)), this, SLOT(selectToolFromMenu( QAction*)));
+
+    k->toolbar->addAction(k->selectionMenu->menuAction());
+
+    // Fill menu
+    k->fillMenu = new QMenu(tr("Fill"), k->toolbar);
+    k->fillMenu->setIcon(QPixmap(THEME_DIR+"/icons/fill.png"));
+    connect(k->fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu( QAction* )));
+
+    k->toolbar->addAction(k->fillMenu->menuAction());
+
+    // View menu
+    k->viewToolMenu = new QMenu(tr("View"), k->toolbar);
+    k->viewToolMenu->setIcon(QPixmap(THEME_DIR+"/icons/magnifying.png"));
+    connect(k->fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu( QAction* )));
+
+    k->toolbar->addAction(k->viewToolMenu->menuAction());
 	
 /*
 	k->toolsSelection->addAction(QPixmap(THEME_DIR+"/icons/nodes.png"), tr( "Con&tour Selection" ), k->paintArea, 
@@ -499,343 +502,288 @@ void KTViewDocument::createTools()
 
 void KTViewDocument::loadPlugins()
 {
-	foreach(QObject *plugin, KTPluginManager::instance()->tools() )
-	{
-		KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
-		
-		QStringList::iterator it;
-		QStringList keys = tool->keys();
-			
-		for (it = keys.begin(); it != keys.end(); ++it)
-		{
-			#ifdef K_DEBUG
-				K_DEBUG("plugins") << "*******Tool Loaded: " << *it;
-			#endif
+    foreach (QObject *plugin, KTPluginManager::instance()->tools()) {
+             KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
 
-			KAction *act = tool->actions()[*it];
-			if ( act )
-			{
-				connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
-				
-				act->setParent(plugin);
-				
-				switch( tool->toolType() )
-				{
-					case KTToolInterface::Brush:
-					{
-						k->brushesMenu->addAction(act);
-						if ( !k->brushesMenu->activeAction() )
-						{
-							act->trigger();
-						}
-					}
-					break;
-					case KTToolInterface::Selection:
-					{
-						k->selectionMenu->addAction(act);
-						if ( !k->selectionMenu->activeAction() )
-						{
-							act->trigger();
-						}
-					}
-					break;
-					case KTToolInterface::Fill:
-					{
-						k->fillMenu->addAction(act);
-						if ( !k->fillMenu->activeAction() )
-						{
-							act->trigger();
-						}
-					}
-					break;
-					case KTToolInterface::View:
-					{
-						k->viewToolMenu->addAction(act);
-						if ( !k->viewToolMenu->activeAction() )
-						{
-							act->trigger();
-						}
-					}
-					break;
-					default:
-					{
-					}
-					break;
-				}
-				// k->paintArea->setTool(tool, *it);
-			}
-		}
-		
-		// connect(plugin, SIGNAL(toDrawGhostGraphic(const QPainterPath &)), k->paintArea, 
-		//  			  SLOT(drawGhostGraphic(const QPainterPath &)));
-		// connect(plugin, SIGNAL(requestRedraw()), k->paintArea, SLOT(redrawAll()));
-	}
-	
-	foreach(QObject *plugin, KTPluginManager::instance()->filters() )
-	{
-		AFilterInterface *filter = qobject_cast<AFilterInterface *>(plugin);
-		QStringList::iterator it;
-		QStringList keys = filter->keys();
-				
-		for (it = keys.begin(); it != keys.end(); ++it)
-		{
-			#ifdef K_DEBUG
-				K_DEBUG("plugins") << "*******Filter Loaded: " << *it;
-			#endif
-					
-			KAction *act = filter->actions()[*it];
-			if ( act )
-			{
-				connect(act, SIGNAL(triggered()), this, SLOT(applyFilter()));
-				k->filterMenu->addAction(act);
-			}
-		}
-	}
+             QStringList::iterator it;
+             QStringList keys = tool->keys();
+
+             for (it = keys.begin(); it != keys.end(); ++it) {
+                  #ifdef K_DEBUG
+                         K_DEBUG("plugins") << "*******Tool Loaded: " << *it;
+                  #endif
+
+                  KAction *act = tool->actions()[*it];
+                  if (act) {
+                      connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
+                      act->setParent(plugin);
+
+                      switch (tool->toolType()) {
+                              case KTToolInterface::Brush:
+                                   k->brushesMenu->addAction(act);
+                                   if (!k->brushesMenu->activeAction())
+                                       act->trigger();
+                                   break;
+                              case KTToolInterface::Selection:
+                                   k->selectionMenu->addAction(act);
+                                   if (!k->selectionMenu->activeAction())
+                                       act->trigger();
+                                   break;
+                              case KTToolInterface::Fill:
+                                   k->fillMenu->addAction(act);
+                                   if (!k->fillMenu->activeAction())
+                                       act->trigger();
+                                   break;
+                               case KTToolInterface::View:
+                                   k->viewToolMenu->addAction(act);
+                                   if (!k->viewToolMenu->activeAction())
+                                       act->trigger();
+                                   break;
+                               default:
+                                   break;
+                      }
+                      // k->paintArea->setTool(tool, *it);
+                  }
+             }
+             /*
+               connect(plugin, SIGNAL(toDrawGhostGraphic(const QPainterPath &)), k->paintArea, 
+                       SLOT(drawGhostGraphic(const QPainterPath &)));
+               connect(plugin, SIGNAL(requestRedraw()), k->paintArea, SLOT(redrawAll()));
+             */
+    }
+
+    foreach (QObject *plugin, KTPluginManager::instance()->filters()) {
+             AFilterInterface *filter = qobject_cast<AFilterInterface *>(plugin);
+             QStringList::iterator it;
+             QStringList keys = filter->keys();
+
+             for (it = keys.begin(); it != keys.end(); ++it) {
+                  #ifdef K_DEBUG
+                         K_DEBUG("plugins") << "*******Filter Loaded: " << *it;
+                  #endif
+
+                  KAction *act = filter->actions()[*it];
+                  if (act) {
+                      connect(act, SIGNAL(triggered()), this, SLOT(applyFilter()));
+                      k->filterMenu->addAction(act);
+                  }
+             }
+    }
 }
 
 void KTViewDocument::selectTool()
 {
-	#ifdef K_DEBUG
-		K_FUNCINFO;
-	#endif
-	KAction *action = qobject_cast<KAction *>(sender());
-	
-	if ( action )
-	{
-		KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
-		QString toolStr = action->text();
-		
-		switch(tool->toolType())
-		{
-			case KTToolInterface::Brush:
-			{
-				k->brushesMenu->setDefaultAction(action);
-				k->brushesMenu->setActiveAction(action);
-				if ( !action->icon().isNull() )
-				{
-					k->brushesMenu->menuAction()->setIcon(action->icon());
-				}
-			}
-			break;
-			case KTToolInterface::Fill:
-			{
-				k->fillMenu->setDefaultAction(action);
-				k->fillMenu->setActiveAction(action);
-				if ( !action->icon().isNull() )
-				{
-					k->fillMenu->menuAction()->setIcon(action->icon());
-				}
-			}
-			break;
-		
-			case KTToolInterface::Selection:
-			{
-				k->selectionMenu->setDefaultAction(action);
-				k->selectionMenu->setActiveAction(action);
-				if ( !action->icon().isNull() )
-				{
-					k->selectionMenu->menuAction()->setIcon(action->icon());
-				}
-			}
-			break;
-			
-			case KTToolInterface::View:
-			{
-				k->viewToolMenu->setDefaultAction(action);
-				k->viewToolMenu->setActiveAction(action);
-				if ( !action->icon().isNull() )
-				{
-					k->viewToolMenu->menuAction()->setIcon(action->icon());
-				}
-			}
-			break;
-		}
-		
-		QWidget *toolConfigurator = tool->configurator();
-		
-		if ( toolConfigurator)
-		{
-			k->configurationArea->setConfigurator( toolConfigurator );
-			toolConfigurator->show();
-			if ( !k->configurationArea->isVisible() )
-			{
-				k->configurationArea->show();
-			}
-		}
-		else
-		{
-			if ( k->configurationArea->isVisible() )
-			{
-				k->configurationArea->close();
-			}
-		}
-		
-		tool->setCurrentTool( toolStr );
-		k->paintArea->setTool(tool);
-		
-		k->paintArea->viewport()->setCursor(action->cursor());
-	}
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+    KAction *action = qobject_cast<KAction *>(sender());
+
+    if (action) {
+        KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
+        QString toolStr = action->text();
+
+        switch (tool->toolType()) {
+                case KTToolInterface::Brush: 
+                     k->brushesMenu->setDefaultAction(action);
+                     k->brushesMenu->setActiveAction(action);
+                     if (!action->icon().isNull())
+                         k->brushesMenu->menuAction()->setIcon(action->icon());
+                     break;
+                case KTToolInterface::Fill:
+                     k->fillMenu->setDefaultAction(action);
+                     k->fillMenu->setActiveAction(action);
+                     if (!action->icon().isNull())
+                     k->fillMenu->menuAction()->setIcon(action->icon());
+                     break;
+
+                case KTToolInterface::Selection:
+                     k->selectionMenu->setDefaultAction(action);
+                     k->selectionMenu->setActiveAction(action);
+                     if (!action->icon().isNull())
+                         k->selectionMenu->menuAction()->setIcon(action->icon());
+                     break;
+
+                case KTToolInterface::View:
+                     k->viewToolMenu->setDefaultAction(action);
+                     k->viewToolMenu->setActiveAction(action);
+                     if (!action->icon().isNull())
+                         k->viewToolMenu->menuAction()->setIcon(action->icon());
+                     break;
+        }
+
+        QWidget *toolConfigurator = tool->configurator();
+
+        if (toolConfigurator) {
+            k->configurationArea->setConfigurator(toolConfigurator);
+            toolConfigurator->show();
+            if (!k->configurationArea->isVisible())
+                k->configurationArea->show();
+        } else {
+            if (k->configurationArea->isVisible())
+                k->configurationArea->close();
+        }
+
+        tool->setCurrentTool( toolStr );
+        k->paintArea->setTool(tool);
+
+        k->paintArea->viewport()->setCursor(action->cursor());
+    }
 }
 
 void KTViewDocument::selectToolFromMenu(QAction *action)
 {
-	#ifdef K_DEBUG
-		K_FUNCINFO;
-	#endif
-	
-	QMenu *menu = qobject_cast<QMenu *>(action->parent());
-	if (menu )
-	{
-		KAction *tool = qobject_cast<KAction *>(menu->activeAction());
-		
-		if ( tool )
-		{
-			tool->trigger(); // this call selectTool()
-		}
-	}
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
+    QMenu *menu = qobject_cast<QMenu *>(action->parent());
+
+    if (menu) {
+        KAction *tool = qobject_cast<KAction *>(menu->activeAction());
+
+        if (tool)
+            tool->trigger(); // this call selectTool()
+    }
 }
 
 bool KTViewDocument::handleProjectResponse(KTProjectResponse *event)
 {
-	return k->paintArea->handleResponse(event);
+    return k->paintArea->handleResponse(event);
 }
 
 void KTViewDocument::applyFilter()
 {
-	QAction *action = qobject_cast<QAction *>(sender());
-	
-	if ( action )
-	{
-		AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(action->parent());
-		QString filter = action->text();
-		
-		// KTFrame *frame = k->paintArea->currentFrame();
-		// 	
-		// if( frame)
-		// {
-		// 	aFilter->filter(action->text(), frame->components() );
-		// 	k->paintArea->redrawAll();
-		// }
-	}
+    QAction *action = qobject_cast<QAction *>(sender());
+
+    if (action) {
+        AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(action->parent());
+        QString filter = action->text();
+
+        /*
+        KTFrame *frame = k->paintArea->currentFrame();
+        if (frame) {
+            aFilter->filter(action->text(), frame->components() );
+            k->paintArea->redrawAll();
+        }
+        */
+    }
 }
 
 void KTViewDocument::updateZoomFactor(double f)
 {
-	// k->paintArea->setZoomFactor( f );
-	k->zoomFactorSpin->blockSignals(true);
-	k->zoomFactorSpin->setValue(f*100);
-	k->zoomFactorSpin->blockSignals(false);
+    k->zoomFactorSpin->blockSignals(true);
+    k->zoomFactorSpin->setValue(f*100);
+    k->zoomFactorSpin->blockSignals(false);
 }
 
 void KTViewDocument::createToolBar()
 {
-	k->barGrid = new QToolBar(tr("Paint area actions"), this);
-	k->barGrid->setIconSize( QSize(16,16) );
-	
-	addToolBar(k->barGrid);
-	
-	k->barGrid->addAction(k->actionManager->find("show_grid"));
-        k->barGrid->addSeparator();
+    k->barGrid = new QToolBar(tr("Paint area actions"), this);
+    k->barGrid->setIconSize( QSize(16,16) );
 
-        k->barGrid->addAction(k->actionManager->find("undo"));
-        k->barGrid->addAction(k->actionManager->find("redo"));
-        k->barGrid->addSeparator();
+    addToolBar(k->barGrid);
 
-        k->barGrid->addAction(k->actionManager->find("copy"));
-        k->barGrid->addAction(k->actionManager->find("paste"));
-        k->barGrid->addAction(k->actionManager->find("cut"));
-	k->barGrid->addAction(k->actionManager->find("delete"));
-        k->barGrid->addSeparator();
+    k->barGrid->addAction(k->actionManager->find("show_grid"));
+    k->barGrid->addSeparator();
 
-	k->barGrid->addAction(k->actionManager->find("group"));
-	k->barGrid->addAction(k->actionManager->find("ungroup"));
+    /*
+    k->barGrid->addAction(k->actionManager->find("undo"));
+    k->barGrid->addAction(k->actionManager->find("redo"));
+    k->barGrid->addSeparator();
+    */
+
+    k->barGrid->addAction(k->actionManager->find("copy"));
+    k->barGrid->addAction(k->actionManager->find("paste"));
+    k->barGrid->addAction(k->actionManager->find("cut"));
+    k->barGrid->addAction(k->actionManager->find("delete"));
+    k->barGrid->addSeparator();
+
+    k->barGrid->addAction(k->actionManager->find("group"));
+    k->barGrid->addAction(k->actionManager->find("ungroup"));
 	
-	// k->barGrid->addSeparator();
-	// k->barGrid->addAction(d->actionManager->find("undo"));
-	// k->barGrid->addAction(d->actionManager->find("redo"));
-	// k->barGrid->addSeparator();
-	// k->barGrid->addAction(d->actionManager->find("zood->in"));
-	// k->barGrid->addWidget(d->zoomFactorSpin);
-	// k->barGrid->addAction(d->actionManager->find("zood->out"));
-	// k->barGrid->addSeparator();
-	
-	// k->barGrid->addActions(d->editGroup->actions());
-	// k->barGrid->addSeparator();
-	k->barGrid->addSeparator();
-	k->barGrid->addActions(k->viewPreviousGroup->actions());
-	
-	QSpinBox *prevOnionSkinSpin = new QSpinBox(this);
-	connect(prevOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setPreviousOnionSkin(int)));
-	
-	k->barGrid->addWidget(prevOnionSkinSpin);
-	
-	k->barGrid->addSeparator();
-	k->barGrid->addActions(k->viewNextGroup->actions());
-	
-	QSpinBox *nextOnionSkinSpin = new QSpinBox(this);
-	connect(nextOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setNextOnionSkin(int)));
-	
-	k->barGrid->addWidget(nextOnionSkinSpin);
+    // k->barGrid->addSeparator();
+    // k->barGrid->addAction(d->actionManager->find("undo"));
+    // k->barGrid->addAction(d->actionManager->find("redo"));
+    // k->barGrid->addSeparator();
+    // k->barGrid->addAction(d->actionManager->find("zood->in"));
+    // k->barGrid->addWidget(d->zoomFactorSpin);
+    // k->barGrid->addAction(d->actionManager->find("zood->out"));
+    // k->barGrid->addSeparator();
+    // k->barGrid->addActions(d->editGroup->actions());
+    // k->barGrid->addSeparator();
+
+    k->barGrid->addSeparator();
+    k->barGrid->addActions(k->viewPreviousGroup->actions());
+
+    QSpinBox *prevOnionSkinSpin = new QSpinBox(this);
+    connect(prevOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setPreviousOnionSkin(int)));
+
+    k->barGrid->addWidget(prevOnionSkinSpin);
+    k->barGrid->addSeparator();
+    k->barGrid->addActions(k->viewNextGroup->actions());
+
+    QSpinBox *nextOnionSkinSpin = new QSpinBox(this);
+    connect(nextOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setNextOnionSkin(int)));
+
+    k->barGrid->addWidget(nextOnionSkinSpin);
 }
 
 void KTViewDocument::createMenu()
 {
-	//tools menu
-	k->toolsMenu = new QMenu(tr( "&Tools" ), this);
-	menuBar()->addMenu( k->toolsMenu );
-	k->toolsMenu->addAction(k->brushesMenu->menuAction ());
-	k->toolsMenu->addAction(k->selectionMenu->menuAction ());
-	k->toolsMenu->addAction(k->fillMenu->menuAction ());
-	k->toolsMenu->addSeparator();
-	k->toolsMenu->addAction(k->actionManager->find("group"));
-	k->toolsMenu->addAction(k->actionManager->find("ungroup"));
-	k->toolsMenu->addSeparator();
+     //tools menu
+     k->toolsMenu = new QMenu(tr( "&Tools" ), this);
+     menuBar()->addMenu( k->toolsMenu );
+     k->toolsMenu->addAction(k->brushesMenu->menuAction ());
+     k->toolsMenu->addAction(k->selectionMenu->menuAction ());
+     k->toolsMenu->addAction(k->fillMenu->menuAction ());
+     k->toolsMenu->addSeparator();
+     k->toolsMenu->addAction(k->actionManager->find("group"));
+     k->toolsMenu->addAction(k->actionManager->find("ungroup"));
+     k->toolsMenu->addSeparator();
 	
-	k->orderMenu = new QMenu(tr( "&Order" ), this);
-	k->orderMenu->addAction(k->actionManager->find("bringToFront"));
-	k->orderMenu->addAction(k->actionManager->find("sendToBack"));
-	k->orderMenu->addAction(k->actionManager->find("oneStepForward"));
-	k->orderMenu->addAction(k->actionManager->find("oneStepBackward"));
-	k->toolsMenu->addAction(k->orderMenu->menuAction ());
-	
-	k->editMenu = new QMenu(tr( "&Edit" ), this);
-	
-	menuBar()->addMenu( k->editMenu );
-	
-	k->editMenu->addAction(k->actionManager->find("undo"));
-	k->editMenu->addAction(k->actionManager->find("redo"));
-	k->editMenu->addSeparator();
-	
-	k->editMenu->addAction(k->actionManager->find("cut"));
-	k->editMenu->addAction(k->actionManager->find("copy"));
-	k->editMenu->addAction(k->actionManager->find("paste"));
-	
-	k->editMenu->addAction(k->actionManager->find("delete"));
-	
-	k->editMenu->addSeparator();
-	k->editMenu->addAction(k->actionManager->find("selectAll"));
-	k->editMenu->addSeparator();
+     k->orderMenu = new QMenu(tr( "&Order" ), this);
+     k->orderMenu->addAction(k->actionManager->find("bringToFront"));
+     k->orderMenu->addAction(k->actionManager->find("sendToBack"));
+     k->orderMenu->addAction(k->actionManager->find("oneStepForward"));
+     k->orderMenu->addAction(k->actionManager->find("oneStepBackward"));
+     k->toolsMenu->addAction(k->orderMenu->menuAction ());
+
+     k->editMenu = new QMenu(tr( "&Edit" ), this);
+     menuBar()->addMenu( k->editMenu );
+
+     k->editMenu->addAction(k->actionManager->find("undo"));
+     k->editMenu->addAction(k->actionManager->find("redo"));
+     k->editMenu->addSeparator();
+
+     k->editMenu->addAction(k->actionManager->find("cut"));
+     k->editMenu->addAction(k->actionManager->find("copy"));
+     k->editMenu->addAction(k->actionManager->find("paste"));
+     k->editMenu->addAction(k->actionManager->find("delete"));
+
+     k->editMenu->addSeparator();
+     k->editMenu->addAction(k->actionManager->find("selectAll"));
+     k->editMenu->addSeparator();
 	// k->editMenu->addAction(d->actionManager->find("localflipv"));
 	// k->editMenu->addAction(d->actionManager->find("localfliph"));
 	// k->editMenu->addSeparator();
-	k->editMenu->addAction(k->actionManager->find("properties"));
-	
-	k->viewMenu = new QMenu(tr( "&View" ), this);
-	k->viewMenu->addActions(k->viewPreviousGroup->actions());
-	k->viewMenu->addSeparator();
-	k->viewMenu->addActions(k->viewNextGroup->actions());
-	menuBar()->addMenu( k->viewMenu );
-	
-	//Filters
-	
-	k->filterMenu = new QMenu(tr("Filters"), this);
-	menuBar()->addMenu(k->filterMenu);
+     k->editMenu->addAction(k->actionManager->find("properties"));
+
+     k->viewMenu = new QMenu(tr( "&View" ), this);
+     k->viewMenu->addActions(k->viewPreviousGroup->actions());
+     k->viewMenu->addSeparator();
+     k->viewMenu->addActions(k->viewNextGroup->actions());
+     menuBar()->addMenu( k->viewMenu );
+
+     //Filters
+
+     k->filterMenu = new QMenu(tr("Filters"), this);
+     menuBar()->addMenu(k->filterMenu);
 }
 
 void KTViewDocument::closeArea()
 {
-	k->paintArea->setScene(0);
-	close();
+    k->paintArea->setScene(0);
+    close();
 }
 
 void KTViewDocument::undo()
@@ -850,135 +798,125 @@ void KTViewDocument::redo()
 
 void KTViewDocument::setCursor(const QCursor &)
 {
-	// k->paintArea->setCursor(c);
+ /*
+    k->paintArea->setCursor(c);
+ */
 }
 
 void KTViewDocument::disablePreviousOnionSkin()
 {
-	k->paintArea->setPreviousFramesOnionSkinCount( 0 );
+    k->paintArea->setPreviousFramesOnionSkinCount( 0 );
 }
 
 void KTViewDocument::onePreviousOnionSkin()
 {
-	k->paintArea->setPreviousFramesOnionSkinCount( 1 );
+    k->paintArea->setPreviousFramesOnionSkinCount( 1 );
 }
 
 void KTViewDocument::twoPreviousOnionSkin()
 {
-	k->paintArea->setPreviousFramesOnionSkinCount( 2 );
+    k->paintArea->setPreviousFramesOnionSkinCount( 2 );
 }
 
 void KTViewDocument::threePreviousOnionSkin()
 {
-	k->paintArea->setPreviousFramesOnionSkinCount( 3 );
+    k->paintArea->setPreviousFramesOnionSkinCount( 3 );
 }
 
 void KTViewDocument::setPreviousOnionSkin(int n)
 {
-	k->paintArea->setPreviousFramesOnionSkinCount(n);
+    k->paintArea->setPreviousFramesOnionSkinCount(n);
 }
 
 // NEXT
 void KTViewDocument::disableNextOnionSkin()
 {
-	k->paintArea->setNextFramesOnionSkinCount( 0 );
+    k->paintArea->setNextFramesOnionSkinCount(0);
 }
 
 void KTViewDocument::oneNextOnionSkin()
 {
-	k->paintArea->setNextFramesOnionSkinCount( 1 );
+    k->paintArea->setNextFramesOnionSkinCount(1);
 }
 
 void KTViewDocument::twoNextOnionSkin()
 {
-	k->paintArea->setNextFramesOnionSkinCount( 2 );
+    k->paintArea->setNextFramesOnionSkinCount(2);
 }
 
 void KTViewDocument::threeNextOnionSkin()
 {
-	k->paintArea->setNextFramesOnionSkinCount( 3 );
+    k->paintArea->setNextFramesOnionSkinCount(3);
 }
 
 
 void KTViewDocument::setNextOnionSkin(int n)
 {
-	k->paintArea->setNextFramesOnionSkinCount( n );
+    k->paintArea->setNextFramesOnionSkinCount(n);
 }
 
 void KTViewDocument::toggleShowGrid()
 {
-	k->paintArea->setDrawGrid( !k->paintArea->drawGrid() );
+    k->paintArea->setDrawGrid( !k->paintArea->drawGrid() );
 }
-
-// void KTViewDocument::setScene(KTScene* scene)
-// {
-// 	setWindowTitle( d->title + " - " + scene->sceneName() );
-// 	k->paintArea->setScene(  scene );
-// }
 
 void KTViewDocument::setZoomFactor(int /*percent*/)
 {
-	k->zoomFactorSpin->blockSignals(true);
-	// k->paintArea->setZoomFactor((float) porcent/100);
-	k->zoomFactorSpin->blockSignals(false);
+    k->zoomFactorSpin->blockSignals(true);
+    k->zoomFactorSpin->blockSignals(false);
 }
 
 void KTViewDocument::scaleRuler(double factor)
 {
-#if 0
-	double sep = factor * k->verticalRuler->scaleFactor();
-	k->verticalRuler->scale(sep);
-	k->horizontalRuler->scale(sep);
-#endif
+/*
+    double sep = factor * k->verticalRuler->scaleFactor();
+    k->verticalRuler->scale(sep);
+    k->horizontalRuler->scale(sep);
+*/
 }
 
 void KTViewDocument::changeRulerOrigin(const QPointF &zero)
 {
-	k->verticalRuler->setZeroAt(zero);
-	k->horizontalRuler->setZeroAt(zero);
+    k->verticalRuler->setZeroAt(zero);
+    k->horizontalRuler->setZeroAt(zero);
 }
 
 /*
  void KTViewDocument::configure()
  {
- 	KTPaintAreaConfig properties;
- 	
- 	if ( properties.exec() != QDialog::Rejected )
- 	{
- 		KTPaintAreaProperties areaProperties;
- 		
- 		areaProperties.gridColor = properties.gridColor();
- 		areaProperties.backgroundColor = properties.backgroundColor();
- 		areaProperties.onionSkinColor = properties.onionSkinColor();
- 		areaProperties.onionSkinBackground = properties.onionSkinBackground();
- 		areaProperties.gridSeparation = properties.gridSeparation();
- 		
-		k->paintArea->setProperties(areaProperties);
- 	}
+    KTPaintAreaConfig properties;
+ 
+    if (properties.exec() != QDialog::Rejected) {
+        KTPaintAreaProperties areaProperties;
+
+        areaProperties.gridColor = properties.gridColor();
+        areaProperties.backgroundColor = properties.backgroundColor();
+        areaProperties.onionSkinColor = properties.onionSkinColor();
+        areaProperties.onionSkinBackground = properties.onionSkinBackground();
+        areaProperties.gridSeparation = properties.gridSeparation();
+
+        k->paintArea->setProperties(areaProperties);
+    }
  }
 
  void KTViewDocument::closeEvent(QCloseEvent *e)
  {
- 	
  }
 */
 
 QSize KTViewDocument::sizeHint() const
 {
-	QSize size(parentWidget()->size());
-	return size.expandedTo(QApplication::globalStrut());
+    QSize size(parentWidget()->size());
+    return size.expandedTo(QApplication::globalStrut());
 }
-
 
 KTBrushManager *KTViewDocument::brushManager() const
 {
-	return k->paintArea->brushManager();
+    return k->paintArea->brushManager();
 }
-
 
 KTPaintAreaCommand *KTViewDocument::createCommand(const KTPaintAreaEvent *event)
 {
-	KTPaintAreaCommand *command = new KTPaintAreaCommand(k->paintArea, event);
-	
-	return command;
+    KTPaintAreaCommand *command = new KTPaintAreaCommand(k->paintArea, event);
+    return command;
 }

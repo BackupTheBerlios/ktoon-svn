@@ -51,7 +51,7 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 	
 	mainLayout->addLayout(layout);
 	
-	m_table = new QTableWidget(5,3);
+	m_table = new QTableWidget(3,3);
 	connect(m_table, SIGNAL(itemClicked ( QTableWidgetItem *)), this, SLOT(updateValueFromItem(QTableWidgetItem *)));
 	
 	m_table->setSelectionMode ( QAbstractItemView::SingleSelection);

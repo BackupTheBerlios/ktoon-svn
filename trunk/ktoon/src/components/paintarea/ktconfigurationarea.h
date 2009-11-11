@@ -32,39 +32,33 @@ class QPushButton;
 */
 class KTConfigurationArea : public QDockWidget
 {
-	Q_OBJECT
-	public:
-		KTConfigurationArea(QWidget *parent = 0);
-		~KTConfigurationArea();
-		
-		void setConfigurator(QWidget *widget);
-		
-		QSize sizeHint() const;
-		
-	public slots:
-		void hideConfigurator();
-		void showConfigurator();
-		
-	private:
-		void shrink();
-		
-	private slots:
-		void toggleLock();
-		
-	protected:
-		void enterEvent(QEvent *e);
-		void leaveEvent(QEvent *e);
-		void paintEvent (QPaintEvent *e);
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT
+    public:
+        KTConfigurationArea(QWidget *parent = 0);
+        ~KTConfigurationArea();
+
+        void setConfigurator(QWidget *widget);
+
+        QSize sizeHint() const;
+
+    public slots:
+        void hideConfigurator();
+        void showConfigurator();
+
+   private:
+        void shrink();
+
+   private slots:
+        void toggleLock();
+
+   protected:
+        void enterEvent(QEvent *e);
+        void leaveEvent(QEvent *e);
+        void paintEvent (QPaintEvent *e);
+
+        private:
+             struct Private;
+             Private *const k;
 };
 
 #endif
-
-
-
-
-
-

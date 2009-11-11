@@ -71,7 +71,7 @@ class ConfigWizard : public KWizard
         /**
          * @return la ruta del directorio repository
          */
-        String cache() const;
+        QString cache() const;
 
      private:
         CWFirstPage *m_firstPage;

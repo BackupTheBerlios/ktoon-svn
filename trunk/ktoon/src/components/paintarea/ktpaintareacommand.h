@@ -34,20 +34,16 @@ class KTPaintAreaEvent;
 
 class KTPaintAreaCommand : public QUndoCommand
 {
-	public:
-		KTPaintAreaCommand(KTPaintArea *area, const KTPaintAreaEvent *event);
-		~KTPaintAreaCommand();
-		
-		void undo();
-		void redo();
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+        KTPaintAreaCommand(KTPaintArea *area, const KTPaintAreaEvent *event);
+        ~KTPaintAreaCommand();
+
+        void undo();
+        void redo();
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif
-
-
-
-

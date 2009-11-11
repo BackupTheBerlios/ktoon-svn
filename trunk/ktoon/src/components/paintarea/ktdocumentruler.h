@@ -31,22 +31,21 @@
 
 class KTDocumentRuler : public KRulerBase
 {
-	Q_OBJECT
-	public:
-		KTDocumentRuler(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0);
-		~KTDocumentRuler();
-		
-		
-	protected:
-		void mousePressEvent(QMouseEvent *event);
-		void mouseMoveEvent(QMouseEvent *event);
-	
-	public slots:
-		void movePointers(const QPointF &pos);
-		
-	private:
-		struct Private;
-		Private * const k;
+    Q_OBJECT
+    public:
+        KTDocumentRuler(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0);
+        ~KTDocumentRuler();
+
+    protected:
+        void mousePressEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
+
+    public slots:
+        void movePointers(const QPointF &pos);
+
+    private:
+        struct Private;
+        Private * const k;
 };
 
 #endif

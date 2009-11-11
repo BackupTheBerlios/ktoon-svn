@@ -35,80 +35,71 @@
 
 struct KTPaintAreaCommand::Private
 {
-	KTPaintArea *paintArea;
-	KTPaintAreaEvent *event;
-	QVariant oldData;
+    KTPaintArea *paintArea;
+    KTPaintAreaEvent *event;
+    QVariant oldData;
 };
 
 KTPaintAreaCommand::KTPaintAreaCommand(KTPaintArea *area, const KTPaintAreaEvent *event) : QUndoCommand(), k(new Private)
 {
-	k->paintArea = area;
-	k->event = event->clone();
+    k->paintArea = area;
+    k->event = event->clone();
 }
 
 KTPaintAreaCommand::~KTPaintAreaCommand()
 {
-	delete k;
+    delete k;
 }
 
 void KTPaintAreaCommand::undo()
 {
-	switch(k->event->action() )
-	{
-		case KTPaintAreaEvent::ChangePen:
-		{
-			k->paintArea->brushManager()->setPen( qvariant_cast<QPen>(k->oldData));
-		}
-		break;
-		case KTPaintAreaEvent::ChangePenBrush:
-		{
-			k->paintArea->brushManager()->setPenBrush( qvariant_cast<QBrush>(k->oldData));
-		}
-		break;
-		case KTPaintAreaEvent::ChangeBrush:
-		{
-			k->paintArea->brushManager()->setBrush( qvariant_cast<QBrush>(k->oldData));
-		}
-		break;
-		
-		default: break;
-	}
+    switch(k->event->action()) {
+           case KTPaintAreaEvent::ChangePen:
+                k->paintArea->brushManager()->setPen( qvariant_cast<QPen>(k->oldData));
+                break;
+           case KTPaintAreaEvent::ChangePenBrush:
+                k->paintArea->brushManager()->setPenBrush( qvariant_cast<QBrush>(k->oldData));
+                break;
+           case KTPaintAreaEvent::ChangeBrush:
+                k->paintArea->brushManager()->setBrush( qvariant_cast<QBrush>(k->oldData));
+                break;
+           default: 
+                break;
+    }
 }
 
 void KTPaintAreaCommand::redo()
 {
-	switch(k->event->action() )
-	{
-		case KTPaintAreaEvent::ChangePen:
-		{
-			k->oldData = k->paintArea->brushManager()->pen();
-			
-			QPen pen = qvariant_cast<QPen>(k->event->data());
-			if ( !pen.color().isValid() )
-			{
-				QPen old = k->paintArea->brushManager()->pen();
-				pen.setColor( old.color() );
-				pen.setBrush( old.brush() );
-			}
-			
-			k->paintArea->brushManager()->setPen( pen );
-		}
-		break;
-		case KTPaintAreaEvent::ChangePenBrush:
-		{
-			k->oldData = k->paintArea->brushManager()->pen().brush();
-			k->paintArea->brushManager()->setPenBrush( qvariant_cast<QBrush>(k->event->data()));
-			
-		}
-		break;
-		case KTPaintAreaEvent::ChangeBrush:
-		{
-			k->oldData = k->paintArea->brushManager()->brush();
-			k->paintArea->brushManager()->setBrush( qvariant_cast<QBrush>(k->event->data()));
-		}
-		break;
-		
-		default: break;
-	}
-}
+    switch (k->event->action()) {
+            case KTPaintAreaEvent::ChangePen:
+                 {
+                   k->oldData = k->paintArea->brushManager()->pen();
+                   QPen pen = qvariant_cast<QPen>(k->event->data());
+                   if (!pen.color().isValid()) {
+                       QPen old = k->paintArea->brushManager()->pen();
+                       pen.setColor( old.color() );
+                       pen.setBrush( old.brush() );
+                   }
 
+                   k->paintArea->brushManager()->setPen( pen );
+                 }
+                 break;
+
+            case KTPaintAreaEvent::ChangePenBrush:
+                 {
+                   k->oldData = k->paintArea->brushManager()->pen().brush();
+                   k->paintArea->brushManager()->setPenBrush( qvariant_cast<QBrush>(k->event->data()));
+                 }
+                 break;
+
+            case KTPaintAreaEvent::ChangeBrush:
+                 {
+                   k->oldData = k->paintArea->brushManager()->brush();
+                   k->paintArea->brushManager()->setBrush( qvariant_cast<QBrush>(k->event->data()));
+                 }
+                 break;
+
+            default: 
+                 break;
+    }
+}

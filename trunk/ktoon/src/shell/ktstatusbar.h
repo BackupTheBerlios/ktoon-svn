@@ -33,21 +33,21 @@
 
 class KTStatusBar : public QStatusBar
 {
-	Q_OBJECT
-	public:
-		KTStatusBar(QWidget *parent);
-		~KTStatusBar();
-		void addWidget ( QWidget *widget, int stretch = 0, bool permanent = FALSE );
-		
-	public slots:
-		void setStatus(const QString &status, int ms = 0);
-		void advance(int step, int totalSteps = -1);
-		void clear();
-		
-	private:
-		QTimer *m_timer;
-		QLabel *m_status;
-		QProgressBar *m_progressBar;
+    Q_OBJECT
+    public:
+        KTStatusBar(QWidget *parent);
+        ~KTStatusBar();
+        void addWidget ( QWidget *widget, int stretch = 0, bool permanent = FALSE );
+
+    public slots:
+        void setStatus(const QString &status, int ms = 0);
+        void advance(int step, int totalSteps = -1);
+        void clear();
+
+    private:
+        QTimer *m_timer;
+        QLabel *m_status;
+        QProgressBar *m_progressBar;
 
 };
 

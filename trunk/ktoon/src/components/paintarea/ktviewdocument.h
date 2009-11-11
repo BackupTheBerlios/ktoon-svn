@@ -47,84 +47,79 @@ class KTProjectResponse;
 
 class KTViewDocument : public QMainWindow
 {
-	Q_OBJECT;
-	
-	public:
-		KTViewDocument(KTProject *project, QWidget *parent = 0 );
-		~KTViewDocument();
-		void closeArea();
-		QSize sizeHint() const;
-		
-		void setAntialiasing(bool useIt );
-		void setOpenGL(bool useIt);
-		void setDrawGrid(bool draw);
-		
-		QPainter::RenderHints renderHints() const;
-		
-		void setRotationAngle(int angle);
-		
-		KTBrushManager *brushManager() const;
-		
-		KTPaintAreaCommand *createCommand(const KTPaintAreaEvent *event);
-		
-		
-	public slots:
-		void disablePreviousOnionSkin();
-		void onePreviousOnionSkin();
-		void twoPreviousOnionSkin();
-		void threePreviousOnionSkin();
-		void disableNextOnionSkin();
-		void oneNextOnionSkin();
-		void twoNextOnionSkin();
-		void threeNextOnionSkin();
-		
-		void setNextOnionSkin(int n);
-		void setPreviousOnionSkin(int n);
-		void toggleShowGrid();
-	
-		void setZoomFactor(int porcent);
-		void scaleRuler(double factor);
-		void changeRulerOrigin(const QPointF &zero);
-		
-	private:
-		struct Private;
-		Private *const k;
-		
-	private:
-		void setupDrawActions();
-		void createToolBar();
-		void createMenu();
-		void createTools();
-		
-	private slots: 
-		// Plugins
-		void loadPlugins();
-		
-	private slots:
-		void showPos(const QPointF &p);	
-		void setCursor(const QCursor &c);
-		
-		void updateZoomFactor( double f);
-// 		void configure();
-		
-		
-		void selectToolFromMenu(QAction *act);
-		
-	public slots:
-                void undo();
-                void redo();
-		void selectTool();
-		void applyFilter();
-		
-		bool handleProjectResponse(KTProjectResponse *event);
-		
-	signals:
-		void sendToStatus(const QString& msg);
-		void requestTriggered(const KTProjectRequest *event);
-		void localRequestTriggered(const KTProjectRequest *event);
-		
-	protected:
-// 		void closeEvent(QCloseEvent *e);
+    Q_OBJECT;
+
+    public:
+        KTViewDocument(KTProject *project, QWidget *parent = 0 );
+        ~KTViewDocument();
+        void closeArea();
+        QSize sizeHint() const;
+
+        void setAntialiasing(bool useIt );
+        void setOpenGL(bool useIt);
+        void setDrawGrid(bool draw);
+
+        QPainter::RenderHints renderHints() const;
+        void setRotationAngle(int angle);
+
+        KTBrushManager *brushManager() const;
+        KTPaintAreaCommand *createCommand(const KTPaintAreaEvent *event);
+
+    public slots:
+        void disablePreviousOnionSkin();
+        void onePreviousOnionSkin();
+        void twoPreviousOnionSkin();
+        void threePreviousOnionSkin();
+        void disableNextOnionSkin();
+        void oneNextOnionSkin();
+        void twoNextOnionSkin();
+        void threeNextOnionSkin();
+
+        void setNextOnionSkin(int n);
+        void setPreviousOnionSkin(int n);
+        void toggleShowGrid();
+
+        void setZoomFactor(int porcent);
+        void scaleRuler(double factor);
+        void changeRulerOrigin(const QPointF &zero);
+
+    private:
+        struct Private;
+        Private *const k;
+
+    private:
+        void setupDrawActions();
+        void createToolBar();
+        void createMenu();
+        void createTools();
+
+    private slots: 
+        // Plugins
+        void loadPlugins();
+
+    private slots:
+        void showPos(const QPointF &p);	
+        void setCursor(const QCursor &c);
+
+        void updateZoomFactor( double f);
+        // void configure();
+        void selectToolFromMenu(QAction *act);
+
+    public slots:
+        void undo();
+        void redo();
+        void selectTool();
+        void applyFilter();
+
+        bool handleProjectResponse(KTProjectResponse *event);
+
+    signals:
+        void sendToStatus(const QString& msg);
+        void requestTriggered(const KTProjectRequest *event);
+        void localRequestTriggered(const KTProjectRequest *event);
+
+    protected:
+        // void closeEvent(QCloseEvent *e);
 };
 
 #endif

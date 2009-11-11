@@ -186,7 +186,7 @@ class KTMainWindow : public KTabbedMainWindow
           QMenu *m_viewMenu;
           QMenu *m_insertMenu;
           QMenu *m_toolsMenu; 
-          QMenu *m_windowMenu,
+          QMenu *m_windowMenu;
           QMenu *m_helpMenu;
 
           QStringList m_recentProjects;

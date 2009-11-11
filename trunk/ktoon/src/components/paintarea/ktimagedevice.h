@@ -30,18 +30,18 @@
 */
 class KTImageDevice : public QWidget
 {
-	Q_OBJECT;
-	public:
-		KTImageDevice(QWidget *parent = 0);
-		~KTImageDevice();
-		
-		virtual QPaintEngine *paintEngine() const;
-		
-	protected:
-		virtual void paintEvent(QPaintEvent *e);
-		
-	private:
-		QImage m_image;
+    Q_OBJECT;
+    public:
+        KTImageDevice(QWidget *parent = 0);
+        ~KTImageDevice();
+
+        virtual QPaintEngine *paintEngine() const;
+
+    protected:
+        virtual void paintEvent(QPaintEvent *e);
+
+    private:
+        QImage m_image;
 };
 
 #endif

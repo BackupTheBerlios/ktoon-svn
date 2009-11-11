@@ -31,20 +31,20 @@ class QGraphicsItem;
 */
 class LibraryDialog : public QDialog
 {
-	Q_OBJECT;
-	public:
-		LibraryDialog();
-		~LibraryDialog();
-		
-		void addItem(QGraphicsItem *item);
-		QString symbolName(QGraphicsItem *item) const;
-		
-	private slots:
-		void checkNames();
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    public:
+        LibraryDialog();
+        ~LibraryDialog();
+
+        void addItem(QGraphicsItem *item);
+        QString symbolName(QGraphicsItem *item) const;
+
+    private slots:
+        void checkNames();
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

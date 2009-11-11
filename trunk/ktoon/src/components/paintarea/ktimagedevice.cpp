@@ -29,35 +29,32 @@
 
 KTImageDevice::KTImageDevice(QWidget *parent) : QWidget(parent)
 {
-	KINIT;
-	
-	m_image = QImage(300,300, QImage::Format_RGB32);
-	m_image.fill(Qt::white);
-	
-	// setAttribute(Qt::WA_PaintOnScreen);
-	// setAttribute(Qt::WA_NoSystemBackground);
-	// setAttribute(Qt::WA_OpaquePaintEvent);
-	// setAutoFillBackground(true);
-}
+    KINIT;
 
+    m_image = QImage(300,300, QImage::Format_RGB32);
+    m_image.fill(Qt::white);
+
+    // setAttribute(Qt::WA_PaintOnScreen);
+    // setAttribute(Qt::WA_NoSystemBackground);
+    // setAttribute(Qt::WA_OpaquePaintEvent);
+    // setAutoFillBackground(true);
+}
 
 KTImageDevice::~KTImageDevice()
 {
-	KEND;
+    KEND;
 }
 
 QPaintEngine *KTImageDevice::paintEngine() const
 {
-	qDebug("KTImageDevice: paint engine *****************************************");
-	// return m_image.paintEngine();
-	
-	return QWidget::paintEngine();
+    qDebug("KTImageDevice: paint engine *****************************************");
+
+    return QWidget::paintEngine();
 }
 
 void KTImageDevice::paintEvent(QPaintEvent *)
 {
-	qDebug("KTImageDevice: Paint event #####################################################");
-	QPainter p(this);
-	p.drawImage(0, 0, m_image);
+    qDebug("KTImageDevice: Paint event #####################################################");
+    QPainter p(this);
+    p.drawImage(0, 0, m_image);
 }
-

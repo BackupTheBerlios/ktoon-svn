@@ -30,7 +30,6 @@
 #include "ktpaintareabase.h"
 #include "ktabstractprojectresponsehandler.h"
 
-
 class QGraphicsRectItem;
 class KTBrushManager;
 class KTInputDeviceInformation;
@@ -44,50 +43,47 @@ class KTPaintAreaRotator;
 
 class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHandler
 {
-	Q_OBJECT;
-	public:
-		enum MoveItemType { MoveBack, MoveFront, MoveBackwards, MoveForwards };
-		
-		KTPaintArea(const KTProject *project, QWidget * parent = 0);
-		~KTPaintArea();
-		
-		void setCurrentScene(int index);
-		
-	public slots:
-		void setNextFramesOnionSkinCount(int n);
-		void setPreviousFramesOnionSkinCount(int n);
-		
-	signals:
-		void requestTriggered(const KTProjectRequest *event);
-		
-	public slots:
-		void deleteItems();
-		void groupItems();
-		void ungroupItems();
-		void copyItems();
-		void pasteItems();
-		void cutItems();
-		
-		void addSelectedItemsToLibrary();
-		
-		void requestMoveSelectedItems(QAction *action);
-		
-	protected:
-		void mousePressEvent( QMouseEvent * event  );
-		
-		void frameResponse(KTFrameResponse *event);
-		void layerResponse(KTLayerResponse *event);
-		void sceneResponse(KTSceneResponse *event);
-		
-		void itemResponse(KTItemResponse *event);
-		void libraryResponse(KTLibraryResponse *request);
-		void projectResponse(KTProjectResponse *projectResponse);
-		
-		bool canPaint() const;
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    public:
+        enum MoveItemType { MoveBack, MoveFront, MoveBackwards, MoveForwards };
+
+        KTPaintArea(const KTProject *project, QWidget * parent = 0);
+        ~KTPaintArea();
+
+        void setCurrentScene(int index);
+
+    public slots:
+        void setNextFramesOnionSkinCount(int n);
+        void setPreviousFramesOnionSkinCount(int n);
+
+    signals:
+        void requestTriggered(const KTProjectRequest *event);
+
+    public slots:
+        void deleteItems();
+        void groupItems();
+        void ungroupItems();
+        void copyItems();
+        void pasteItems();
+        void cutItems();
+
+        void addSelectedItemsToLibrary();
+        void requestMoveSelectedItems(QAction *action);
+
+    protected:
+        void mousePressEvent( QMouseEvent * event  );
+        void frameResponse(KTFrameResponse *event);
+        void layerResponse(KTLayerResponse *event);
+        void sceneResponse(KTSceneResponse *event);
+        void itemResponse(KTItemResponse *event);
+        void libraryResponse(KTLibraryResponse *request);
+        void projectResponse(KTProjectResponse *projectResponse);
+
+        bool canPaint() const;
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

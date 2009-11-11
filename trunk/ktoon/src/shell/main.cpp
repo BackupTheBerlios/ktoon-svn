@@ -83,130 +83,117 @@ void usage();
 
 int main( int argc, char ** argv )
 {
-	KTApplication application( argc, argv );
-	
-	qsrand( ::time(0) );
-	
-	// Initializing the crash handler, very useful to catch bugs
-	CrashHandler::init();
-	
-	// Setting the gui style for the interface
+    KTApplication application( argc, argv );
+
+    qsrand( ::time(0) );
+
+    // Initializing the crash handler, very useful to catch bugs
+    CrashHandler::init();
+
+    // Setting the gui style for the interface
 #ifdef ENABLE_KTOONSTYLE
-	QApplication::setStyle(new KWaitStyle());
+    QApplication::setStyle(new KWaitStyle());
 #elif defined(Q_OS_LINUX)
-	QApplication::setStyle(new QPlastiqueStyle());
+    QApplication::setStyle(new QPlastiqueStyle());
 #endif
-	// If help es required as argument from command line, show the options console help
-	if ( application.isArg("help") || application.isArg("h") )
-	{
-		usage();
-		application.exit(0);
-		return 0;
-	}
-	
-	// Time to define global variables for KToon
-	KCONFIG->beginGroup("General");
-	
-	if ( ! KCONFIG->isOk() )
-	{
-		KCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("KTOON_HOME")));
-		KCONFIG->setValue("Cache", QDir::tempPath() );
-	}
-	
-	kAppProp->setHomeDir(KCONFIG->value("Home").toString());
 
-	// Setting the repository directory (where the projects are saved)
-	application.createCache(KCONFIG->value("Cache").toString());
+    // If help es required as argument from command line, show the options console help
+    if (application.isArg("help") || application.isArg("h")) {
+        usage();
+        application.exit(0);
+        return 0;
+    }
 
-	// If user asked for reconfigure KToon or if this is the first time the application is launched
-	if ( kAppProp->homeDir().isEmpty() || application.isArg("r") || application.isArg("reconfigure") )
-	{
-		// Launching the basic configuration dialog
-		if ( ! application.firstRun() )
-		{
-			// If dialog is canceled or KToon can not be configured, kill the whole application
-			#ifdef K_DEBUG
-				kFatal () << "**********************You need configure the application" << endl;
-			#endif
-			
-			QMessageBox::critical(0, QObject::tr("Missing..."), 
-					      QObject::tr("You need configure the application"));
-			application.exit(-1);
-			return -1;
-		}
-		
-		// Setting the new global variables for KToon
-		kAppProp->setHomeDir(KCONFIG->value("Home").toString());
-		application.createCache(KCONFIG->value("Cache").toString());
-	}
-	
-	// Setting the current version for KToon
-	kAppProp->setVersion(VERSION_STR);
-	
-	// Time to apply the theme for the application GUI
-	QString themefile = KCONFIG->value("ThemeFile").toString();
-	if ( ! themefile.isEmpty() )
-	{
-		application.applyTheme(themefile);
-	}
+    // Time to define global variables for KToon
+    KCONFIG->beginGroup("General");
 
-	// Loading localization files... now you got KToon in your native language	
-	{
-		QString locale = QString(QLocale::system().name()).left(2);
-	
-		if ( locale.length() < 2 )
-		{
-			locale = "en";
-		}
-		
-		QTranslator *qttranslator = new QTranslator(&application);
-		
-		qttranslator->load( QString( "qt_" ) + locale, HOME_DIR+"/data/translations");
-	
-		application.installTranslator( qttranslator );
-		
-		QTranslator *translator = new QTranslator(&application);
-		translator->load( QString( "ktoon_" )+locale,  HOME_DIR+"/data/translations");
-		
-		application.installTranslator( translator );
-	}
-	
-	// Time to show the KToon initial splash 
-	KTSplash *splash = new KTSplash;
-	splash->show();
-	splash->setMessage( QObject::tr( "Initializing..." ) );
-	
-	splash->setMessage( QObject::tr( "Loading Modules" ) );
-	KTMainWindow mainWindow(splash);
-	
-	splash->setMessage( QObject::tr( "Loaded!" ) );
+   if (! KCONFIG->isOk()) {
+       KCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("KTOON_HOME")));
+       KCONFIG->setValue("Cache", QDir::tempPath() );
+   }
 
-        // 	splash->finish( &mainWindow );
-	
-	mainWindow.showMaximized();
-	
-	delete splash;
+   kAppProp->setHomeDir(KCONFIG->value("Home").toString());
 
-	// Looking for plugins for KToon
-	#ifdef K_DEBUG
-		kWarning() << "Loading plugins from: " << HOME_DIR << " + /plugins";
-	#endif
-	QApplication::addLibraryPath (HOME_DIR + "/plugins");
+   // Setting the repository directory (where the projects are saved)
+   application.createCache(KCONFIG->value("Cache").toString());
 
-	// Loading visual components required for the Crash Handler
-#ifdef Q_OS_UNIX
-	CHANDLER->setConfig(DATA_DIR+"/crashhandler.xml");
-	CHANDLER->setImagePath(THEME_DIR+"/icons/");
-#endif
-	// If user added a second argument, it means, he wants to load a project from the command line
-	if ( argc == 2 )
-	{
-		QString project = QString(argv[1]);
-		mainWindow.openProject( project );
-	}
+   // If user asked for reconfigure KToon or if this is the first time the application is launched
+   if (kAppProp->homeDir().isEmpty() || application.isArg("r") || application.isArg("reconfigure") ) {
+       // Launching the basic configuration dialog
+       if (! application.firstRun()) {
+           // If dialog is canceled or KToon can not be configured, kill the whole application
+           #ifdef K_DEBUG
+                  kFatal () << "**********************You need configure the application" << endl;
+           #endif
 
-	// It is time to play with KToon!	
-	return application.exec();
+           QMessageBox::critical(0, QObject::tr("Missing..."), 
+                                 QObject::tr("You need configure the application"));
+           application.exit(-1);
+           return -1;
+       }
+
+       // Setting the new global variables for KToon
+       kAppProp->setHomeDir(KCONFIG->value("Home").toString());
+       application.createCache(KCONFIG->value("Cache").toString());
+    }
+
+    // Setting the current version for KToon
+    kAppProp->setVersion(VERSION_STR);
+
+    // Time to apply the theme for the application GUI
+    QString themefile = KCONFIG->value("ThemeFile").toString();
+
+    if (! themefile.isEmpty()) 
+        application.applyTheme(themefile);
+
+    // Loading localization files... now you got KToon in your native language	
+    QString locale = QString(QLocale::system().name()).left(2);
+
+    if (locale.length() < 2)
+        locale = "en";
+
+    QTranslator *qttranslator = new QTranslator(&application);
+    qttranslator->load(QString( "qt_" ) + locale, HOME_DIR+"/data/translations");
+    application.installTranslator( qttranslator );
+
+    QTranslator *translator = new QTranslator(&application);
+    translator->load(QString( "ktoon_" )+locale,  HOME_DIR+"/data/translations");
+    application.installTranslator( translator );
+
+    // Time to show the KToon initial splash 
+    KTSplash *splash = new KTSplash;
+    splash->show();
+    splash->setMessage( QObject::tr( "Initializing..." ) );
+
+    splash->setMessage( QObject::tr( "Loading Modules" ) );
+    KTMainWindow mainWindow(splash);
+
+    splash->setMessage( QObject::tr( "Loaded!" ) );
+
+    mainWindow.showMaximized();
+
+    delete splash;
+
+    // Looking for plugins for KToon
+    #ifdef K_DEBUG
+           kWarning() << "Loading plugins from: " << HOME_DIR << " + /plugins";
+    #endif
+    QApplication::addLibraryPath (HOME_DIR + "/plugins");
+
+    // Loading visual components required for the Crash Handler
+    #ifdef Q_OS_UNIX
+           CHANDLER->setConfig(DATA_DIR+"/crashhandler.xml");
+           CHANDLER->setImagePath(THEME_DIR+"/icons/");
+    #endif
+
+    // If user added a second argument, it means, he wants to load a project from the command line
+    if (argc == 2) {
+        QString project = QString(argv[1]);
+        mainWindow.openProject(project);
+    }
+
+    // It is time to play with KToon!	
+    return application.exec();
 }
 
 /** 
@@ -216,27 +203,20 @@ int main( int argc, char ** argv )
 void usage()
 {
 #if defined(Q_OS_UNIX)
-        // Characters \033[1;33m and \033[1;34m are useful for colored messages
-	puts(QString("\033[1;33m"+QApplication::applicationName() + kAppProp->version()).toLocal8Bit());
-	puts(QString(QObject::tr("2D Animation Toolkit")+"\033[0;0m" ).toLocal8Bit());
-
-	puts(QString("\033[1;34m"+QObject::tr("Usage: %1 [option]").arg(kApp->argv()[0])+"\033[0;0m").toLocal8Bit());
-	
-	puts(QString("\033[1;31m"+QObject::tr("Options: ")).toLocal8Bit());
-	
-	puts("-r, --reconfigure");
-	puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLocal8Bit());
-	
-	puts("\033[0;0m");
+    // Characters \033[1;33m and \033[1;34m are useful for colored messages
+    puts(QString("\033[1;33m"+QApplication::applicationName() + kAppProp->version()).toLocal8Bit());
+    puts(QString(QObject::tr("2D Animation Toolkit")+"\033[0;0m" ).toLocal8Bit());
+    puts(QString("\033[1;34m"+QObject::tr("Usage: %1 [option]").arg(kApp->argv()[0])+"\033[0;0m").toLocal8Bit());
+    puts(QString("\033[1;31m"+QObject::tr("Options: ")).toLocal8Bit());
+    puts("-r, --reconfigure");
+    puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLocal8Bit());
+    puts("\033[0;0m");
 #else
-	puts(QString(QApplication::applicationName() + kApp->version()).toLocal8Bit());
-
-	puts(QObject::tr("Usage: %1 [option]").arg(kApp->argv()[0]).toLocal8Bit());
-	
-	puts(QObject::tr("Options: ").toLocal8Bit());
-	
-	puts("-r, --reconfigure");
-	puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLocal8Bit()); 
+    puts(QString(QApplication::applicationName() + kApp->version()).toLocal8Bit());
+    puts(QObject::tr("Usage: %1 [option]").arg(kApp->argv()[0]).toLocal8Bit());
+    puts(QObject::tr("Options: ").toLocal8Bit());
+    puts("-r, --reconfigure");
+    puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLocal8Bit()); 
 #endif
 }
 

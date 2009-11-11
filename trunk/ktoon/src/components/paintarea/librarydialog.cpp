@@ -36,68 +36,66 @@
 
 struct LibraryDialog::Private
 {
-		QToolBox *toolBox;
-		QMap<QGraphicsItem *, QLineEdit *> symbolNames;
-		QMap<int, QLineEdit *> tabs;
+    QToolBox *toolBox;
+    QMap<QGraphicsItem *, QLineEdit *> symbolNames;
+    QMap<int, QLineEdit *> tabs;
 };
 
 LibraryDialog::LibraryDialog() : QDialog(), k(new Private)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	
-	k->toolBox = new QToolBox;
-	layout->addWidget(k->toolBox);
-	
-	QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Help | QDialogButtonBox::Ok 
-								| QDialogButtonBox::Cancel, Qt::Horizontal );	
-	connect(buttons, SIGNAL(accepted ()), this, SLOT(checkNames()));
-	connect(buttons, SIGNAL(rejected ()), this, SLOT(reject()));
-	
-	layout->addWidget(buttons);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+
+    k->toolBox = new QToolBox;
+    layout->addWidget(k->toolBox);
+
+    QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Help | QDialogButtonBox::Ok 
+                                | QDialogButtonBox::Cancel, Qt::Horizontal );	
+    connect(buttons, SIGNAL(accepted ()), this, SLOT(checkNames()));
+    connect(buttons, SIGNAL(rejected ()), this, SLOT(reject()));
+
+    layout->addWidget(buttons);
 }
 
 LibraryDialog::~LibraryDialog()
 {
-	delete k;
+    delete k;
 }
 
 void LibraryDialog::addItem(QGraphicsItem *item)
 {
-	KTItemPreview *preview = new KTItemPreview;	
-	preview->render( item );
-	
-	QWidget *container = new QWidget;
-	
-	QVBoxLayout *layout = new QVBoxLayout(container);
-	layout->addWidget(preview);
-	
-	QLineEdit *name = new QLineEdit;
-	connect(name, SIGNAL(returnPressed()), this, SLOT(checkNames()));
-	
-	QLayout *grid = KFormFactory::makeGrid( QStringList() << tr("Name"), QWidgetList() << name );	
-	layout->addLayout(grid);
-	
-	int index = k->toolBox->addItem(container, tr("Item %1").arg(k->toolBox->count()+1));
-	k->symbolNames.insert(item, name);
-	k->tabs.insert(index, name);
+    KTItemPreview *preview = new KTItemPreview;	
+    preview->render( item );
+
+    QWidget *container = new QWidget;
+
+    QVBoxLayout *layout = new QVBoxLayout(container);
+    layout->addWidget(preview);
+
+    QLineEdit *name = new QLineEdit;
+    connect(name, SIGNAL(returnPressed()), this, SLOT(checkNames()));
+
+    QLayout *grid = KFormFactory::makeGrid( QStringList() << tr("Name"), QWidgetList() << name );	
+    layout->addLayout(grid);
+
+    int index = k->toolBox->addItem(container, tr("Item %1").arg(k->toolBox->count()+1));
+    k->symbolNames.insert(item, name);
+    k->tabs.insert(index, name);
 }
 
 QString LibraryDialog::symbolName(QGraphicsItem *item) const
 {
-	return k->symbolNames[item]->text();
+    return k->symbolNames[item]->text();
 }
 
 void LibraryDialog::checkNames()
 {
-	for(int i = 0; i < k->toolBox->count(); i++)
-	{
-		if ( k->tabs[i]->text().isEmpty())
-		{
-			k->toolBox->setCurrentIndex (i);
-			k->tabs[i]->setFocus();
-			return;
-		}
-	}
-	
-	accept();
+    for (int i = 0; i < k->toolBox->count(); i++) {
+         if (k->tabs[i]->text().isEmpty()) {
+             k->toolBox->setCurrentIndex (i);
+             k->tabs[i]->setFocus();
+             return;
+         }
+    }
+
+    accept();
 }

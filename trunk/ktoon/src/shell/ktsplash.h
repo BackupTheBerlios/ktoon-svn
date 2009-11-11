@@ -42,37 +42,36 @@
 */
 class KTSplash : public QSplashScreen
 {
-    	Q_OBJECT
+    Q_OBJECT
+    public:
+        /**
+         * @brief Default Constructor
+         *
+         * Constructs a KTSplash object.
+         */
+         KTSplash();
+         /**
+          * @brief Default Destructor
+          *
+          * Destroys the KTSplash object.
+          */
+         ~KTSplash();
 
-	public:
-		/**
-		* @brief Default Constructor
-		*
-		* Constructs a KTSplash object.
-		*/
-		KTSplash();
-		/**
-		* @brief Default Destructor
-		*
-		* Destroys the KTSplash object.
-		*/
-		~KTSplash();
-			 
-		void setMessage(const QString &msg);
-		
-	private slots:
-		void animate();
+         void setMessage(const QString &msg);
 
-	private:
-		QString m_message, m_version;
-		int m_size;
-		int m_state;
-		int m_position;
-		
-		QTimer *m_timer;
-		
-	protected:
-		void drawContents ( QPainter * painter );
+    private slots:
+         void animate();
+
+    private:
+         QString m_message, m_version;
+         int m_size;
+         int m_state;
+         int m_position;
+
+         QTimer *m_timer;
+
+    protected:
+         void drawContents ( QPainter * painter );
 };
 
 #endif
