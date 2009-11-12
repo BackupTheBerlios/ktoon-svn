@@ -30,33 +30,32 @@
 
 class KTLuminancePicker : public QWidget
 {
-	Q_OBJECT
-	public:
-		KTLuminancePicker(QWidget* parent=0);
-		~KTLuminancePicker();
-		int value();
-	public slots:
-		void setCol(int h, int s, int v);
-		void setCol(int h, int s);
-		void setVal(int v);
+    Q_OBJECT
+    public:
+        KTLuminancePicker(QWidget* parent=0);
+        ~KTLuminancePicker();
+        int value();
 
-	signals:
-		void newHsv(int h, int s, int v);
+    public slots:
+        void setCol(int h, int s, int v);
+        void setCol(int h, int s);
+        void setVal(int v);
 
-	protected:
-		void paintEvent(QPaintEvent*);
-		void mouseMoveEvent(QMouseEvent *);
-		void mousePressEvent(QMouseEvent *);
+    signals:
+        void newHsv(int h, int s, int v);
 
-	private:
-		enum { foff = 3, coff = 4 }; //frame and contents offset
-		
-		struct Private;
-		Private *const k;
-		
-		int y2val(int y);
-		int val2y(int val);
+    protected:
+        void paintEvent(QPaintEvent*);
+        void mouseMoveEvent(QMouseEvent *);
+        void mousePressEvent(QMouseEvent *);
 
+    private:
+        enum { foff = 3, coff = 4 }; //frame and contents offset
+
+    struct Private;
+    Private *const k;
+    int y2val(int y);
+    int val2y(int val);
 };
 
 #endif

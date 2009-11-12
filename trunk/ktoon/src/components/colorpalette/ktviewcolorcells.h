@@ -38,40 +38,36 @@
 */
 class KTViewColorCells : public QFrame
 {
-	Q_OBJECT
-	public:
-		KTViewColorCells(QWidget *parent = 0);
-		virtual ~KTViewColorCells();
-		void readPaletteFile(const QString &file);
-		void setColor(const QBrush & b);
-		
-	private:
-		struct Private;
-		Private *const k;
-		
-		
-	private:
-		void setupForm();
-		void setupButtons();
-		void fillDefaultColors();
-		void addDefaultColor(int i , int j, const QColor &);
-		void fillNamedColor();
-		void readPalettes(const QString &paletteDir);
-		void addPalette(KTCellsColor *palette);
-		
-		
-	protected:
-		
-		
-	signals:
-		void selectColor(const QBrush &);
-		
-	public slots:
-		virtual void addCurrentColor();
-		virtual void removeCurrentColor();
-		virtual void addPalette(const QString & name, const QList<QBrush> & brushes, bool editable );
-		void changeColor(QTableWidgetItem*/*, QTableWidgetItem **/);
-		
+    Q_OBJECT
+    public:
+        KTViewColorCells(QWidget *parent = 0);
+        virtual ~KTViewColorCells();
+        void readPaletteFile(const QString &file);
+        void setColor(const QBrush & b);
+
+    private:
+        struct Private;
+        Private *const k;
+
+    private:
+        void setupForm();
+        void setupButtons();
+        void fillDefaultColors();
+        void addDefaultColor(int i , int j, const QColor &);
+        void fillNamedColor();
+        void readPalettes(const QString &paletteDir);
+        void addPalette(KTCellsColor *palette);
+
+    protected:
+
+    signals:
+        void selectColor(const QBrush &);
+
+    public slots:
+        virtual void addCurrentColor();
+        virtual void removeCurrentColor();
+        virtual void addPalette(const QString & name, const QList<QBrush> & brushes, bool editable );
+        void changeColor(QTableWidgetItem*/*, QTableWidgetItem **/);
 };
 
 #endif

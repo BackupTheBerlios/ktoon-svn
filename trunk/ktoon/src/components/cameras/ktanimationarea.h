@@ -38,51 +38,50 @@
 */
 class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectResponseHandler
 {
-	Q_OBJECT
-	public:
-		KTAnimationArea(const KTProject *project, QWidget *parent = 0);
-		~KTAnimationArea();
-		
-		QSize sizeHint() const;
-		void setLoop(bool l);
-		void setCurrentScene(int index);
-		KTScene *currentScene() const;
-		void setFPS(int fps);
-		
-	public slots:
-		virtual void render();
-		virtual void play();
-		virtual void stop();
-		virtual void nextFrame();
-		virtual void previousFrame();
-		
-		
-	private slots:
-		void advance();
-		
-	protected:
-		void frameResponse(KTFrameResponse *event);
-		void layerResponse(KTLayerResponse *event);
-		void sceneResponse(KTSceneResponse *event);
-		void projectResponse(KTProjectResponse *event);
-		void itemResponse(KTItemResponse *event);
-		void libraryResponse(KTLibraryResponse *request);
-		
-	signals:
-		void progressStep(int, int);
-		void toStatusBar(const QString &, int);
-		
-		void sceneChanged(const KTScene *newScene );
-		
-		void requestTriggered(const KTProjectRequest *event);
-		
-	protected:
-		void paintEvent(QPaintEvent *e);
-		void resizeEvent ( QResizeEvent * event );
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT
+    public:
+        KTAnimationArea(const KTProject *project, QWidget *parent = 0);
+        ~KTAnimationArea();
+
+        QSize sizeHint() const;
+        void setLoop(bool l);
+        void setCurrentScene(int index);
+        KTScene *currentScene() const;
+        void setFPS(int fps);
+
+    public slots:
+        virtual void render();
+        virtual void play();
+        virtual void stop();
+        virtual void nextFrame();
+        virtual void previousFrame();
+
+
+    private slots:
+        void advance();
+
+    protected:
+        void frameResponse(KTFrameResponse *event);
+        void layerResponse(KTLayerResponse *event);
+        void sceneResponse(KTSceneResponse *event);
+        void projectResponse(KTProjectResponse *event);
+        void itemResponse(KTItemResponse *event);
+        void libraryResponse(KTLibraryResponse *request);
+
+    signals:
+        void progressStep(int, int);
+        void toStatusBar(const QString &, int);
+        void sceneChanged(const KTScene *newScene );
+
+        void requestTriggered(const KTProjectRequest *event);
+
+    protected:
+        void paintEvent(QPaintEvent *e);
+        void resizeEvent ( QResizeEvent * event );
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

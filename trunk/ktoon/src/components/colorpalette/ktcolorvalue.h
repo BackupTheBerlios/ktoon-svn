@@ -31,61 +31,57 @@
 
 class KTItemColorValue : public QFrame
 {
-	Q_OBJECT
-	public:
-		KTItemColorValue( const QString &text = QString::null, QWidget *parent = 0);
-		~KTItemColorValue();
-		int  value();
-		void setMax(int);
-		void setRange(int minimum, int maximum);
-		void setSuffix(const QString &suffix );
-		
-	private:
-		struct Private;
-		Private *const k;
-		
-	public slots:
-		void setValue ( int val );
-		
-	signals:
-		void valueChanged ( int i );
-		void valueChanged ( const QString & text );
-		void editingFinished();
+    Q_OBJECT
+    public:
+        KTItemColorValue( const QString &text = QString::null, QWidget *parent = 0);
+        ~KTItemColorValue();
+        int  value();
+        void setMax(int);
+        void setRange(int minimum, int maximum);
+        void setSuffix(const QString &suffix );
+
+    private:
+        struct Private;
+        Private *const k;
+
+    public slots:
+        void setValue ( int val );
+
+    signals:
+        void valueChanged ( int i );
+        void valueChanged ( const QString & text );
+        void editingFinished();
 };
 
 class KTColorValue : public QFrame
 {
-	Q_OBJECT
-	public:
-		KTColorValue(QWidget *parent = 0);
-		~KTColorValue();
-		int hue();
-		int saturation();
-		int value();
-		int alpha();
-		
-		
-	private:
-		struct Private;
-		Private *const k;
-		
-	private:
-		void setupForm();
-		
-	public slots:
-		void setColor(const QBrush & brush);
-		
-	private slots:
-		void syncValuesRgb(int value = 0);
-		
-	signals:
-		void brushChanged(const QBrush &);
-		void hueChanged(int);
-		void saturationChanged(int);
-		void valueChanged(int);
-		
+    Q_OBJECT
+    public:
+        KTColorValue(QWidget *parent = 0);
+        ~KTColorValue();
+       int hue();
+       int saturation();
+       int value();
+       int alpha();
+
+    private:
+       struct Private;
+       Private *const k;
+
+    private:
+       void setupForm();
+
+    public slots:
+       void setColor(const QBrush & brush);
+
+    private slots:
+       void syncValuesRgb(int value = 0);
+
+    signals:
+       void brushChanged(const QBrush &);
+       void hueChanged(int);
+       void saturationChanged(int);
+       void valueChanged(int);
 };
-
-
 
 #endif

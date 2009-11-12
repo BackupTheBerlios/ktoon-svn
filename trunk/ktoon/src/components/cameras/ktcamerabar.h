@@ -34,23 +34,25 @@
 */
 class KTCameraBar : public QFrame
 {
-	Q_OBJECT
-	public:
-		KTCameraBar(QWidget *parent = 0);
-		~KTCameraBar();
-		void setPalette(const QPalette &);
-		
-	private:
-		KImageButton *m_rew, *m_play, *m_stop, *m_ff;
-		
-	signals:
-		void play();
-		void stop();
-		void ff();
-		void rew();
-		
-		
-	protected:
+    Q_OBJECT
+    public:
+        KTCameraBar(QWidget *parent = 0);
+        ~KTCameraBar();
+        void setPalette(const QPalette &);
+
+    private:
+        KImageButton *m_rew;
+        KImageButton *m_play;
+        KImageButton *m_stop;
+        KImageButton *m_ff;
+
+    signals:
+        void play();
+        void stop();
+        void ff();
+        void rew();
+
+    protected:
 };
 
 #endif

@@ -39,21 +39,18 @@ class QSpinBox;
 
 class KTCameraWidget : public KTModuleWidgetBase
 {
-	Q_OBJECT;
-	
-	public:
-		KTCameraWidget(KTProject *project, QWidget *parent = 0);
-		~KTCameraWidget();
-		
-		KTViewCamera *viewCamera();
-		
-	public slots:
-		void setFPS(int fps);
-		
-	private:
-		KTViewCamera *m_viewCamera;
-		
-		QSpinBox *m_fps;
+    Q_OBJECT;
+    public:
+        KTCameraWidget(KTProject *project, QWidget *parent = 0);
+        ~KTCameraWidget();
+        KTViewCamera *viewCamera();
+
+    public slots:
+        void setFPS(int fps);
+
+    private:
+        KTViewCamera *m_viewCamera;
+        QSpinBox *m_fps;
 };
 
 #endif

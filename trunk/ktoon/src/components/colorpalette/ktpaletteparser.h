@@ -35,26 +35,25 @@
  * @author David Cuadrado
 */
 
-//TODO KTPaletteParser: portar a DXmlParserBase
+//TODO KTPaletteParser: portar a KXmlParserBase
 
 class KTPaletteParser : public KXmlParserBase
 {
-	public:
-		KTPaletteParser();
-		~KTPaletteParser();
-		
-		QList<QBrush> brushes() const;
-		QString paletteName() const;
-		bool paletteIsEditable() const;
-		
-		bool startTag(const QString &tag, const QXmlAttributes &atts);
-		bool endTag(const QString &tag);
-		void text(const QString& text );
-		
-	private:
-		struct Private;
-		Private *const k;
-		
+     public:
+         KTPaletteParser();
+         ~KTPaletteParser();
+
+         QList<QBrush> brushes() const;
+         QString paletteName() const;
+         bool paletteIsEditable() const;
+
+         bool startTag(const QString &tag, const QXmlAttributes &atts);
+         bool endTag(const QString &tag);
+         void text(const QString& text );
+
+     private:
+         struct Private;
+         Private *const k;
 };
 
 #endif

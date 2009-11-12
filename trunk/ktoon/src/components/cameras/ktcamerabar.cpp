@@ -29,45 +29,45 @@
 KTCameraBar::KTCameraBar(QWidget *parent)
  : QFrame(parent)
 {
-	#ifdef K_DEBUG
-		KINIT;
-	#endif
+    #ifdef K_DEBUG
+           KINIT;
+    #endif
 
-	setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
-	setMidLineWidth(2);
-	setLineWidth (1);
-	
-	QBoxLayout *m_mainLayout = new QBoxLayout(QBoxLayout::LeftToRight, parent);
-	m_mainLayout->addStretch(1);
-	
-	m_mainLayout->setSpacing(0);
-	m_mainLayout->setMargin(0);
-	
-	m_rew = new KImageButton(QPixmap(THEME_DIR+"/icons/rw.png"), 33,this, true);
-	m_mainLayout->addWidget(m_rew);
-	connect(m_rew, SIGNAL(clicked()), this, SIGNAL(rew()));
-	
-	m_play = new KImageButton(QPixmap(THEME_DIR+"/icons/play.png"), 33,this, true);
-	m_mainLayout->addWidget(m_play);
-	connect(m_play, SIGNAL(clicked()), this, SIGNAL(play()));
-	
-	m_stop = new KImageButton(QPixmap(THEME_DIR+"/icons/stop.png"), 33,this, true);
-	m_mainLayout->addWidget(m_stop);
-	connect(m_stop, SIGNAL(clicked()), this, SIGNAL(stop()));
-	
-	m_ff = new KImageButton(QPixmap(THEME_DIR+"/icons/ff.png"), 33,this, true);
-	m_mainLayout->addWidget(m_ff);
-	connect(m_ff, SIGNAL(clicked()), this, SIGNAL(ff()));
-	
-	setLayout(m_mainLayout);
+    setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
+    setMidLineWidth(2);
+    setLineWidth (1);
+
+    QBoxLayout *m_mainLayout = new QBoxLayout(QBoxLayout::LeftToRight, parent);
+    m_mainLayout->addStretch(1);
+
+    m_mainLayout->setSpacing(0);
+    m_mainLayout->setMargin(0);
+
+    m_rew = new KImageButton(QPixmap(THEME_DIR+"/icons/rw.png"), 33,this, true);
+    m_mainLayout->addWidget(m_rew);
+    connect(m_rew, SIGNAL(clicked()), this, SIGNAL(rew()));
+
+    m_play = new KImageButton(QPixmap(THEME_DIR+"/icons/play.png"), 33,this, true);
+    m_mainLayout->addWidget(m_play);
+    connect(m_play, SIGNAL(clicked()), this, SIGNAL(play()));
+
+    m_stop = new KImageButton(QPixmap(THEME_DIR+"/icons/stop.png"), 33,this, true);
+    m_mainLayout->addWidget(m_stop);
+    connect(m_stop, SIGNAL(clicked()), this, SIGNAL(stop()));
+
+    m_ff = new KImageButton(QPixmap(THEME_DIR+"/icons/ff.png"), 33,this, true);
+    m_mainLayout->addWidget(m_ff);
+    connect(m_ff, SIGNAL(clicked()), this, SIGNAL(ff()));
+
+    setLayout(m_mainLayout);
 }
 
 
 KTCameraBar::~KTCameraBar()
 {
-	#ifdef K_DEBUG
-		KEND;
-	#endif
+    #ifdef K_DEBUG
+           KEND;
+    #endif
 }
 
 void KTCameraBar::setPalette(const QPalette &)

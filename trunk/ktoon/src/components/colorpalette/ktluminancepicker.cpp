@@ -28,118 +28,122 @@
 
 struct KTLuminancePicker::Private
 {
-	int val;
-	int hue;
-	int sat;
-	QPixmap *pix;
-	
-	~Private()
-	{
-		delete pix;
-	};
-	
+    int val;
+    int hue;
+    int sat;
+    QPixmap *pix;
+
+    ~Private()
+     {
+       delete pix;
+     };
 };
 
 int KTLuminancePicker::y2val(int y)
 {
-	int k = height() - 2*coff - 1;
-	return 255 - (y - coff)*255/k;
+    int k = height() - 2*coff - 1;
+    return 255 - (y - coff)*255/k;
 }
 
 int KTLuminancePicker::val2y(int v)
 {
-	int k = height() - 2*coff - 1;
-	return coff + (255-v)*k/255;
+    int k = height() - 2*coff - 1;
+    return coff + (255-v)*k/255;
 }
 
 KTLuminancePicker::KTLuminancePicker(QWidget* parent)
 	:QWidget(parent), k( new Private)
 {
-	k->hue = 100; k->val = 100; k->sat = 100;
-	k->pix = 0;
-    //    setAttribute(WA_NoErase, true);
+    k->hue = 100; 
+    k->val = 100; 
+    k->sat = 100;
+    k->pix = 0;
 }
 
 KTLuminancePicker::~KTLuminancePicker()
 {
-	delete k;
-	#ifdef K_DEBUG
-		KEND;
-	#endif
+    delete k;
+    #ifdef K_DEBUG
+           KEND;
+    #endif
 }
 
 void KTLuminancePicker::mouseMoveEvent(QMouseEvent *m)
 {
-	setVal(y2val(m->y()));
+    setVal(y2val(m->y()));
 	
 }
+
 void KTLuminancePicker::mousePressEvent(QMouseEvent *m)
 {
-	setVal(y2val(m->y()));
+    setVal(y2val(m->y()));
 }
 
 void KTLuminancePicker::setVal(int v)
 {
-	if (k->val == v)
-		return;
-	k->val = qMax(0, qMin(v,255));
-	delete k->pix; k->pix=0;
-	repaint();
-	emit newHsv(k->hue, k->sat, k->val);
+    if (k->val == v)
+        return;
+    k->val = qMax(0, qMin(v,255));
+    delete k->pix; k->pix=0;
+    repaint();
+
+    emit newHsv(k->hue, k->sat, k->val);
 }
 
-//receives from a d->hue,d->sat chooser and relays.
+//receives from a k->hue,k->sat chooser and relays.
 void KTLuminancePicker::setCol(int h, int s)
 {
-	setCol(h, s, k->val);
-	emit newHsv(h, s, k->val);
+    setCol(h, s, k->val);
+    emit newHsv(h, s, k->val);
 }
 
 void KTLuminancePicker::paintEvent(QPaintEvent *)
 {
-	int w = width() - 5;
+    int w = width() - 5;
 
-	QRect r(0, foff, w, height() - 2*foff);
-	int wi = r.width() - 2;
-	int hi = r.height() - 2;
-	if (!k->pix || k->pix->height() != hi || k->pix->width() != wi) {
-		delete k->pix;
-		QImage img(wi, hi, QImage::Format_RGB32);
-		int y;
-		for (y = 0; y < hi; y++) {
-			QColor c;
-			c.setHsv(k->hue, k->sat, y2val(y+coff));
-			QRgb r = c.rgb();
-			int x;
-			for (x = 0; x < wi; x++)
-				img.setPixel(x, y, r);
-		}
-		k->pix = new QPixmap(QPixmap::fromImage(img));
-	}
-	QPainter p(this);
-	p.drawPixmap(1, coff, *k->pix);
-	const QPalette &g = palette();
-	qDrawShadePanel(&p, r, g, true);
-	p.setPen(g.foreground().color());
-	p.setBrush(g.foreground());
-	QPolygon a;
-	int y = val2y(k->val);
-	a.setPoints(3, w, y, w+5, y+5, w+5, y-5);
-	p.eraseRect(w, 0, 5, height());
-	p.drawPolygon(a);
+    QRect r(0, foff, w, height() - 2*foff);
+    int wi = r.width() - 2;
+    int hi = r.height() - 2;
+    if (!k->pix || k->pix->height() != hi || k->pix->width() != wi) {
+        delete k->pix;
+        QImage img(wi, hi, QImage::Format_RGB32);
+        int y;
+        for (y = 0; y < hi; y++) {
+             QColor c;
+             c.setHsv(k->hue, k->sat, y2val(y+coff));
+             QRgb r = c.rgb();
+             int x;
+             for (x = 0; x < wi; x++)
+                  img.setPixel(x, y, r);
+        }
+        k->pix = new QPixmap(QPixmap::fromImage(img));
+    }
+
+    QPainter p(this);
+    p.drawPixmap(1, coff, *k->pix);
+    const QPalette &g = palette();
+    qDrawShadePanel(&p, r, g, true);
+    p.setPen(g.foreground().color());
+    p.setBrush(g.foreground());
+    QPolygon a;
+    int y = val2y(k->val);
+    a.setPoints(3, w, y, w+5, y+5, w+5, y-5);
+    p.eraseRect(w, 0, 5, height());
+    p.drawPolygon(a);
 }
 
 void KTLuminancePicker::setCol(int h, int s , int v)
 {
-	k->val = v;
-	k->hue = h;
-	k->sat = s;
-	delete k->pix; k->pix=0;
-	repaint();
+    k->val = v;
+    k->hue = h;
+    k->sat = s;
+    delete k->pix; 
+    k->pix = 0;
+    repaint();
 }
 
 int  KTLuminancePicker::value()
 {
-	return k->val;
+    return k->val;
 }
 

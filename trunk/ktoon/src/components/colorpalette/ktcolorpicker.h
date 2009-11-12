@@ -27,37 +27,35 @@
 
 class KTColorPicker : public QFrame
 {
-	Q_OBJECT
-	public:
-		KTColorPicker(QWidget* parent);
-		~KTColorPicker();
-		int hue();
-		int sat();
-		
+    Q_OBJECT
+    public:
+        KTColorPicker(QWidget* parent);
+        ~KTColorPicker();
+        int hue();
+        int sat();
 
-	public slots:
-		void setCol(int h, int s);
-		void setH(int h);
-		void setS(int s);
+    public slots:
+        void setCol(int h, int s);
+        void setH(int h);
+        void setS(int s);
 
-	signals:
-		void newCol(int h, int s);
+    signals:
+        void newCol(int h, int s);
 
-	protected:
-		QSize sizeHint() const;
-		void paintEvent(QPaintEvent*);
-		void mouseMoveEvent(QMouseEvent *);
-		void mousePressEvent(QMouseEvent *);
+    protected:
+        QSize sizeHint() const;
+        void paintEvent(QPaintEvent*);
+        void mouseMoveEvent(QMouseEvent *);
+        void mousePressEvent(QMouseEvent *);
 
-	private:
-		struct Private;
-		Private *const k;
-		
-		QPoint colPt();
-		int huePt(const QPoint &pt);
-		int satPt(const QPoint &pt);
-		void setCol(const QPoint &pt);
+    private:
+        struct Private;
+        Private *const k;
 
+        QPoint colPt();
+        int huePt(const QPoint &pt);
+        int satPt(const QPoint &pt);
+        void setCol(const QPoint &pt);
 };
 
 #endif

@@ -30,30 +30,30 @@
 */
 class KTCellsColor : public KCellView
 {
-Q_OBJECT
-	public:
-		
-		enum Type{Color = 0, Gradient};
-		KTCellsColor(QWidget *parent = 0, Type type= Color);
-		virtual ~KTCellsColor();
-		
-		void setReadOnly(bool enable);
-		void setType(Type type);
-		bool isReadOnly();
-		int type();
-		QString name() const;
-		void setName(const QString& name);
-		void save( const QString& path);
-		
-	private:
-		struct Private;
-		Private *const k;
-		
-	protected:
-		void mousePressEvent(QMouseEvent* e);
-		void mouseMoveEvent(QMouseEvent* e);
-		void dragEnterEvent(QDragEnterEvent* e);
-		void dropEvent(QDropEvent* e);
+    Q_OBJECT
+    public:
+
+        enum Type{Color = 0, Gradient};
+        KTCellsColor(QWidget *parent = 0, Type type= Color);
+        virtual ~KTCellsColor();
+
+        void setReadOnly(bool enable);
+        void setType(Type type);
+        bool isReadOnly();
+        int type();
+        QString name() const;
+        void setName(const QString& name);
+        void save( const QString& path);
+
+    private:
+        struct Private;
+        Private *const k;
+
+    protected:
+        void mousePressEvent(QMouseEvent* e);
+        void mouseMoveEvent(QMouseEvent* e);
+        void dragEnterEvent(QDragEnterEvent* e);
+        void dropEvent(QDropEvent* e);
 };
 
 #endif

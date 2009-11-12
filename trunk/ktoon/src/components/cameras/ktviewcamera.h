@@ -39,36 +39,34 @@ class QCheckBox;
 */
 class KTViewCamera : public QMainWindow
 {
-	Q_OBJECT
-	public:
-		KTViewCamera(KTProject *project, QWidget *parent = 0);
-		~KTViewCamera();
-		
-		QSize sizeHint() const;
-		void updateSceneInfo();
-		void setFPS(int fps);
-		
-		
-	private slots:
-		void showSceneInfo(const KTScene *scene);
-		void setLoop();
-		void doPlay();
-		
-	public slots:
-		bool handleProjectResponse(KTProjectResponse *event);
-		
-	signals:
-		void requestTriggered(const KTProjectRequest *event);
-		
-	private:
-		QFrame *m_container;
-		KTAnimationArea *m_animationArea;
-		
-		class Status;
-		
-		Status *m_status;
-		
-		QCheckBox *m_loop;
+    Q_OBJECT
+    public:
+        KTViewCamera(KTProject *project, QWidget *parent = 0);
+        ~KTViewCamera();
+
+        QSize sizeHint() const;
+        void updateSceneInfo();
+        void setFPS(int fps);
+
+    private slots:
+        void showSceneInfo(const KTScene *scene);
+        void setLoop();
+        void doPlay();
+
+        public slots:
+            bool handleProjectResponse(KTProjectResponse *event);
+
+        signals:
+            void requestTriggered(const KTProjectRequest *event);
+
+        private:
+            QFrame *m_container;
+            KTAnimationArea *m_animationArea;
+
+            class Status;
+            Status *m_status;
+
+            QCheckBox *m_loop;
 };
 
 #endif

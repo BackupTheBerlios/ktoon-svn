@@ -31,18 +31,17 @@
 
 KTCameraWidget::KTCameraWidget(KTProject *project, QWidget *parent) : KTModuleWidgetBase(parent)
 {
-	setWindowTitle(tr("Camera"));
-	setWindowIcon(QPixmap(THEME_DIR+"/icons/camera_preview.png") );
-	
-	m_viewCamera = new KTViewCamera(project);
-	
-	m_fps = new QSpinBox;
-	boxLayout()->addLayout(KFormFactory::makeGrid( QStringList() << "FPS", QWidgetList() << m_fps ));
-	connect(m_fps, SIGNAL(valueChanged(int)), this, SLOT(setFPS(int)));
-	
-	m_fps->setValue(14);
-}
+    setWindowTitle(tr("Camera"));
+    setWindowIcon(QPixmap(THEME_DIR+"/icons/camera_preview.png") );
 
+    m_viewCamera = new KTViewCamera(project);
+
+    m_fps = new QSpinBox;
+    boxLayout()->addLayout(KFormFactory::makeGrid( QStringList() << "FPS", QWidgetList() << m_fps ));
+    connect(m_fps, SIGNAL(valueChanged(int)), this, SLOT(setFPS(int)));
+
+    m_fps->setValue(14);
+}
 
 KTCameraWidget::~KTCameraWidget()
 {
@@ -50,12 +49,10 @@ KTCameraWidget::~KTCameraWidget()
 
 KTViewCamera *KTCameraWidget::viewCamera()
 {
-	return m_viewCamera;
+    return m_viewCamera;
 }
 
 void KTCameraWidget::setFPS(int fps)
 {
-	m_viewCamera->setFPS( fps );
+    m_viewCamera->setFPS( fps );
 }
-
-

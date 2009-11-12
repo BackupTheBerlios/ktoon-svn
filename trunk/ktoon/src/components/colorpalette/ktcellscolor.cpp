@@ -34,164 +34,140 @@
 
 struct KTCellsColor::Private
 {
-	KTCellsColor::Type type;
-	QString name;
-	bool readOnly;
-	QPoint startDragPosition;
+    KTCellsColor::Type type;
+    QString name;
+    bool readOnly;
+    QPoint startDragPosition;
 };
 
 KTCellsColor::KTCellsColor(QWidget *parent, Type type)
 	: KCellView(16, parent), k(new Private)
 {
-	k->type = type;
-	k->readOnly = false;
-	setAcceptDrops(true);
+    k->type = type;
+    k->readOnly = false;
+    setAcceptDrops(true);
 }
-
 
 KTCellsColor::~KTCellsColor()
 {
-	delete k;
+    delete k;
 }
 
 
 void KTCellsColor::setReadOnly(bool enable)
 {
-	k->readOnly = enable;
+    k->readOnly = enable;
 }
 
 bool KTCellsColor::isReadOnly()
 {
-	return k->readOnly;
+    return k->readOnly;
 }
 
 void KTCellsColor::setType(Type type)
 {
-	k->type = type;
+    k->type = type;
 }
 
 int KTCellsColor::type()
 {
-	return k->type;
+    return k->type;
 }
 
 QString KTCellsColor::name() const
 {
-	return k->name;
+    return k->name;
 }
 
 void KTCellsColor::setName(const QString& name)
 {
-	k->name = name;
+    k->name = name;
 }
 
 void KTCellsColor::save( const QString &path)
 {
-	QFile save(path);
-	KTPaletteDocument document(k->name, true);
-	
-	for(int i = 0; i < columnCount() ; i++)
-	{
-		for (int  j = 0; j < rowCount() ; j++)
-		{
-			QTableWidgetItem *tmpItem = itemAt(i*25, j*25);
-			if(tmpItem)
-			{
-				if(tmpItem->background().gradient())
-				{
-					document.addGradient(*tmpItem->background().gradient());
-				}
-				else if(tmpItem->background().color().isValid())
-				{
-					document.addColor(tmpItem->background().color());
-				}
-			}
-		}
-	}
-	if ( save.open(QIODevice::WriteOnly | QIODevice::Text))
-	{
-		QTextStream out(&save);
-		out << document.toString();
-		save.close();
-	}
+    QFile save(path);
+    KTPaletteDocument document(k->name, true);
+
+    for (int i = 0; i < columnCount() ; i++) {
+         for (int  j = 0; j < rowCount() ; j++) {
+              QTableWidgetItem *tmpItem = itemAt(i*25, j*25);
+              if (tmpItem) {
+                  if (tmpItem->background().gradient())
+                      document.addGradient(*tmpItem->background().gradient());
+                  else if(tmpItem->background().color().isValid())
+                      document.addColor(tmpItem->background().color());
+              }
+         }
+    }
+
+    if (save.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&save);
+        out << document.toString();
+        save.close();
+    }
 }
 
 void KTCellsColor::dragEnterEvent( QDragEnterEvent *event )
 {
-	setFocus();
+    setFocus();
 
-	if (event->mimeData()->hasColor()) 
-	{
-		if (event->source() == this) 
-		{
-			event->setDropAction(Qt::MoveAction);
-			event->accept();
-		} 
-		else
-		{
-			event->acceptProposedAction();
-		}
-	} 
-	else 
-	{
-		event->ignore();
-	}
+    if (event->mimeData()->hasColor()) {
+        if (event->source() == this) {
+             event->setDropAction(Qt::MoveAction);
+             event->accept();
+        } else {
+             event->acceptProposedAction();
+        }
+    } else {
+          event->ignore();
+    }
 }
 
 void KTCellsColor::dropEvent( QDropEvent *event )
 {
-	if (event->mimeData()->hasColor())
-	{
-		QColor color = qvariant_cast<QColor>(event->mimeData()->colorData());
-		
-		// TODO: crear item in ktcellscolor.cpp
-		
-		if (event->source() == this) 
-		{
-			event->setDropAction(Qt::MoveAction);
-			event->accept();
-		} 
-		else 
-		{
-			event->acceptProposedAction();
-		}
-	} 
-	else 
-	{
-		event->ignore();
-	}
+    if (event->mimeData()->hasColor()) {
+        QColor color = qvariant_cast<QColor>(event->mimeData()->colorData());
+
+        // TODO: crear item in ktcellscolor.cpp
+
+        if (event->source() == this) {
+            event->setDropAction(Qt::MoveAction);
+            event->accept();
+        } else {
+            event->acceptProposedAction();
+        }
+    } else {
+            event->ignore();
+    }
 }
 
 void KTCellsColor::mousePressEvent(QMouseEvent* e)
 {
-	KCellView::mousePressEvent(e);
-	k->startDragPosition = e->pos();
-	
+    KCellView::mousePressEvent(e);
+    k->startDragPosition = e->pos();
 }
 
 void KTCellsColor::mouseMoveEvent(QMouseEvent* e)
 {
-	KCellView::mouseMoveEvent(e);
-	
-	if ((e->pos() - k->startDragPosition).manhattanLength() <  QApplication::startDragDistance() || !currentItem() )
-		return;
+    KCellView::mouseMoveEvent(e);
 
-	QDrag *drag = new QDrag( this );
-	QPixmap pix( 25, 25 );
-	QColor color=  currentItem()->background().color();
-	pix.fill( color);
-	
-	QPainter painter( &pix );
-	painter.drawRect( 0, 0, pix.width(), pix.height() );
-	painter.end();
-		
-	QMimeData *mimeData = new QMimeData;
-	mimeData->setColorData(currentItem()->background().color());
-		
-	drag->setMimeData(mimeData);
-	drag->setPixmap( pix );
-		
-	/*Qt::DropAction dropAction = */drag->start(Qt::MoveAction);
+    if ((e->pos() - k->startDragPosition).manhattanLength() <  QApplication::startDragDistance() || !currentItem() )
+        return;
 
+    QDrag *drag = new QDrag( this );
+    QPixmap pix( 25, 25 );
+    QColor color =  currentItem()->background().color();
+    pix.fill( color);
+
+    QPainter painter(&pix);
+    painter.drawRect( 0, 0, pix.width(), pix.height() );
+    painter.end();
+
+    QMimeData *mimeData = new QMimeData;
+    mimeData->setColorData(currentItem()->background().color());
+
+    drag->setMimeData(mimeData);
+    drag->setPixmap(pix);
 }
 

@@ -33,40 +33,40 @@ class KTColorPalette;
 */
 class KTColorPalette : public KTModuleWidgetBase
 {
-	Q_OBJECT
-	public:
-		enum TypeBrush{ Solid = 0, Gradient };
-		KTColorPalette(QWidget *parent = 0);
-		~KTColorPalette();
-		//FIXME: cambiar esto por brush
-		QPair<QColor, QColor> color();
-		void parsePaletteFile(const QString &file);
+    Q_OBJECT
+    public:
+        enum TypeBrush{ Solid = 0, Gradient };
+        KTColorPalette(QWidget *parent = 0);
+        ~KTColorPalette();
+        //FIXME: cambiar esto por brush
+        QPair<QColor, QColor> color();
+        void parsePaletteFile(const QString &file);
 
-	private:
-		struct Private;
-		Private *const k;
+    private:
+        struct Private;
+        Private *const k;
+
+    private:
+        void setupButtons();
+        void setupChooserTypeColor();
+        void setupGradienManager();
+        void setupDisplayColor();
+
+    protected:
+        void mousePressEvent ( QMouseEvent * e );
+
+    public slots:
+        void setColor(const QBrush &brush);
+        void setFG(const QBrush &brush);
+        void setBG(const QBrush &brush);
+        void updateColor();
+        void changeTypeColor(KDualColorButton::DualColor s);
+        void syncHsv(int h , int s , int v);
+        void setHS(int h, int s);
+        void changeBrushType(const QString& );
 		
-	private:
-		void setupButtons();
-		void setupChooserTypeColor();
-		void setupGradienManager();
-		void setupDisplayColor();
-	
-	protected:
-		void mousePressEvent ( QMouseEvent * e );
-	
-	public slots:
-		void setColor(const QBrush &brush);
-		void setFG(const QBrush &brush);
-		void setBG(const QBrush &brush);
-		void updateColor();
-		void changeTypeColor(KDualColorButton::DualColor s);
-		void syncHsv(int h , int s , int v);
-		void setHS(int h, int s);
-		void changeBrushType(const QString& );
-		
-	signals:
-		void paintAreaEventTriggered(const KTPaintAreaEvent *event);
+    signals:
+        void paintAreaEventTriggered(const KTPaintAreaEvent *event);
 };
 
 #endif
