@@ -45,44 +45,41 @@
 
 class KTExposureSheet : public KTModuleWidgetBase
 {
-	Q_OBJECT;
-	public:
-		KTExposureSheet(QWidget *parent = 0);
-		~KTExposureSheet();
+    Q_OBJECT;
+    public:
+        KTExposureSheet(QWidget *parent = 0);
+        ~KTExposureSheet();
+
+    private:
+        struct Private;
+        Private * const k;
+        void createMenu();
+
+    protected:
+        virtual void sceneResponse(KTSceneResponse *e);
+        virtual void layerResponse(KTLayerResponse *e);
+        virtual void frameResponse(KTFrameResponse *e);
+
+    public slots:
+        void closeAllScenes();
+        void applyAction(int action);
+        void addScene(int index, const QString &name);
+        void renameScene(int index, const QString &name);
+        void setScene(int index);
+        void changeVisiblityLayer( int, bool  );
+
+    private slots: 
+        void emitRequestChangeScene(int index);
+        void emitRequestCopyCurrentFrame();
+        void emitRequestPasteInCurrentFrame();
+        void emitRequestExpandCurrentFrame();
 		
-	private:
-		struct Private;
-		Private * const k;
-		
-		void createMenu();
-		
-	protected:
-		virtual void sceneResponse(KTSceneResponse *e);
-		virtual void layerResponse(KTLayerResponse *e);
-		virtual void frameResponse(KTFrameResponse *e);
-		
-	public slots:
-		void closeAllScenes();
-		void applyAction(int action);
-		void addScene(int index, const QString &name);
-		void renameScene( int index, const QString &name);
-		void setScene(int index);
-		void changeVisiblityLayer( int, bool  );
-		
-	private slots: 
-		void emitRequestChangeScene(int index);
-		
-		void emitRequestCopyCurrentFrame();
-		void emitRequestPasteInCurrentFrame();
-		void emitRequestExpandCurrentFrame();
-		
-		void insertItem(int indexLayer, int indexFrame);
-		void renameFrame(int indexLayer, int indexFrame, const QString & name);
-		void selectFrame(int indexLayer, int indexFrame);
-		void renameLayer(int indexLayer, const QString & name);
-		void moveLayer(int oldIndex, int newIndex);
-		void actionTiggered(QAction *action);
-		
+        void insertItem(int indexLayer, int indexFrame);
+        void renameFrame(int indexLayer, int indexFrame, const QString & name);
+        void selectFrame(int indexLayer, int indexFrame);
+        void renameLayer(int indexLayer, const QString & name);
+        void moveLayer(int oldIndex, int newIndex);
+        void actionTiggered(QAction *action);
 };
 
 #endif

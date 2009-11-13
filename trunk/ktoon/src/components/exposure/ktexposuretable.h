@@ -32,70 +32,68 @@ class QMenu;
 */
 class KTExposureTable : public QTableWidget
 {
-	Q_OBJECT;
-	
-	friend class KTExposureItemDelegate;
-	
-	public:
-		enum Attribute
-		{
-			IsUsed = 1000,
-			IsLocked
-		};
-		
-		KTExposureTable(QWidget * parent = 0);
-		~KTExposureTable();
-		
-		int currentLayer() const;
-		int currentFrame() const;
-		void insertLayer(int index, const QString & name);
-		void setUseFrame(int indexLayer, int indexFrame, const QString & name, bool external);
-		void removeLayer(int indexLayer );
-		void removeFrame(int indexLayer, int indexFrame);
-		void moveFrame( int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external );
-		void moveLayer( int oldPosLayer, int newPosLayer );
-		
-		void setLockFrame(int indexLayer, int indexFrame, bool locked);
-		void setLockLayer(int indexLayer,  bool locked);
-		void setVisibilityChanged(int visualIndex, bool visibility);
-		int numUsed( int column ) const;
-		
-		QString frameName(int indexLayer, int indexFrame);
-		void setFrameName(int indexLayer, int indexFrame,const QString & name);
-		void setLayerName(int indexLayer, const QString & name);
-		
-		bool frameIsLocked(int indexLayer, int indexFrame);
-		void selectFrame( int indexLayer, int indexFrame);
-		
-		void setMenu(QMenu *menu);
-		
-	private:
-		struct Private;
-		Private *const k;
-		
-	private slots:
-		void emitRequestSetUsedFrame(int indexFrame,  int indexLayer);
-		void emitRequestRenameFrame( QTableWidgetItem * item );
-		void emitRequestSelectFrame(  int currentRow, int currentColumn, int previousRow, int previousColumn );
-		void emitRequestMoveLayer( int logicalIndex, int oldVisualIndex, int newVisualIndex  );
+    Q_OBJECT;
 
-	protected:
-		bool edit ( const QModelIndex & index, EditTrigger trigger, QEvent * event );
-		void mousePressEvent(QMouseEvent * event);
+    friend class KTExposureItemDelegate;
+
+    public:
+        enum Attribute
+        {
+          IsUsed = 1000,
+          IsLocked
+        };
+
+        KTExposureTable(QWidget * parent = 0);
+        ~KTExposureTable();
+
+        int currentLayer() const;
+        int currentFrame() const;
+        void insertLayer(int index, const QString & name);
+        void setUseFrame(int indexLayer, int indexFrame, const QString & name, bool external);
+        void removeLayer(int indexLayer);
+        void removeFrame(int indexLayer, int indexFrame);
+        void moveFrame(int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external);
+        void moveLayer(int oldPosLayer, int newPosLayer);
+
+        void setLockFrame(int indexLayer, int indexFrame, bool locked);
+        void setLockLayer(int indexLayer,  bool locked);
+        void setVisibilityChanged(int visualIndex, bool visibility);
+        int numUsed(int column) const;
+
+        QString frameName(int indexLayer, int indexFrame);
+        void setFrameName(int indexLayer, int indexFrame,const QString & name);
+        void setLayerName(int indexLayer, const QString & name);
+
+        bool frameIsLocked(int indexLayer, int indexFrame);
+        void selectFrame( int indexLayer, int indexFrame);
+
+        void setMenu(QMenu *menu);
 		
-	protected slots:
-		void commitData ( QWidget * editor );
-		
-		
-	signals:
-		void requestSetUsedFrame(int indexLayer, int indexFrame);
-		void requestRenameFrame(int indexLayer, int indexFrame,const QString & name);
-		void requestSelectFrame(int indexLayer, int indexFrame);
-		
-		void requestRenameLayer(int indexLayer, const QString & name);
-		void requestMoveLayer( int oldIndex, int newIndex  );
-		void requestChangeVisiblityLayer(int visualIndexLayer, bool visibility);
-		
+    private:
+        struct Private;
+        Private *const k;
+
+    private slots:
+        void emitRequestSetUsedFrame(int indexFrame,  int indexLayer);
+        void emitRequestRenameFrame(QTableWidgetItem * item);
+        void emitRequestSelectFrame(int currentRow, int currentColumn, int previousRow, int previousColumn);
+        void emitRequestMoveLayer(int logicalIndex, int oldVisualIndex, int newVisualIndex);
+
+    protected:
+        bool edit(const QModelIndex & index, EditTrigger trigger, QEvent * event);
+        void mousePressEvent(QMouseEvent * event);
+
+    protected slots:
+        void commitData(QWidget * editor);
+
+    signals:
+        void requestSetUsedFrame(int indexLayer, int indexFrame);
+        void requestRenameFrame(int indexLayer, int indexFrame,const QString & name);
+        void requestSelectFrame(int indexLayer, int indexFrame);
+
+       void requestRenameLayer(int indexLayer, const QString & name);
+       void requestMoveLayer(int oldIndex, int newIndex);
+       void requestChangeVisiblityLayer(int visualIndexLayer, bool visibility);
 };
 
 #endif

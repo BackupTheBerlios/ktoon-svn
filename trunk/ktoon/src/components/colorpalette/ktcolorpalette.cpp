@@ -65,7 +65,7 @@ struct KTColorPalette::Private
     bool flagGradient;
     TypeBrush type;
 
-    ~Private();
+    //~Private();
 };
 
 KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(new Private)

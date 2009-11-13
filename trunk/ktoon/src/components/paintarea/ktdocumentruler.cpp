@@ -81,7 +81,7 @@ void KTDocumentRuler::movePointers(const QPointF &pos)
         translateArrow(zero().x() + pos.x(), 0);
     } else if (orientation() == Qt::Vertical) {
                translateArrow(0, -k->oldPos.y());
-               translateArrow(0,zero().y() + pos.y());
+               translateArrow(0, zero().y() + pos.y());
     }
 
     k->oldPos = zero() + pos;
