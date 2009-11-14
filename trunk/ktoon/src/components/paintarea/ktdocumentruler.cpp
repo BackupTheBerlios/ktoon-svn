@@ -22,6 +22,9 @@
 
 #include "ktdocumentruler.h"
 
+#include <iostream>
+using namespace std;
+
 #include <QApplication>
 
 struct KTDocumentRuler::Private
@@ -31,7 +34,7 @@ struct KTDocumentRuler::Private
 };
 
 KTDocumentRuler::KTDocumentRuler(Qt::Orientation orientation, QWidget *parent) : KRulerBase(orientation, parent), 
-										 k( new Private)
+                                 k( new Private)
 {
     k->oldPos = QPointF(0.0,0.0);
     setDrawPointer(true);
@@ -66,7 +69,7 @@ void KTDocumentRuler::mouseMoveEvent(QMouseEvent *event)
     else
         data = "horizontalLine";
 
-    mimeData->setData("ktoon-ruler", data.toAscii () );
+    mimeData->setData("ktoon-ruler", data.toAscii());
     drag->setMimeData(mimeData);
 
     Qt::DropAction dropAction = drag->start(Qt::CopyAction | Qt::MoveAction);
@@ -79,9 +82,13 @@ void KTDocumentRuler::movePointers(const QPointF &pos)
     if (orientation() == Qt::Horizontal) {
         translateArrow(-k->oldPos.x(), 0);
         translateArrow(zero().x() + pos.x(), 0);
+        cout << "Horizontal PosX: " << zero().x() + pos.x() << endl;
+        cout << "Horizontal PosY: " << 0 << endl;
     } else if (orientation() == Qt::Vertical) {
                translateArrow(0, -k->oldPos.y());
                translateArrow(0, zero().y() + pos.y());
+               cout << "Vertical PosX: " << 0 << endl;
+               cout << "Vertical PosY: " << zero().y() + pos.y() << endl;
     }
 
     k->oldPos = zero() + pos;
