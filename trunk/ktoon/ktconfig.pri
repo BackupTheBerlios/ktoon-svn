@@ -1,4 +1,4 @@
-# Generated automatically at Tue Nov 10 16:57:36 -0500 2009! PLEASE DO NOT EDIT!
+# Generated automatically at Fri Nov 13 00:19:32 -0500 2009! PLEASE DO NOT EDIT!
 INCLUDEPATH += /usr/include/gstreamer-0.10 /usr/include/glib-2.0 /usr/lib/glib-2.0/include /usr/include/libxml2 /usr/include
 LIBS += -lgstreamer-0.10 -lgobject-2.0 -lgmodule-2.0 -lgthread-2.0 -lrt -lxml2 -lglib-2.0 -pthread -laspell -lavcodec -lavformat -lkgui -lkcore -lksound -lz -L/usr/lib
 QT += opengl core gui svg xml network

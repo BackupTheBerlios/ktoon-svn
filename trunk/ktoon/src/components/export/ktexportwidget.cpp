@@ -40,6 +40,10 @@
 #include <kgui/kitemselector.h>
 #include <kgui/kxyspinbox.h>
 
+#include <iostream>
+using namespace std;
+
+
 /**
  * This class handles the whole process to export a project into a movie format.
  * The export widget uses a wizard to guide the process: format, escenes, target file
@@ -59,18 +63,19 @@ class SelectPlugin : public KExportWizardPage
         void addPlugin(const QString &plugin);
         void setFormats(KTExportInterface::Formats formats);
 
-        public slots:
-            void selectedPluginItem(QListWidgetItem *);
-            void selectedFormatItem(QListWidgetItem *);
-            void clean();
+    public slots:
+        void selectedPluginItem(QListWidgetItem *);
+        void selectedFirstItem();
+        void selectedFormatItem(QListWidgetItem *);
+        //void close();
 
-        signals:
-            void selectedPlugin(const QString &plugin);
-            void formatSelected(int format);
+    signals:
+        void selectedPlugin(const QString &plugin);
+        void formatSelected(int format);
 
-        private:
-            QListWidget *m_exporterList;
-            QListWidget *m_formatList;
+    private:
+        QListWidget *m_exporterList;
+        QListWidget *m_formatList;
 };
 
 SelectPlugin::SelectPlugin(const KTExportWidget *kt) : KExportWizardPage(tr("Select plugin"))
@@ -79,6 +84,8 @@ SelectPlugin::SelectPlugin(const KTExportWidget *kt) : KExportWizardPage(tr("Sel
     QHBoxLayout *layout = new QHBoxLayout(container);
 
     m_exporterList = new QListWidget;
+    m_exporterList->setSelectionMode(QAbstractItemView::SingleSelection);
+
     connect(m_exporterList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selectedPluginItem(QListWidgetItem *)));
     layout->addWidget(m_exporterList);
 
@@ -86,7 +93,7 @@ SelectPlugin::SelectPlugin(const KTExportWidget *kt) : KExportWizardPage(tr("Sel
     connect(m_formatList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(selectedFormatItem(QListWidgetItem *)));
     layout->addWidget(m_formatList);
 
-    connect(kt, SIGNAL(cancelled()), this, SLOT(clean()));
+    //connect(kt, SIGNAL(cancelled()), this, SLOT(close()));
     setWidget(container);
 
     reset();
@@ -105,13 +112,15 @@ void SelectPlugin::reset()
 {
     m_exporterList->clearSelection();
     m_formatList->clearSelection();
-}
-
-void SelectPlugin::clean()
-{
-    reset();
     m_formatList->clear();
 }
+
+/*
+void SelectPlugin::close()
+{
+    cout << "Closing..." << endl;
+}
+*/
 
 void SelectPlugin::addPlugin(const QString &plugin)
 {
@@ -122,6 +131,15 @@ void SelectPlugin::selectedPluginItem(QListWidgetItem *item)
 {
     if (item) {
         emit selectedPlugin(item->text());
+        emit completed();
+    }
+}
+
+void SelectPlugin::selectedFirstItem()
+{
+    m_exporterList->item(0)->setSelected(true);
+    if (m_exporterList->item(0)) {
+        emit selectedPlugin(m_exporterList->item(0)->text());
         emit completed();
     }
 }
@@ -557,8 +575,8 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KExp
     connect(m_pluginSelectionPage, SIGNAL(formatSelected(int)), m_exportToPage, SLOT(setCurrentFormat(int)));
     connect(m_scenesSelectionPage, SIGNAL(selectedScenes(const QList<int> &)), m_exportToPage, 
             SLOT(setScenesIndexes(const QList<int> &)));
-
     loadPlugins();
+    m_pluginSelectionPage->selectedFirstItem();
 }
 
 KTExportWidget::~KTExportWidget()
