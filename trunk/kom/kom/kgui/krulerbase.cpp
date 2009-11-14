@@ -23,8 +23,6 @@
 #include "krulerbase.h"
 #include "kdebug.h"
 
-#include <iostream>
-using namespace std;
 #include <QMouseEvent>
 #include <QFrame>
 #include <QResizeEvent>
@@ -61,18 +59,21 @@ KRulerBase::KRulerBase(Qt::Orientation orientation, QWidget *parent) : QFrame(pa
     k->scaleFactor = 1.0;
 
     if (k->orientation == Qt::Horizontal) {
-        setMaximumHeight(10);
+
+        setMaximumHeight(20);
         setMinimumHeight(20);
 
         k->width = width();
         k->height = height();
 
         k->pArrow << QPointF(0.0, 0.0);
-        k->pArrow << QPointF(5.0,  5.0);
+        k->pArrow << QPointF(5.0, 5.0);
         k->pArrow << QPointF(10.0, 0.0);
 
-        k->pArrow.translate(0, 10);
+        k->pArrow.translate(0,13);
+
     } else {
+
         setMaximumWidth(20);
         setMinimumWidth(20);
 
@@ -83,11 +84,10 @@ KRulerBase::KRulerBase(Qt::Orientation orientation, QWidget *parent) : QFrame(pa
         k->pArrow << QPointF(5.0, 5.0);
         k->pArrow << QPointF(0.0, 10.0);
 
-        k->pArrow.translate(10,0);
+        k->pArrow.translate(13,0);
     }
 
-
-    setMouseTracking ( true );
+    setMouseTracking (true);
 
     connect(this, SIGNAL(displayMenu(KRulerBase *, QPoint)), this, SLOT(showMenu(KRulerBase *, QPoint)));
 
@@ -140,7 +140,7 @@ void KRulerBase::drawScale(QPainter *painter)
     if (k->orientation == Qt::Horizontal) {
         painter->translate(k->zero.x(), 0);
         init = (int)k->zero.x();
-        painter->drawLine(-390,height()-1, width(), height()-1);
+        painter->drawLine(-390, height()-1, width(), height()-1);
     } else {
         painter->drawLine(width()-1, 0, width()-1, height());
         fact = -1;
@@ -153,16 +153,16 @@ void KRulerBase::drawScale(QPainter *painter)
     int ytext = k->height/2;
 
     for (int i = 0; i < k->width; i += k->separation) {
-
          QSize sizeFont = fm.size(Qt::TextSingleLine, QString::number(i));
          if (i % 100 == 0) { // FIX ME
-             painter->drawLine ( i, ypos, i, 0 );
+             painter->drawLine (i, ypos, i, 0);
+             int dx = i + 3;
              if (k->orientation == Qt::Vertical)
-                 painter->drawText( QPoint(i + 3, ytext - sizeFont.height()), QString::number(i));
+                 painter->drawText(QPoint(dx, ytext - sizeFont.height()), QString::number(i));
              else
-                 painter->drawText( QPoint(i + 3, ytext), QString::number(i));
+                 painter->drawText(QPoint(dx, ytext), QString::number(i));
          } else {
-                 painter->drawLine ( i, ypos, i, ypos - k->height/4*fact );
+                 painter->drawLine (i, ypos, i, ypos - k->height/4*fact);
          }
     }
 
@@ -170,20 +170,21 @@ void KRulerBase::drawScale(QPainter *painter)
          //cout << "Var: " << i << endl;
          QSize sizeFont = fm.size (Qt::TextSingleLine, QString::number(i));
          if (i % 100  == 0) { // FIX ME
-             painter->drawLine ( i, ypos, i, 0 );
+             painter->drawLine(i, ypos, i, 0);
+             int dx = i + 3;
              if (k->orientation == Qt::Vertical)
-                 painter->drawText( QPoint(i + 3, ytext - sizeFont.height()), QString::number(i));
+                 painter->drawText(QPoint(dx, ytext - sizeFont.height()), QString::number(i));
              else
-                 painter->drawText( QPoint(i + 3, ytext), QString::number(i));
+                 painter->drawText(QPoint(dx, ytext), QString::number(i));
          } else {
-             painter->drawLine ( i, ypos, i, ypos - k->height/4*fact );
+             painter->drawLine(i, ypos, i, ypos - k->height/4*fact);
          }
     }
 
     painter->restore();
 }
 
-void KRulerBase::resizeEvent ( QResizeEvent * )
+void KRulerBase::resizeEvent(QResizeEvent *)
 {
     if (k->orientation == Qt::Horizontal) {
         k->width = width();
@@ -247,10 +248,12 @@ void KRulerBase::showMenu(KRulerBase *ruler, QPoint pos)
 
 void KRulerBase::slide(int value)
 {
+    int distance = -value + k->height;
+
     if (k->orientation == Qt::Horizontal)
-        move(-value+k->height, pos().y());
+        move(distance, pos().y());
     else
-        move(pos().x(), -value+k->height);
+        move(pos().x(), distance);
 }
 
 QPointF KRulerBase::zero() const
@@ -277,10 +280,12 @@ void KRulerBase::scale(double factor)
 
 QSize KRulerBase::sizeHint() const
 {
-    if (k->orientation == Qt::Horizontal)
-        return QSize(k->width/3, height());
+    int distance = k->width/3;
 
-    return QSize( width(), k->height/3 );
+    if (k->orientation == Qt::Horizontal)
+        return QSize(distance, height());
+
+    return QSize(width(), distance);
 }
 
 void KRulerBase::changeScaleTo5pts()
