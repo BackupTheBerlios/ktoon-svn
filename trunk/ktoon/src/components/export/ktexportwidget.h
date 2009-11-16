@@ -61,6 +61,7 @@ class KTExportWidget : public KExportWizard
         ExportTo *m_exportToPage;
         const KTProject *m_project;
         QHash<QString, KTExportInterface *> m_plugins;
+        const QString tag;
 };
 
 
