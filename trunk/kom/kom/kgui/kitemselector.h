@@ -45,6 +45,7 @@ class KItemSelector : public QWidget
 		
 		void clear();
 		void reset();
+                void selectFirstItem();
 		
 	private slots:
 		void addCurrent();

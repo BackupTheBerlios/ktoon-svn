@@ -29,173 +29,170 @@
 
 struct KItemSelector::Private
 {
-	QListWidget *available;
-	QListWidget *selected;
+    QListWidget *available;
+    QListWidget *selected;
 };
 
 KItemSelector::KItemSelector(QWidget *parent) : QWidget(parent), k( new Private )
 {
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	
-	k->available = new QListWidget;
-	
-	layout->addWidget(k->available);
-	
-	QVBoxLayout *controlBox = new QVBoxLayout(this);
-	controlBox->setSpacing(0);
-	controlBox->setMargin(2);
-	controlBox->addStretch();
-	
-	QToolButton *bnext = new QToolButton;
-	bnext->setText(">>");
-	connect(bnext, SIGNAL(clicked()), this, SLOT(addCurrent()));
-	
-	controlBox->addWidget(bnext);
-	
-	QToolButton *bprev = new QToolButton;
-	bprev->setText("<<");
-	connect(bprev, SIGNAL(clicked()), this, SLOT(removeCurrent()));
-	
-	controlBox->addWidget(bprev);
-	
-	QToolButton *bup = new QToolButton;
-	bup->setText("^");
-	connect(bup, SIGNAL(clicked()), this, SLOT(upCurrent()));
-	
-	controlBox->addWidget(bup);
-	
-	QToolButton *bdown = new QToolButton;
-	bdown->setText("v");
-	connect(bdown, SIGNAL(clicked()), this, SLOT(downCurrent()));
-	
-	controlBox->addWidget(bdown);
-	
-	controlBox->addStretch();
-	
-	layout->addLayout(controlBox);
-	
-	k->selected = new QListWidget;
-	layout->addWidget(k->selected);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+
+    k->available = new QListWidget;
+
+    layout->addWidget(k->available);
+
+    QVBoxLayout *controlBox = new QVBoxLayout(this);
+    controlBox->setSpacing(0);
+    controlBox->setMargin(2);
+    controlBox->addStretch();
+
+    QToolButton *bnext = new QToolButton;
+    bnext->setText(">>");
+    connect(bnext, SIGNAL(clicked()), this, SLOT(addCurrent()));
+
+    controlBox->addWidget(bnext);
+
+    QToolButton *bprev = new QToolButton;
+    bprev->setText("<<");
+    connect(bprev, SIGNAL(clicked()), this, SLOT(removeCurrent()));
+
+    controlBox->addWidget(bprev);
+
+    /*
+    QToolButton *bup = new QToolButton;
+    bup->setText("^");
+    connect(bup, SIGNAL(clicked()), this, SLOT(upCurrent()));
+
+    controlBox->addWidget(bup);
+
+    QToolButton *bdown = new QToolButton;
+    bdown->setText("v");
+    connect(bdown, SIGNAL(clicked()), this, SLOT(downCurrent()));
+
+    controlBox->addWidget(bdown);
+    */
+
+    controlBox->addStretch();
+
+    layout->addLayout(controlBox);
+
+    k->selected = new QListWidget;
+    layout->addWidget(k->selected);
 }
 
 
 KItemSelector::~KItemSelector()
 {
-	delete k;
+    delete k;
 }
 
+void KItemSelector::selectFirstItem() {
+     if (k->available->item(0)) {
+         k->available->item(0)->setSelected(true);
+         emit changed();
+     }
+}
 
 void KItemSelector::addCurrent()
 {
-	int row = k->available->currentRow();
-	if( row >= 0 )
-	{
-		QListWidgetItem *item = k->available->takeItem(row);
-		k->selected->addItem(item);
-		
-		emit changed();
-	}
+    int row = k->available->currentRow();
+
+    if (row >= 0) {
+        QListWidgetItem *item = k->available->takeItem(row);
+        k->selected->addItem(item);
+
+        emit changed();
+    }
 }
 
 void KItemSelector::removeCurrent()
 {
-	int row = k->selected->currentRow();
-	if( row >= 0 )
-	{
-		QListWidgetItem *item = k->selected->takeItem(row);
-		k->available->addItem(item);
-		
-		emit changed();
-	}
+    int row = k->selected->currentRow();
+    if (row >= 0) {
+        QListWidgetItem *item = k->selected->takeItem(row);
+        k->available->addItem(item);
+
+        emit changed();
+    }
 }
 
 void KItemSelector::upCurrent()
 {
-	int row = k->selected->currentRow();
-	if( row >= 0 )
-	{
-		QListWidgetItem *item = k->selected->takeItem(row);
-		
-		k->selected->insertItem(row-1,item);
-		
-		k->selected->setCurrentItem(item);
-		
-		emit changed();
-	}
+    int row = k->selected->currentRow();
+    if (row >= 0) {
+        QListWidgetItem *item = k->selected->takeItem(row);
+        k->selected->insertItem(row-1,item);
+        k->selected->setCurrentItem(item);
+
+        emit changed();
+    }
 }
 
 void KItemSelector::downCurrent()
 {
-	int row = k->selected->currentRow();
-	if( row >= 0 )
-	{
-		QListWidgetItem *item = k->selected->takeItem(row);
-		
-		k->selected->insertItem(row+1,item);
-		k->selected->setCurrentItem(item);
-		
-		emit changed();
-	}
+    int row = k->selected->currentRow();
+    if (row >= 0) {
+        QListWidgetItem *item = k->selected->takeItem(row);
+        k->selected->insertItem(row+1,item);
+        k->selected->setCurrentItem(item);
+
+        emit changed();
+    }
 }
 
 
 void KItemSelector::setItems(const QStringList &items)
 {
-	k->available->clear();
-	addItems(items);
+    k->available->clear();
+    addItems(items);
 }
 
 int KItemSelector::addItem(const QString &item)
 {
-	QListWidgetItem *it = new QListWidgetItem(item, k->available);
-	
-	int index = k->available->count()-1;
-	
-	it->setData(4321, index);
-	
-	return index;
+    QListWidgetItem *it = new QListWidgetItem(item, k->available);
+    int index = k->available->count()-1;
+    it->setData(4321, index);
+
+    return index;
 }
 
 void KItemSelector::addItems(const QStringList &items)
 {
-	foreach(QString item, items)
-		addItem(item);
+    foreach (QString item, items)
+             addItem(item);
 }
 
 QStringList KItemSelector::selectedItems() const
 {
-	QStringList items;
-	for(int row = 0; row < k->selected->count(); row++)
-	{
-		QListWidgetItem *item = k->selected->item(row);
-		items << item->text();
-	}
-	
-	return items;
+    QStringList items;
+    for (int row = 0; row < k->selected->count(); row++) {
+         QListWidgetItem *item = k->selected->item(row);
+         items << item->text();
+    }
+
+    return items;
 }
 
 QList<int> KItemSelector::selectedIndexes() const
 {
-	QList<int> indexes;
-	for(int row = 0; row < k->selected->count(); row++)
-	{
-		QListWidgetItem *item = k->selected->item(row);
-		indexes << item->data(4321).toInt();
-	}
-	
-	return indexes;
+    QList<int> indexes;
+    for (int row = 0; row < k->selected->count(); row++) {
+         QListWidgetItem *item = k->selected->item(row);
+         indexes << item->data(4321).toInt();
+    }
+
+    return indexes;
 }
 
 void KItemSelector::clear()
 {
-	k->available->clear();
-	reset();
+    k->available->clear();
+    reset();
 }
 
 void KItemSelector::reset()
 {
-	k->selected->clear();
-	
-	emit changed();
+    k->selected->clear();
+    emit changed();
 }
 

@@ -31,11 +31,12 @@
 // Qt
 #include <QLabel>
 #include <QBitmap>
+#include <QDebug>
 
 KExportWizard::KExportWizard(QWidget *parent) : QDialog(parent)
 {
     m_cancelButton = new QPushButton(tr("Cancel"));
-    m_backButton = new QPushButton(tr("< &Back"));
+    m_backButton = new QPushButton(tr("< Back"));
     m_nextButton = new QPushButton(tr("Next >"));
 
     connect(m_cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
@@ -70,10 +71,11 @@ KExportWizardPage *KExportWizard::addPage(KExportWizardPage *newPage)
         newPage->setFocus();
         m_backButton->setEnabled(false);
         m_nextButton->setDefault(true);
-    }
+    } 
 
     m_nextButton->setEnabled( newPage->isComplete() );
     connect(newPage, SIGNAL(completed()), this, SLOT(pageCompleted()));
+    connect(newPage, SIGNAL(emptyField()), this, SLOT(disableButton()));
 
     return newPage;
 }
@@ -90,19 +92,6 @@ void KExportWizard::showPage(int index)
 
 void KExportWizard::cancel()
 {       
-    /*
-    m_history.setCurrentIndex(0);
-    KExportWizardPage *current = qobject_cast<KExportWizardPage *>(m_history.widget(0));
-    m_history.setCurrentWidget(current);
-
-    m_nextButton->setEnabled(true);
-    m_backButton->setEnabled(false);
-
-    emit cancelled();
-
-    KToolView *toolView = dynamic_cast<KToolView *>(parentWidget());
-    toolView->setVisible(false);
-    */
     close();
 }
 
@@ -120,24 +109,33 @@ void KExportWizard::back()
         m_backButton->setEnabled(false);
         m_nextButton->setDefault(true);
     } else {
-        m_nextButton->setDefault(true);
+        m_nextButton->setText("Next >");
+        m_nextButton->setEnabled(true);
     }
+
+    QString tag = current->getTag();
+    if ((tag.compare("EXPORT")==0) && (!m_nextButton->isEnabled())) 
+        m_nextButton->setEnabled(true);
 }
 
 void KExportWizard::next()
 {
     KExportWizardPage *current = qobject_cast<KExportWizardPage *>(m_history.currentWidget());
+    QString tag = current->getTag();
 
     if (current)
         current->aboutToNextPage();
 
     m_history.setCurrentIndex(m_history.currentIndex()+1);
-	
-    if (m_history.currentIndex() == m_history.count()-1 && current->isComplete())
-        m_nextButton->setEnabled(false);
 
     if (m_history.currentIndex() > 0)
         m_backButton->setEnabled(true);
+
+    if (tag.compare("EXPORT")==0)
+        emit saveFile();
+
+    if (tag.compare("SCENE")==0) 
+        emit setFileName();
 
     pageCompleted();
 }
@@ -146,11 +144,20 @@ void KExportWizard::pageCompleted()
 {
     KExportWizardPage *current = qobject_cast<KExportWizardPage *>(m_history.currentWidget());
 
-    if (m_history.currentIndex() < m_history.count()-1)
+    if (m_history.currentIndex() < m_history.count()-1) {
         m_nextButton->setEnabled(current->isComplete());
+    } else {
+        m_nextButton->setText(tr("Save"));
+        m_nextButton->setEnabled(true);
+    }
 
     if (m_history.currentIndex() == 1)
         emit updateScenes();
+}
+
+void KExportWizard::disableButton() 
+{
+    m_nextButton->setEnabled(false);
 }
 
 KExportWizardPage::KExportWizardPage(const QString &title, QWidget *parent) : KVHBox(parent)
@@ -182,6 +189,16 @@ void KExportWizardPage::setPixmap(const QPixmap &px)
 void KExportWizardPage::setWidget(QWidget *w)
 {
     m_layout->addWidget(w, 0, 1);
+}
+
+void KExportWizardPage::setTag(const QString &label)
+{
+    tag = label;
+}
+
+const QString KExportWizardPage::getTag()
+{
+    return tag;
 }
 
 KExportWizardPage::~KExportWizardPage() {};

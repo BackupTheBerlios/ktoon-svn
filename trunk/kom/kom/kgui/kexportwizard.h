@@ -41,32 +41,35 @@ class KExportWizardPage;
 
 class K_GUI_EXPORT KExportWizard : public QDialog
 {
-	Q_OBJECT;
-	
-	public:
-		KExportWizard(QWidget *parent = 0);
-		~KExportWizard();
-		KExportWizardPage *addPage(KExportWizardPage *page);
-		void showPage(int index);
-		void showPage(KExportWizardPage *page);
-		
-	private slots:
-		void cancel();
-		void back();
-		void next();
-		void pageCompleted();
-	signals:
-		void cancelled();
-		void updateScenes();
-	private:
-		QStackedWidget m_history;
-		QPushButton *m_cancelButton;
-		QPushButton *m_backButton;
-		QPushButton *m_nextButton;
-		QHBoxLayout *m_buttonLayout;
-		QVBoxLayout *m_mainLayout;
+    Q_OBJECT;
 
+    public:
+        KExportWizard(QWidget *parent = 0);
+        ~KExportWizard();
+        KExportWizardPage *addPage(KExportWizardPage *page);
+        void showPage(int index);
+        void showPage(KExportWizardPage *page);
 
+    private slots:
+        void cancel();
+        void back();
+        void next();
+        void pageCompleted();
+        void disableButton();
+
+    signals:
+        void cancelled();
+        void updateScenes();
+        void saveFile();
+        void setFileName();
+
+    private:
+        QStackedWidget m_history;
+        QPushButton *m_cancelButton;
+        QPushButton *m_backButton;
+        QPushButton *m_nextButton;
+        QHBoxLayout *m_buttonLayout;
+        QVBoxLayout *m_mainLayout;
 };
 
 #include <QFrame>
@@ -75,28 +78,31 @@ class K_GUI_EXPORT KExportWizard : public QDialog
 
 class KExportWizardPage : public KVHBox
 {
-	Q_OBJECT
-	public:
-		KExportWizardPage(const QString &title, QWidget *parent = 0 );
-		virtual ~KExportWizardPage();
-		
-		virtual bool isComplete() const = 0;
-		virtual void reset() = 0;
-		
-		void setPixmap(const QPixmap &px);
-		void setWidget(QWidget *w);
-		
-	public slots:
-		virtual void aboutToNextPage() {}
-		virtual void aboutToBackPage() {}
-	signals:
-		void completed();
-	private:
-		QFrame *m_container;
-		QGridLayout *m_layout;
-		QLabel *m_image;
+    Q_OBJECT
+    public:
+        KExportWizardPage(const QString &title, QWidget *parent = 0);
+        virtual ~KExportWizardPage();
+        virtual bool isComplete() const = 0;
+        virtual void reset() = 0;
 
+        void setPixmap(const QPixmap &px);
+        void setWidget(QWidget *w);
+        void setTag(const QString &label);
+        const QString getTag();
 
+    public slots:
+        virtual void aboutToNextPage() {}
+        virtual void aboutToBackPage() {}
+
+    signals:
+        void completed();
+        void emptyField();
+
+    private:
+        QFrame *m_container;
+        QGridLayout *m_layout;
+        QLabel *m_image;
+        QString tag;
 };
 
 #endif
