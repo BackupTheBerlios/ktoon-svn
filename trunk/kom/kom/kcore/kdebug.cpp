@@ -72,171 +72,153 @@
 
 static class Colors
 {
-	public:
-		Colors()
-		{
-			m_psb << "\033[90m" << "\033[91m" << "\033[92m" << "\033[93m" << "\033[94m" << "\033[95m" << "\033[96m" << "\033[97m" << "\033[31m" << "\033[32m" << "\033[33m" << "\033[34m" << "\033[35m" << "\033[36m" << "\033[44m" << "\033[38m" << "\033[43m";
-			
-			qsrand(::time(0));
-		}
-		~Colors() {}
-		
-		QString colorize(const QString &area)
-		{
-			if( ! m_colors.contains(area) )
-			{
-				m_colors[area] = m_psb[qrand() % m_psb.size()];
-			}
-			return QString("%1%2\033[0m").arg(m_colors[area]).arg(area);
-		}
-		
-	private:
-		QMap<QString, QString> m_colors;
-		QVector<QString> m_psb;
+    public:
+        Colors()
+          {
+             m_psb << "\033[90m" << "\033[91m" << "\033[92m" << "\033[93m" << "\033[94m" << "\033[95m" << "\033[96m" << "\033[97m" << "\033[31m" << "\033[32m" << "\033[33m" << "\033[34m" << "\033[35m" << "\033[36m" << "\033[44m" << "\033[38m" << "\033[43m";
+
+             qsrand(::time(0));
+          }
+        ~Colors() {}
+
+        QString colorize(const QString &area)
+          {
+                if (! m_colors.contains(area))
+                    m_colors[area] = m_psb[qrand() % m_psb.size()];
+                return QString("%1%2\033[0m").arg(m_colors[area]).arg(area);
+          }
+
+    private:
+        QMap<QString, QString> m_colors;
+        QVector<QString> m_psb;
 } colors;
 
 #endif
 
 static class ConfigReader
 {
-	public:
-		ConfigReader();
-		~ConfigReader();
-		
-		QStringList areas;
-		
-		bool colorize;
-		bool showArea;
-		bool showAll;
-		bool forceDisableGUI;
-		DebugOutput defaultOutput;
+    public:
+        ConfigReader();
+        ~ConfigReader();
+
+        QStringList areas;
+
+        bool colorize;
+        bool showArea;
+        bool showAll;
+        bool forceDisableGUI;
+        DebugOutput defaultOutput;
 } configReader;
 
 ConfigReader::ConfigReader()
 {
-	QSettings settings("kdebug");
-	
-	settings.beginGroup("Iface");
-	areas = settings.value("areas", QStringList()).toStringList();
-	showArea = settings.value("show_area", false).toBool();
-	showAll = settings.value("show_all", true).toBool();
-	
-	defaultOutput= DebugOutput(settings.value("default", KShellOutput).toInt());
-	
-	forceDisableGUI = false;
-	
-	colorize = false;
+    QSettings settings("kdebug");
+    settings.beginGroup("Iface");
+
+    areas = settings.value("areas", QStringList()).toStringList();
+    showArea = settings.value("show_area", false).toBool();
+    showAll = settings.value("show_all", true).toBool();
+
+    defaultOutput= DebugOutput(settings.value("default", KShellOutput).toInt());
+    forceDisableGUI = false;
+    colorize = false;
 	
 #ifdef Q_OS_UNIX
-	QString terminal = QString::fromLocal8Bit(::getenv("TERM"));
-	if ( terminal == "linux" || terminal == "xterm" )
-	{
-		colorize = true;
-	}
+    QString terminal = QString::fromLocal8Bit(::getenv("TERM"));
+    if (terminal == "linux" || terminal == "xterm")
+        colorize = true;
 #endif
 }
 
 ConfigReader::~ConfigReader()
 {
-	QSettings settings("kdebug");
-	settings.beginGroup("Iface");
-	
-	if ( areas.isEmpty() )
-	{
-		settings.setValue("areas", "");
-	}
-	else
-	{
-		settings.setValue("areas", areas);
-	}
-	
-	settings.setValue("show_area", showArea);
-	settings.setValue("show_all", showAll);
-	
-	settings.setValue("default", defaultOutput);
-	
-	if ( debugBrowser )
-	{
-		if  (debugBrowser->parentWidget() == 0 )
-		{
-			delete debugBrowser;
-		}
-	}
+    QSettings settings("kdebug");
+    settings.beginGroup("Iface");
+
+    if (areas.isEmpty())
+        settings.setValue("areas", "");
+    else
+        settings.setValue("areas", areas);
+
+    settings.setValue("show_area", showArea);
+    settings.setValue("show_all", showAll);
+    settings.setValue("default", defaultOutput);
+
+    if (debugBrowser) {
+        if (debugBrowser->parentWidget() == 0 )
+            delete debugBrowser;
+    }
 }
 
 #ifdef QT_GUI_LIB
 
 class DebugBrowserHighlighter : public QSyntaxHighlighter
 {
-	Q_OBJECT;
-	public:
-		DebugBrowserHighlighter(QTextDocument *doc);
-		~DebugBrowserHighlighter() {};
-		
-	protected:
-		virtual void highlightBlock ( const QString & text );
-		
-	private:
-		QMap<QString, QColor> m_colors;
+    Q_OBJECT;
+    public:
+        DebugBrowserHighlighter(QTextDocument *doc);
+        ~DebugBrowserHighlighter() {};
+
+    protected:
+        virtual void highlightBlock ( const QString & text );
+
+    private:
+        QMap<QString, QColor> m_colors;
 };
 
 #include "kdebug.moc"
 
-
 DebugBrowserHighlighter::DebugBrowserHighlighter(QTextDocument *doc) : QSyntaxHighlighter(doc)
 {
-	QVector<int> colorIndexes = QVector<int>() << 7 << 13 << 8 << 14 <<
-			9 <<
-			15 <<
-			10 <<
-			16 <<
-			11 <<
-			17 <<
-			18;
-	
-	int count = 0;
-	foreach(QString area, configReader.areas)
-	{
-		m_colors.insert(area, QColor(Qt::GlobalColor(colorIndexes[count++ % colorIndexes.count()])) );
-	}
+    QVector<int> colorIndexes = QVector<int>() << 7 << 13 << 8 << 14 <<
+                 9 <<
+                15 <<
+                10 <<
+                16 <<
+                11 <<
+                17 <<
+                18;
+
+    int count = 0;
+    foreach(QString area, configReader.areas)
+            m_colors.insert(area, QColor(Qt::GlobalColor(colorIndexes[count++ % colorIndexes.count()])) );
 }
 
 void DebugBrowserHighlighter::highlightBlock ( const QString &text )
 {
-	int sepIndex = text.indexOf(":");
-	
-	if ( sepIndex < 0 ) return;
-	
-	QString area = text.left(sepIndex);
-	
-	if ( !m_colors.contains(area) ) return;
-	
-	QTextCharFormat format;
-	format.setFontWeight(QFont::Bold);
-	format.setForeground( m_colors[area] );
-	
-	setFormat(0, sepIndex, format);
+    int sepIndex = text.indexOf(":");
+
+    if (sepIndex < 0) 
+        return;
+
+    QString area = text.left(sepIndex);
+
+    if (!m_colors.contains(area)) 
+        return;
+
+    QTextCharFormat format;
+    format.setFontWeight(QFont::Bold);
+    format.setForeground( m_colors[area] );
+
+    setFormat(0, sepIndex, format);
 }
 
 #endif // QT_GUI_LIB
 
 static void kDebugOutput(DebugType t, DebugOutput o, const char *data)
 {
-	if ( (o == KBoxOutput) || (o == KBrowserOutput && configReader.forceDisableGUI) )
-	{
-		o = KShellOutput;
-		configReader.defaultOutput = KShellOutput;
-	}
-	
-	char const *output = "%s\n";
-	
-	if( configReader.colorize )
-	{
-		switch(t)
-		{
-			case KDebugMsg:
-			{
-	// 			output = "%s\n";
+    if ((o == KBoxOutput) || (o == KBrowserOutput && configReader.forceDisableGUI)) {
+        o = KShellOutput;
+        configReader.defaultOutput = KShellOutput;
+    }
+
+    char const *output = "%s\n";
+
+    if (configReader.colorize) {
+        switch(t) {
+               case KDebugMsg:
+                    {
+               // output = "%s\n";
 			}
 			break;
 			case KWarningMsg:
@@ -254,8 +236,8 @@ static void kDebugOutput(DebugType t, DebugOutput o, const char *data)
 				output = SHOW_FATAL;
 			}
 			break;
-		}
-	}
+        }
+    }
 	
 	switch(o)
 	{
