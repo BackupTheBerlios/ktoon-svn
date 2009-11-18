@@ -104,7 +104,7 @@ void KTViewCamera::Status::addWidget(QWidget *widget, int stretch )
 
 KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(parent)
 {
-    #ifdef KDEBUG
+    #ifdef K_DEBUG
            K_DEBUG;
     #endif
 
@@ -171,7 +171,7 @@ KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(pa
 
 KTViewCamera::~KTViewCamera()
 {
-    #ifdef KDEBUG
+    #ifdef K_DEBUG
            KEND;
     #endif
 }

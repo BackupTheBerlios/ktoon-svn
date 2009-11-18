@@ -42,10 +42,13 @@ _EOH_
 	
 	config.addDefine("VERSION=0.9+svn")
 	config.addDefine('VERSION_STR=\\\\\"0.9+svn\\\\\"')
-	if not conf.hasArgument?("with-debug")
-		config.addDefine("D_NODEBUG")
-		config.addOption("silent")
-	end
+
+        if conf.hasArgument?("with-debug")
+           config.addDefine("K_DEBUG")
+        else
+           config.addDefine("K_NODEBUG")
+           config.addOption("silent")
+        end
 	
 	unix = config.addScope("unix")
 	unix.addVariable("MOC_DIR", ".moc")

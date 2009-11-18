@@ -83,7 +83,7 @@ void KTApplication::createCache(const QString &cacheDir)
     QDir cache(cacheDir);
     if (! cache.exists()) {
         #ifdef K_DEBUG
-               K_DEBUG() << tr("Initializing repository %1").arg(cacheDir);
+               kDebug() << tr("Initializing repository %1").arg(cacheDir);
         #endif
 
        if (! cache.mkdir(cacheDir)) {

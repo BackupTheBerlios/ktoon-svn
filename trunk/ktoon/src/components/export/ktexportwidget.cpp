@@ -300,14 +300,14 @@ void SelectScenes::setScenes(const QList<KTScene *> &scenes)
 
     foreach (KTScene *scene, scenes) {
              #ifdef K_DEBUG
-                    K_DEBUG("export") << "Adding " << scene->sceneName();
+                    kDebug("export") << "Adding " << scene->sceneName();
              #endif
              m_selector->addItem(QString("%1: ").arg(pos)+scene->sceneName());
              pos++;
     }
 
     #ifdef K_DEBUG
-           K_DEBUG("export") << "Loop: " << pos;
+           kDebug("export") << "Loop: " << pos;
     #endif
 
     m_selector->selectFirstItem();
@@ -515,13 +515,13 @@ void ExportTo::exportIt()
             return;
 
         #ifdef K_DEBUG
-               K_DEBUG("export") << "Exporting to file: " << filename;
+               kDebug("export") << "Exporting to file: " << filename;
         #endif
 
         QList<KTScene *> scenes = scenesToExport();
 
         #ifdef K_DEBUG
-               K_DEBUG("export") << "Exporting " << scenes.count() << " scenes";
+               kDebug("export") << "Exporting " << scenes.count() << " scenes";
         #endif
 
         if (scenes.count() > 0) {

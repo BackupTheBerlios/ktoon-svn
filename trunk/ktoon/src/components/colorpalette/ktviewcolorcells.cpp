@@ -65,7 +65,7 @@ KTViewColorCells::~KTViewColorCells()
         brushesDir.mkdir(brushesDir.path());
 
     #ifdef K_DEBUG
-           K_DEBUG("palette") << brushesDir.path();
+           kDebug("palette") << brushesDir.path();
     #endif
 
     for (int i = 0; i < k->containerPalette->count(); i++) {
@@ -135,7 +135,7 @@ void KTViewColorCells::setupForm()
 void KTViewColorCells::readPalettes(const QString &paletteDir)
 {
     #ifdef K_DEBUG
-           K_DEBUG("palette") << "Reading palettes from: " << paletteDir;
+           kDebug("palette") << "Reading palettes from: " << paletteDir;
     #endif
     QDir dir(paletteDir);
 

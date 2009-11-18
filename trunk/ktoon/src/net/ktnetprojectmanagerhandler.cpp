@@ -81,6 +81,10 @@ struct KTNetProjectManagerHandler::Private
 
 KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent), k(new Private)
 {
+    #ifdef K_DEBUG
+       KINIT;
+    #endif
+
 	k->socket = new KTNetSocket(this);
 	k->project = 0;
 	k->params = 0;
@@ -106,6 +110,9 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
 
 KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
 {
+    #ifdef K_DEBUG
+       KEND;
+    #endif
 	k->chat->close();
 	delete k;
 }
@@ -120,7 +127,7 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 	if ( k->socket->state() == QAbstractSocket::ConnectedState )
 	{
 		#ifdef K_DEBUG
-			K_DEBUG("net") << "SENDING: " << request->xml();
+                       kDebug("net") << "SENDING: " << request->xml();
 		#endif
 		k->socket->send( request->xml() );
 	}
@@ -174,7 +181,7 @@ bool KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
 	k->params = netparams;
 	
 	#ifdef K_DEBUG
-		K_DEBUG("net") << "Connecting to " << netparams->server() << ":" << netparams->port();
+		kDebug("net") << "Connecting to " << netparams->server() << ":" << netparams->port();
 	#endif	
 
 	k->socket->connectToHost(k->params->server(), k->params->port());
@@ -326,7 +333,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 			if(dialog.exec () == QDialog::Accepted && !dialog.currentProject().isEmpty())
 			{
 				#ifdef K_DEBUG
-					K_DEBUG() << "opening " << dialog.currentProject() << "project";
+					kDebug() << "opening " << dialog.currentProject() << "project";
 				#endif
 				loadProjectFromServer(dialog.currentProject() );
 			}
@@ -367,7 +374,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 	else
 	{
 		#ifdef K_DEBUG
-			K_DEBUG("net") << "Unknown package: " << root;
+			kDebug("net") << "Unknown package: " << root;
 		#endif
 	}
 }

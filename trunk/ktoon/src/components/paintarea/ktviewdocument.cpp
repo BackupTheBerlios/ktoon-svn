@@ -510,7 +510,7 @@ void KTViewDocument::loadPlugins()
 
              for (it = keys.begin(); it != keys.end(); ++it) {
                   #ifdef K_DEBUG
-                         K_DEBUG("plugins") << "*******Tool Loaded: " << *it;
+                         kDebug("plugins") << "*******Tool Loaded: " << *it;
                   #endif
 
                   KAction *act = tool->actions()[*it];
@@ -559,7 +559,7 @@ void KTViewDocument::loadPlugins()
 
              for (it = keys.begin(); it != keys.end(); ++it) {
                   #ifdef K_DEBUG
-                         K_DEBUG("plugins") << "*******Filter Loaded: " << *it;
+                         kDebug("plugins") << "*******Filter Loaded: " << *it;
                   #endif
 
                   KAction *act = filter->actions()[*it];

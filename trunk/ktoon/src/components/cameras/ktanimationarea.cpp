@@ -106,7 +106,7 @@ void KTAnimationArea::paintEvent(QPaintEvent *)
 void KTAnimationArea::play()
 {
    #ifdef K_DEBUG
-          K_DEBUG("camera") << "Playing!";
+          kDebug("camera") << "Playing!";
    #endif
 
    k->draw = true;
@@ -123,7 +123,7 @@ void KTAnimationArea::play()
 void KTAnimationArea::stop()
 {
     #ifdef K_DEBUG
-           K_DEBUG("camera") << "Stopping";
+           kDebug("camera") << "Stopping";
     #endif
 
     k->timer->stop();

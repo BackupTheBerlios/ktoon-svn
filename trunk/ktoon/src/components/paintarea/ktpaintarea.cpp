@@ -181,7 +181,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
                  setCurrentScene( event->sceneIndex() );
 
                  #ifdef K_DEBUG
-                        K_DEBUG("paintarea") << "frame: " << event->frameIndex() << " " << "layer: " << event->layerIndex();
+                        kDebug("paintarea") << "frame: " << event->frameIndex() << " " << "layer: " << event->layerIndex();
                  #endif
                  }
                  break;
@@ -455,7 +455,7 @@ void KTPaintArea::setPreviousFramesOnionSkinCount(int n)
 void KTPaintArea::addSelectedItemsToLibrary()
 {
     #ifdef K_DEBUG
-           K_DEBUG("paintarea") << "Adding to library";
+           kDebug("paintarea") << "Adding to library";
     #endif
 
     QList<QGraphicsItem *> selecteds = scene()->selectedItems();
