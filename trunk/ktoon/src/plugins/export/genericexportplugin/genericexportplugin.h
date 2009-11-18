@@ -26,24 +26,22 @@
 #include <ktexportpluginobject.h>
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+    @author David Cuadrado <krawek@toonka.com>
 */
 class GenericExportPlugin : public KTExportPluginObject
 {
-	Q_OBJECT;
-	
-	public:
-		GenericExportPlugin();
-		virtual ~GenericExportPlugin();
-		virtual QString key() const;
-		KTExportInterface::Formats availableFormats();
-		
-		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps);
-		
-		
-	private:
-		QString m_baseName;
+    Q_OBJECT;
 
+    public:
+        GenericExportPlugin();
+        virtual ~GenericExportPlugin();
+        virtual QString key() const;
+        KTExportInterface::Formats availableFormats();
+
+        virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps);
+
+    private:
+        QString m_baseName;
 };
 
 #endif

@@ -41,58 +41,54 @@ GenericExportPlugin::~GenericExportPlugin()
 
 QString GenericExportPlugin::key() const
 {
-	return "Image Arrays";
+    return "Image Arrays";
 }
 
 KTExportInterface::Formats GenericExportPlugin::availableFormats()
 {
-	return KTExportInterface::PNG | KTExportInterface::JPEG | KTExportInterface::XPM;
+    return KTExportInterface::PNG | KTExportInterface::JPEG | KTExportInterface::XPM;
 }
 
 void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
 {
-	QFileInfo fileInfo(filePath);
-		
-	QDir dir = fileInfo.dir();
-	if ( !dir.exists() )
-	{
-		dir.mkdir(dir.path());
-	}
-	
-	m_baseName = fileInfo.baseName();
-	const char *fmt = "PNG";
-	
-	switch( format )
-	{
-		case KTExportInterface::JPEG:
-			fmt = "JPEG";
-		        break;
-		case KTExportInterface::XPM:
-			fmt = "XPM";
-		        break;
-                default:
-                        break;
-	}
-	
-	KTAnimationRenderer renderer;
-	foreach(KTScene *scene, scenes)
-	{
-		renderer.setScene(scene);
-		
-		int photogram = 0;
-		while(renderer.nextPhotogram())
-		{
-			QImage img(size, QImage::Format_RGB32);
-			{
-				QPainter painter(&img);
-				painter.setRenderHint(QPainter::Antialiasing, true);
-				renderer.render(&painter);
-			}
-			img.save(fileInfo.absolutePath() +"/"+ QString(m_baseName+"%1.%2").arg(photogram).arg(QString(fmt).toLower() ), fmt);
-			
-			photogram++;
-		}
-	}
+    QFileInfo fileInfo(filePath);
+
+    QDir dir = fileInfo.dir();
+    if (!dir.exists())
+        dir.mkdir(dir.path());
+
+    m_baseName = fileInfo.baseName();
+    const char *fmt = "PNG";
+
+    switch (format) {
+            case KTExportInterface::JPEG:
+                 fmt = "JPEG";
+                 break;
+            case KTExportInterface::XPM:
+                 fmt = "XPM";
+                 break;
+            default:
+                 break;
+    }
+
+    KTAnimationRenderer renderer;
+
+    foreach (KTScene *scene, scenes) {
+             renderer.setScene(scene);
+
+             int photogram = 0;
+             while (renderer.nextPhotogram()) {
+                    QImage img(size, QImage::Format_RGB32);
+                    {
+                     QPainter painter(&img);
+                     painter.setRenderHint(QPainter::Antialiasing, true);
+                     renderer.render(&painter);
+                    }
+                    img.save(fileInfo.absolutePath() +"/"+ QString(m_baseName+"%1.%2").arg(photogram).arg(QString(fmt).toLower() ), fmt);
+
+                    photogram++;
+             }
+    }
 }
 
 Q_EXPORT_PLUGIN( GenericExportPlugin );

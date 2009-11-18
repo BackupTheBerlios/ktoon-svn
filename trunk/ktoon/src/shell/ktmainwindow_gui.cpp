@@ -168,7 +168,7 @@ void KTMainWindow::createGUI()
 
 void KTMainWindow::connectToDisplays(const QWidget *widget)
 {
-   connect(widget, SIGNAL(sendToStatus(const QString &)), this, SLOT(messageToStatus(const QString &)));
+    connect(widget, SIGNAL(sendToStatus(const QString &)), this, SLOT(messageToStatus(const QString &)));
 }
 
 /**
@@ -182,68 +182,68 @@ void KTMainWindow::connectToDisplays(const QWidget *widget)
 
 void KTMainWindow::setupMenu()
 {
-	// Setting up the file menu
-	setupFileActions();
+    // Setting up the file menu
+    setupFileActions();
 
-        // Menu File	
-	m_fileMenu = new QMenu(tr("&File"), this);
-	menuBar()->addMenu(m_fileMenu);
+    // Menu File	
+    m_fileMenu = new QMenu(tr("&File"), this);
+    menuBar()->addMenu(m_fileMenu);
 
-	// Adding Option New	
-	QMenu *newMenu = new QMenu(tr("&New..."), this );
-	m_fileMenu->addMenu(newMenu);
-	newMenu->addAction(m_actionManager->find("newproject"));
+    // Adding Option New	
+    QMenu *newMenu = new QMenu(tr("&New..."), this );
+    m_fileMenu->addMenu(newMenu);
+    newMenu->addAction(m_actionManager->find("newproject"));
+
+    newMenu->addSeparator();
+
+    m_fileMenu->addAction(m_actionManager->find("openproject"));
+    m_fileMenu->addAction(m_actionManager->find("opennetproject"));
+    m_fileMenu->addAction(m_actionManager->find("importprojectserver"));
+
+    // Adding Option Open Recent	
+    m_recentProjectsMenu = new QMenu(tr("Recents"), this);
+    connect(m_recentProjectsMenu, SIGNAL(activated(int)), this, SLOT(openRecent(int)));
 	
-	newMenu->addSeparator();
+    KCONFIG->beginGroup("General");
+    QStringList recents = KCONFIG->value("recents").toString().split(';');
+    updateOpenRecentMenu(m_recentProjectsMenu, recents);	
+    m_fileMenu->addMenu( m_recentProjectsMenu );
 
-	m_fileMenu->addAction(m_actionManager->find("openproject"));
-	m_fileMenu->addAction(m_actionManager->find("opennetproject"));
-	m_fileMenu->addAction(m_actionManager->find("importprojectserver"));
+    // Adding Options save, save as, close, export, import palettes and exit	
+    m_fileMenu->addAction(m_actionManager->find("saveproject"));
+    m_fileMenu->addAction(m_actionManager->find("saveprojectas"));
+    m_fileMenu->addAction(m_actionManager->find("closeproject"));
+    m_fileMenu->addSeparator();
+    m_fileMenu->addAction(m_actionManager->find("export"));
+    m_fileMenu->addSeparator();
+    m_fileMenu->addAction(m_actionManager->find("ImportPalettes"));
+    m_fileMenu->addSeparator();
+    m_fileMenu->addAction(m_actionManager->find("Exit"));
+    m_fileMenu->addSeparator();
 
-	// Adding Option Open Recent	
-	m_recentProjectsMenu = new QMenu(tr("Recents"), this );
-	connect( m_recentProjectsMenu, SIGNAL( activated(int) ), this, SLOT( openRecent( int ) ) );
-	
-	KCONFIG->beginGroup("General");
-	QStringList recents = KCONFIG->value("recents").toString().split(';');
-	updateOpenRecentMenu(m_recentProjectsMenu, recents);	
-	m_fileMenu->addMenu( m_recentProjectsMenu );
+    // Setting up the insert menu
+    setupInsertActions();
 
-	// Adding Options save, save as, close, export, import palettes and exit	
-	m_fileMenu->addAction(m_actionManager->find("saveproject"));
-	m_fileMenu->addAction(m_actionManager->find("saveprojectas"));
-	m_fileMenu->addAction(m_actionManager->find("closeproject"));
-	m_fileMenu->addSeparator();
-	m_fileMenu->addAction(m_actionManager->find("export"));
-	m_fileMenu->addSeparator();
-	m_fileMenu->addAction(m_actionManager->find("ImportPalettes"));
-	m_fileMenu->addSeparator();
-	m_fileMenu->addAction(m_actionManager->find("Exit"));
-	m_fileMenu->addSeparator();
-	
-	// Setting up the insert menu
-	setupInsertActions();
-	
-	// Menu Insert
-	m_insertMenu = new QMenu(tr( "&Insert" ), this);
-	menuBar()->addMenu( m_insertMenu );
+    // Menu Insert
+    m_insertMenu = new QMenu(tr( "&Insert" ), this);
+    menuBar()->addMenu( m_insertMenu );
 
-	// Adding Options insert scene, insert layer and insert frame
-	m_insertMenu->addAction(m_actionManager->find("InsertScene"));
-	m_insertMenu->addAction(m_actionManager->find("InsertLayer"));
-	m_insertMenu->addAction(m_actionManager->find("InsertFrame"));
-	m_insertMenu->addSeparator();
-	
-	// Adding Options import bitmap and import audio file
-	m_insertMenu->addAction(m_actionManager->find("importbitmap"));
-	m_insertMenu->addAction(m_actionManager->find("importaudiofile"));
-	
-	// Setting up the window menu
-	setupWindowActions();
-	m_windowMenu = new QMenu(tr( "&Window" ),this);
-	menuBar()->addMenu(  m_windowMenu );
+    // Adding Options insert scene, insert layer and insert frame
+    m_insertMenu->addAction(m_actionManager->find("InsertScene"));
+    m_insertMenu->addAction(m_actionManager->find("InsertLayer"));
+    m_insertMenu->addAction(m_actionManager->find("InsertFrame"));
+    m_insertMenu->addSeparator();
 
-	// Adding Options show debug, palette, pen, library, timeline, scenes, exposure, help
+    // Adding Options import bitmap and import audio file
+    m_insertMenu->addAction(m_actionManager->find("importbitmap"));
+    m_insertMenu->addAction(m_actionManager->find("importaudiofile"));
+
+    // Setting up the window menu
+    setupWindowActions();
+    m_windowMenu = new QMenu(tr( "&Window" ),this);
+    menuBar()->addMenu(m_windowMenu);
+
+    // Adding Options show debug, palette, pen, library, timeline, scenes, exposure, help
 	m_windowMenu->addAction(m_actionManager->find("show debug"));
 	m_windowMenu->addAction(m_actionManager->find("show palette"));
 	m_windowMenu->addAction(m_actionManager->find("show pen"));
@@ -297,17 +297,16 @@ void KTMainWindow::setupMenu()
 
 void KTMainWindow::setupActions()
 {
-	// KAction *next = new KAction( QPixmap(), tr( "Back Frame" ), QKeySequence(Qt::Key_PageUp), this, 
-	//				SLOT(selectBackFrame()), m_actionManager, "BackFrame");
-	// next->setShortcutContext ( Qt::ApplicationShortcut );
-	// 	
-	// 	
-	// KAction *back = new KAction( QPixmap(), tr( "Next Frame" ), QKeySequence(Qt::Key_PageDown), this, 
-	//				SLOT(selectNextFrame()), m_actionManager, "Next Frame");
-	// back->setShortcutContext ( Qt::ApplicationShortcut );
-	// 	
-	// addAction(back);
-	// addAction(next);
+/*
+    KAction *next = new KAction( QPixmap(), tr( "Back Frame" ), QKeySequence(Qt::Key_PageUp), this, 
+                    SLOT(selectBackFrame()), m_actionManager, "BackFrame");
+    next->setShortcutContext ( Qt::ApplicationShortcut );
+    KAction *back = new KAction( QPixmap(), tr( "Next Frame" ), QKeySequence(Qt::Key_PageDown), this, 
+                    SLOT(selectNextFrame()), m_actionManager, "Next Frame");
+    back->setShortcutContext ( Qt::ApplicationShortcut );
+    addAction(back);
+    addAction(next);
+*/
 }
 
 /**
@@ -321,59 +320,58 @@ void KTMainWindow::setupActions()
 
 void KTMainWindow::setupFileActions()
 {
-	KAction *newProject = new KAction( QPixmap( THEME_DIR+"/icons/project.png" ), tr( "New project" ), QKeySequence(),
-						this, SLOT(newProject()), m_actionManager );
-	newProject->setStatusTip(tr( "Opens a new project"));
-	m_actionManager->insert( newProject, "newproject", "file" );
-	
-	
-	KAction *openFile = new KAction( QPixmap(THEME_DIR+"/icons/open.png"), tr( "Open project" ), tr("Ctrl+O"), this,
-						SLOT(openProject()), m_actionManager );
-	m_actionManager->insert( openFile, "openproject", "file" );
-	openFile->setStatusTip(tr("Loads an existent project"));
-	
-	KAction *openNetFile = new KAction(QPixmap(THEME_DIR+"/icons/open.png"), tr("Open project from server..."), tr(""),
-						this, SLOT(openProjectFromServer()), m_actionManager);
-	m_actionManager->insert(openNetFile, "opennetproject", "file");
-	
-	KAction *importNetFile = new KAction(QPixmap(THEME_DIR+""), tr("Import project to server..."), tr(""), this, 
-						SLOT(importProjectToServer()), m_actionManager);
-	m_actionManager->insert(importNetFile, "importprojectserver", "file");
-	
-	KAction *save = new KAction( QPixmap(THEME_DIR+"/icons/save.png"), tr( "Save project" ),QKeySequence(tr("Ctrl+S")),
-					this, SLOT(saveProject()), m_actionManager);
-	m_actionManager->insert( save, "saveproject", "file" );
-	save->setStatusTip(tr("Saves the current project in the current location"));
-	
-	KAction *saveAs = new KAction( tr( "Save project &As..." ), m_actionManager);
-	connect(saveAs, SIGNAL(triggered()), this, SLOT(saveAs()));
-	saveAs->setStatusTip(tr("Opens a dialog box to save the current project in any location"));
-	m_actionManager->insert( saveAs, "saveprojectas", "file" );
-	
-	KAction *close = new KAction(QPixmap(THEME_DIR+"/icons/close.png"), tr( "Cl&ose project" ), 
-					QKeySequence(tr("Ctrl+W")), m_actionManager);
-	connect(close, SIGNAL(triggered()), this, SLOT(closeProject()));
-	close->setStatusTip(tr("Closes the active project"));
-	m_actionManager->insert( close, "closeproject", "file" );
-	
-	// Import Palette action
-	
-	KAction *importPalette = new KAction( QPixmap(THEME_DIR+"/icons/import.png"), tr( "&Import GIMP palettes..." ),
-						QKeySequence(), this, SLOT(importPalettes()), m_actionManager);
-	importPalette->setStatusTip(tr("Imports palettes"));
-	m_actionManager->insert( importPalette, "importpalettes", "file" );
-	
-	// Export Project action
-	KAction *exportProject = new KAction( QPixmap(THEME_DIR+"/icons/export.png"), tr( "&Export..." ),  QKeySequence(),
-						this, SLOT(exportProject()), m_actionManager);
-	exportProject->setStatusTip(tr("Export project to different formats"));
-	m_actionManager->insert( exportProject, "export", "file" );
-	
-	// Exit action
-	KAction *exit = new KAction(QPixmap(THEME_DIR+"/icons/close.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")),
-					qApp, SLOT(closeAllWindows ()), m_actionManager);
-	exit->setStatusTip(tr("Closes the application"));
-	m_actionManager->insert( exit, "exit", "file" );
+    KAction *newProject = new KAction(QPixmap( THEME_DIR+"/icons/project.png"), tr("New project"), QKeySequence(),
+                                      this, SLOT(newProject()), m_actionManager);
+    newProject->setStatusTip(tr("Open new project"));
+    m_actionManager->insert(newProject, "newproject", "file");
+
+    KAction *openFile = new KAction(QPixmap(THEME_DIR+"/icons/open.png"), tr( "Open project" ), tr("Ctrl+O"), this,
+                                    SLOT(openProject()), m_actionManager);
+    m_actionManager->insert( openFile, "openproject", "file" );
+    openFile->setStatusTip(tr("Load existent project"));
+
+    KAction *openNetFile = new KAction(QPixmap(THEME_DIR+"/icons/open.png"), tr("Open project from server..."), tr(""),
+                                       this, SLOT(openProjectFromServer()), m_actionManager);
+    m_actionManager->insert(openNetFile, "opennetproject", "file");
+
+    KAction *importNetFile = new KAction(QPixmap(THEME_DIR+""), tr("Import project to server..."), tr(""), this, 
+                                         SLOT(importProjectToServer()), m_actionManager);
+    m_actionManager->insert(importNetFile, "importprojectserver", "file");
+
+    KAction *save = new KAction(QPixmap(THEME_DIR+"/icons/save.png"), tr( "Save project" ),QKeySequence(tr("Ctrl+S")),
+                                this, SLOT(saveProject()), m_actionManager);
+    m_actionManager->insert( save, "saveproject", "file" );
+    save->setStatusTip(tr("Save current project in current location"));
+
+    KAction *saveAs = new KAction( tr( "Save project &As..." ), m_actionManager);
+    connect(saveAs, SIGNAL(triggered()), this, SLOT(saveAs()));
+    saveAs->setStatusTip(tr("Open dialog box to save current project in any location"));
+    m_actionManager->insert( saveAs, "saveprojectas", "file");
+
+    KAction *close = new KAction(QPixmap(THEME_DIR+"/icons/close.png"), tr( "Cl&ose project" ), 
+                                 QKeySequence(tr("Ctrl+W")), m_actionManager);
+    connect(close, SIGNAL(triggered()), this, SLOT(closeProject()));
+    close->setStatusTip(tr("Close active project"));
+    m_actionManager->insert(close, "closeproject", "file");
+
+    // Import Palette action
+
+    KAction *importPalette = new KAction(QPixmap(THEME_DIR+"/icons/import.png"), tr("&Import GIMP palettes..."),
+                                         QKeySequence(), this, SLOT(importPalettes()), m_actionManager);
+    importPalette->setStatusTip(tr("Import palettes"));
+    m_actionManager->insert( importPalette, "importpalettes", "file" );
+
+    // Export Project action
+    KAction *exportProject = new KAction(QPixmap(THEME_DIR+"/icons/export.png"), tr("&Export..."), QKeySequence(),
+                                         this, SLOT(exportProject()), m_actionManager);
+    exportProject->setStatusTip(tr("Export project to different formats"));
+    m_actionManager->insert(exportProject, "export", "file");
+
+    // Exit action
+    KAction *exit = new KAction(QPixmap(THEME_DIR+"/icons/close.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")),
+                                qApp, SLOT(closeAllWindows()), m_actionManager);
+    exit->setStatusTip(tr("Close application"));
+    m_actionManager->insert(exit, "exit", "file" );
 }
 
 /**
@@ -387,13 +385,13 @@ void KTMainWindow::setupFileActions()
 
 void KTMainWindow::setupSettingsActions()
 {
-	KAction *wizard = new KAction( tr( "Launch configuration wizard..." ), QKeySequence(), 
-					qobject_cast<KTApplication*>(qApp), SLOT(firstRun()), m_actionManager, "wizard");
-	wizard->setStatusTip(tr("Launch first configuration wizard"));
-	
-	KAction * preferences = new KAction( tr( "Pr&eferences..." ), QKeySequence(), this, SLOT( preferences()),
-						m_actionManager, "preferences");
-	preferences->setStatusTip(tr("Opens the preferences dialog box"));
+    KAction *wizard = new KAction(tr("Launch configuration wizard..."), QKeySequence(), 
+                                  qobject_cast<KTApplication*>(qApp), SLOT(firstRun()), m_actionManager, "wizard");
+    wizard->setStatusTip(tr("Launch first configuration wizard"));
+
+    KAction * preferences = new KAction(tr("Pr&eferences..."), QKeySequence(), this, SLOT( preferences()),
+                                        m_actionManager, "preferences");
+    preferences->setStatusTip(tr("Opens the preferences dialog box"));
 }
 
 /**
@@ -407,8 +405,8 @@ void KTMainWindow::setupSettingsActions()
 
 void KTMainWindow::setupHelpActions()
 {
-	new KAction(QPixmap(), tr("About KToon"), QKeySequence(), this, SLOT(aboutKToon()), m_actionManager, "about ktoon");
-	new KAction(QPixmap(), tr("Tip of day"), QKeySequence(), this, SLOT(showTipDialog()), m_actionManager, "tipofday");
+    new KAction(QPixmap(), tr("About KToon"), QKeySequence(), this, SLOT(aboutKToon()), m_actionManager, "about ktoon");
+    new KAction(QPixmap(), tr("Tip of day"), QKeySequence(), this, SLOT(showTipDialog()), m_actionManager, "tipofday");
 }
 
 /**
@@ -423,8 +421,8 @@ void KTMainWindow::setupHelpActions()
 void KTMainWindow::setupWindowActions()
 {
 #if defined(QT_GUI_LIB) && defined(K_DEBUG)
-	new KAction(QPixmap(), tr("Show debug dialog"), QKeySequence(), KDebug::browser(), SLOT(show()), m_actionManager,
-			"show debug");
+    new KAction(QPixmap(), tr("Show debug dialog"), QKeySequence(), KDebug::browser(), SLOT(show()), m_actionManager,
+                "show debug");
 #endif
 }
 
@@ -439,14 +437,16 @@ void KTMainWindow::setupWindowActions()
 
 void KTMainWindow::setupInsertActions()
 {
-	new KAction( QPixmap(THEME_DIR+"/icons/scene.png"), tr( "Insert scene" ), QKeySequence(), m_scenes, 
-			SLOT(emitRequestInsertScene()), m_actionManager, "InsertScene");
-	
-	// new KAction( QPixmap(THEME_DIR+"/icons/layer.png"), tr( "Insert layer" ), QKeySequence(), m_exposureSheet, 
-	//		SLOT(createLayer()), m_actionManager, "InsertLayer");
-	// 	
-	// new KAction( QPixmap(THEME_DIR+"/icons/frame.png"), tr( "Insert frame" ), QKeySequence(), m_projectManager, 
-	// SLOT(createFrame()), m_actionManager, "InsertFrame");
+    new KAction(QPixmap(THEME_DIR+"/icons/scene.png"), tr("Insert scene"), QKeySequence(), m_scenes, 
+                SLOT(emitRequestInsertScene()), m_actionManager, "InsertScene");
+
+/*	
+    new KAction(QPixmap(THEME_DIR+"/icons/layer.png"), tr("Insert layer"), QKeySequence(), m_exposureSheet, 
+                SLOT(createLayer()), m_actionManager, "InsertLayer");
+
+    new KAction(QPixmap(THEME_DIR+"/icons/frame.png"), tr("Insert frame"), QKeySequence(), m_projectManager, 
+                SLOT(createFrame()), m_actionManager, "InsertFrame");
+*/
 }
 
 /**
@@ -460,25 +460,25 @@ void KTMainWindow::setupInsertActions()
 
 void KTMainWindow::setupToolBar()
 {
-	QToolBar * toolbar = new QToolBar(tr("Bar Actions"), this);
-	toolbar->setIconSize( QSize(22,22) );
-	addToolBar(Qt::TopToolBarArea, toolbar);
-	
-	// KCommandHistory *history = new KCommandHistory(m_undoCommands, this);
-	
-	QAction * undo = m_projectManager->undoHistory()->createUndoAction( this, tr("Undo"));
-	undo->setShortcut(QKeySequence(QKeySequence::Undo));
-	toolbar->addAction(undo);
-	
-	QAction *redo =  m_projectManager->undoHistory()->createRedoAction ( this );
-	redo->setShortcut(QKeySequence(QKeySequence::Redo));
-	toolbar->addAction(redo);
-	
-	undo->setIcon( QPixmap(THEME_DIR+"/icons/undo.png" ));
-	redo->setIcon(QPixmap(THEME_DIR+"/icons/redo.png" ));
-	
-	kApp->insertGlobalAction(undo, "undo");
-	kApp->insertGlobalAction(redo, "redo");
+    QToolBar * toolbar = new QToolBar(tr("Bar Actions"), this);
+    toolbar->setIconSize( QSize(22,22) );
+    addToolBar(Qt::TopToolBarArea, toolbar);
+
+    // KCommandHistory *history = new KCommandHistory(m_undoCommands, this);
+
+    QAction * undo = m_projectManager->undoHistory()->createUndoAction(this, tr("Undo"));
+    undo->setShortcut(QKeySequence(QKeySequence::Undo));
+    toolbar->addAction(undo);
+
+    QAction *redo =  m_projectManager->undoHistory()->createRedoAction ( this );
+    redo->setShortcut(QKeySequence(QKeySequence::Redo));
+    toolbar->addAction(redo);
+
+    undo->setIcon( QPixmap(THEME_DIR+"/icons/undo.png" ));
+    redo->setIcon(QPixmap(THEME_DIR+"/icons/redo.png" ));
+
+    kApp->insertGlobalAction(undo, "undo");
+    kApp->insertGlobalAction(redo, "redo");
 }
 
 /**
@@ -492,80 +492,65 @@ void KTMainWindow::setupToolBar()
 
 void KTMainWindow::updateOpenRecentMenu(QMenu *menu, QStringList recents)
 {	
-	menu->clear();
-	m_recentProjects.clear();
-	
-	foreach(QString recent, recents)
-	{
-		if ( !recent.isEmpty() && m_recentProjects.indexOf(recent) == -1 )
-		{
-			m_recentProjects << recent;
-			connect(menu->addAction(recent), SIGNAL(triggered()), this, SLOT(openRecentProject()));
-		}
-	}
+    menu->clear();
+    m_recentProjects.clear();
+
+    foreach (QString recent, recents) {
+             if (!recent.isEmpty() && m_recentProjects.indexOf(recent) == -1) {
+                 m_recentProjects << recent;
+                 connect(menu->addAction(recent), SIGNAL(triggered()), this, SLOT(openRecentProject()));
+             }
+    }
 }
 
 void KTMainWindow::showWidgetPage()
 {
-	// KAction *action = qobject_cast<KAction *>(sender());
-	// 	
-	// if ( action )
-	// {
-	// 	QWidget *widget = 0;
-	// 	DiDockWidget::Position position;
-	// 	QString actionText = "";
-	// 		
-	//	if ( action == m_actionManager->find("show timeline") )
-	// 	{
-	// 		widget = m_timeLine;
-	//		position = DiDockWidget::Bottom;
-	// 		actionText = "time line widget";
-	// 	}
-	// 	else if ( action == m_actionManager->find("show exposure") )
-	// 	{
-	//		widget = m_exposureSheet;
-	//		position = DiDockWidget::Right;
-	// 		actionText = "exposure widget";
-	// 	}
-	// 	else if ( action == m_actionManager->find("show library") )
-	// 	{
-	// 		widget = m_libraryWidget;
-	//		position = DiDockWidget::Left;
-	//		actionText = "library widget";
-	//	}
-	//	else if ( action == m_actionManager->find("show scenes") )
-	// 	{
-	// 		widget = m_scenes;
-	//		position = DiDockWidget::Right;
-	// 		actionText = "scenes widget";
-	// 	}
-	//	else if ( action == m_actionManager->find("show help") )
-	// 	{
-	// 		widget = m_helper;
-	// 		position = DiDockWidget::Right;
-	//		actionText = "help widget";
-	// 	}
-	// 		
-	//	else if ( action == m_actionManager->find("show palette") )
-	// 	{
-	// 		widget = m_colorPalette;
-	// 		position = DiDockWidget::Left;
-	// 		actionText = "color palette widget";
-	//	}
-	// 	if ( widget )
-	// 	{
-	// 		if ( widget->isVisible() )
-	// 		{
-	// 			toolWindow( position)->centralWidget()->setExpanded(false);
-	//			action->setText("Show "+actionText);
-	//		}
-	//		else
-	//		{
-	// 			toolWindow( position)->centralWidget()->raiseWidget(widget);
-	// 			action->setText("Hide "+actionText);
-	//		}
-	// 	}
-	// }
+/*
+    KAction *action = qobject_cast<KAction *>(sender());
+
+    if (action) {
+        QWidget *widget = 0;
+        DiDockWidget::Position position;
+        QString actionText = "";
+ 		
+        if ( action == m_actionManager->find("show timeline") ) {
+            widget = m_timeLine;
+            position = DiDockWidget::Bottom;
+            actionText = "time line widget";
+        } else if ( action == m_actionManager->find("show exposure") ) {
+            widget = m_exposureSheet;
+            position = DiDockWidget::Right;
+            actionText = "exposure widget";
+        } else if ( action == m_actionManager->find("show library") ) {
+            widget = m_libraryWidget;
+            position = DiDockWidget::Left;
+            actionText = "library widget";
+	}
+	else if ( action == m_actionManager->find("show scenes") ) {
+            widget = m_scenes;
+            position = DiDockWidget::Right;
+            actionText = "scenes widget";
+        } else if ( action == m_actionManager->find("show help") ) {
+            widget = m_helper;
+            position = DiDockWidget::Right;
+            actionText = "help widget";
+ 	} else if ( action == m_actionManager->find("show palette") ) {
+            widget = m_colorPalette;
+            position = DiDockWidget::Left;
+            actionText = "color palette widget";
+        }
+
+        if ( widget ) {
+            if ( widget->isVisible() ) {
+                toolWindow( position)->centralWidget()->setExpanded(false);
+                action->setText("Show "+actionText);
+            } else {
+                toolWindow( position)->centralWidget()->raiseWidget(widget);
+                action->setText("Hide "+actionText);
+            }
+        }
+    }
+*/
 }
 
 /**
@@ -579,7 +564,7 @@ void KTMainWindow::showWidgetPage()
 
 void KTMainWindow::changePerspective(QAction *a)
 {
-	int perspective = a->data().toInt();
-	setCurrentPerspective(perspective);
-	a->setChecked(true);
+    int perspective = a->data().toInt();
+    setCurrentPerspective(perspective);
+    a->setChecked(true);
 }

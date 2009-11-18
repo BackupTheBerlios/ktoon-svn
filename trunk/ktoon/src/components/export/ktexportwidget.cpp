@@ -529,7 +529,7 @@ void ExportTo::exportIt()
                                                (int)m_size->x()), m_fps->value()  );
         }
     } else {
-        KOsd::self()->display( tr("Please choose the format before export"), KOsd::Error );
+        KOsd::self()->display( tr("Format problem. Internal error... ouch! :S"), KOsd::Error );
     }
 }
 

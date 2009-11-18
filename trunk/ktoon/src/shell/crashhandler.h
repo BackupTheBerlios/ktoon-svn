@@ -63,7 +63,7 @@ class CrashHandler
         QString signalText(int signal);
         QString signalImage(int signal);
         bool containsSignalEntry(int signal);
-		
+
     private:
         struct CrashHandlerConfig {
                QString title;

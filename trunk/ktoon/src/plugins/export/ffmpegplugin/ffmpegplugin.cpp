@@ -37,86 +37,81 @@ FFMpegPlugin::FFMpegPlugin()
 {
 }
 
-
 FFMpegPlugin::~FFMpegPlugin()
 {
 }
 
 QString FFMpegPlugin::key() const
 {
-	return "Video Formats";
+    return "Video Formats";
 }
 
 KTExportInterface::Formats FFMpegPlugin::availableFormats()
 {
-	return KTExportInterface::SWF | KTExportInterface::MPEG | KTExportInterface::AVI | KTExportInterface::RM | KTExportInterface::ASF | KTExportInterface::MOV | KTExportInterface::GIF;
+    return KTExportInterface::SWF | KTExportInterface::MPEG | KTExportInterface::AVI | KTExportInterface::RM | KTExportInterface::ASF | KTExportInterface::MOV | KTExportInterface::GIF;
 }
 
 void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
 {
-	KFFMpegMovieGenerator *generator = 0;
-	
-	switch(format)
-	{
-		case KTExportInterface::SWF:
-		{
-			generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::SWF, size, fps);
-		}
-		break;
-		case KTExportInterface::MPEG:
-		{
-			generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::MPEG, size, fps);
-		}
-		break;
-		case KTExportInterface::AVI:
-		{
-			generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::AVI, size, fps);
-		}
-		break;
-		case KTExportInterface::RM:
-		{
-			generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::RM, size, fps);
-		}
-		break;
-		case KTExportInterface::MOV:
-		{
-			generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::MOV, size, fps);
-		}
-		break;
-		case KTExportInterface::ASF:
-		{
-			generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::ASF, size, fps);
-		}
-		break;
-		case KTExportInterface::GIF:
-		{
-			generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::GIF, size, fps);
-		}
-		break;
-		default: return;
-	}
-	
-	
-	KTAnimationRenderer renderer;
-	{
-		QPainter painter(generator);
-		painter.setRenderHint(QPainter::Antialiasing, true);
-		
-		foreach(KTScene *scene, scenes)
-		{
-			renderer.setScene(scene);
-			
-			while(renderer.nextPhotogram())
-			{
-				renderer.render(&painter);
-				generator->nextFrame();
-				generator->reset();
-			}
-		}
-	}
-	
-	generator->saveMovie(filePath);
-	delete generator;
+    KFFMpegMovieGenerator *generator = 0;
+
+    switch (format) {
+            case KTExportInterface::SWF:
+                 {
+                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::SWF, size, fps);
+                 }
+                 break;
+            case KTExportInterface::MPEG:
+                 {
+                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::MPEG, size, fps);
+                 }
+                 break;
+            case KTExportInterface::AVI:
+                 {
+                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::AVI, size, fps);
+                 }
+                 break;
+            case KTExportInterface::RM:
+                 {
+                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::RM, size, fps);
+                 }
+                 break;
+            case KTExportInterface::MOV:
+                 {
+                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::MOV, size, fps);
+                 }
+                 break;
+            case KTExportInterface::ASF:
+                 {
+                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::ASF, size, fps);
+                 }
+                 break;
+            case KTExportInterface::GIF:
+                 {
+                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::GIF, size, fps);
+                 }
+                 break;
+            default: return;
+    }
+
+    KTAnimationRenderer renderer;
+    {
+         QPainter painter(generator);
+         painter.setRenderHint(QPainter::Antialiasing, true);
+
+         foreach (KTScene *scene, scenes) {
+                  renderer.setScene(scene);
+
+                  while (renderer.nextPhotogram()) {
+                         renderer.render(&painter);
+                         generator->nextFrame();
+                         generator->reset();
+                  }
+         }
+    }
+
+    generator->saveMovie(filePath);
+    delete generator;
 }
 
 

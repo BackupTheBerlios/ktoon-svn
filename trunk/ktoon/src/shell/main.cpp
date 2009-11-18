@@ -43,7 +43,9 @@
 
 #include "ktmainwindow.h"
 
+#ifdef Q_OS_UNIX
 #include "crashhandler.h"
+#endif
 
 #ifdef ENABLE_KTOONSTYLE
 #include "kwaitstyle.h"
@@ -87,8 +89,10 @@ int main( int argc, char ** argv )
 
     qsrand( ::time(0) );
 
+#ifdef Q_OS_UNIX
     // Initializing the crash handler, very useful to catch bugs
     CrashHandler::init();
+#endif
 
     // Setting the gui style for the interface
 #ifdef ENABLE_KTOONSTYLE
@@ -153,11 +157,11 @@ int main( int argc, char ** argv )
         locale = "en";
 
     QTranslator *qttranslator = new QTranslator(&application);
-    qttranslator->load(QString( "qt_" ) + locale, HOME_DIR+"/data/translations");
+    qttranslator->load(QString( "qt_" ) + locale, HOME_DIR + "data/translations");
     application.installTranslator( qttranslator );
 
     QTranslator *translator = new QTranslator(&application);
-    translator->load(QString( "ktoon_" )+locale,  HOME_DIR+"/data/translations");
+    translator->load(QString( "ktoon_" )+locale,  HOME_DIR + "data/translations");
     application.installTranslator( translator );
 
     // Time to show the KToon initial splash 
@@ -176,14 +180,14 @@ int main( int argc, char ** argv )
 
     // Looking for plugins for KToon
     #ifdef K_DEBUG
-           kWarning() << "Loading plugins from: " << HOME_DIR << " + /plugins";
+           kWarning() << "Loading plugins from: " << HOME_DIR << " + plugins";
     #endif
-    QApplication::addLibraryPath (HOME_DIR + "/plugins");
+    QApplication::addLibraryPath (HOME_DIR + "plugins");
 
     // Loading visual components required for the Crash Handler
     #ifdef Q_OS_UNIX
-           CHANDLER->setConfig(DATA_DIR+"/crashhandler.xml");
-           CHANDLER->setImagePath(THEME_DIR+"/icons/");
+           CHANDLER->setConfig(DATA_DIR + "crashhandler.xml");
+           CHANDLER->setImagePath(THEME_DIR + "icons/");
     #endif
 
     // If user added a second argument, it means, he wants to load a project from the command line

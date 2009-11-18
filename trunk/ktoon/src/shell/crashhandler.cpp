@@ -58,7 +58,6 @@ CrashHandler::CrashHandler() : m_verbose(false)
     m_config.defaultText = QObject::tr("This is a general failure");
 }
 
-
 CrashHandler::~CrashHandler ()
 {
     if (m_instance) 
@@ -148,9 +147,8 @@ QString CrashHandler::defaultText() const
 
 QString CrashHandler::defaultImage() const
 {
-    return m_imagePath +"/"+m_config.defaultImage;
+    return m_imagePath + "/" + m_config.defaultImage;
 }
-
 
 QString CrashHandler::signalText(int signal)
 {
@@ -159,12 +157,12 @@ QString CrashHandler::signalText(int signal)
 
 QString CrashHandler::signalImage(int signal)
 {
-    return m_imagePath +"/"+m_config.signalEntry[signal].second;
+    return m_imagePath + "/" + m_config.signalEntry[signal].second;
 }
 
 bool CrashHandler::containsSignalEntry(int signal)
 {
-	return m_config.signalEntry.contains(signal);
+    return m_config.signalEntry.contains(signal);
 }
 
 void CrashHandler::setConfig(const QString &filePath)
@@ -216,8 +214,10 @@ static QString runCommand( const QString &command )
 {
     static const uint SIZE = 40960; //40 KiB
     static char buf[ SIZE ];
-	
-    // dDebug() << "Running: " << command;
+
+#ifdef K_DEBUG
+    kDebug() << "Running command: " << command;
+#endif
 
     FILE *process = ::popen( command.toLocal8Bit().data(), "r" );
     buf[ std::fread( (void*)stdout, sizeof(char), SIZE-1, process ) ] = '\0';
@@ -228,7 +228,7 @@ static QString runCommand( const QString &command )
 
 void crashTrapper (int sig)
 {
-    qDebug("%s is crashing with signal %d :(", CHANDLER->program().toLocal8Bit().data(), sig);
+    qDebug("Fatal error: %s is crashing with signal %d :(", CHANDLER->program().toLocal8Bit().data(), sig);
 
     CHANDLER->setTrapper(0); // Unactive crash handler
 
@@ -254,29 +254,29 @@ void crashTrapper (int sig)
         const int handle = temp.handle();
         const QString gdb_batch = "bt\n";
 
-        ::write( handle, gdb_batch.toLocal8Bit().data(), gdb_batch.length() );
-        ::fsync( handle );
+        ::write(handle, gdb_batch.toLocal8Bit().data(), gdb_batch.length());
+        ::fsync(handle);
 
         // so we can read stderr too
-        ::dup2( fileno( stdout ), fileno( stderr ) );
+        ::dup2(fileno(stdout), fileno(stderr));
 
         QString gdb;
-        gdb  = "gdb --nw -n --batch -x ";
+        gdb  = "gdb -nw -n -batch -x ";
         gdb += temp.fileName();
-        gdb += " "+HOME_DIR+"/bin/ktoon.bin ";
-        gdb += QString::number( ::getppid() );
+        gdb += " " + HOME_DIR + "bin/ktoon.bin ";
+        gdb += QString::number(::getppid());
 
-        bt = runCommand( gdb );
+        bt = runCommand(gdb);
 
         /// clean up
         bt.remove( QRegExp("\\(no debugging symbols found\\)") );
         bt = bt.simplified();
 
-        execInfo = runCommand( "file "+HOME_DIR+"/bin/ktoon.bin");
+        execInfo = runCommand("file " + HOME_DIR + "bin/ktoon.bin");
 
         // Widget
         CrashWidget widget(sig);
-        widget.addBacktracePage( execInfo, bt );
+        widget.addBacktracePage(execInfo, bt);
         widget.exec();
 
         if (!isActive)
