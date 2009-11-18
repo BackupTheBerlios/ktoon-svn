@@ -31,102 +31,93 @@ KApplicationProperties *KApplicationProperties::s_instance = 0;
 
 struct KApplicationProperties::Private
 {
-	QString homeDir;
-	QString dataDir;
-	QString themeDir;
-	QString version;
-	QString cacheDir;
+    QString homeDir;
+    QString dataDir;
+    QString themeDir;
+    QString version;
+    QString cacheDir;
 };
 
 KApplicationProperties::KApplicationProperties() : k(new Private)
 {
 }
 
-
 KApplicationProperties::~KApplicationProperties()
 {
-	delete k;
+    delete k;
 }
 
 void KApplicationProperties::setDataDir(const QString &v)
 {
-	k->dataDir = v;
+    k->dataDir = v;
 }
 
 void KApplicationProperties::setHomeDir(const QString &v)
 {
-	k->homeDir = v;
+    k->homeDir = v;
 }
 
 void KApplicationProperties::setThemeDir(const QString &v)
 {
-	k->themeDir = v;
+    k->themeDir = v;
 }
 
 void KApplicationProperties::setCacheDir(const QString &v)
 {
-	k->cacheDir = v;
+    k->cacheDir = v;
 }
 
 void KApplicationProperties::setVersion(const QString &v)
 {
-	k->version = v;
+    k->version = v;
 }
 
 QString KApplicationProperties::dataDir() const
 {
-	if ( k->dataDir.isEmpty() )
-	{
-		QString locale = QString(QLocale::system().name()).left(2);
-	
-		if ( locale.length() < 2 )
-		{
-			locale = "en";
-		}
-		
-		return k->homeDir+"/data/"+locale+"/";
-	}
-	
-	return k->dataDir;
+    if (k->dataDir.isEmpty()) {
+        QString locale = QString(QLocale::system().name()).left(2);
+
+        if (locale.length() < 2)
+            locale = "en";
+
+        return k->homeDir + "/data/" + locale + "/";
+    }
+
+    return k->dataDir;
 }
 
 QString KApplicationProperties::homeDir() const
 {
-	return k->homeDir;
+    return k->homeDir + "/";
 }
 
 QString KApplicationProperties::themeDir() const
 {
-	if ( k->themeDir.isEmpty() )
-	{
-		return k->homeDir+"/themes/default";
-	}
-	
-	return k->themeDir;
+    if (k->themeDir.isEmpty())
+        return k->homeDir + "/themes/default" + "/";
+
+    return k->themeDir;
 }
 
 QString KApplicationProperties::configDir() const
 {
-	return QDir::homePath()+"/."+qApp->applicationName();
+    return QDir::homePath() + "/." + qApp->applicationName() + "/";
 }
 
 QString KApplicationProperties::cacheDir() const
 {
-	return k->cacheDir;
+    return k->cacheDir;
 }
 
 QString KApplicationProperties::version() const
 {
-	return k->version;
+    return k->version;
 }
 
 KApplicationProperties *KApplicationProperties::instance()
 {
-	if (s_instance == 0 )
-	{
-		s_instance = new KApplicationProperties;
-	}
-	
-	return s_instance;
-}
+    if (s_instance == 0)
+        s_instance = new KApplicationProperties;
 
+    return s_instance;
+}

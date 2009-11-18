@@ -24,79 +24,63 @@
 #include "kactionmanager.h"
 
 
-KAction::KAction( QObject * parent, const QString &id ) : QAction(parent)
+KAction::KAction(QObject * parent, const QString &id ) : QAction(parent)
 {
-	if ( KActionManager *m = dynamic_cast<KActionManager *>(parent) )
-	{
-		initWithManager( m, id );
-	}
+    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
+        initWithManager(m, id);
 }
 
-KAction::KAction ( const QString & text, QObject * parent, const QString &id) : QAction(text, parent)
+KAction::KAction(const QString & text, QObject * parent, const QString &id) : QAction(text, parent)
 {
-	if ( KActionManager *m = dynamic_cast<KActionManager *>(parent) )
-	{
-		initWithManager( m, id );
-	}
+    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
+        initWithManager(m, id);
 }
 
-KAction::KAction ( const QIcon & icon, const QString & text, QObject * parent, const QString &id) : QAction(icon, text, parent)
+KAction::KAction(const QIcon & icon, const QString & text, QObject * parent, const QString &id) : QAction(icon, text, parent)
 {
-	if ( KActionManager *m = dynamic_cast<KActionManager *>(parent) )
-	{
-		initWithManager( m, id );
-	}
+    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
+        initWithManager( m, id );
 }
 
-KAction::KAction ( const QIcon & icon, QObject *parent, const QString &id ) : QAction(parent)
+KAction::KAction(const QIcon & icon, QObject *parent, const QString &id ) : QAction(parent)
 {
-	setIcon(icon);
-	if ( KActionManager *m = dynamic_cast<KActionManager *>(parent) )
-	{
-		initWithManager( m , id);
-	}
+    setIcon(icon);
+    if (KActionManager *m = dynamic_cast<KActionManager *>(parent) )
+        initWithManager( m , id);
 }
 
-KAction::KAction ( const QIcon & icon, const QString & text, const QString &key, QObject * parent, const QString &id) : QAction(icon,text,parent)
+KAction::KAction(const QIcon & icon, const QString & text, const QString &key, QObject * parent, const QString &id) : QAction(icon,text,parent)
 {
-	setShortcut(QKeySequence(key));
-	if ( KActionManager *m = dynamic_cast<KActionManager *>(parent) )
-	{
-		initWithManager( m , id);
-	}
+    setShortcut(QKeySequence(key));
+    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
+        initWithManager(m, id);
 }
 
-KAction::KAction ( const QIcon & icon, const QKeySequence &key, QObject * parent, const QString &id) : QAction(parent)
+KAction::KAction(const QIcon & icon, const QKeySequence &key, QObject * parent, const QString &id) : QAction(parent)
 {
-	setIcon(icon);
-	setShortcut (key);
-	
-	if ( KActionManager *m = dynamic_cast<KActionManager *>(parent) )
-	{
-		initWithManager( m, id );
-	}
+    setIcon(icon);
+    setShortcut(key);
+
+    if (KActionManager *m = dynamic_cast<KActionManager *>(parent) )
+        initWithManager(m, id);
 }
 
 KAction::KAction(const QIcon & icon, const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id) : QAction(icon, text, parent)
 {
-	setShortcut(key);
-	connect(this, SIGNAL(triggered()), reciever, slot);
-	
-	if ( KActionManager *m = dynamic_cast<KActionManager *>(parent) )
-	{
-		initWithManager( m, id );
-	}
+    setShortcut(key);
+    connect(this, SIGNAL(triggered()), reciever, slot);
+
+    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
+        initWithManager(m, id);
 }
 
 KAction::KAction(const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id) : QAction(text, parent)
 {
-	setShortcut(key);
-	connect(this, SIGNAL(triggered()), reciever, slot);
-	
-	if ( KActionManager *m = dynamic_cast<KActionManager *>(parent) )
-	{
-		initWithManager( m, id );
-	}
+    setShortcut(key);
+    connect(this, SIGNAL(triggered()), reciever, slot);
+
+    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
+        initWithManager(m, id);
 }
 
 KAction::~KAction()
@@ -105,8 +89,8 @@ KAction::~KAction()
 
 void KAction::initWithManager(KActionManager * parent, const QString &id)
 {
-	if ( !id.isEmpty() )
-		parent->insert(this, id);
+    if (!id.isEmpty())
+        parent->insert(this, id);
 }
 
 void KAction::init()
@@ -115,11 +99,11 @@ void KAction::init()
 
 void KAction::setCursor(const QCursor &cursor)
 {
-	m_cursor = cursor;
+    m_cursor = cursor;
 }
 
 QCursor KAction::cursor() const
 {
-	return m_cursor;
+    return m_cursor;
 }
 
