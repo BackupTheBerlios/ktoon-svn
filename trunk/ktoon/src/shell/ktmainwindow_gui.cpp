@@ -372,6 +372,9 @@ void KTMainWindow::setupFileActions()
                                 qApp, SLOT(closeAllWindows()), m_actionManager);
     exit->setStatusTip(tr("Close application"));
     m_actionManager->insert(exit, "exit", "file" );
+
+    // when the last window is closed, the application should quit
+    connect(qApp, SIGNAL(lastWindowClosed()), qApp, SLOT(quit()));
 }
 
 /**
