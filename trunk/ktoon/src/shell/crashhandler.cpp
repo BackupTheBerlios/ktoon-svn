@@ -35,17 +35,17 @@ extern "C"
 #include <sys/types.h> //pid_t
 #include <sys/wait.h>  //waitpid
 #include <unistd.h>    //write, getpid
+#include <stdio.h>
 }
 
 #include "crashhandler.h"
 #include "crashwidget.h"
-
 #include <kcore/kdebug.h>
 #include <kcore/kglobal.h>
 
 CrashHandler *CrashHandler::m_instance = 0;
 
-void crashTrapper (int sig);
+void crashTrapper(int sig);
 
 CrashHandler::CrashHandler() : m_verbose(false)
 {
@@ -53,12 +53,12 @@ CrashHandler::CrashHandler() : m_verbose(false)
     setTrapper(crashTrapper);
 
     m_config.title = QObject::tr("Fatal error");
-    m_config.message = QObject::tr("%1 is crashing...").arg( m_program );
+    m_config.message = QObject::tr("%1 is crashing...").arg(m_program);
     m_config.buttonText = QObject::tr("Close");
     m_config.defaultText = QObject::tr("This is a general failure");
 }
 
-CrashHandler::~CrashHandler ()
+CrashHandler::~CrashHandler()
 {
     if (m_instance) 
         delete m_instance;
@@ -210,25 +210,42 @@ void CrashHandler::setConfig(const QString &filePath)
     }
 }
 
-static QString runCommand( const QString &command )
+static QString runCommand(const QString &command)
 {
     static const uint SIZE = 40960; //40 KiB
-    static char buf[ SIZE ];
+    static char buf[SIZE];
+    QString result = "";
 
 #ifdef K_DEBUG
     kDebug() << "Running command: " << command;
 #endif
+    FILE *process = ::popen(command.toLocal8Bit().data(), "r");
+    while (fgets(buf, SIZE-1, process) != NULL) {
+           result += "</br>";
+           result += QString::fromLocal8Bit(buf);
+    }
 
-    FILE *process = ::popen( command.toLocal8Bit().data(), "r" );
-    buf[ std::fread( (void*)stdout, sizeof(char), SIZE-1, process ) ] = '\0';
-         ::pclose( process );
+    ::pclose(process);
 
-    return QString::fromLocal8Bit( buf );
+    return result;
 }
 
 void crashTrapper (int sig)
 {
-    qDebug("Fatal error: %s is crashing with signal %d :(", CHANDLER->program().toLocal8Bit().data(), sig);
+
+#ifdef K_DEBUG
+    qDebug("\n*** Fatal error: %s is crashing with signal %d :(", CHANDLER->program().toLocal8Bit().data(), sig);
+
+    if (sig == 6) {
+        qDebug("Signal 6: The process itself has found that some essential pre-requisite");
+        qDebug("for correct function is not available and voluntarily killing itself.");
+    }
+
+    if (sig == 11) {
+        qDebug("Signal 11: Officially known as \"segmentation fault\", means that the program");
+        qDebug("accessed a memory location that was not assigned. That's usually a bug in the program.");
+    }
+#endif
 
     CHANDLER->setTrapper(0); // Unactive crash handler
 
@@ -247,22 +264,11 @@ void crashTrapper (int sig)
         QString bt;
         QString execInfo;
 
-        QTemporaryFile temp("qt_temp_file");
-        temp.setAutoRemove( true );
-        temp.open();
-
-        const int handle = temp.handle();
-        const QString gdb_batch = "bt\n";
-
-        ::write(handle, gdb_batch.toLocal8Bit().data(), gdb_batch.length());
-        ::fsync(handle);
-
         // so we can read stderr too
         ::dup2(fileno(stdout), fileno(stderr));
 
         QString gdb;
-        gdb  = "gdb -nw -n -batch -x ";
-        gdb += temp.fileName();
+        gdb  = "gdb -nw -n -ex bt -batch";
         gdb += " " + HOME_DIR + "bin/ktoon.bin ";
         gdb += QString::number(::getppid());
 

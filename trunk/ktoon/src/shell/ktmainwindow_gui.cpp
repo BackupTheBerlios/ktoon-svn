@@ -101,18 +101,18 @@ void KTMainWindow::createGUI()
 
     m_exposureSheet = new KTExposureSheet;
     view = addToolView(m_exposureSheet, Qt::RightDockWidgetArea, Drawing);
-    m_actionManager->insert( view->toggleViewAction(), "show exposure");
+    m_actionManager->insert(view->toggleViewAction(), "show exposure");
     addToPerspective(view->toggleViewAction(), Drawing);
 
     ui4project(m_exposureSheet);
-    ui4localRequest( m_exposureSheet );
+    ui4localRequest(m_exposureSheet);
     connectToDisplays(m_exposureSheet);
 
     // Adding the help widget to the right side of the interface
 
-    m_helper = new KTHelpWidget(HOME_DIR+"/data/help/");
-    view = addToolView( m_helper, Qt::RightDockWidgetArea, All );
-    m_actionManager->insert( view->toggleViewAction(), "show help");
+    m_helper = new KTHelpWidget(HOME_DIR + "data/help/");
+    view = addToolView(m_helper, Qt::RightDockWidgetArea, All );
+    m_actionManager->insert(view->toggleViewAction(), "show help");
 
     connect(m_helper, SIGNAL(pageLoaded(const QString &, const QString &)), this, SLOT(showHelpPage(const QString &,
                              const QString &)));
@@ -129,8 +129,8 @@ void KTMainWindow::createGUI()
     m_actionManager->insert( view->toggleViewAction(), "show timeline");
     addToPerspective(view->toggleViewAction(), Drawing);
 
-    ui4project( m_timeLine );
-    ui4localRequest( m_timeLine );
+    ui4project(m_timeLine);
+    ui4localRequest(m_timeLine);
     connectToDisplays(m_timeLine);
 
     // Adding the script editor to the bottom side, if kinas was enabled
@@ -149,12 +149,12 @@ void KTMainWindow::createGUI()
     // Adding the camera widget to the bottom side of the interface
 
     m_cameraWidget = new KTCameraWidget(m_projectManager->project());
-    view = addToolView( m_cameraWidget, Qt::BottomDockWidgetArea, Animation );
-    m_actionManager->insert( view->toggleViewAction(), "show camera");
+    view = addToolView(m_cameraWidget, Qt::BottomDockWidgetArea, Animation);
+    m_actionManager->insert(view->toggleViewAction(), "show camera");
     addToPerspective(view->toggleViewAction(), Drawing);
 
-    ui4project( m_cameraWidget );
-    connectToDisplays( m_cameraWidget );
+    ui4project(m_cameraWidget);
+    connectToDisplays(m_cameraWidget);
 }
 
 /**
@@ -370,12 +370,11 @@ void KTMainWindow::setupFileActions()
     // Exit action
     KAction *exit = new KAction(QPixmap(THEME_DIR+"/icons/close.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")),
                                 qApp, SLOT(closeAllWindows()), m_actionManager);
-    //                          qApp, SLOT(quit()), m_actionManager);
     exit->setStatusTip(tr("Close application"));
     m_actionManager->insert(exit, "exit", "file" );
 
     // when the last window is closed, the application should quit
-    //connect(qApp, SIGNAL(lastWindowClosed()), qApp, SLOT(quit()));
+    connect(qApp, SIGNAL(lastWindowClosed()), qApp, SLOT(quit()));
 }
 
 /**

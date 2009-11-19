@@ -57,7 +57,7 @@ TextArea::~ TextArea()
 {
 }
 
-void TextArea::setSource( const QUrl &name )
+void TextArea::setSource(const QUrl &name)
 {
     if (name.scheme() == "http") {
         KCONFIG->beginGroup("General");
@@ -75,12 +75,11 @@ CrashWidget::CrashWidget (int sig) : QDialog(0), m_sig(sig)
 {
     setModal(true);
 
-    setWindowTitle( CHANDLER->title() );
+    setWindowTitle(CHANDLER->title());
 
     m_layout = new QVBoxLayout(this);
     m_tabber = new QTabWidget(this);
     m_layout->addWidget(m_tabber);
-
 
     QWidget *page1 = new QWidget;
     QVBoxLayout *page1layout = new QVBoxLayout(page1);
@@ -109,7 +108,7 @@ CrashWidget::CrashWidget (int sig) : QDialog(0), m_sig(sig)
 
     page1layout->addLayout(hbox);
 
-    m_tabber->addTab(page1, tr("What happens?"));
+    m_tabber->addTab(page1, tr("What's happening?"));
 
     QPushButton *end = new QPushButton( CHANDLER->buttonText(),this );
     connect(end,SIGNAL(clicked()),SLOT(accept()));
@@ -134,14 +133,11 @@ void CrashWidget::addBacktracePage(const QString &execInfo, const QString &backt
     layout->addWidget(new QLabel(tr("Executable information")));
 
     TextArea *fileInfo = new TextArea;
-
-    // QFontMetrics fm(fileInfo->font());
-    // QSize fileInfoSize = fm.size( Qt::TextWordWrap, execInfo);
-    // fileInfo->setMaximumHeight(fileInfoSize.height());
-
     fileInfo->setHtml(execInfo);
+
     layout->addWidget(fileInfo);
     layout->addWidget(new QLabel(tr("Backtrace")));
+
     TextArea *btInfo = new TextArea;
     btInfo->setHtml(backtrace);
 

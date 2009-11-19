@@ -20,7 +20,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef CRASHHANDLER_H
 #define CRASHHANDLER_H
 
@@ -41,16 +40,15 @@ class CrashHandler
         CrashHandler();
 
     public:
-        ~CrashHandler ();
+        ~CrashHandler();
         void setConfig(const QString &filePath);
-
-        void setTrapper (void (*trapper)(int));
+        void setTrapper(void (*trapper)(int));
         static CrashHandler *instance();
         static void init();
 
     public:
-        void setProgram (const QString &prog);
-        QString program () const;
+        void setProgram(const QString &prog);
+        QString program() const;
         void setImagePath(const QString &imagePath);
         QString imagePath() const;
 
@@ -68,23 +66,20 @@ class CrashHandler
         struct CrashHandlerConfig {
                QString title;
                QString message;
-               QColor messageColor;
+               QColor  messageColor;
                QString buttonText;
-
                QString defaultText;
                QString defaultImage;
                QMap<int, QPair<QString, QString> > signalEntry;
-
         } m_config;
 
         static CrashHandler *m_instance; // Singleton
-QString m_program;
+        QString m_program;
         QString m_imagePath;
         bool m_verbose;
 };
 
 #define CHANDLER CrashHandler::instance()
-
 
 #endif // Q_OS_UNIX
 
