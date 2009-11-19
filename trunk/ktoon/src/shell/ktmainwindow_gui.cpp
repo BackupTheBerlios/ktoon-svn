@@ -370,11 +370,12 @@ void KTMainWindow::setupFileActions()
     // Exit action
     KAction *exit = new KAction(QPixmap(THEME_DIR+"/icons/close.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")),
                                 qApp, SLOT(closeAllWindows()), m_actionManager);
+    //                          qApp, SLOT(quit()), m_actionManager);
     exit->setStatusTip(tr("Close application"));
     m_actionManager->insert(exit, "exit", "file" );
 
     // when the last window is closed, the application should quit
-    connect(qApp, SIGNAL(lastWindowClosed()), qApp, SLOT(quit()));
+    //connect(qApp, SIGNAL(lastWindowClosed()), qApp, SLOT(quit()));
 }
 
 /**

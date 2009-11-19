@@ -36,33 +36,32 @@
 
 class KTOON_EXPORT KTExportInterface
 {
-	public:
-		enum Format
-		{
-			NONE = 0,
-			SWF = 1<<0,
-			MPEG = 1<<1,
-			AVI = 1<<2,
-			RM = 1 << 3,
-			ASF = 1 << 5,
-			MOV = 1 << 6,
-			GIF = 1 << 7,
-			PNG = 1 << 8,
-			JPEG = 1 << 9,
-			XPM = 1 << 10,
-			SMIL = 1 << 11
-		};
-		
-		Q_DECLARE_FLAGS(Formats, Format);
-		
-		virtual ~KTExportInterface() {};
-		virtual QString key() const = 0;
-		virtual Formats availableFormats() = 0;
-		
-		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, const QSize &size, int fps ) = 0;
+    public:
+        enum Format 
+             {
+               NONE = 0,
+               SWF = 1<<0,
+               MPEG = 1<<1,
+               AVI = 1<<2,
+               RM = 1 << 3,
+               ASF = 1 << 5,
+               MOV = 1 << 6,
+               GIF = 1 << 7,
+               PNG = 1 << 8,
+               JPEG = 1 << 9,
+               XPM = 1 << 10,
+               SMIL = 1 << 11
+             };
+
+        Q_DECLARE_FLAGS(Formats, Format);
+
+        virtual ~KTExportInterface() {};
+        virtual QString key() const = 0;
+        virtual Formats availableFormats() = 0;
+        virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, const QSize &size, int fps ) = 0;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(KTExportInterface::Formats);
-Q_DECLARE_INTERFACE( KTExportInterface, "com.toonka.ktoon.ExportInterface/0.1" );
+        Q_DECLARE_OPERATORS_FOR_FLAGS(KTExportInterface::Formats);
+        Q_DECLARE_INTERFACE(KTExportInterface, "com.toonka.ktoon.ExportInterface/0.1");
 
 #endif
