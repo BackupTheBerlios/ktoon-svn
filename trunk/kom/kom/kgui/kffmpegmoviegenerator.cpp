@@ -205,6 +205,12 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
 
 bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
 {
+    if (image.isNull()) {
+        #ifdef K_DEBUG
+               kDebug() << "Image is null!";
+        #endif
+    }
+
     AVCodecContext *c = video_st->codec;
     AVFrame *picturePtr;
     double nbFrames = ((int)(streamDuration * fps));
