@@ -219,13 +219,17 @@ static QString runCommand(const QString &command)
 #ifdef K_DEBUG
     kDebug() << "Running command: " << command;
 #endif
+
     FILE *process = ::popen(command.toLocal8Bit().data(), "r");
+
     while (fgets(buf, SIZE-1, process) != NULL) {
-           result += "</br>";
-           result += QString::fromLocal8Bit(buf);
+           result += buf;
     }
 
     ::pclose(process);
+
+    result.replace(QString("#"), QString("<p></p>#"));
+    result.replace(QString("]"), QString("]<p></p>"));
 
     return result;
 }

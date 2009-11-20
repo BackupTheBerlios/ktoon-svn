@@ -52,7 +52,8 @@ class SelectPlugin : public KExportWizardPage
 {
     Q_OBJECT;
     public:
-        SelectPlugin(const KTExportWidget *kt);
+        //SelectPlugin(const KTExportWidget *kt);
+        SelectPlugin();
         ~SelectPlugin();
 
         bool isComplete() const;
@@ -78,7 +79,9 @@ class SelectPlugin : public KExportWizardPage
         const char* getFormatExtension(const QString format);
 };
 
-SelectPlugin::SelectPlugin(const KTExportWidget *kt) : KExportWizardPage(tr("Select plugin"))
+//SelectPlugin::SelectPlugin(const KTExportWidget *kt) : KExportWizardPage(tr("Select plugin"))
+
+SelectPlugin::SelectPlugin() : KExportWizardPage(tr("Select plugin"))
 {
     setTag("PLUGIN");
     QWidget *container = new QWidget;
@@ -551,7 +554,7 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KExp
     setWindowTitle(tr("Export"));
     setWindowIcon(QIcon(THEME_DIR+"/icons/export.png"));
 
-    m_pluginSelectionPage = new SelectPlugin(this);
+    m_pluginSelectionPage = new SelectPlugin();
     addPage(m_pluginSelectionPage);
 
     m_scenesSelectionPage = new SelectScenes(this);
@@ -575,7 +578,6 @@ KTExportWidget::~KTExportWidget()
     #ifdef K_DEBUG
            KEND;
     #endif
-    qDeleteAll(m_plugins);
 }
 
 void KTExportWidget::loadPlugins()
