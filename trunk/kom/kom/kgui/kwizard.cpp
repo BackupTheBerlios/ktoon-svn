@@ -34,29 +34,28 @@
 
 KWizard::KWizard(QWidget *parent) : QDialog(parent)
 {
-	m_cancelButton = new QPushButton(tr("Cancel"));
-	m_backButton = new QPushButton(tr("< &Back"));
-	m_nextButton = new QPushButton(tr("Next >"));
-	m_finishButton = new QPushButton(tr("&Finish"));
+    m_cancelButton = new QPushButton(tr("Cancel"));
+    m_backButton = new QPushButton(tr("< &Back"));
+    m_nextButton = new QPushButton(tr("Next >"));
+    m_finishButton = new QPushButton(tr("&Finish"));
 
-	connect(m_cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
-	connect(m_backButton, SIGNAL(clicked()), this, SLOT(back()));
-	connect(m_nextButton, SIGNAL(clicked()), this, SLOT(next()));
-	connect(m_finishButton, SIGNAL(clicked()), this, SLOT(finish()));
+    connect(m_cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+    connect(m_backButton, SIGNAL(clicked()), this, SLOT(back()));
+    connect(m_nextButton, SIGNAL(clicked()), this, SLOT(next()));
+    connect(m_finishButton, SIGNAL(clicked()), this, SLOT(finish()));
 
-	m_buttonLayout = new QHBoxLayout;
-	m_buttonLayout->addStretch(1);
-	m_buttonLayout->addWidget(m_cancelButton);
-	m_buttonLayout->addWidget(m_backButton);
-	m_buttonLayout->addWidget(m_nextButton);
-	m_buttonLayout->addWidget(m_finishButton);
+    m_buttonLayout = new QHBoxLayout;
+    m_buttonLayout->addStretch(1);
+    m_buttonLayout->addWidget(m_cancelButton);
+    m_buttonLayout->addWidget(m_backButton);
+    m_buttonLayout->addWidget(m_nextButton);
+    m_buttonLayout->addWidget(m_finishButton);
 
-	m_mainLayout = new QVBoxLayout;
-	m_mainLayout->addWidget(&m_history);
-	m_mainLayout->addLayout(m_buttonLayout);
-	setLayout(m_mainLayout);
+    m_mainLayout = new QVBoxLayout;
+    m_mainLayout->addWidget(&m_history);
+    m_mainLayout->addLayout(m_buttonLayout);
+    setLayout(m_mainLayout);
 }
-
 
 KWizard::~KWizard()
 {
@@ -64,133 +63,117 @@ KWizard::~KWizard()
 
 KWizardPage *KWizard::addPage(KWizardPage *newPage)
 {
-	newPage->setParent(&m_history);
-	newPage->show();
-	
-	m_history.addWidget(newPage);
-	
-	if( m_history.count() == 1) // First Page
-	{
-		newPage->setFocus();
-		m_backButton->setEnabled(false);
-		m_nextButton->setDefault(true);
-	}
-	
-	m_nextButton->setEnabled( newPage->isComplete() );
-	
-	connect(newPage, SIGNAL(completed()), this, SLOT(pageCompleted()));
-	
-	return newPage;
+    newPage->setParent(&m_history);
+    newPage->show();
+
+    m_history.addWidget(newPage);
+
+    if (m_history.count() == 1) { // First Page
+        newPage->setFocus();
+        m_backButton->setEnabled(false);
+        m_nextButton->setDefault(true);
+    }
+
+    m_nextButton->setEnabled( newPage->isComplete() );
+
+    connect(newPage, SIGNAL(completed()), this, SLOT(pageCompleted()));
+
+    return newPage;
 }
 
 void KWizard::showPage(KWizardPage *page)
 {
-	m_history.setCurrentWidget(page);
+    m_history.setCurrentWidget(page);
 }
 
 void KWizard::showPage(int index)
 {
-	m_history.setCurrentIndex(index);
+    m_history.setCurrentIndex(index);
 }
 
 void KWizard::back()
 {
-	KWizardPage *current = qobject_cast<KWizardPage *>(m_history.currentWidget());
-	if( current )
-	{
-		current->aboutToBackPage();
-	}
-	
-	m_history.setCurrentIndex(m_history.currentIndex()-1);
-	
-	if ( m_history.currentIndex() == 0 )
-	{
-		m_nextButton->setEnabled(true);
-		m_finishButton->setEnabled(false);
-		m_backButton->setEnabled(false);
-		
-		m_nextButton->setDefault(true);
-	} else 
-	{
-		m_nextButton->setDefault(true);
-		m_finishButton->setEnabled(false);
-	}
+    KWizardPage *current = qobject_cast<KWizardPage *>(m_history.currentWidget());
+    if (current)
+        current->aboutToBackPage();
+
+    m_history.setCurrentIndex(m_history.currentIndex()-1);
+
+    if (m_history.currentIndex() == 0) {
+        m_nextButton->setEnabled(true);
+        m_finishButton->setEnabled(false);
+        m_backButton->setEnabled(false);
+        m_nextButton->setDefault(true);
+    } else {
+        m_nextButton->setDefault(true);
+        m_finishButton->setEnabled(false);
+    }
 }
 
 void KWizard::next()
 {
-	KWizardPage *current = qobject_cast<KWizardPage *>(m_history.currentWidget());
-	if( current )
-	{
-		current->aboutToNextPage();
-	}
-	
-	m_history.setCurrentIndex(m_history.currentIndex()+1);
-	
-	if ( m_history.currentIndex() == m_history.count()-1 && current->isComplete())
-	{
-		m_nextButton->setEnabled(false);
-		m_backButton->setEnabled(true);
-		
-		m_finishButton->setDefault(true);
-	} else 
-	{
-		m_finishButton->setEnabled(false);
-	}
-	
-	pageCompleted();
+    KWizardPage *current = qobject_cast<KWizardPage *>(m_history.currentWidget());
+    if (current)
+        current->aboutToNextPage();
+
+    m_history.setCurrentIndex(m_history.currentIndex()+1);
+
+    if (m_history.currentIndex() == m_history.count()-1 && current->isComplete()) {
+        m_nextButton->setEnabled(false);
+        m_backButton->setEnabled(true);
+        m_finishButton->setDefault(true);
+    } else {
+        m_finishButton->setEnabled(false);
+    }
+
+    pageCompleted();
 }
 
 void KWizard::finish()
 {
-	KWizardPage *current = qobject_cast<KWizardPage *>(m_history.currentWidget());
-	if ( current ) current->aboutToFinish();
-	accept();
+    KWizardPage *current = qobject_cast<KWizardPage *>(m_history.currentWidget());
+    if (current) 
+        current->aboutToFinish();
+    accept();
 }
 
 void KWizard::pageCompleted()
 {
-	KWizardPage *current = qobject_cast<KWizardPage *>(m_history.currentWidget());
-	
-	if ( m_history.currentIndex() == m_history.count()-1 )
-	{
-		m_finishButton->setEnabled(current->isComplete());
-	}
-	else
-	{
-		m_nextButton->setEnabled(current->isComplete());
-	}
+    KWizardPage *current = qobject_cast<KWizardPage *>(m_history.currentWidget());
+
+    if (m_history.currentIndex() == m_history.count()-1)
+        m_finishButton->setEnabled(current->isComplete());
+    else
+        m_nextButton->setEnabled(current->isComplete());
 }
 
 KWizardPage::KWizardPage(const QString &title, QWidget *parent) : KVHBox(parent)
 {
-	KVHBox *theTitle = new KVHBox(this, Qt::Vertical);
-	new QLabel(title, theTitle);
-	new KSeparator(theTitle);
-	boxLayout()->setAlignment(theTitle, Qt::AlignTop);
-	
-	m_container = new QFrame(this);
-	
-	m_layout = new QGridLayout(m_container);
-	
-	m_image = new QLabel;
-	m_layout->addWidget(m_image, 0, 0, Qt::AlignLeft);
-	m_image->hide();
-	
-	new KSeparator(this);
-	
-	hide();
+    KVHBox *theTitle = new KVHBox(this, Qt::Vertical);
+    new QLabel(title, theTitle);
+    new KSeparator(theTitle);
+    boxLayout()->setAlignment(theTitle, Qt::AlignTop);
+
+    m_container = new QFrame(this);
+    m_layout = new QGridLayout(m_container);
+
+    m_image = new QLabel;
+    m_layout->addWidget(m_image, 0, 0, Qt::AlignLeft);
+    m_image->hide();
+
+    new KSeparator(this);
+    hide();
 }
 
 void KWizardPage::setPixmap(const QPixmap &px)
 {
-	m_image->setPixmap(px);
-	m_image->show();
+    m_image->setPixmap(px);
+    m_image->show();
 }
 
 void KWizardPage::setWidget(QWidget *w)
 {
-	m_layout->addWidget(w, 0, 1);
+    m_layout->addWidget(w, 0, 1);
 }
 
 KWizardPage::~KWizardPage() {};

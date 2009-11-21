@@ -27,13 +27,10 @@
 
 KWidgetListView::KWidgetListView(QWidget * parent) : QTableWidget(0,1,parent)
 {
-	verticalHeader()->hide();
-	horizontalHeader()->hide();
-	
-	horizontalHeader()->setResizeMode ( QHeaderView::Custom);
-// 	horizontalHeader()->setStretchLastSection(true);
+    verticalHeader()->hide();
+    horizontalHeader()->hide();
+    horizontalHeader()->setResizeMode ( QHeaderView::Custom);
 }
-
 
 KWidgetListView::~KWidgetListView()
 {
@@ -41,77 +38,65 @@ KWidgetListView::~KWidgetListView()
 
 QTableWidgetItem *KWidgetListView::addWidget(QWidget *widget)
 {
-	QTableWidgetItem *newItem = new QTableWidgetItem();
-	
-	int newRowIndex = rowCount();
-	
-	insertRow(newRowIndex);
-	setItem( newRowIndex, 0, newItem);
-	#if QT_VERSION >= 0x040100
-	setIndexWidget(indexFromItem(newItem), widget);
-	#endif
-	verticalHeader()->resizeSection(newRowIndex, widget->height());
-	
-	m_items.insert(widget, newItem);
+    QTableWidgetItem *newItem = new QTableWidgetItem();
 
-	return newItem;
+    int newRowIndex = rowCount();
+    insertRow(newRowIndex);
+    setItem( newRowIndex, 0, newItem);
+
+    setIndexWidget(indexFromItem(newItem), widget);
+    verticalHeader()->resizeSection(newRowIndex, widget->height());
+
+    m_items.insert(widget, newItem);
+
+    return newItem;
 }
 
 QTableWidgetItem *KWidgetListView::insertWidget(int pos, QWidget *widget)
 {
-	QTableWidgetItem *newItem = new QTableWidgetItem();
-	
-	insertRow(pos);
-	setItem( pos, 0, newItem);
-	
-	setIndexWidget(indexFromItem(newItem), widget);
-	verticalHeader()->resizeSection(pos, widget->height());
-	
-	m_items.insert(widget, newItem);
+    QTableWidgetItem *newItem = new QTableWidgetItem();
 
-	return newItem;
+    insertRow(pos);
+    setItem(pos, 0, newItem);
+
+    setIndexWidget(indexFromItem(newItem), widget);
+    verticalHeader()->resizeSection(pos, widget->height());
+
+    m_items.insert(widget, newItem);
+
+    return newItem;
 }
-
 
 QWidget *KWidgetListView::widget(QTableWidgetItem *treeItem)
 {
-	return indexWidget(indexFromItem(treeItem));
+    return indexWidget(indexFromItem(treeItem));
 }
 
 QTableWidgetItem *KWidgetListView::item(QWidget *widget)
 {
-	return m_items[widget];
+    return m_items[widget];
 }
 
 void KWidgetListView::resizeEvent(QResizeEvent *e)
 {
-	horizontalHeader()->resizeSection (0, e->size().width() );
+    horizontalHeader()->resizeSection (0, e->size().width() );
 }
-
 
 void KWidgetListView::moveItemUp(int index)
 {
-	if ( index > 0 )
-	{
-		verticalHeader()->moveSection(index, index-1);
-// 		setCurrentCell(index-1, 0);
-// 		selectRow(index);
-	}
+    if (index > 0)
+        verticalHeader()->moveSection(index, index-1);
 }
 
 void KWidgetListView::moveItemDown(int index)
 {
-	if ( index < rowCount() )
-	{
-		verticalHeader()->moveSection(index, index+1);
-// 		setCurrentCell(index+1, 0);
-// 		selectRow(index);
-	}
+    if (index < rowCount())
+        verticalHeader()->moveSection(index, index+1);
 }
 
 
 int KWidgetListView::currentVisualRow() const
 {
-	return verticalHeader()->visualIndex(currentRow());
+    return verticalHeader()->visualIndex(currentRow());
 }
 

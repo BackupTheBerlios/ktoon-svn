@@ -22,10 +22,10 @@
 
 #include "kmoviegenerator.h"
 
-KMovieGenerator::KMovieGenerator( int width, int height )
+KMovieGenerator::KMovieGenerator(int width, int height)
  : QImage(width, height, QImage::Format_RGB32)
 {
-	reset();
+    reset();
 }
 
 KMovieGenerator::~KMovieGenerator()
@@ -34,24 +34,19 @@ KMovieGenerator::~KMovieGenerator()
 
 bool KMovieGenerator::begin()
 {
-	return true;
+    return true;
 }
 
 void KMovieGenerator::nextFrame()
 {
-	handle(*this);
+    handle(*this);
 }
 
 void KMovieGenerator::end()
 {
 }
 
-
 void KMovieGenerator::reset()
 {
-	fill( qRgba(255, 255, 255, 0) );
+    fill( qRgba(255, 255, 255, 0) );
 }
-
-
-
-

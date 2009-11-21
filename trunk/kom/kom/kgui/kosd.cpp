@@ -33,266 +33,232 @@
 
 KOsd *KOsd::s_osd = 0;
 
-KOsd::KOsd( QWidget * parent ) : QWidget( parent), m_timer( 0 )
+KOsd::KOsd(QWidget * parent) : QWidget(parent), m_timer(0)
 {
-	setFocusPolicy( Qt::NoFocus );
-	
-	m_palette = palette();
-// 	setBackgroundMode( Qt::NoBackground );
-	
-	move( 50, 50 );
-	resize( 0, 0 );
-	hide();
-	
-	m_animator = new Animation;
-	connect(&m_animator->timer, SIGNAL(timeout()), this, SLOT(animate()));
-	
-	m_timer = new QTimer( this );
-	connect( m_timer, SIGNAL( timeout() ), SLOT( hide() ) );
-	
-	
-	setWindowFlags( Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::ToolTip );
-	
-	m_document = new QTextDocument(this);
+    setFocusPolicy(Qt::NoFocus);
+    m_palette = palette();
+
+    move(50, 50);
+    resize(0, 0);
+    hide();
+
+    m_animator = new Animation;
+    connect(&m_animator->timer, SIGNAL(timeout()), this, SLOT(animate()));
+
+    m_timer = new QTimer(this);
+    connect(m_timer, SIGNAL(timeout()), SLOT( hide()));
+
+    setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::ToolTip);
+
+    m_document = new QTextDocument(this);
 }
 
 KOsd::~KOsd()
 {
-	delete m_animator;
-	delete m_timer;
+    delete m_animator;
+    delete m_timer;
 }
 
-void KOsd::display( const QString &message, Level level, int ms )
+void KOsd::display(const QString &message, Level level, int ms)
 {
-	if (message.isEmpty()) return;
-	
-	QString htmlMessage = message;
-	
-	htmlMessage.replace('\n', "<br/>");
-	
-	QBrush background = palette().background();
-	QBrush foreground = palette().foreground();
-	
-	if ( level != None )
-	{
-		switch ( level )
-		{
-			case Info:
-			{
-				background = QColor(0x678eae);
-				m_document->setHtml("<font size=+3 >"+tr("Information")+"</font><br><font size=+2>"+htmlMessage+"</font>");
-			}
-			break;
-			case Warning:
-			{
-				m_document->setHtml("<font size=+3>"+tr("Attention")+"</font><br><font size=+2>"+htmlMessage+"</font>");
-			}
-			break;
-			case Error:
-			{
-				background = Qt::red;
-				m_document->setHtml("<font size=+3>"+tr("Error")+"</font><br><font size=+2>"+htmlMessage+"</font>");
-			}
-			break;
-			case Fatal:
-			{
-				background = Qt::magenta;
-				m_document->setHtml("<font size=+3>"+tr("Error")+"</font><br><font size=+2>"+htmlMessage+"</font>");
-			}
-			break;
-			default:
-			{
-				m_document->setHtml(htmlMessage);
-			}
-			break;
-		}
-	}
-	
-	if ( ms < 0 )
-	{
-		ms = m_document->toPlainText().length() * 90;
-	}
-	
-	m_animator->level = level;
-	
-	QSizeF textSize = m_document->size();
-	
-	int width = (int)textSize.width()+10;
-	int height = (int)textSize.height()+10;
-	
-	QDesktopWidget desktop;
-	move ( (int) (desktop.screenGeometry().width() - textSize.width() ) - 50, 50 );
-	
-	
-	QRect geometry( 0, 0, width + 10, height + 8 );
-	QRect geometry2( 0, 0, width + 9, height + 7 );
+    if (message.isEmpty()) 
+        return;
 
-	// resize pixmap, mask and widget
-	/*static*/ QBitmap mask;
-	mask = QBitmap( geometry.size() );
-	m_pixmap = QPixmap( geometry.size() );
-	
-	resize( geometry.size() );
+    QString htmlMessage = message;
 
-    	// create and set transparency mask
-	QPainter maskPainter(&mask);
-	maskPainter.setRenderHint(QPainter::Antialiasing);
-	mask.fill( Qt::white );
-	maskPainter.setBrush( Qt::black );
-	maskPainter.drawRoundRect( geometry2, 1600 / geometry2.width(), 1600 / geometry2.height() );
-	setMask( mask );
-	
-	maskPainter.end();
-	
-	drawPixmap( background, foreground );
-	
-    	// show widget and schedule a repaint
-	show();
-	update();
+    htmlMessage.replace('\n', "<br/>");
 
-    	// close the message window after given mS
-	if ( ms > 0 )
-	{
-		m_animator->timer.start(300);
-		m_timer->start( ms );
-	} 
-	else if ( m_timer )
-	{
-		m_timer->stop();
-	}
+    QBrush background = palette().background();
+    QBrush foreground = palette().foreground();
+
+    if (level != None) {
+        switch (level) {
+                case Info:
+                   {
+                     background = QColor(0x678eae);
+                     m_document->setHtml("<font size=+3>" + tr("Information") + "</font><br><font size=+2>" + htmlMessage + "</font>");
+                   }
+                   break;
+                case Warning:
+                   {
+                     m_document->setHtml("<font size=+3>" + tr("Attention") + "</font><br><font size=+2>" + htmlMessage + "</font>");
+                   }
+                   break;
+                case Error:
+                   {
+                     background = Qt::red;
+                     m_document->setHtml("<font size=+3>" + tr("Error") + "</font><br><font size=+2>" + htmlMessage + "</font>");
+                   }
+                   break;
+                case Fatal:
+                   {
+                     background = Qt::magenta;
+                     m_document->setHtml("<font size=+3>" + tr("Error") + "</font><br><font size=+2>" + htmlMessage+"</font>");
+                   }
+                   break;
+                default:
+                   {
+                     m_document->setHtml(htmlMessage);
+                   }
+                   break;
+        }
+    }
+
+    if (ms < 0)
+        ms = m_document->toPlainText().length() * 90;
+
+    m_animator->level = level;
+
+    QSizeF textSize = m_document->size();
+
+    int width = (int)textSize.width()+10;
+    int height = (int)textSize.height()+10;
+
+    QDesktopWidget desktop;
+    move ((int) (desktop.screenGeometry().width() - textSize.width()) - 50, 50);
+
+    QRect geometry(0, 0, width + 10, height + 8);
+    QRect geometry2(0, 0, width + 9, height + 7);
+
+    // resize pixmap, mask and widget
+    QBitmap mask;
+    mask = QBitmap(geometry.size());
+    m_pixmap = QPixmap(geometry.size());
+
+    resize( geometry.size() );
+
+    // create and set transparency mask
+    QPainter maskPainter(&mask);
+    maskPainter.setRenderHint(QPainter::Antialiasing);
+    mask.fill(Qt::white);
+    maskPainter.setBrush(Qt::black);
+    maskPainter.drawRoundRect(geometry2, 1600 / geometry2.width(), 1600 / geometry2.height());
+    setMask(mask);
+
+    maskPainter.end();
+	
+    drawPixmap(background, foreground);
+
+    // show widget and schedule a repaint
+    show();
+    update();
+
+    // close the message window after given mS
+    if (ms > 0) {
+        m_animator->timer.start(300);
+        m_timer->start( ms );
+    } else if (m_timer) {
+        m_timer->stop();
+    }
 }
 
 KOsd *KOsd::self()
 {
-	if ( ! s_osd )
-	{
-		s_osd = new KOsd(QApplication::desktop() );
-	}
-	
-	return s_osd;
+    if (! s_osd)
+        s_osd = new KOsd(QApplication::desktop());
+
+    return s_osd;
 }
 
 void KOsd::paintEvent( QPaintEvent * e )
 {
-	QPainter p( this );
-	p.drawPixmap( e->rect().topLeft(), m_pixmap, e->rect() );
+    QPainter p( this );
+    p.drawPixmap( e->rect().topLeft(), m_pixmap, e->rect() );
 }
 
 void KOsd::mousePressEvent( QMouseEvent *e )
 {
-	if ( m_timer )
-		m_timer->stop();
-	hide();
+    if (m_timer)
+        m_timer->stop();
+    hide();
 }
 
 void KOsd::animate()
 {
-	if ( !isVisible() )
-	{
-		m_animator->timer.stop();
-	}
-	
-	QBrush background;
-	
-	if ( m_animator->level == Info )
-		return;
-	
-	if ( m_animator->level == Error )
-	{
-		if ( m_animator->on )
-		{
-			background = Qt::red;
-		}
-		else
-		{
-			background = palette().background();
-		}
-	}
-	else if ( m_animator->level == Warning )
-	{
-		if ( m_animator->on )
-		{
-			background = QColor("orange");
-		}
-		else
-		{
-			background = palette().background();
-		}
-	}
-	else if ( m_animator->level == Fatal )
-	{
-		if ( m_animator->on )
-		{
-			background = Qt::magenta;
-		}
-		else
-		{
-			background = palette().background();
-		}
-	}
-	
-	m_animator->on = m_animator->on ? false : true;
-	
-	drawPixmap( background, palette().foreground() );
-	
-	repaint();
+    if (!isVisible())
+        m_animator->timer.stop();
+
+    QBrush background;
+
+    if (m_animator->level == Info)
+        return;
+
+    if (m_animator->level == Error) {
+        if (m_animator->on)
+            background = Qt::red;
+        else
+            background = palette().background();
+    } else if (m_animator->level == Warning) {
+               if (m_animator->on)
+                   background = QColor("orange");
+               else
+                   background = palette().background();
+    } else if (m_animator->level == Fatal) {
+               if (m_animator->on)
+                   background = Qt::magenta;
+               else
+                   background = palette().background();
+    }
+
+    m_animator->on = m_animator->on ? false : true;
+
+    drawPixmap(background, palette().foreground());
+
+    repaint();
 }
 
 void KOsd::drawPixmap(const QBrush &background, const QBrush &foreground)
 {
-	QPixmap symbol;
-	
-	QRect textRect = QRect(QPoint(0, 0), m_document->size().toSize() );
-	
-	QSizeF textSize = m_document->size();
-	
-	int width = (int)textSize.width()+10;
-	int height = (int)textSize.height()+10;
-	
-	int textXOffset = 0;
-	int shadowOffset = QApplication::isRightToLeft() ? -1 : 1;
-	
-	QRect geometry( 0, 0, width + 10, height + 8 );
-	QRect geometry2( 0, 0, width + 9, height + 7 );
-	
-	textXOffset = 2;
-	
-	width += textXOffset;
-	height = qMax( height, symbol.height() );
-	
-	// draw background
-	m_pixmap.fill( Qt::gray );
-	QPainter bufferPainter( &m_pixmap );
-	bufferPainter.setRenderHint(QPainter::Antialiasing);
-	bufferPainter.setPen( QPen(QBrush(foreground), 3)  );
-	
-	QLinearGradient gradient(geometry.topLeft(), geometry.bottomLeft() );
-	
-	QColor color0 = background.color();
-	color0.setAlpha(180);
-	
-	QColor color1 = palette().color( QPalette::Button);
-	color1.setAlpha(180);
-	
-	gradient.setColorAt(0.0, color0 );
-	gradient.setColorAt(1.0, color1 );
-	gradient.setSpread(QGradient::ReflectSpread );
-	
-	bufferPainter.setBrush( gradient ); 
-	bufferPainter.drawRoundRect( geometry2, 1600 / geometry2.width(), 1600 / geometry2.height() );
+    QPixmap symbol;
+
+    QRect textRect = QRect(QPoint(0, 0), m_document->size().toSize() );
+
+    QSizeF textSize = m_document->size();
+
+    int width = (int)textSize.width() + 10;
+    int height = (int)textSize.height() + 10;
+
+    int textXOffset = 0;
+    int shadowOffset = QApplication::isRightToLeft() ? -1 : 1;
+
+    QRect geometry( 0, 0, width + 10, height + 8 );
+    QRect geometry2( 0, 0, width + 9, height + 7 );
+
+    textXOffset = 2;
+
+    width += textXOffset;
+    height = qMax( height, symbol.height() );
+
+    // draw background
+    m_pixmap.fill(Qt::gray);
+    QPainter bufferPainter( &m_pixmap );
+    bufferPainter.setRenderHint(QPainter::Antialiasing);
+    bufferPainter.setPen( QPen(QBrush(foreground), 3)  );
+
+    QLinearGradient gradient(geometry.topLeft(), geometry.bottomLeft() );
+
+    QColor color0 = background.color();
+    color0.setAlpha(180);
+
+    QColor color1 = palette().color( QPalette::Button);
+    color1.setAlpha(180);
+
+    gradient.setColorAt(0.0, color0 );
+    gradient.setColorAt(1.0, color1 );
+    gradient.setSpread(QGradient::ReflectSpread );
+
+    bufferPainter.setBrush(gradient); 
+    bufferPainter.drawRoundRect(geometry2, 1600/geometry2.width(), 1600/geometry2.height());
 	 
-	// draw shadow and text
-// 	int yText = geometry.height() - height / 2;
-	bufferPainter.setPen( palette().background().color().dark( 115 ) );
-	
-	
-	bufferPainter.translate( 5 + textXOffset + shadowOffset, 1);
-	
-	m_document->drawContents(&bufferPainter,  QRect(0,0, textRect.width(), textRect.height() ));
-	
-	bufferPainter.translate( -shadowOffset, -1 );
-	
-	bufferPainter.setPen( palette().foreground().color() );
-	m_document->drawContents(&bufferPainter,  QRect(0, 0, textRect.width(), textRect.height() ));
+    // draw shadow and text
+    bufferPainter.setPen(palette().background().color().dark(115));
+    bufferPainter.translate(5 + textXOffset + shadowOffset, 1);
+
+    m_document->drawContents(&bufferPainter,QRect(0,0, textRect.width(), textRect.height()));
+
+    bufferPainter.translate(-shadowOffset, -1);
+    bufferPainter.setPen(palette().foreground().color());
+
+    m_document->drawContents(&bufferPainter, QRect(0, 0, textRect.width(), textRect.height()));
 }
 

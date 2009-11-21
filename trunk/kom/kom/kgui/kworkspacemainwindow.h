@@ -30,17 +30,15 @@
 */
 class K_IDEAL_EXPORT KWorkspaceMainWindow : public KMainWindow
 {
-	Q_OBJECT;
-	public:
-		KWorkspaceMainWindow(QWidget *parent = 0);
-		~KWorkspaceMainWindow();
-		void addWidget(QWidget *widget, int perspective = DefaultPerspective);
-		void removeWidget(QWidget *widget);
-		
-	private:
-		QWorkspace *m_workspace;
+    Q_OBJECT;
+    public:
+        KWorkspaceMainWindow(QWidget *parent = 0);
+        ~KWorkspaceMainWindow();
+        void addWidget(QWidget *widget, int perspective = DefaultPerspective);
+        void removeWidget(QWidget *widget);
 
+    private:
+        QWorkspace *m_workspace;
 };
 
 #endif
-

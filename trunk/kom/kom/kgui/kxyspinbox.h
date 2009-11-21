@@ -34,36 +34,34 @@
 */
 class K_GUI_EXPORT KXYSpinBox : public QGroupBox
 {
-	Q_OBJECT
-	public:
-		KXYSpinBox(const QString &title, QWidget *parent = 0);
-		~KXYSpinBox();
-		void setSingleStep(double step);
-		void setMinimum ( double min);
-		void setMaximum ( double max);
-		void setX(double x);
-		void setY(double y);
-		double x();
-		double y();
-		void setModifyTogether(bool enable);
-		
-	private slots:
-		void updateXValue(double v);
-		void updateYValue(double v);
-		void toggleModify();
-		
-	private:
-		QLabel *m_textX, *m_textY;
-	
-		QDoubleSpinBox *m_x, *m_y;
-		QPushButton *m_separator;
-		
-		bool m_modifyTogether;
-		
-	signals:
-		void valueXChanged(double );
-		void valueYChanged(double );
-		void valueXYChanged(double, double);
+    Q_OBJECT
+    public:
+        KXYSpinBox(const QString &title, QWidget *parent = 0);
+        ~KXYSpinBox();
+        void setSingleStep(double step);
+        void setMinimum(double min);
+        void setMaximum(double max);
+        void setX(double x);
+        void setY(double y);
+        double x();
+        double y();
+        void setModifyTogether(bool enable);
+
+    private slots:
+        void updateXValue(double v);
+        void updateYValue(double v);
+        void toggleModify();
+
+    private:
+        QLabel *m_textX, *m_textY;
+        QDoubleSpinBox *m_x, *m_y;
+        QPushButton *m_separator;
+        bool m_modifyTogether;
+
+    signals:
+        void valueXChanged(double );
+        void valueYChanged(double );
+        void valueXYChanged(double, double);
 };
 
 #endif

@@ -35,13 +35,13 @@ struct KItemSelector::Private
 
 KItemSelector::KItemSelector(QWidget *parent) : QWidget(parent), k( new Private )
 {
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    QHBoxLayout *layout = new QHBoxLayout;
 
     k->available = new QListWidget;
 
     layout->addWidget(k->available);
 
-    QVBoxLayout *controlBox = new QVBoxLayout(this);
+    QVBoxLayout *controlBox = new QVBoxLayout;
     controlBox->setSpacing(0);
     controlBox->setMargin(2);
     controlBox->addStretch();
@@ -57,27 +57,14 @@ KItemSelector::KItemSelector(QWidget *parent) : QWidget(parent), k( new Private 
     connect(bprev, SIGNAL(clicked()), this, SLOT(removeCurrent()));
 
     controlBox->addWidget(bprev);
-
-    /*
-    QToolButton *bup = new QToolButton;
-    bup->setText("^");
-    connect(bup, SIGNAL(clicked()), this, SLOT(upCurrent()));
-
-    controlBox->addWidget(bup);
-
-    QToolButton *bdown = new QToolButton;
-    bdown->setText("v");
-    connect(bdown, SIGNAL(clicked()), this, SLOT(downCurrent()));
-
-    controlBox->addWidget(bdown);
-    */
-
     controlBox->addStretch();
 
     layout->addLayout(controlBox);
 
     k->selected = new QListWidget;
     layout->addWidget(k->selected);
+
+    setLayout(layout);
 }
 
 

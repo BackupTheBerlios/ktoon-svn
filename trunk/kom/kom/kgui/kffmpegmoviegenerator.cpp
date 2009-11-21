@@ -138,7 +138,6 @@ void KFFMpegMovieGenerator::Private::chooseFileExtension(int format)
                  movieFile += ".asf";
                  break;
             case AVI:
-                 // fmt->video_codec = CODEC_ID_MSMPEG4V3;
                  movieFile += ".avi";
                  break;
             case MOV:
@@ -205,11 +204,9 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
 
 bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
 {
-    if (image.isNull()) {
-        #ifdef K_DEBUG
-               kDebug() << "Image is null!";
-        #endif
-    }
+    #ifdef K_DEBUG
+           kDebug() << "Generating frame...";
+    #endif
 
     AVCodecContext *c = video_st->codec;
     AVFrame *picturePtr;
@@ -244,8 +241,35 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
         //sws_scale(img_convert_ctx, pFrame->data, pFrame->linesize, 0, pCodecCtx->height, pict.data, pict.linesize);
        */
 
+        int w = c->width;
+        int h = c->height;
+        AVPicture pictTmp;
+        avpicture_alloc(&pictTmp, PIX_FMT_RGBA32,w,h);
+
+        int size = sizeof(pictTmp.data);
+        int imgSize = image.numBytes(); 
+        kDebug() << "Size pictTmp: " << size << endl;
+        kDebug() << "Size QImage: " << imgSize << endl;
+
+
+        if (!image.isNull()) {
+            kDebug() << "Creando copia...";
+            memcpy(pictTmp.data[0],image.bits(),w*h*4);
+        } else {
+            kDebug() << "La imagen es nula!";
+            picturePtr = 0;
+       }
+
         picturePtr = avcodec_alloc_frame();
-        memcpy(picturePtr->data[0],image.bits(),c->width*c->height*4);
+        /* the lower the better quality, but also larger images => slower to transfer */
+        picturePtr->quality = 0;
+        /* copy the data from avpicture to avframe */
+        for (int i=0; i<4; ++i){
+             picturePtr->data[i]= pictTmp.data[i];
+             picturePtr->linesize[i]= pictTmp.linesize[i];
+        }
+
+        //memcpy(picturePtr->data[0],image.bits(),c->width*c->height*4);
 
         //avpicture_free(&pictTmp);
         //picturePtr = tmpFrame;

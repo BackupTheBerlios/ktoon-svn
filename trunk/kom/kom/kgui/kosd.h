@@ -36,52 +36,50 @@
 
 class K_GUI_EXPORT KOsd : public QWidget
 {
-	Q_OBJECT;
+    Q_OBJECT;
+
+    private:
+        KOsd(QWidget *parent = 0);
+
+    public:
+        enum Level
+        {
+           None = -1,
+           Info,
+           Warning,
+           Error,
+           Fatal
+        };
+        ~KOsd();
 	
-	private:
-		KOsd(QWidget *parent = 0);
-		
-	public:
-		enum Level
-		{
-			None = -1,
-			Info,
-			Warning,
-			Error,
-			Fatal
-		};
-		~KOsd();
-		
-		void display( const QString & message, Level level = Info, int ms = -1 );
-		
-		static KOsd *self();
-		
-	private slots:
-		void animate();
+        void display( const QString & message, Level level = Info, int ms = -1 );
 
-	protected:
-		void paintEvent( QPaintEvent * e );
-		void mousePressEvent( QMouseEvent * e );
-		
-	private:
-		void drawPixmap(const QBrush &background, const QBrush &foreground);
+        static KOsd *self();
 
-	private:
-		static KOsd *s_osd;
-		QPixmap m_pixmap;
-		QTimer *m_timer;
-		
-		QPalette m_palette; 
-		
-		struct Animation
-		{
-			QTimer timer;
-			Level level;
-			bool on;
-		} *m_animator;
-		
-		QTextDocument *m_document;
+    private slots:
+        void animate();
 
+    protected:
+        void paintEvent( QPaintEvent * e );
+        void mousePressEvent( QMouseEvent * e );
+
+    private:
+        void drawPixmap(const QBrush &background, const QBrush &foreground);
+
+    private:
+        static KOsd *s_osd;
+        QPixmap m_pixmap;
+        QTimer *m_timer;
+        QPalette m_palette; 
+
+        struct Animation
+        {
+          QTimer timer;
+          Level level;
+          bool on;
+        } *m_animator;
+
+        QTextDocument *m_document;
 };
 
 #endif

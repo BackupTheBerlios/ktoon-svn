@@ -40,31 +40,29 @@ class KWizardPage;
 
 class K_GUI_EXPORT KWizard : public QDialog
 {
-	Q_OBJECT;
-	
-	public:
-		KWizard(QWidget *parent = 0);
-		~KWizard();
-		KWizardPage *addPage(KWizardPage *page);
-		void showPage(int index);
-		void showPage(KWizardPage *page);
-		
-	private slots:
-		void back();
-		void next();
-		void pageCompleted();
-		void finish();
-		
-	private:
-		QStackedWidget m_history;
-		QPushButton *m_cancelButton;
-		QPushButton *m_backButton;
-		QPushButton *m_nextButton;
-		QPushButton *m_finishButton;
-		QHBoxLayout *m_buttonLayout;
-		QVBoxLayout *m_mainLayout;
+    Q_OBJECT;
 
+    public:
+        KWizard(QWidget *parent = 0);
+        ~KWizard();
+        KWizardPage *addPage(KWizardPage *page);
+        void showPage(int index);
+        void showPage(KWizardPage *page);
 
+    private slots:
+        void back();
+        void next();
+        void pageCompleted();
+        void finish();
+
+    private:
+        QStackedWidget m_history;
+        QPushButton *m_cancelButton;
+        QPushButton *m_backButton;
+        QPushButton *m_nextButton;
+        QPushButton *m_finishButton;
+        QHBoxLayout *m_buttonLayout;
+        QVBoxLayout *m_mainLayout;
 };
 
 #include <QFrame>
@@ -73,29 +71,29 @@ class K_GUI_EXPORT KWizard : public QDialog
 
 class KWizardPage : public KVHBox
 {
-	Q_OBJECT
-	public:
-		KWizardPage(const QString &title, QWidget *parent = 0 );
-		virtual ~KWizardPage();
-		
-		virtual bool isComplete() const = 0;
-		virtual void reset() = 0;
-		
-		void setPixmap(const QPixmap &px);
-		void setWidget(QWidget *w);
-		
-	public slots:
-		virtual void aboutToNextPage() {}
-		virtual void aboutToBackPage() {}
-		virtual void aboutToFinish() {};
-		
-	private:
-		QFrame *m_container;
-		QGridLayout *m_layout;
-		QLabel *m_image;
+    Q_OBJECT
+    public:
+        KWizardPage(const QString &title, QWidget *parent = 0 );
+        virtual ~KWizardPage();
 
-	signals:
-		void completed();
+        virtual bool isComplete() const = 0;
+        virtual void reset() = 0;
+
+        void setPixmap(const QPixmap &px);
+        void setWidget(QWidget *w);
+
+    public slots:
+        virtual void aboutToNextPage() {}
+        virtual void aboutToBackPage() {}
+        virtual void aboutToFinish() {};
+
+    private:
+        QFrame *m_container;
+        QGridLayout *m_layout;
+        QLabel *m_image;
+
+    signals:
+        void completed();
 };
 
 #endif

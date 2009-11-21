@@ -25,11 +25,9 @@
 
 KWorkspaceMainWindow::KWorkspaceMainWindow(QWidget *parent) : KMainWindow(parent)
 {
-	m_workspace = new QWorkspace;
-	
-	setCentralWidget( m_workspace );
+    m_workspace = new QWorkspace;
+    setCentralWidget( m_workspace );
 }
-
 
 KWorkspaceMainWindow::~KWorkspaceMainWindow()
 {
@@ -37,16 +35,13 @@ KWorkspaceMainWindow::~KWorkspaceMainWindow()
 
 void KWorkspaceMainWindow::addWidget(QWidget *widget, int perspective)
 {
-	addToPerspective( widget, perspective );
-	
-	m_workspace->addWindow(widget);
-	widget->show();
+    addToPerspective(widget, perspective);
+    m_workspace->addWindow(widget);
+    widget->show();
 }
 
 void KWorkspaceMainWindow::removeWidget(QWidget *widget)
 {
-	removeFromPerspective( widget );
-	
-	widget->setParent(0);
+    removeFromPerspective(widget);
+    widget->setParent(0);
 }
-
