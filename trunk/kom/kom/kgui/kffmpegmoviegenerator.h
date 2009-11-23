@@ -29,21 +29,20 @@
 */
 class KFFMpegMovieGenerator : public KMovieGenerator
 {
-	public:
-		KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, int width, int height, int fps = 24);
-		KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, const QSize &size, int fps = 24);
-		~KFFMpegMovieGenerator();
-		
-	protected:
-		void __saveMovie(const QString &fileName);
-		virtual void handle(const QImage& image);
-		
-		virtual bool begin();
-		virtual void end();
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+        KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, int width, int height, int fps = 24);
+        KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, const QSize &size, int fps = 24);
+        ~KFFMpegMovieGenerator();
+
+    protected:
+        void __saveMovie(const QString &fileName);
+        virtual void handle(const QImage& image);
+        virtual bool begin();
+        virtual void end();
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

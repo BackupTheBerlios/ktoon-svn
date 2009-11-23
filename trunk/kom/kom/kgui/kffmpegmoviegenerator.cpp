@@ -35,6 +35,29 @@ extern "C" {
 }
 #endif
 
+struct KFFMpegMovieGenerator::Private
+{
+    AVFrame *picture;
+    AVFrame *tmpPicture;
+
+    QString movieFile;
+    int fps;
+    double video_pts;
+    uint8_t *videOutbuf;
+    int frameCount;
+    int videOutbufSize;
+    double streamDuration;
+
+    AVStream *video_st;
+    AVFormatContext *oc;
+    AVOutputFormat *fmt;
+
+    void chooseFileExtension(int format);
+    bool openVideo(AVFormatContext *oc, AVStream *st);
+    bool writeVideoFrame(const QImage &image);
+    void closeVideo(AVStream *st);
+};
+
 static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, int height, int fps)
 {
     AVCodecContext *c;
@@ -108,29 +131,6 @@ static AVFrame *allocPicture(int pix_fmt, int width, int height)
     return picture;
 }
 
-struct KFFMpegMovieGenerator::Private
-{
-    AVFrame *picture;
-    AVFrame *tmpPicture;
-
-    QString movieFile;
-    int fps;
-    double video_pts;
-    uint8_t *videOutbuf;
-    int frameCount;
-    int videOutbufSize;
-    double streamDuration;
-
-    AVStream *video_st;
-    AVFormatContext *oc;
-    AVOutputFormat *fmt;
-
-    void chooseFileExtension(int format);
-    bool openVideo(AVFormatContext *oc, AVStream *st);
-    bool writeVideoFrame(const QImage &image);
-    void closeVideo(AVStream *st);
-};
-
 void KFFMpegMovieGenerator::Private::chooseFileExtension(int format)
 {
     switch (format) {
@@ -159,6 +159,7 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
 {
     AVCodec *codec;
     AVCodecContext *c;
+
     c = st->codec;
 
     /* find the video encoder */
@@ -205,81 +206,33 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
 bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
 {
     #ifdef K_DEBUG
-           kDebug() << "Generating frame...";
+           kDebug() << "Generating frame #" << frameCount;
     #endif
 
     AVCodecContext *c = video_st->codec;
     AVFrame *picturePtr;
     double nbFrames = ((int)(streamDuration * fps));
 
-    if (frameCount >= nbFrames) {
-        picturePtr = 0;
-    } else {
-       /*
-        AVPicture pictTmp;
-        avpicture_alloc(&pictTmp, PIX_FMT_RGBA32,c->width, c->height);
-        memcpy(pictTmp.data[0],image.bits(),c->width*c->height*4);
-
-        //int img_convert(AVPicture *dst, int dst_pix_fmt, const AVPicture *src, int pix_fmt, int width, int height);
-        //img_convert((AVPicture *)picture, c->pix_fmt, &pictTmp, PIX_FMT_RGBA32, c->width, c->height);
-
+    if (frameCount < nbFrames) {
+        int size;
+        uint8_t *picture_buf;
         int w = c->width;
         int h = c->height;
-        struct SwsContext *img_convert_ctx;
-        img_convert_ctx = sws_getContext(w, h, PIX_FMT_RGBA32, w, h, PIX_FMT_RGBA32, SWS_BICUBIC, NULL, NULL, NULL);
-        sws_scale(img_convert_ctx, 
-                  pictTmp.data, 
-                  pictTmp.linesize, 
-                  0, h, 
-                  pictNew.data, 
-                  pictNew.linesize);
-
-        //img_convert(&pict, PIX_FMT_YUV420P, (AVPicture *)pFrame, pCodecCtx->pix_fmt, pCodecCtx->width, pCodecCtx->height);
-        //int w = pCodecCtx->width;
-        //int h = pCodecCtx->height;
-        //img_convert_ctx = sws_getContext(w, h, pCodecCtx->pix_fmt, w, h, PIX_FMT_YUV420P, SWS_BICUBIC, NULL, NULL, NULL);
-        //sws_scale(img_convert_ctx, pFrame->data, pFrame->linesize, 0, pCodecCtx->height, pict.data, pict.linesize);
-       */
-
-        int w = c->width;
-        int h = c->height;
-        AVPicture pictTmp;
-        avpicture_alloc(&pictTmp, PIX_FMT_RGBA32,w,h);
-
-        int size = sizeof(pictTmp.data);
-        int imgSize = image.numBytes(); 
-        kDebug() << "Size pictTmp: " << size << endl;
-        kDebug() << "Size QImage: " << imgSize << endl;
-
-
-        if (!image.isNull()) {
-            kDebug() << "Creando copia...";
-            memcpy(pictTmp.data[0],image.bits(),w*h*4);
-        } else {
-            kDebug() << "La imagen es nula!";
-            picturePtr = 0;
-       }
 
         picturePtr = avcodec_alloc_frame();
-        /* the lower the better quality, but also larger images => slower to transfer */
-        picturePtr->quality = 0;
-        /* copy the data from avpicture to avframe */
-        for (int i=0; i<4; ++i){
-             picturePtr->data[i]= pictTmp.data[i];
-             picturePtr->linesize[i]= pictTmp.linesize[i];
-        }
+        size = avpicture_get_size(PIX_FMT_YUV420P, w, h);
+        picture_buf = (uint8_t *) av_malloc(size);
+        memcpy(picture_buf,image.bits(),size);
+        avpicture_fill((AVPicture *)picturePtr, picture_buf,
+                        PIX_FMT_YUV420P, w, h);
 
-        //memcpy(picturePtr->data[0],image.bits(),c->width*c->height*4);
-
-        //avpicture_free(&pictTmp);
-        //picturePtr = tmpFrame;
+        //fill_yuv_image(picturePtr, frameCount, w, h);
     }
 
     int out_size = -1, ret = -1;
 
-    if (oc->oformat->flags & AVFMT_RAWPICTURE) {
+    if (oc->oformat->flags & AVFMT_RAWPICTURE) { // Exporting images array
         AVPacket pkt;
-
         av_init_packet(&pkt);
         pkt.flags |= PKT_FLAG_KEY;
         pkt.stream_index= video_st->index;
@@ -287,8 +240,10 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
         pkt.size= sizeof(AVPicture);
         
         ret = av_write_frame(oc, &pkt);
-    } else {
+
+    } else { // Exporting movies
         out_size = avcodec_encode_video(c, videOutbuf, videOutbufSize, picturePtr);
+
         if (out_size > 0) {
             AVPacket pkt;
             av_init_packet(&pkt);
@@ -309,6 +264,7 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
             kError() << "Error while writing video frame";
             return false;
         }
+
         frameCount++;
 
         return true;
