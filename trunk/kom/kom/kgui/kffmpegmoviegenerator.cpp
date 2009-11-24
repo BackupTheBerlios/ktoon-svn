@@ -222,8 +222,23 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
         picturePtr->quality = 0;
         const uchar *data = image.bits();
         int size = sizeof(data);
-        memcpy(picturePtr->data[0],data,size);
-        picturePtr = 0;
+        kDebug() << "Array() Size: " << size;
+        int test = avpicture_get_size(PIX_FMT_YUV420P, w, h);
+        kDebug() << "AVPicture Size: " << test;
+        int numBytes = image.numBytes();
+        kDebug() << "numBytes: " << numBytes;
+
+        AVPicture pictTmp;
+        avpicture_alloc(&pictTmp, PIX_FMT_YUV420P ,w ,h);
+        memcpy(pictTmp.data[0],data, test);
+
+        for (int i=0;i<3;i++) {
+             picturePtr->data[i]=pictTmp.data[i];
+             picturePtr->linesize[i]= pictTmp.linesize[i];
+        }
+
+        avpicture_free(&pictTmp);
+        //picturePtr = 0;
     }
 
     int out_size = -1, ret = -1;
