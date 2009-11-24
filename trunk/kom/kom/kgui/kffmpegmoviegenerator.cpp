@@ -214,19 +214,16 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
     double nbFrames = ((int)(streamDuration * fps));
 
     if (frameCount < nbFrames) {
-        int size;
-        uint8_t *picture_buf;
         int w = c->width;
         int h = c->height;
+        uint8_t *pic_dat;
 
         picturePtr = avcodec_alloc_frame();
-        size = avpicture_get_size(PIX_FMT_YUV420P, w, h);
-        picture_buf = (uint8_t *) av_malloc(size);
-        memcpy(picture_buf,image.bits(),size);
-        avpicture_fill((AVPicture *)picturePtr, picture_buf,
-                        PIX_FMT_YUV420P, w, h);
-
-        //fill_yuv_image(picturePtr, frameCount, w, h);
+        picturePtr->quality = 0;
+        const uchar *data = image.bits();
+        int size = sizeof(data);
+        memcpy(picturePtr->data[0],data,size);
+        picturePtr = 0;
     }
 
     int out_size = -1, ret = -1;
