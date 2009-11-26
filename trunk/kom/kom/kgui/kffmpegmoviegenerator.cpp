@@ -54,6 +54,7 @@ struct KFFMpegMovieGenerator::Private
 
     void chooseFileExtension(int format);
     bool openVideo(AVFormatContext *oc, AVStream *st);
+    void RGBtoYUV420P(const uint8_t *bufferRGB, uint8_t *bufferYUV, uint iRGBIncrement, bool bSwapRGB, int width, int height);
     bool writeVideoFrame(const QImage &image);
     void closeVideo(AVStream *st);
 };
@@ -203,6 +204,49 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
     return true;
 }
 
+#define rgbtoyuv(r, g, b, y, u, v) \
+  y = (uint8_t)(((int)30*r + (int)59*g + (int)11*b)/100); \
+  u = (uint8_t)(((int)-17*r - (int)33*g + (int)50*b + 12800)/100); \
+  v = (uint8_t)(((int)50*r - (int)42*g - (int)8*b + 12800)/100);
+
+void KFFMpegMovieGenerator::Private::RGBtoYUV420P(const uint8_t *bufferRGB, uint8_t *bufferYUV, uint iRGBIncrement, bool bSwapRGB, int width, int height)
+{
+    const unsigned iPlaneSize = width * height;
+    const unsigned iHalfWidth = width >> 1;
+
+    // get pointers to the data
+    uint8_t *yplane  = bufferYUV;
+    uint8_t *uplane  = bufferYUV + iPlaneSize;
+    uint8_t *vplane  = bufferYUV + iPlaneSize + (iPlaneSize >> 2);
+    const uint8_t *bufferRGBIndex = bufferRGB;
+
+    int iRGBIdx[3];
+    iRGBIdx[0] = 0;
+    iRGBIdx[1] = 1;
+    iRGBIdx[2] = 2;
+    if (bSwapRGB)  {
+        iRGBIdx[0] = 2;
+        iRGBIdx[2] = 0;
+    }
+ 
+    for (int y = 0; y < (int) height; y++) {
+         uint8_t *yline  = yplane + (y * width);
+         uint8_t *uline  = uplane + ((y >> 1) * iHalfWidth);
+         uint8_t *vline  = vplane + ((y >> 1) * iHalfWidth);
+
+         for (int x=0; x<width; x+=2) {
+              rgbtoyuv ( bufferRGBIndex[iRGBIdx[0]], bufferRGBIndex[iRGBIdx[1]], bufferRGBIndex[iRGBIdx[2]], *yline, *uline, *vline );
+              bufferRGBIndex += iRGBIncrement;
+              yline++;
+              rgbtoyuv ( bufferRGBIndex[iRGBIdx[0]], bufferRGBIndex[iRGBIdx[1]], bufferRGBIndex[iRGBIdx[2]], *yline, *uline, *vline );
+              bufferRGBIndex += iRGBIncrement;
+              yline++;
+              uline++;
+              vline++;
+         }
+    }
+}
+
 bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
 {
     #ifdef K_DEBUG
@@ -210,60 +254,22 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
     #endif
 
     AVCodecContext *c = video_st->codec;
-    AVFrame *picturePtr;
+    AVFrame *picturePtr = 0;
     double nbFrames = ((int)(streamDuration * fps));
 
     if (frameCount < nbFrames) {
         int w = c->width;
         int h = c->height;
-        uint8_t *pic_dat;
+
+        int size = avpicture_get_size(PIX_FMT_YUV420P, w, h);
+        uint8_t *pic_dat = (uint8_t *) av_malloc(size);
+        RGBtoYUV420P(image.bits(), pic_dat, image.depth()/8, true, w, h);
 
         picturePtr = avcodec_alloc_frame();
         picturePtr->quality = 0;
-        const uchar *data = image.bits();
-        int size = sizeof(data);
-        kDebug() << "Array() Size: " << size;
-        int test = avpicture_get_size(PIX_FMT_YUV420P, w, h);
-        kDebug() << "AVPicture Size: " << test;
-        int numBytes = image.numBytes();
-        kDebug() << "QImage numBytes: " << numBytes;
-        int shortint = sizeof(uint8_t);
-        kDebug() << "uint8_t: " << shortint;
-        int charsize = sizeof(char);
-        kDebug() << "char: " << charsize;
-        pic_dat = (uint8_t *) av_malloc(test);
-        memcpy(pic_dat, image.bits(), test);
-        kDebug() << "Width: " << w;
-        kDebug() << "Height: " << h;
-        kDebug() << "QWidth: " << image.width();
-        kDebug() << "QHeight: " << image.height();
 
-        AVPicture pictTmp;
-        avpicture_alloc(&pictTmp, PIX_FMT_YUV420P, w, h);
-        memcpy(pictTmp.data[0], data, test);
-
-        for (int i=0;i<3;i++) {
-             picturePtr->data[i]=pictTmp.data[i];
-             picturePtr->linesize[i]= pictTmp.linesize[i];
-        }
-
-        avpicture_free(&pictTmp);
-
-        /*
         avpicture_fill((AVPicture *)picturePtr, pic_dat,
                    PIX_FMT_YUV420P, w, h);
-        AVPicture pictTmp;
-        avpicture_alloc(&pictTmp, PIX_FMT_YUV420P ,w ,h);
-        memcpy(pictTmp->data[0], data, test);
-
-        for (int i=0;i<3;i++) {
-             picturePtr->data[i]=pictTmp.data[i];
-             picturePtr->linesize[i]= pictTmp.linesize[i];
-        }
-
-        avpicture_free(&pictTmp);
-        picturePtr = 0;
-        */
     }
 
     int out_size = -1, ret = -1;
