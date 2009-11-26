@@ -231,17 +231,23 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
         kDebug() << "uint8_t: " << shortint;
         int charsize = sizeof(char);
         kDebug() << "char: " << charsize;
-        pic_dat = (uint8_t *) av_malloc(w*h*4);
-        memcpy(pic_dat, image.bits(), w*h*4);
+        pic_dat = (uint8_t *) av_malloc(test);
+        memcpy(pic_dat, image.bits(), test);
         kDebug() << "Width: " << w;
         kDebug() << "Height: " << h;
         kDebug() << "QWidth: " << image.width();
         kDebug() << "QHeight: " << image.height();
 
+        AVPicture pictTmp;
+        avpicture_alloc(&pictTmp, PIX_FMT_YUV420P, w, h);
+        memcpy(pictTmp.data[0], data, test);
 
-        avpicture_fill((AVPicture *)picturePtr, pic_dat,
-                   PIX_FMT_YUV420P, w, h);
+        for (int i=0;i<3;i++) {
+             picturePtr->data[i]=pictTmp.data[i];
+             picturePtr->linesize[i]= pictTmp.linesize[i];
+        }
 
+        avpicture_free(&pictTmp);
 
         /*
         avpicture_fill((AVPicture *)picturePtr, pic_dat,
