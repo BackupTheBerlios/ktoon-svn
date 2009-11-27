@@ -31,26 +31,26 @@
 
 class KTPaletteImporter
 {
-	public:
-		enum PaletteType
-		{
-			Gimp = 0
-		};
-		
-		KTPaletteImporter();
-		~KTPaletteImporter();
-		
-		void import(const QString &file, PaletteType pt);
-		void saveFile(const QString &path);
-		QString filePath() const;
-		
-	private:
-		void importGimpPalette(const QString &file);
-		
-	private:
-		KTPaletteDocument *m_document;
-		QString m_paletteName;
-		QString m_filePath;
+    public:
+        enum PaletteType
+        {
+           Gimp = 0
+        };
+
+        KTPaletteImporter();
+        ~KTPaletteImporter();
+
+        void import(const QString &file, PaletteType pt);
+        void saveFile(const QString &path);
+        QString filePath() const;
+
+    private:
+        void importGimpPalette(const QString &file);
+
+    private:
+        KTPaletteDocument *m_document;
+        QString m_paletteName;
+        QString m_filePath;
 };
 
 #endif

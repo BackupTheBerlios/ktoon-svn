@@ -362,6 +362,7 @@ class ExportTo : public KExportWizardPage
     signals:
         void saveFile();
         void setFileName();
+        void isDone();
 
     private:
         QList<int> m_indexes;
@@ -373,6 +374,7 @@ class ExportTo : public KExportWizardPage
         QSpinBox *m_fps;
         KXYSpinBox *m_size;
         QString filename;
+        QString path;
         QString extension;
 };
 
@@ -382,7 +384,7 @@ ExportTo::ExportTo(const KTProject *project, const KTExportWidget *kt) : KExport
     setTag("EXPORT");
     QWidget *container = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout(container);
-    filename = getenv ("HOME");
+    path = getenv ("HOME");
 
     ////////////////
 
@@ -472,6 +474,7 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
     extension = value;
 
 #if defined(Q_OS_UNIX)
+    filename = path;
     filename += "/";
     filename += m_project->projectName();
     filename += extension;
@@ -487,9 +490,10 @@ void ExportTo::updateNameField()
 void ExportTo::chooseFile()
 {
     QFileDialog dialog(this);
-    dialog.setNameFilter(extension);
     dialog.setDirectory(filename);
-    filename = dialog.getSaveFileName(this, tr("Choose a file name..."));
+    const char *filter = "Video File (*" + extension.toLocal8Bit() + ")";
+    filename = dialog.getSaveFileName(this, tr("Choose a file name..."), QString(), tr(filter));
+
     if (filename.length() > 0) {
         if (!filename.toLower().endsWith(extension)) {
             filename += extension;
@@ -513,26 +517,37 @@ void ExportTo::exportIt()
            K_FUNCINFO;
     #endif
 
+    bool done = false; 
+    filename = m_filePath->text();
+
     if (m_currentExporter) {
         if (filename.isNull()) 
             return;
 
         #ifdef K_DEBUG
-               kDebug("export") << "Exporting to file: " << filename;
+               kDebug() << "Exporting to file: " << filename;
         #endif
 
         QList<KTScene *> scenes = scenesToExport();
 
         #ifdef K_DEBUG
-               kDebug("export") << "Exporting " << scenes.count() << " scenes";
+               kDebug() << "Exporting " << scenes.count() << " scenes";
         #endif
 
         if (scenes.count() > 0) {
             m_currentExporter->exportToFormat(filename, scenes, m_currentFormat, QSize((int)m_size->x(),
-                                               (int)m_size->x()), m_fps->value()  );
+                                               (int)m_size->x()), m_fps->value());
+            done = true;
         }
     } else {
-        KOsd::self()->display( tr("Format problem. Internal error... ouch! :S"), KOsd::Error );
+        KOsd::self()->display( tr("Format problem. Internal error... ouch! :S"), KOsd::Error);
+    }
+
+    if (done) {
+        int index = filename.length() - filename.lastIndexOf("/");
+        QString message = "File " + filename.right(index-1) + " was saved successful";
+        KOsd::self()->display(tr(message.toLocal8Bit()), KOsd::Info);
+        emit isDone();
     }
 }
 

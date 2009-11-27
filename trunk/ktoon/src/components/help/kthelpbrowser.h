@@ -32,20 +32,20 @@
 */
 class KTHelpBrowser : public QWidget
 {
-	Q_OBJECT
-	public:
-		KTHelpBrowser(QWidget *parent);
-		~KTHelpBrowser();
-		
-	public slots:
-		void setDocument(const QString &doc);
-		void setSource( const QString &filePath);
-		void setDataDirs(const QStringList &dirs);
-		
-	private:
-		QSplitter *m_separator;
-		QTextBrowser *m_pageArea;
-		QTextDocument *m_document;
+    Q_OBJECT
+    public:
+        KTHelpBrowser(QWidget *parent);
+        ~KTHelpBrowser();
+
+    public slots:
+        void setDocument(const QString &doc);
+        void setSource(const QString &filePath);
+        void setDataDirs(const QStringList &dirs);
+
+    private:
+        QSplitter *m_separator;
+        QTextBrowser *m_pageArea;
+        QTextDocument *m_document;
 };
 
 #endif

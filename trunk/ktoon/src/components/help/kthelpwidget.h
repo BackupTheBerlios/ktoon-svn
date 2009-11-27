@@ -38,22 +38,22 @@ class KHelpWidgetManager;
 */
 class KTHelpWidget : public KTModuleWidgetBase
 {
-	Q_OBJECT
-	public:
-		KTHelpWidget(const QString &path, QWidget *parent = 0);
-		~KTHelpWidget();
-		QString helpPath () const;
-		
-	private slots:
-		void tryToLoadPage(QTreeWidgetItem *, int);
-		void loadPage(const QString &title,const QString &path);
-		
-	signals:
-		void pageLoaded(const QString &title, const QString &content);
-		
-	private:
-		QDir m_helpPath;
-		QMap<QTreeWidgetItem *, QString> m_files;
+    Q_OBJECT
+    public:
+        KTHelpWidget(const QString &path, QWidget *parent = 0);
+        ~KTHelpWidget();
+        QString helpPath() const;
+
+    private slots:
+        void tryToLoadPage(QTreeWidgetItem *, int);
+        void loadPage(const QString &title,const QString &path);
+
+    signals:
+        void pageLoaded(const QString &title, const QString &content);
+
+    private:
+        QDir m_helpPath;
+        QMap<QTreeWidgetItem *, QString> m_files;
 };
 
 #endif

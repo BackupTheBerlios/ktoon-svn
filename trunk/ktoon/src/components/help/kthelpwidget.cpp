@@ -38,86 +38,67 @@
 
 KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidgetBase(parent)
 {
-	setWindowTitle( tr("Help"));
-	setWindowIcon(QPixmap(THEME_DIR+"/icons/help.png"));
-	
-	if (QString(QLocale::system().name()).length() > 1 )
-	{
-		m_helpPath = path+"/"+QString(QLocale::system().name()).left(2);
-	}
-	else
-	{
-		m_helpPath = path+"/en";
-	}
-	
-	
-	QTreeWidget *contentsListView = new QTreeWidget(this);
-	contentsListView->setHeaderLabels ( QStringList() << tr("") );
-	contentsListView->header()->hide();
-	
-	connect(contentsListView, SIGNAL(itemClicked ( QTreeWidgetItem *, int )), this, 
-									SLOT(tryToLoadPage(QTreeWidgetItem *, int)));
-	
-	// contentsListView->setRootIsDecorated(true);
-	// contentsListView->addColumn(tr("Topics"));
-	
-	addChild( contentsListView);
-	
-	QDomDocument document;
-	QFile file( m_helpPath.path()+"/help.xml" );
-	
-	// kDebug() << "Help path: " << m_helpPath.path();
-	if ( file.open( QIODevice::ReadOnly ) )
-	{
-		if ( document.setContent(&file) )
-		{
-			QDomElement root = document.documentElement();
-			
-			QDomNode section = root.firstChild();
-			while( !section.isNull() )
-			{
-				QDomElement element = section.toElement();
-				if( !element.isNull() )
-				{
-					if ( element.tagName() == "Section" )
-					{
-						QTreeWidgetItem *item = new QTreeWidgetItem(contentsListView);
-						item->setText(0, element.attribute("title"));
-						
-						QDomNode subSection = element.firstChild();
-						while( ! subSection.isNull())
-						{
-							QDomElement element2 = subSection.toElement();
-							if ( !element2.isNull() )
-							{
-								if ( element2.tagName() == "SubSection" )
-								{
-									QTreeWidgetItem *subitem = 
-												new QTreeWidgetItem(item);
+    setWindowTitle(tr("Help"));
+    setWindowIcon(QPixmap(THEME_DIR + "/icons/help.png"));
 
-									subitem->setText(0, element2.attribute("title"));
-									m_files.insert(subitem, element2.attribute("file"));
-								}
-							}
-							subSection = subSection.nextSibling();
-						}
-					}
-				}
-				section = section.nextSibling();
-			}
-		}
-		else
-		{
-			qDebug("KTHelpWidget::Can't set contents");
-		}
-		file.close();
-	}
-	else
-	{
-		qDebug("KTHelpWidget::Can't open");
-	}
-	
-	contentsListView->show();
+    if (QString(QLocale::system().name()).length() > 1)
+        m_helpPath = path + "/" + QString(QLocale::system().name()).left(2);
+    else
+        m_helpPath = path+"/en";
+
+    QTreeWidget *contentsListView = new QTreeWidget(this);
+    contentsListView->setHeaderLabels (QStringList() << tr(""));
+    contentsListView->header()->hide();
+
+    connect(contentsListView, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, 
+                              SLOT(tryToLoadPage(QTreeWidgetItem *, int)));
+
+    // contentsListView->setRootIsDecorated(true);
+    // contentsListView->addColumn(tr("Topics"));
+
+    addChild( contentsListView);
+
+    QDomDocument document;
+    QFile file( m_helpPath.path()+"/help.xml" );
+
+    // kDebug() << "Help path: " << m_helpPath.path();
+    if (file.open(QIODevice::ReadOnly)) {
+        if (document.setContent(&file)) {
+            QDomElement root = document.documentElement();
+            QDomNode section = root.firstChild();
+
+            while (!section.isNull()) {
+                   QDomElement element = section.toElement();
+                   if (!element.isNull()) {
+                       if (element.tagName() == "Section") {
+                           QTreeWidgetItem *item = new QTreeWidgetItem(contentsListView);
+                           item->setText(0, element.attribute("title"));
+
+                           QDomNode subSection = element.firstChild();
+                           while (! subSection.isNull()) {
+                                  QDomElement element2 = subSection.toElement();
+                                  if (!element2.isNull()) {
+                                      if (element2.tagName() == "SubSection") {
+                                          QTreeWidgetItem *subitem = new QTreeWidgetItem(item);
+                                          subitem->setText(0, element2.attribute("title"));
+                                          m_files.insert(subitem, element2.attribute("file"));
+                                      }
+                                  }
+                                  subSection = subSection.nextSibling();
+                           }
+                       }
+                   }
+                   section = section.nextSibling();
+            }
+        } else {
+                 qDebug("KTHelpWidget::Can't set contents");
+        }
+        file.close();
+    } else {
+        qDebug("KTHelpWidget::Can't open");
+    }
+
+    contentsListView->show();
 }
 
 KTHelpWidget::~KTHelpWidget()
@@ -126,43 +107,19 @@ KTHelpWidget::~KTHelpWidget()
 
 void KTHelpWidget::tryToLoadPage(QTreeWidgetItem *item, int)
 {
-	if ( item )
-	{
-		QString fileName = m_files[item];
-		if ( ! fileName.isNull() )
-		{
-			loadPage(item->text(0), m_helpPath.path()+"/"+ fileName);
-		}
-	}
+    if (item) {
+        QString fileName = m_files[item];
+        if (! fileName.isNull())
+            loadPage(item->text(0), m_helpPath.path()+"/"+ fileName);
+    }
 }
 
 void KTHelpWidget::loadPage(const QString &title, const QString &filePath)
 {
-/*
- 	kDebug() << "Loading: "+filePath;
-	
-	QFile file(filePath);
-	QFileInfo finfo(file);
-	
-	if ( finfo.exists() && !finfo.isDir() && file.open( QIODevice::ReadOnly | QIODevice::Text ) )
-	{
-		QTextStream ts(&file);
-		
-		QString document = "";
-		while( ! ts.atEnd() )
-		{
-			document += ts.readLine();
-		}
-		
-		file.close();
-		
-		if ( document != "" )
-*/
-	emit pageLoaded(title, filePath);
-// 	}	
+    emit pageLoaded(title, filePath);
 }
 
 QString KTHelpWidget::helpPath () const
 {
-	return m_helpPath.path();
+    return m_helpPath.path();
 }

@@ -32,109 +32,97 @@ KTPaletteImporter::KTPaletteImporter() : m_document(0)
 
 KTPaletteImporter::~KTPaletteImporter()
 {
-	if ( m_document) delete m_document;
+    if (m_document) 
+        delete m_document;
 }
 
 void KTPaletteImporter::import(const QString &file, PaletteType pt)
 {
-	switch(pt)
-	{
-		case Gimp:
-		{
-			importGimpPalette(file);
-		}
-		break;
-	}
+    switch (pt) {
+            case Gimp:
+             {
+                 importGimpPalette(file);
+             }
+             break;
+    }
 }
 
 void KTPaletteImporter::importGimpPalette(const QString &file)
 {
-	QFile f(file);
-	
-	if ( f.open(QIODevice::ReadOnly | QIODevice::Text))
-	{
-		QTextStream stream(&f);
+   QFile f(file);
+
+   if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+       QTextStream stream(&f);
+
+       if (! stream.readLine().contains("GIMP Palette")) {
+           #ifdef K_DEBUG
+                  kError() << "Don't contains \"GIMP Palette\"";
+           #endif
+           return;
+       }
+
+       QString string = "";
+       string = stream.readLine();
+
+       m_paletteName = string.section("Name:", 1).trimmed();
+
+       if (m_document) 
+           delete m_document;
+
+       m_document = new KTPaletteDocument(m_paletteName, false);
+
+       stream >> string;
+
+       if (! string.contains("#"))
+           stream.readLine();
 		
-		if ( ! stream.readLine().contains("GIMP Palette") )
-		{
-			#ifdef K_DEBUG
-				kError() << "Don't contains \"GIMP Palette\"";
-			#endif
-			return;
-		}
-		
-		QString string = "";
-		string = stream.readLine();
-		
-		
-		m_paletteName = string.section("Name:", 1).trimmed();
-		
-		if ( m_document ) delete m_document;
-		m_document = new KTPaletteDocument(m_paletteName, false);
-		
-		stream >> string;
-		
-		if ( ! string.contains("#") )
-		{
-// 			K_DEBUG("palette") << "Don't have \'#\' " << string;
-// 			return;
-			stream.readLine();
-		}
-		
-		QRegExp rgb("\\s*([\\d]{0,3})\\s+([\\d]{0,3})\\s+([\\d]{0,3})\\s+.*$");
-		while ( !stream.atEnd())
-		{
-			QString line = stream.readLine();
-			
-			if ( rgb.indexIn(line) != -1 )
-			{
-				QStringList capturedTexts = rgb.capturedTexts();
-				
-				if ( capturedTexts.count() != 4 )
-					continue;
-				
-				int r = capturedTexts[1].toInt();
-				int g = capturedTexts[2].toInt();
-				int b = capturedTexts[3].toInt();
-			
-				QColor c(r, g, b);
-			
-				if ( c.isValid() )
-				{
-					m_document->addColor(c);
-				}
-				else
-				{
-					#ifdef K_DEBUG
-						kError() << "Bad color";
-					#endif
-				}
-			}
-			else {
-				#ifdef K_DEBUG
-					kError() << "No find";
-				#endif
-			}
-		}
-	}
+       QRegExp rgb("\\s*([\\d]{0,3})\\s+([\\d]{0,3})\\s+([\\d]{0,3})\\s+.*$");
+       while (!stream.atEnd()) {
+              QString line = stream.readLine();
+
+              if (rgb.indexIn(line) != -1) {
+                  QStringList capturedTexts = rgb.capturedTexts();
+
+                  if (capturedTexts.count() != 4)
+                      continue;
+
+                  int r = capturedTexts[1].toInt();
+                  int g = capturedTexts[2].toInt();
+                  int b = capturedTexts[3].toInt();
+
+                  QColor c(r, g, b);
+
+                  if (c.isValid()) {
+                      m_document->addColor(c);
+                  } else {
+                      #ifdef K_DEBUG
+                             kError() << "Bad color";
+                      #endif
+                  }
+              } else {
+                  #ifdef K_DEBUG
+                         kError() << "No find";
+                  #endif
+              }
+       }
+    }
 }
 
 void KTPaletteImporter::saveFile(const QString &path)
 {
-	if ( m_paletteName.isNull () )
-		return;
-	
-	QFile file(path+"/"+m_paletteName.remove(' ')+".ktpl" );
-	if (file.open(QIODevice::WriteOnly | QIODevice::Text))
-	{
-		QTextStream ts(&file);
-		ts << m_document->toString();
-		
-		m_filePath = path+"/"+m_paletteName.remove(' ')+".ktpl";
-	}
+    if (m_paletteName.isNull())
+        return;
+
+    QFile file(path + "/" + m_paletteName.remove(' ') + ".ktpl");
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream ts(&file);
+        ts << m_document->toString();
+
+        m_filePath = path+"/"+m_paletteName.remove(' ')+".ktpl";
+    }
 }
 
 QString KTPaletteImporter::filePath() const
 {
-	return m_filePath;
+    return m_filePath;
 }

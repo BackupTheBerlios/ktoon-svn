@@ -35,19 +35,18 @@
 */
 class KinasWidget : public KTModuleWidgetBase
 {
-	Q_OBJECT
-	public:
-		KinasWidget(QWidget *parent = 0);
-		~KinasWidget();
-		
-	public slots:
-		void addEditor(const QString &title);
-		
-	private:
-		QSplitter *m_splitter;
-		KTSFunctionView *m_functionViewer;
-		QTabWidget *m_editors;
+    Q_OBJECT
+    public:
+        KinasWidget(QWidget *parent = 0);
+        ~KinasWidget();
 
+    public slots:
+        void addEditor(const QString &title);
+
+    private:
+        QSplitter *m_splitter;
+        KTSFunctionView *m_functionViewer;
+        QTabWidget *m_editors;
 };
 
 #endif

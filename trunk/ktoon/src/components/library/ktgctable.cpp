@@ -32,13 +32,11 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-KTGCTable::KTGCTable(QWidget *parent)
-	: KTreeListWidget(parent), m_currentFolder(0)
+KTGCTable::KTGCTable(QWidget *parent) : KTreeListWidget(parent), m_currentFolder(0)
 {
-	setHeaderLabels(QStringList() << "" << "" );
-	header()->setResizeMode(QHeaderView::ResizeToContents);
+    setHeaderLabels(QStringList() << "" << "" );
+    header()->setResizeMode(QHeaderView::ResizeToContents);
 }
-
 
 KTGCTable::~KTGCTable()
 {
@@ -46,46 +44,39 @@ KTGCTable::~KTGCTable()
 
 void KTGCTable::createFolder(const QString &name)
 {
-	QTreeWidgetItem *newFolder = new QTreeWidgetItem(this);
-	
-	if ( name.isNull() )
-	{
-		newFolder->setText(0, tr("New folder %1").arg( topLevelItemCount ()) );
-	}
-	else
-	{
-		newFolder->setText(0, name );
-	}
-	newFolder->setIcon(0, QPixmap(THEME_DIR+"/icons/folder_icon.png" ));
-	
-	m_currentFolder = newFolder;
-	
-	setCurrentItem(m_currentFolder);
+    QTreeWidgetItem *newFolder = new QTreeWidgetItem(this);
+
+    if (name.isNull())
+        newFolder->setText(0, tr("New folder %1").arg( topLevelItemCount ()) );
+    else
+        newFolder->setText(0, name );
+
+    newFolder->setIcon(0, QPixmap(THEME_DIR+"/icons/folder_icon.png" ));
+    m_currentFolder = newFolder;
+
+    setCurrentItem(m_currentFolder);
 }
 
 QTreeWidgetItem *KTGCTable::currentFolder()
 {
-	return m_currentFolder;
+    return m_currentFolder;
 }
 
 void KTGCTable::setCurrentFolder(QTreeWidgetItem *cf)
 {
-	if ( cf )
-	{
-		m_currentFolder = cf;
-	}
+    if (cf)
+        m_currentFolder = cf;
 }
 
 void KTGCTable::removeCurrentFolder()
 {
-	if ( m_currentFolder )
-	{
-		int index = indexOfTopLevelItem(m_currentFolder) - 1;
-		
-		delete m_currentFolder;
-		
-		m_currentFolder = topLevelItem (index);
-		setCurrentItem(m_currentFolder);
-	}
+    if (m_currentFolder) {
+        int index = indexOfTopLevelItem(m_currentFolder) - 1;
+
+        delete m_currentFolder;
+
+        m_currentFolder = topLevelItem (index);
+        setCurrentItem(m_currentFolder);
+    }
 }
 

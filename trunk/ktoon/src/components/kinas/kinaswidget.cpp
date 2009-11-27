@@ -25,33 +25,33 @@
 
 KinasWidget::KinasWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 {
-	KINIT;
-	
-	setWindowTitle(tr("KToon Script"));
-	setWindowIcon(QPixmap(HOME_DIR+"/images/icons/color_palette.png") );
-	
-	m_splitter = new QSplitter(this);
-	addChild(m_splitter);
-	
-	m_functionViewer = new KTSFunctionView(m_splitter);
-	m_splitter->addWidget(m_functionViewer);
-	 
-	m_editors = new QTabWidget(this);
-	m_splitter->addWidget(m_editors);
-	
-	m_splitter->setSizes(QList<int>()<<160 << 400);
-	
-	addEditor("Example.kts");
+    KINIT;
+
+    setWindowTitle(tr("KToon Script"));
+    setWindowIcon(QPixmap(HOME_DIR+"/images/icons/color_palette.png") );
+
+    m_splitter = new QSplitter(this);
+    addChild(m_splitter);
+
+    m_functionViewer = new KTSFunctionView(m_splitter);
+    m_splitter->addWidget(m_functionViewer);
+
+    m_editors = new QTabWidget(this);
+    m_splitter->addWidget(m_editors);
+
+    m_splitter->setSizes(QList<int>()<<160 << 400);
+
+    addEditor("Example.kts");
 }
 
 
 KinasWidget::~KinasWidget()
 {
-	KEND;
+    KEND;
 }
 
 void KinasWidget::addEditor(const QString &title)
 {
-	KTSEditor *m_editor = new KTSEditor;
-	m_editors->addTab(m_editor, title);
+    KTSEditor *m_editor = new KTSEditor;
+    m_editors->addTab(m_editor, title);
 }

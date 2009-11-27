@@ -24,20 +24,20 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
-// KTHelpBrowser
+// Help Browser
 
 KTHelpBrowser::KTHelpBrowser( QWidget *parent) : QWidget(parent)
 {
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setMargin(15);
-	m_separator = new QSplitter(this);
-	layout->addWidget(m_separator);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->setMargin(15);
+    m_separator = new QSplitter(this);
+    layout->addWidget(m_separator);
 
-	m_pageArea = new QTextBrowser(m_separator);
-	
-	m_document = new QTextDocument(m_pageArea);
-	
-	m_pageArea->setDocument(m_document);
+    m_pageArea = new QTextBrowser(m_separator);
+
+    m_document = new QTextDocument(m_pageArea);
+
+    m_pageArea->setDocument(m_document);
 }
 
 
@@ -47,16 +47,16 @@ KTHelpBrowser::~KTHelpBrowser()
 
 void KTHelpBrowser::setDocument(const QString &doc)
 {
-	m_document->setHtml(doc);
+    m_document->setHtml(doc);
 }
 
 void KTHelpBrowser::setSource( const QString &filePath)
 {
-	m_pageArea->setSource(filePath);
+    m_pageArea->setSource(filePath);
 }
 
 void KTHelpBrowser::setDataDirs(const QStringList &dirs)
 {
-	m_pageArea->setSearchPaths (dirs);
+    m_pageArea->setSearchPaths (dirs);
 }
 

@@ -31,19 +31,19 @@
 */
 class KTGCTable : public KTreeListWidget
 {
-	Q_OBJECT
-	public:
-		KTGCTable(QWidget *parent = 0);
-		~KTGCTable();
-		QTreeWidgetItem *currentFolder();
-		void setCurrentFolder(QTreeWidgetItem *cf);
-		void removeCurrentFolder();
-		
-	public slots:
-		void createFolder(const QString &name = QString() );
-		
-	private:
-		QTreeWidgetItem *m_currentFolder;
+    Q_OBJECT
+    public:
+        KTGCTable(QWidget *parent = 0);
+        ~KTGCTable();
+        QTreeWidgetItem *currentFolder();
+        void setCurrentFolder(QTreeWidgetItem *cf);
+        void removeCurrentFolder();
+
+    public slots:
+        void createFolder(const QString &name = QString() );
+
+    private:
+        QTreeWidgetItem *m_currentFolder;
 
 };
 
