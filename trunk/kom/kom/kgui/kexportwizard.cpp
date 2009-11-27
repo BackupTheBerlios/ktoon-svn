@@ -76,6 +76,7 @@ KExportWizardPage *KExportWizard::addPage(KExportWizardPage *newPage)
     m_nextButton->setEnabled( newPage->isComplete() );
     connect(newPage, SIGNAL(completed()), this, SLOT(pageCompleted()));
     connect(newPage, SIGNAL(emptyField()), this, SLOT(disableButton()));
+    connect(newPage, SIGNAL(isDone()), this, SLOT(closeDialog()));
 
     return newPage;
 }
@@ -158,6 +159,11 @@ void KExportWizard::pageCompleted()
 void KExportWizard::disableButton() 
 {
     m_nextButton->setEnabled(false);
+}
+
+void KExportWizard::closeDialog()
+{
+    close();
 }
 
 KExportWizardPage::KExportWizardPage(const QString &title, QWidget *parent) : KVHBox(parent)

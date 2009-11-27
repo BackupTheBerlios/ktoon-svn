@@ -56,12 +56,14 @@ class K_GUI_EXPORT KExportWizard : public QDialog
         void next();
         void pageCompleted();
         void disableButton();
+        void closeDialog();
 
     signals:
         void cancelled();
         void updateScenes();
         void saveFile();
         void setFileName();
+        void isDone();
 
     private:
         QStackedWidget m_history;

@@ -250,7 +250,7 @@ void KFFMpegMovieGenerator::Private::RGBtoYUV420P(const uint8_t *bufferRGB, uint
 bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
 {
     #ifdef K_DEBUG
-           kDebug() << "Generating frame #" << frameCount;
+           kDebug() << "* Generating frame #" << frameCount;
     #endif
 
     AVCodecContext *c = video_st->codec;
