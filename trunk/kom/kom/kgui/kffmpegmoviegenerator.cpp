@@ -31,7 +31,6 @@
 extern "C" {
 #include "libavformat/avformat.h"
 #include "libavcodec/avcodec.h"
-// #include "libswscale/swscale.h"
 }
 #endif
 
@@ -47,6 +46,8 @@ struct KFFMpegMovieGenerator::Private
     int frameCount;
     int videOutbufSize;
     double streamDuration;
+    bool exception;
+    const char *errorMsg;
 
     AVStream *video_st;
     AVFormatContext *oc;
@@ -59,7 +60,7 @@ struct KFFMpegMovieGenerator::Private
     void closeVideo(AVStream *st);
 };
 
-static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, int height, int fps)
+static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, int height, int fps, const char *errorMsg)
 {
     AVCodecContext *c;
     AVStream *st;
@@ -69,7 +70,10 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
 
     st = av_new_stream(oc, 0);
     if (!st) {
-        kError() << "Could not alloc stream";
+        errorMsg = "ffmpeg error: Could not alloc stream. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        #ifdef K_DEBUG
+               kError() << errorMsg;
+        #endif
         return 0;
     }
 
@@ -81,8 +85,8 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
     /* put sample parameters */
     c->bit_rate = 400000;
     /* resolution must be a multiple of two */
-    c->width = w;  // 520
-    c->height = h; // 340
+    c->width = w;  
+    c->height = h; 
 
     c->time_base.den = fps;
     c->time_base.num = 1;
@@ -127,6 +131,7 @@ static AVFrame *allocPicture(int pix_fmt, int width, int height)
 	av_free(picture);
 	return 0;
     }
+
     avpicture_fill((AVPicture *)picture, picture_buf, pix_fmt, width, height);
 
     return picture;
@@ -167,13 +172,20 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
     codec = avcodec_find_encoder(c->codec_id);
 
     if (!codec) {
-        kError() << "codec not found";
+        errorMsg = "ffmpeg error: Video codec not found. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. It's very possible your system is missing codecs. More info: http://ffmpeg.org/";
+        #ifdef K_DEBUG
+               kError() << errorMsg;
+        #endif
+
         return false;
     }
 
     /* open the codec */
     if (avcodec_open(c, codec) < 0) {
-        kError() << "could not open codec";
+        errorMsg = "ffmpeg error: Could not open video codec. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        #ifdef K_DEBUG
+               kError() << errorMsg;
+        #endif
         return false;
     }
 
@@ -187,7 +199,10 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
     picture = allocPicture(c->pix_fmt, c->width, c->height);
 
     if (!picture) {
-        kError() << "Could not allocate m_picture";
+        errorMsg = "ffmpeg error: Could not allocate m_picture. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        #ifdef K_DEBUG
+               kError() << errorMsg;
+        #endif 
         return false;
     }
 
@@ -196,7 +211,10 @@ bool KFFMpegMovieGenerator::Private::openVideo(AVFormatContext *oc, AVStream *st
     if (c->pix_fmt != PIX_FMT_YUV420P) {
         tmpPicture = allocPicture(PIX_FMT_YUV420P, c->width, c->height);
         if (!tmpPicture) {
-            kError() << "Could not allocate temporary picture";
+            errorMsg = "ffmpeg error: Could not allocate temporary picture. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+            #ifdef K_DEBUG
+                   kError() << errorMsg;
+            #endif
             return false;
         }
     }
@@ -304,7 +322,11 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
         }
 
         if (ret != 0) {
-            kError() << "Error while writing video frame";
+            errorMsg = "ffmpeg error: Could not write video frame. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+
+            #ifdef K_DEBUG
+                   kError() << errorMsg;
+            #endif
             return false;
         }
 
@@ -331,25 +353,25 @@ void KFFMpegMovieGenerator::Private::closeVideo(AVStream *st)
 KFFMpegMovieGenerator::KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, int width, int height, int fps)
  : KMovieGenerator(width, height), k(new Private)
 {
-    k->movieFile = QDir::tempPath()+"/ffmpeg_video"+KAlgorithm::randomString(12);
+    k->movieFile = QDir::tempPath() + "/ktoon_video" + KAlgorithm::randomString(12);
     k->chooseFileExtension(format);
     k->fps = fps;
-    begin();
+    k->exception = begin();
 }
 
 KFFMpegMovieGenerator::KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, const QSize &size, int fps) : KMovieGenerator(size.width(), size.height()), k(new Private)
 {
-    k->movieFile = QDir::tempPath()+"/ffmpeg_video"+KAlgorithm::randomString(12);
+    k->movieFile = QDir::tempPath() + "/ktoon_video" + KAlgorithm::randomString(12);
     k->chooseFileExtension(format);
     k->fps = fps;
-    begin();
+    k->exception = begin();
 }
 
 KFFMpegMovieGenerator::~KFFMpegMovieGenerator()
 {
-    if ( QFile::exists( k->movieFile ) ) {
-         QFile::remove(k->movieFile);
-    }
+    if (QFile::exists(k->movieFile)) 
+        QFile::remove(k->movieFile);
+
     delete k;
 }
 
@@ -358,46 +380,62 @@ bool KFFMpegMovieGenerator::begin()
     av_register_all();
     k->fmt = guess_format(0, k->movieFile.toLocal8Bit().data(), 0);
 
-    if ( !k->fmt ) 
+    if (!k->fmt) 
          k->fmt = guess_format("mpeg", NULL, NULL);
 
-    if ( ! k->fmt ) {
-         kError() << "Cannot find a valid format for " << k->movieFile;
-         return false;
+    if (! k->fmt) {
+        k->errorMsg = "ffmpeg error: Cannot find a valid format for " + k->movieFile.toLocal8Bit() + ". This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        #ifdef K_DEBUG
+               kError() << k->errorMsg;
+        #endif
+        return false;
     }
 
-    //k->oc = av_alloc_format_context();
     k->oc = avformat_alloc_context();
 
-    if ( !k->oc ) {
-         kError() << "Error while export";
-         return false;
+    if (!k->oc) {
+        k->errorMsg = "ffmpeg error: Error while doing export. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        #ifdef K_DEBUG
+               kError() << k->errorMsg;
+        #endif
+        return false;
     }
 	
     k->oc->oformat = k->fmt;
     snprintf(k->oc->filename, sizeof(k->oc->filename), "%s", k->movieFile.toLocal8Bit().data());
-    k->video_st = addVideoStream(k->oc, k->fmt->video_codec, width(), height(), k->fps);
+    k->video_st = addVideoStream(k->oc, k->fmt->video_codec, width(), height(), k->fps, k->errorMsg);
 	
-    if ( !k->video_st ) {
-         kError() << "Can't add video stream";
-         return false;
+    if (!k->video_st) {
+        k->errorMsg = "ffmpeg error: Can't add video stream. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        #ifdef K_DEBUG
+               kError() << k->errorMsg;
+        #endif
+        return false;
     }
 
     if (av_set_parameters(k->oc, 0) < 0) {
-        kError() << "Invalid output format parameters";
+        k->errorMsg = "ffmpeg error: Invalid output format parameters. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+        #ifdef K_DEBUG
+               kError() << k->errorMsg;
+        #endif
         return false;
     }
 
     dump_format(k->oc, 0, k->movieFile.toLocal8Bit().data(), 1);
 
     if (!k->openVideo(k->oc, k->video_st) ) {
-        kError() << "Can't open video";
+        #ifdef K_DEBUG
+               kError() << "Can't open video";
+        #endif
         return false;
     }
 
     if (!(k->fmt->flags & AVFMT_NOFILE)) {
         if (url_fopen(&k->oc->pb, k->movieFile.toLocal8Bit().data(), URL_WRONLY) < 0) {
-            kError() << "Could not open " << k->movieFile;
+            k->errorMsg = "ffmpeg error: Could not open " + k->movieFile.toLocal8Bit() + ". This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+            #ifdef K_DEBUG
+                   kError() << k->errorMsg;
+            #endif
             return false;
         }
     }
@@ -411,6 +449,14 @@ bool KFFMpegMovieGenerator::begin()
     return true;
 }
 
+bool KFFMpegMovieGenerator::movieHeaderOk() { 
+    return k->exception;
+}
+
+const char* KFFMpegMovieGenerator::getErrorMsg() {
+    return k->errorMsg;
+}
+
 void KFFMpegMovieGenerator::handle(const QImage& image)
 {
     if (k->video_st) 
@@ -418,8 +464,7 @@ void KFFMpegMovieGenerator::handle(const QImage& image)
     else 
         k->video_pts = 0.0;
 
-
-    if (!k->video_st || k->video_pts >= k->streamDuration )
+    if (!k->video_st || k->video_pts >= k->streamDuration)
         return;
 
     k->writeVideoFrame(image);
@@ -437,7 +482,6 @@ void KFFMpegMovieGenerator::end()
     }
 
     if (!(k->fmt->flags & AVFMT_NOFILE)) {
-        //url_fclose(&k->oc->pb);
         url_fclose(k->oc->pb);
     }
 
@@ -447,8 +491,8 @@ void KFFMpegMovieGenerator::end()
 
 void KFFMpegMovieGenerator::__saveMovie(const QString &fileName)
 {
-    if ( QFile::exists( fileName ) ) 
-         QFile::remove(fileName);
+    if (QFile::exists(fileName)) 
+        QFile::remove(fileName);
 
     QFile::copy(k->movieFile, fileName);
 }

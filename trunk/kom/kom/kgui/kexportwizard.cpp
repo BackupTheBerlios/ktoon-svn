@@ -99,13 +99,20 @@ void KExportWizard::cancel()
 void KExportWizard::back()
 {
     KExportWizardPage *current = qobject_cast<KExportWizardPage *>(m_history.currentWidget());
+    QString tag = current->getTag();
 
     if (current)
         current->aboutToBackPage();
 
     m_history.setCurrentIndex(m_history.currentIndex()-1);
+    
+    // if (m_history.currentIndex() == 0) {
 
-    if (m_history.currentIndex() == 0) {
+    if (tag.compare("SCENE")==0)
+        m_backButton->setEnabled(false);
+
+/*
+    if (tag.compare("PLUGIN")==0) {
         m_nextButton->setEnabled(true);
         m_backButton->setEnabled(false);
         m_nextButton->setDefault(true);
@@ -113,8 +120,12 @@ void KExportWizard::back()
         m_nextButton->setText("Next >");
         m_nextButton->setEnabled(true);
     }
+*/
 
-    QString tag = current->getTag();
+    m_nextButton->setText("Next >");
+    m_nextButton->setEnabled(true);
+
+
     if ((tag.compare("EXPORT")==0) && (!m_nextButton->isEnabled())) 
         m_nextButton->setEnabled(true);
 }
@@ -129,7 +140,9 @@ void KExportWizard::next()
 
     m_history.setCurrentIndex(m_history.currentIndex()+1);
 
-    if (m_history.currentIndex() > 0)
+    //if (m_history.currentIndex() > 0)
+
+    if (tag.compare("PLUGIN")==0)
         m_backButton->setEnabled(true);
 
     if (tag.compare("EXPORT")==0)
