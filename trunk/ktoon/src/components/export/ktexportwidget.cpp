@@ -33,6 +33,7 @@
 #include <QIntValidator>
 #include <QToolButton>
 #include <QFileDialog>
+#include <QMessageBox>
 
 #include <kcore/kglobal.h>
 #include <kcore/kdebug.h>
@@ -534,13 +535,12 @@ void ExportTo::exportIt()
                kDebug() << "Exporting " << scenes.count() << " scenes";
         #endif
 
-        if (scenes.count() > 0) {
-            m_currentExporter->exportToFormat(filename, scenes, m_currentFormat, QSize((int)m_size->x(),
-                                               (int)m_size->x()), m_fps->value());
-            done = true;
-        }
+        if (scenes.count() > 0) 
+            done = m_currentExporter->exportToFormat(filename, scenes, m_currentFormat, 
+                                                     QSize((int)m_size->x(),
+                                                     (int)m_size->x()), m_fps->value());
     } else {
-        KOsd::self()->display( tr("Format problem. Internal error... ouch! :S"), KOsd::Error);
+        KOsd::self()->display(tr("Format problem. KToon Internal error."), KOsd::Error);
     }
 
     if (done) {
@@ -548,6 +548,9 @@ void ExportTo::exportIt()
         QString message = "File " + filename.right(index-1) + " was saved successful";
         KOsd::self()->display(tr(message.toLocal8Bit()), KOsd::Info);
         emit isDone();
+    } else {
+        const char *msg = m_currentExporter->getExceptionMsg();
+        QMessageBox::critical(this, tr("ERROR!"), tr(msg), QMessageBox::Ok);
     }
 }
 

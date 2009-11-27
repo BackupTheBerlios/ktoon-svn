@@ -49,7 +49,7 @@ KTExportInterface::Formats GenericExportPlugin::availableFormats()
     return KTExportInterface::PNG | KTExportInterface::JPEG | KTExportInterface::XPM;
 }
 
-void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
+bool GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
 {
     QFileInfo fileInfo(filePath);
 
@@ -84,11 +84,13 @@ void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KT
                      painter.setRenderHint(QPainter::Antialiasing, true);
                      renderer.render(&painter);
                     }
-                    img.save(fileInfo.absolutePath() +"/"+ QString(m_baseName+"%1.%2").arg(photogram).arg(QString(fmt).toLower() ), fmt);
+                    img.save(fileInfo.absolutePath() + "/" + QString(m_baseName+"%1.%2").arg(photogram).arg(QString(fmt).toLower() ), fmt);
 
                     photogram++;
              }
     }
+
+    return true;
 }
 
 Q_EXPORT_PLUGIN( GenericExportPlugin );

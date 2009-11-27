@@ -31,21 +31,21 @@ class KTScene;
 */
 class KTAnimationRenderer
 {
-	public:
-		KTAnimationRenderer();
-		~KTAnimationRenderer();
-		
-		void setScene(KTScene *scene);
-		
-		bool nextPhotogram();
-		void render(QPainter *painter);
-		
-		int currentPhotogram() const;
-		int totalPhotograms() const;
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+        KTAnimationRenderer();
+        ~KTAnimationRenderer();
+
+        void setScene(KTScene *scene);
+
+        bool nextPhotogram();
+        void render(QPainter *painter);
+
+        int currentPhotogram() const;
+        int totalPhotograms() const;
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

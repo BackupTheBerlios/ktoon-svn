@@ -46,7 +46,7 @@ KTExportInterface::Formats SmilExportPlugin::availableFormats()
     return KTExportInterface::SMIL;
 }
 
-void SmilExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
+bool SmilExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
 {
     QFileInfo fileInfo(filePath);
 
@@ -65,6 +65,8 @@ void SmilExportPlugin::exportToFormat(const QString &filePath, const QList<KTSce
         QTextStream out(&save);
         out << m_smil.toString();
     }
+
+    return true;
 }
 
 void SmilExportPlugin::initSmil()

@@ -51,7 +51,7 @@ KTExportInterface::Formats FFMpegPlugin::availableFormats()
     return KTExportInterface::SWF | KTExportInterface::MPEG | KTExportInterface::AVI | KTExportInterface::RM | KTExportInterface::ASF | KTExportInterface::MOV | KTExportInterface::GIF;
 }
 
-void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
+bool FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
 {
     KFFMpegMovieGenerator *generator = 0;
 
@@ -91,7 +91,17 @@ void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
                    generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::GIF, size, fps);
                  }
                  break;
-            default: return;
+            default: 
+                 return false;
+    }
+
+    if (!generator->movieHeaderOk()) {
+        errorMsg = generator->getErrorMsg();
+        #ifdef K_DEBUG
+               kError() << "FATAL : can not create video";
+        #endif
+        delete generator;
+        return false;
     }
 
     KTAnimationRenderer renderer;
@@ -112,6 +122,12 @@ void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
 
     generator->saveMovie(filePath);
     delete generator;
+
+    return true;
+}
+
+const char* FFMpegPlugin::getExceptionMsg() {
+    return errorMsg;
 }
 
 

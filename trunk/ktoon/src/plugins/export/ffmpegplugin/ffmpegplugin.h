@@ -30,16 +30,17 @@
 */
 class FFMpegPlugin : public KTExportPluginObject
 {
-	Q_OBJECT;
-	
-	public:
-		FFMpegPlugin();
-		virtual ~FFMpegPlugin();
-		virtual QString key() const;
-		KTExportInterface::Formats availableFormats();
-		
-		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps);
+    Q_OBJECT;
+
+    public:
+        FFMpegPlugin();
+        virtual ~FFMpegPlugin();
+        virtual QString key() const;
+        KTExportInterface::Formats availableFormats();
+
+        virtual bool exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps);
+        virtual const char* getExceptionMsg();
+        const char *errorMsg;
 };
 
 #endif
-

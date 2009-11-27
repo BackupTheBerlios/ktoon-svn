@@ -32,93 +32,83 @@
 
 struct KTAnimationRenderer::Private
 {
-	KTGraphicsScene *scene;
-	int totalPhotograms;
-	int currentPhotogram;
-	
-	Private() : scene(0), totalPhotograms(-1), currentPhotogram(0) {}
-	
-	~Private()
-	{
-		delete scene;
-	}
-	
-	int calculateTotalPhotograms(KTScene *scene);
-};
+    KTGraphicsScene *scene;
+    int totalPhotograms;
+    int currentPhotogram;
 
+    Private() : scene(0), totalPhotograms(-1), currentPhotogram(0) {}
+
+    ~Private() {
+         delete scene;
+    }
+
+    int calculateTotalPhotograms(KTScene *scene);
+};
 
 int KTAnimationRenderer::Private::calculateTotalPhotograms(KTScene *scene)
 {
-	Layers layers = scene->layers();
-	
-	int total = 0;
+    Layers layers = scene->layers();
 
-	foreach(KTLayer *layer, layers.values())
-	{
-		if( layer )
-		{
-			total = qMax(total, layer->frames().count());
-		}
-	}
-	
-	return total;
+    int total = 0;
+
+    foreach (KTLayer *layer, layers.values()) {
+             if (layer)
+                 total = qMax(total, layer->frames().count());
+    }
+
+    return total;
 }
 
 KTAnimationRenderer::KTAnimationRenderer() : k(new Private)
 {
-	k->scene = new KTGraphicsScene;
-	k->scene->setBackgroundBrush(Qt::white);
+    k->scene = new KTGraphicsScene;
+    k->scene->setBackgroundBrush(Qt::white);
 }
-
 
 KTAnimationRenderer::~KTAnimationRenderer()
 {
-	delete k;
+    delete k;
 }
 
 void KTAnimationRenderer::setScene(KTScene *scene)
 {
-	k->scene->setCurrentScene(scene);
-	k->scene->setSceneRect(QRectF(QPointF(0,0), QSizeF( 500, 400 ) )); // FIXME: this isn't real size
-	
-	k->scene->drawPhotogram(0); // ###: Why whithout this don't work?
-	k->currentPhotogram = -1;
-	
-	k->totalPhotograms = k->calculateTotalPhotograms(scene);
+    k->scene->setCurrentScene(scene);
+    k->scene->setSceneRect(QRectF(QPointF(0,0), QSizeF( 500, 400 ) )); // FIXME: this isn't real size
+
+    k->scene->drawPhotogram(0); // ###: Why whithout this don't work?
+    k->currentPhotogram = -1;
+
+    k->totalPhotograms = k->calculateTotalPhotograms(scene);
 }
 
 bool KTAnimationRenderer::nextPhotogram()
 {
-	if( k->totalPhotograms < 0 ) 
-	{
-		return false;
-	}
-	
-	k->currentPhotogram++;
-	
-	if( k->currentPhotogram == k->totalPhotograms )
-	{
-		return false;
-	}
-	
-	k->scene->drawPhotogram(k->currentPhotogram);
+    if (k->totalPhotograms < 0) 
+        return false;
 
-	return true;
+    k->currentPhotogram++;
+
+    if (k->currentPhotogram == k->totalPhotograms)
+        return false;
+
+    k->scene->drawPhotogram(k->currentPhotogram);
+
+    return true;
 }
 
 void KTAnimationRenderer::render(QPainter *painter)
 {
-	k->scene->render(painter, QRect(0, 0, painter->device()->width(), painter->device()->height()), 
-					k->scene->sceneRect().toRect(), Qt::IgnoreAspectRatio );
+    k->scene->render(painter, QRect(0, 0, painter->device()->width(), painter->device()->height()), 
+                     k->scene->sceneRect().toRect(), Qt::IgnoreAspectRatio );
 }
 
 int KTAnimationRenderer::currentPhotogram() const
 {
-	return k->currentPhotogram;
+    return k->currentPhotogram;
 }
 
 int KTAnimationRenderer::totalPhotograms() const
 {
-	return k->totalPhotograms;
+    return k->totalPhotograms;
 }
 

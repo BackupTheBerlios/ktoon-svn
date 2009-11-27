@@ -58,7 +58,8 @@ class KTOON_EXPORT KTExportInterface
         virtual ~KTExportInterface() {};
         virtual QString key() const = 0;
         virtual Formats availableFormats() = 0;
-        virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, const QSize &size, int fps ) = 0;
+        virtual bool exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, const QSize &size, int fps ) = 0;
+        virtual const char* getExceptionMsg() = 0;
 };
 
         Q_DECLARE_OPERATORS_FOR_FLAGS(KTExportInterface::Formats);

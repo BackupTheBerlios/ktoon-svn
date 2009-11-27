@@ -50,8 +50,9 @@ KTExportInterface::Formats MingPlugin::availableFormats()
 	return KTExportInterface::SWF;
 }
 
-void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
+bool MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
 {
+    return true;
 }
 
 Q_EXPORT_PLUGIN( MingPlugin );
