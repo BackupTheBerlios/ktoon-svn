@@ -93,5 +93,9 @@ bool GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KT
     return true;
 }
 
+const char* GenericExportPlugin::getExceptionMsg() {
+    return errorMsg;
+}
+
 Q_EXPORT_PLUGIN( GenericExportPlugin );
 

@@ -36,11 +36,8 @@
 #include "ktgraphiclibraryitem.h"
 
 #include "ktitemfactory.h"
-
 #include "ktprojectresponse.h"
-
 #include "ktprojectloader.h"
-
 
 #include <QGraphicsView>
 #include <QGraphicsSvgItem>
@@ -61,7 +58,7 @@ struct KTProject::Private
 };
 
 /**
- * Constructor por defecto
+ * Constructor
  */
 KTProject::KTProject(QObject *parent) : QObject(parent), k(new Private)
 {
@@ -75,22 +72,21 @@ KTProject::KTProject(QObject *parent) : QObject(parent), k(new Private)
 }
 
 /**
- * Destructor por defecto
+ * Destructor
  */
 KTProject::~KTProject()
 {
     #ifdef K_DEBUG
            KEND;
     #endif
+
     deleteDataDir();
-
     k->scenes.clear(true);
-
     delete k;
 }
 
 /**
- * Esta funcion carga la libreria local
+ * This function loads a local library
  */
 void KTProject::loadLibrary(const QString &filename)
 {
@@ -107,7 +103,7 @@ void KTProject::loadLibrary(const QString &filename)
 }
 
 /**
- * Cierra el proyecto
+ * This function closes project 
  */
 void KTProject::clear()
 {
@@ -118,7 +114,7 @@ void KTProject::clear()
 }
 
 /**
- * Pone un nombre al proyecto
+ * This function sets project name 
  */
 void KTProject::setProjectName(const QString &name)
 {
@@ -126,7 +122,7 @@ void KTProject::setProjectName(const QString &name)
 }
 
 /**
- * Pone el autor del proyecto
+ * This function sets author name 
  */
 void KTProject::setAuthor(const QString &author)
 {
@@ -134,7 +130,7 @@ void KTProject::setAuthor(const QString &author)
 }
 
 /**
- * Pone la descripcion del proyecto
+ * This function sets description project
  */
 void KTProject::setDescription(const QString& description)
 {
@@ -142,13 +138,7 @@ void KTProject::setDescription(const QString& description)
 }
 
 /**
- * @if spanish
- * Retorna el nombre del proyecto
- * @endif
- * 
- * @if english
  * Returns project name
- * @endif
  */
 QString KTProject::projectName() const
 {
@@ -156,8 +146,7 @@ QString KTProject::projectName() const
 }
 
 /**
- * retorna el autor del proyecto
- * @return 
+ * Returns project name
  */
 QString KTProject::author() const
 {
@@ -165,8 +154,7 @@ QString KTProject::author() const
 }
 
 /**
- * retorna la descripcion del proyecto
- * @return 
+ * Returns description project
  */
 QString KTProject::description() const
 {
@@ -452,6 +440,6 @@ bool KTProject::deleteDataDir()
 
 QString KTProject::dataDir() const
 {
-    return CACHE_DIR + "/"+ k->name;
+    return CACHE_DIR + "/" + k->name;
 }
 

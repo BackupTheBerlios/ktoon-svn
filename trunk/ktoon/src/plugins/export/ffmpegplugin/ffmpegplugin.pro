@@ -7,7 +7,6 @@ INSTALLS += target
 target.path = /plugins/ 
 KDEV_QTVER = 4 
 
-
 include(../export_config.pri)
 
 CONFIG += plugin 

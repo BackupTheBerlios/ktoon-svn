@@ -32,32 +32,31 @@
 
 class SmilExportPlugin : public KTExportPluginObject
 {
-	Q_OBJECT;
-	
-	public:
-		SmilExportPlugin();
-		virtual ~SmilExportPlugin();
-		virtual QString key() const;
-		KTExportInterface::Formats availableFormats();
-		
-		virtual bool exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps);
-		
-	private:
-		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir,float sx = 1, float sy = 1, const char *format = "PNG");
-		
-		void initSmil();
-		void createPar(const QString &filePath, double duration);
-		
-	private:
-		QString m_baseName;
-		
-		QDomDocument m_smil;
-		QDomElement m_body;
-		
-		int m_fps;
-		
-		QSize m_size;
+    Q_OBJECT;
 
+    public:
+        SmilExportPlugin();
+        virtual ~SmilExportPlugin();
+        virtual QString key() const;
+        KTExportInterface::Formats availableFormats();
+
+        virtual bool exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps);
+        virtual const char* getExceptionMsg();
+        const char *errorMsg;
+
+    private:
+        QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir,float sx = 1, float sy = 1, const char *format = "PNG");
+        void initSmil();
+        void createPar(const QString &filePath, double duration);
+
+    private:
+        QString m_baseName;
+
+        QDomDocument m_smil;
+        QDomElement m_body;
+
+        int m_fps;
+        QSize m_size;
 };
 
 #endif

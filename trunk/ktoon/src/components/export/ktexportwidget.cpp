@@ -416,23 +416,23 @@ ExportTo::ExportTo(const KTProject *project, const KTExportWidget *kt) : KExport
     m_size = new KXYSpinBox(tr("Size"));
     m_size->setMaximum(1024);
     m_size->setModifyTogether(true);
-    m_size->setX( 520 );
-    m_size->setY( 340);
+    m_size->setX(520);
+    m_size->setY(340);
 
-    QGroupBox *configuration = new QGroupBox(tr("Configuration"));
-    QHBoxLayout *configurationLayout = new QHBoxLayout(configuration);
+    QGroupBox *groupBox = new QGroupBox(tr("Configuration"));
+    QHBoxLayout *configLayout = new QHBoxLayout(configuration);
 
-    configurationLayout->addWidget(new QLabel(tr("FPS")));
+    configLayout->addWidget(new QLabel(tr("FPS")));
 
     m_fps = new QSpinBox;
     m_fps->setMinimum(0);
     m_fps->setMaximum(100);
     m_fps->setValue(24);
 
-    configurationLayout->addWidget(m_fps);
+    configLayout->addWidget(m_fps);
 
     configureLayout->addWidget(m_size);
-    configureLayout->addWidget(configuration);
+    configureLayout->addWidget(groupBox);
     configureLayout->addStretch();
 
     layout->addWidget(configure);
@@ -496,9 +496,9 @@ void ExportTo::chooseFile()
     filename = dialog.getSaveFileName(this, tr("Choose a file name..."), QString(), tr(filter));
 
     if (filename.length() > 0) {
-        if (!filename.toLower().endsWith(extension)) {
+        if (!filename.toLower().endsWith(extension)) 
             filename += extension;
-        }
+
         m_filePath->setText(filename);
     }
 }
@@ -521,9 +521,44 @@ void ExportTo::exportIt()
     bool done = false; 
     filename = m_filePath->text();
 
-    if (m_currentExporter) {
-        if (filename.isNull()) 
+    int indexPath = filename.lastIndexOf("/");
+    int indexFile = filename.length() - indexPath;
+    QString name = filename.right(indexFile - 1);
+    path = filename.left(indexPath + 1);
+
+    if (!name.toLower().endsWith(extension))    
+        name += extension;
+
+    if (path.length() == 0) {
+        path = getenv ("HOME");
+        filename = path + "/" + name;
+    }
+
+    if (QFile::exists(filename)) {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, tr("Warning!"),
+                                     tr("File exists. Overwrite it?"),
+                                     QMessageBox::Yes | QMessageBox::No);
+
+        if (reply == QMessageBox::No)
             return;
+    } 
+
+    QDir directory(path);
+    if (!directory.exists()) {
+        QMessageBox::critical(this, tr("Error!"), tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), QMessageBox::Ok);
+        return;
+    } else {
+        QFile file(directory.filePath(name));
+        if (!file.open(QIODevice::ReadWrite)) {
+            file.remove();
+            QMessageBox::critical(this, tr("Error!"), tr("You have no permission to create this file. Please, choose another path."), QMessageBox::Ok);
+            return;
+        }
+        file.remove();
+    }
+
+    if (m_currentExporter) {
 
         #ifdef K_DEBUG
                kDebug() << "Exporting to file: " << filename;
@@ -537,15 +572,14 @@ void ExportTo::exportIt()
 
         if (scenes.count() > 0) 
             done = m_currentExporter->exportToFormat(filename, scenes, m_currentFormat, 
-                                                     QSize((int)m_size->x(),
-                                                     (int)m_size->x()), m_fps->value());
+                                                     QSize((int)m_size->x(),(int)m_size->y()), 
+                                                     m_fps->value());
     } else {
         KOsd::self()->display(tr("Format problem. KToon Internal error."), KOsd::Error);
     }
 
     if (done) {
-        int index = filename.length() - filename.lastIndexOf("/");
-        QString message = "File " + filename.right(index-1) + " was saved successful";
+        QString message = "File " + name + " was saved successful";
         KOsd::self()->display(tr(message.toLocal8Bit()), KOsd::Info);
         emit isDone();
     } else {

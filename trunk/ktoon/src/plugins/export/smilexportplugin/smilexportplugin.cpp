@@ -129,5 +129,9 @@ void SmilExportPlugin::createPar(const QString &filePath, double duration)
     m_body.appendChild(par);
 }
 
+const char* SmilExportPlugin::getExceptionMsg() {
+    return errorMsg;
+}
+
 Q_EXPORT_PLUGIN( SmilExportPlugin );
 

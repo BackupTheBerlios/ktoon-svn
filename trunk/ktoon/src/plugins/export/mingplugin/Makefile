@@ -137,7 +137,7 @@ Makefile: mingplugin.pro  /usr/lib/qt4.2.2/mkspecs/linux-g++/qmake.conf /usr/lib
 		/usr/lib/qt4.2.2/lib/libQtOpenGL.prl \
 		/usr/lib/qt4.2.2/lib/libQtNetwork.prl
 	$(QMAKE) -unix -o Makefile mingplugin.pro
-	/usr/bin/ruby1.8 /home/xtingray/tmp/ktoon/configure.status /home/xtingray/tmp/ktoon/src/plugins/export/mingplugin/Makefile
+	/usr/bin/ruby1.8 /home/xtingray/ktoon/sources/ktoon/configure.status /home/xtingray/ktoon/sources/ktoon/src/plugins/export/mingplugin/Makefile
 /usr/lib/qt4.2.2/mkspecs/common/g++.conf:
 /usr/lib/qt4.2.2/mkspecs/common/linux.conf:
 /usr/lib/qt4.2.2/mkspecs/qconfig.pri:

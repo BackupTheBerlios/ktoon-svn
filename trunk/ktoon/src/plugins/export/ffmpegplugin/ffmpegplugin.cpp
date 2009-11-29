@@ -95,17 +95,17 @@ bool FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
                  return false;
     }
 
-    if (!generator->movieHeaderOk()) {
-        errorMsg = generator->getErrorMsg();
-        #ifdef K_DEBUG
-               kError() << "FATAL : can not create video";
-        #endif
-        delete generator;
-        return false;
-    }
-
     KTAnimationRenderer renderer;
     {
+         if (!generator->movieHeaderOk()) {
+             errorMsg = generator->getErrorMsg();
+             #ifdef K_DEBUG
+                    kError() << "FATAL : can not create video";
+             #endif
+             delete generator;
+             return false;
+         }
+
          QPainter painter(generator);
          painter.setRenderHint(QPainter::Antialiasing, true);
 
@@ -129,7 +129,6 @@ bool FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
 const char* FFMpegPlugin::getExceptionMsg() {
     return errorMsg;
 }
-
 
 #ifdef HAVE_FFMPEG
 Q_EXPORT_PLUGIN( FFMpegPlugin );
