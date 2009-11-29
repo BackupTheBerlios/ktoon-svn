@@ -33,12 +33,12 @@ class KFFMpegMovieGenerator : public KMovieGenerator
         KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, int width, int height, int fps = 24);
         KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, const QSize &size, int fps = 24);
         ~KFFMpegMovieGenerator();
-        bool movieHeaderOk();
-        const char* getErrorMsg();
+        virtual bool movieHeaderOk();
+        virtual const char* getErrorMsg();
 
     protected:
         void __saveMovie(const QString &fileName);
-        virtual void handle(const QImage& image);
+        virtual void handle(const QImage &image);
         virtual bool begin();
         virtual void end();
 

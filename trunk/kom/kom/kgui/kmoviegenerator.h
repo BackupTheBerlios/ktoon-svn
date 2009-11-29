@@ -33,10 +33,12 @@
 class KMovieGenerator : public QImage, public KMovieGeneratorInterface
 {
     public:
-        KMovieGenerator( int width, int height);
-        virtual ~KMovieGenerator();
+        KMovieGenerator(int width, int height);
+        ~KMovieGenerator();
         void nextFrame();
-        virtual void reset();
+        void reset();
+        virtual bool movieHeaderOk() = 0;
+        virtual const char* getErrorMsg() = 0;
 
     protected:
         virtual bool begin();

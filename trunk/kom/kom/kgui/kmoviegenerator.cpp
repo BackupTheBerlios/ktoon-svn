@@ -20,7 +20,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+
 #include "kmoviegenerator.h"
+#include <kcore/kdebug.h>
 
 KMovieGenerator::KMovieGenerator(int width, int height)
  : QImage(width, height, QImage::Format_RGB32)
@@ -42,11 +44,21 @@ void KMovieGenerator::nextFrame()
     handle(*this);
 }
 
+bool KMovieGenerator::movieHeaderOk() 
+{
+    return true;
+}
+
+const char* KMovieGenerator::getErrorMsg()
+{
+    return 0;
+}
+
 void KMovieGenerator::end()
 {
 }
 
 void KMovieGenerator::reset()
 {
-    fill( qRgba(255, 255, 255, 0) );
+    fill(qRgba(255, 255, 255, 0));
 }

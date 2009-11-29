@@ -449,11 +449,13 @@ bool KFFMpegMovieGenerator::begin()
     return true;
 }
 
-bool KFFMpegMovieGenerator::movieHeaderOk() { 
+bool KFFMpegMovieGenerator::movieHeaderOk() 
+{ 
     return k->exception;
 }
 
-const char* KFFMpegMovieGenerator::getErrorMsg() {
+const char* KFFMpegMovieGenerator::getErrorMsg() 
+{
     return k->errorMsg;
 }
 
@@ -469,7 +471,6 @@ void KFFMpegMovieGenerator::handle(const QImage& image)
 
     k->writeVideoFrame(image);
 }
-
 
 void KFFMpegMovieGenerator::end()
 {
