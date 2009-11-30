@@ -62,6 +62,7 @@ KExportWizard::~KExportWizard()
 
 KExportWizardPage *KExportWizard::addPage(KExportWizardPage *newPage)
 {
+    QString tag = newPage->getTag();
     newPage->setParent(&m_history);
     newPage->show();
 
@@ -76,7 +77,9 @@ KExportWizardPage *KExportWizard::addPage(KExportWizardPage *newPage)
     m_nextButton->setEnabled( newPage->isComplete() );
     connect(newPage, SIGNAL(completed()), this, SLOT(pageCompleted()));
     connect(newPage, SIGNAL(emptyField()), this, SLOT(disableButton()));
-    connect(newPage, SIGNAL(isDone()), this, SLOT(closeDialog()));
+
+    if (tag.compare("EXPORT")==0) 
+        connect(newPage, SIGNAL(isDone()), this, SLOT(closeDialog()));
 
     return newPage;
 }

@@ -33,35 +33,34 @@ class QTabWidget;
 */
 class K_IDEAL_EXPORT KTabbedMainWindow : public KMainWindow
 {
-	Q_OBJECT;
-	public:
-		KTabbedMainWindow(QWidget *parent = 0);
-		~KTabbedMainWindow();
+    Q_OBJECT;
+    public:
+        KTabbedMainWindow(QWidget *parent = 0);
+        ~KTabbedMainWindow();
+
+        void addWidget(QWidget *widget, bool persistant = false, int perspective = DefaultPerspective);
+        void removeWidget(QWidget *widget, bool force = false);
+        void setTabWidget(QTabWidget *w);
+        QTabWidget *tabWidget() const;
+
+    protected:
+        virtual void setupTabWidget(QTabWidget *w);
+
+    protected slots:
+        void closeCurrentTab();
+        virtual void setupPerspective(int wps);
+
+    signals:
+        void widgetChanged(QWidget *widget);
 		
-		void addWidget(QWidget *widget, bool persistant = false, int perspective = DefaultPerspective);
-		void removeWidget(QWidget *widget, bool force = false);
-		void setTabWidget(QTabWidget *w);
-		QTabWidget *tabWidget() const;
-		
-	protected:
-		virtual void setupTabWidget(QTabWidget *w);
-		
-	protected slots:
-		void closeCurrentTab();
-		virtual void setupPerspective(int wps);
-		
-	signals:
-		void widgetChanged(QWidget *widget);
-		
-	private slots:
-		void emitWidgetChanged(int index);
-		
-	private:
-		QTabWidget *m_tabWidget;
-		QWidgetList m_persistantWidgets;
-		QHash<QWidget *, int> m_tabs;
-		
-		QWidgetList m_pages;
+    private slots:
+        void emitWidgetChanged(int index);
+
+    private:
+        QTabWidget *m_tabWidget;
+        QWidgetList m_persistantWidgets;
+        QHash<QWidget *, int> m_tabs;
+        QWidgetList m_pages;
 };
 
 #endif

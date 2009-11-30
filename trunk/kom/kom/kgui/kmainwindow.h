@@ -42,84 +42,78 @@ class KMainWindowAbstractSettings;
 
 class K_IDEAL_EXPORT KMainWindow : public QMainWindow
 {
-	Q_OBJECT;
-	public:
-		enum
-		{
-			None = 0,
-			DefaultPerspective
-		};
-		
-		KMainWindow(QWidget *parent = 0);
-		~KMainWindow();
-		
-		KToolView *addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective = DefaultPerspective);
-		void removeToolView(KToolView *view);
-		
-		// FIXME: remove tool view
-		void moveToolView(KToolView *view, Qt::DockWidgetArea newPlace);
-		
-		
-		void addToPerspective(QWidget *widget, int perspective = DefaultPerspective);
-		void removeFromPerspective(QWidget *widget);
-		
-		void addToPerspective(QAction *action, int perspective);
-		void addToPerspective(const QList<QAction *> &actions, int perspective);
-		void removeFromPerspective(QAction *action);
-		
-		void setCurrentPerspective(int wsp);
-		int currentPerspective() const;
-		
-		void setAutoRestore(bool autoRestore);
-		bool autoRestore() const;
-		
-		virtual QMenu *createPopupMenu();
-		
-		void setSettingsHandler(KMainWindowAbstractSettings *settings);
-		void restoreGUI();
-		void saveGUI();
-		
-		QHash<Qt::ToolBarArea, KButtonBar *> buttonBars() const;
-		QHash<KButtonBar *, QList<KToolView*> > toolViews() const;
-		
-	private:
-		Qt::DockWidgetArea toDockWidgetArea(Qt::ToolBarArea area);
-		Qt::ToolBarArea toToolBarArea(Qt::DockWidgetArea area);
-		
-	public slots:
-		void setEnableButtonBlending(bool enable);
-		
-	private slots:
-		void relayoutViewButton(bool topLevel);
-		void relayoutToolView();
-		
-	signals:
-		void perspectiveChanged(int wps);
-		
-	protected:
-		void addButtonBar(Qt::ToolBarArea area);
-		
-	protected:
-		virtual void closeEvent(QCloseEvent *e);
-		virtual void showEvent(QShowEvent *e);
-#if QT_VERSION >= 0x040200
-		virtual bool event(QEvent *e);
-#endif
-		
-	private:
-		KToolView *m_forRelayout;
-		
-	private:
-		QHash<Qt::ToolBarArea, KButtonBar *> m_buttonBars;
-		QHash<KButtonBar *, QList<KToolView*> > m_toolViews;
-		QHash<QWidget *, int> m_managedWidgets;
-		QHash<QAction *, int> m_managedActions;
-		
-		int m_currentPerspective;
-		
-		KMainWindowAbstractSettings *m_settings;
-		
-		bool m_autoRestore;
+    Q_OBJECT;
+    public:
+        enum
+         {
+           None = 0, DefaultPerspective
+         };
+
+        KMainWindow(QWidget *parent = 0);
+        ~KMainWindow();
+
+        KToolView *addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective = DefaultPerspective);
+        void removeToolView(KToolView *view);
+
+        // FIXME: remove tool view
+        void moveToolView(KToolView *view, Qt::DockWidgetArea newPlace);
+
+        void addToPerspective(QWidget *widget, int perspective = DefaultPerspective);
+        void removeFromPerspective(QWidget *widget);
+
+        void addToPerspective(QAction *action, int perspective);
+        void addToPerspective(const QList<QAction *> &actions, int perspective);
+        void removeFromPerspective(QAction *action);
+        void setCurrentPerspective(int wsp);
+        int currentPerspective() const;
+
+        void setAutoRestore(bool autoRestore);
+        bool autoRestore() const;
+
+        virtual QMenu *createPopupMenu();
+
+        void setSettingsHandler(KMainWindowAbstractSettings *settings);
+        void restoreGUI();
+        void saveGUI();
+
+        QHash<Qt::ToolBarArea, KButtonBar *> buttonBars() const;
+        QHash<KButtonBar *, QList<KToolView*> > toolViews() const;
+
+    private:
+        Qt::DockWidgetArea toDockWidgetArea(Qt::ToolBarArea area);
+        Qt::ToolBarArea toToolBarArea(Qt::DockWidgetArea area);
+
+    public slots:
+        void setEnableButtonBlending(bool enable);
+
+    private slots:
+        void relayoutViewButton(bool topLevel);
+        void relayoutToolView();
+
+    signals:
+        void perspectiveChanged(int wps);
+
+    protected:
+        void addButtonBar(Qt::ToolBarArea area);
+
+    protected:
+        virtual void closeEvent(QCloseEvent *e);
+        virtual void showEvent(QShowEvent *e);
+        virtual bool event(QEvent *e);
+
+    private:
+        KToolView *m_forRelayout;
+
+    private:
+        QHash<Qt::ToolBarArea, KButtonBar *> m_buttonBars;
+        QHash<KButtonBar *, QList<KToolView*> > m_toolViews;
+        QHash<QWidget *, int> m_managedWidgets;
+        QHash<QAction *, int> m_managedActions;
+
+        int m_currentPerspective;
+
+        KMainWindowAbstractSettings *m_settings;
+        bool m_autoRestore;
 };
 
 #endif

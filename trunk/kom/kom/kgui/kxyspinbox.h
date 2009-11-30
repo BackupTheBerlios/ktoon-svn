@@ -38,30 +38,34 @@ class K_GUI_EXPORT KXYSpinBox : public QGroupBox
     public:
         KXYSpinBox(const QString &title, QWidget *parent = 0);
         ~KXYSpinBox();
-        void setSingleStep(double step);
-        void setMinimum(double min);
-        void setMaximum(double max);
-        void setX(double x);
-        void setY(double y);
-        double x();
-        double y();
+        void setSingleStep(int step);
+        void setMinimum(int min);
+        void setMaximum(int max);
+        void setX(int x);
+        void setY(int y);
+        int x();
+        int y();
         void setModifyTogether(bool enable);
 
     private slots:
-        void updateXValue(double v);
-        void updateYValue(double v);
+        void updateXValue();
+        void updateYValue();
         void toggleModify();
 
     private:
-        QLabel *m_textX, *m_textY;
-        QDoubleSpinBox *m_x, *m_y;
+        QLabel *m_textX;
+        QLabel *m_textY;
+        QSpinBox *m_x;
+        QSpinBox *m_y;
         QPushButton *m_separator;
         bool m_modifyTogether;
 
+    /*
     signals:
-        void valueXChanged(double );
-        void valueYChanged(double );
+        void valueXChanged(double);
+        void valueYChanged(double);
         void valueXYChanged(double, double);
+    */
 };
 
 #endif

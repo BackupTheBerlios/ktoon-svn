@@ -24,11 +24,12 @@
 
 #include <QHBoxLayout>
 #include <QSizePolicy>
+
 #include "kapplication.h"
 
 #include "kdebug.h"
 
-KXYSpinBox::KXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(title, parent), m_modifyTogether(true)
+KXYSpinBox::KXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(title, parent), m_modifyTogether(false)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
 
@@ -36,16 +37,14 @@ KXYSpinBox::KXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(title,
     m_textX = new QLabel("X: ");
     internal->addWidget(m_textX, 0, 0, Qt::AlignRight);
 
-    m_x = new QDoubleSpinBox;
-    // m_x->setMaximumWidth(60);
+    m_x = new QSpinBox;
     internal->addWidget(m_x, 0, 1);
     m_textX->setBuddy(m_x);
 
     m_textY = new QLabel("Y: ");
     internal->addWidget(m_textY, 1, 0, Qt::AlignRight);
 
-    m_y = new QDoubleSpinBox;
-    // m_y->setMaximumWidth(60);
+    m_y = new QSpinBox;
     internal->addWidget(m_y, 1, 1);
 
     m_textY->setBuddy(m_y);
@@ -53,48 +52,33 @@ KXYSpinBox::KXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(title,
 
     m_separator = new QPushButton;
     m_separator->setFlat(true);
-
     m_separator->setMaximumWidth(20);
-    // m_separator->setMinimumHeight(50);
-    layout->addWidget(m_separator);
+    m_separator->setIcon(QPixmap(THEME_DIR + "/icons/vchain_broken.png"));
 
-    connect(m_separator, SIGNAL(clicked()), this, SLOT(toggleModify()));
+    //layout->addWidget(m_separator);
+
+    //connect(m_separator, SIGNAL(clicked()), this, SLOT(toggleModify()));
     setLayout(layout);
 
-    connect(m_x, SIGNAL(valueChanged (double)), this, SLOT(updateXValue(double)));
-    connect(m_y, SIGNAL(valueChanged (double)), this, SLOT(updateYValue(double)));
+    connect(m_x, SIGNAL(editingFinished()), this, SLOT(updateXValue()));
+    connect(m_y, SIGNAL(editingFinished()), this, SLOT(updateYValue()));
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-
-    m_separator->setIcon(QPixmap(THEME_DIR+"/icons/vchain.png"));
 }
-
 
 KXYSpinBox::~KXYSpinBox()
 {
 }
 
-
-void KXYSpinBox::updateXValue(double v)
+void KXYSpinBox::updateXValue()
 {
-    emit valueXChanged( v );
-
-    if (m_modifyTogether && m_y->value() != v) {
-        emit valueXYChanged(v, v);
-        m_y->setValue(v);
-    } else {
-        emit valueXYChanged(v, m_y->value());
-    }
+     int value = (int) m_x->value()*340/520;
+     m_y->setValue(value);
 }
 
-void KXYSpinBox::updateYValue(double v)
+void KXYSpinBox::updateYValue()
 {
-    emit valueYChanged( v );
-    if (m_modifyTogether && m_x->value() != v) {
-        emit valueXYChanged( v, v);
-        m_x->setValue( v );
-    } else {
-        emit valueXYChanged( m_x->value(), v);
-    }
+     int value = (int) m_y->value()*520/340; 
+     m_x->setValue(value);
 }
 
 void KXYSpinBox::setModifyTogether(bool enable)
@@ -105,49 +89,52 @@ void KXYSpinBox::setModifyTogether(bool enable)
 
 void KXYSpinBox::toggleModify()
 {
-    // TODO: Change the button icon !!
-    m_modifyTogether = !m_modifyTogether;
-
-    if (m_modifyTogether)
-        m_separator->setIcon(QPixmap(THEME_DIR+"/icons/vchain.png"));
-    else
-        m_separator->setIcon(QPixmap(THEME_DIR+"/icons/vchain_broken.png"));
+    if (!m_modifyTogether) {
+        m_modifyTogether = true;
+        m_separator->setIcon(QPixmap(THEME_DIR + "/icons/vchain.png"));
+        int x = m_x->value();
+        if (m_y->value() != x)
+            m_y->setValue(x);
+    } else {
+        m_modifyTogether = false;
+        m_separator->setIcon(QPixmap(THEME_DIR + "/icons/vchain_broken.png"));
+    }
 }
 
-void KXYSpinBox::setSingleStep(double step)
+void KXYSpinBox::setSingleStep(int step)
 {
     m_x->setSingleStep(step);
     m_y->setSingleStep(step);
 }
 
-void KXYSpinBox::setMinimum ( double min)
+void KXYSpinBox::setMinimum(int min)
 {
     m_x->setMinimum(min);
     m_y->setMinimum(min);
 }
 
-void KXYSpinBox::setMaximum ( double max)
+void KXYSpinBox::setMaximum(int max)
 {
     m_x->setMaximum(max);
     m_y->setMaximum(max);
 }
 
-void KXYSpinBox::setX(double x)
+void KXYSpinBox::setX(int x)
 {
     m_x->setValue(x);
 }
 
-void KXYSpinBox::setY(double y)
+void KXYSpinBox::setY(int y)
 {
     m_y->setValue(y);
 }
 
-double KXYSpinBox::x()
+int KXYSpinBox::x()
 {
     return m_x->value();
 }
 
-double KXYSpinBox::y()
+int KXYSpinBox::y()
 {
     return m_y->value();
 }

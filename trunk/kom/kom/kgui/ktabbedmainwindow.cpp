@@ -33,14 +33,14 @@
 #ifndef KLIB_GUI
 class TabWidgetPrivate : public QTabWidget
 {
-	Q_OBJECT;
-	public:
-		TabWidgetPrivate(QWidget *parent = 0);
-		~TabWidgetPrivate();
-		
-	protected:
-		virtual void wheelEvent( QWheelEvent *e );
-		virtual void wheelMove( int delta );
+    Q_OBJECT;
+    public:
+        TabWidgetPrivate(QWidget *parent = 0);
+        ~TabWidgetPrivate();
+
+    protected:
+        virtual void wheelEvent(QWheelEvent *e);
+        virtual void wheelMove(int delta);
 };
 
 TabWidgetPrivate::TabWidgetPrivate(QWidget *parent) : QTabWidget(parent)
@@ -51,34 +51,28 @@ TabWidgetPrivate::~TabWidgetPrivate()
 {
 }
 
-void TabWidgetPrivate::wheelEvent( QWheelEvent *ev )
+void TabWidgetPrivate::wheelEvent(QWheelEvent *ev)
 {
-	QRect rect = tabBar()->rect();
-	rect.setWidth( width() );
-	
-	if ( rect.contains(ev->pos()) )
-	{
-		wheelMove( ev->delta() );
-	}
+    QRect rect = tabBar()->rect();
+    rect.setWidth(width());
+
+    if (rect.contains(ev->pos()))
+        wheelMove(ev->delta());
 }
 
-void TabWidgetPrivate::wheelMove( int delta )
+void TabWidgetPrivate::wheelMove(int delta)
 {
-	if ( count() > 1 )
-	{
-		int current = currentIndex();
-		if ( delta < 0 )
-		{
-			current = (current + 1) % count();
-		}
-		else 
-		{
-			current--;
-			if ( current < 0 )
-				current = count() - 1;
-		}
-		setCurrentIndex( current );
-	}
+    if (count() > 1) {
+        int current = currentIndex();
+        if (delta < 0) {
+            current = (current + 1) % count();
+        } else {
+            current--;
+            if (current < 0)
+                current = count() - 1;
+        }
+        setCurrentIndex( current );
+    }
 }
 
 #include "ktabbedmainwindow.moc"
@@ -90,7 +84,6 @@ void TabWidgetPrivate::wheelMove( int delta )
 
 #endif
 
-
 // KTabbedMainWindow
 
 /**
@@ -100,14 +93,12 @@ void TabWidgetPrivate::wheelMove( int delta )
  */
 KTabbedMainWindow::KTabbedMainWindow(QWidget *parent) : KMainWindow(parent)
 {
-	m_tabWidget = new TabWidgetPrivate;
-	
-	setupTabWidget( m_tabWidget );
-	setCentralWidget(m_tabWidget);
-	
-	connect(this, SIGNAL(perspectiveChanged(int)), this, SLOT(setupPerspective(int)));
-}
+    m_tabWidget = new TabWidgetPrivate;
+    setupTabWidget(m_tabWidget);
+    setCentralWidget(m_tabWidget);
 
+    connect(this, SIGNAL(perspectiveChanged(int)), this, SLOT(setupPerspective(int)));
+}
 
 /**
  * Destructor
@@ -115,7 +106,6 @@ KTabbedMainWindow::KTabbedMainWindow(QWidget *parent) : KMainWindow(parent)
  */
 KTabbedMainWindow::~KTabbedMainWindow()
 {
-	
 }
 
 /**
@@ -124,58 +114,51 @@ KTabbedMainWindow::~KTabbedMainWindow()
  */
 void KTabbedMainWindow::setupTabWidget(QTabWidget *w)
 {
-	w->setFocusPolicy(Qt::NoFocus);
-	
-	if ( ! w->cornerWidget( Qt::TopRightCorner ) )
-	{
-		QToolButton *closeButton = new QToolButton(w);
-		QPixmap closepx(16, 16);
-		closepx.fill(Qt::transparent);
-		
-		QPainter p(&closepx);
-		p.initFrom(this);
-		
-		p.setPen(QPen(palette().buttonText() , 4));
-		p.drawLine(0, 0, 15,15);
-		p.drawLine(0,15, 15, 0);
-		
-		
-		p.end();
-		
-		closeButton->setIcon(closepx);
-		closeButton->adjustSize();
-		closeButton->hide();
-		
-		w->setCornerWidget(closeButton, Qt::TopRightCorner);
-		
-		connect(closeButton, SIGNAL(clicked()), this, SLOT(closeCurrentTab()));
-	}
-	
-	connect(w, SIGNAL(currentChanged ( int)), this, SLOT(emitWidgetChanged( int )));
+    w->setFocusPolicy(Qt::NoFocus);
+
+    /*
+    if (! w->cornerWidget(Qt::TopRightCorner)) {
+        QToolButton *closeButton = new QToolButton(w);
+        QPixmap closepx(16, 16);
+        closepx.fill(Qt::transparent);
+
+        QPainter p(&closepx);
+        p.initFrom(this);
+        p.setPen(QPen(palette().buttonText(), 4));
+        p.drawLine(0, 0, 15,15);
+        p.drawLine(0, 15, 15, 0);
+        p.end();
+
+        closeButton->setIcon(closepx);
+        closeButton->adjustSize();
+        closeButton->hide();
+
+        w->setCornerWidget(closeButton, Qt::TopRightCorner);
+
+        connect(closeButton, SIGNAL(clicked()), this, SLOT(closeCurrentTab()));
+    }
+    */
+
+    connect(w, SIGNAL(currentChanged(int)), this, SLOT(emitWidgetChanged(int)));
 }
 
 void KTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int perspective)
 {
-	if ( perspective & currentPerspective() )
-	{
-		m_tabWidget->addTab(widget, widget->windowIcon(), widget->windowTitle() );
-	}
-	
-	if ( persistant )
-	{
-		m_persistantWidgets << widget;
-	}
-	
-	m_pages << widget;
-	m_tabs[widget] = perspective;
-	
-	if ( QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner)) )
-	{
-		if ( !button->isVisible() )
-		{
-			button->show();
-		}
-	}
+    if (perspective & currentPerspective())
+        m_tabWidget->addTab(widget, widget->windowIcon(), widget->windowTitle());
+
+    if (persistant)
+        m_persistantWidgets << widget;
+
+    m_pages << widget;
+    m_tabs[widget] = perspective;
+
+    /*
+    if (QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner))) {
+        if (!button->isVisible())
+            button->show();
+    }
+    */
 }
 
 /**
@@ -184,66 +167,56 @@ void KTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int perspect
  */
 void KTabbedMainWindow::removeWidget(QWidget *widget, bool force)
 {
-	if ( force ) m_persistantWidgets.removeAll(widget);
-	if ( m_persistantWidgets.contains(widget) ) return;
-	
-	int index = m_tabWidget->indexOf(widget);
-	if ( index >= 0 )
-	{
-		m_tabWidget->removeTab( index );
-	}
-	
-	m_tabs.remove(widget);
-	m_pages.removeAll(widget);
-	
-	if ( m_tabWidget->count() == 0 )
-	{
-		if ( QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner)) )
-		{
-			if ( button->isVisible() )
-			{
-				button->hide();
-			}
-		}
-	}
-}
+    if (force) 
+        m_persistantWidgets.removeAll(widget);
 
+    if (m_persistantWidgets.contains(widget)) 
+        return;
+
+    int index = m_tabWidget->indexOf(widget);
+    if (index >= 0)
+        m_tabWidget->removeTab(index);
+
+    m_tabs.remove(widget);
+    m_pages.removeAll(widget);
+
+    /*
+    if (m_tabWidget->count() == 0) {
+        if (QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner))) {
+            if (button->isVisible())
+                button->hide();
+        }
+   }
+   */
+}
 
 /**
  * Close the current tab.
  */
 void KTabbedMainWindow::closeCurrentTab()
 {
-	int index = m_tabWidget->currentIndex();
-	
-	if ( index >= 0 )
-	{
-		removeWidget(m_tabWidget->widget(index));
-	}
+    int index = m_tabWidget->currentIndex();
+
+    if (index >= 0)
+        removeWidget(m_tabWidget->widget(index));
 }
 
 void KTabbedMainWindow::emitWidgetChanged(int index)
 {
-	QWidget *w = m_tabWidget->widget(index);
-	
-	if ( m_persistantWidgets.contains(w) )
-	{
-		if ( QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner)) )
-		{
-			button->setEnabled( false );
-		}
-	}
-	else
-	{
-		if ( QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner) ))
-		{
-			button->setEnabled( true );
-		}
-	}
-	
-	emit widgetChanged( w );
-}
+    QWidget *w = m_tabWidget->widget(index);
 
+    /*
+    if (m_persistantWidgets.contains(w)) {
+        if (QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner)))
+            button->setEnabled(false);
+    } else {
+            if (QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner)))
+                button->setEnabled(true);
+    }
+    */
+
+    emit widgetChanged(w);
+}
 
 /**
  * Sets other tab widget.
@@ -251,16 +224,16 @@ void KTabbedMainWindow::emitWidgetChanged(int index)
  */
 void KTabbedMainWindow::setTabWidget(QTabWidget *w)
 {
-	m_tabWidget->close();
-	
-	setupTabWidget( w );
-	
-	delete m_tabWidget;
-	m_tabWidget = 0;
-	
-	setCentralWidget( w );
-	
-	m_tabWidget = w;
+    m_tabWidget->close();
+
+    setupTabWidget(w);
+
+    delete m_tabWidget;
+    m_tabWidget = 0;
+
+    setCentralWidget(w);
+
+    m_tabWidget = w;
 }
 
 /**
@@ -269,7 +242,7 @@ void KTabbedMainWindow::setTabWidget(QTabWidget *w)
  */
 QTabWidget *KTabbedMainWindow::tabWidget() const
 {
-	return m_tabWidget;
+    return m_tabWidget;
 }
 
 /**
@@ -278,58 +251,44 @@ QTabWidget *KTabbedMainWindow::tabWidget() const
  */
 void KTabbedMainWindow::setupPerspective(int wps)
 {
-	// FIXME: Flickr = (
+    // FIXME: It is Flickering =(
+
+    m_tabWidget->setUpdatesEnabled(false);
+    setUpdatesEnabled(false);
+
+    foreach (QWidget *w, m_pages) {
+             int perspective = m_tabs[w];
+
+             if (wps & perspective) {
+                 m_tabWidget->addTab(w, w->windowIcon(), w->windowTitle());
+                 w->show();
+             } else {
+                 w->hide();
+                 m_tabWidget->removeTab( m_tabWidget->indexOf(w) );
+             }
+    }
+
+/*
+    if (QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner))) {
+        if (!button->isVisible())
+            button->show();
+    }
+*/
+
+    m_tabWidget->setUpdatesEnabled(true);
+    setUpdatesEnabled( true);
 	
-	m_tabWidget->setUpdatesEnabled( false );
-	setUpdatesEnabled( false );
-	
-	foreach(QWidget *w, m_pages )
-	{
-		int perspective = m_tabs[w];
-		
-		if ( wps & perspective )
-		{
-			m_tabWidget->addTab(w, w->windowIcon(), w->windowTitle() );
-			w->show();
-		}
-		else
-		{
-			w->hide();
-			m_tabWidget->removeTab( m_tabWidget->indexOf(w) );
-		}
-	}
-	
-	if ( QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner)) )
-	{
-		if ( !button->isVisible() )
-		{
-			button->show();
-		}
-	}
-	
-	m_tabWidget->setUpdatesEnabled( true);
-	setUpdatesEnabled( true);
-	
-#if 0
-	int count = m_tabWidget->count();
-	
-	for(int index = 0; index < count; index++ )
-	{
-		QWidget *w = m_tabWidget->widget(index);
-		
-		if ( m_tabs[w] == wps )
-		{
-			w->show();
-			m_tabWidget->setTabEnabled( index, true);
-			
-		}
-		else
-		{
-			w->hide();
-			m_tabWidget->setTabEnabled( index, false);
-		}
-	}
-#endif
+    int count = m_tabWidget->count();
+
+    for (int index = 0; index < count; index++) {
+         QWidget *w = m_tabWidget->widget(index);
+
+         if (m_tabs[w] == wps) {
+             w->show();
+             m_tabWidget->setTabEnabled( index, true);
+         } else {
+             w->hide();
+             m_tabWidget->setTabEnabled( index, false);
+         }
+    }
 }
-
-
