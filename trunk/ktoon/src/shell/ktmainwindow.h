@@ -209,7 +209,7 @@ class KTMainWindow : public KTabbedMainWindow
           KTCameraWidget *m_cameraWidget;
 
     signals:
-          void responsed( KTProjectResponse *);
+          void responsed(KTProjectResponse *);
 };
 
 #endif

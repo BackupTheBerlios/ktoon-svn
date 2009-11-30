@@ -30,85 +30,66 @@
 
 struct KTRequestParser::Private
 {
-	QString sign;
-	KTProjectResponse *response;
+    QString sign;
+    KTProjectResponse *response;
 };
 
 KTRequestParser::KTRequestParser() : KTXmlParserBase(), k(new Private())
 {
-	k->response = 0;
+    k->response = 0;
 }
-
 
 KTRequestParser::~KTRequestParser()
 {
-	delete k;
+    delete k;
 }
 
 void KTRequestParser::initialize()
 {
-	k->response = 0;
+    k->response = 0;
 }
-
 
 bool KTRequestParser::startTag(const QString& qname, const QXmlAttributes& atts)
 {
-	if( qname == "request" )
-	{
-		k->sign = atts.value("sign");
-	}
-	else if ( qname == "item" )
-	{
-		static_cast<KTItemResponse *>(k->response)->setItemIndex(atts.value("index").toInt());
-	}
-	else if ( qname == "frame" )
-	{
-		static_cast<KTFrameResponse *>(k->response)->setFrameIndex(atts.value("index").toInt());
-	}
-	else if ( qname == "data" )
-	{
-		setReadText(true);
-	}
-	else if ( qname == "layer" )
-	{
-		static_cast<KTLayerResponse *>(k->response)->setLayerIndex(atts.value("index").toInt());
-	}
-	else if ( qname == "scene" )
-	{
-		static_cast<KTSceneResponse *>(k->response)->setSceneIndex(atts.value("index").toInt());
-	}
-	else if ( qname == "symbol" )
-	{
-		static_cast<KTLibraryResponse*>(k->response)->setSymbolType(atts.value("type").toInt());
-	}
-	else if ( qname == "action" )
-	{
-		k->response = KTProjectResponseFactory::create( atts.value("part").toInt(), atts.value("id").toInt());
-		k->response->setArg(atts.value("arg"));
-	}
-	
-	return true;
+    if (qname == "request") {
+        k->sign = atts.value("sign");
+    } else if (qname == "item") {
+               static_cast<KTItemResponse *>(k->response)->setItemIndex(atts.value("index").toInt());
+    } else if (qname == "frame") {
+               static_cast<KTFrameResponse *>(k->response)->setFrameIndex(atts.value("index").toInt());
+    } else if (qname == "data") {
+               setReadText(true);
+    } else if (qname == "layer") {
+               static_cast<KTLayerResponse *>(k->response)->setLayerIndex(atts.value("index").toInt());
+    } else if (qname == "scene") {
+               static_cast<KTSceneResponse *>(k->response)->setSceneIndex(atts.value("index").toInt());
+    } else if (qname == "symbol") {
+               static_cast<KTLibraryResponse*>(k->response)->setSymbolType(atts.value("type").toInt());
+    } else if (qname == "action") {
+               k->response = KTProjectResponseFactory::create( atts.value("part").toInt(), atts.value("id").toInt());
+               k->response->setArg(atts.value("arg"));
+    }
+
+    return true;
 }
 
 bool KTRequestParser::endTag(const QString& qname)
 {
-	return true;
+    return true;
 }
 
 void KTRequestParser::text( const QString &ch )
 {
-	if ( currentTag() == "data" )
-	{
-		k->response->setData( QByteArray::fromBase64( QByteArray(ch.toLocal8Bit()) ) );
-	}
+    if (currentTag() == "data")
+        k->response->setData(QByteArray::fromBase64(QByteArray(ch.toLocal8Bit())));
 }
 
 KTProjectResponse *KTRequestParser::response() const
 {
-	return k->response;
+    return k->response;
 }
 
 QString KTRequestParser::sign() const
 {
-	return k->sign;
+    return k->sign;
 }

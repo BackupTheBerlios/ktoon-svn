@@ -33,25 +33,25 @@ KTAbstractProjectHandler::~KTAbstractProjectHandler()
 
 bool KTAbstractProjectHandler::initialize(KTProjectManagerParams *params)
 {
-	return true;
+    return true;
 }
 
 bool KTAbstractProjectHandler::setupNewProject(KTProjectManagerParams *params)
 {
-	return true;
+    return true;
 }
 
 bool KTAbstractProjectHandler::closeProject()
 {
-	return true;
+    return true;
 }
 
 bool KTAbstractProjectHandler::commandExecuted(KTProjectResponse *response)
 {
-	return true;
+    return true;
 }
 
 bool KTAbstractProjectHandler::isValid() const
 {
-	return true;
+    return true;
 }

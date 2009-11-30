@@ -37,32 +37,26 @@ class KTProject;
 */
 class STORE_EXPORT KTAbstractProjectHandler : public QObject
 {
-	Q_OBJECT;
-	
-	public:
-		KTAbstractProjectHandler(QObject *parent = 0);
-		virtual ~KTAbstractProjectHandler();
-		
-		virtual bool initialize(KTProjectManagerParams *params);
-		virtual bool setupNewProject(KTProjectManagerParams *params);
-		virtual bool closeProject();
-		virtual void handleProjectRequest(const KTProjectRequest *request) = 0;
-		virtual bool commandExecuted(KTProjectResponse *response);
-		
-		virtual bool saveProject(const QString &fileName, const KTProject *project) = 0;
-		virtual bool loadProject(const QString &fileName, KTProject *project) = 0;
-		virtual void setProject(KTProject *project) = 0;
-		
-		
-		virtual bool isValid() const;
-		
-	signals:
-		void sendCommand(const KTProjectRequest *request, bool addToStack);
-		void sendLocalCommand(const KTProjectRequest *request);
-		void openNewArea(const QString &name);
+    Q_OBJECT;
+
+    public:
+        KTAbstractProjectHandler(QObject *parent = 0);
+        virtual ~KTAbstractProjectHandler();
+
+        virtual bool initialize(KTProjectManagerParams *params);
+        virtual bool setupNewProject(KTProjectManagerParams *params);
+        virtual bool closeProject();
+        virtual void handleProjectRequest(const KTProjectRequest *request) = 0;
+        virtual bool commandExecuted(KTProjectResponse *response);
+        virtual bool saveProject(const QString &fileName, const KTProject *project) = 0;
+        virtual bool loadProject(const QString &fileName, KTProject *project) = 0;
+        virtual void setProject(KTProject *project) = 0;
+        virtual bool isValid() const;
+
+    signals:
+        void sendCommand(const KTProjectRequest *request, bool addToStack);
+        void sendLocalCommand(const KTProjectRequest *request);
+        void openNewArea(const QString &name);
 };
 
-
 #endif
-
-

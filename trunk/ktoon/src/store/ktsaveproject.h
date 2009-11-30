@@ -30,13 +30,13 @@ class KTProject;
 */
 class KTSaveProject : public QObject
 {
-	Q_OBJECT;
-	public:
-		KTSaveProject();
-		~KTSaveProject();
-		
-		virtual bool save(const QString &filename, const KTProject *project);
-		virtual bool load(const QString &filename, KTProject *project);
+    Q_OBJECT;
+    public:
+    KTSaveProject();
+    ~KTSaveProject();
+
+    virtual bool save(const QString &filename, const KTProject *project);
+    virtual bool load(const QString &filename, KTProject *project);
 };
 
 #endif

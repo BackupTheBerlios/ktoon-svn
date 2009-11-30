@@ -24,9 +24,11 @@
 
 struct KTProjectManagerParams::Private
 {
-	QString projectName;
-	QString author;
-	QString description;
+    QString projectName;
+    QString author;
+    QString description;
+    QSize dimension;
+    int fps;
 };
 
 KTProjectManagerParams::KTProjectManagerParams(): k(new Private)
@@ -39,32 +41,50 @@ KTProjectManagerParams::~KTProjectManagerParams()
 
 void KTProjectManagerParams::setProjectName(const QString &name)
 {
-	k->projectName = name;
+    k->projectName = name;
 }
 
 QString KTProjectManagerParams::projectName() const
 {
-	return k->projectName;
+    return k->projectName;
 }
-
 
 void KTProjectManagerParams::setAuthor(const QString &author)
 {
-	k->author = author;
+    k->author = author;
 }
 
 QString KTProjectManagerParams::author() const
 {
-	return k->author;
+    return k->author;
 }
-
 
 void KTProjectManagerParams::setDescription(const QString &description)
 {
-	k->description = description;
+    k->description = description;
 }
 
 QString KTProjectManagerParams::description() const
 {
-	return k->description;
+    return k->description;
+}
+
+void KTProjectManagerParams::setDimension(const QSize &dimension)
+{
+    k->dimension = dimension;
+}
+
+QSize KTProjectManagerParams::dimension() const
+{
+    return k->dimension;
+}
+
+void KTProjectManagerParams::setFPS(const int fps)
+{
+    k->fps = fps;
+}
+
+int KTProjectManagerParams::fps() const
+{
+    return k->fps;
 }

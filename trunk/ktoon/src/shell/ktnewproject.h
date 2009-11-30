@@ -35,75 +35,25 @@ class KTProjectManagerParams;
 
 class KTNewProject : public KTabDialog
 {
-	Q_OBJECT
-	public:
-		KTNewProject(QWidget *parent = 0);
-		~KTNewProject();
-		// QString projectName() const;
-		// QSize dimension() const;
-		// int fps() const;
-		
-		KTProjectManagerParams *params();
-		
-		bool useNetwork() const;
-		
-	public slots:
-		void ok();
-		
-	private:
-		void setupNetOptions();
-		
-	public slots:
-		void activateNetOptions(bool isVisible);
-	
-	private:
-		struct Private;
-		Private *const k;
-		
-};
-#if 0
-class KTNewProject : public KWizard
-{
-	Q_OBJECT
-	public:
-		KTNewProject(QWidget *parent = 0);
-		~KTNewProject();
-		QString projectName() const;
-		QSize dimension() const;
-		int fps() const;
-// 		QString renderType() const;
-	signals:
-		void sendToStatus(const QString &);
-		void sendToOSD(const QString &, int);
-		
-	private:
-		NPFirstPage *m_firstPage ;
+    Q_OBJECT
+    public:
+        KTNewProject(QWidget *parent = 0);
+        ~KTNewProject();
+        KTProjectManagerParams *parameters();
+        bool useNetwork() const;
+
+    public slots:
+        void ok();
+
+    private:
+        void setupNetOptions();
+
+    public slots:
+        void activateNetOptions(bool isVisible);
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
-class NPFirstPage : public KWizardPage
-{
-	Q_OBJECT
-	public:
-		NPFirstPage(QWidget *parent = 0);
-		~NPFirstPage();
-		bool isComplete();
-		void reset();
-		QString projectName() const;
-		QSize dimension() const;
-		int fps() const;
-		QString renderType() const;
-		
-	signals:
-		void sendToStatus(const QString &);
-		void sendToOSD(const QString &, int level);
-		
-	private:
-		QLineEdit *m_projectName;
-		QLineEdit *m_authorName;
-		QComboBox *m_renderType;
-		QSpinBox *m_fps;
-		
-		KXYSpinBox *m_size;
-};
-#endif
 #endif

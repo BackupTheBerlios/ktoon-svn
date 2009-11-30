@@ -95,31 +95,29 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : KTabbedMainWindow(),  m_projectMa
 
     // Defining the status bar
     m_statusBar = new KTStatusBar(this);
-    setStatusBar( m_statusBar );
+    setStatusBar(m_statusBar);
 
     // Naming the main frame...
-    setWindowTitle( tr("KToon: 2D Animation Toolkit" ) );
+    setWindowTitle(tr("KToon: 2D Animation Toolkit"));
 
     // Defining the render type for the drawings
     m_renderType = KToon::RenderType(KCONFIG->value("RenderType").toInt());
 
     // Calling out the project manager
     m_projectManager = new KTProjectManager(this);
-    m_projectManager->setHandler( new KTLocalProjectManagerHandler );
+    m_projectManager->setHandler(new KTLocalProjectManagerHandler);
 
-    // setProjectManager( projectManager );
-	
-    splash->setMessage( tr("Setting up the project manager") );
+    splash->setMessage(tr("Setting up the project manager"));
 
     // Calling out the events/actions manager
-    splash->setMessage( tr("Loading action manager...") );
+    splash->setMessage(tr("Loading action manager..."));
     m_actionManager = new KActionManager(this);
 	
     // Defining the menu bar
-    splash->setMessage( tr("Creating menu bar...") );
+    splash->setMessage(tr("Creating menu bar..."));
     setupActions();
 	
-    splash->setMessage( tr("Creating GUI...") );
+    splash->setMessage(tr("Creating GUI..."));
 	
     // Setting up all the GUI...
     createGUI(); // This method is called from the ktmainwindow_gui class
@@ -128,7 +126,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : KTabbedMainWindow(),  m_projectMa
 	
     // Check if user wants to see a KToon tip for every time he launches the program
     KCONFIG->beginGroup("TipOfDay");
-    bool showTips = qvariant_cast<bool>(KCONFIG->value("ShowOnStart", true ));
+    bool showTips = qvariant_cast<bool>(KCONFIG->value("ShowOnStart", true));
 	
     // If option is enabled, then, show a little dialog with a nice tip
     if (showTips)
@@ -138,7 +136,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : KTabbedMainWindow(),  m_projectMa
     KTPluginManager::instance()->loadPlugins();
 
     // Defining the Drawing view, as the first interface to show up	
-    setCurrentPerspective( Drawing );
+    setCurrentPerspective(Drawing);
 	
     KCONFIG->beginGroup("General");
     // check if into the config file, user always wants to start opening his last project created
@@ -207,31 +205,33 @@ void KTMainWindow::viewNewDocument(const QString &title)
         KOsd::self()->display(tr("Opening a new document..."));
 
         m_viewDoc = new KTViewDocument(m_projectManager->project());
-        connectToDisplays( m_viewDoc );
+        connectToDisplays(m_viewDoc);
         // m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
 
-        m_viewDoc->setWindowTitle(tr("Illustration: %1").arg(title) );
-        addWidget( m_viewDoc, true, Drawing );
-        connectToDisplays( m_viewDoc );
-        ui4project( m_viewDoc );
-        ui4localRequest(m_viewDoc );
+        m_viewDoc->setWindowTitle(tr("Illustration: %1").arg(title));
+
+        addWidget(m_viewDoc, true, Drawing);
+
+        connectToDisplays(m_viewDoc);
+        ui4project(m_viewDoc);
+        ui4localRequest(m_viewDoc);
       
         m_viewDoc->setAntialiasing(true);
 
         m_animationSpace = new KTWorkspace;
         m_animationSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/animation_mode.png"));
-        m_animationSpace->setScrollBarsEnabled ( true );
+        m_animationSpace->setScrollBarsEnabled(true);
 
         m_animationSpace->setWindowTitle(tr("Animation"));
-        addWidget( m_animationSpace, true, Animation );
+        addWidget(m_animationSpace, true, Animation);
 
         KTViewCamera *viewCamera = m_cameraWidget->viewCamera();
-        ui4project( viewCamera );
+        ui4project(viewCamera);
 
         m_animationSpace->addWindow(viewCamera);
         viewCamera->showMaximized();
 
-        setCurrentPerspective( Drawing );
+        setCurrentPerspective(Drawing);
     }
 }
 
@@ -254,9 +254,9 @@ void KTMainWindow::newProject()
     // connectToDisplays(wizard);
     if (wizard->exec() != QDialog::Rejected) {
        if (wizard->useNetwork())
-           setupNetworkProject( wizard->params() );
+           setupNetworkProject(wizard->parameters());
        else
-           setupLocalProject( wizard->params() );
+           setupLocalProject(wizard->parameters());
        createNewProject();
     }
 
@@ -382,7 +382,7 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
             delete m_viewChat;
         }
 
-        m_viewChat = addToolView( netProjectManagerHandler->comunicationWidget(),  Qt::RightDockWidgetArea, All);
+        m_viewChat = addToolView(netProjectManagerHandler->comunicationWidget(),  Qt::RightDockWidgetArea, All);
         m_viewChat->setVisible(false);
 
         return true;
@@ -404,10 +404,10 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 bool KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
 {
     if (closeProject()) {
-        m_projectManager->setHandler( new KTLocalProjectManagerHandler );
+        m_projectManager->setHandler(new KTLocalProjectManagerHandler);
         m_projectManager->setParams(params);
-
         m_isNetworkProject = false;
+
         return true;
     }
 
@@ -431,7 +431,7 @@ void KTMainWindow::openProject()
      if (package.isEmpty()) 
          return;
 
-     openProject( package );
+     openProject(package);
 }
 
 /**
@@ -661,7 +661,7 @@ void KTMainWindow::ui4project(QWidget *widget)
     connect(widget, SIGNAL(requestTriggered(const KTProjectRequest *)), m_projectManager, 
             SLOT(handleProjectRequest(const KTProjectRequest *)));
 
-    connect(m_projectManager, SIGNAL(responsed( KTProjectResponse* )), widget, 
+    connect(m_projectManager, SIGNAL(responsed(KTProjectResponse*)), widget, 
             SLOT(handleProjectResponse(KTProjectResponse *)));
 
     // PENDING TO CHECK
@@ -727,12 +727,12 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
        K_FUNCINFO;
     #endif
     KTHelpBrowser *page = new KTHelpBrowser(this);
-    page->setDataDirs( QStringList() << m_helper->helpPath() );
+    page->setDataDirs(QStringList() << m_helper->helpPath());
 
-    // page->setDocument( document );
-    page->setSource( filePath );
+    // page->setDocument(document);
+    page->setSource(filePath);
     page->setWindowTitle(tr("Help:%1").arg(title));
-    addWidget( page, false, All );
+    addWidget(page, false, All);
 }
 
 /**
@@ -820,7 +820,7 @@ void KTMainWindow::showAnimationMenu(const QPoint &p)
  * @endif
 */
 
-void KTMainWindow::closeEvent( QCloseEvent *event )
+void KTMainWindow::closeEvent(QCloseEvent *event)
 {
     QString lastProject = m_fileName;
 

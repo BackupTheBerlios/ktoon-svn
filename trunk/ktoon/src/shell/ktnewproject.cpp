@@ -71,8 +71,8 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private
     layout->addWidget(k->authorName, 1, 1);
 
     k->size = new KXYSpinBox(tr("Dimension"), container);
-    k->size->setMaximum( 1000);
-    k->size->setModifyTogether(true);;
+    k->size->setMaximum(1000);
+    //k->size->setModifyTogether(true);;
 
     k->size->setX( 520 );
     k->size->setY( 340);
@@ -103,24 +103,27 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private
     setupNetOptions();
     mcontly->addWidget(k->netOptions);
 
-    layout->addWidget( mcont, 2, 1);
+    layout->addWidget(mcont, 2, 1);
 
     k->netOptions->setVisible(false);
 
     QCheckBox *activeNetOptions = new QCheckBox( tr("Create a network project") );
-    layout->addWidget( activeNetOptions, 3, 1);
+    layout->addWidget(activeNetOptions, 3, 1);
+    activeNetOptions->setEnabled(false);
 
     connect(activeNetOptions, SIGNAL(toggled( bool )), this, SLOT(activateNetOptions(bool)));
 }
 
 KTNewProject::~KTNewProject()
 {
+  /*
     KConfig *config = kApp->config("Network");
-
     config->setValue("server", k->server->text());
     config->setValue("port", k->port->value());
     config->setValue("login", k->login->text());
     config->setValue("password", k->password->text());
+   */
+   delete k;
 }
 
 void KTNewProject::setupNetOptions()
@@ -149,12 +152,16 @@ void KTNewProject::setupNetOptions()
     layout->addLayout( KFormFactory::makeGrid( QStringList() << tr("Login") << tr("Password") <<tr("Server") << tr("Port"), QWidgetList() << k->login << k->password << k->server << k->port ) );
 }
 
-KTProjectManagerParams *KTNewProject::params()
+KTProjectManagerParams *KTNewProject::parameters()
 {
     if (k->useNetwork) {
         KTNetProjectManagerParams *params = new KTNetProjectManagerParams;
-        params->setProjectName( k->projectName->text() );
-        params->setAuthor( k->authorName->text());
+        params->setProjectName(k->projectName->text());
+        params->setAuthor(k->authorName->text());
+        const QSize size(k->size->x(),k->size->y());
+        params->setDimension(size);
+        params->setFPS(k->fps->value());
+        // Network settings
         params->setServer(k->server->text());
         params->setPort(k->port->value());
         params->setLogin(k->login->text());
@@ -165,7 +172,10 @@ KTProjectManagerParams *KTNewProject::params()
 
     KTProjectManagerParams *params = new KTProjectManagerParams;
     params->setProjectName(k->projectName->text());
-    params->setAuthor( k->authorName->text());
+    params->setAuthor(k->authorName->text());
+    const QSize size(k->size->x(),k->size->y());
+    params->setDimension(size);
+    params->setFPS(k->fps->value());
 
     return params;
 }

@@ -225,7 +225,7 @@ void KTMainWindow::setupMenu()
     setupInsertActions();
 
     // Menu Insert
-    m_insertMenu = new QMenu(tr( "&Insert" ), this);
+    m_insertMenu = new QMenu(tr("&Insert"), this);
     menuBar()->addMenu( m_insertMenu );
 
     // Adding Options insert scene, insert layer and insert frame
@@ -254,6 +254,7 @@ void KTMainWindow::setupMenu()
 	m_windowMenu->addAction(m_actionManager->find("show help"));
 	m_windowMenu->addSeparator();
 
+        /*
 	// Setup perspective menu
 	QMenu *perspectiveMenu = new QMenu(tr("Perspective"),this);
 	QActionGroup *group = new QActionGroup(this);
@@ -268,13 +269,14 @@ void KTMainWindow::setupMenu()
 	// Adding Option Animation
 	QAction *animationPerspective = new QAction(tr("Animation"), this);
 	animationPerspective->setShortcut(QKeySequence(Qt::Key_F10));
-	// drawingPerspective->setCheckable(true);
+	//drawingPerspective->setCheckable(true);
 	group->addAction(animationPerspective);
 	animationPerspective->setData(Animation);
 	
 	perspectiveMenu->addActions(group->actions());
 	connect(group, SIGNAL(triggered(QAction *)), this, SLOT(changePerspective(QAction *)));
 	menuBar()->addMenu(perspectiveMenu);
+        */
 	
 	// Setting up the Settings menu
 	setupSettingsActions();
@@ -287,11 +289,11 @@ void KTMainWindow::setupMenu()
 	
 	// Setting up the help menu
 	setupHelpActions();
-	m_helpMenu = new QMenu(tr( "&Help" ),this);
-	menuBar()->addMenu(  m_helpMenu );
-	m_helpMenu->addAction(m_actionManager->find("tipofday") );
+	m_helpMenu = new QMenu(tr("&Help"),this);
+	menuBar()->addMenu(m_helpMenu);
+	m_helpMenu->addAction(m_actionManager->find("tipofday"));
 	m_helpMenu->addSeparator();
-	m_helpMenu->addAction(m_actionManager->find("about ktoon") );
+	m_helpMenu->addAction(m_actionManager->find("about ktoon"));
 }
 
 

@@ -46,15 +46,17 @@
 
 struct KTProject::Private
 {
-    Scenes scenes;
     QString name;
-    QString dataDir;
+    QString author;
+    QString description;
 
+    QSize dimension;
+    int fps;
+    QString dataDir;
+    Scenes scenes;
     int sceneCounter;
     KTLibrary *library;
     bool isOpen;
-    QString author;
-    QString description;
 };
 
 /**
@@ -130,11 +132,27 @@ void KTProject::setAuthor(const QString &author)
 }
 
 /**
- * This function sets description project
+ * This function sets project description
  */
 void KTProject::setDescription(const QString& description)
 {
     k->description = description;
+}
+
+/**
+ * This function sets project dimension
+ */
+void KTProject::setDimension(const QSize dimension)
+{
+    k->dimension = dimension;
+}
+
+/**
+ * This function sets FPS dimension
+ */
+void KTProject::setFPS(const int fps)
+{
+    k->fps = fps;
 }
 
 /**
@@ -161,6 +179,21 @@ QString KTProject::description() const
     return k->description;
 }
 
+/**
+ * Returns dimension project
+ */
+QSize KTProject::dimension() const
+{
+    return k->dimension;
+}
+
+/**
+ * Returns fps project
+ */
+int KTProject::fps() const
+{
+    return k->fps;
+}
 
 KTScene *KTProject::createScene(int position, bool loaded )
 {
@@ -243,7 +276,7 @@ int KTProject::logicalIndexOf(KTScene *scene) const
     return k->scenes.logicalIndex(scene);
 }
 
-void KTProject::fromXml(const QString &xml )
+void KTProject::fromXml(const QString &xml)
 {
     QDomDocument document;
 
@@ -259,7 +292,7 @@ void KTProject::fromXml(const QString &xml )
            if (!e.isNull()) {
 
                if (e.tagName() == "project") {
-                   setProjectName( e.attribute( "name", projectName() ) );
+                   setProjectName(e.attribute("name", projectName()));
                } else if (e.tagName() == "meta") {
                           QDomNode n1 = e.firstChild();
                           while(!n1.isNull()) {
@@ -269,7 +302,18 @@ void KTProject::fromXml(const QString &xml )
                                         setAuthor(e1.text());
                                 } else if (e1.tagName() == "description") {
                                            if (e1.firstChild().isText())
-                                               setDescription( e1.text());
+                                               setDescription(e1.text());
+                                } else if (e1.tagName() == "dimension") {
+                                           if (e1.firstChild().isText()) {
+                                               QStringList list = e1.text().split(",");
+                                               int x = list.at(0).toInt();
+                                               int y = list.at(1).toInt();
+                                               QSize size(x,y);
+                                               setDimension(size);
+                                           }
+                                } else if (e1.tagName() == "fps") {
+                                           if (e1.firstChild().isText())
+                                               setFPS(e1.text().toInt());
                                 }
                                 n1 = n1.nextSibling();
                           }
@@ -295,8 +339,19 @@ QDomElement KTProject::toXml(QDomDocument &doc) const
     QDomElement description = doc.createElement("description");
     description.appendChild(doc.createTextNode(k->description));
 
+    QDomElement size = doc.createElement("dimension");
+    QString xy = QString::number(k->dimension.width()) + "," + QString::number(k->dimension.height());
+    size.appendChild(doc.createTextNode(xy));
+
+    QDomElement fps = doc.createElement("fps");
+    QString frames = QString::number(k->fps);
+    fps.appendChild(doc.createTextNode(frames));
+
     meta.appendChild(author);
     meta.appendChild(description);
+    meta.appendChild(size);
+    meta.appendChild(fps);
+
     project.appendChild(meta);
     ktoon.appendChild(project);
 	
@@ -307,7 +362,6 @@ Scenes KTProject::scenes() const
 {
     return k->scenes;
 }
-
 
 bool KTProject::createSymbol(int type, const QString &name, const QByteArray &data)
 {

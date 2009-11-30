@@ -43,7 +43,6 @@ KTLocalProjectManagerHandler::~KTLocalProjectManagerHandler()
 
 void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *request)
 {
-
     #ifdef K_DEBUG
            K_FUNCINFO;
     #endif

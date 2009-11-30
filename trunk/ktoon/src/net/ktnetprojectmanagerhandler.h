@@ -36,43 +36,41 @@ class KTNetProjectManagerParams;
 */
 class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 {
-	Q_OBJECT;
-	public:
-		KTNetProjectManagerHandler(QObject *parent = 0);
-		~KTNetProjectManagerHandler();
-		
-		virtual bool initialize(KTProjectManagerParams *params);
-		virtual bool setupNewProject(KTProjectManagerParams *params);
-		virtual bool closeProject();
-		
-		virtual void handleProjectRequest(const KTProjectRequest* event);
-		virtual bool commandExecuted(KTProjectResponse *response);
-		
-		virtual bool saveProject(const QString &fileName, const KTProject *project);
-		
-		virtual bool loadProject(const QString &fileName, KTProject *project);
-		
-		void handlePackage(const QString &root, const QString &package);
-		
-		virtual bool isValid() const;
-		
-		void sendPackage(const QDomDocument &doc);
-		
-		QTabWidget *comunicationWidget();
-		
-	private:
-		bool loadProjectFromServer(const QString &name);
-		void emitRequest(KTProjectRequest *request, bool toStack);
-		
-		void setProject(KTProject *project);
-		
-	private slots:
-		void sendChatMessage(const QString & message);
-		void sendNoticeMessage(const QString & message);
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    public:
+        KTNetProjectManagerHandler(QObject *parent = 0);
+        ~KTNetProjectManagerHandler();
+
+        virtual bool initialize(KTProjectManagerParams *params);
+        virtual bool setupNewProject(KTProjectManagerParams *params);
+        virtual bool closeProject();
+
+        virtual void handleProjectRequest(const KTProjectRequest* event);
+        virtual bool commandExecuted(KTProjectResponse *response);
+
+        virtual bool saveProject(const QString &fileName, const KTProject *project);
+        virtual bool loadProject(const QString &fileName, KTProject *project);
+
+        void handlePackage(const QString &root, const QString &package);
+
+        virtual bool isValid() const;
+
+        void sendPackage(const QDomDocument &doc);
+
+        QTabWidget *comunicationWidget();
+
+    private:
+        bool loadProjectFromServer(const QString &name);
+        void emitRequest(KTProjectRequest *request, bool toStack);
+        void setProject(KTProject *project);
+
+    private slots:
+        void sendChatMessage(const QString & message);
+        void sendNoticeMessage(const QString & message);
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

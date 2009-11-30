@@ -413,21 +413,21 @@ ExportTo::ExportTo(const KTProject *project, const KTExportWidget *kt) : KExport
     QHBoxLayout *configureLayout = new QHBoxLayout(configure);
     configureLayout->addStretch();
 
+    QSize dimension = m_project->dimension(); 
     m_size = new KXYSpinBox(tr("Size"));
     m_size->setMaximum(1024);
-    m_size->setModifyTogether(true);
-    m_size->setX(520);
-    m_size->setY(340);
+    m_size->setX(dimension.width());
+    m_size->setY(dimension.height());
 
     QGroupBox *groupBox = new QGroupBox(tr("Configuration"));
-    QHBoxLayout *configLayout = new QHBoxLayout(configuration);
+    QHBoxLayout *configLayout = new QHBoxLayout(groupBox);
 
     configLayout->addWidget(new QLabel(tr("FPS")));
 
     m_fps = new QSpinBox;
     m_fps->setMinimum(0);
     m_fps->setMaximum(100);
-    m_fps->setValue(24);
+    m_fps->setValue(m_project->fps());
 
     configLayout->addWidget(m_fps);
 

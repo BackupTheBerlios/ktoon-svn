@@ -92,7 +92,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
     k->paintArea = new KTPaintArea(project, frame);
     connect(k->paintArea, SIGNAL(scaled(double)), this, SLOT(scaleRuler(double)));
 
-    setCentralWidget( frame );
+    setCentralWidget(frame);
 
     layout->addWidget(k->paintArea, 1,1);
     k->horizontalRuler = new KTDocumentRuler(Qt::Horizontal);
@@ -165,7 +165,7 @@ void KTViewDocument::setAntialiasing(bool useIt )
 
 void KTViewDocument::setOpenGL(bool useIt)
 {
-    k->paintArea->setUseOpenGL( useIt );
+    k->paintArea->setUseOpenGL(useIt);
 }
 
 void KTViewDocument::setDrawGrid(bool draw)

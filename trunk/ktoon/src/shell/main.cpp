@@ -82,11 +82,11 @@ void usage();
  * This method is the first one invoked when KToon is launched
  */
 
-int main( int argc, char ** argv )
+int main(int argc, char ** argv)
 {
-    KTApplication application( argc, argv );
+    KTApplication application(argc, argv);
 
-    qsrand( ::time(0) );
+    qsrand(::time(0));
 
 #ifdef Q_OS_UNIX
     // Initializing the crash handler, very useful to catch bugs
@@ -112,7 +112,7 @@ int main( int argc, char ** argv )
 
    if (! KCONFIG->isOk()) {
        KCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("KTOON_HOME")));
-       KCONFIG->setValue("Cache", QDir::tempPath() );
+       KCONFIG->setValue("Cache", QDir::tempPath());
    }
 
    kAppProp->setHomeDir(KCONFIG->value("Home").toString());
@@ -121,7 +121,7 @@ int main( int argc, char ** argv )
    application.createCache(KCONFIG->value("Cache").toString());
 
    // If user asked for reconfigure KToon or if this is the first time the application is launched
-   if (kAppProp->homeDir().isEmpty() || application.isArg("r") || application.isArg("reconfigure") ) {
+   if (kAppProp->homeDir().isEmpty() || application.isArg("r") || application.isArg("reconfigure")) {
        // Launching the basic configuration dialog
        if (! application.firstRun()) {
            // If dialog is canceled or KToon can not be configured, kill the whole application
@@ -156,22 +156,22 @@ int main( int argc, char ** argv )
         locale = "en";
 
     QTranslator *qttranslator = new QTranslator(&application);
-    qttranslator->load(QString( "qt_" ) + locale, HOME_DIR + "data/translations");
-    application.installTranslator( qttranslator );
+    qttranslator->load(QString("qt_") + locale, HOME_DIR + "data/translations");
+    application.installTranslator(qttranslator);
 
     QTranslator *translator = new QTranslator(&application);
-    translator->load(QString( "ktoon_" )+locale,  HOME_DIR + "data/translations");
-    application.installTranslator( translator );
+    translator->load(QString("ktoon_")+locale,  HOME_DIR + "data/translations");
+    application.installTranslator(translator);
 
     // Time to show the KToon initial splash 
     KTSplash *splash = new KTSplash;
     splash->show();
-    splash->setMessage( QObject::tr( "Initializing..." ) );
+    splash->setMessage(QObject::tr("Initializing..."));
 
-    splash->setMessage( QObject::tr( "Loading Modules" ) );
+    splash->setMessage(QObject::tr( "Loading Modules"));
     KTMainWindow mainWindow(splash);
 
-    splash->setMessage( QObject::tr( "Loaded!" ) );
+    splash->setMessage(QObject::tr("Loaded!"));
 
     mainWindow.showMaximized();
 

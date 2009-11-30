@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KOM: KToon Open Media 0.1                                     *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,13 +19,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "ktnetprojectmanagerparams.h"
 
 KTNetProjectManagerParams::KTNetProjectManagerParams()
-	: KTProjectManagerParams(), m_server("localhost"), m_port(6502)
+           : KTProjectManagerParams(), m_server("localhost"), m_port(6502)
 {
 }
-
 
 KTNetProjectManagerParams::~KTNetProjectManagerParams()
 {
@@ -31,48 +33,40 @@ KTNetProjectManagerParams::~KTNetProjectManagerParams()
 
 void KTNetProjectManagerParams::setLogin(const QString &login)
 {
-	m_login = login;
+    m_login = login;
 }
-
 
 QString KTNetProjectManagerParams::login() const
 {
-	return m_login;
+    return m_login;
 }
-
-
 
 void KTNetProjectManagerParams::setPassword(const QString &passwd)
 {
-	m_password = passwd;
+    m_password = passwd;
 }
-
 
 QString KTNetProjectManagerParams::password() const
 {
-	return m_password;
+    return m_password;
 }
-
-
 
 void KTNetProjectManagerParams::setServer(const QString &server)
 {
-	m_server = server;
+    m_server = server;
 }
 
 QString KTNetProjectManagerParams::server() const
 {
-	return m_server;
+    return m_server;
 }
-
 
 void KTNetProjectManagerParams::setPort(int port)
 {
-	m_port = port;
+    m_port = port;
 }
 
 int KTNetProjectManagerParams::port() const
 {
-	return m_port;
+    return m_port;
 }
-

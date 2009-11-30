@@ -24,30 +24,35 @@
 #define KTPROJECTMANAGERPARAMS_H
 
 #include <QString>
+#include <QSize>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
 class KTProjectManagerParams
 {
-	public:
-		KTProjectManagerParams();
-		virtual ~KTProjectManagerParams();
-		
-		void setProjectName(const QString &name);
-		QString projectName() const;
-		
-		void setAuthor(const QString &author);
-		QString author() const;
-		
-		void setDescription(const QString &description);
-		QString description() const;
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+        KTProjectManagerParams();
+        virtual ~KTProjectManagerParams();
+
+        void setProjectName(const QString &name);
+        QString projectName() const;
+
+        void setAuthor(const QString &author);
+        QString author() const;
+
+        void setDescription(const QString &description);
+        QString description() const;
+
+        void setDimension(const QSize &dimension);
+        QSize dimension() const;
+
+        void setFPS(const int fps);
+        int fps() const;
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif
-
-

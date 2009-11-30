@@ -37,55 +37,53 @@ class KTCommandExecutor;
 class KTProjectResponse;
 
 /**
- * Clase para tratar eventos del proyecto
+ * Events handler class for the project
  * @author David Cuadrado \<krawek@gmail.com\>
 */
 class STORE_EXPORT KTProjectManager : public QObject
 {
-	Q_OBJECT;
-	public:
-		KTProjectManager(QObject *parent = 0);
-		virtual ~KTProjectManager();
-		
-		void setParams(KTProjectManagerParams *params);
-		KTProjectManagerParams *params() const;
-		
-		virtual void setupNewProject();
-		virtual void closeProject();
-		
-		bool isOpen() const;
-		bool isModified() const;
-		KTProject *project() const;
-		void setHandler(KTAbstractProjectHandler *handler);
-		KTAbstractProjectHandler *handler() const;
-		
-		QUndoStack *undoHistory() const;
-		
-		virtual bool saveProject(const QString &fileName);
-		virtual bool loadProject(const QString &fileName);
-		
-		bool isValid() const;
-		
-	private:
-		void setupProjectDir();
-		
-	protected slots:
-		virtual void handleProjectRequest(const KTProjectRequest *request);
-		virtual void handleLocalRequest(const KTProjectRequest *request);
-		virtual void createCommand(const KTProjectRequest *request, bool addToStack);
-		
-	private slots:
-		void emitResponse( KTProjectResponse *response);
-		
-	signals:
-		void responsed(KTProjectResponse *reponse );
-		void requestOpenProject(const QString& filename);
-		
-	private:
-		class Private;
-		Private *const k;
+    Q_OBJECT;
+    public:
+        KTProjectManager(QObject *parent = 0);
+        virtual ~KTProjectManager();
+
+        void setParams(KTProjectManagerParams *params);
+        KTProjectManagerParams *params() const;
+
+        virtual void setupNewProject();
+        virtual void closeProject();
+
+        bool isOpen() const;
+        bool isModified() const;
+        KTProject *project() const;
+        void setHandler(KTAbstractProjectHandler *handler);
+        KTAbstractProjectHandler *handler() const;
+
+        QUndoStack *undoHistory() const;
+
+        virtual bool saveProject(const QString &fileName);
+        virtual bool loadProject(const QString &fileName);
+
+        bool isValid() const;
+	
+    private:
+        void setupProjectDir();
+
+    protected slots:
+        virtual void handleProjectRequest(const KTProjectRequest *request);
+        virtual void handleLocalRequest(const KTProjectRequest *request);
+        virtual void createCommand(const KTProjectRequest *request, bool addToStack);
+
+    private slots:
+        void emitResponse( KTProjectResponse *response);
+
+    signals:
+        void responsed(KTProjectResponse *reponse );
+        void requestOpenProject(const QString& filename);
+
+    private:
+        class Private;
+        Private *const k;
 };
 
 #endif
-
-

@@ -29,11 +29,11 @@
 #include <QObject>
 #include <QDomDocument>
 #include <QDomElement>
+#include <QSize>
 
 #include "ktinthash.h"
 
 #include "ktglobal_store.h"
-
 
 class KTScene;
 class KTLayer;
@@ -45,68 +45,69 @@ class KTLibrary;
 
 typedef KTIntHash<KTScene *> Scenes;
 
-
 /**
- * Esta clase maneja el proyecto, adem�s contiene las diferentes escenas que componen todo el proyecto.
+ * This class contains the project data structure including scenes.
  * 
- * @brief Project manager
  * @author David Cuadrado \<krawek@toonka.com\>
 */
 
 class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 {
-	Q_OBJECT;
-	public:
-		KTProject(QObject *parent = 0);
-		~KTProject();
-		
-		void setProjectName(const QString &name);
-		void setAuthor(const QString &author);
-		void setDescription(const QString& description);
-		
-		QString projectName() const;
-		QString author() const;
-		QString description() const;
-		
-		bool deleteDataDir();
-		QString dataDir() const;
-		
-		KTScene *scene(int position) const;
-		
-		int visualIndexOf(KTScene *scene) const;
-		int logicalIndexOf(KTScene *scene) const;
-		
-		Scenes scenes() const;
-		
-		KTScene *createScene(int position, bool loaded = false);
-		bool removeScene(int position);
-		bool moveScene(int position, int newPosition);
-		
-		bool createSymbol(int type, const QString &name, const QByteArray &data);
-		bool removeSymbol(const QString &name);
-		
-		bool addSymbolToProject(const QString &name, int scene, int layer, int frame);
-		bool removeSymbolFromProject(const QString &name, int scene, int layer, int frame);
-		
-		void clear();
-		
-		void loadLibrary(const QString &filename);
-		
-		KTLibrary *library() const;
-		void emitResponse(KTProjectResponse *response);
-		
-		virtual void fromXml(const QString &xml );
-		virtual QDomElement toXml(QDomDocument &doc) const;
-		
-		void setOpen(bool open);
-		bool isOpen();
-		
-	signals:
-		void responsed(KTProjectResponse *response);
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    public:
+        KTProject(QObject *parent = 0);
+        ~KTProject();
+
+        void setProjectName(const QString &name);
+        void setAuthor(const QString &author);
+        void setDescription(const QString &description);
+        void setDimension(const QSize dimension);
+        void setFPS(const int fps);	
+
+        QString projectName() const;
+        QString author() const;
+        QString description() const;
+        QSize dimension() const;
+        int fps() const;
+
+        bool deleteDataDir();
+        QString dataDir() const;
+
+        KTScene *scene(int position) const;
+
+        int visualIndexOf(KTScene *scene) const;
+        int logicalIndexOf(KTScene *scene) const;
+
+        Scenes scenes() const;
+
+        KTScene *createScene(int position, bool loaded = false);
+        bool removeScene(int position);
+        bool moveScene(int position, int newPosition);
+
+        bool createSymbol(int type, const QString &name, const QByteArray &data);
+        bool removeSymbol(const QString &name);
+
+        bool addSymbolToProject(const QString &name, int scene, int layer, int frame);
+        bool removeSymbolFromProject(const QString &name, int scene, int layer, int frame);
+
+        void clear();
+        void loadLibrary(const QString &filename);
+
+        KTLibrary *library() const;
+        void emitResponse(KTProjectResponse *response);
+
+        virtual void fromXml(const QString &xml );
+        virtual QDomElement toXml(QDomDocument &doc) const;
+
+        void setOpen(bool open);
+        bool isOpen();
+
+    signals:
+        void responsed(KTProjectResponse *response);
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

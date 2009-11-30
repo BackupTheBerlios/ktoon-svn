@@ -28,28 +28,28 @@
 */
 class KTNetProjectManagerParams : public KTProjectManagerParams
 {
-	public:
-		KTNetProjectManagerParams();
-		~KTNetProjectManagerParams();
-		
-		void setLogin(const QString &login);
-		QString login() const;
-		
-		void setPassword(const QString &passwd);
-		QString password() const;
-		
-		void setServer(const QString &server);
-		QString server() const;
-		
-		void setPort(int port);
-		int port() const;
-		
-	private:
-		QString m_login;
-		QString m_password;
-		QString m_server;
-		
-		int m_port;
+    public:
+        KTNetProjectManagerParams();
+        ~KTNetProjectManagerParams();
+
+        void setLogin(const QString &login);
+        QString login() const;
+
+        void setPassword(const QString &passwd);
+        QString password() const;
+
+        void setServer(const QString &server);
+        QString server() const;
+
+        void setPort(int port);
+        int port() const;
+
+    private:
+        QString m_login;
+        QString m_password;
+        QString m_server;
+
+        int m_port;
 };
 
 #endif
