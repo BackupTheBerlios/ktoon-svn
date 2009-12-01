@@ -53,7 +53,7 @@ void KTMainWindow::createGUI()
     // Adding the color palette to the left side of the interface 
 
     m_colorPalette = new KTColorPalette;
-    KToolView *view = addToolView( m_colorPalette, Qt::LeftDockWidgetArea, Drawing );
+    KToolView *view = addToolView(m_colorPalette, Qt::LeftDockWidgetArea, Drawing);
     m_actionManager->insert( view->toggleViewAction(), "show palette");
     addToPerspective(view->toggleViewAction(), Drawing);
 
@@ -63,8 +63,8 @@ void KTMainWindow::createGUI()
     // Adding the pen parameters widget to the left side of the interface 
 
     m_penWidget = new KTPenWidget;
-    view = addToolView( m_penWidget, Qt::LeftDockWidgetArea, Drawing );
-    m_actionManager->insert( view->toggleViewAction(), "show pen");
+    view = addToolView(m_penWidget, Qt::LeftDockWidgetArea, Drawing);
+    m_actionManager->insert(view->toggleViewAction(), "show pen");
     addToPerspective(view->toggleViewAction(), Drawing);
 
     connectToDisplays(m_penWidget);
@@ -72,10 +72,12 @@ void KTMainWindow::createGUI()
 
     // Adding the objects library widget to the left side of the interface
 
+    // Temporary Disable before SQA
+    /*
     m_libraryWidget = new KTLibraryWidget();
     m_libraryWidget->setLibrary(m_projectManager->project()->library());
-    view = addToolView( m_libraryWidget, Qt::LeftDockWidgetArea, Drawing );
-    m_actionManager->insert( view->toggleViewAction(), "show library");
+    view = addToolView(m_libraryWidget, Qt::LeftDockWidgetArea, Drawing);
+    m_actionManager->insert(view->toggleViewAction(), "show library");
     addToPerspective(view->toggleViewAction(), Drawing);
     connectToDisplays(m_libraryWidget);
 
@@ -86,11 +88,12 @@ void KTMainWindow::createGUI()
 
     ui4project( m_libraryWidget );
     ui4localRequest(m_libraryWidget);
+    */
 
     // Adding the scenes widget to the right side of the interface
 
     m_scenes = new KTScenesWidget;
-    view = addToolView( m_scenes, Qt::RightDockWidgetArea, All );
+    view = addToolView(m_scenes, Qt::RightDockWidgetArea, All);
     m_actionManager->insert( view->toggleViewAction(), "show scenes");
 
     ui4project(m_scenes);
@@ -108,6 +111,8 @@ void KTMainWindow::createGUI()
     ui4localRequest(m_exposureSheet);
     connectToDisplays(m_exposureSheet);
 
+   // Temporary Disable before SQA
+    /*
     // Adding the help widget to the right side of the interface
 
     m_helper = new KTHelpWidget(HOME_DIR + "data/help/");
@@ -116,22 +121,22 @@ void KTMainWindow::createGUI()
 
     connect(m_helper, SIGNAL(pageLoaded(const QString &, const QString &)), this, SLOT(showHelpPage(const QString &,
                              const QString &)));
-
     connectToDisplays(m_helper);
+    */
 
+    // Temporary Disable before SQA
+    /*
     // Adding the time line widget to the bottom side of the interface
-
     m_timeLine = new KTTimeLine;
     m_timeLine->setLibrary(m_projectManager->project()->library());
-
     view = addToolView( m_timeLine, Qt::BottomDockWidgetArea, Drawing );
-
     m_actionManager->insert( view->toggleViewAction(), "show timeline");
     addToPerspective(view->toggleViewAction(), Drawing);
 
     ui4project(m_timeLine);
     ui4localRequest(m_timeLine);
     connectToDisplays(m_timeLine);
+    */
 
     // Adding the script editor to the bottom side, if kinas was enabled
 

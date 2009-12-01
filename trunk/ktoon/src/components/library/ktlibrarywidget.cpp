@@ -85,10 +85,10 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
     #endif
     k->childCount = 0;
 
-    setWindowIcon(QPixmap(THEME_DIR+"/icons/library.png"));
+    setWindowIcon(QPixmap(THEME_DIR + "/icons/library.png"));
     setWindowTitle(tr("&Library"));
 
-    k->libraryDir = QDir(CONFIG_DIR+"/libraries");
+    k->libraryDir = QDir(CONFIG_DIR + "/libraries");
     k->display = new KTItemPreview(this);
     k->libraryTree = new KTGCTable(this);
 
@@ -105,12 +105,12 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
     connect(addGC, SIGNAL(clicked()), this, SIGNAL(requestCurrentGraphic()));
 
     buttonLayout->addWidget(addGC);
-    addGC->setToolTip(tr( "Add the current graphic to library" ));
+    addGC->setToolTip(tr("Add the current graphic to library"));
 
     KImageButton *delGC = new KImageButton(QPixmap(THEME_DIR+"/icons/minussign.png" ), 22, buttons);
     connect(delGC, SIGNAL(clicked()), this, SLOT(removeCurrentGraphic()));
 
-    delGC->setToolTip(tr( "Remove the selected symbol from library" ));
+    delGC->setToolTip(tr("Remove the selected symbol from library"));
     buttonLayout->addWidget(delGC);
 
     KImageButton *gctoDrawingArea = new KImageButton(QPixmap(THEME_DIR+"/icons/insert_cg.png" ), 22, buttons);

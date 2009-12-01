@@ -42,35 +42,34 @@ class KTLibrary;
 
 class KTLibraryWidget : public KTModuleWidgetBase
 {
-	Q_OBJECT
-	public:
-		KTLibraryWidget(QWidget *parent = 0);
-		~KTLibraryWidget();
-		
-		void setLibrary(const KTLibrary *library);
-		
-	protected:
-		virtual void libraryResponse(KTLibraryResponse *response);
-		virtual void frameResponse(KTFrameResponse *response);
-		
-	private slots:
-		void addFolder(const QString &name);
-		void previewItem(QTreeWidgetItem *, int);
-		void emitSelectedComponent();
-		void removeCurrentGraphic();
-		void renameObject( QTreeWidgetItem* item);
-		
-		
-	public slots:
-		void importBitmap();
-		void importSound();
-		
-	signals:
-		void requestCurrentGraphic();
-	
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT
+    public:
+        KTLibraryWidget(QWidget *parent = 0);
+        ~KTLibraryWidget();
+
+        void setLibrary(const KTLibrary *library);
+
+    protected:
+        virtual void libraryResponse(KTLibraryResponse *response);
+        virtual void frameResponse(KTFrameResponse *response);
+
+    private slots:
+        void addFolder(const QString &name);
+        void previewItem(QTreeWidgetItem *, int);
+        void emitSelectedComponent();
+        void removeCurrentGraphic();
+        void renameObject( QTreeWidgetItem* item);
+
+    public slots:
+        void importBitmap();
+        void importSound();
+
+    signals:
+        void requestCurrentGraphic();
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif
