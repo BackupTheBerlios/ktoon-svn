@@ -28,83 +28,75 @@
 
 KTTLRuler::KTTLRuler(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
 {
-	#ifdef K_DEBUG
-		KINIT;
-	#endif
-	
-	setHighlightSections ( true );
-	// setSelectionMode ( QAbstractItemView::SingleSelection );
-	// setSelectionBehavior ( QAbstractItemView::SelectColumns );
-	
-	setClickable (true);	
-	connect(this, SIGNAL(sectionClicked(int)), this, SLOT(updateSelected(int)));
+    #ifdef K_DEBUG
+           KINIT;
+    #endif
+
+    setHighlightSections(true);
+    // setSelectionMode(QAbstractItemView::SingleSelection);
+    // setSelectionBehavior(QAbstractItemView::SelectColumns);
+
+    setClickable(true);	
+    connect(this, SIGNAL(sectionClicked(int)), this, SLOT(updateSelected(int)));
 }
 
 KTTLRuler::~KTTLRuler()
 {
-	#ifdef K_DEBUG
-		KEND;
-	#endif
+    #ifdef K_DEBUG
+           KEND;
+    #endif
 }
 
-void KTTLRuler::paintSection ( QPainter * painter, const QRect & rect, int logicalIndex ) const
+void KTTLRuler::paintSection(QPainter * painter, const QRect & rect, int logicalIndex) const
 {
-	if ( !model() || !rect.isValid() )
-	{
-		return;
-	}
-	
-	painter->save();
-	
-	if ( selectionModel()->isSelected( model()->index(0, logicalIndex ) ) )
-	{
-		QBrush brush(Qt::red);
-		brush.setStyle(Qt::Dense5Pattern );
-		painter->fillRect(rect, brush);
-	}
-	
-	if ( logicalIndex % 5 == 0 )
-	{
-		QFontMetricsF fm(painter->font());
+    if (!model() || !rect.isValid())
+        return;
+
+    painter->save();
+
+    if (selectionModel()->isSelected(model()->index(0, logicalIndex))) {
+        QBrush brush(Qt::red);
+        brush.setStyle(Qt::Dense5Pattern);
+        painter->fillRect(rect, brush);
+    }
+
+    if (logicalIndex % 5 == 0) {
+        QFontMetricsF fm(painter->font());
+        QString number = QString::number(logicalIndex+1);
 		
-		QString number = QString::number(logicalIndex+1);
-		
-		painter->drawText( (int)(rect.center().x() - (fm.width(number)/2)), (int)(rect.center().y() 
-					+ (fm.height()/2)) ,number);
-	}
-	
-	painter->drawLine(rect.bottomLeft(), rect.bottomLeft() - QPointF(0, 4));
-	painter->drawLine(rect.topLeft(), rect.topLeft()+ QPointF(0, 4));
-	
-	QPen pen = painter->pen();
-	pen.setWidth(4);
-	painter->setPen(pen); 
-	
-	painter->drawLine(rect.bottomLeft(), rect.bottomRight());
-	
-	painter->restore();
+        painter->drawText((int)(rect.center().x() - (fm.width(number)/2)), 
+                          (int)(rect.center().y() + (fm.height()/2)) ,number);
+    }
+
+    painter->drawLine(rect.bottomLeft(), rect.bottomLeft() - QPointF(0, 4));
+    painter->drawLine(rect.topLeft(), rect.topLeft()+ QPointF(0, 4));
+
+    QPen pen = painter->pen();
+    pen.setWidth(4);
+    painter->setPen(pen); 
+    painter->drawLine(rect.bottomLeft(), rect.bottomRight());
+    painter->restore();
+
 }
 
 void KTTLRuler::updateSelected(int logical)
 {
-	select(logical);
-	
-	emit logicalSectionSelected(logical);
+    select(logical);
+
+    emit logicalSectionSelected(logical);
 }
 
 void KTTLRuler::select(int logical)
 {
-	selectionModel()->select( model()->index(0, logical), QItemSelectionModel::ClearAndSelect);
-	
-	viewport()->update(QRect(sectionViewportPosition(logical), 0, sectionSize(logical),viewport()->height()) );
+    selectionModel()->select( model()->index(0, logical), QItemSelectionModel::ClearAndSelect);
+
+    viewport()->update(QRect(sectionViewportPosition(logical), 0, sectionSize(logical),viewport()->height()) );
 }
 
 void KTTLRuler::mouseMoveEvent(QMouseEvent *e)
 {
-	if ( e->buttons() & Qt::LeftButton )
-	{
-		updateSelected(logicalIndexAt(e->pos()));
-	}
-	
-	QHeaderView::mouseMoveEvent(e);
+    if (e->buttons() & Qt::LeftButton)
+        updateSelected(logicalIndexAt(e->pos()));
+
+    QHeaderView::mouseMoveEvent(e);
 }

@@ -1,62 +1,54 @@
 KToon
 
-Version 0.8
+Version 0.9a [ Codigo: Phoenix ]
 
-Desarrollador principal
+Director de Desarrollo
 
-David A. Cuadrado
-<krawek@toonka.com>
+  Gustavo Gonzalez
+  <ktoon@toonka.com>
+
+Version <= 0.9
 
 Desarrolladores
 
-Jorge H. Cuadrado
-<kuadrosx@toonka.com>
+  David A. Cuadrado
 
-Versiones <= 0.7
+  Jorge H. Cuadrado
 
-Simena Dinas
-<dsimena@gmail.com>
+Version <= 0.7
 
-Fernando Jose Roldan Correa
-<froldan@parquesoft.com>
+  Simena Dinas
 
-
-Parche para compilar en Mac
---------------------------
-Daniel Lurie 
-<dl1021@optonline.net>
+  Fernando Jose Roldan Correa
 
 ----------------------------
-Technical Advisor
+Documentacion de Desarrollo
 
-Gustavo Gonzalez Giron
-<xtingray@kazak.ws>
+  David A. Cuadrado
 
-----------------------------
-Documentación para desarrolladores
-
-David A. Cuadrado
-<krawek@toonka.com>
-
-Jorge H. Cuadrado
-<kuadrosx@toonka.com>
+  Jorge H. Cuadrado
 
 ----------------------------
 Traductores
 
-(Español) David A. Cuadrado
-<krawek@toonka.com>
+  Spanish: David A. Cuadrado
 
 ----------------------------
-Diseño de iconos
+DiseÃ±o Iconografico
 
-Carlos Andres Cajigas
-
+  Carlos Andres Cajigas
 
 ----------------------------
-Muchas gracias a:
+Agradecimientos especiales a:
 
-Markus Bongard por su apoyo incondicional
+  Markus Bongard por su colaboracion 
+  incondicional en este proyecto 
 
+----------------------------
 LabToon
 2010
+
+
+"SueÃ±a como si fueras a vivir por siempre,
+ vive como si fueras a morir hoy"
+                       James Dean

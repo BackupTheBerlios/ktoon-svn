@@ -1,55 +1,54 @@
 KToon
 
-Version 0.9a
+Version 0.9a [ Code Name: Phoenix ]
 
 Main developer
 
-Gustavo Gonzalez
-<ktoon@toonka.com>
+  Gustavo Gonzalez
+  <ktoon@toonka.com>
 
 Version <= 0.9
 
 Developers
 
-David A. Cuadrado
-<krawek@gmail.com>
+  David A. Cuadrado
 
-Jorge H. Cuadrado
-<kuadrosx@toonka.com>
+  Jorge H. Cuadrado
 
 Version <= 0.7
 
-Simena Dinas
-<dsimena@gmail.com>
+  Simena Dinas
 
-Fernando Jose Roldan Correa
-<froldan@parquesoft.com>
+  Fernando Jose Roldan Correa
 
 ----------------------------
 Developers Documentation
 
-David A. Cuadrado
-<krawek@toonka.com>
+  David A. Cuadrado
 
-Jorge H. Cuadrado
-<kuadrosx@toonka.com>
+  Jorge H. Cuadrado
 
 ----------------------------
 Translators
 
-(Spanish) David A. Cuadrado
-<krawek@toonka.com>
+  Spanish: David A. Cuadrado
 
 ----------------------------
 Iconographic Design
 
-Carlos Andres Cajigas
-
+  Carlos Andres Cajigas
 
 ----------------------------
 Many thanks to 
 
-Markus Bongard for your unconditional collaboration
+  Markus Bongard for his unconditional 
+  collaboration on this project 
 
+----------------------------
 LabToon
 2010
+
+
+"Dream as if you'll live forever, 
+ live as if you'll die today"
+                       James Dean

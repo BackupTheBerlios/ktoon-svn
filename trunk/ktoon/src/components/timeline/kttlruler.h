@@ -31,22 +31,21 @@
 
 class KTTLRuler : public QHeaderView
 {
-	Q_OBJECT
-	public:
-		KTTLRuler(QWidget *parent = 0);
-		~KTTLRuler();
-		
-		void select(int logical);
-		
-	protected:
-		void paintSection( QPainter *painter, const QRect & rect, int logicalIndex ) const;
-		void mouseMoveEvent(QMouseEvent *e);
-		
-	private slots:
-		void updateSelected(int logical);
-		
-	signals:
-		void logicalSectionSelected(int logical);
+    Q_OBJECT
+    public:
+        KTTLRuler(QWidget *parent = 0);
+        ~KTTLRuler();
+        void select(int logical);
+
+    protected:
+        void paintSection( QPainter *painter, const QRect & rect, int logicalIndex ) const;
+        void mouseMoveEvent(QMouseEvent *e);
+
+    private slots:
+        void updateSelected(int logical);
+
+    signals:
+        void logicalSectionSelected(int logical);
 };
 
 #endif

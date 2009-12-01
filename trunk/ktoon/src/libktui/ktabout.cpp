@@ -49,7 +49,7 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
     setWindowTitle(tr("About") + QString(" KToon"));
 
     //1: Credits
-    QFile creditsFile(DATA_DIR+"/credits.txt");
+    QFile creditsFile(DATA_DIR + "/credits.txt");
     QString creditsText;
     if (creditsFile.open(QIODevice::ReadOnly)) {
         QTextStream stream(&creditsFile);
@@ -66,7 +66,7 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
 
     QImage credits = QImage(DATA_DIR + "/images/credits.png");
 
-    KImageEffect::fade(credits,0.25, palette().background().color());
+    KImageEffect::fade(credits, 0.25, palette().background().color());
   
     m_credits = new KAnimWidget(QPixmap::fromImage(credits), creditsText);
     addTab(m_credits, tr("Credits"));
