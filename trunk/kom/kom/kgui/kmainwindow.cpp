@@ -87,7 +87,6 @@ void DefaultSettings::save(KMainWindow *w)
     settings.setValue("size", w->size());
     settings.setValue("maximized", w->isMaximized() );
     settings.setValue("position", w->pos());
-
     settings.endGroup();
 }
 
@@ -205,7 +204,7 @@ void KMainWindow::addButtonBar(Qt::ToolBarArea area)
 }
 
 /**
- * Adds a tool view to the main window in the area and perspective.
+ * Add a tool view to the main window in the area and perspective.
  * 
  * @param widget 
  * @param area 
@@ -227,10 +226,9 @@ KToolView *KMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, in
 
     // Show separators
     if (area == Qt::TopDockWidgetArea || area == Qt::BottomDockWidgetArea) 
-        m_buttonBars[toToolBarArea( area ) ]->showSeparator(! m_buttonBars[Qt::LeftToolBarArea]->isEmpty());
+        m_buttonBars[toToolBarArea(area)]->showSeparator(! m_buttonBars[Qt::LeftToolBarArea]->isEmpty());
     else if (area == Qt::LeftDockWidgetArea)
-             m_buttonBars[Qt::TopToolBarArea]->showSeparator( m_buttonBars[Qt::TopToolBarArea]->isEmpty() );
-    ////
+             m_buttonBars[Qt::TopToolBarArea]->showSeparator(m_buttonBars[Qt::TopToolBarArea]->isEmpty());
 
     connect(toolView, SIGNAL(topLevelChanged(bool)), this, SLOT(relayoutViewButton(bool)));
 
@@ -415,7 +413,7 @@ Qt::ToolBarArea KMainWindow::toToolBarArea(Qt::DockWidgetArea area)
  */
 void KMainWindow::setEnableButtonBlending(bool enable)
 {
-    foreach (KButtonBar *bar, m_buttonBars.values() )
+    foreach (KButtonBar *bar, m_buttonBars.values())
              bar->setEnableButtonBlending(enable);
 }
 
@@ -435,8 +433,8 @@ void KMainWindow::relayoutViewButton(bool topLevel)
             foreach (KToolView *v, m_toolViews[bar])
                      exclusive = exclusive && !v->isFloating();
 
-            bar->setExclusive( exclusive );
-            bar->onlyShow( m_forRelayout, true );
+            bar->setExclusive(exclusive);
+            bar->onlyShow(m_forRelayout, true);
         }
     } else {
             // Floating tool views aren't exclusive
@@ -488,11 +486,11 @@ void KMainWindow::relayoutToolView()
 
 /**
  * Sets the current perspective.
- * @param wsp 
+ * @param workspace
  */
-void KMainWindow::setCurrentPerspective(int wsp)
+void KMainWindow::setCurrentPerspective(int workspace)
 {
-    if (m_currentPerspective == wsp) 
+    if (m_currentPerspective == workspace) 
         return;
 
     typedef QList<KToolView *> Views;
@@ -507,29 +505,28 @@ void KMainWindow::setCurrentPerspective(int wsp)
     QHash<KButtonBar *, int> hideButtonCount;
 
     foreach (Views views, viewsList) {
-             foreach (KToolView *v, views) {
-                      KButtonBar *bar = m_buttonBars[v->button()->area()];
+             foreach (KToolView *view, views) {
+                      KButtonBar *bar = m_buttonBars[view->button()->area()];
                       bar->setUpdatesEnabled(false);
-                      v->setUpdatesEnabled(false);
+                      view->setUpdatesEnabled(false);
 
-                      if (v->perspective() & wsp) {
-                          bar->enable(v->button());
-
-                          if (v->button()->isChecked())
-                              v->show();
+                      if (view->perspective() & workspace) {
+                          bar->enable(view->button());
+                          if (view->button()->isChecked())
+                              view->show();
                       } else {
-                              bar->disable( v->button() );
-                              if (v->button()->isChecked() || v->isVisible())
-                                  v->close();
+                              bar->disable(view->button());
+                              if (view->button()->isChecked() || view->isVisible())
+                                  view->close();
                               hideButtonCount[bar]++;
                       }
 
                       if (bar->isEmpty())
                           bar->hide();
                       else if (! bar->isVisible())
-                          bar->show();
+                               bar->show();
 
-                      v->setUpdatesEnabled(true);
+                      view->setUpdatesEnabled(true);
                       bar->setUpdatesEnabled(true);
              }
     }
@@ -548,7 +545,7 @@ void KMainWindow::setCurrentPerspective(int wsp)
     while (widgetIt.hasNext()) {
            widgetIt.next();
 
-           if (widgetIt.value() & wsp)
+           if (widgetIt.value() & workspace)
                widgetIt.key()->show();
            else
                widgetIt.key()->hide();
@@ -559,7 +556,7 @@ void KMainWindow::setCurrentPerspective(int wsp)
     while (actionIt.hasNext()) {
            actionIt.next();
 
-           if (actionIt.value() & wsp)
+           if (actionIt.value() & workspace)
                actionIt.key()->setVisible(true);
            else
                actionIt.key()->setVisible(false);
@@ -569,7 +566,7 @@ void KMainWindow::setCurrentPerspective(int wsp)
         centralWidget()->setUpdatesEnabled(true);
 
     setUpdatesEnabled(true);
-    m_currentPerspective = wsp;
+    m_currentPerspective = workspace;
 
     emit perspectiveChanged(m_currentPerspective);
 }

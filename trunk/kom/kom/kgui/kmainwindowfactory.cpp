@@ -38,15 +38,15 @@
 
 class EventFilter : public QObject
 {
-	public:
-		EventFilter(KMainWindow *mw, QObject *parent = 0);
-		~EventFilter();
-		
-	protected:
-		bool eventFilter(QObject *obj, QEvent *event);
-		
-	private:
-		KMainWindow *m_mainWindow;
+    public:
+        EventFilter(KMainWindow *mw, QObject *parent = 0);
+        ~EventFilter();
+
+    protected:
+        bool eventFilter(QObject *obj, QEvent *event);
+
+    private:
+        KMainWindow *m_mainWindow;
 };
 
 EventFilter::EventFilter(KMainWindow *mw, QObject *parent) : QObject(parent), m_mainWindow(mw)
@@ -59,27 +59,18 @@ EventFilter::~EventFilter()
 
 bool EventFilter::eventFilter(QObject *obj, QEvent *event)
 {
-	if (event->type() == QEvent::Close)
-	{
-		m_mainWindow->close();
-		
-		return true;
-	}
-	else if ( event->type() == QEvent::Show )
-	{
-		m_mainWindow->show();
-		
-		return true;
-	}
-	else if ( event->type() == QEvent::Hide )
-	{
-		m_mainWindow->hide();
-		
-		return true;
-	}
-	
-	
-	return false;
+    if (event->type() == QEvent::Close) {
+        m_mainWindow->close();
+        return true;
+    } else if (event->type() == QEvent::Show) {
+               m_mainWindow->show();
+               return true;
+    } else if (event->type() == QEvent::Hide) {
+               m_mainWindow->hide();
+               return true;
+    }
+
+    return false;
 }
 
 /**
@@ -90,7 +81,6 @@ KMainWindowFactory::KMainWindowFactory()
 {
 }
 
-
 /**
  * Destructor
  * @return 
@@ -100,84 +90,66 @@ KMainWindowFactory::~KMainWindowFactory()
 }
 
 /**
- * if centralWidget() is a QTabWidget an instance of DTabbedMainWindow will be created
+ * if centralWidget() is a QTabWidget an instance of KTabbedMainWindow will be created
  * @param other 
  * @return 
  */
 KMainWindow *KMainWindowFactory::create(QMainWindow *other)
 {
-	KMainWindow *mainWindow = 0;
-	
-	if ( other->isVisible() )
-	{
-		other->hide();
-	}
-	
-	if ( other->inherits( "KMainWindow" ) )
-	{
-		qWarning() << QObject::tr("Can't create a KMainWindow from KMainWindow");
-		return static_cast<KMainWindow *>(other);
-	}
-	
-	if ( QWidget *central = other->centralWidget() )
-	{
-		if ( QTabWidget *tabWidget = dynamic_cast<QTabWidget *>(central) )
-		{
-			mainWindow = new KTabbedMainWindow;
-			static_cast<KTabbedMainWindow *>(mainWindow)->setTabWidget(tabWidget);
-		}
-		else
-		{
-			mainWindow = new KMainWindow;
-			central->setParent(mainWindow);
-			mainWindow->setCentralWidget( central );
-		}
-	}
-	
-	QList<QDockWidget *> docks = other->findChildren<QDockWidget *>();
-	
-	foreach(QDockWidget *dock, docks )
-	{
-		dock->widget()->setWindowTitle(dock->windowTitle());
-		dock->widget()->setWindowIcon(dock->windowIcon());
-		
-		Qt::DockWidgetArea area = other->dockWidgetArea(dock);
+    KMainWindow *mainWindow = 0;
 
-		if ( area == 0)
-		{
-			area = Qt::LeftDockWidgetArea;
-		}
-		
-		mainWindow->addToolView( dock->widget(), area);
-	}
+    if (other->isVisible())
+        other->hide();
+
+    if (other->inherits("KMainWindow")) {
+        qWarning() << QObject::tr("Can't create a KMainWindow from KMainWindow");
+        return static_cast<KMainWindow *>(other);
+    }
+
+    if (QWidget *central = other->centralWidget()) {
+        if (QTabWidget *tabWidget = dynamic_cast<QTabWidget *>(central)) {
+            mainWindow = new KTabbedMainWindow;
+            static_cast<KTabbedMainWindow *>(mainWindow)->setTabWidget(tabWidget);
+        } else {
+            mainWindow = new KMainWindow;
+            central->setParent(mainWindow);
+            mainWindow->setCentralWidget( central );
+        }
+    }
+
+    QList<QDockWidget *> docks = other->findChildren<QDockWidget *>();
+
+    foreach (QDockWidget *dock, docks) {
+             dock->widget()->setWindowTitle(dock->windowTitle());
+             dock->widget()->setWindowIcon(dock->windowIcon());
+
+             Qt::DockWidgetArea area = other->dockWidgetArea(dock);
+
+             if (area == 0)
+                 area = Qt::LeftDockWidgetArea;
+
+             mainWindow->addToolView( dock->widget(), area);
+    }
 	
-	QList<QToolBar *> toolBars = other->findChildren<QToolBar *>();
-	
-	foreach(QToolBar *toolBar, toolBars )
-	{
-		toolBar->setParent(mainWindow);
-		
-		Qt::ToolBarArea area = other->toolBarArea(toolBar);
-		
-		if ( area == 0)
-		{
-			area = Qt::TopToolBarArea;
-		}
-		
-		mainWindow->addToolBar(area, toolBar);
-	}
-	
-	mainWindow->setStatusBar(other->statusBar());
-	mainWindow->setMenuBar(other->menuBar());
-	mainWindow->setCurrentPerspective( KMainWindow::DefaultPerspective );
-	
-	
-	
-	EventFilter *eventFilter = new EventFilter(mainWindow, other);
-	other->installEventFilter( eventFilter );
-	
-	return mainWindow;
+    QList<QToolBar *> toolBars = other->findChildren<QToolBar *>();
+
+    foreach (QToolBar *toolBar, toolBars) {
+             toolBar->setParent(mainWindow);
+
+             Qt::ToolBarArea area = other->toolBarArea(toolBar);
+
+             if (area == 0)
+                 area = Qt::TopToolBarArea;
+
+             mainWindow->addToolBar(area, toolBar);
+    }
+
+    mainWindow->setStatusBar(other->statusBar());
+    mainWindow->setMenuBar(other->menuBar());
+    mainWindow->setCurrentPerspective(KMainWindow::DefaultPerspective);
+
+    EventFilter *eventFilter = new EventFilter(mainWindow, other);
+    other->installEventFilter(eventFilter);
+
+    return mainWindow;
 }
-
-
-

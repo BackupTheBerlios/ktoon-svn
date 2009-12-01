@@ -34,11 +34,11 @@ class QMainWindow;
 */
 class K_IDEAL_EXPORT KMainWindowFactory
 {
-	public:
-		KMainWindowFactory();
-		~KMainWindowFactory();
-		
-		static KMainWindow *create(QMainWindow *other);
+    public:
+        KMainWindowFactory();
+        ~KMainWindowFactory();
+
+        static KMainWindow *create(QMainWindow *other);
 };
 
 #endif

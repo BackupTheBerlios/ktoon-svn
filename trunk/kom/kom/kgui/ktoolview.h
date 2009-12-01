@@ -34,46 +34,44 @@ class KViewButton;
 */
 class K_IDEAL_EXPORT KToolView : public QDockWidget
 {
-	Q_OBJECT;
-	
-	public:
-		KToolView(const QString &title, const QIcon &icon = QIcon(), QWidget * parent = 0);
-		virtual ~KToolView();
-		
-		void setDescription(const QString &description);
-		KViewButton *button() const;
-		void expand();
-		QSize sizeHint() const;
-		
-		void setPerspective(int wsp);
-		int perspective() const;
-		
-		void setFixedSize(int s);
-		int fixedSize() const;
-		
-	private:
-		void setup();
-		
-		
-	private slots:
-		void saveSize(bool checked);
-		
-	protected:
-		virtual void showEvent(QShowEvent *e);
-		
+    Q_OBJECT;
+
+    public:
+        KToolView(const QString &title, const QIcon &icon = QIcon(), QWidget * parent = 0);
+        virtual ~KToolView();
+
+        void setDescription(const QString &description);
+        KViewButton *button() const;
+        void expand();
+        QSize sizeHint() const;
+        void setPerspective(int wsp);
+        int perspective() const;
+        void setFixedSize(int s);
+        int fixedSize() const;
+
+    private:
+        void setup();
+
+    private slots:
+        void saveSize(bool checked);
+
+    protected:
+        virtual void showEvent(QShowEvent *e);
+
+/*		
 #if QT_VERSION < 0x040200
-	protected:
-		virtual bool event(QEvent *e);
-		
-	private:
-		Qt::DockWidgetArea m_area;
+    protected:
+        virtual bool event(QEvent *e);
+
+    private:
+        Qt::DockWidgetArea m_area;
 #endif
-		
-	private:
-		KViewButton *m_button;
-		int m_size;
-		
-		int m_perspective;
+*/
+
+    private:
+        KViewButton *m_button;
+        int m_size;
+        int m_perspective;
 };
 
 #endif

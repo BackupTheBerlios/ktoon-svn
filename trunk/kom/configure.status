@@ -1,4 +1,4 @@
 
     require 'qonf/makefile'
-    RQonf::Makefile::override( ARGV[0].to_s, "/usr", "/home/xtingray/ktoon/sources/kom/configure.status" )
+    RQonf::Makefile::override( ARGV[0].to_s, "/usr", "/home/xtingray/tmp/kom/configure.status" )
     

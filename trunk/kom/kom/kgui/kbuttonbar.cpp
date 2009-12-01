@@ -35,46 +35,42 @@
 
 KButtonBar::KButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent), m_autoHide(false), m_blockHider(false)
 {
-	setMovable(false);
-	
-	setIconSize(QSize(16,16));
-	
-	m_buttons.setExclusive( true );
-	
-	switch(area)
-	{
-		case Qt::LeftToolBarArea:
-		{
-			setWindowTitle(tr("Left button bar"));
-		}
-		break;
-		case Qt::RightToolBarArea:
-		{
-			setWindowTitle(tr("Right button bar"));
-		}
-		break;
-		case Qt::BottomToolBarArea:
-		{
-			setWindowTitle(tr("Bottom button bar"));
-		}
-		break;
-		case Qt::TopToolBarArea:
-		{
-			setWindowTitle(tr("Top button bar"));
-		}
-		break;
-		default: break;
-	}
-	
-	
-	setObjectName("KButtonBar-"+windowTitle());
-	
-	m_separator = addAction("");
-	m_separator->setEnabled(false); // Separator
-	m_separator->setVisible( false );
-	
-	connect( &m_hider, SIGNAL(timeout()), this, SLOT(hide()));
-	connect(&m_buttons, SIGNAL(buttonClicked(QAbstractButton *)), this, SLOT(hideOthers(QAbstractButton *)));
+    setMovable(false);
+    setIconSize(QSize(16,16));
+    m_buttons.setExclusive(true);
+
+    switch (area) {
+            case Qt::LeftToolBarArea:
+                 {
+                    setWindowTitle(tr("Left button bar"));
+                 }
+                 break;
+            case Qt::RightToolBarArea:
+                 {
+                    setWindowTitle(tr("Right button bar"));
+		 }
+                 break;
+            case Qt::BottomToolBarArea:
+                 {
+                    setWindowTitle(tr("Bottom button bar"));
+                 }
+                 break;
+            case Qt::TopToolBarArea:
+                 {
+                    setWindowTitle(tr("Top button bar"));
+                 }
+                 break;
+            default: break;
+    }
+
+    setObjectName("KButtonBar-"+windowTitle());
+
+    m_separator = addAction("");
+    m_separator->setEnabled(false); // Separator
+    m_separator->setVisible(false);
+
+    connect(&m_hider, SIGNAL(timeout()), this, SLOT(hide()));
+    connect(&m_buttons, SIGNAL(buttonClicked(QAbstractButton *)), this, SLOT(hideOthers(QAbstractButton *)));
 }
 
 
@@ -84,242 +80,218 @@ KButtonBar::~KButtonBar()
 
 QMenu *KButtonBar::createMenu()
 {
-	QMenu *menu = new QMenu(windowTitle(), this);
-	
-	QAction *a = 0;
-	
-	a = menu->addAction(tr("Only icons"));
-	connect(a, SIGNAL(triggered()), this, SLOT(setShowOnlyIcons()));
-	
-	a = menu->addAction(tr("Only texts"));
-	connect(a, SIGNAL(triggered()), this, SLOT(setShowOnlyTexts()));
-	
-	menu->addSeparator();
-	
-	a = menu->addAction(tr("Exclusive"));
-	a->setCheckable(true);
-	a->setChecked( isExclusive() );
-	
-	connect(a, SIGNAL(triggered(bool)), this, SLOT(setExclusive( bool )));
-	
-#if QT_VERSION >= 0x040200
-	a = menu->addAction(tr("Auto hide"));
-	a->setCheckable(true);
-	a->setChecked( autohide() );
-	
-	connect(a, SIGNAL(triggered(bool)), this, SLOT(setAutoHide( bool )));
-#endif 
-	
-	return menu;
+    QMenu *menu = new QMenu(windowTitle(), this);
+    QAction *a = 0;
+
+    a = menu->addAction(tr("Only icons"));
+    connect(a, SIGNAL(triggered()), this, SLOT(setShowOnlyIcons()));
+
+    a = menu->addAction(tr("Only texts"));
+    connect(a, SIGNAL(triggered()), this, SLOT(setShowOnlyTexts()));
+
+    menu->addSeparator();
+
+    a = menu->addAction(tr("Share space"));
+    a->setCheckable(true);
+    a->setChecked(isExclusive());
+
+    connect(a, SIGNAL(triggered(bool)), this, SLOT(setExclusive(bool)));
+
+//#if QT_VERSION >= 0x040200
+    a = menu->addAction(tr("Auto hide"));
+    a->setCheckable(true);
+    a->setChecked(autohide());
+    connect(a, SIGNAL(triggered(bool)), this, SLOT(setAutoHide( bool )));
+//#endif 
+
+    return menu;
 }
 
 void KButtonBar::addButton(KViewButton *viewButton)
 {
-	QAction *act = addWidget(viewButton);
-	
-	m_buttons.addButton(viewButton);
-	
-	if ( viewButton->toolView()->isVisible() )
-	{
-		hideOthers( viewButton );
-		viewButton->toggleView();
-	}
-	
-	m_actionForWidget[viewButton] = act;
-	act->setVisible(true);
-	if ( !isVisible() ) show();
-	
-	
+    QAction *act = addWidget(viewButton);
+    m_buttons.addButton(viewButton);
+
+    if (viewButton->toolView()->isVisible()) {
+        hideOthers(viewButton);
+        viewButton->toggleView();
+    }
+
+    m_actionForWidget[viewButton] = act;
+    act->setVisible(true);
+
+    if (!isVisible()) 
+        show();
 }
 
 void KButtonBar::removeButton(KViewButton *viewButton)
 {
-	if ( ! m_buttons.buttons().contains(viewButton) ) return;
-	
-	m_buttons.removeButton(viewButton);
-	removeAction( m_actionForWidget[viewButton] );
-	viewButton->setParent(0);
-	
-	if ( isEmpty() ) hide();
+    if (! m_buttons.buttons().contains(viewButton)) 
+        return;
+
+    m_buttons.removeButton(viewButton);
+    removeAction(m_actionForWidget[viewButton]);
+    viewButton->setParent(0);
+
+    if (isEmpty()) 
+        hide();
 }
 
 bool KButtonBar::isEmpty() const
 {
-	// O(n) -> very slow...
-	
-	bool isEmpty = true;
-	
-	foreach(QAbstractButton *button, m_buttons.buttons() )
-	{
-		isEmpty = isEmpty && button->isHidden();
-		
-		if ( ! isEmpty ) break;
-	}
-	
-	return isEmpty;
-}
+    // O(n) -> very slow...
 
+    bool isEmpty = true;
+
+    foreach (QAbstractButton *button, m_buttons.buttons()) {
+             isEmpty = isEmpty && button->isHidden();
+             if (! isEmpty) 
+                 break;
+    }
+
+    return isEmpty;
+}
 
 void KButtonBar::setExclusive(bool excl)
 {
-	m_buttons.setExclusive( excl );
+    m_buttons.setExclusive(excl);
 }
 
 void KButtonBar::setAutoHide(bool autohide)
 {
-	m_autoHide = autohide;
-	if (autohide)
-	{
-		hide();
-	}
+    m_autoHide = autohide;
+    if (autohide)
+        hide();
 }
 
 bool KButtonBar::autohide() const
 {
-	return m_autoHide;
+    return m_autoHide;
 }
 
 void KButtonBar::setShowOnlyIcons()
 {
-	foreach(QAbstractButton *b, m_buttons.buttons() )
-	{
-		KViewButton *viewButton = static_cast<KViewButton *>(b);
-		viewButton->setOnlyIcon();
-	}
+    foreach (QAbstractButton *b, m_buttons.buttons()) {
+             KViewButton *viewButton = static_cast<KViewButton *>(b);
+             viewButton->setOnlyIcon();
+    }
 }
 
 void KButtonBar::setShowOnlyTexts()
 {
-	foreach(QAbstractButton *b, m_buttons.buttons() )
-	{
-		KViewButton *viewButton = static_cast<KViewButton *>(b);
-		viewButton->setOnlyText();
-	}
+    foreach (QAbstractButton *b, m_buttons.buttons()) {
+             KViewButton *viewButton = static_cast<KViewButton *>(b);
+             viewButton->setOnlyText();
+    }
 }
 
 void KButtonBar::disable(KViewButton *v)
 {
-	QAction *a = m_actionForWidget[v];
-	if ( a )
-	{
-		a->setVisible(false);
-	}
+    QAction *a = m_actionForWidget[v];
+
+    if (a)
+        a->setVisible(false);
 }
 
 void KButtonBar::enable(KViewButton *v)
 {
-	QAction *a = m_actionForWidget[v];
-	if ( a )
-	{
-		a->setVisible(true);
-	}
+    QAction *a = m_actionForWidget[v];
+
+    if (a)
+        a->setVisible(true);
 }
 
 bool KButtonBar::isExclusive() const
 {
-	return m_buttons.exclusive();
+    return m_buttons.exclusive();
 }
 
 void KButtonBar::onlyShow(KToolView *tool, bool ensureVisible)
 {
-	KViewButton *button = tool->button();
-	
-	if ( ensureVisible )
-	{
-		if ( tool->isVisible() )
-		{
-			button->click();
-		}
-	}
-	hideOthers( button );
+    KViewButton *button = tool->button();
+
+    if (ensureVisible) {
+        if (tool->isVisible())
+            button->click();
+    }
+
+    hideOthers(button);
 }
 
 void KButtonBar::hideOthers(QAbstractButton *source)
 {
-	if ( !m_buttons.exclusive() )
-	{
-		static_cast<KViewButton *>(source)->toggleView();
-		return;
-	}
-	
-	m_buttons.setExclusive( false );
-	
-	setUpdatesEnabled( false );
-	
-	foreach(QAbstractButton *b, m_buttons.buttons())
-	{
-		KViewButton *button = static_cast<KViewButton *>(b);
-		if ( source != button )
-		{
-			if ( button->toolView()->isVisible() )
-			{
-				button->blockSignals(true);
-				button->toggleView();
-				button->blockSignals(false);
-				break;
-			}
-		}
-	}
-	
-	static_cast<KViewButton *>(source)->toggleView();
-	
-	m_buttons.setExclusive(true);
-	setUpdatesEnabled( true);
-}
+    if (!m_buttons.exclusive()) {
+        static_cast<KViewButton *>(source)->toggleView();
+        return;
+    }
 
+    m_buttons.setExclusive(false);
+
+    setUpdatesEnabled( false );
+
+    foreach (QAbstractButton *b, m_buttons.buttons()) {
+             KViewButton *button = static_cast<KViewButton *>(b);
+             if (source != button) {
+                 if (button->toolView()->isVisible()) {
+                     button->blockSignals(true);
+                     button->toggleView();
+                     button->blockSignals(false);
+                     break;
+                 }
+             }
+    }
+
+    static_cast<KViewButton *>(source)->toggleView();
+
+    m_buttons.setExclusive(true);
+    setUpdatesEnabled(true);
+}
 
 void KButtonBar::mousePressEvent(QMouseEvent *e)
 {
-	QToolBar::mousePressEvent(e);
-	
-	if ( e->button() == Qt::RightButton )
-	{
-		m_blockHider = true;
-		createMenu()->exec(e->globalPos());
-		e->accept();
-		
-		m_blockHider = false;
-	}
+    QToolBar::mousePressEvent(e);
+
+    if (e->button() == Qt::RightButton) {
+        m_blockHider = true;
+        createMenu()->exec(e->globalPos());
+        e->accept();
+
+        m_blockHider = false;
+    }
 }
 
 void KButtonBar::enterEvent(QEvent *e)
 {
-	QToolBar::enterEvent(e);
-	doNotHide();
+    QToolBar::enterEvent(e);
+    doNotHide();
 }
 
 void KButtonBar::leaveEvent(QEvent *e)
 {
-	QToolBar::leaveEvent(e);
-	
-	if ( m_autoHide && !m_hider.isActive() && !m_blockHider )
-	{
-		m_hider.start(800);
-	}
+    QToolBar::leaveEvent(e);
+
+    if (m_autoHide && !m_hider.isActive() && !m_blockHider)
+        m_hider.start(800);
 }
 
 void KButtonBar::doNotHide()
 {
-	if ( m_hider.isActive() )
-	{
-		m_hider.stop();
-	}
+    if (m_hider.isActive())
+        m_hider.stop();
 }
 
 void KButtonBar::showSeparator(bool e)
 {
-	m_separator->setVisible(e);
+    m_separator->setVisible(e);
 }
 
 int KButtonBar::count() const
 {
-	return m_buttons.buttons().count();
+    return m_buttons.buttons().count();
 }
 
 void KButtonBar::setEnableButtonBlending(bool enable)
 {
-	foreach(QAbstractButton *button, m_buttons.buttons() )
-	{
-		static_cast<KViewButton *>(button)->setBlending(enable);
-	}
+    foreach (QAbstractButton *button, m_buttons.buttons())
+             static_cast<KViewButton *>(button)->setBlending(enable);
 }

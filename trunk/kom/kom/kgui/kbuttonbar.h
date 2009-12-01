@@ -35,64 +35,55 @@ class KToolView;
 class QAction;
 class QMenu;
 
-
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
 class K_IDEAL_EXPORT KButtonBar : public QToolBar
 {
-	Q_OBJECT;
-	public:
-		KButtonBar(Qt::ToolBarArea area, QWidget *parent = 0);
-		~KButtonBar();
-		
-		void addButton(KViewButton *viewButton);
-		void removeButton(KViewButton *viewButton);
-		
-		bool isEmpty() const;
-		
-		void disable(KViewButton *v);
-		void enable(KViewButton *v);
-		
-		bool isExclusive() const;
-		bool autohide() const;
-		void showSeparator(bool e);
-		
-		int count() const;
-		
-		void setEnableButtonBlending(bool enable);
-		
-	public slots:
-		void onlyShow(KToolView *tool, bool ensureVisible = false);
-		
-		void setExclusive(bool excl);
-		void setAutoHide(bool autohide);
-		void setShowOnlyIcons();
-		void setShowOnlyTexts();
-		
-	private:
-		QMenu *createMenu();
-		
-	private slots:
-		void hideOthers(QAbstractButton *source);
-		void doNotHide();
-		
-	protected:
-		virtual void mousePressEvent(QMouseEvent *e);
-		virtual void enterEvent(QEvent *e);
-		virtual void leaveEvent(QEvent *e);
-		
-	private:
-		QButtonGroup m_buttons;
-		QMap<QWidget *, QAction *> m_actionForWidget;
-		
-		QAction *m_separator;
-		
-		bool m_autoHide;
-		
-		QTimer m_hider;
-		
-		bool m_blockHider;
+    Q_OBJECT;
+    public:
+        KButtonBar(Qt::ToolBarArea area, QWidget *parent = 0);
+        ~KButtonBar();
+
+        void addButton(KViewButton *viewButton);
+        void removeButton(KViewButton *viewButton);
+        bool isEmpty() const;
+        void disable(KViewButton *v);
+        void enable(KViewButton *v);
+
+        bool isExclusive() const;
+        bool autohide() const;
+        void showSeparator(bool e);
+
+        int count() const;
+        void setEnableButtonBlending(bool enable);
+
+    public slots:
+        void onlyShow(KToolView *tool, bool ensureVisible = false);
+        void setExclusive(bool excl);
+        void setAutoHide(bool autohide);
+        void setShowOnlyIcons();
+        void setShowOnlyTexts();
+
+    private:
+        QMenu *createMenu();
+
+    private slots:
+        void hideOthers(QAbstractButton *source);
+        void doNotHide();
+
+    protected:
+        virtual void mousePressEvent(QMouseEvent *e);
+        virtual void enterEvent(QEvent *e);
+        virtual void leaveEvent(QEvent *e);
+
+    private:
+        QButtonGroup m_buttons;
+        QMap<QWidget *, QAction *> m_actionForWidget;
+        QAction *m_separator;
+        QTimer m_hider;
+        bool m_blockHider;
+        bool m_autoHide;
 };
 
 #endif
