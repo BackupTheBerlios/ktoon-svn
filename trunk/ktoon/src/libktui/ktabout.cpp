@@ -43,102 +43,90 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-KTAbout::KTAbout( QWidget *parent ) : KTabDialog( Cancel, parent )
+KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
 {
-	// Q_INIT_RESOURCE(ktui_images);
-	// tabWidget()->setTabPosition(QTabWidget::West);
 	
-	setWindowTitle( tr( "About" ) + QString( " KToon..." ) );
+    setWindowTitle(tr("About") + QString(" KToon"));
 
-    	//1: Credits
-	QFile creditsFile( DATA_DIR+"/credits.txt" );
-	QString creditsText;
-	if ( creditsFile.open( QIODevice::ReadOnly ) )
-	{
-		QTextStream stream( &creditsFile );
-		while ( !stream.atEnd() )
-		{
-			QString line = stream.readLine();
-			creditsText += line + "\n";
-		}
-		creditsFile.close();
-	}
-	else
-	{
-		#ifdef K_DEBUG
-			kError() << "Error while trying to read " << creditsFile.fileName();
-		#endif
-	}
-	
-	QImage credits = QImage(DATA_DIR+"/images/credits.png");
-	
-	KImageEffect::fade(credits, 0.25, palette().background().color());
-    
-	m_credits = new KAnimWidget( QPixmap::fromImage(credits), creditsText );
-	addTab( m_credits, tr( "Credits" ) );
-	
-	QPalette pal = m_credits->palette();
-	pal.setColor(QPalette::Foreground, 0x686868);
-	
-	m_credits->setPalette(pal);
-	m_credits->setFont(QFont("verdana", 24));
+    //1: Credits
+    QFile creditsFile(DATA_DIR+"/credits.txt");
+    QString creditsText;
+    if (creditsFile.open(QIODevice::ReadOnly)) {
+        QTextStream stream(&creditsFile);
+        while (!stream.atEnd()) {
+               QString line = stream.readLine();
+               creditsText += line + "\n";
+        }
+        creditsFile.close();
+    } else {
+        #ifdef K_DEBUG
+               kError() << "Error while trying to read " << creditsFile.fileName();
+        #endif
+    }
 
-    	// 2: Ack
-	
-	QLabel *ack = new QLabel;
-	
-	QImage ackImg( DATA_DIR+"/images/sponsors.png" );
-	KImageEffect::fade( ackImg,0.2,palette().background().color()); 
-	
-	ack->setPixmap(QPixmap::fromImage(ackImg));
-	
-	addTab( ack, tr("Sponsors") );
+    QImage credits = QImage(DATA_DIR + "/images/credits.png");
 
-	// 4: Toonka Films
+    KImageEffect::fade(credits,0.25, palette().background().color());
+  
+    m_credits = new KAnimWidget(QPixmap::fromImage(credits), creditsText);
+    addTab(m_credits, tr("Credits"));
 
-	QLabel *toonka = new QLabel;
-	
-	QImage toonkaImg( DATA_DIR+"/images/toonka.png" );
-	KImageEffect::fade( toonkaImg,0.2,palette().background().color()); 
-	
-	toonka->setPixmap(QPixmap::fromImage(toonkaImg));
-	addTab( toonka, "Toonka Films" );
+    QPalette pal = m_credits->palette();
+    pal.setColor(QPalette::Foreground, 0x686868);
 
-    	// 5: Laboratoon
+    m_credits->setPalette(pal);
+    m_credits->setFont(QFont("verdana", 24));
 
-	QLabel *laboratoon = new QLabel;
-	
-	QImage laboratoonImg( DATA_DIR+"/images/laboratoon.png" );
-	KImageEffect::fade( laboratoonImg,0.2,palette().background().color()); 
-	
-	laboratoon->setPixmap( QPixmap::fromImage(laboratoonImg  ) );
-	addTab( laboratoon, "Laboratoon" );
+    // 2: Ack
 
-    	// 6: Licence
+    QLabel *ack = new QLabel;
 
-	QTextBrowser *licenceText = new QTextBrowser;
-	// scrollLicence->setWidget( licenceText );
-	// QString licence = "";
-	QFile licenceFile( DATA_DIR+"/COPYING" );
-	if ( licenceFile.open( QIODevice::ReadOnly  | QIODevice::Text) )
-	{
-		QTextStream stream( &licenceFile );
-		while ( ! stream.atEnd() )
-		{
-			QString line = stream.readLine();
-			// licence += line+"\n";
-			licenceText->append(line);
-		}
-		licenceFile.close();
-	}
-	
-	// licenceText -> setText( licence );
+    QImage ackImg(DATA_DIR + "/images/sponsors.png");
+    KImageEffect::fade(ackImg,0.2,palette().background().color()); 
 
-	addTab( licenceText, tr( "License Agreement" ) );
-	setButtonText( Cancel, tr("Close"));
+    ack->setPixmap(QPixmap::fromImage(ackImg));
+
+    addTab(ack, tr("Sponsors"));
+
+    // 4: Toonka Films
+    /*
+    QLabel *toonka = new QLabel;
+    QImage toonkaImg(DATA_DIR + "/images/toonka.png");
+
+    KImageEffect::fade(toonkaImg,0.2,palette().background().color()); 
+
+    toonka->setPixmap(QPixmap::fromImage(toonkaImg));
+    addTab(toonka, "Toonka Films");
+    */
+
+    // 5: Laboratoon
+
+    QLabel *laboratoon = new QLabel;
+
+    QImage laboratoonImg(DATA_DIR + "/images/laboratoon.png");
+    KImageEffect::fade(laboratoonImg,0.2,palette().background().color()); 
+
+    laboratoon->setPixmap(QPixmap::fromImage(laboratoonImg));
+    addTab(laboratoon, "Laboratoon");
+
+    // 6: Licence
+
+    QTextBrowser *licenceText = new QTextBrowser;
+    QFile licenceFile(DATA_DIR + "/COPYING");
+    if (licenceFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream stream( &licenceFile );
+        while (! stream.atEnd()) {
+               QString line = stream.readLine();
+               licenceText->append(line);
+        }
+        licenceFile.close();
+    }
+    licenceText->moveCursor(QTextCursor::Start);
+
+    addTab(licenceText, tr("License Agreement"));
+    setButtonText(Cancel, tr("Close"));
 }
 
 KTAbout::~KTAbout()
 {
 }
-

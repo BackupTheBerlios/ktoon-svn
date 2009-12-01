@@ -1,14 +1,18 @@
 KToon
 
-Version 0.8
+Version 0.9a
 
 Main developer
 
-David A. Cuadrado
-<krawek@toonka.com>
+Gustavo Gonzalez
+<ktoon@toonka.com>
 
+Version <= 0.9
 
 Developers
+
+David A. Cuadrado
+<krawek@gmail.com>
 
 Jorge H. Cuadrado
 <kuadrosx@toonka.com>
@@ -20,13 +24,6 @@ Simena Dinas
 
 Fernando Jose Roldan Correa
 <froldan@parquesoft.com>
-
-
-----------------------------
-Technical Advisor
-
-Gustavo Gonzalez Giron
-<xtingray@kazak.ws>
 
 ----------------------------
 Developers Documentation
@@ -50,12 +47,9 @@ Carlos Andres Cajigas
 
 
 ----------------------------
-many thanks to 
+Many thanks to 
 
 Markus Bongard for your unconditional collaboration
 
-
-Toonka Films
-2005-2006
-
-
+LabToon
+2010

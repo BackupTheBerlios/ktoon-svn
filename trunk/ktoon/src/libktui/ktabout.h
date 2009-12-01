@@ -49,25 +49,14 @@
 
 class KTAbout : public KTabDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	public:
-		/**
-		* @brief Default Constructor
-		*
-		* Constructs an KTAbout Dialog.
-		* @param parent The parent widget
-		*/
-		KTAbout( QWidget *parent );
-		/**
-		* @brief Default Destructor
-		*
-		* Destroys the KTAbout Dialog.
-		*/
-		~KTAbout();
-	
-	private:
-		KAnimWidget *m_credits;
+    public:
+        KTAbout(QWidget *parent);
+        ~KTAbout();
+
+    private:
+        KAnimWidget *m_credits;
 };
 
 #endif
