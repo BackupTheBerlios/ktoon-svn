@@ -48,6 +48,10 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
 	
     setWindowTitle(tr("About") + QString(" KToon"));
 
+    Qt::WindowFlags flags;
+    flags = Qt::Window | Qt::WindowTitleHint;
+    setWindowFlags(flags);
+
     //1: Credits
     QFile creditsFile(DATA_DIR + "/credits.txt");
     QString creditsText;

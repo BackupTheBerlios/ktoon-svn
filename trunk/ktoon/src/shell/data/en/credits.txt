@@ -22,7 +22,7 @@ Version <= 0.7
   Fernando Jose Roldan Correa
 
 ----------------------------
-Developers Documentation
+Development Documentation
 
   David A. Cuadrado
 
