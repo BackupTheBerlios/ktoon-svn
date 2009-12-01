@@ -38,9 +38,8 @@ typedef QList<QPixmap> ListOfPixmaps;
 
 /**
  * @if english
- * @short Translate
+ * @short The class KAnimWidget provides a widget containing a simple animation of moving text or image sequences  
  * @elseif spanish
- * Si el es de texto lo va desplazando de arriba abajo hacia arriba y si es de imgenes las va mostrando una por una.
  * @short La clase KAnimWidget provee de un widget que hace una simple animacion, de un texto o una secuencia de imagenes.
  * 
  * @Author David Cuadrado
@@ -48,64 +47,67 @@ typedef QList<QPixmap> ListOfPixmaps;
  */
 class K_GUI_EXPORT KAnimWidget : public QWidget
 {
-	public:
-		enum Type { AnimText = 0, AnimPixmap };
-		/**
-		 * Construye un KAnimWidget con una imagen de fondo, un texto para animar y un padre.
-		 * @param px imagen de fondo
-		 * @param text texto para animar
-		 * @param parent 
-		 */
-		KAnimWidget(const QPixmap &px, const QString &text, QWidget *parent = 0);
-		/**
-		 * Construye un KAnimWidget con una lista de imagenes para animar y un padre.
-		 * @param lop imagenes para animar
-		 * @param parent 
-		 */
-		KAnimWidget(ListOfPixmaps lop, QWidget *parent = 0);
-		
-		/**
-		 * Destructor
-		 */
-		~KAnimWidget();
-		
-		/**
-		 * pone una imagen de fondo a la animacion
-		 * @param px imagen de fondo
-		 */
-		void setBackgroundPixmap(const QPixmap &px);
+    public:
+        enum Type { AnimText = 0, AnimPixmap };
 
+        /**
+          * Builds a KAnimWidget object with a background, an animated text and a parent widget
+          * @param px background
+          * @param text text to animate 
+          * @param parent 
+          */
+        KAnimWidget(const QPixmap &px, const QString &text, QWidget *parent = 0);
+
+        /**
+          * Builds a KAnimWidget object with a background, an image list and a parent widget
+          * @param lop images to animate 
+          * @param parent 
+          */
+        KAnimWidget(ListOfPixmaps lop, QWidget *parent = 0);
 		
-	protected:
-		/**
-		 * Inicia la animacion
-		 */
-		void showEvent ( QShowEvent * e);
-		/**
-		 * Detiene la animacion
-		 */
-		void hideEvent ( QHideEvent * e);
+        /**
+         * Destructor
+         */
+        ~KAnimWidget();
+
+        /**
+         * set an image as animation background
+         * @param px background 
+         */
+        void setBackgroundPixmap(const QPixmap &px);
+
+    protected:
+        /**
+         * Starts animation
+         */
+        void showEvent(QShowEvent * e);
+
+        /**
+         * Stops animation 
+         */
+        void hideEvent(QHideEvent * e);
+
+    protected:
+        /**
+         * Handles animation flow
+         */
+        void timerEvent(QTimerEvent *e);
+
+        /**
+         * Draws animation
+         */
+        void paintEvent(QPaintEvent *e);
 		
-	protected:
-		/**
-		 * Avanza la animacion.
-		 */
-		void timerEvent(QTimerEvent *e);
-		/**
-		 * Dibuja la animacion.
-		 */
-		void paintEvent(QPaintEvent *e);
-		
-	private:
-		Type m_type;
-		class Controller;
-		Controller *m_controller;
-		QPixmap m_background;
-		QString m_text;
-		QRectF m_textRect;
-		
-		ListOfPixmaps m_pixmaps;
-		int m_pixmapIndex;
+    private:
+        Type m_type;
+        class Controller;
+        Controller *m_controller;
+        QPixmap m_background;
+        QString m_text;
+        QRectF m_textRect;
+
+        ListOfPixmaps m_pixmaps;
+        int m_pixmapIndex;
 };
 
 #endif

@@ -33,121 +33,118 @@
 
 class KAnimWidget::Controller
 {
-	public:
-		Controller(KAnimWidget *area) : m_area(area), m_timerId(-1)
-		{
-		}
-		~Controller()
-		{
-		}
-		void start(int ms)
-		{
-			if ( m_timerId != -1 )
-			{
-				stop();
-			}
-			
-			m_timerId = m_area->startTimer(ms);
-		}
-		void stop()
-		{
-			m_area->killTimer(m_timerId);
-			m_timerId = -1;
-		}
-		
-	private:
-		KAnimWidget *m_area;
-		int m_timerId;
+    public:
+        Controller(KAnimWidget *area) : m_area(area), m_timerId(-1)
+         {
+         }
+        ~Controller()
+         {
+         }
+        void start(int ms)
+         {
+             if (m_timerId != -1)
+                 stop();
+
+             m_timerId = m_area->startTimer(ms);
+         }
+        void stop()
+         {
+             m_area->killTimer(m_timerId);
+             m_timerId = -1;
+         }
+
+    private:
+        KAnimWidget *m_area;
+        int m_timerId;
 };
 
 KAnimWidget::KAnimWidget(const QPixmap &px, const QString &text, QWidget *parent) : QWidget(parent), m_type(AnimText), m_controller(new Controller(this)), m_background(px), m_text(text)
 {
-	resize(px.width()/2, px.height());
-	
-	QPoint position = QPoint(50, px.height());
-	
-	QFontMetricsF fontMetrics(font());
-	m_textRect = QRectF(QPointF(40, height()), fontMetrics.size(Qt::TextWordWrap, m_text).expandedTo( QSizeF(px.width(), 0)) );
+    resize(px.width()/2, px.height());
+
+    QPoint position = QPoint(50, px.height());
+
+    QFont kfont("lucida", 12, QFont::Bold, false);
+    QFontMetrics fontMetrics(kfont);
+
+    m_textRect = QRectF(QPointF(40, height()), fontMetrics.size(Qt::TextWordWrap, m_text).expandedTo(QSize(px.width(), 0)));
 }
 
 KAnimWidget::KAnimWidget(ListOfPixmaps lop, QWidget *parent) : QWidget(parent), m_type(AnimPixmap), m_controller(new Controller(this)), m_pixmaps(lop), m_pixmapIndex(0)
 {
-	m_background = lop[0];
+    m_background = lop[0];
 }
 
 KAnimWidget::~ KAnimWidget()
 {
-	delete m_controller;
+    delete m_controller;
 }
 
 void KAnimWidget::setBackgroundPixmap(const QPixmap &px)
 {
-	m_background = px;
+    m_background = px;
 }
 
-void KAnimWidget::showEvent ( QShowEvent * e )
+void KAnimWidget::showEvent(QShowEvent * e)
 {
-	switch(m_type)
-	{
-		case AnimText:
-		{
-			m_controller->start(50);
-		}
-		break;
-		case AnimPixmap:
-		{
-			m_controller->start(5000);
-		}
-		break;
-	}
-	QWidget::showEvent (e);
+    switch (m_type) {
+            case AnimText:
+             {
+                 m_controller->start(50);
+             }
+            break;
+            case AnimPixmap:
+             {
+                 m_controller->start(5000);
+             }
+            break;
+    }
+    QWidget::showEvent(e);
 }
 
-void KAnimWidget::hideEvent ( QHideEvent *e)
+void KAnimWidget::hideEvent(QHideEvent *e)
 {
-	m_controller->stop();
-	QWidget::hideEvent ( e);
+    m_controller->stop();
+    QWidget::hideEvent(e);
 }
 
 void KAnimWidget::timerEvent(QTimerEvent *)
 {
-	switch(m_type)
-	{
-		case AnimText:
-		{
-			int yPos = (int)( m_textRect.y() - 1);
-			m_textRect.setY( yPos );
-		}
-		break;
-		case AnimPixmap:
-		{
-			m_pixmapIndex = (m_pixmapIndex + 1) % m_pixmaps.count();
-			m_background = m_pixmaps[m_pixmapIndex];
-		}
-		break;
-	}
-	update();
+    switch (m_type) {
+            case AnimText:
+             {
+                 int yPos = (int)(m_textRect.y() - 1);
+                 m_textRect.setY(yPos);
+             }
+            break;
+            case AnimPixmap:
+             {
+                 m_pixmapIndex = (m_pixmapIndex + 1) % m_pixmaps.count();
+                 m_background = m_pixmaps[m_pixmapIndex];
+             }
+            break;
+    }
+    update();
 }
 
 void KAnimWidget::paintEvent(QPaintEvent *)
 {
-	QPainter painter(this);
-	painter.setRenderHint(QPainter::Antialiasing, true);
-	
-	painter.drawPixmap(0,0, m_background);
-	
-	switch(m_type)
-	{
-		case AnimText:
-		{
-			painter.setRenderHint(QPainter::TextAntialiasing, true);
-			painter.drawText( m_textRect, m_text);
-		}
-		break;
-		case AnimPixmap:
-		{
-		}
-		break;
-	}
-}
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
 
+    painter.drawPixmap(0,0, m_background);
+
+    switch (m_type) {
+            case AnimText:
+             {
+                 painter.setRenderHint(QPainter::TextAntialiasing, true);
+                 painter.setFont(QFont("lucida", 12, QFont::Bold, false));
+                 painter.drawText(m_textRect, m_text);
+             }
+            break;
+            case AnimPixmap:
+             {
+             }
+            break;
+    }
+}
