@@ -69,7 +69,8 @@ KAnimWidget::KAnimWidget(const QPixmap &px, const QString &text, QWidget *parent
 
     m_textRect = QRectF(QPointF(40, height()), fontMetrics.size(Qt::TextWordWrap, m_text).expandedTo(QSize(px.width(), 0)));
     m_counter = 0;
-
+    m_lines = m_text.count("\n");
+    fontSize = fontMetrics.height();
 }
 
 KAnimWidget::KAnimWidget(ListOfPixmaps lop, QWidget *parent) : QWidget(parent), m_type(AnimPixmap), m_controller(new Controller(this)), m_pixmaps(lop), m_pixmapIndex(0)
@@ -118,18 +119,12 @@ void KAnimWidget::timerEvent(QTimerEvent *)
                  int yPos = (int)(m_textRect.y() - 1);
                  m_textRect.setY(yPos);
                  m_counter++;
-                 // 2380
-                 // 54
-                 // 372
-                 // 1080
-                 // 
-                 if (m_counter > 1420) {
-                     //kDebug() << "El texto ha terminado...";
+                 int end = (fontSize*m_lines) + height();
+
+                 if (m_counter > end) {
                      m_counter = 0;
                      m_textRect.setY(height());
-                 } else {
-                     kDebug() << "Counting: " << m_counter;
-                 }
+                 } 
              }
             break;
             case AnimPixmap:

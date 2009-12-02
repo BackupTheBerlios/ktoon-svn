@@ -109,6 +109,8 @@ class K_GUI_EXPORT KAnimWidget : public QWidget
         ListOfPixmaps m_pixmaps;
         int m_pixmapIndex;
         int m_counter;
+        int m_lines;
+        int fontSize;
 };
 
 #endif
