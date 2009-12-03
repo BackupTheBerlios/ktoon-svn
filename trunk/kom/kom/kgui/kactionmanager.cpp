@@ -32,7 +32,7 @@
  */
 KActionManager::KActionManager(QObject *parent) : QObject(parent)
 {
-    setObjectName( "KActionManager"+parent->objectName() );
+    setObjectName("KActionManager"+parent->objectName());
 }
 
 /**
@@ -47,13 +47,13 @@ KActionManager::~KActionManager()
  * @param action accion para adicionar 
  * @return 
  */
-bool KActionManager::insert(QAction *action, const QString &_id, const QString &container )
+bool KActionManager::insert(QAction *action, const QString &_id, const QString &container)
 {
     QString id = _id.toLower();
     if (id.isEmpty() || container.isEmpty())
         return false;
 
-    QAction *a = (m_actionContainer[container])[ id ];
+    QAction *a = (m_actionContainer[container])[id];
     if (a == action) {
         kWarning() << tr("Cannot insert action with id: ") << id;
         return false;
@@ -69,7 +69,7 @@ bool KActionManager::insert(QAction *action, const QString &_id, const QString &
  * Remueve una accion del manejador
  * @param action para remover
  */
-void KActionManager::remove( QAction* action, const QString &container )
+void KActionManager::remove(QAction* action, const QString &container)
 {
     delete take(action, container);
 }
@@ -79,15 +79,14 @@ void KActionManager::remove( QAction* action, const QString &container )
  * @param action para remover
  * @return la accion removida o cero si esta no estaba en el manejador
  */
-QAction *KActionManager::take( QAction* action, const QString &container  )
+QAction *KActionManager::take(QAction* action, const QString &container)
 {
     QAction *a = 0;
-
     QString id = m_actionContainer[container].key(action);
 
     if (! container.isEmpty()) {
         if (m_actionContainer[container].contains(id))
-            a = m_actionContainer[container].take( id );
+            a = m_actionContainer[container].take(id);
     } else {
             foreach (QString key, m_actionContainer.keys()) {
                      if (m_actionContainer[key].contains(id)) {
@@ -140,6 +139,16 @@ QAction *KActionManager::operator[](const QString &id) const
     return find(id);
 }
 
+/**
+ * Retorna la accion asociada a id
+ * @param id
+ */
+void KActionManager::enable(const QString &id, bool flag)
+{
+   QAction *action = find(id);
+   if (action != 0)
+       action->setEnabled(flag);
+}
 
 QMenuBar *KActionManager::setupMenuBar(QMenuBar *menuBar, const QStringList &containers, bool clear)
 {
@@ -147,7 +156,7 @@ QMenuBar *KActionManager::setupMenuBar(QMenuBar *menuBar, const QStringList &con
         if (clear)
             menuBar->clear();
     } else {
-        menuBar = new QMenuBar( 0 );
+        menuBar = new QMenuBar(0);
     }
 
     foreach (QString container, containers)

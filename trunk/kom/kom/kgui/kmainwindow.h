@@ -66,6 +66,7 @@ class K_IDEAL_EXPORT KMainWindow : public QMainWindow
         void removeFromPerspective(QAction *action);
         void setCurrentPerspective(int wsp);
         int currentPerspective() const;
+        void enableToolViews(bool flag);
 
         void setAutoRestore(bool autoRestore);
         bool autoRestore() const;

@@ -41,37 +41,36 @@ class KConfig;
 
 class K_CORE_EXPORT KConfig : public QObject
 {
-	public:
-		~KConfig();
-	protected:
-		explicit KConfig();
-		void init();
-		
-		
-	public:
-		void beginGroup(const QString & prefix );
-		void endGroup();
-		
-		void setValue ( const QString & key, const QVariant & value );
+    public:
+        ~KConfig();
 
-		QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() ) const;
+    protected:
+        explicit KConfig();
+        void init();
 
-		static KConfig *instance();
-		
-		bool isOk();
-		QDomDocument document();
-		
-		void sync();
-		
-	private:
-		QDomElement find(const QDomElement &element, const QString &key) const;
-		
-	private:
-		static KConfig *m_instance;
-		
-		class Private;
-		Private * const k;
+    public:
+        void beginGroup(const QString & prefix);
+        void endGroup();
 
+        void setValue(const QString & key, const QVariant & value);
+
+        QVariant value(const QString & key, const QVariant & defaultValue = QVariant()) const;
+
+        static KConfig *instance();
+
+        bool isOk();
+        QDomDocument document();
+
+        void sync();
+
+    private:
+        QDomElement find(const QDomElement &element, const QString &key) const;
+
+    private:
+        static KConfig *m_instance;
+
+        class Private;
+        Private * const k;
 };
 
 #define KCONFIG KConfig::instance()

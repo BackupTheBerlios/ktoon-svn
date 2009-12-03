@@ -45,28 +45,26 @@ class QMenuBar;
 
 class K_GUI_EXPORT KActionManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	public:
-		
-		KActionManager(QObject *parent = 0);
-		~KActionManager();
-		
-		bool insert(QAction *action, const QString &id, const QString &container = "default" );
-		void remove( QAction* action, const QString &container = QString()  );
-		
-		QAction *take( QAction* action, const QString &container = QString()  );
-		QAction *find(const QString &id, const QString &container = QString() ) const;
-		QAction *operator[](const QString &id) const;
-		
-		QMenuBar *setupMenuBar(QMenuBar *menu, const QStringList &containers, bool clear = true);
-		QMenu *setupMenu(QMenu *menu, const QString &container, bool clear = true);
-		QToolBar *setupToolBar(QToolBar *toolBar, const QString &container, bool clear = true );
-		
-	private:
-		KActionContainer m_actionContainer;
+    public:
+        KActionManager(QObject *parent = 0);
+        ~KActionManager();
+
+        bool insert(QAction *action, const QString &id, const QString &container = "default");
+        void remove(QAction* action, const QString &container = QString());
+
+        QAction *take(QAction* action, const QString &container = QString());
+        QAction *find(const QString &id, const QString &container = QString()) const;
+        QAction *operator[](const QString &id) const;
+        void enable(const QString &id, bool flag);
+
+        QMenuBar *setupMenuBar(QMenuBar *menu, const QStringList &containers, bool clear = true);
+        QMenu *setupMenu(QMenu *menu, const QString &container, bool clear = true);
+        QToolBar *setupToolBar(QToolBar *toolBar, const QString &container, bool clear = true );
+
+    private:
+        KActionContainer m_actionContainer;
 };
 
 #endif
-
-

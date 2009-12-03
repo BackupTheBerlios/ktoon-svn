@@ -51,7 +51,6 @@ void KToolView::setup(const QString &label)
 #endif
 */
     setFeatures(AllDockWidgetFeatures);
-    // setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     m_button = new KViewButton(this);
     m_button->setToolTip(label);
 
@@ -127,6 +126,15 @@ void KToolView::showEvent(QShowEvent *e)
     }
 
     QDockWidget::showEvent(e);
+}
+
+void KToolView::enableButton(bool flag)
+{
+    m_button->setEnabled(flag);
+}
+
+QString KToolView::getObjectID() {
+    return objectName();
 }
 
 /*

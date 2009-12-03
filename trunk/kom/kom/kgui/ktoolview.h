@@ -48,6 +48,8 @@ class K_IDEAL_EXPORT KToolView : public QDockWidget
         int perspective() const;
         void setFixedSize(int s);
         int fixedSize() const;
+        void enableButton(bool flag);
+        QString getObjectID();
 
     private:
         void setup(const QString &label);

@@ -85,7 +85,7 @@ void DefaultSettings::save(KMainWindow *w)
 
     settings.beginGroup("MainWindow");
     settings.setValue("size", w->size());
-    settings.setValue("maximized", w->isMaximized() );
+    settings.setValue("maximized", w->isMaximized());
     settings.setValue("position", w->pos());
     settings.endGroup();
 }
@@ -176,13 +176,6 @@ KMainWindow::KMainWindow(QWidget *parent)
     addButtonBar(Qt::TopToolBarArea);
     addButtonBar(Qt::BottomToolBarArea);
 
-    /*
-    setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
-    setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
-    setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
-    setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
-    */
-
     setDockNestingEnabled(false);
 }
 
@@ -222,7 +215,7 @@ KToolView *KMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, in
     addDockWidget(area, toolView);
     widget->show();
 
-    m_toolViews[m_buttonBars[toToolBarArea( area ) ]] << toolView;
+    m_toolViews[m_buttonBars[toToolBarArea(area)]] << toolView;
 
     // Show separators
     if (area == Qt::TopDockWidgetArea || area == Qt::BottomDockWidgetArea) 
@@ -263,6 +256,29 @@ void KMainWindow::removeToolView(KToolView *view)
 
     if (findIt)
         removeDockWidget(view);
+}
+
+void KMainWindow::enableToolViews(bool flag)
+{
+    foreach (KButtonBar *bar, m_buttonBars.values()) {
+             QList<KToolView *> views = m_toolViews[bar];
+             QList<KToolView *>::iterator it = views.begin();
+
+             while (it != views.end()) {
+                    KToolView *v = *it;
+
+                    // Temporary code while Library, Help and Time Line are fixed
+                    if (v->getObjectID().compare("KToolView-Library")==0 
+                        || v->getObjectID().compare("KToolView-Time Line")==0  
+                        || v->getObjectID().compare("KToolView-Help")==0 )
+                        v->enableButton(false);
+                    else
+                        v->enableButton(flag);
+
+                    qDebug() << "ID: " << v->getObjectID();
+                    ++it;
+             }
+    }
 }
 
 /**
