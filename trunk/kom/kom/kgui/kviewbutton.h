@@ -34,60 +34,58 @@ class KToolView;
 */
 class K_IDEAL_EXPORT KViewButton : public QToolButton
 {
-	Q_OBJECT;
-	public:
-		KViewButton(Qt::ToolBarArea area, KToolView *toolView, QWidget * parent = 0 );
-		KViewButton(KToolView *toolView, QWidget *parent = 0 );
-		~KViewButton();
+    Q_OBJECT;
+    public:
+        KViewButton(Qt::ToolBarArea area, KToolView *toolView, QWidget * parent = 0);
+        KViewButton(KToolView *toolView, QWidget *parent = 0);
+        ~KViewButton();
+
+        void setArea(Qt::ToolBarArea area);
+        Qt::ToolBarArea area() const;
+
+        QSize sizeHint() const;
+
+        bool isSensible() const;
+        bool blending() const;
+
+        KToolView *toolView() const;
+
+    public slots:
+        void setSensible(bool s);
+        void setBlending(bool e);
+
+    private:
+        void setup();
+        QMenu *createMenu();
+        QStyleOptionToolButton styleOption() const;
+
+    protected:
+        virtual void paintEvent(QPaintEvent *e);
+        virtual void mousePressEvent(QMouseEvent *e);
+        virtual void enterEvent(QEvent*);
+        virtual void leaveEvent(QEvent*);
 		
-		void setArea(Qt::ToolBarArea area);
-		Qt::ToolBarArea area() const;
-		
-		QSize sizeHint() const;
-		
-		bool isSensible() const;
-		bool blending() const;
-		
-		KToolView *toolView() const;
-		
-	public slots:
-		void setSensible(bool s);
-		void setBlending(bool e);
-		
-	private:
-		void setup();
-		QMenu *createMenu();
-		QStyleOptionToolButton styleOption() const;
-		
-	protected:
-		virtual void paintEvent(QPaintEvent *e);
-		virtual void mousePressEvent(QMouseEvent *e);
-		virtual void enterEvent( QEvent* );
-		virtual void leaveEvent( QEvent* );
-		
-	public slots:
-		void setOnlyText();
-		void setOnlyIcon();
-		
-		void toggleView();
-		
-	private slots:
-		void animate();
-		void toggleSensibility();
-		
-	private:
-		Qt::ToolBarArea m_area;
-		
-		class Animator;
-		Animator *m_animator;
-		
-		bool m_isSensible;
-		
-		bool m_blending;
-		
-		QPalette m_palette;
-		
-		KToolView *m_toolView;
+    public slots:
+        void setOnlyText();
+        void setOnlyIcon();
+        void toggleView();
+
+    private slots:
+        void animate();
+        void toggleSensibility();
+
+    private:
+        Qt::ToolBarArea m_area;
+
+        class Animator;
+        Animator *m_animator;
+
+        bool m_isSensible;
+        bool m_blending;
+
+        QPalette m_palette;
+
+        KToolView *m_toolView;
 };
 
 #endif

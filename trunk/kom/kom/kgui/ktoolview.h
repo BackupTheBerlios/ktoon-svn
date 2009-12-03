@@ -50,7 +50,7 @@ class K_IDEAL_EXPORT KToolView : public QDockWidget
         int fixedSize() const;
 
     private:
-        void setup();
+        void setup(const QString &label);
 
     private slots:
         void saveSize(bool checked);

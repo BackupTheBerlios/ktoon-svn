@@ -111,6 +111,7 @@ class K_GUI_EXPORT KAnimWidget : public QWidget
         int m_counter;
         int m_lines;
         int fontSize;
+        int m_end;
 };
 
 #endif

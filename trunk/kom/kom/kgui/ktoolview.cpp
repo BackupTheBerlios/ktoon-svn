@@ -35,7 +35,7 @@ KToolView::KToolView(const QString &title, const QIcon &icon, QWidget * parent)
           : QDockWidget(title, parent), m_size(-1), m_perspective(0)
 {
     setWindowIcon(icon);
-    setup();
+    setup(title);
     setObjectName("KToolView-" + title);
 }
 
@@ -43,7 +43,7 @@ KToolView::~KToolView()
 {
 }
 
-void KToolView::setup()
+void KToolView::setup(const QString &label)
 {
 /*
 #if QT_VERSION < 0x040200
@@ -53,6 +53,7 @@ void KToolView::setup()
     setFeatures(AllDockWidgetFeatures);
     // setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     m_button = new KViewButton(this);
+    m_button->setToolTip(label);
 
     connect(toggleViewAction(), SIGNAL(toggled(bool)), this, SLOT(saveSize(bool)));
 }

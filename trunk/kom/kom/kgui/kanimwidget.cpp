@@ -64,13 +64,14 @@ KAnimWidget::KAnimWidget(const QPixmap &px, const QString &text, QWidget *parent
 
     QPoint position = QPoint(50, px.height());
 
-    QFont kfont("lucida", 12, QFont::Bold, false);
+    QFont kfont("lucida", 10, QFont::Bold, false);
     QFontMetrics fontMetrics(kfont);
 
-    m_textRect = QRectF(QPointF(40, height()), fontMetrics.size(Qt::TextWordWrap, m_text).expandedTo(QSize(px.width(), 0)));
+    m_textRect = QRectF(QPointF(20, height()), fontMetrics.size(Qt::TextWordWrap, m_text).expandedTo(QSize(px.width(), 0)));
     m_counter = 0;
     m_lines = m_text.count("\n");
     fontSize = fontMetrics.height();
+    m_end = (fontSize*m_lines) + height() - 100;
 }
 
 KAnimWidget::KAnimWidget(ListOfPixmaps lop, QWidget *parent) : QWidget(parent), m_type(AnimPixmap), m_controller(new Controller(this)), m_pixmaps(lop), m_pixmapIndex(0)
@@ -119,9 +120,8 @@ void KAnimWidget::timerEvent(QTimerEvent *)
                  int yPos = (int)(m_textRect.y() - 1);
                  m_textRect.setY(yPos);
                  m_counter++;
-                 int end = (fontSize*m_lines) + height();
 
-                 if (m_counter > end) {
+                 if (m_counter > m_end) {
                      m_counter = 0;
                      m_textRect.setY(height());
                  } 
@@ -148,7 +148,7 @@ void KAnimWidget::paintEvent(QPaintEvent *)
             case AnimText:
              {
                  painter.setRenderHint(QPainter::TextAntialiasing, true);
-                 painter.setFont(QFont("lucida", 12, QFont::Bold, false));
+                 painter.setFont(QFont("lucida", 10, QFont::Bold, false));
                  painter.drawText(m_textRect, m_text);
              }
             break;

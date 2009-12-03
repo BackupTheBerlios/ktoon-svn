@@ -36,443 +36,382 @@
 
 class KViewButton::Animator
 {
-	public:
-		Animator(QObject *parent) : count(0), MAXCOUNT(30), INTERVAL(30), isEnter(false)
-		{
-			timer = new QTimer(parent);
-		}
-		~Animator() {}
-		void start()
-		{
-			timer->start(INTERVAL);
-		}
-		
-		QColor blendColors( const QColor& color1, const QColor& color2, int percent )
-		{
-			const float factor1 = ( 100 - ( float ) percent ) / 100;
-			const float factor2 = ( float ) percent / 100;
+    public:
+        Animator(QObject *parent) : count(0), MAXCOUNT(30), INTERVAL(30), isEnter(false)
+         {
+            timer = new QTimer(parent);
+         }
+        ~Animator() 
+         {
+         }
+        void start()
+         {
+            timer->start(INTERVAL);
+         }
 
-			const int r = static_cast<int>( color1.red() * factor1 + color2.red() * factor2 );
-			const int g = static_cast<int>( color1.green() * factor1 + color2.green() * factor2 );
-			const int b = static_cast<int>( color1.blue() * factor1 + color2.blue() * factor2 );
-			
-			QColor result;
-			
-			if ( r > 0 && r < 255 && g > 0 && g < 255 && b > 0 && b < 255 )
-			{
-				result.setRgb( r , g , b);
-			}
-			
-			return result;
-		}
-			
-		QTimer *timer;
-		int count;
-		const int MAXCOUNT;
-		const int INTERVAL;
-			
-		bool isEnter;
+        QColor blendColors(const QColor& color1, const QColor& color2, int percent)
+         {
+            const float factor1 = (100 - (float) percent ) / 100;
+            const float factor2 = (float) percent / 100;
+
+            const int r = static_cast<int>(color1.red() * factor1 + color2.red() * factor2);
+            const int g = static_cast<int>(color1.green() * factor1 + color2.green() * factor2);
+            const int b = static_cast<int>(color1.blue() * factor1 + color2.blue() * factor2);
+
+            QColor result;
+
+            if (r > 0 && r < 255 && g > 0 && g < 255 && b > 0 && b < 255)
+                result.setRgb( r , g , b);
+
+            return result;
+         }
+
+        QTimer *timer;
+        int count;
+        const int MAXCOUNT;
+        const int INTERVAL;
+
+        bool isEnter;
 };
 
 KViewButton::KViewButton(Qt::ToolBarArea area, KToolView *toolView, QWidget * parent) : QToolButton(parent), m_area(area), m_toolView(toolView)
 {
-	setup();
+    setup();
 }
-
 
 KViewButton::KViewButton(KToolView *toolView, QWidget *parent) : QToolButton(parent), m_area(Qt::LeftToolBarArea), m_toolView(toolView)
 {
-	setup();
+    setup();
 }
 
 void KViewButton::setup()
 {
-// 	setAutoExclusive(true);
-	setCheckable( true );
-	setAutoRaise(true);
+    setCheckable(true);
+    setAutoRaise(true);
+
+    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    setFocusPolicy(Qt::NoFocus);
+
+    m_isSensible = false;
+    m_animator = new Animator(this);
+
+    connect( m_animator->timer, SIGNAL( timeout() ), this, SLOT( animate() ) );
 	
-	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-	setFocusPolicy(Qt::NoFocus);
-	
-	m_isSensible = false;
-	
-	m_animator = new Animator(this);
-	connect( m_animator->timer, SIGNAL( timeout() ), this, SLOT( animate() ) );
-	
-	setChecked(false);
-// 	setDown(false);
-	
-	m_blending = true;
-	
-	///
-	//QAction *act = m_toolView->toggleViewAction();
-	
-	setText(m_toolView->windowTitle());
-	setIcon(m_toolView->windowIcon());
-	
-	if ( !isChecked() )
-	{
-		m_toolView->close();
-	}
+    setChecked(false);
+
+    m_blending = true;
+
+    setText(m_toolView->windowTitle());
+    setIcon(m_toolView->windowIcon());
+
+    if (!isChecked())
+        m_toolView->close();
 }
 
 KViewButton::~KViewButton()
 {
-	delete m_animator;
+    delete m_animator;
 }
 
 void KViewButton::setOnlyText()
 {
-	setToolButtonStyle(Qt::ToolButtonTextOnly);
+    setToolButtonStyle(Qt::ToolButtonTextOnly);
 }
 
 void KViewButton::setOnlyIcon()
 {
-	setToolButtonStyle(Qt::ToolButtonIconOnly);
+    setToolButtonStyle(Qt::ToolButtonIconOnly);
 }
-
 
 void KViewButton::setArea(Qt::ToolBarArea area)
 {
-	m_area = area;
-	update();
+    m_area = area;
+    update();
 }
 
 Qt::ToolBarArea KViewButton::area() const
 {
-	return m_area;
+    return m_area;
 }
 
 QSize KViewButton::sizeHint() const
 {
-	QSize size = QToolButton::sizeHint();
-	
-	if ( m_area == Qt::RightToolBarArea || m_area == Qt::LeftToolBarArea )
-	{
-		size.transpose();
-	}
-	
-	return size;
-}
+    QSize size = QToolButton::sizeHint();
 
+    if (m_area == Qt::RightToolBarArea || m_area == Qt::LeftToolBarArea)
+        size.transpose();
+
+    return size;
+}
 
 QStyleOptionToolButton KViewButton::styleOption() const
 {
-	QStyleOptionToolButton opt;
-	opt.init(this);
-	
-	bool down = isDown();
-	bool checked = defaultAction() ? defaultAction()->isChecked() : isChecked();
-	bool forceNoText = false;
-	
-	
-	opt.toolButtonStyle = toolButtonStyle();
-	if ( m_area == Qt::LeftToolBarArea )
-	{
-		QSize size = opt.rect.size();
-		size.transpose();
-		opt.rect = QRect(QPoint(opt.rect.x(), opt.rect.y()), size );
-	}
-	else if ( m_area == Qt::RightToolBarArea )
-	{
-		QSize size = opt.rect.size();
-		size.transpose();
-		opt.rect = QRect(QPoint(opt.rect.x(), opt.rect.y()), size );
-	}
-	
-	if (parentWidget())
-	{
-		if (QToolBar *toolBar = qobject_cast<QToolBar *>(parentWidget()))
-		{
-			opt.iconSize = toolBar->iconSize();
-		}
-		else 
-		{
-			opt.iconSize = iconSize();
-		}
-	}
+    QStyleOptionToolButton opt;
+    opt.init(this);
 
-	if (!forceNoText)
-	{
-		opt.text = text();
-	}
+    bool down = isDown();
+    bool checked = defaultAction() ? defaultAction()->isChecked() : isChecked();
+    bool forceNoText = false;
 	
-	opt.icon = icon();
-	
-	opt.arrowType = arrowType();
-	
-#if 1
-	if (down)
-		opt.state |= QStyle::State_Sunken;
-// 	if (checked)
-// 		opt.state |= QStyle::State_On;
-	if (autoRaise())
-		opt.state |= QStyle::State_AutoRaise;
-	if (!checked && !down)
-		opt.state |= QStyle::State_Raised;
-#endif 
+    opt.toolButtonStyle = toolButtonStyle();
 
-	opt.subControls = QStyle::SC_ToolButton;
-	opt.activeSubControls = QStyle::SC_None;
+    if (m_area == Qt::LeftToolBarArea) {
+        QSize size = opt.rect.size();
+        size.transpose();
+        opt.rect = QRect(QPoint(opt.rect.x(), opt.rect.y()), size);
+    } else if (m_area == Qt::RightToolBarArea) {
+               QSize size = opt.rect.size();
+               size.transpose();
+               opt.rect = QRect(QPoint(opt.rect.x(), opt.rect.y()), size);
+    }
 
-	opt.features = QStyleOptionToolButton::None;
-// 	if (popupMode() == QToolButton::MenuButtonPopup) {
-// 		opt.subControls |= QStyle::SC_ToolButtonMenu;
-// 		opt.features |= QStyleOptionToolButton::Menu;
-// 		if (menuButtonDown || down) {
-// 			opt.state |= QStyle::State_MouseOver;
-// 			opt.activeSubControls |= QStyle::SC_ToolButtonMenu;
-// 		}
-// 	} 
-// 	else 
-// 	{
-// 		if (menuButtonDown)
-// 			opt.state  |= QStyle::State_Sunken;
-// 	}
-	
-	if (arrowType() != Qt::NoArrow)
-	{
-		opt.features |= QStyleOptionToolButton::Arrow;
-	}
-	
-	if (popupMode() == QToolButton::DelayedPopup)
-	{
-		opt.features |= QStyleOptionToolButton::PopupDelay;
-	}
-	
-// 	opt.toolButtonStyle = toolButtonStyle();
-// 	
-// 	if (icon().isNull() && arrowType() == Qt::NoArrow && !forceNoText) 
-// 	{
-// 		if (!text().isEmpty())
-// 		{
-// 			opt.toolButtonStyle = Qt::ToolButtonTextOnly;
-// 		}
-// 		else if (opt.toolButtonStyle != Qt::ToolButtonTextOnly)
-// 		{
-// 			opt.toolButtonStyle = Qt::ToolButtonIconOnly;
-// 		}
-// 	}
-// 	else
-// 	{
-// 		if (text().isEmpty() && opt.toolButtonStyle != Qt::ToolButtonIconOnly)
-// 		{
-// 			opt.toolButtonStyle = Qt::ToolButtonIconOnly;
-// 		}
-// 	}
+    if (parentWidget()) {
+        if (QToolBar *toolBar = qobject_cast<QToolBar *>(parentWidget()))
+            opt.iconSize = toolBar->iconSize();
+        else 
+            opt.iconSize = iconSize();
+    }
 
-	opt.pos = pos();
-	opt.font = font();
-	return opt;
+    if (!forceNoText)
+        opt.text = text();
+
+    opt.icon = icon();
+    opt.arrowType = arrowType();
+
+    if (down)
+        opt.state |= QStyle::State_Sunken;
+
+    // if (checked)
+    //     opt.state |= QStyle::State_On;
+
+    if (autoRaise())
+        opt.state |= QStyle::State_AutoRaise;
+
+    if (!checked && !down)
+        opt.state |= QStyle::State_Raised;
+
+    opt.subControls = QStyle::SC_ToolButton;
+    opt.activeSubControls = QStyle::SC_None;
+
+    opt.features = QStyleOptionToolButton::None;
+
+    /*
+    if (popupMode() == QToolButton::MenuButtonPopup) {
+        opt.subControls |= QStyle::SC_ToolButtonMenu;
+        opt.features |= QStyleOptionToolButton::Menu;
+        if (menuButtonDown || down) {
+            opt.state |= QStyle::State_MouseOver;
+            opt.activeSubControls |= QStyle::SC_ToolButtonMenu;
+        }
+    } else {
+            if (menuButtonDown)
+                opt.state  |= QStyle::State_Sunken;
+    }
+    */
+
+    if (arrowType() != Qt::NoArrow)
+        opt.features |= QStyleOptionToolButton::Arrow;
+
+    if (popupMode() == QToolButton::DelayedPopup)
+        opt.features |= QStyleOptionToolButton::PopupDelay;
+
+/*
+    opt.toolButtonStyle = toolButtonStyle();
+
+    if (icon().isNull() && arrowType() == Qt::NoArrow && !forceNoText) {
+        if (!text().isEmpty()) {
+            opt.toolButtonStyle = Qt::ToolButtonTextOnly;
+        } else if (opt.toolButtonStyle != Qt::ToolButtonTextOnly) {
+            opt.toolButtonStyle = Qt::ToolButtonIconOnly;
+        }
+    } else {
+          if (text().isEmpty() && opt.toolButtonStyle != Qt::ToolButtonIconOnly)
+              opt.toolButtonStyle = Qt::ToolButtonIconOnly;
+    }
+*/
+
+    opt.pos = pos();
+    opt.font = font();
+
+    return opt;
 }
 
 void KViewButton::paintEvent(QPaintEvent *e)
 {
-	Q_UNUSED(e);
-	
-	QStyleOptionToolButton opt = styleOption();
-	
-	QRect r = opt.rect;
-	QColor fillColor, textColor;
-	
-	bool checked = defaultAction() ? defaultAction()->isChecked() : isChecked();
-	
-	if ( m_animator->count <= 0 ) m_animator->count = 1;
-	
-	if ( checked )
-	{
-		fillColor = m_animator->blendColors( palette().highlight().color(), palette().background().color(), static_cast<int>( m_animator->count * 3.5 ) );
-		textColor = m_animator->blendColors( palette().highlightedText().color(), palette().text().color(), static_cast<int>( m_animator->count * 4.5 ) );
-	}
-	else
-	{
-		fillColor = m_animator->blendColors( palette().background().color(), palette().highlight().color(), static_cast<int>( m_animator->count * 3.5 ) );
-		textColor = m_animator->blendColors( palette().text().color(), palette().highlightedText().color(), static_cast<int>( m_animator->count * 4.5 ) );
-	}
-	
-	opt.palette.setColor(QPalette::Background, fillColor.isValid() ? fillColor : m_palette.background().color() );
-// 	opt.palette.setColor(QPalette::Text, textColor);
-	
-// 	opt.palette.setColor(QPalette::Button, fillColor);
-	opt.palette.setColor(QPalette::ButtonText, textColor.isValid() ? textColor : m_palette.text().color() );
-	
-	QPixmap pm(r.width(), r.height());
-	pm.fill(fillColor.isValid() ? fillColor : m_palette.color(QPalette::Background));
-	
-	
-	QStylePainter p(&pm, this);
-	p.drawComplexControl(QStyle::CC_ToolButton, opt);
-	
-	QPainter painter(this);
+    Q_UNUSED(e);
 
-	switch (m_area)
-	{
-		case Qt::LeftToolBarArea:
-			painter.rotate(-90);
-			painter.drawPixmap(-pm.width(), 0, pm);
-			break;
-		case Qt::RightToolBarArea:
-			painter.rotate(90);
-			painter.drawPixmap(0, -pm.height(), pm);
-			break;
-		default:
-			painter.drawPixmap(0, 0, pm);
-			break;
-	}
-	
-	m_palette.setBrush(QPalette::Background, opt.palette.background());
-	m_palette.setBrush(QPalette::ButtonText, opt.palette.buttonText());
+    QStyleOptionToolButton opt = styleOption();
+
+    QRect r = opt.rect;
+    QColor fillColor, textColor;
+
+    bool checked = defaultAction() ? defaultAction()->isChecked() : isChecked();
+
+    if (m_animator->count <= 0) 
+        m_animator->count = 1;
+
+    if (checked) {
+        fillColor = m_animator->blendColors(palette().highlight().color(), palette().background().color(), static_cast<int>(m_animator->count * 3.5));
+        textColor = m_animator->blendColors(palette().highlightedText().color(), palette().text().color(), static_cast<int>(m_animator->count * 4.5));
+    } else {
+        fillColor = m_animator->blendColors(palette().background().color(), palette().highlight().color(), static_cast<int>(m_animator->count * 3.5));
+        textColor = m_animator->blendColors(palette().text().color(), palette().highlightedText().color(), static_cast<int>(m_animator->count * 4.5));
+    }
+
+    opt.palette.setColor(QPalette::Background, fillColor.isValid() ? fillColor : m_palette.background().color());
+    opt.palette.setColor(QPalette::ButtonText, textColor.isValid() ? textColor : m_palette.text().color());
+
+    QPixmap pm(r.width(), r.height());
+    pm.fill(fillColor.isValid() ? fillColor : m_palette.color(QPalette::Background));
+
+    QStylePainter p(&pm, this);
+    p.drawComplexControl(QStyle::CC_ToolButton, opt);
+
+    QPainter painter(this);
+
+    switch (m_area) {
+            case Qt::LeftToolBarArea:
+                 painter.rotate(-90);
+                 painter.drawPixmap(-pm.width(), 0, pm);
+            break;
+            case Qt::RightToolBarArea:
+                 painter.rotate(90);
+                 painter.drawPixmap(0, -pm.height(), pm);
+            break;
+            default:
+                 painter.drawPixmap(0, 0, pm);
+                 break;
+    }
+
+    m_palette.setBrush(QPalette::Background, opt.palette.background());
+    m_palette.setBrush(QPalette::ButtonText, opt.palette.buttonText());
 }
 
 QMenu *KViewButton::createMenu()
 {
-	QMenu *menu = new QMenu(tr("Menu"), this);
-	menu->addAction(tr("Only icon"), this, SLOT(setOnlyIcon()) );
-	menu->addAction(tr("Only text"), this, SLOT(setOnlyText()) );
-	menu->addSeparator();
+    QMenu *menu = new QMenu(tr("Menu"), this);
+    menu->addAction(tr("Only icon"), this, SLOT(setOnlyIcon()) );
+    menu->addAction(tr("Only text"), this, SLOT(setOnlyText()) );
+    menu->addSeparator();
 	
-	QAction *a = menu->addAction(tr("Mouse sensibility")/*, this, SLOT(toggleSensibility())*/);
-	connect(a, SIGNAL(toggled(bool)), this, SLOT(setSensible( bool ) ));
-	a->setCheckable(true);
-	a->setChecked( isSensible() );
-	
-	return menu;
+    QAction *a = menu->addAction(tr("Mouse sensibility"));
+    connect(a, SIGNAL(toggled(bool)), this, SLOT(setSensible( bool ) ));
+    a->setCheckable(true);
+    a->setChecked( isSensible() );
+
+    return menu;
 }
 
 void KViewButton::mousePressEvent(QMouseEvent *e)
 {
-	QToolButton::mousePressEvent(e);
-	
-	if ( e->button() == Qt::RightButton )
-	{
-		createMenu()->exec(e->globalPos());
-		e->accept();
-	}
+    QToolButton::mousePressEvent(e);
+
+    if (e->button() == Qt::RightButton) {
+        createMenu()->exec(e->globalPos());
+        e->accept();
+    }
 }
 
 void KViewButton::enterEvent( QEvent* )
 {
-// 	bool checked = defaultAction() ? defaultAction()->isChecked() : isChecked();
-// 	qDebug() << "CHECKED: " << checked << " DOWN: " << isDown();
-	
-	if ( m_isSensible )
-	{
-		m_isSensible = false;
-		animateClick();
-		
-		QTimer::singleShot(300, this, SLOT(toggleSensibility()));
-	}
-	
-	m_animator->isEnter = true;
-	m_animator->count = 1;
-	
-	if ( m_blending )
-	{
-		m_animator->start();
-	}
+    if (m_isSensible) {
+        m_isSensible = false;
+        animateClick();
+
+        QTimer::singleShot(300, this, SLOT(toggleSensibility()));
+    }
+
+    m_animator->isEnter = true;
+    m_animator->count = 1;
+
+    if (m_blending)
+        m_animator->start();
 }
 
 void KViewButton::leaveEvent( QEvent* )
 {
-	if ( m_animator->count == 0 )
-	{
-		m_animator->count = 1;
-	}
-	
-	m_animator->isEnter = false;
-	
-	if ( m_blending )
-	{
-		m_animator->timer->start();
-	}
+    if (m_animator->count == 0)
+        m_animator->count = 1;
+
+    m_animator->isEnter = false;
+
+    if (m_blending)
+        m_animator->timer->start();
 }
 
 void KViewButton::animate()
 {
-	if ( m_animator->isEnter ) 
-	{
-		m_animator->count += 1;
-		update();
-		if ( m_animator->count > m_animator->MAXCOUNT )
-		{
-			m_animator->timer->stop();
-		}
-	} else 
-	{
-		m_animator->count -= 1;
-		if ( m_animator->count < 1 )
-		{
-			m_animator->timer->stop();
-			m_animator->count = 1;
-		}
-		
-		update();
-	}
+    if (m_animator->isEnter) {
+        m_animator->count += 1;
+        update();
+        if (m_animator->count > m_animator->MAXCOUNT)
+            m_animator->timer->stop();
+    } else {
+        m_animator->count -= 1;
+        if (m_animator->count < 1) {
+            m_animator->timer->stop();
+            m_animator->count = 1;
+        }
+
+        update();
+    }
 }
 
 void KViewButton::toggleSensibility()
 {
-	m_isSensible = !m_isSensible;
+    m_isSensible = !m_isSensible;
 }
 
 void KViewButton::setSensible(bool s)
 {
-	m_isSensible = s;
+    m_isSensible = s;
 }
 
 bool KViewButton::isSensible() const
 {
-	return m_isSensible;
+    return m_isSensible;
 }
 
 void KViewButton::setBlending(bool e)
 {
-	m_blending = e;
+    m_blending = e;
 }
 
 bool KViewButton::blending() const
 {
-	return m_blending;
+    return m_blending;
 }
 
 
 void KViewButton::toggleView()
 {
-	QMainWindow *mw = static_cast<QMainWindow *>(m_toolView->parentWidget());
+    QMainWindow *mw = static_cast<QMainWindow *>(m_toolView->parentWidget());
+
+    m_toolView->setUpdatesEnabled(false);
+
+    if (mw)
+        mw->setUpdatesEnabled(false);
+
+    if (m_area == Qt::LeftToolBarArea || m_area == Qt::RightToolBarArea)
+        m_toolView->setSizePolicy(QSizePolicy::Preferred , QSizePolicy::Expanding);
+    else
+        m_toolView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+    m_toolView->toggleViewAction()->trigger();
 	
-	m_toolView->setUpdatesEnabled(false);
-	if ( mw  )
-	{
-		mw->setUpdatesEnabled( false );
-	}
-	
-	if( m_area == Qt::LeftToolBarArea || m_area == Qt::RightToolBarArea  )
-	{
-		m_toolView->setSizePolicy(QSizePolicy::Preferred , QSizePolicy::Expanding);
-	}
-	else
-	{
-		m_toolView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-	}
-	
-	m_toolView->toggleViewAction()->trigger();
-	
-#if QT_VERSION > 0x040201 && QT_VERSION < 0x040300
-	m_toolView->adjustSize();
-#endif
-	
-	setChecked( m_toolView->isVisible() );
-	
-	
-	m_toolView->setUpdatesEnabled(true);
-	if ( mw )
-	{
-		mw->setUpdatesEnabled(true);
-	}
+    //#if QT_VERSION > 0x040201 && QT_VERSION < 0x040300
+    //m_toolView->adjustSize();
+    //#endif
+
+    setChecked(m_toolView->isVisible());
+    m_toolView->setUpdatesEnabled(true);
+
+    if (mw)
+        mw->setUpdatesEnabled(true);
 }
 
 
 KToolView *KViewButton::toolView() const
 {
-	return m_toolView;
+    return m_toolView;
 }
