@@ -54,11 +54,11 @@ void KTMainWindow::createGUI()
 
     m_colorPalette = new KTColorPalette;
     KToolView *view = addToolView(m_colorPalette, Qt::LeftDockWidgetArea, Drawing);
-    m_actionManager->insert( view->toggleViewAction(), "show palette");
+    m_actionManager->insert(view->toggleViewAction(), "show palette");
     addToPerspective(view->toggleViewAction(), Drawing);
 
     connectToDisplays(m_colorPalette);
-    ui4paintArea( m_colorPalette );
+    ui4paintArea(m_colorPalette);
 
     // Adding the pen parameters widget to the left side of the interface 
 
@@ -68,7 +68,7 @@ void KTMainWindow::createGUI()
     addToPerspective(view->toggleViewAction(), Drawing);
 
     connectToDisplays(m_penWidget);
-    ui4paintArea( m_penWidget );
+    ui4paintArea(m_penWidget);
 
     // Adding the objects library widget to the left side of the interface
 
@@ -94,7 +94,7 @@ void KTMainWindow::createGUI()
 
     m_scenes = new KTScenesWidget;
     view = addToolView(m_scenes, Qt::RightDockWidgetArea, All);
-    m_actionManager->insert( view->toggleViewAction(), "show scenes");
+    m_actionManager->insert(view->toggleViewAction(), "show scenes");
 
     ui4project(m_scenes);
     ui4localRequest(m_scenes);

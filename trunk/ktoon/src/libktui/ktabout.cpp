@@ -117,14 +117,16 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
 
     QTextBrowser *licenceText = new QTextBrowser;
     QFile licenceFile(DATA_DIR + "/COPYING");
+    QString line = "";
     if (licenceFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream stream( &licenceFile );
         while (! stream.atEnd()) {
-               QString line = stream.readLine();
-               licenceText->append(line);
+               line += stream.readLine();
+               //licenceText->append(line);
         }
         licenceFile.close();
     }
+    licenceText->setHtml(line);
     licenceText->moveCursor(QTextCursor::Start);
 
     addTab(licenceText, tr("License Agreement"));
