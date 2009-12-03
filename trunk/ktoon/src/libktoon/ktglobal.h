@@ -37,20 +37,20 @@
 
 namespace KToon
 {
-	enum RenderType
-	{
-		Image = 0,
-		OpenGL,
-		Native
-	};
-	
-	enum MessageType
-	{
-		Information = 0,
-		Warning,
-		Error,
-		Critical
-	};
+    enum RenderType
+      {
+       Image = 0,
+       OpenGL,
+       Native
+      };
+
+    enum MessageType
+      {
+       Information = 0,
+       Warning,
+       Error,
+       Critical
+      };
 };
 
 #endif

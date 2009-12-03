@@ -179,6 +179,8 @@ void KTMainWindow::createNewProject()
         return;
 
     m_projectManager->setupNewProject();
+    enableToolViews(true);
+    setMenuItemsContext(true);
 
     if (!m_isNetworkProject)
         viewNewDocument(tr("Document"));
@@ -299,6 +301,8 @@ bool KTMainWindow::closeProject()
     }
 
     setUpdatesEnabled(false);
+    enableToolViews(false);
+    setMenuItemsContext(false);
 
     if (m_viewDoc)
         m_viewDoc->closeArea();
@@ -459,7 +463,7 @@ void KTMainWindow::openProject(const QString &path)
         setupNetworkProject(params->projectName(), params->server(), params->port());
         delete params;
     } else if (path.endsWith(".ktn")) {
-               m_projectManager->setHandler( new KTLocalProjectManagerHandler );
+               m_projectManager->setHandler(new KTLocalProjectManagerHandler);
                m_isNetworkProject = false;
     }
 
@@ -467,13 +471,13 @@ void KTMainWindow::openProject(const QString &path)
         setUpdatesEnabled(false);
         tabWidget()->setCurrentWidget(m_viewDoc);
 
-        if (m_projectManager->loadProject( path )) {
+        if (m_projectManager->loadProject(path)) {
             if (QDir::isRelativePath(path))
-                m_fileName = QDir::currentPath()+"/"+path;
+                m_fileName = QDir::currentPath() + "/" + path;
             else
                 m_fileName = path;
 
-            viewNewDocument( m_projectManager->project()->projectName() );
+            viewNewDocument(m_projectManager->project()->projectName());
 			
             // TODO: move this code to the project manager class
             KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Select);
@@ -496,10 +500,14 @@ void KTMainWindow::openProject(const QString &path)
             }
 
             updateOpenRecentMenu(m_recentProjectsMenu, m_recentProjects);
+
+            enableToolViews(true);
+            setMenuItemsContext(true);
+
             setUpdatesEnabled(true);
 
             // Showing a info message in a bubble
-            KOsd::self()->display( tr("Project %1 opened!").arg(m_projectManager->project()->projectName()) );
+            KOsd::self()->display(tr("Project %1 opened!").arg(m_projectManager->project()->projectName()));
         } else {
                  setUpdatesEnabled(true);
                  KOsd::self()->display( tr("Cannot open project!"), KOsd::Error );
@@ -630,20 +638,20 @@ void KTMainWindow::showTipDialog()
 
 void KTMainWindow::importPalettes()
 {
-    QStringList files = QFileDialog::getOpenFileNames( this, tr("Import gimp palettes"), QString(), 
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import gimp palettes"), QString(), 
                                                        "Gimp Palette (*.gpl)");
-    m_statusBar->setStatus( tr("Importing palettes"));
+    m_statusBar->setStatus(tr("Importing palettes"));
     QStringList::ConstIterator it = files.begin();
 	
     int progress = 1;
     while (it != files.end()) {
            KTPaletteImporter importer;
-           importer.import( *it, KTPaletteImporter::Gimp);
+           importer.import(*it, KTPaletteImporter::Gimp);
            ++it;
 
-           importer.saveFile(CONFIG_DIR+"/palettes");
+           importer.saveFile(CONFIG_DIR + "/palettes");
            m_colorPalette->parsePaletteFile( importer.filePath() );
-           m_statusBar->advance( progress++, files.count());
+           m_statusBar->advance(progress++, files.count());
     }
 }
 

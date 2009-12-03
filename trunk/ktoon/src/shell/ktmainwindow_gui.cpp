@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 #include "ktmainwindow.h"
-
 #include "ktapplication.h"
 
 #include <kgui/kcommandhistory.h>
@@ -54,7 +53,7 @@ void KTMainWindow::createGUI()
 
     m_colorPalette = new KTColorPalette;
     KToolView *view = addToolView(m_colorPalette, Qt::LeftDockWidgetArea, Drawing);
-    m_actionManager->insert(view->toggleViewAction(), "show palette");
+    m_actionManager->insert(view->toggleViewAction(),"show palette");
     addToPerspective(view->toggleViewAction(), Drawing);
 
     connectToDisplays(m_colorPalette);
@@ -72,8 +71,6 @@ void KTMainWindow::createGUI()
 
     // Adding the objects library widget to the left side of the interface
 
-    // Temporary Disable before SQA
-    /*
     m_libraryWidget = new KTLibraryWidget();
     m_libraryWidget->setLibrary(m_projectManager->project()->library());
     view = addToolView(m_libraryWidget, Qt::LeftDockWidgetArea, Drawing);
@@ -88,7 +85,6 @@ void KTMainWindow::createGUI()
 
     ui4project( m_libraryWidget );
     ui4localRequest(m_libraryWidget);
-    */
 
     // Adding the scenes widget to the right side of the interface
 
@@ -111,38 +107,32 @@ void KTMainWindow::createGUI()
     ui4localRequest(m_exposureSheet);
     connectToDisplays(m_exposureSheet);
 
-   // Temporary Disable before SQA
-    /*
     // Adding the help widget to the right side of the interface
 
     m_helper = new KTHelpWidget(HOME_DIR + "data/help/");
-    view = addToolView(m_helper, Qt::RightDockWidgetArea, All );
+    view = addToolView(m_helper, Qt::RightDockWidgetArea, All);
     m_actionManager->insert(view->toggleViewAction(), "show help");
 
     connect(m_helper, SIGNAL(pageLoaded(const QString &, const QString &)), this, SLOT(showHelpPage(const QString &,
                              const QString &)));
     connectToDisplays(m_helper);
-    */
 
-    // Temporary Disable before SQA
-    /*
     // Adding the time line widget to the bottom side of the interface
     m_timeLine = new KTTimeLine;
     m_timeLine->setLibrary(m_projectManager->project()->library());
-    view = addToolView( m_timeLine, Qt::BottomDockWidgetArea, Drawing );
+    view = addToolView(m_timeLine, Qt::BottomDockWidgetArea, Drawing);
     m_actionManager->insert( view->toggleViewAction(), "show timeline");
     addToPerspective(view->toggleViewAction(), Drawing);
 
     ui4project(m_timeLine);
     ui4localRequest(m_timeLine);
     connectToDisplays(m_timeLine);
-    */
 
     // Adding the script editor to the bottom side, if kinas was enabled
 
 #ifdef ENABLE_KINAS
     KinasWidget *m_scriptEditor = new KinasWidget;
-    addToolView( m_scriptEditor, Qt::BottomDockWidgetArea, Drawing );
+    addToolView(m_scriptEditor, Qt::BottomDockWidgetArea, Drawing);
 #endif
 
     // Adding the export widget to the bottom side of the interface
@@ -160,6 +150,8 @@ void KTMainWindow::createGUI()
 
     ui4project(m_cameraWidget);
     connectToDisplays(m_cameraWidget);
+
+    enableToolViews(false);
 }
 
 /**
@@ -202,8 +194,11 @@ void KTMainWindow::setupMenu()
     newMenu->addSeparator();
 
     m_fileMenu->addAction(m_actionManager->find("openproject"));
+
     m_fileMenu->addAction(m_actionManager->find("opennetproject"));
     m_fileMenu->addAction(m_actionManager->find("importprojectserver"));
+    m_actionManager->enable("opennetproject", false);
+    m_actionManager->enable("importprojectserver", false);
 
     // Adding Option Open Recent	
     m_recentProjectsMenu = new QMenu(tr("Recents"), this);
@@ -212,12 +207,14 @@ void KTMainWindow::setupMenu()
     KCONFIG->beginGroup("General");
     QStringList recents = KCONFIG->value("recents").toString().split(';');
     updateOpenRecentMenu(m_recentProjectsMenu, recents);	
-    m_fileMenu->addMenu( m_recentProjectsMenu );
+    m_fileMenu->addMenu(m_recentProjectsMenu);
 
     // Adding Options save, save as, close, export, import palettes and exit	
     m_fileMenu->addAction(m_actionManager->find("saveproject"));
+
     m_fileMenu->addAction(m_actionManager->find("saveprojectas"));
     m_fileMenu->addAction(m_actionManager->find("closeproject"));
+
     m_fileMenu->addSeparator();
     m_fileMenu->addAction(m_actionManager->find("export"));
     m_fileMenu->addSeparator();
@@ -226,39 +223,43 @@ void KTMainWindow::setupMenu()
     m_fileMenu->addAction(m_actionManager->find("Exit"));
     m_fileMenu->addSeparator();
 
+// Temporary out while SQA is done
+/*
     // Setting up the insert menu
     setupInsertActions();
-
     // Menu Insert
     m_insertMenu = new QMenu(tr("&Insert"), this);
-    menuBar()->addMenu( m_insertMenu );
-
+    menuBar()->addMenu(m_insertMenu);
     // Adding Options insert scene, insert layer and insert frame
     m_insertMenu->addAction(m_actionManager->find("InsertScene"));
     m_insertMenu->addAction(m_actionManager->find("InsertLayer"));
     m_insertMenu->addAction(m_actionManager->find("InsertFrame"));
     m_insertMenu->addSeparator();
-
     // Adding Options import bitmap and import audio file
     m_insertMenu->addAction(m_actionManager->find("importbitmap"));
     m_insertMenu->addAction(m_actionManager->find("importaudiofile"));
+*/
 
     // Setting up the window menu
     setupWindowActions();
-    m_windowMenu = new QMenu(tr( "&Window" ),this);
+    m_windowMenu = new QMenu(tr("&Window"),this);
     menuBar()->addMenu(m_windowMenu);
 
     // Adding Options show debug, palette, pen, library, timeline, scenes, exposure, help
-	m_windowMenu->addAction(m_actionManager->find("show debug"));
-	m_windowMenu->addAction(m_actionManager->find("show palette"));
-	m_windowMenu->addAction(m_actionManager->find("show pen"));
-	m_windowMenu->addAction(m_actionManager->find("show library"));
-	m_windowMenu->addAction(m_actionManager->find("show timeline"));
-	m_windowMenu->addAction(m_actionManager->find("show scenes"));
-	m_windowMenu->addAction(m_actionManager->find("show exposure"));
-	m_windowMenu->addAction(m_actionManager->find("show help"));
-	m_windowMenu->addSeparator();
+    m_windowMenu->addAction(m_actionManager->find("show debug"));
+    m_windowMenu->addAction(m_actionManager->find("show palette"));
+    m_windowMenu->addAction(m_actionManager->find("show pen"));
+    m_windowMenu->addAction(m_actionManager->find("show library"));
+    m_actionManager->enable("show library", false);
+    m_windowMenu->addAction(m_actionManager->find("show timeline"));
+    m_actionManager->enable("show timeline", false);
+    m_windowMenu->addAction(m_actionManager->find("show scenes"));
+    m_windowMenu->addAction(m_actionManager->find("show exposure"));
+    m_windowMenu->addAction(m_actionManager->find("show help"));
+    m_actionManager->enable("show help", false);
+    m_windowMenu->addSeparator();
 
+    // Temporary out while SQA is done
         /*
 	// Setup perspective menu
 	QMenu *perspectiveMenu = new QMenu(tr("Perspective"),this);
@@ -282,25 +283,37 @@ void KTMainWindow::setupMenu()
 	connect(group, SIGNAL(triggered(QAction *)), this, SLOT(changePerspective(QAction *)));
 	menuBar()->addMenu(perspectiveMenu);
         */
+    ///
 	
-	// Setting up the Settings menu
-	setupSettingsActions();
-	m_settingsMenu = new QMenu(tr( "&Settings" ), this);
-	menuBar()->addMenu( m_settingsMenu );
+    // Setting up the Settings menu
+    setupSettingsActions();
+    m_settingsMenu = new QMenu(tr( "&Settings" ), this);
+    menuBar()->addMenu(m_settingsMenu);
 
-	// Adding Options wizard and preferences
-	m_settingsMenu->addAction(m_actionManager->find("wizard"));
-	m_settingsMenu->addAction(m_actionManager->find("preferences"));
-	
-	// Setting up the help menu
-	setupHelpActions();
-	m_helpMenu = new QMenu(tr("&Help"),this);
-	menuBar()->addMenu(m_helpMenu);
-	m_helpMenu->addAction(m_actionManager->find("tipofday"));
-	m_helpMenu->addSeparator();
-	m_helpMenu->addAction(m_actionManager->find("about ktoon"));
+    // Adding Options wizard and preferences
+    m_settingsMenu->addAction(m_actionManager->find("wizard"));
+    m_settingsMenu->addAction(m_actionManager->find("preferences"));
+
+    // Setting up the help menu
+    setupHelpActions();
+    m_helpMenu = new QMenu(tr("&Help"),this);
+    menuBar()->addMenu(m_helpMenu);
+    m_helpMenu->addAction(m_actionManager->find("tipofday"));
+    m_helpMenu->addSeparator();
+    m_helpMenu->addAction(m_actionManager->find("about ktoon"));
+
+    setMenuItemsContext(false);
 }
 
+void KTMainWindow::setMenuItemsContext(bool flag)
+{
+    m_actionManager->enable("saveproject", flag);
+    m_actionManager->enable("saveprojectas", flag);
+    m_actionManager->enable("closeproject", flag);
+    m_actionManager->enable("export", flag);
+
+    m_windowMenu->setEnabled(flag);
+}
 
 void KTMainWindow::setupActions()
 {
@@ -332,21 +345,21 @@ void KTMainWindow::setupFileActions()
     newProject->setStatusTip(tr("Open new project"));
     m_actionManager->insert(newProject, "newproject", "file");
 
-    KAction *openFile = new KAction(QPixmap(THEME_DIR+"/icons/open.png"), tr( "Open project" ), tr("Ctrl+O"), this,
-                                    SLOT(openProject()), m_actionManager);
+    KAction *openFile = new KAction(QPixmap(THEME_DIR+"/icons/open.png"), tr( "Open project" ), tr("Ctrl+O"), 
+                                    this, SLOT(openProject()), m_actionManager);
     m_actionManager->insert( openFile, "openproject", "file" );
     openFile->setStatusTip(tr("Load existent project"));
 
-    KAction *openNetFile = new KAction(QPixmap(THEME_DIR+"/icons/open.png"), tr("Open project from server..."), tr(""),
-                                       this, SLOT(openProjectFromServer()), m_actionManager);
+    KAction *openNetFile = new KAction(QPixmap(THEME_DIR+"/icons/open.png"), tr("Open project from server..."), 
+                                       tr(""), this, SLOT(openProjectFromServer()), m_actionManager);
     m_actionManager->insert(openNetFile, "opennetproject", "file");
 
     KAction *importNetFile = new KAction(QPixmap(THEME_DIR+""), tr("Import project to server..."), tr(""), this, 
                                          SLOT(importProjectToServer()), m_actionManager);
     m_actionManager->insert(importNetFile, "importprojectserver", "file");
 
-    KAction *save = new KAction(QPixmap(THEME_DIR+"/icons/save.png"), tr( "Save project" ),QKeySequence(tr("Ctrl+S")),
-                                this, SLOT(saveProject()), m_actionManager);
+    KAction *save = new KAction(QPixmap(THEME_DIR+"/icons/save.png"), tr( "Save project" ),
+                                QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager);
     m_actionManager->insert( save, "saveproject", "file" );
     save->setStatusTip(tr("Save current project in current location"));
 
@@ -378,7 +391,7 @@ void KTMainWindow::setupFileActions()
     KAction *exit = new KAction(QPixmap(THEME_DIR+"/icons/close.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")),
                                 qApp, SLOT(closeAllWindows()), m_actionManager);
     exit->setStatusTip(tr("Close application"));
-    m_actionManager->insert(exit, "exit", "file" );
+    m_actionManager->insert(exit, "exit", "file");
 
     // when the last window is closed, the application should quit
     connect(qApp, SIGNAL(lastWindowClosed()), qApp, SLOT(quit()));

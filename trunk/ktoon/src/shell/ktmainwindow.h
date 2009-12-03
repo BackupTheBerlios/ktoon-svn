@@ -106,6 +106,7 @@ class KTMainWindow : public KTabbedMainWindow
 
          void setupHelpActions();
          void setupActions();
+         void setMenuItemsContext(bool flag);
 
          void ui4project(QWidget *widget);
          void ui4paintArea(QWidget *widget);

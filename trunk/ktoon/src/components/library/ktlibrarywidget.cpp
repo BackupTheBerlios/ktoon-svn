@@ -86,15 +86,15 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
     k->childCount = 0;
 
     setWindowIcon(QPixmap(THEME_DIR + "/icons/library.png"));
-    setWindowTitle(tr("&Library"));
+    setWindowTitle(tr("Library"));
 
     k->libraryDir = QDir(CONFIG_DIR + "/libraries");
     k->display = new KTItemPreview(this);
     k->libraryTree = new KTGCTable(this);
 
-    connect(k->libraryTree, SIGNAL(itemClicked (QTreeWidgetItem *, int)), this, SLOT(previewItem(QTreeWidgetItem *,
-                                   int)));
-    connect(k->libraryTree, SIGNAL(itemRenamed( QTreeWidgetItem* )), this, SLOT(renameObject( QTreeWidgetItem* )));
+    connect(k->libraryTree, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, 
+                                   SLOT(previewItem(QTreeWidgetItem *, int)));
+    connect(k->libraryTree, SIGNAL(itemRenamed(QTreeWidgetItem*)), this, SLOT(renameObject(QTreeWidgetItem*)));
 
     QGroupBox *buttons = new QGroupBox(this);
     QHBoxLayout *buttonLayout = new QHBoxLayout(buttons);

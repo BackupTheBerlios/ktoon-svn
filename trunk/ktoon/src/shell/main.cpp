@@ -55,8 +55,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 #define HAVE_LIBGIF
-#define VERSION 0.9+svn
-#define VERSION_STR "0.9+svn"
+//#define VERSION 0.9a+Phoenix
+//#define VERSION_STR "0.9a+Phoenix"
 #endif
 
 #ifndef HAVE_SOUND

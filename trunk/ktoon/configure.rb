@@ -41,7 +41,7 @@ _EOH_
 	config.addIncludePath(RQonf::CONFIG["includepath"])
 	
 	config.addDefine("VERSION=0.9a")
-	config.addDefine('VERSION_STR=\\\\\"0.9a\\\\\"')
+	config.addDefine('VERSION_STR=\\\\\"0.9a+Phoenix\\\\\"')
 
         if conf.hasArgument?("with-debug")
            config.addDefine("K_DEBUG")
