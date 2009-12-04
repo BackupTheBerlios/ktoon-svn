@@ -22,12 +22,9 @@
 
 #include "ktanimationspace.h"
 
-#include <QFrame>
 #include <QMouseEvent>
 #include <QDropEvent>
 #include <QLinearGradient>
-#include <QGridLayout>
-#include <QWorkspace>
 
 #include <kcore/kdebug.h>
 
@@ -39,23 +36,7 @@
 
 KTAnimationspace::KTAnimationspace(QWidget *internal, QWidget *parent) : QMainWindow(parent)
 {
-    QFrame *frame = new QFrame(this);
-    QGridLayout *layout = new QGridLayout(frame);
-
-    //QWorkspace *workspace = new QWorkspace();
-
-    //Qt::WindowFlags flags = 0;
-    //flags = Qt::Window;
-    //flags |= Qt::WindowTitleHint;
-
-    //flags = Qt::Dialog;
-    //flags |= Qt::CustomizeWindowHint;
-    //workspace->addWindow(internal,flags);
-    QSize size(700,600);
-    internal->setFixedSize(size);
-    layout->addWidget(internal,1,1); 
-
-    setCentralWidget(frame);
+    setCentralWidget(internal);
 }
 
 KTAnimationspace::~KTAnimationspace()

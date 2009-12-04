@@ -27,6 +27,7 @@
 #include <kgui/kvhbox.h>
 
 #include <QMainWindow>
+#include <QFrame>
 #include "ktanimationarea.h"
 #include "ktcamerabar.h"
 
@@ -37,7 +38,7 @@ class QCheckBox;
 /**
  * @author David Cuadrado \<krawek@toonka.com\>
 */
-class KTViewCamera : public QMainWindow
+class KTViewCamera : public QFrame
 {
     Q_OBJECT
     public:

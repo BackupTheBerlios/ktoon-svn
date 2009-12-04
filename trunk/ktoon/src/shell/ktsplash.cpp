@@ -35,13 +35,13 @@
 
 //------------------ CONSTRUCTOR -----------------
 
-KTSplash::KTSplash() : QSplashScreen( 0 ), m_size(3), m_state(0), m_position(0)
+KTSplash::KTSplash() : QSplashScreen(0), m_size(3), m_state(0), m_position(0)
 {
     QImage image(THEME_DIR+"/images/splash.png");
     setPixmap(QPixmap::fromImage(image));
     m_version = tr("Version ")+kAppProp->version();
 
-    m_timer = new QTimer( this );
+    m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(animate()));
     m_timer->start(100);
 }
@@ -61,21 +61,21 @@ void KTSplash::animate()
 
 void KTSplash::setMessage(const QString &msg)
 {
-    QSplashScreen::showMessage(msg,Qt::AlignTop, palette().text().color() );
+    QSplashScreen::showMessage(msg,Qt::AlignTop, palette().text().color());
     m_message = msg;
 
     animate();
 
-    QTimer::singleShot( 10, this, SLOT(animate()));
+    QTimer::singleShot(10, this, SLOT(animate()));
 }
 
-void KTSplash::drawContents ( QPainter * painter )
+void KTSplash::drawContents(QPainter * painter)
 {
     int position;
 
     // Draw background circles
     painter->setPen(Qt::NoPen);
-    painter->setBrush( palette().background() );
+    painter->setBrush(palette().background());
     painter->drawEllipse(51,7,9,9);
     painter->drawEllipse(62,7,9,9);
     painter->drawEllipse(73,7,9,9);
@@ -107,14 +107,14 @@ void KTSplash::drawContents ( QPainter * painter )
 
     painter->restore();
 
-    painter->setPen( 0xCFCDD3);
+    painter->setPen(0xCFCDD3);
 
     // Draw version number
     QRect r = rect();
-    r.setRect(r.x() + 5, r.y() + 5, r.width() - 30, r.height() - 30);
+    r.setRect(r.x() + 5, r.y() + 22, r.width() - 30, r.height() - 30);
 
     QFont forig = painter->font();
-    painter->setFont(QFont("helvetica", 16, 10, true));
+    painter->setFont(QFont("helvetica", 12, 10, true));
     painter->drawText(r, Qt::AlignRight, m_version);
 
     painter->setFont(forig);

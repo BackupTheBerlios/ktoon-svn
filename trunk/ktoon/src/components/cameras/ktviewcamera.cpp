@@ -50,9 +50,9 @@ class KTViewCamera::Status : public QStatusBar
 
 KTViewCamera::Status::Status(QWidget *parent) : QStatusBar(parent)
 {
-    setSizeGripEnabled (false);
-    QWidget *sceneInfo = new QWidget;
+    setSizeGripEnabled(false);
 
+    QFrame *sceneInfo = new QFrame;
     m_sceneInfoLayout = new QHBoxLayout(sceneInfo);
     m_sceneInfoLayout->setMargin(0);
 
@@ -63,8 +63,11 @@ KTViewCamera::Status::Status(QWidget *parent) : QStatusBar(parent)
     fpsText->setFont(font);
     m_fps = new QLabel;
     m_fps->setFont(font);
-    m_sceneInfoLayout->addWidget(fpsText);
-    m_sceneInfoLayout->addWidget(m_fps,2);
+
+    m_sceneInfoLayout->addWidget(fpsText,1);
+    m_sceneInfoLayout->addWidget(m_fps,1);
+
+    m_sceneInfoLayout->addSpacing(20);
 
     m_sceneName = new QLabel;
     m_sceneName->setFont(font);
@@ -72,11 +75,12 @@ KTViewCamera::Status::Status(QWidget *parent) : QStatusBar(parent)
     QLabel *sceneNameText = new QLabel(tr("<B>Scene name:</B> "));
     sceneNameText->setFont(font);
 
-    m_sceneInfoLayout->addWidget(sceneNameText);
-    m_sceneInfoLayout->addWidget(m_sceneName,2);
+    m_sceneInfoLayout->addWidget(sceneNameText,1);
+    m_sceneInfoLayout->addWidget(m_sceneName,1);
+
+    m_sceneInfoLayout->addSpacing(20);
 
     addPermanentWidget(sceneInfo,2);
-
     sceneInfo->show();
 }
 
@@ -103,34 +107,29 @@ void KTViewCamera::Status::addWidget(QWidget *widget, int stretch)
     m_sceneInfoLayout->addWidget(widget, stretch, Qt::AlignCenter);
 }
 
-KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(parent)
+KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QFrame(parent)
 {
     #ifdef K_DEBUG
            KINIT;
     #endif
 
-    m_status = new Status;
-    m_loop = new QCheckBox(tr("Loop"));
-    connect(m_loop, SIGNAL(clicked()), this, SLOT(setLoop()));
-
-    m_status->addWidget(m_loop);
-    setStatusBar(m_status);
-
     setObjectName("KTViewCamera_");
-
     setWindowTitle(tr("Render Camera Preview"));
-    setWindowIcon(QPixmap(THEME_DIR+"/icons/camera_preview.png"));
+    setWindowIcon(QPixmap(THEME_DIR + "/icons/camera_preview.png"));
 
-    m_container = new QFrame(this);
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, m_container);
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+
+    QFont font = this->font();
+    font.setPointSize(8);
+    QLabel *title = new QLabel(tr("Render Camera Preview"));
+    title->setFont(font);
+    layout->addWidget(title, 0, Qt::AlignCenter);
 
     QFrame *animationAreaContainer = new QFrame;
     animationAreaContainer->setMidLineWidth(2);
     animationAreaContainer->setLineWidth(2);
     animationAreaContainer->setFrameStyle(QFrame::Box | QFrame::Raised);
-    //animationAreaContainer->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-    QSize size(500,300);
-    animationAreaContainer->setFixedSize(size);
+    animationAreaContainer->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 
     QBoxLayout *animationAreaLayout = new QBoxLayout(QBoxLayout::TopToBottom, animationAreaContainer);
     animationAreaLayout->setMargin(0);
@@ -148,8 +147,14 @@ KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(pa
     connect(m_bar, SIGNAL(ff()), m_animationArea, SLOT(nextFrame()));
     connect(m_bar, SIGNAL(rew()), m_animationArea, SLOT(previousFrame()));
 
-    m_container->setLayout(layout);
-    setCentralWidget(m_container);
+    m_status = new Status;
+    m_loop = new QCheckBox(tr("Loop"));
+    connect(m_loop, SIGNAL(clicked()), this, SLOT(setLoop()));
+    m_status->addWidget(m_loop);
+    showSceneInfo(m_animationArea->currentScene());
+
+    layout->addWidget(m_status, 0, Qt::AlignCenter|Qt::AlignTop);
+    setLayout(layout);
 }
 
 

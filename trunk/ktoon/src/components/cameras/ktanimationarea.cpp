@@ -54,7 +54,7 @@ struct KTAnimationArea::Private
     bool isRendered;
 };
 
-KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QFrame(parent), k( new Private )
+KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QFrame(parent), k(new Private)
 {
     k->project = project;
 
@@ -195,23 +195,21 @@ void KTAnimationArea::sceneResponse(KTSceneResponse *event)
 
      switch (event->action()) {
              case KTProjectRequest::Select:
-{
-			setCurrentScene( event->sceneIndex() );
-		}
-		break;
-		case KTProjectRequest::Remove:
-		{
-			if ( event->sceneIndex() == k->currentSceneIndex )
-			{
-				if(k->currentSceneIndex != 0)
-				{
-					setCurrentScene( k->currentSceneIndex-1 );
-				}
-			}
-		}
-		break;
-		default: break;
-	}
+              {
+                  setCurrentScene(event->sceneIndex());
+              }
+             break;
+             case KTProjectRequest::Remove:
+              {
+                  if (event->sceneIndex() == k->currentSceneIndex) {
+                      if (k->currentSceneIndex != 0)
+                          setCurrentScene(k->currentSceneIndex-1);
+                  }
+              }
+             break;
+             default: 
+             break;
+    }
 }
 
 void KTAnimationArea::projectResponse(KTProjectResponse *)
@@ -228,7 +226,7 @@ void KTAnimationArea::libraryResponse(KTLibraryResponse *)
 
 void KTAnimationArea::render()
 {
-    KTScene *scene = k->project->scene( k->currentSceneIndex );
+    KTScene *scene = k->project->scene(k->currentSceneIndex);
 
     if (!scene) 
         return;

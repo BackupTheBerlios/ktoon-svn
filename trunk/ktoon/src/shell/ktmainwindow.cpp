@@ -227,8 +227,8 @@ void KTMainWindow::viewNewDocument(const QString &title)
 
         m_animationSpace = new KTAnimationspace(viewCamera);
         m_animationSpace->setWindowIcon(QIcon(THEME_DIR + "/icons/animation_mode.png"));
-
         m_animationSpace->setWindowTitle(tr("Animation"));
+
         addWidget(m_animationSpace, true, Animation);
 
         //m_animationSpace->setCentralWidget(viewCamera);
