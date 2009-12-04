@@ -80,10 +80,10 @@ void KTMainWindow::createGUI()
 
     new KAction(QPixmap(), tr("Import bitmap..."), QKeySequence(), m_libraryWidget, SLOT(importBitmap()),
                 m_actionManager, "importbitmap");
-    new KAction(QPixmap(), tr( "Import audio file..." ), QKeySequence(), m_libraryWidget, SLOT(importSound()),
+    new KAction(QPixmap(), tr("Import audio file..."), QKeySequence(), m_libraryWidget, SLOT(importSound()),
                 m_actionManager, "importaudiofile");
 
-    ui4project( m_libraryWidget );
+    ui4project(m_libraryWidget);
     ui4localRequest(m_libraryWidget);
 
     // Adding the scenes widget to the right side of the interface
@@ -146,7 +146,7 @@ void KTMainWindow::createGUI()
     m_cameraWidget = new KTCameraWidget(m_projectManager->project());
     view = addToolView(m_cameraWidget, Qt::BottomDockWidgetArea, Animation);
     m_actionManager->insert(view->toggleViewAction(), "show camera");
-    addToPerspective(view->toggleViewAction(), Drawing);
+    addToPerspective(view->toggleViewAction(), Animation);
 
     ui4project(m_cameraWidget);
     connectToDisplays(m_cameraWidget);
@@ -260,7 +260,6 @@ void KTMainWindow::setupMenu()
     m_windowMenu->addSeparator();
 
     // Temporary out while SQA is done
-        /*
 	// Setup perspective menu
 	QMenu *perspectiveMenu = new QMenu(tr("Perspective"),this);
 	QActionGroup *group = new QActionGroup(this);
@@ -282,7 +281,6 @@ void KTMainWindow::setupMenu()
 	perspectiveMenu->addActions(group->actions());
 	connect(group, SIGNAL(triggered(QAction *)), this, SLOT(changePerspective(QAction *)));
 	menuBar()->addMenu(perspectiveMenu);
-        */
     ///
 	
     // Setting up the Settings menu

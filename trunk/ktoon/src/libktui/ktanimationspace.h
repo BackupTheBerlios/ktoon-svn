@@ -21,29 +21,27 @@
 #ifndef KTWORKSPACE_H
 #define KTWORKSPACE_H
 
-#include <QWorkspace>
+#include <QMainWindow>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTWorkspace : public QWorkspace
+class KTAnimationspace : public QMainWindow
 {
-	Q_OBJECT
-	public:
-		KTWorkspace(QWidget *parent = 0);
-		~KTWorkspace();
-		
-	protected:
-		void mousePressEvent(QMouseEvent *e);
-		void mouseMoveEvent(QMouseEvent *e);
-		void mouseReleaseEvent(QMouseEvent *e);
-		
-		
-	signals:
-		void contextMenu( const QPoint &p );
-// 		void dropEvent(QDropEvent* e);
-// 		void dragEnterEvent(QDragEnterEvent* e);
-		
+    Q_OBJECT
+    public:
+        KTAnimationspace(QWidget *internal, QWidget *parent = 0);
+        ~KTAnimationspace();
+
+    protected:
+        void mousePressEvent(QMouseEvent *e);
+        void mouseMoveEvent(QMouseEvent *e);
+        void mouseReleaseEvent(QMouseEvent *e);
+
+    signals:
+        void contextMenu(const QPoint &p);
+        // void dropEvent(QDropEvent* e);
+        // void dragEnterEvent(QDragEnterEvent* e);
 };
 
 #endif

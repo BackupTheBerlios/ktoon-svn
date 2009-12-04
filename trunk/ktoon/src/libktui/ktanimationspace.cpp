@@ -20,12 +20,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktworkspace.h"
+#include "ktanimationspace.h"
 
+#include <QFrame>
 #include <QMouseEvent>
 #include <QDropEvent>
 #include <QLinearGradient>
-#include <QBoxLayout>
+#include <QGridLayout>
+#include <QWorkspace>
 
 #include <kcore/kdebug.h>
 
@@ -35,80 +37,68 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-KTWorkspace::KTWorkspace(QWidget *parent) : QWorkspace(parent)
+KTAnimationspace::KTAnimationspace(QWidget *internal, QWidget *parent) : QMainWindow(parent)
 {
-	setAcceptDrops( true );
-	setMouseTracking(true);
-	
-	#if 0
-		QPalette pal = palette();
-		QLinearGradient gradient(0, 0, width(), height());
-		gradient.setColorAt(1, pal.background().color());
-		gradient.setColorAt(0.5, pal.foreground().color());
-		gradient.setColorAt(0, pal.highlight().color());	
-		gradient.setSpread(QGradient::ReflectSpread);
-	
-		setBackground(gradient);
-	#endif
+    QFrame *frame = new QFrame(this);
+    QGridLayout *layout = new QGridLayout(frame);
 
-	// QBoxLayout *layout = new QBoxLayout(QBoxLayout::BottomToTop, this);
-	// KTCameraBar *bar = new KTCameraBar;
-	// layout->addWidget(bar,2,Qt::AlignBottom | Qt::AlignHCenter);
-	// bar->show();
+    //QWorkspace *workspace = new QWorkspace();
+
+    //Qt::WindowFlags flags = 0;
+    //flags = Qt::Window;
+    //flags |= Qt::WindowTitleHint;
+
+    //flags = Qt::Dialog;
+    //flags |= Qt::CustomizeWindowHint;
+    //workspace->addWindow(internal,flags);
+    QSize size(700,600);
+    internal->setFixedSize(size);
+    layout->addWidget(internal,1,1); 
+
+    setCentralWidget(frame);
 }
 
-KTWorkspace::~KTWorkspace()
-{
-}
-
-void KTWorkspace::mousePressEvent(QMouseEvent *e)
-{
-	if ( e->button () == Qt::RightButton )
-	{
-		emit contextMenu( mapToGlobal(e->pos()) );
-	}
-}
-
-void KTWorkspace::mouseMoveEvent(QMouseEvent *e)
+KTAnimationspace::~KTAnimationspace()
 {
 }
 
-void KTWorkspace::mouseReleaseEvent(QMouseEvent *e)
+void KTAnimationspace::mousePressEvent(QMouseEvent *e)
+{
+    if (e->button () == Qt::RightButton)
+        emit contextMenu(mapToGlobal(e->pos()));
+}
+
+void KTAnimationspace::mouseMoveEvent(QMouseEvent *e)
+{
+}
+
+void KTAnimationspace::mouseReleaseEvent(QMouseEvent *e)
 {
 }
 
 /*
-void KTWorkspace::dropEvent( QDropEvent *event )
+void KTAnimationspace::dropEvent(QDropEvent *event)
 {
- 	if (event->mimeData()->hasColor())
- 	{
- 		QColor color = qvariant_cast<QColor>(event->mimeData()->colorData());
- 		
- 		QPalette pal = palette();
- 		pal.setColor(QPalette::Dark, color);
- 		
- 		kDebug() << "Co: " << color;
- 		setPalette(pal);
- 		
- 		event->acceptProposedAction();
- 	} 
- 	else 
- 	{
- 		event->ignore();
- 	}
+    if (event->mimeData()->hasColor()) {
+        QColor color = qvariant_cast<QColor>(event->mimeData()->colorData());
+        QPalette pal = palette();
+        pal.setColor(QPalette::Dark, color);
+ 
+        kDebug() << "Co: " << color;
+        setPalette(pal);
+        event->acceptProposedAction();
+    } else {
+        event->ignore();
+    }
 }
  
-void KTWorkspace::dragEnterEvent( QDragEnterEvent *event )
+void KTAnimationspace::dragEnterEvent(QDragEnterEvent *event)
 {
- 	setFocus();
- 
- 	if (event->mimeData()->hasColor()) 
- 	{
- 		event->acceptProposedAction();
- 	} 
- 	else 
- 	{
- 		event->ignore();
- 	}
+    setFocus();
+
+    if (event->mimeData()->hasColor()) 
+        event->acceptProposedAction();
+    else 
+        event->ignore();
  }
 */

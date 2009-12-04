@@ -82,7 +82,9 @@
  * @return 
 */
 
-KTMainWindow::KTMainWindow(KTSplash *splash) : KTabbedMainWindow(),  m_projectManager(0), m_viewDoc(0), m_animationSpace(0),  m_viewChat(0), m_exposureSheet(0),  m_scenes(0)
+KTMainWindow::KTMainWindow(KTSplash *splash) : 
+              KTabbedMainWindow(), m_projectManager(0), m_viewDoc(0), m_animationSpace(0), 
+              m_viewChat(0), m_exposureSheet(0), m_scenes(0)
 {
     #ifdef K_DEBUG
        KINIT;
@@ -220,18 +222,18 @@ void KTMainWindow::viewNewDocument(const QString &title)
       
         m_viewDoc->setAntialiasing(true);
 
-        m_animationSpace = new KTWorkspace;
-        m_animationSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/animation_mode.png"));
-        m_animationSpace->setScrollBarsEnabled(true);
+        KTViewCamera *viewCamera = m_cameraWidget->viewCamera();
+        ui4project(viewCamera);
+
+        m_animationSpace = new KTAnimationspace(viewCamera);
+        m_animationSpace->setWindowIcon(QIcon(THEME_DIR + "/icons/animation_mode.png"));
 
         m_animationSpace->setWindowTitle(tr("Animation"));
         addWidget(m_animationSpace, true, Animation);
 
-        KTViewCamera *viewCamera = m_cameraWidget->viewCamera();
-        ui4project(viewCamera);
-
-        m_animationSpace->addWindow(viewCamera);
-        viewCamera->showMaximized();
+        //m_animationSpace->setCentralWidget(viewCamera);
+        //m_animationSpace->addWindow(viewCamera);
+        //viewCamera->showMaximized();
 
         setCurrentPerspective(Drawing);
     }
@@ -307,7 +309,7 @@ bool KTMainWindow::closeProject()
     if (m_viewDoc)
         m_viewDoc->closeArea();
 
-    m_animationSpace->closeAllWindows();
+    //m_animationSpace->closeAllWindows();
 
     removeWidget(m_animationSpace, true);
     removeWidget(m_viewDoc, true);

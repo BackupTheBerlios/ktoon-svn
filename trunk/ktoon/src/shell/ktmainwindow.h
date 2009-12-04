@@ -33,7 +33,7 @@
 #include <kgui/kactionmanager.h>
 #include "ktviewdocument.h"
 
-#include "ktworkspace.h"
+#include "ktanimationspace.h"
 #include "ktpreferences.h"
 
 // modules
@@ -124,7 +124,7 @@ class KTMainWindow : public KTabbedMainWindow
           * Reimplemented from QWidget.
           * @param close_event The input event
           */
-          void closeEvent( QCloseEvent *event );
+          void closeEvent(QCloseEvent *event);
 
          /**
           *  Creates the application GUI according to the information from the data classes
@@ -179,7 +179,7 @@ class KTMainWindow : public KTabbedMainWindow
 
     private:
           KTViewDocument *m_viewDoc;
-          KTWorkspace *m_animationSpace;
+          KTAnimationspace *m_animationSpace;
           KTStatusBar *m_statusBar;
           KActionManager *m_actionManager;
           QMenu *m_fileMenu;

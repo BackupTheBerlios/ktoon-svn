@@ -53,20 +53,20 @@ class KTViewCamera : public QMainWindow
         void setLoop();
         void doPlay();
 
-        public slots:
-            bool handleProjectResponse(KTProjectResponse *event);
+    public slots:
+        bool handleProjectResponse(KTProjectResponse *event);
 
-        signals:
-            void requestTriggered(const KTProjectRequest *event);
+    signals:
+        void requestTriggered(const KTProjectRequest *event);
 
-        private:
-            QFrame *m_container;
-            KTAnimationArea *m_animationArea;
+    private:
+        QFrame *m_container;
+        KTAnimationArea *m_animationArea;
 
-            class Status;
-            Status *m_status;
+        class Status;
+        Status *m_status;
 
-            QCheckBox *m_loop;
+        QCheckBox *m_loop;
 };
 
 #endif

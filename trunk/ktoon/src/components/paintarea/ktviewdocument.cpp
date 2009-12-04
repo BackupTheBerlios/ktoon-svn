@@ -80,7 +80,7 @@ struct KTViewDocument::Private
     KTConfigurationArea *configurationArea;
 };
 
-KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWindow(parent), k(new Private)
+KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindow(parent), k(new Private)
 {
     setWindowIcon(QPixmap(THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
 
@@ -130,7 +130,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 
     connect(k->paintArea, SIGNAL(changedZero(const QPointF&)), this, SLOT(changeRulerOrigin(const QPointF&)));
 
-    connect(k->paintArea, SIGNAL(requestTriggered(const KTProjectRequest* )), this, 
+    connect(k->paintArea, SIGNAL(requestTriggered(const KTProjectRequest*)), this, 
                           SIGNAL(requestTriggered(const KTProjectRequest *)));
 
     setupDrawActions();
@@ -144,10 +144,10 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
     KTPaintAreaStatus *status = new KTPaintAreaStatus(this);
     setStatusBar(status);
 	
-    connect(k->paintArea->brushManager(), SIGNAL(brushChanged( const QBrush& )), status, 
+    connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), status, 
             SLOT(setBrush(const QBrush &)));
 
-    connect(k->paintArea->brushManager(), SIGNAL(penChanged( const QPen& )), status, SLOT(setPen(const QPen &)));
+    connect(k->paintArea->brushManager(), SIGNAL(penChanged(const QPen&)), status, SLOT(setPen(const QPen &)));
 
     QTimer::singleShot(1000, this, SLOT(loadPlugins()));
 }

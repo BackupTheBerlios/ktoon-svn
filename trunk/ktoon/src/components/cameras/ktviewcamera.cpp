@@ -52,6 +52,7 @@ KTViewCamera::Status::Status(QWidget *parent) : QStatusBar(parent)
 {
     setSizeGripEnabled (false);
     QWidget *sceneInfo = new QWidget;
+
     m_sceneInfoLayout = new QHBoxLayout(sceneInfo);
     m_sceneInfoLayout->setMargin(0);
 
@@ -94,18 +95,18 @@ void KTViewCamera::Status::setSceneName(const QString &name)
     m_sceneName->setText(name);
 }
 
-void KTViewCamera::Status::addWidget(QWidget *widget, int stretch )
+void KTViewCamera::Status::addWidget(QWidget *widget, int stretch)
 {
     QFont font = widget->font();
     font.setPointSize(6);
     widget->setFont(font);
-    m_sceneInfoLayout->addWidget(widget, stretch);
+    m_sceneInfoLayout->addWidget(widget, stretch, Qt::AlignCenter);
 }
 
 KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(parent)
 {
     #ifdef K_DEBUG
-           K_DEBUG;
+           KINIT;
     #endif
 
     m_status = new Status;
@@ -118,7 +119,7 @@ KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(pa
     setObjectName("KTViewCamera_");
 
     setWindowTitle(tr("Render Camera Preview"));
-    setWindowIcon( QPixmap(THEME_DIR+"/icons/camera_preview.png" ));
+    setWindowIcon(QPixmap(THEME_DIR+"/icons/camera_preview.png"));
 
     m_container = new QFrame(this);
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, m_container);
@@ -126,45 +127,28 @@ KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(pa
     QFrame *animationAreaContainer = new QFrame;
     animationAreaContainer->setMidLineWidth(2);
     animationAreaContainer->setLineWidth(2);
-    animationAreaContainer->setFrameStyle(QFrame::Box | QFrame::Raised );
-    animationAreaContainer->setSizePolicy( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding) );
+    animationAreaContainer->setFrameStyle(QFrame::Box | QFrame::Raised);
+    //animationAreaContainer->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+    QSize size(500,300);
+    animationAreaContainer->setFixedSize(size);
 
     QBoxLayout *animationAreaLayout = new QBoxLayout(QBoxLayout::TopToBottom, animationAreaContainer);
     animationAreaLayout->setMargin(0);
 
     m_animationArea = new KTAnimationArea(project);
     animationAreaLayout->addWidget(m_animationArea);
-    layout->addWidget( animationAreaContainer);
+    layout->addWidget(animationAreaContainer, 0, Qt::AlignCenter);
 
-#if 1
     KTCameraBar *m_bar = new KTCameraBar;
-    layout->addWidget( m_bar, 0, Qt::AlignTop | Qt::AlignCenter );
+    layout->addWidget(m_bar, 0, Qt::AlignCenter);
     m_bar->show();
 
     connect(m_bar, SIGNAL(play()), this, SLOT(doPlay()));
     connect(m_bar, SIGNAL(stop()), m_animationArea, SLOT(stop()));
     connect(m_bar, SIGNAL(ff()), m_animationArea, SLOT(nextFrame()));
     connect(m_bar, SIGNAL(rew()), m_animationArea, SLOT(previousFrame()));
-#else
-    KCircleButtonBar *m_bar = new DCircleButtonBar(40);
-    layout->addWidget(m_bar, 0, Qt::AlignTop | Qt::AlignCenter );
-    m_bar->show();
-
-    qobject_cast<QBoxLayout *>(m_bar->layout())->insertStretch(0, 2);
-
-    KCircleButton *rew = m_bar->addButton(QPixmap(THEME_DIR+"/icons/rw.png" ));
-    KCircleButton *play = m_bar->addButton(QPixmap(THEME_DIR+"/icons/play.png" ));
-    KCircleButton *stop = m_bar->addButton(QPixmap(THEME_DIR+"/icons/stop.png" ));
-    KCircleButton *ff = m_bar->addButton(QPixmap(THEME_DIR+"/icons/ff.png" ));
-
-    qobject_cast<QBoxLayout *>(m_bar->layout())->addStretch(2);
-
-    connect(play, SIGNAL(clicked()), this, SLOT(doPlay()));
-    connect(stop, SIGNAL(clicked()), m_animationArea, SLOT(stop()));
-#endif
 
     m_container->setLayout(layout);
-
     setCentralWidget(m_container);
 }
 

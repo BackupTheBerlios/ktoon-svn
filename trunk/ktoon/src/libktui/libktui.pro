@@ -12,12 +12,12 @@ images.path = /data/es/images/
 HEADERS += ktthemeselector.h \
            ktabout.h \
            ktpreferences.h \
-           ktworkspace.h \
+           ktanimationspace.h \
            ktpaintareaconfig.h 
 SOURCES += ktthemeselector.cpp \
            ktabout.cpp \
            ktpreferences.cpp \
-           ktworkspace.cpp \
+           ktanimationspace.cpp \
            ktpaintareaconfig.cpp 
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon
