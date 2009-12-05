@@ -286,24 +286,36 @@ void KTProject::fromXml(const QString &xml)
     QDomElement root = document.documentElement();
     QDomNode n = root.firstChild();
 
+    int i = 0;
     while (!n.isNull()) {
            QDomElement e = n.toElement();
 
            if (!e.isNull()) {
-
                if (e.tagName() == "project") {
                    setProjectName(e.attribute("name", projectName()));
-               } else if (e.tagName() == "meta") {
-                          QDomNode n1 = e.firstChild();
-                          while(!n1.isNull()) {
-                                QDomElement e1 = n1.toElement();
-                                if (e1.tagName() == "author") {
-                                    if (e1.firstChild().isText()) 
-                                        setAuthor(e1.text());
-                                } else if (e1.tagName() == "description") {
-                                           if (e1.firstChild().isText())
-                                               setDescription(e1.text());
+                   QDomNode n1 = e.firstChild();
+                   e = n1.toElement();
+
+                   if (e.tagName() == "meta") {
+
+                       QDomNode n1 = e.firstChild();
+
+                       while (!n1.isNull()) {
+
+                              QDomElement e1 = n1.toElement();
+
+                              if (e1.tagName() == "author") {
+
+                                  if (e1.firstChild().isText()) 
+                                      setAuthor(e1.text());
+
+                              } else if (e1.tagName() == "description") {
+
+                                         if (e1.firstChild().isText())
+                                             setDescription(e1.text());
+
                                 } else if (e1.tagName() == "dimension") {
+
                                            if (e1.firstChild().isText()) {
                                                QStringList list = e1.text().split(",");
                                                int x = list.at(0).toInt();
@@ -311,15 +323,19 @@ void KTProject::fromXml(const QString &xml)
                                                QSize size(x,y);
                                                setDimension(size);
                                            }
+
                                 } else if (e1.tagName() == "fps") {
                                            if (e1.firstChild().isText())
                                                setFPS(e1.text().toInt());
+
                                 }
                                 n1 = n1.nextSibling();
                           }
+                   }
                }
-           }
+           } 
            n = n.nextSibling();
+           i++;
     }
 }
 
@@ -421,6 +437,10 @@ bool KTProject::removeSymbolFromProject(const QString &name, int scene, int laye
 {
      #ifdef K_DEBUG
             kFatal("project") << "removeSymbolFromProject::Find me in ktproject.cpp";
+            kDebug() << "Name: " << name;
+            kDebug() << "Scene: " << scene; 
+            kDebug() << "Layer: " << layer;
+            kDebug() << "Frame: " << frame; 
      #endif
 
      return false;
@@ -451,7 +471,7 @@ bool KTProject::deleteDataDir()
     if (QFile::exists(dataDir() ) && !k->name.isEmpty()) {
         QDir dir(dataDir() );
 
-        if (dir.exists("audio") && dir.exists("video") && dir.exists("images") || dir.exists("project.ktp")) {
+        if ((dir.exists("audio") && dir.exists("video") && dir.exists("images")) || dir.exists("project.ktp")) {
             #ifdef K_DEBUG
                    kDebug("project") << "Removing " << dir.absolutePath() << "...";
             #endif

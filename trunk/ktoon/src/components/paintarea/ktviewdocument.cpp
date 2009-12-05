@@ -82,7 +82,7 @@ struct KTViewDocument::Private
 
 KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindow(parent), k(new Private)
 {
-    setWindowIcon(QPixmap(THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
+    setWindowIcon(QPixmap(THEME_DIR + "/icons/layer_pic.png") ); // FIXME: new image for documents
 
     k->actionManager = new KActionManager(this);
 
@@ -105,18 +105,18 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
     switch (renderType) {
             case KToon::OpenGL:
-                 k->paintArea->setUseOpenGL( true );
+                 k->paintArea->setUseOpenGL(true);
                  break;
 
             case KToon::Native:
-                 k->paintArea->setUseOpenGL( false );
+                 k->paintArea->setUseOpenGL(false);
                  break;
 
             default:
                  #ifdef K_DEBUG
                         kWarning() << "Unsopported render, switching to native!";
                  #endif
-                 k->paintArea->setUseOpenGL( false );
+                 k->paintArea->setUseOpenGL(false);
             break;
     }
 	

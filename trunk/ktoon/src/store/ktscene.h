@@ -32,7 +32,6 @@
 #include <QMap>
 
 #include "ktinthash.h"
-
 #include "ktglobal_store.h"
 
 class QGraphicsItem;
@@ -46,98 +45,91 @@ typedef KTIntHash<KTLayer *> Layers;
 typedef KTIntHash<KTSoundLayer *> SoundLayers;
 
 /**
- * @brief Esta clase representa una escena
+ * @brief This class represents the scene data structure
  * @author David Cuadrado \<krawek@toonka.com\>
 */
 
 class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
 {
-	Q_OBJECT
-	public:
-		/**
-		 * Constructor por defecto
-		 */
-		KTScene(KTProject *parent);
-		
-		/**
-		 * Destructor
-		 */
-		~KTScene();
-		
-		/**
-		 * Pone un nombre a la escena
-		 */
-		void setSceneName(const QString &name);
-		
-		/**
-		 * Bloquea la escena
-		 */
-		void setLocked(bool isLocked);
-		
-		/**
-		 * retorna el nombre de la escena
-		 */
-		QString sceneName() const;
-		
-		/**
-		 * Returna verdadero cuando la escena esta bloqueada
-		 */
-		bool isLocked() const;
-		
-		
-		void setVisible(bool isVisible);
-		bool isVisible() const;
-		
-		/**
-		 * Retorna la lista de layers
-		 */
-		Layers layers() const;
-		
-		SoundLayers soundLayers() const;
-		
-		
-		KTLayer *layer(int position) const;
-		
-		KTSoundLayer *soundLayer(int position) const;
-		
-		void setLayers(const Layers &);
-		
-		/**
-		 * Remueve el layer situado en el indice proporcionado
-		 */
-		bool removeLayer(int index);
-		
-		/**
-		 * Crea una layer, si addToEnd es verdadero el layer se creara al final, sino se creara despues del layer actual
-		 */
-		KTLayer *createLayer(int position, bool loaded = false);
-		
-		KTSoundLayer *createSoundLayer(int position, bool loaded = false);
-		
-		/**
-		 * Mueve el layer a la posicicion indicada
-		 */
-		bool moveLayer(int from, int to);
-		
-		int logicalIndex() const;
-		int visualIndex() const;
-		int visualIndexOf(KTLayer *layer) const;
-		int logicalIndexOf(KTLayer *layer) const;
-		
-		KTProject *project() const;
-		
-		void addTweeningObject(KTGraphicObject *object);
-		void removeTweeningObject(KTGraphicObject *object);
-		QList<KTGraphicObject *> tweeningObjects() const;
-		
-	public:
-		virtual void fromXml(const QString &xml );
-		virtual QDomElement toXml(QDomDocument &doc) const;
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT
+    public:
+        /**
+          * Default Constructor
+          */
+        KTScene(KTProject *parent);
+
+        /**
+          * Destructor
+          */
+        ~KTScene();
+
+        /**
+          * Sets scene name
+          */
+        void setSceneName(const QString &name);
+
+        /**
+          * Locks the scene
+          */
+        void setLocked(bool isLocked);
+
+        /**
+          * Returns scene name
+          */
+        QString sceneName() const;
+
+        /**
+          * Returns true if scene is locked
+          */
+        bool isLocked() const;
+        void setVisible(bool isVisible);
+        bool isVisible() const;
+
+        /**
+          * Returns layers list
+          */
+        Layers layers() const;
+        SoundLayers soundLayers() const;
+
+        KTLayer *layer(int position) const;
+        KTSoundLayer *soundLayer(int position) const;
+
+        void setLayers(const Layers &);
+
+        /**
+          * Removes the layer at index
+          */
+        bool removeLayer(int index);
+
+        /**
+          * Adds a layer, if addToEnd is true, the layer will be set at the end, otherwise next to the current layer
+          */
+        KTLayer *createLayer(int position, bool loaded = false);
+
+        KTSoundLayer *createSoundLayer(int position, bool loaded = false);
+
+        /**
+          * Moves the layer to the index
+          */
+        bool moveLayer(int from, int to);
+
+        int logicalIndex() const;
+        int visualIndex() const;
+        int visualIndexOf(KTLayer *layer) const;
+        int logicalIndexOf(KTLayer *layer) const;
+
+        KTProject *project() const;
+        void addTweeningObject(KTGraphicObject *object);
+        void removeTweeningObject(KTGraphicObject *object);
+        QList<KTGraphicObject *> tweeningObjects() const;
+
+    public:
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc) const;
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif
-

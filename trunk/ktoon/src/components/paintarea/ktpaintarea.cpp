@@ -79,7 +79,7 @@ KTPaintArea::KTPaintArea(const KTProject *project, QWidget * parent) : KTPaintAr
     k->project = project;
     k->currentSceneIndex = 0;
 
-    setCurrentScene( 0 );
+    setCurrentScene(0);
     if (graphicsScene()->scene())
         graphicsScene()->setCurrentFrame( 0, 0 );
 }

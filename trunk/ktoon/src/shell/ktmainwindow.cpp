@@ -222,7 +222,8 @@ void KTMainWindow::viewNewDocument(const QString &title)
       
         m_viewDoc->setAntialiasing(true);
 
-        KTViewCamera *viewCamera = m_cameraWidget->viewCamera();
+        KTViewCamera *viewCamera = new KTViewCamera(m_projectManager->project());
+        //m_cameraWidget->viewCamera();
         ui4project(viewCamera);
 
         m_animationSpace = new KTAnimationspace(viewCamera);

@@ -28,8 +28,8 @@
 #include "ktgraphicobject.h"
 #include "ktgraphicsscene.h"
 #include "ktanimationrenderer.h"
-
 #include "ktsoundlayer.h"
+
 #include <kcore/kdebug.h>
 
 struct KTAnimationArea::Private
@@ -71,10 +71,13 @@ KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QF
 
     k->renderCamera = QImage(size(), QImage::Format_RGB32);
     k->renderCamera.fill(qRgb(255, 255, 255));
+
     k->timer = new QTimer(this);
 
     connect(k->timer, SIGNAL(timeout()), this, SLOT(advance()));
-    setCurrentScene( 0 );
+    setCurrentScene(0);
+
+    nextFrame();
 }
 
 
@@ -233,7 +236,7 @@ void KTAnimationArea::render()
 
     k->sounds.clear();
 
-    foreach (KTSoundLayer *layer, scene->soundLayers().values() )
+    foreach (KTSoundLayer *layer, scene->soundLayers().values())
              k->sounds << layer;
 
     k->photograms.clear();
@@ -260,7 +263,7 @@ QSize KTAnimationArea::sizeHint() const
     return k->renderCamera.size();
 }
 
-void  KTAnimationArea::resizeEvent ( QResizeEvent * e)
+void  KTAnimationArea::resizeEvent (QResizeEvent * e)
 {
     QFrame::resizeEvent(e);
 
@@ -273,9 +276,9 @@ void  KTAnimationArea::resizeEvent ( QResizeEvent * e)
     update();
 }
 
-void KTAnimationArea::setLoop(bool l)
+void KTAnimationArea::setLoop(bool loop)
 {
-    k->ciclicAnimation = l;
+    k->ciclicAnimation = loop;
 }
 
 void KTAnimationArea::setCurrentScene(int index)
@@ -285,6 +288,6 @@ void KTAnimationArea::setCurrentScene(int index)
 
 KTScene *KTAnimationArea::currentScene() const
 {
-    return k->project->scene( k->currentSceneIndex );
+    return k->project->scene(k->currentSceneIndex);
 }
 

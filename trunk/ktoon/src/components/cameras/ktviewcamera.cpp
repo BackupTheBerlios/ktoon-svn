@@ -151,7 +151,13 @@ KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QFrame(parent)
     m_loop = new QCheckBox(tr("Loop"));
     connect(m_loop, SIGNAL(clicked()), this, SLOT(setLoop()));
     m_status->addWidget(m_loop);
-    showSceneInfo(m_animationArea->currentScene());
+    //showSceneInfo(m_animationArea->currentScene());
+
+    KTScene *scene = project->scene(0);
+    if (scene)
+        m_status->setSceneName(scene->sceneName());
+
+    m_status->setFPS(project->fps());
 
     layout->addWidget(m_status, 0, Qt::AlignCenter|Qt::AlignTop);
     setLayout(layout);
@@ -181,7 +187,6 @@ QSize KTViewCamera::sizeHint() const
     QSize size = QWidget::sizeHint();
     return size.expandedTo(QApplication::globalStrut());
 }
-
 
 void KTViewCamera::doPlay()
 {

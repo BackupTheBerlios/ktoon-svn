@@ -138,11 +138,12 @@ void KTMainWindow::createGUI()
     // Adding the export widget to the bottom side of the interface
 
     KTExportWidget *m_exportWidget = new KTExportWidget(m_projectManager->project());
-    view = addToolView(m_exportWidget, Qt::BottomDockWidgetArea, Drawing);
+    view = addToolView(m_exportWidget, Qt::BottomDockWidgetArea, All);
     connectToDisplays(m_exportWidget);
 
     // Adding the camera widget to the bottom side of the interface
 
+    /*
     m_cameraWidget = new KTCameraWidget(m_projectManager->project());
     view = addToolView(m_cameraWidget, Qt::BottomDockWidgetArea, Animation);
     m_actionManager->insert(view->toggleViewAction(), "show camera");
@@ -150,6 +151,7 @@ void KTMainWindow::createGUI()
 
     ui4project(m_cameraWidget);
     connectToDisplays(m_cameraWidget);
+    */
 
     enableToolViews(false);
 }
