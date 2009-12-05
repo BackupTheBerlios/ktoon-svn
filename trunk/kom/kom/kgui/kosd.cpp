@@ -76,24 +76,24 @@ void KOsd::display(const QString &message, Level level, int ms)
                 case Info:
                    {
                      background = QColor(0x678eae);
-                     m_document->setHtml("<font size=+3>" + tr("Information") + "</font><br><font size=+2>" + htmlMessage + "</font>");
+                     m_document->setHtml("<font size=+2>" + tr("Information") + "</font><br><font size=+1>" + htmlMessage + "</font>");
                    }
                    break;
                 case Warning:
                    {
-                     m_document->setHtml("<font size=+3>" + tr("Attention") + "</font><br><font size=+2>" + htmlMessage + "</font>");
+                     m_document->setHtml("<font size=+2>" + tr("Attention") + "</font><br><font size=+1>" + htmlMessage + "</font>");
                    }
                    break;
                 case Error:
                    {
                      background = Qt::red;
-                     m_document->setHtml("<font size=+3>" + tr("Error") + "</font><br><font size=+2>" + htmlMessage + "</font>");
+                     m_document->setHtml("<font size=+2>" + tr("Error") + "</font><br><font size=+1>" + htmlMessage + "</font>");
                    }
                    break;
                 case Fatal:
                    {
                      background = Qt::magenta;
-                     m_document->setHtml("<font size=+3>" + tr("Error") + "</font><br><font size=+2>" + htmlMessage+"</font>");
+                     m_document->setHtml("<font size=+2>" + tr("Error") + "</font><br><font size=+1>" + htmlMessage+"</font>");
                    }
                    break;
                 default:
@@ -115,7 +115,8 @@ void KOsd::display(const QString &message, Level level, int ms)
     int height = (int)textSize.height()+10;
 
     QDesktopWidget desktop;
-    move ((int) (desktop.screenGeometry().width() - textSize.width()) - 50, 50);
+    //move ((int) (desktop.screenGeometry().width() - textSize.width()) - 50, 50);
+    move((int) (desktop.screenGeometry().width() - textSize.width()) - 25, (int) (desktop.screenGeometry().height() - textSize.height()) - 50);
 
     QRect geometry(0, 0, width + 10, height + 8);
     QRect geometry2(0, 0, width + 9, height + 7);
@@ -125,7 +126,7 @@ void KOsd::display(const QString &message, Level level, int ms)
     mask = QBitmap(geometry.size());
     m_pixmap = QPixmap(geometry.size());
 
-    resize( geometry.size() );
+    resize(geometry.size());
 
     // create and set transparency mask
     QPainter maskPainter(&mask);
@@ -146,7 +147,7 @@ void KOsd::display(const QString &message, Level level, int ms)
     // close the message window after given mS
     if (ms > 0) {
         m_animator->timer.start(300);
-        m_timer->start( ms );
+        m_timer->start(ms);
     } else if (m_timer) {
         m_timer->stop();
     }
@@ -160,13 +161,13 @@ KOsd *KOsd::self()
     return s_osd;
 }
 
-void KOsd::paintEvent( QPaintEvent * e )
+void KOsd::paintEvent(QPaintEvent * e)
 {
-    QPainter p( this );
-    p.drawPixmap( e->rect().topLeft(), m_pixmap, e->rect() );
+    QPainter p(this);
+    p.drawPixmap(e->rect().topLeft(), m_pixmap, e->rect());
 }
 
-void KOsd::mousePressEvent( QMouseEvent *e )
+void KOsd::mousePressEvent(QMouseEvent *e)
 {
     if (m_timer)
         m_timer->stop();
@@ -211,7 +212,7 @@ void KOsd::drawPixmap(const QBrush &background, const QBrush &foreground)
 {
     QPixmap symbol;
 
-    QRect textRect = QRect(QPoint(0, 0), m_document->size().toSize() );
+    QRect textRect = QRect(QPoint(0, 0), m_document->size().toSize());
 
     QSizeF textSize = m_document->size();
 
@@ -221,31 +222,31 @@ void KOsd::drawPixmap(const QBrush &background, const QBrush &foreground)
     int textXOffset = 0;
     int shadowOffset = QApplication::isRightToLeft() ? -1 : 1;
 
-    QRect geometry( 0, 0, width + 10, height + 8 );
-    QRect geometry2( 0, 0, width + 9, height + 7 );
+    QRect geometry(0, 0, width + 10, height + 8);
+    QRect geometry2(0, 0, width + 9, height + 7);
 
     textXOffset = 2;
 
     width += textXOffset;
-    height = qMax( height, symbol.height() );
+    height = qMax(height, symbol.height());
 
     // draw background
     m_pixmap.fill(Qt::gray);
-    QPainter bufferPainter( &m_pixmap );
+    QPainter bufferPainter(&m_pixmap);
     bufferPainter.setRenderHint(QPainter::Antialiasing);
-    bufferPainter.setPen( QPen(QBrush(foreground), 3)  );
+    bufferPainter.setPen(QPen(QBrush(foreground), 3));
 
-    QLinearGradient gradient(geometry.topLeft(), geometry.bottomLeft() );
+    QLinearGradient gradient(geometry.topLeft(), geometry.bottomLeft());
 
     QColor color0 = background.color();
     color0.setAlpha(180);
 
-    QColor color1 = palette().color( QPalette::Button);
+    QColor color1 = palette().color(QPalette::Button);
     color1.setAlpha(180);
 
-    gradient.setColorAt(0.0, color0 );
-    gradient.setColorAt(1.0, color1 );
-    gradient.setSpread(QGradient::ReflectSpread );
+    gradient.setColorAt(0.0, color0);
+    gradient.setColorAt(1.0, color1);
+    gradient.setSpread(QGradient::ReflectSpread);
 
     bufferPainter.setBrush(gradient); 
     bufferPainter.drawRoundRect(geometry2, 1600/geometry2.width(), 1600/geometry2.height());
@@ -261,4 +262,3 @@ void KOsd::drawPixmap(const QBrush &background, const QBrush &foreground)
 
     m_document->drawContents(&bufferPainter, QRect(0, 0, textRect.width(), textRect.height()));
 }
-
