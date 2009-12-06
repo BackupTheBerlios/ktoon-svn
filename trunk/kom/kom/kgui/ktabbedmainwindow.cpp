@@ -71,7 +71,7 @@ void TabWidgetPrivate::wheelMove(int delta)
             if (current < 0)
                 current = count() - 1;
         }
-        setCurrentIndex( current );
+        setCurrentIndex(current);
     }
 }
 
@@ -144,8 +144,10 @@ void KTabbedMainWindow::setupTabWidget(QTabWidget *w)
 
 void KTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int perspective)
 {
-    if (perspective & currentPerspective())
-        m_tabWidget->addTab(widget, widget->windowIcon(), widget->windowTitle());
+    qDebug() << "** Adding widget -> " << perspective;
+
+    //if (perspective & currentPerspective())
+    m_tabWidget->addTab(widget, widget->windowIcon(), widget->windowTitle());
 
     if (persistant)
         m_persistantWidgets << widget;
@@ -264,7 +266,7 @@ void KTabbedMainWindow::setupPerspective(int wps)
                  w->show();
              } else {
                  w->hide();
-                 m_tabWidget->removeTab( m_tabWidget->indexOf(w) );
+                 m_tabWidget->removeTab(m_tabWidget->indexOf(w));
              }
     }
 

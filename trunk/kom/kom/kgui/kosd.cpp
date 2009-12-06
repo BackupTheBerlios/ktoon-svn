@@ -72,28 +72,34 @@ void KOsd::display(const QString &message, Level level, int ms)
     QBrush foreground = palette().foreground();
 
     if (level != None) {
+  
+        QString logo = THEME_DIR + "/icons/help.png";
         switch (level) {
                 case Info:
                    {
-                     background = QColor(0x678eae);
-                     m_document->setHtml("<font size=+2>" + tr("Information") + "</font><br><font size=+1>" + htmlMessage + "</font>");
+                     background = QColor(0xc1e2fb);
+                     m_document->setHtml("<img src=\"" + logo + "\"><font style=\"font-size:12px;\"><b>&nbsp;&nbsp;" \
+                                         + tr("Information") + "</b></font><br><font style=\"font-size:12px\">" + htmlMessage + "</font>");
                    }
                    break;
                 case Warning:
                    {
-                     m_document->setHtml("<font size=+2>" + tr("Attention") + "</font><br><font size=+1>" + htmlMessage + "</font>");
+                     m_document->setHtml("<img src=\"" + logo + "\"><font style=\"font-size:12px;\"><b>&nbsp;&nbsp;" \
+                                         + tr("Attention") + "</b></font><br><font style=\"font-size:12px\">" + htmlMessage + "</font>");
                    }
                    break;
                 case Error:
                    {
                      background = Qt::red;
-                     m_document->setHtml("<font size=+2>" + tr("Error") + "</font><br><font size=+1>" + htmlMessage + "</font>");
+                     m_document->setHtml("<img src=\"" + logo + "\"><font style=\"font-size:12px;\"><b>&nbsp;&nbsp;" \
+                                         + tr("Error") + "</b></font><br><font style=\"font-size:12px\">" + htmlMessage + "</font>");
                    }
                    break;
                 case Fatal:
                    {
                      background = Qt::magenta;
-                     m_document->setHtml("<font size=+2>" + tr("Error") + "</font><br><font size=+1>" + htmlMessage+"</font>");
+                     m_document->setHtml("<img src=\"" + logo + "\"><font style=\"font-size:12px;\"><b>&nbsp;&nbsp;" \
+                                         + tr("Error") + "</b></font><br><font style=\"font-size:12px\">" + htmlMessage+"</font>");
                    }
                    break;
                 default:
@@ -115,7 +121,6 @@ void KOsd::display(const QString &message, Level level, int ms)
     int height = (int)textSize.height()+10;
 
     QDesktopWidget desktop;
-    //move ((int) (desktop.screenGeometry().width() - textSize.width()) - 50, 50);
     move((int) (desktop.screenGeometry().width() - textSize.width()) - 25, (int) (desktop.screenGeometry().height() - textSize.height()) - 50);
 
     QRect geometry(0, 0, width + 10, height + 8);
@@ -132,8 +137,9 @@ void KOsd::display(const QString &message, Level level, int ms)
     QPainter maskPainter(&mask);
     maskPainter.setRenderHint(QPainter::Antialiasing);
     mask.fill(Qt::white);
-    maskPainter.setBrush(Qt::black);
-    maskPainter.drawRoundRect(geometry2, 1600 / geometry2.width(), 1600 / geometry2.height());
+
+    maskPainter.drawRoundedRect(0, 0, width + 9, height + 7, 1, 1, Qt::AbsoluteSize);
+
     setMask(mask);
 
     maskPainter.end();
@@ -234,7 +240,7 @@ void KOsd::drawPixmap(const QBrush &background, const QBrush &foreground)
     m_pixmap.fill(Qt::gray);
     QPainter bufferPainter(&m_pixmap);
     bufferPainter.setRenderHint(QPainter::Antialiasing);
-    bufferPainter.setPen(QPen(QBrush(foreground), 3));
+    bufferPainter.setPen(QPen(QBrush(foreground), 1));
 
     QLinearGradient gradient(geometry.topLeft(), geometry.bottomLeft());
 
@@ -249,16 +255,11 @@ void KOsd::drawPixmap(const QBrush &background, const QBrush &foreground)
     gradient.setSpread(QGradient::ReflectSpread);
 
     bufferPainter.setBrush(gradient); 
-    bufferPainter.drawRoundRect(geometry2, 1600/geometry2.width(), 1600/geometry2.height());
-	 
+    bufferPainter.drawRoundedRect(0, 0, width + 8, height + 6, 1, 1, Qt::AbsoluteSize);
+
     // draw shadow and text
     bufferPainter.setPen(palette().background().color().dark(115));
     bufferPainter.translate(5 + textXOffset + shadowOffset, 1);
 
     m_document->drawContents(&bufferPainter,QRect(0,0, textRect.width(), textRect.height()));
-
-    bufferPainter.translate(-shadowOffset, -1);
-    bufferPainter.setPen(palette().foreground().color());
-
-    m_document->drawContents(&bufferPainter, QRect(0, 0, textRect.width(), textRect.height()));
 }

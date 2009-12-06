@@ -109,7 +109,8 @@ void DefaultSettings::restore(KMainWindow *w)
                       Qt::DockWidgetArea area = Qt::DockWidgetArea(settings.value("area", 0).toInt());
                       w->moveToolView(view, area);
                       view->setFixedSize(settings.value("size").toInt());
-                      view->button()->setToolButtonStyle(Qt::ToolButtonStyle(settings.value("style", int(view->button()->toolButtonStyle())).toInt()));
+                      view->button()->setToolButtonStyle(Qt::ToolButtonStyle(settings.value("style", 
+                                                         int(view->button()->toolButtonStyle())).toInt()));
                       view->button()->setSensible(settings.value("sensibility", view->button()->isSensible()).toBool());
 
                       bool visible = settings.value("visible", false ).toBool();
@@ -527,7 +528,17 @@ void KMainWindow::setCurrentPerspective(int workspace)
                       view->setUpdatesEnabled(false);
 
                       if (view->perspective() & workspace) {
-                          bar->enable(view->button());
+
+                          // Temporary code while Library, Help and Time Line are fixed
+                          if (view->getObjectID().compare("KToolView-Library")==0
+                              || view->getObjectID().compare("KToolView-Time Line")==0
+                              || view->getObjectID().compare("KToolView-Help")==0
+                              || view->getObjectID().compare("KToolView-Camera")==0) {
+                              bar->enable(view->button());
+                              view->enableButton(false);
+                          } else {
+                              bar->enable(view->button());
+                          } 
                           if (view->button()->isChecked())
                               view->show();
                       } else {
