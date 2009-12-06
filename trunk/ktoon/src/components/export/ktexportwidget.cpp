@@ -546,13 +546,15 @@ void ExportTo::exportIt()
 
     QDir directory(path);
     if (!directory.exists()) {
-        QMessageBox::critical(this, tr("Error!"), tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), QMessageBox::Ok);
+        //QMessageBox::critical(this, tr("Error!"), tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), QMessageBox::Ok);
+        KOsd::self()->display(tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), KOsd::Error);
         return;
     } else {
         QFile file(directory.filePath(name));
         if (!file.open(QIODevice::ReadWrite)) {
             file.remove();
-            QMessageBox::critical(this, tr("Error!"), tr("You have no permission to create this file. Please, choose another path."), QMessageBox::Ok);
+            //QMessageBox::critical(this, tr("Error!"), tr("You have no permission to create this file. Please, choose another path."), QMessageBox::Ok);
+            KOsd::self()->display(tr("You have no permission to create this file. Please, choose another path."), KOsd::Error);
             return;
         }
         file.remove();
@@ -604,7 +606,7 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KExp
     #endif
 
     setWindowTitle(tr("Export"));
-    setWindowIcon(QIcon(THEME_DIR+"/icons/export.png"));
+    setWindowIcon(QIcon(THEME_DIR + "/icons/export.png"));
 
     m_pluginSelectionPage = new SelectPlugin();
     addPage(m_pluginSelectionPage);

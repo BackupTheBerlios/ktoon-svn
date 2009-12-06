@@ -23,7 +23,8 @@
 #include "ktpaintareastatus.h"
 
 #include <QComboBox>
-#include <QPushButton>
+//#include <QPushButton>
+#include <QCheckBox>
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QIntValidator>
@@ -57,8 +58,7 @@ class ColorWidget : public QWidget
 
 QSize ColorWidget::sizeHint() const
 {
-    QSize size(40, -1);
-
+    QSize size(30, -1);
     return size;
 }
 
@@ -97,9 +97,14 @@ BrushStatus::BrushStatus()
     m_pen = new ColorWidget;
     m_brush = new ColorWidget;
 
+    layout->addWidget(new KSeparator(Qt::Vertical));
+    layout->addWidget(new QLabel(tr("Current Color")));
     layout->addWidget(m_pen);
-    layout->addWidget( new KSeparator(Qt::Vertical ) );
-    layout->addWidget(m_brush);
+    layout->addSpacing(5);
+    //layout->addWidget(new KSeparator(Qt::Vertical));
+    //layout->addSpacing(5);
+    //layout->addWidget(new QLabel(tr("Current Brush")));
+    //layout->addWidget(m_brush);
 }
 
 BrushStatus::~BrushStatus()
@@ -108,7 +113,7 @@ BrushStatus::~BrushStatus()
 
 void BrushStatus::setForeground(const QPen &pen)
 {
-    m_pen->setBrush( pen.brush() );
+    m_pen->setBrush(pen.brush());
 }
 
 void BrushStatus::setBackground(const QBrush &brush)
@@ -121,8 +126,9 @@ void BrushStatus::setBackground(const QBrush &brush)
 struct KTPaintAreaStatus::Private
 {
     KTViewDocument *viewDocument;
-    QPushButton *antialiasHint;
-    QComboBox *renderer;
+    //QPushButton *antialiasHint;
+    QCheckBox *antialiasHint;
+    //QComboBox *renderer;
     BrushStatus *brushStatus;
     QComboBox *rotation;
 };
@@ -131,6 +137,7 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 {
     setSizeGripEnabled(false);
     k->viewDocument = parent;
+
     QWidget *rotContainer = new QWidget;
     QHBoxLayout *rotLayout = new QHBoxLayout(rotContainer);
     rotLayout->setSpacing(3);
@@ -147,7 +154,7 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 
     k->rotation->setValidator(new QIntValidator(-360, 360,this));
 
-    rotLayout->addWidget( k->rotation);
+    rotLayout->addWidget(k->rotation);
 
     addPermanentWidget(rotContainer);
 
@@ -155,36 +162,22 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 
     ///////
 
-    k->antialiasHint = new QPushButton;
-    k->antialiasHint->setFocusPolicy( Qt::NoFocus);
-
-    k->antialiasHint->setText(tr("Antialiasing"));
+    k->antialiasHint = new QCheckBox(tr("Antialiasing"));
+    k->antialiasHint->setFocusPolicy(Qt::NoFocus);
     k->antialiasHint->setCheckable(true);
-	
-    //k->antialiasHint->setChecked( parent->renderHints() & QPainter::Antialiasing );
     k->antialiasHint->setChecked(true);
-	
-    addPermanentWidget(k->antialiasHint/*,1*/);
+    addPermanentWidget(k->antialiasHint);
 
-    k->renderer = new QComboBox;
-
-#ifdef QT_OPENGL_LIB
-    k->renderer->addItem(tr("OpenGL"), KToon::OpenGL );
-#endif
-
-    k->renderer->addItem(tr("Native"), KToon::Native );
-    k->renderer->setCurrentIndex(1);
-
-    addPermanentWidget(k->renderer/*,1*/);
+    connect(k->antialiasHint, SIGNAL(clicked()), this, SLOT(selectAntialiasingHint()));
 
     k->brushStatus = new BrushStatus;
     addPermanentWidget(k->brushStatus);
 
-    connect(k->antialiasHint, SIGNAL(toggled(bool)), this, SLOT(selectAntialiasingHint(bool) ));
-    connect(k->renderer, SIGNAL(activated(int)), this, SLOT(selectRenderer(int)));
+    //connect(k->antialiasHint, SIGNAL(toggled(bool)), this, SLOT(selectAntialiasingHint(bool)));
+    //connect(k->antialiasHint, SIGNAL(clicked()), this, SLOT(selectAntialiasingHint(bool)));
 
-    k->brushStatus->setBackground( k->viewDocument->brushManager()->brush() );
-    k->brushStatus->setForeground( k->viewDocument->brushManager()->pen() );
+    k->brushStatus->setBackground(k->viewDocument->brushManager()->brush());
+    k->brushStatus->setForeground(k->viewDocument->brushManager()->pen());
 }
 
 KTPaintAreaStatus::~KTPaintAreaStatus()
@@ -193,19 +186,21 @@ KTPaintAreaStatus::~KTPaintAreaStatus()
 }
 
 
-void KTPaintAreaStatus::selectAntialiasingHint(bool use)
+void KTPaintAreaStatus::selectAntialiasingHint()
 {
-    k->viewDocument->setAntialiasing( use ); 
+    k->viewDocument->setAntialiasing(k->antialiasHint->isChecked()); 
 }
 
 void KTPaintAreaStatus::selectRenderer(int id)
 {
+  /*
     KToon::RenderType type = KToon::RenderType(k->renderer->itemData(id ).toInt());
 
     if (type == KToon::OpenGL)
         k->viewDocument->setOpenGL(true);
     else
         k->viewDocument->setOpenGL(false);
+   */
 }
 
 

@@ -32,23 +32,24 @@ class KTViewDocument;
 */
 class KTPaintAreaStatus : public QStatusBar
 {
-	Q_OBJECT;
-	public:
-		KTPaintAreaStatus(KTViewDocument *parent);
-		~KTPaintAreaStatus();
-		
-	public slots:
-		void setBrush(const QBrush &brush);
-		void setPen(const QPen &pen);
-		
-	private slots:
-		void selectAntialiasingHint(bool use);
-		void selectRenderer(int id);
-		void applyRotationFromItem(const QString & text);
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    public:
+        KTPaintAreaStatus(KTViewDocument *parent);
+        ~KTPaintAreaStatus();
+
+    public slots:
+        void setBrush(const QBrush &brush);
+        void setPen(const QPen &pen);
+
+    private slots:
+        //void selectAntialiasingHint(bool use);
+        void selectAntialiasingHint();
+        void selectRenderer(int id);
+        void applyRotationFromItem(const QString & text);
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

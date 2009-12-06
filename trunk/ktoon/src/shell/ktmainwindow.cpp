@@ -34,6 +34,7 @@
 // Including some KOM headers
 #include <kgui/ktipdialog.h>
 #include <kcore/kdebug.h>
+#include <kgui/kosd.h>
 #include <kgui/kimageeffect.h>
 #include <ksound/kaudioplayer.h>
 
@@ -757,8 +758,29 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 
 void KTMainWindow::saveAs()
 {
-    QString fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), CACHE_DIR, 
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Build project package"), CACHE_DIR, 
                        "KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)");
+
+    int indexPath = fileName.lastIndexOf("/");
+    int indexFile = fileName.length() - indexPath;
+    QString name = fileName.right(indexFile - 1);
+    QString path = fileName.left(indexPath + 1);
+
+    QDir directory(path);
+    if (!directory.exists()) {
+        //QMessageBox::critical(this, tr("Error!"), tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), QMessageBox::Ok);
+        KOsd::self()->display(tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), KOsd::Error);
+        return;
+    } else {
+        QFile file(directory.filePath(name));
+        if (!file.open(QIODevice::ReadWrite)) {
+            file.remove();
+            //QMessageBox::critical(this, tr("Error!"), tr("You have no permission to create this file. Please, choose another path."), QMessageBox::Ok);
+            KOsd::self()->display(tr("You have no permission to create this file. Please, choose another path."), KOsd::Error);
+            return;
+        }
+        file.remove();
+    }
 
     if (fileName.isEmpty())
         return;
