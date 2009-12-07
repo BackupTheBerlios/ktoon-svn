@@ -35,6 +35,13 @@ class K_IDEAL_EXPORT KTabbedMainWindow : public KMainWindow
 {
     Q_OBJECT;
     public:
+
+        enum Perspective {
+             Drawing = 0x01,
+             Animation = 0x02,
+             All = Drawing | Animation
+        };
+
         KTabbedMainWindow(QWidget *parent = 0);
         ~KTabbedMainWindow();
 
@@ -42,6 +49,7 @@ class K_IDEAL_EXPORT KTabbedMainWindow : public KMainWindow
         void removeWidget(QWidget *widget, bool force = false);
         void setTabWidget(QTabWidget *w);
         QTabWidget *tabWidget() const;
+        void setCurrentTab(int index);
 
     protected:
         virtual void setupTabWidget(QTabWidget *w);

@@ -116,51 +116,19 @@ void KTabbedMainWindow::setupTabWidget(QTabWidget *w)
 {
     w->setFocusPolicy(Qt::NoFocus);
 
-    /*
-    if (! w->cornerWidget(Qt::TopRightCorner)) {
-        QToolButton *closeButton = new QToolButton(w);
-        QPixmap closepx(16, 16);
-        closepx.fill(Qt::transparent);
-
-        QPainter p(&closepx);
-        p.initFrom(this);
-        p.setPen(QPen(palette().buttonText(), 4));
-        p.drawLine(0, 0, 15,15);
-        p.drawLine(0, 15, 15, 0);
-        p.end();
-
-        closeButton->setIcon(closepx);
-        closeButton->adjustSize();
-        closeButton->hide();
-
-        w->setCornerWidget(closeButton, Qt::TopRightCorner);
-
-        connect(closeButton, SIGNAL(clicked()), this, SLOT(closeCurrentTab()));
-    }
-    */
-
     connect(w, SIGNAL(currentChanged(int)), this, SLOT(emitWidgetChanged(int)));
 }
 
 void KTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int perspective)
 {
-    qDebug() << "** Adding widget -> " << perspective;
-
-    //if (perspective & currentPerspective())
-    m_tabWidget->addTab(widget, widget->windowIcon(), widget->windowTitle());
+    if (perspective & currentPerspective())
+        m_tabWidget->addTab(widget, widget->windowIcon(), widget->windowTitle());
 
     if (persistant)
         m_persistantWidgets << widget;
 
     m_pages << widget;
     m_tabs[widget] = perspective;
-
-    /*
-    if (QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner))) {
-        if (!button->isVisible())
-            button->show();
-    }
-    */
 }
 
 /**
@@ -206,18 +174,15 @@ void KTabbedMainWindow::closeCurrentTab()
 void KTabbedMainWindow::emitWidgetChanged(int index)
 {
     QWidget *w = m_tabWidget->widget(index);
+    qDebug() << "*** HEY! Tab: " << index;
+    //qDebug() << "*** Title Window: " << w->windowTitle();
+ 
+    // QString label = w->windowTitle();
+    //if (label.compare(tr("The Joker")))
+    //    setCurrentPerspective(2);
 
-    /*
-    if (m_persistantWidgets.contains(w)) {
-        if (QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner)))
-            button->setEnabled(false);
-    } else {
-            if (QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner)))
-                button->setEnabled(true);
-    }
-    */
-
-    emit widgetChanged(w);
+    //setCurrentPerspective(2);
+    //emit widgetChanged(w);
 }
 
 /**
@@ -270,27 +235,26 @@ void KTabbedMainWindow::setupPerspective(int wps)
              }
     }
 
-/*
-    if (QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner))) {
-        if (!button->isVisible())
-            button->show();
-    }
-*/
-
     m_tabWidget->setUpdatesEnabled(true);
-    setUpdatesEnabled( true);
+    setUpdatesEnabled(true);
 	
     int count = m_tabWidget->count();
 
     for (int index = 0; index < count; index++) {
          QWidget *w = m_tabWidget->widget(index);
 
-         if (m_tabs[w] == wps) {
+         if (m_tabs[w] == wps || (w->objectName().compare("The Joker") == 0)) {
              w->show();
-             m_tabWidget->setTabEnabled( index, true);
+             m_tabWidget->setTabEnabled(index, true);
          } else {
              w->hide();
-             m_tabWidget->setTabEnabled( index, false);
+             m_tabWidget->setTabEnabled(index, false);
          }
     }
+}
+
+void KTabbedMainWindow::setCurrentTab(int index)
+{
+    if (index != -1)
+        m_tabWidget->setCurrentIndex(index);
 }

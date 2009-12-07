@@ -113,7 +113,7 @@ void DefaultSettings::restore(KMainWindow *w)
                                                          int(view->button()->toolButtonStyle())).toInt()));
                       view->button()->setSensible(settings.value("sensibility", view->button()->isSensible()).toBool());
 
-                      bool visible = settings.value("visible", false ).toBool();
+                      bool visible = settings.value("visible", false).toBool();
 
                       if (visible && view->button()->isVisible()) {
                           view->button()->setChecked(true);
@@ -131,11 +131,11 @@ void DefaultSettings::restore(KMainWindow *w)
              }
 
              settings.beginGroup(bar->windowTitle());
-             bar->setExclusive(settings.value("exclusive", true ).toBool());
+             bar->setExclusive(settings.value("exclusive", true).toBool());
              settings.endGroup();
 
              settings.beginGroup(bar->windowTitle());
-             bar->setAutoHide(settings.value("autohide", false ).toBool());
+             bar->setAutoHide(settings.value("autohide", false).toBool());
              settings.endGroup();
     }
 	
@@ -147,7 +147,7 @@ void DefaultSettings::restore(KMainWindow *w)
 
     settings.beginGroup("MainWindow");
     w->resize(settings.value("size").toSize());
-    bool maximized = settings.value("maximized", false ).toBool();
+    bool maximized = settings.value("maximized", false).toBool();
 
     if (maximized)
         w->showMaximized();
@@ -507,6 +507,8 @@ void KMainWindow::relayoutToolView()
  */
 void KMainWindow::setCurrentPerspective(int workspace)
 {
+    qDebug() << "*** Changing perspective to: " << workspace;
+
     if (m_currentPerspective == workspace) 
         return;
 
@@ -572,7 +574,7 @@ void KMainWindow::setCurrentPerspective(int workspace)
     while (widgetIt.hasNext()) {
            widgetIt.next();
 
-           if (widgetIt.value() & workspace)
+           if (widgetIt.value() & workspace) 
                widgetIt.key()->show();
            else
                widgetIt.key()->hide();
@@ -582,6 +584,9 @@ void KMainWindow::setCurrentPerspective(int workspace)
 
     while (actionIt.hasNext()) {
            actionIt.next();
+
+           //QString name = actionIt.key()->objectName();
+           //qDebug() << "*** Printing widget name: " << name;
 
            if (actionIt.value() & workspace)
                actionIt.key()->setVisible(true);
