@@ -588,6 +588,10 @@ void KTMainWindow::showWidgetPage()
 void KTMainWindow::changePerspective(QAction *a)
 {
     int perspective = a->data().toInt();
-    setCurrentPerspective(perspective);
+    kDebug() << " <- Selecting tab " << perspective;
+
+    setCurrentTab(perspective - 1);
+
+    //setCurrentPerspective(perspective);
     a->setChecked(true);
 }

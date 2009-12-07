@@ -140,7 +140,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) :
 
     // Defining the Drawing view, as the first interface to show up	
     setCurrentPerspective(Drawing);
-	
+
     KCONFIG->beginGroup("General");
     // check if into the config file, user always wants to start opening his last project created
     bool openLast = KCONFIG->value("OpenLastProject", true).toBool();
@@ -211,7 +211,6 @@ void KTMainWindow::viewNewDocument(const QString &title)
 
         m_viewDoc = new KTViewDocument(m_projectManager->project());
         connectToDisplays(m_viewDoc);
-        // m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
 
         m_viewDoc->setWindowTitle(tr("Illustration: %1").arg(title));
 
@@ -224,7 +223,6 @@ void KTMainWindow::viewNewDocument(const QString &title)
         m_viewDoc->setAntialiasing(true);
 
         KTViewCamera *viewCamera = new KTViewCamera(m_projectManager->project());
-        //m_cameraWidget->viewCamera();
         ui4project(viewCamera);
 
         m_animationSpace = new KTAnimationspace(viewCamera);
@@ -233,9 +231,12 @@ void KTMainWindow::viewNewDocument(const QString &title)
 
         addWidget(m_animationSpace, true, Animation);
 
-        //m_animationSpace->setCentralWidget(viewCamera);
-        //m_animationSpace->addWindow(viewCamera);
-        //viewCamera->showMaximized();
+        /*
+        QWidget *proof = new QWidget(this);
+        proof->setWindowTitle(tr("The Joker"));
+        m_animationSpace->setObjectName("The Joker");
+        addWidget(m_animationSpace, true, All);
+        */
 
         setCurrentPerspective(Drawing);
     }
@@ -918,4 +919,3 @@ void KTMainWindow::exportProject()
     KTExportWidget exportWidget(m_projectManager->project(), this);
     exportWidget.exec();
 }
-
