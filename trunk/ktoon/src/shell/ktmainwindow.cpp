@@ -214,7 +214,7 @@ void KTMainWindow::viewNewDocument(const QString &title)
 
         m_viewDoc->setWindowTitle(tr("Illustration: %1").arg(title));
 
-        addWidget(m_viewDoc, true, Drawing);
+        addWidget(m_viewDoc, true, All);
 
         connectToDisplays(m_viewDoc);
         ui4project(m_viewDoc);
@@ -229,16 +229,9 @@ void KTMainWindow::viewNewDocument(const QString &title)
         m_animationSpace->setWindowIcon(QIcon(THEME_DIR + "/icons/animation_mode.png"));
         m_animationSpace->setWindowTitle(tr("Animation"));
 
-        addWidget(m_animationSpace, true, Animation);
-
-        /*
-        QWidget *proof = new QWidget(this);
-        proof->setWindowTitle(tr("The Joker"));
-        m_animationSpace->setObjectName("The Joker");
         addWidget(m_animationSpace, true, All);
-        */
 
-        setCurrentPerspective(Drawing);
+        exposureView->expandDock(true);
     }
 }
 

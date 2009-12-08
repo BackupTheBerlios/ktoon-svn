@@ -97,11 +97,10 @@ void KTMainWindow::createGUI()
     connectToDisplays(m_scenes);
 
     // Adding the exposure sheet to the right side of the interface
-
     m_exposureSheet = new KTExposureSheet;
-    view = addToolView(m_exposureSheet, Qt::RightDockWidgetArea, Drawing);
-    m_actionManager->insert(view->toggleViewAction(), "show exposure");
-    addToPerspective(view->toggleViewAction(), Drawing);
+    exposureView = addToolView(m_exposureSheet, Qt::RightDockWidgetArea, Drawing);
+    m_actionManager->insert(exposureView->toggleViewAction(), "show exposure");
+    addToPerspective(exposureView->toggleViewAction(), Drawing);
 
     ui4project(m_exposureSheet);
     ui4localRequest(m_exposureSheet);
@@ -261,33 +260,30 @@ void KTMainWindow::setupMenu()
     m_actionManager->enable("show help", false);
     m_windowMenu->addSeparator();
 
-    // Temporary out while SQA is done
-	// Setup perspective menu
-	QMenu *perspectiveMenu = new QMenu(tr("Perspective"),this);
-	QActionGroup *group = new QActionGroup(this);
-	group->setExclusive(true);
+    // Setup perspective menu
+    m_viewMenu = new QMenu(tr("Modules"),this);
+    QActionGroup *group = new QActionGroup(this);
+    group->setExclusive(true);
 
-	// Adding Option Drawing
-	QAction *drawingPerspective = new QAction(tr("Drawing"), this);
-	drawingPerspective->setShortcut(QKeySequence(Qt::Key_F9));
-	drawingPerspective->setData(Drawing);
-	group->addAction(drawingPerspective);
+    // Adding Option Drawing
+    QAction *drawingPerspective = new QAction(tr("Drawing"), this);
+    drawingPerspective->setShortcut(QKeySequence(Qt::Key_F9));
+    drawingPerspective->setData(Drawing);
+    group->addAction(drawingPerspective);
 
-	// Adding Option Animation
-	QAction *animationPerspective = new QAction(tr("Animation"), this);
-	animationPerspective->setShortcut(QKeySequence(Qt::Key_F10));
-	//drawingPerspective->setCheckable(true);
-	group->addAction(animationPerspective);
-	animationPerspective->setData(Animation);
-	
-	perspectiveMenu->addActions(group->actions());
-	connect(group, SIGNAL(triggered(QAction *)), this, SLOT(changePerspective(QAction *)));
-	menuBar()->addMenu(perspectiveMenu);
-    ///
+    // Adding Option Animation
+    QAction *animationPerspective = new QAction(tr("Animation"), this);
+    animationPerspective->setShortcut(QKeySequence(Qt::Key_F10));
+    group->addAction(animationPerspective);
+    animationPerspective->setData(Animation);
+
+    m_viewMenu->addActions(group->actions());
+    connect(group, SIGNAL(triggered(QAction *)), this, SLOT(changePerspective(QAction *)));
+    menuBar()->addMenu(m_viewMenu);
 	
     // Setting up the Settings menu
     setupSettingsActions();
-    m_settingsMenu = new QMenu(tr( "&Settings" ), this);
+    m_settingsMenu = new QMenu(tr("&Settings"), this);
     menuBar()->addMenu(m_settingsMenu);
 
     // Adding Options wizard and preferences
@@ -313,6 +309,7 @@ void KTMainWindow::setMenuItemsContext(bool flag)
     m_actionManager->enable("export", flag);
 
     m_windowMenu->setEnabled(flag);
+    m_viewMenu->setEnabled(flag);
 }
 
 void KTMainWindow::setupActions()
@@ -588,10 +585,6 @@ void KTMainWindow::showWidgetPage()
 void KTMainWindow::changePerspective(QAction *a)
 {
     int perspective = a->data().toInt();
-    kDebug() << " <- Selecting tab " << perspective;
-
     setCurrentTab(perspective - 1);
-
-    //setCurrentPerspective(perspective);
     a->setChecked(true);
 }

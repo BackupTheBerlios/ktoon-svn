@@ -86,7 +86,8 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
     k->actionManager = new KActionManager(this);
 
-    QFrame *frame = new QFrame(this);
+    QFrame *frame = new QFrame(this, Qt::FramelessWindowHint);
+    
     QGridLayout *layout = new QGridLayout(frame);
  
     k->paintArea = new KTPaintArea(project, frame);
@@ -137,6 +138,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
     k->configurationArea = new KTConfigurationArea;
     addDockWidget(Qt::RightDockWidgetArea, k->configurationArea);
+    k->configurationArea->close();
 	
     createToolBar();
     createTools();
@@ -623,7 +625,7 @@ void KTViewDocument::selectTool()
                 k->configurationArea->close();
         }
 
-        tool->setCurrentTool( toolStr );
+        tool->setCurrentTool(toolStr);
         k->paintArea->setTool(tool);
 
         k->paintArea->viewport()->setCursor(action->cursor());

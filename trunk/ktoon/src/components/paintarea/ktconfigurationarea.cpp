@@ -48,7 +48,7 @@ struct KTConfigurationArea::Private
 KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent), k(new Private)
 {
     k->toolTipShowed = false;
-    setAllowedAreas (Qt::RightDockWidgetArea);
+    setAllowedAreas(Qt::RightDockWidgetArea);
 
     // connect(&d->locker, SIGNAL(timeout()), this, SLOT(toggleLock()));
     connect(&k->shower, SIGNAL(timeout()), this, SLOT(showConfigurator()));
