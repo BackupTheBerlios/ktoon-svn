@@ -44,18 +44,18 @@ class K_IDEAL_EXPORT KViewButton : public QToolButton
         Qt::ToolBarArea area() const;
 
         QSize sizeHint() const;
-
+        void fade();
         bool isSensible() const;
         bool blending() const;
 
         KToolView *toolView() const;
+        void setup();
 
     public slots:
         void setSensible(bool s);
         void setBlending(bool e);
 
     private:
-        void setup();
         QMenu *createMenu();
         QStyleOptionToolButton styleOption() const;
 

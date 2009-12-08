@@ -37,6 +37,7 @@ KToolView::KToolView(const QString &title, const QIcon &icon, QWidget * parent)
     setWindowIcon(icon);
     setup(title);
     setObjectName("KToolView-" + title);
+    expanded = false;
 }
 
 KToolView::~KToolView()
@@ -64,11 +65,28 @@ KViewButton *KToolView::button() const
 
 void KToolView::expandDock(bool flag)
 {
-    toggleViewAction()->toggle();
+    expanded = flag;
+    if (flag) {
+        show();
+    } else { 
+        close();
+    }
     m_button->setChecked(flag);
 }
 
-void KToolView::expand() {
+bool KToolView::isExpanded()
+{
+    return expanded;
+}
+
+void KToolView::setExpandingFlag() {
+    if (expanded)
+        expanded = false;
+    else
+        expanded = true;
+}
+
+void KToolView::setSizeHint() {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 }
 

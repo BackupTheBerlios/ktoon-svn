@@ -43,7 +43,9 @@ class K_IDEAL_EXPORT KToolView : public QDockWidget
         void setDescription(const QString &description);
         KViewButton *button() const;
         void expandDock(bool flag);
-        void expand();
+        bool isExpanded();
+        void setExpandingFlag();
+        void setSizeHint();
         QSize sizeHint() const;
         void setPerspective(int wsp);
         int perspective() const;
@@ -75,6 +77,7 @@ class K_IDEAL_EXPORT KToolView : public QDockWidget
         KViewButton *m_button;
         int m_size;
         int m_perspective;
+        bool expanded;
 };
 
 #endif

@@ -82,8 +82,8 @@ class K_IDEAL_EXPORT KButtonBar : public QToolBar
         QMap<QWidget *, QAction *> m_actionForWidget;
         QAction *m_separator;
         QTimer m_hider;
-        bool m_blockHider;
         bool m_autoHide;
+        bool m_blockHider;
 };
 
 #endif

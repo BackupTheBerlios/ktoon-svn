@@ -181,9 +181,6 @@ QStyleOptionToolButton KViewButton::styleOption() const
     if (down)
         opt.state |= QStyle::State_Sunken;
 
-    // if (checked)
-    //     opt.state |= QStyle::State_On;
-
     if (autoRaise())
         opt.state |= QStyle::State_AutoRaise;
 
@@ -195,40 +192,11 @@ QStyleOptionToolButton KViewButton::styleOption() const
 
     opt.features = QStyleOptionToolButton::None;
 
-    /*
-    if (popupMode() == QToolButton::MenuButtonPopup) {
-        opt.subControls |= QStyle::SC_ToolButtonMenu;
-        opt.features |= QStyleOptionToolButton::Menu;
-        if (menuButtonDown || down) {
-            opt.state |= QStyle::State_MouseOver;
-            opt.activeSubControls |= QStyle::SC_ToolButtonMenu;
-        }
-    } else {
-            if (menuButtonDown)
-                opt.state  |= QStyle::State_Sunken;
-    }
-    */
-
     if (arrowType() != Qt::NoArrow)
         opt.features |= QStyleOptionToolButton::Arrow;
 
     if (popupMode() == QToolButton::DelayedPopup)
         opt.features |= QStyleOptionToolButton::PopupDelay;
-
-/*
-    opt.toolButtonStyle = toolButtonStyle();
-
-    if (icon().isNull() && arrowType() == Qt::NoArrow && !forceNoText) {
-        if (!text().isEmpty()) {
-            opt.toolButtonStyle = Qt::ToolButtonTextOnly;
-        } else if (opt.toolButtonStyle != Qt::ToolButtonTextOnly) {
-            opt.toolButtonStyle = Qt::ToolButtonIconOnly;
-        }
-    } else {
-          if (text().isEmpty() && opt.toolButtonStyle != Qt::ToolButtonIconOnly)
-              opt.toolButtonStyle = Qt::ToolButtonIconOnly;
-    }
-*/
 
     opt.pos = pos();
     opt.font = font();
@@ -245,7 +213,10 @@ void KViewButton::paintEvent(QPaintEvent *e)
     QRect r = opt.rect;
     QColor fillColor, textColor;
 
-    bool checked = defaultAction() ? defaultAction()->isChecked() : isChecked();
+    bool checked = true;
+
+    if (m_toolView->isHidden())
+        checked = false;
 
     if (m_animator->count <= 0) 
         m_animator->count = 1;
@@ -304,6 +275,8 @@ QMenu *KViewButton::createMenu()
 
 void KViewButton::mousePressEvent(QMouseEvent *e)
 {
+    m_toolView->setExpandingFlag();
+
     QToolButton::mousePressEvent(e);
 
     if (e->button() == Qt::RightButton) {
@@ -312,48 +285,65 @@ void KViewButton::mousePressEvent(QMouseEvent *e)
     }
 }
 
-void KViewButton::enterEvent( QEvent* )
+void KViewButton::enterEvent(QEvent*)
 {
-    if (m_isSensible) {
-        m_isSensible = false;
-        animateClick();
+    if (isEnabled ()) {
+        if (m_isSensible) {
+            m_isSensible = false;
+            animateClick();
+            QTimer::singleShot(300, this, SLOT(toggleSensibility()));
+        }
 
-        QTimer::singleShot(300, this, SLOT(toggleSensibility()));
-    }
-
-    m_animator->isEnter = true;
-    m_animator->count = 1;
-
-    if (m_blending)
-        m_animator->start();
-}
-
-void KViewButton::leaveEvent( QEvent* )
-{
-    if (m_animator->count == 0)
+        m_animator->isEnter = true;
         m_animator->count = 1;
 
-    m_animator->isEnter = false;
+        if (m_blending)
+            m_animator->start();
+    }
+}
 
-    if (m_blending)
-        m_animator->timer->start();
+void KViewButton::leaveEvent(QEvent*)
+{
+    if (isEnabled ()) {
+        if (m_animator->count == 0)
+            m_animator->count = 1;
+
+        m_animator->isEnter = false;
+
+        if (m_blending)
+            m_animator->timer->start();
+    }
+}
+
+void KViewButton::fade()
+{
+        if (m_animator->count == 0)
+            m_animator->count = 1;
+
+        m_animator->isEnter = false;
+
+        if (m_blending)
+            m_animator->timer->start();
 }
 
 void KViewButton::animate()
 {
     if (m_animator->isEnter) {
+
         m_animator->count += 1;
         update();
         if (m_animator->count > m_animator->MAXCOUNT)
             m_animator->timer->stop();
+
     } else {
+
         m_animator->count -= 1;
         if (m_animator->count < 1) {
             m_animator->timer->stop();
             m_animator->count = 1;
         }
-
         update();
+
     }
 }
 
@@ -381,7 +371,6 @@ bool KViewButton::blending() const
 {
     return m_blending;
 }
-
 
 void KViewButton::toggleView()
 {

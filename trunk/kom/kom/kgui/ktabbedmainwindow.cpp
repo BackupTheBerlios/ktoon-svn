@@ -97,7 +97,7 @@ KTabbedMainWindow::KTabbedMainWindow(QWidget *parent) : KMainWindow(parent)
     setupTabWidget(m_tabWidget);
     setCentralWidget(m_tabWidget);
 
-    connect(this, SIGNAL(perspectiveChanged(int)), this, SLOT(setupPerspective(int)));
+    //connect(this, SIGNAL(perspectiveChanged(int)), this, SLOT(setupPerspective(int)));
 }
 
 /**
