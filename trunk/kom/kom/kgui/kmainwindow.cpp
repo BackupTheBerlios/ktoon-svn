@@ -507,9 +507,7 @@ void KMainWindow::relayoutToolView()
  */
 void KMainWindow::setCurrentPerspective(int workspace)
 {
-    qDebug() << "*** Changing perspective to: " << workspace;
-
-    if (m_currentPerspective == workspace) 
+    if (m_currentPerspective == workspace)
         return;
 
     typedef QList<KToolView *> Views;
@@ -584,9 +582,6 @@ void KMainWindow::setCurrentPerspective(int workspace)
 
     while (actionIt.hasNext()) {
            actionIt.next();
-
-           //QString name = actionIt.key()->objectName();
-           //qDebug() << "*** Printing widget name: " << name;
 
            if (actionIt.value() & workspace)
                actionIt.key()->setVisible(true);

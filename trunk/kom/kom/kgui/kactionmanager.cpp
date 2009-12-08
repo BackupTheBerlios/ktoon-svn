@@ -150,6 +150,19 @@ void KActionManager::enable(const QString &id, bool flag)
        action->setEnabled(flag);
 }
 
+/**
+ * Exec the action defined by id 
+ * @param id
+ */
+void KActionManager::exec(const QString &id)
+{
+   QAction *action = find(id);
+   if (action != 0) {
+       action->toggle();
+       action->setChecked(true);
+   }
+}
+
 QMenuBar *KActionManager::setupMenuBar(QMenuBar *menuBar, const QStringList &containers, bool clear)
 {
     if (menuBar) {
@@ -175,7 +188,7 @@ QMenu *KActionManager::setupMenu(QMenu *menu, const QString &container, bool cle
 
     foreach (QAction *a, m_actionContainer[container]) {
              if (a)
-                 menu->addAction( a );
+                 menu->addAction(a);
     }
 
     return menu;

@@ -56,7 +56,7 @@ class K_IDEAL_EXPORT KTabbedMainWindow : public KMainWindow
 
     protected slots:
         void closeCurrentTab();
-        virtual void setupPerspective(int wps);
+        //virtual void setupPerspective(int wps);
 
     signals:
         void widgetChanged(QWidget *widget);

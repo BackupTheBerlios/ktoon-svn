@@ -62,6 +62,12 @@ KViewButton *KToolView::button() const
     return m_button;
 }
 
+void KToolView::expandDock(bool flag)
+{
+    toggleViewAction()->toggle();
+    m_button->setChecked(flag);
+}
+
 void KToolView::expand() {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 }

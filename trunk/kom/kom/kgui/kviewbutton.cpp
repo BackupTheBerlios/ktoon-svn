@@ -95,7 +95,7 @@ void KViewButton::setup()
     m_isSensible = false;
     m_animator = new Animator(this);
 
-    connect( m_animator->timer, SIGNAL( timeout() ), this, SLOT( animate() ) );
+    connect(m_animator->timer, SIGNAL(timeout()), this, SLOT(animate()));
 	
     setChecked(false);
 
@@ -295,9 +295,9 @@ QMenu *KViewButton::createMenu()
     menu->addSeparator();
 	
     QAction *a = menu->addAction(tr("Mouse sensibility"));
-    connect(a, SIGNAL(toggled(bool)), this, SLOT(setSensible( bool ) ));
+    connect(a, SIGNAL(toggled(bool)), this, SLOT(setSensible(bool)));
     a->setCheckable(true);
-    a->setChecked( isSensible() );
+    a->setChecked(isSensible());
 
     return menu;
 }
@@ -399,10 +399,6 @@ void KViewButton::toggleView()
 
     m_toolView->toggleViewAction()->trigger();
 	
-    //#if QT_VERSION > 0x040201 && QT_VERSION < 0x040300
-    //m_toolView->adjustSize();
-    //#endif
-
     setChecked(m_toolView->isVisible());
     m_toolView->setUpdatesEnabled(true);
 

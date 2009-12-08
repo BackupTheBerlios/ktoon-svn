@@ -115,7 +115,6 @@ KTabbedMainWindow::~KTabbedMainWindow()
 void KTabbedMainWindow::setupTabWidget(QTabWidget *w)
 {
     w->setFocusPolicy(Qt::NoFocus);
-
     connect(w, SIGNAL(currentChanged(int)), this, SLOT(emitWidgetChanged(int)));
 }
 
@@ -149,15 +148,6 @@ void KTabbedMainWindow::removeWidget(QWidget *widget, bool force)
 
     m_tabs.remove(widget);
     m_pages.removeAll(widget);
-
-    /*
-    if (m_tabWidget->count() == 0) {
-        if (QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner))) {
-            if (button->isVisible())
-                button->hide();
-        }
-   }
-   */
 }
 
 /**
@@ -173,16 +163,10 @@ void KTabbedMainWindow::closeCurrentTab()
 
 void KTabbedMainWindow::emitWidgetChanged(int index)
 {
-    QWidget *w = m_tabWidget->widget(index);
-    qDebug() << "*** HEY! Tab: " << index;
-    //qDebug() << "*** Title Window: " << w->windowTitle();
- 
-    // QString label = w->windowTitle();
-    //if (label.compare(tr("The Joker")))
-    //    setCurrentPerspective(2);
-
-    //setCurrentPerspective(2);
-    //emit widgetChanged(w);
+    if (index != -1) {
+        QWidget *w = m_tabWidget->widget(index);
+        setCurrentPerspective(index + 1); 
+    }
 }
 
 /**
@@ -212,14 +196,10 @@ QTabWidget *KTabbedMainWindow::tabWidget() const
     return m_tabWidget;
 }
 
-/**
- * Setup the perspective. Shows the pages in wps and hide others.
- * @param wps 
- */
+/*
 void KTabbedMainWindow::setupPerspective(int wps)
 {
     // FIXME: It is Flickering =(
-
     m_tabWidget->setUpdatesEnabled(false);
     setUpdatesEnabled(false);
 
@@ -243,7 +223,7 @@ void KTabbedMainWindow::setupPerspective(int wps)
     for (int index = 0; index < count; index++) {
          QWidget *w = m_tabWidget->widget(index);
 
-         if (m_tabs[w] == wps || (w->objectName().compare("The Joker") == 0)) {
+         if (m_tabs[w] == wps) {
              w->show();
              m_tabWidget->setTabEnabled(index, true);
          } else {
@@ -252,9 +232,12 @@ void KTabbedMainWindow::setupPerspective(int wps)
          }
     }
 }
+*/
 
 void KTabbedMainWindow::setCurrentTab(int index)
 {
-    if (index != -1)
+    if (index != -1) {
         m_tabWidget->setCurrentIndex(index);
+        setCurrentPerspective(index + 1);
+    }
 }

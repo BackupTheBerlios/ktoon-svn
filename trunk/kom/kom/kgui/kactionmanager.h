@@ -58,6 +58,7 @@ class K_GUI_EXPORT KActionManager : public QObject
         QAction *find(const QString &id, const QString &container = QString()) const;
         QAction *operator[](const QString &id) const;
         void enable(const QString &id, bool flag);
+        void exec(const QString &id);
 
         QMenuBar *setupMenuBar(QMenuBar *menu, const QStringList &containers, bool clear = true);
         QMenu *setupMenu(QMenu *menu, const QString &container, bool clear = true);
