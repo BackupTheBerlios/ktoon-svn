@@ -298,6 +298,30 @@ bool KTMainWindow::closeProject()
 
     }
 
+    if (exposureView->isExpanded())
+        exposureView->expandDock(false);
+
+    if (colorView->isExpanded())
+        colorView->expandDock(false);
+
+    if (penView->isExpanded())
+        penView->expandDock(false);
+
+    if (libraryView->isExpanded())
+        libraryView->expandDock(false);
+
+    if (scenesView->isExpanded())
+        scenesView->expandDock(false);
+    
+    if (helpView->isExpanded())
+        helpView->expandDock(false);
+    
+    if (timeView->isExpanded())
+        timeView->expandDock(false);
+
+    if (exportView->isExpanded())
+        exportView->expandDock(false);
+
     setUpdatesEnabled(false);
     enableToolViews(false);
     setMenuItemsContext(false);
@@ -755,6 +779,9 @@ void KTMainWindow::saveAs()
     QString fileName = QFileDialog::getSaveFileName(this, tr("Build project package"), CACHE_DIR, 
                        "KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)");
 
+    if (fileName.isEmpty())
+        return;
+
     int indexPath = fileName.lastIndexOf("/");
     int indexFile = fileName.length() - indexPath;
     QString name = fileName.right(indexFile - 1);
@@ -775,9 +802,6 @@ void KTMainWindow::saveAs()
         }
         file.remove();
     }
-
-    if (fileName.isEmpty())
-        return;
 
     m_fileName = fileName;
     save();

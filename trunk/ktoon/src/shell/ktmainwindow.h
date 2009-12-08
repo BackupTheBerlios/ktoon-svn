@@ -209,6 +209,13 @@ class KTMainWindow : public KTabbedMainWindow
           KTColorPalette *m_colorPalette;
           KTPenWidget *m_penWidget;
           KToolView *exposureView;
+          KToolView *colorView;
+          KToolView *penView;
+          KToolView *libraryView;
+          KToolView *scenesView;  
+          KToolView *helpView;
+          KToolView *timeView;
+          KToolView *exportView;
 
     signals:
           void responsed(KTProjectResponse *);

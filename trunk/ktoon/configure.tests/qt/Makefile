@@ -115,7 +115,7 @@ Makefile: qt.pro  /usr/lib/qt4/mkspecs/linux-g++/qmake.conf /usr/lib/qt4/mkspecs
 		/usr/lib/qt4/lib/libQtCore.prl \
 		/usr/lib/qt4/lib/libQtGui.prl
 	$(QMAKE) -unix -o Makefile qt.pro
-	/usr/bin/ruby1.8 /home/xtingray/Projects/ktoon/devel/ktoon/configure.status /home/xtingray/Projects/ktoon/devel/ktoon/configure.tests/qt/Makefile
+	/usr/bin/ruby1.8 /home/xtingray/ktoon/sources/ktoon/configure.status /home/xtingray/ktoon/sources/ktoon/configure.tests/qt/Makefile
 /usr/lib/qt4/mkspecs/common/g++.conf:
 /usr/lib/qt4/mkspecs/common/linux.conf:
 /usr/lib/qt4/mkspecs/qconfig.pri:
