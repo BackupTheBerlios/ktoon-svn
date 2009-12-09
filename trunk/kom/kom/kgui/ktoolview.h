@@ -54,11 +54,11 @@ class K_IDEAL_EXPORT KToolView : public QDockWidget
         void enableButton(bool flag);
         QString getObjectID();
 
+    public slots:
+        void saveSize(bool checked);
+
     private:
         void setup(const QString &label);
-
-    private slots:
-        void saveSize(bool checked);
 
     protected:
         virtual void showEvent(QShowEvent *e);
