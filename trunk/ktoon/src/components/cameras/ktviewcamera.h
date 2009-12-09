@@ -47,7 +47,6 @@ class KTViewCamera : public QFrame
 
         QSize sizeHint() const;
         void updateSceneInfo();
-        void setFPS(int fps);
 
     private slots:
         void showSceneInfo(const KTScene *scene);
@@ -56,6 +55,7 @@ class KTViewCamera : public QFrame
 
     public slots:
         bool handleProjectResponse(KTProjectResponse *event);
+        void setFPS(int fps);
 
     signals:
         void requestTriggered(const KTProjectRequest *event);
@@ -67,7 +67,7 @@ class KTViewCamera : public QFrame
         class Status;
         Status *m_status;
 
-        QCheckBox *m_loop;
+        //QCheckBox *m_loop;
 };
 
 #endif

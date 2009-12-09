@@ -28,27 +28,33 @@
 #include <QHBoxLayout>
 #include <QApplication>
 #include <QCheckBox>
+#include <QSpinBox>
 
 #include "ktprojectresponse.h"
 
 class KTViewCamera::Status : public QStatusBar
 {
     public:
-        Status(QWidget *parent = 0);
+        Status(KTViewCamera *camera = 0, QWidget *parent = 0);
         ~Status();
 
         void setFPS(int fps);
         void setSceneName(const QString &name);
+        void setTotalFrames(const QString &total);
         void addWidget(QWidget *widget, int stretch = 0);
+        bool loop();
 
     private:
-        QLabel *m_fps;
+        //QLabel *m_fps;
+        QSpinBox *m_fps;
         QLabel *m_sceneName;
+        QLabel *m_total;
         QHBoxLayout *m_sceneInfoLayout;
+        QCheckBox *m_loop;
 };
 
 
-KTViewCamera::Status::Status(QWidget *parent) : QStatusBar(parent)
+KTViewCamera::Status::Status(KTViewCamera *camera, QWidget *parent) : QStatusBar(parent)
 {
     setSizeGripEnabled(false);
 
@@ -58,16 +64,6 @@ KTViewCamera::Status::Status(QWidget *parent) : QStatusBar(parent)
 
     QFont font = this->font();
     font.setPointSize(6);
-
-    QLabel *fpsText = new QLabel(tr("<B>FPS:</B> "));
-    fpsText->setFont(font);
-    m_fps = new QLabel;
-    m_fps->setFont(font);
-
-    m_sceneInfoLayout->addWidget(fpsText,1);
-    m_sceneInfoLayout->addWidget(m_fps,1);
-
-    m_sceneInfoLayout->addSpacing(20);
 
     m_sceneName = new QLabel;
     m_sceneName->setFont(font);
@@ -80,6 +76,35 @@ KTViewCamera::Status::Status(QWidget *parent) : QStatusBar(parent)
 
     m_sceneInfoLayout->addSpacing(20);
 
+    QLabel *framesTotal = new QLabel(tr("<B>Frames Total:</B> "));
+    framesTotal->setFont(font);
+
+    m_total = new QLabel;
+    m_total->setFont(font);
+
+    m_sceneInfoLayout->addWidget(framesTotal, 1);
+    m_sceneInfoLayout->addWidget(m_total, 1);
+
+    m_sceneInfoLayout->addSpacing(20);
+
+    QLabel *fpsText = new QLabel(tr("<B>FPS:</B> "));
+    fpsText->setFont(font);
+
+    m_fps = new QSpinBox;
+    m_fps->setMinimum(1);
+
+    m_fps->setFont(font);
+    connect(m_fps, SIGNAL(valueChanged(int)), camera, SLOT(setFPS(int)));
+
+    m_sceneInfoLayout->addWidget(fpsText,1);
+    m_sceneInfoLayout->addWidget(m_fps,1);
+
+    m_sceneInfoLayout->addSpacing(20);
+
+    m_loop = new QCheckBox(tr("Loop"));
+    connect(m_loop, SIGNAL(clicked()), camera, SLOT(setLoop()));
+    m_sceneInfoLayout->addWidget(m_loop,1);
+
     addPermanentWidget(sceneInfo,2);
     sceneInfo->show();
 }
@@ -91,12 +116,17 @@ KTViewCamera::Status::~Status()
 
 void KTViewCamera::Status::setFPS(int fps)
 {
-    m_fps->setText(QString::number(fps));
+    m_fps->setValue(fps);
 }
 
 void KTViewCamera::Status::setSceneName(const QString &name)
 {
     m_sceneName->setText(name);
+}
+
+void KTViewCamera::Status::setTotalFrames(const QString &total)
+{
+    m_total->setText(total);
 }
 
 void KTViewCamera::Status::addWidget(QWidget *widget, int stretch)
@@ -105,6 +135,11 @@ void KTViewCamera::Status::addWidget(QWidget *widget, int stretch)
     font.setPointSize(6);
     widget->setFont(font);
     m_sceneInfoLayout->addWidget(widget, stretch, Qt::AlignCenter);
+}
+
+bool KTViewCamera::Status::loop()
+{
+    return m_loop->isChecked();
 }
 
 KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QFrame(parent)
@@ -147,22 +182,18 @@ KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QFrame(parent)
     connect(m_bar, SIGNAL(ff()), m_animationArea, SLOT(nextFrame()));
     connect(m_bar, SIGNAL(rew()), m_animationArea, SLOT(previousFrame()));
 
-    m_status = new Status;
-    m_loop = new QCheckBox(tr("Loop"));
-    connect(m_loop, SIGNAL(clicked()), this, SLOT(setLoop()));
-    m_status->addWidget(m_loop);
-    //showSceneInfo(m_animationArea->currentScene());
+    m_status = new Status(this);
 
     KTScene *scene = project->scene(0);
     if (scene)
         m_status->setSceneName(scene->sceneName());
+        //m_status->setTotalFrames(scene->);
 
     m_status->setFPS(project->fps());
 
     layout->addWidget(m_status, 0, Qt::AlignCenter|Qt::AlignTop);
     setLayout(layout);
 }
-
 
 KTViewCamera::~KTViewCamera()
 {
@@ -179,7 +210,7 @@ void KTViewCamera::showSceneInfo(const KTScene *scene)
 
 void KTViewCamera::setLoop()
 {
-    m_animationArea->setLoop(m_loop->isChecked());
+    m_animationArea->setLoop(m_status->loop());
 }
 
 QSize KTViewCamera::sizeHint() const
