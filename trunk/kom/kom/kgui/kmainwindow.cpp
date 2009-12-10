@@ -539,8 +539,8 @@ void KMainWindow::setCurrentPerspective(int workspace)
                           } else {
                               bar->enable(view->button());
                           } 
-                          //if (view->button()->isChecked())
-                          //    view->show();
+                          if (view->button()->isChecked())
+                              view->show();
                       } else {
                               bar->disable(view->button());
                               if (view->button()->isChecked() || view->isVisible())

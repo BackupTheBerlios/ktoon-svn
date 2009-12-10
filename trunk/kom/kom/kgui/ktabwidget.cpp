@@ -36,44 +36,34 @@ KTabWidget::~KTabWidget()
 
 void KTabWidget::removeAllTabs()
 {
-	int count = this->count();
-	for (int i = 0; i < count; i++)
-	{
-		delete currentWidget();
-	}
+    int count = this->count();
+    for (int i = 0; i < count; i++)
+         delete currentWidget();
 }
 
 #ifndef QT_NO_WHEELEVENT
-void KTabWidget::wheelEvent( QWheelEvent *ev )
+void KTabWidget::wheelEvent(QWheelEvent *ev)
 {
-	QRect rect = tabBar()->rect();
-	rect.setWidth( width() );
-	
-	if ( rect.contains(ev->pos()) )
-	{
-		wheelMove( ev->delta() );
-	}
+    QRect rect = tabBar()->rect();
+    rect.setWidth(width());
+
+    if (rect.contains(ev->pos()))
+        wheelMove(ev->delta());
 }
 
 void KTabWidget::wheelMove( int delta )
 {
-	if ( count() > 1 )
-	{
-		int current = currentIndex();
-		if ( delta < 0 )
-		{
-			current = (current + 1) % count();
-		}
-		else 
-		{
-			current--;
-			if ( current < 0 )
-				current = count() - 1;
-		}
-		setCurrentIndex( current );
-	}
+    if (count() > 1) {
+        int current = currentIndex();
+        if (delta < 0) {
+            current = (current + 1) % count();
+        } else {
+            current--;
+            if (current < 0)
+                current = count() - 1;
+        }
+        setCurrentIndex( current );
+    }
 }
 
 #endif
-
-
