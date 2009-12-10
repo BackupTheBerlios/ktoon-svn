@@ -27,158 +27,155 @@
 
 class KTProjectResponse::Private
 {
-	public:
-		Private(int part, int action) : part(part), action(action), isExternal(false) {}
-		
-		int part;
-		int action;
-		KTProjectRequestArgument arg;
-		QByteArray data;
-		Mode mode;
-		
-		bool isExternal;
+    public:
+        Private(int part, int action) : part(part), action(action), isExternal(false) {}
+
+        int part;
+        int action;
+        KTProjectRequestArgument arg;
+        QByteArray data;
+        Mode mode;
+
+        bool isExternal;
 };
 
 KTProjectResponse::KTProjectResponse(int part, int action) : k(new Private(part, action))
 {
 }
 
-
 KTProjectResponse::~KTProjectResponse()
 {
-	delete k;
+    delete k;
 }
-
 
 int KTProjectResponse::part() const
 {
-	return k->part;
+    return k->part;
 }
 
 int KTProjectResponse::action() const
 {
-	if( k->mode == Undo )
-	{
-		switch(k->action)
-		{
-			case KTProjectRequest::Add:
-			{
-				return KTProjectRequest::Remove;
-			}
-			break;
-			case KTProjectRequest::AddSymbolToProject:
-			{
-			}
-			break;
-			case KTProjectRequest::EditNodes:
-			{
-			}
-			break;
-			case KTProjectRequest::View:
-			{
-			}
-			break;
-			case KTProjectRequest::Select:
-			{
-			}
-			break;
-			case KTProjectRequest::Transform:
-			{
-			}
-			break;
-			case KTProjectRequest::Tweening:
-			{
-			}
-			break;
-			case KTProjectRequest::Lock:
-			{
-			}
-			break;
-			case KTProjectRequest::Ungroup:
-			{
-				return KTProjectRequest::Group;
-			}
-			break;
-			case KTProjectRequest::Rename:
-			{
-			}
-			break;
-			case KTProjectRequest::Move:
-			{
-			}
-			break;
-			case KTProjectRequest::Convert:
-			{
-			}
-			break;
-			case KTProjectRequest::Remove:
-			{
-				return KTProjectRequest::Add;
-			}
-			break;
-			case KTProjectRequest::Group:
-			{
-				return KTProjectRequest::Ungroup;
-			}
-			break;
-			case KTProjectRequest::Paste:
-			{
-			}
-			break;
-			default:
-			{
-				qFatal("Unhandled action");
-			}
-			break;
-		}
-	}
-	
-	return k->action;
+    if (k->mode == Undo) {
+
+        switch (k->action) {
+                case KTProjectRequest::Add:
+                     {
+                        return KTProjectRequest::Remove;
+                     }
+                break;
+                case KTProjectRequest::AddSymbolToProject:
+                     {
+                     }
+                break;
+                case KTProjectRequest::EditNodes:
+                     {
+                     }
+                break;
+                case KTProjectRequest::View:
+                     {
+                     }
+                break;
+                case KTProjectRequest::Select:
+                     {
+                     }
+                break;
+                case KTProjectRequest::Transform:
+                     {
+                     }
+                break;
+                case KTProjectRequest::Tweening:
+                     {
+                     }
+                break;
+                case KTProjectRequest::Lock:
+                     {
+                     }
+                break;
+                case KTProjectRequest::Ungroup:
+                     {
+                        return KTProjectRequest::Group;
+                     }
+                break;
+                case KTProjectRequest::Rename:
+                     {
+                     }
+                break;
+                case KTProjectRequest::Move:
+                     {
+                     }
+                break;
+                case KTProjectRequest::Convert:
+                     {
+                     }
+                break;
+                case KTProjectRequest::Remove:
+                     {
+                        return KTProjectRequest::Add;
+                     }
+                break;
+                case KTProjectRequest::Group:
+                     {
+                        return KTProjectRequest::Ungroup;
+                     }
+                break;
+                case KTProjectRequest::Paste:
+                     {
+                     }
+                break;
+                default:
+                     {
+                        qFatal("Unhandled action");
+                     }
+                break;
+        }
+    }
+
+    return k->action;
 }
 
 int KTProjectResponse::originalAction() const
 {
-	return k->action;
+    return k->action;
 }
 
 void KTProjectResponse::setMode(Mode mode)
 {
-	k->mode = mode;
+    k->mode = mode;
 }
 
 void KTProjectResponse::setExternal(bool e)
 {
-	k->isExternal = e;
+    k->isExternal = e;
 }
 
 bool KTProjectResponse::external() const
 {
-	return k->isExternal;
+    return k->isExternal;
 }
 
 KTProjectResponse::Mode KTProjectResponse::mode() const
 {
-	return k->mode;
+    return k->mode;
 }
 
 void KTProjectResponse::setArg(const QString &value)
 {
-	k->arg = value;
+    k->arg = value;
 }
 
 void KTProjectResponse::setData(const QByteArray &data)
 {
-	k->data = data;
+    k->data = data;
 }
 
 KTProjectRequestArgument KTProjectResponse::arg() const
 {
-	return k->arg;
+    return k->arg;
 }
 
 QByteArray KTProjectResponse::data() const
 {
-	return k->data;
+    return k->data;
 }
 
 // SCENE
@@ -193,26 +190,27 @@ KTSceneResponse::~KTSceneResponse()
 
 int KTSceneResponse::sceneIndex() const
 {
-	return m_sceneIndex;
+    return m_sceneIndex;
 }
 
 void KTSceneResponse::setSceneIndex(int index)
 {
-	m_sceneIndex = index;
+    m_sceneIndex = index;
 }
 
 void KTSceneResponse::setState(const QString &state)
 {
-	m_state = state;
+    m_state = state;
 }
 
 QString KTSceneResponse::state() const
 {
-	return m_state;
+    return m_state;
 }
 
-void KTSceneResponse::setScenes(Scenes scenes) {
-	m_scenes = scenes;
+void KTSceneResponse::setScenes(Scenes scenes) 
+{
+    m_scenes = scenes;
 }
 
 // LAYER
@@ -227,14 +225,13 @@ KTLayerResponse::~KTLayerResponse()
 
 int KTLayerResponse::layerIndex() const
 {
-	return m_layerIndex;
+    return m_layerIndex;
 }
 
 void KTLayerResponse::setLayerIndex(int index)
 {
-	m_layerIndex = index;
+    m_layerIndex = index;
 }
-
 
 // FRAME
 
@@ -248,14 +245,13 @@ KTFrameResponse::~KTFrameResponse()
 
 int KTFrameResponse::frameIndex() const
 {
-	return m_frameIndex;
+    return m_frameIndex;
 }
 
 void KTFrameResponse::setFrameIndex(int index)
 {
-	m_frameIndex = index;
+    m_frameIndex = index;
 }
-
 
 // ITEM
 
@@ -269,12 +265,12 @@ KTItemResponse::~KTItemResponse()
 
 int KTItemResponse::itemIndex() const
 {
-	return m_itemIndex;
+    return m_itemIndex;
 }
 
 void KTItemResponse::setItemIndex(int index)
 {
-	m_itemIndex = index;
+    m_itemIndex = index;
 }
 
 KTLibraryResponse::KTLibraryResponse(int part, int action) : KTFrameResponse(part, action), m_symbolType(-1)
@@ -287,14 +283,13 @@ KTLibraryResponse::~KTLibraryResponse()
 
 void KTLibraryResponse::setSymbolType(int symtype)
 {
-	m_symbolType = symtype;
+    m_symbolType = symtype;
 }
 
 int KTLibraryResponse::symbolType() const
 {
-	return m_symbolType;
+    return m_symbolType;
 }
-
 
 KTProjectResponseFactory::KTProjectResponseFactory()
 {
@@ -306,39 +301,38 @@ KTProjectResponseFactory::~KTProjectResponseFactory()
 
 KTProjectResponse *KTProjectResponseFactory::create(int part, int action)
 {
-	switch(part)
-	{
-		case KTProjectRequest::Scene:
-		{
-			return new KTSceneResponse(part, action);
-		}
-		break;
-		case KTProjectRequest::Layer:
-		{
-			return new KTLayerResponse(part, action);
-		}
-		break;
-		case KTProjectRequest::Frame:
-		{
-			return new KTFrameResponse(part, action);
-		}
-		break;
-		case KTProjectRequest::Item:
-		{
-			return new KTItemResponse(part, action);
-		}
-		break;
-		case KTProjectRequest::Library:
-		{
-			return new KTLibraryResponse(part, action);
-		}
-		break;
-		default:
-		{
-			qFatal("Unknown PART"); // TODO: REMOVE ME
-		}
-		break;
-	}
+    switch (part) {
+            case KTProjectRequest::Scene:
+             {
+                 return new KTSceneResponse(part, action);
+             }
+            break;
+            case KTProjectRequest::Layer:
+             {
+                 return new KTLayerResponse(part, action);
+             }
+            break;
+            case KTProjectRequest::Frame:
+             {
+                 return new KTFrameResponse(part, action);
+             }
+            break;
+            case KTProjectRequest::Item:
+             {
+                 return new KTItemResponse(part, action);
+             }
+            break;
+            case KTProjectRequest::Library:
+             {
+                 return new KTLibraryResponse(part, action);
+             }
+            break;
+            default:
+             {
+                qFatal("Unknown PART"); // TODO: REMOVE ME
+             }
+            break;
+    }
 	
-	return new KTProjectResponse(part, action);
+    return new KTProjectResponse(part, action);
 }

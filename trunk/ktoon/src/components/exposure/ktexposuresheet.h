@@ -34,7 +34,8 @@
 #include <QList>
 #include <QActionGroup>
 
-#include <kgui/ktabwidget.h>
+//#include <kgui/ktabwidget.h>
+#include <ktscenetabwidget.h>
 #include <kgui/kimagebutton.h>
 
 #include "ktprojectactionbar.h"

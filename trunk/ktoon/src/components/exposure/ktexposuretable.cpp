@@ -50,7 +50,7 @@ class KTExposureHeader: public QHeaderView
 {
     Q_OBJECT;
     public:
-        KTExposureHeader(QWidget * parent = 0 );
+        KTExposureHeader(QWidget * parent = 0);
         ~KTExposureHeader();
         void paintSection(QPainter *painter, const QRect & rect, int logicalIndex ) const;
         void insertLayer(int logicalIndex, const QString &text);
@@ -87,12 +87,12 @@ KTExposureHeader::KTExposureHeader(QWidget * parent) : QHeaderView(Qt::Horizonta
     setClickable(true);
     setMovable(true);
 
-    connect(this, SIGNAL(sectionDoubleClicked( int )), this, SLOT(showEditorName(int)));
+    connect(this, SIGNAL(sectionDoubleClicked(int)), this, SLOT(showEditorName(int)));
 
     m_editor = new QLineEdit(this);
     m_editor->setFocusPolicy( Qt::ClickFocus);
     m_editor->setInputMask("");
-    connect (m_editor, SIGNAL(editingFinished()), this, SLOT(hideEditorName()));
+    connect(m_editor, SIGNAL(editingFinished()), this, SLOT(hideEditorName()));
     m_editor->hide();
 }
 
@@ -183,7 +183,7 @@ void KTExposureHeader::setLastFrame(int logicalIndex, int num)
     m_layers[logicalIndex].lastFrame = num;
 }
 
-void KTExposureHeader::mousePressEvent ( QMouseEvent * event )
+void KTExposureHeader::mousePressEvent(QMouseEvent * event)
 {
     int section = logicalIndexAt(  event->pos() );
     int x = sectionViewportPosition ( section ) + 3;
@@ -195,7 +195,7 @@ void KTExposureHeader::mousePressEvent ( QMouseEvent * event )
         QHeaderView::mousePressEvent(event);
 }
 
-void KTExposureHeader::paintSection ( QPainter * painter, const QRect & rect, int logicalIndex ) const
+void KTExposureHeader::paintSection (QPainter * painter, const QRect & rect, int logicalIndex) const
 {
     if (!rect.isValid()) 
         return;
@@ -221,12 +221,12 @@ void KTExposureHeader::paintSection ( QPainter * painter, const QRect & rect, in
     painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
 	
     QString text = m_layers[logicalIndex].title;
-    QFontMetrics fm( painter->font() );
+    QFontMetrics fm( painter->font());
 
     int x = rect.x() + (sectionSize(logicalIndex) - fm.width( text ))/2;
-    int y = fm.height() + ( rect.y() / 2);
+    int y = fm.height() + (rect.y() / 2);
 
-    painter->drawText( x, y, text);
+    painter->drawText(x, y, text);
 
     QStyleOptionButton buttonOption;
 
@@ -237,15 +237,19 @@ void KTExposureHeader::paintSection ( QPainter * painter, const QRect & rect, in
         buttonOption.state |= QStyle::State_Sunken;
     }
 
+    /*
     int pxWidth = 0;
     if (m_layers[logicalIndex].isLocked) {
-        QPixmap pixmap(HOME_DIR+"/themes/default/icons/kilit_pic.png");
-        painter->drawPixmap(x+fm.width( text )+3, 3, pixmap);
-        pxWidth =  pixmap.width();
+        QPixmap pixmap(HOME_DIR + "/themes/default/icons/kilit_pic.png");
+        //painter->drawPixmap(x+fm.width(text)+3, 3, pixmap);
+        painter->drawPixmap(x+15, 3, pixmap);
+        //pxWidth =  pixmap.width();
     }
-
-    buttonOption.rect = QRect(rect.x()+3, rect.y()+3, height, height);
-    style()->drawControl( QStyle::CE_PushButton, &buttonOption, painter);
+    */
+    
+    height -= 4;
+    buttonOption.rect = QRect(rect.x()+3, rect.y() + ((rect.height()-height)/2) + 1, height, height);
+    style()->drawControl(QStyle::CE_PushButton, &buttonOption, painter);
 }
 
 #include "ktexposuretable.moc"
@@ -255,7 +259,7 @@ void KTExposureHeader::paintSection ( QPainter * painter, const QRect & rect, in
 class KTExposureItemDelegate : public QItemDelegate
 {
     public:
-        KTExposureItemDelegate(QObject * parent = 0 );
+        KTExposureItemDelegate(QObject * parent = 0);
         ~KTExposureItemDelegate();
         virtual void paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const;
 };
@@ -275,15 +279,22 @@ void KTExposureItemDelegate::paint( QPainter *painter, const QStyleOptionViewIte
     KTExposureTable *table = qobject_cast<KTExposureTable *>(index.model()->parent());
 
     QTableWidgetItem *item = table->itemFromIndex(index);
-	
-    if (item) {
-        if (item->data(KTExposureTable::IsLocked).toBool()) {
-            painter->drawLine( option.rect.topLeft(),  option.rect.bottomRight());
-            painter->drawLine( option.rect.topRight(),  option.rect.bottomLeft());
-        }
 
-        if (item->data(KTExposureTable::IsUsed).toBool())
-            painter->drawRoundRect( option.rect );
+    if (item) {
+
+        //if (item->data(KTExposureTable::IsLocked).toBool()) {
+        //     QPixmap pixmap(HOME_DIR + "/themes/default/icons/kilit_pic.png");
+        //     painter->drawPixmap(1, 5, pixmap);
+        //} else 
+
+        if (item->data(KTExposureTable::IsUsed).toBool() && !item->data(KTExposureTable::IsLocked).toBool()) {
+            int x = option.rect.topLeft().x() + 2;
+            int y = option.rect.topLeft().y() + 2;
+            int w = option.rect.bottomRight().x() - x - 2;
+            int h = option.rect.bottomRight().y() - y - 2;
+            painter->setPen(Qt::gray);
+            painter->drawRect(x, y, w, h);
+        }
     }
 }
 
@@ -301,11 +312,11 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new
 
     QTableWidgetItem *prototype = new QTableWidgetItem();
 
-    prototype->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable );	
-    prototype->setTextAlignment(Qt::AlignCenter);	
+    prototype->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable);
+    prototype->setTextAlignment(Qt::AlignCenter);
     setItemPrototype(prototype);
 
-    setRowCount( 100 );
+    setRowCount(100);
 
     k->header = new KTExposureHeader(this);
 
@@ -314,12 +325,12 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new
                               const QString & )));
     connect(k->header, SIGNAL(sectionMoved (int , int , int)), this, SLOT(emitRequestMoveLayer(int, int , int)));
 
-    setHorizontalHeader( k->header);
+    setHorizontalHeader(k->header);
 
     connect(this, SIGNAL(cellClicked(int, int)), this, SLOT(emitRequestSetUsedFrame(int, int)));
     connect(this, SIGNAL(currentCellChanged(int , int , int , int)), this, SLOT(emitRequestSelectFrame(int , int , int , int)));
 
-    setSelectionBehavior (QAbstractItemView::SelectItems);
+    setSelectionBehavior(QAbstractItemView::SelectItems);
     setSelectionMode(QAbstractItemView::SingleSelection);
 
     k->menu = 0;
@@ -359,7 +370,7 @@ QString KTExposureTable::frameName(int indexLayer, int indexFrame)
 
 void KTExposureTable::setFrameName(int indexLayer, int indexFrame,const QString & name)
 {
-    QTableWidgetItem *frame = item( indexFrame , indexLayer);
+    QTableWidgetItem *frame = item(indexFrame , indexLayer);
     if (frame) {
         if (frame->text() != name)
             frame->setText(name);
@@ -368,7 +379,7 @@ void KTExposureTable::setFrameName(int indexLayer, int indexFrame,const QString 
 
 void KTExposureTable::setLayerName(int indexLayer, const QString & name)
 {
-    k->header->setLayerName( k->header->logicalIndex(indexLayer), name);
+    k->header->setLayerName(k->header->logicalIndex(indexLayer), name);
 }
 
 bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
@@ -384,9 +395,9 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
     return false;
 }
 
-void KTExposureTable::selectFrame( int indexLayer, int indexFrame)
+void KTExposureTable::selectFrame(int indexLayer, int indexFrame)
 {
-    setCurrentCell(indexFrame,  k->header->logicalIndex(indexLayer));
+    setCurrentCell(indexFrame, k->header->logicalIndex(indexLayer));
 }
 
 void KTExposureTable::setMenu(QMenu *menu)
@@ -418,6 +429,7 @@ int KTExposureTable::currentFrame() const
 
 void KTExposureTable::insertLayer(int index, const QString & name)
 {
+    kDebug() << "*** Inserting Layer column!"; 
     insertColumn(index);
     k->header->insertLayer(index, name);
 }
@@ -425,27 +437,27 @@ void KTExposureTable::insertLayer(int index, const QString & name)
 void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString & name, bool external)
 {
     QTableWidgetItem * frame = new QTableWidgetItem;
-    frame->setBackgroundColor(Qt::gray );
+    frame->setBackgroundColor(Qt::lightGray);
     frame->setText(name);
     frame->setData(IsUsed, true);
     frame->setTextAlignment(Qt::AlignCenter);
 
-    int logicalIndex = k->header->logicalIndex( indexLayer);
+    int logicalIndex = k->header->logicalIndex(indexLayer);
 
-    k->header->setLastFrame( logicalIndex, k->header->lastFrame(logicalIndex)+1 );
+    k->header->setLastFrame(logicalIndex, k->header->lastFrame(logicalIndex)+1 );
 
     setItem(k->header->lastFrame(logicalIndex)-1, logicalIndex, frame);
 
     for (int i = k->header->lastFrame(logicalIndex)-1; i > indexFrame; i--)
-         moveFrame(  indexLayer, i , indexLayer, i-1, external);
+         moveFrame(indexLayer, i , indexLayer, i-1, external);
 
-    if (k->header->lastFrame(logicalIndex)  == rowCount ())
-        setRowCount( k->header->lastFrame(logicalIndex) + 50 );
+    if (k->header->lastFrame(logicalIndex)  == rowCount())
+        setRowCount(k->header->lastFrame(logicalIndex) + 50);
 }
 
 void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
 {
-    int logicalIndex = k->header->logicalIndex ( indexLayer);
+    int logicalIndex = k->header->logicalIndex (indexLayer);
     QTableWidgetItem * frame = item(indexFrame, logicalIndex);
 
     if (frame) {
@@ -453,7 +465,7 @@ void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
             if (locked)
                 frame->setBackgroundColor(Qt::red);
             else
-                frame->setBackgroundColor(Qt::gray);
+                frame->setBackgroundColor(Qt::lightGray);
 
             frame->setData(IsLocked, locked);
         }
@@ -487,15 +499,15 @@ void KTExposureTable::removeFrame(int indexLayer, int indexFrame)
              if (idx)
                  setItem(index-1, indexLayer, idx);
         }
-             k->header->setLastFrame( indexLayer, k->header->lastFrame(indexLayer)-1 );
+             k->header->setLastFrame(indexLayer, k->header->lastFrame(indexLayer)-1);
     }
     setUpdatesEnabled(true);
 }
 
 void KTExposureTable::moveFrame(int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external)
 {
-    QTableWidgetItem * oldItem  = takeItem(oldPosFrame, oldPosLayer );
-    QTableWidgetItem * newItem  = takeItem(newPosFrame, newPosLayer );
+    QTableWidgetItem * oldItem  = takeItem(oldPosFrame, oldPosLayer);
+    QTableWidgetItem * newItem  = takeItem(newPosFrame, newPosLayer);
 
     setItem(newPosFrame, newPosLayer, oldItem);
     setItem(oldPosFrame, oldPosLayer, newItem);
@@ -510,19 +522,22 @@ void KTExposureTable::moveLayer(int oldPosLayer, int newPosLayer)
     k->header->moveLayer(oldPosLayer, newPosLayer);
 }
 
-void KTExposureTable::emitRequestSetUsedFrame( int indexFrame,  int indexLayer)
+void KTExposureTable::emitRequestSetUsedFrame(int indexFrame,  int indexLayer)
 {
+    kDebug() << "*** Selecting Frame..."; 
+
     int visualIndex = k->header->visualIndex(indexLayer);
 
     if (indexFrame == k->header->lastFrame(indexLayer)) {
+        kDebug() << "*** Adding Frame #" << indexFrame;
         emit requestSetUsedFrame(visualIndex, indexFrame);
-        emit requestSelectFrame( visualIndex, indexFrame);
+        emit requestSelectFrame(visualIndex, indexFrame);
     }
 }
 
 int KTExposureTable::numUsed(int column) const
 {
-    return k->header->lastFrame( column );
+    return k->header->lastFrame(column);
 }
 
 bool KTExposureTable::edit( const QModelIndex & index, EditTrigger trigger, QEvent *event )

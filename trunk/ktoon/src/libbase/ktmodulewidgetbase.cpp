@@ -33,102 +33,98 @@
 
 struct KTModuleWidgetBase::Private
 {
-	QBoxLayout *container;
-	QObjectList childs;
+    QBoxLayout *container;
+    QObjectList childs;
 };
 
 KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent),
-									KTAbstractProjectResponseHandler(), k( new Private )
+                                                                            KTAbstractProjectResponseHandler(), k( new Private )
 {
-	setObjectName(name);
+    setObjectName(name);
 
-	k->container = new QVBoxLayout(this);
-	k->container->setMargin(5);
-	k->container->setSpacing(1);
-	
-	adjustSize();
-	hide();
+    k->container = new QVBoxLayout(this);
+    k->container->setMargin(5);
+    k->container->setSpacing(1);
+
+    adjustSize();
+    hide();
 }
-
 
 KTModuleWidgetBase::~KTModuleWidgetBase()
 {
-	delete k;
+    delete k;
 }
 
 void KTModuleWidgetBase::addChild(QWidget* child, Qt::Alignment alignment)
 {
-	k->childs.append(child);
-	k->container->invalidate();
-	k->container->addWidget(child, 0,alignment);
+    k->childs.append(child);
+    k->container->invalidate();
+    k->container->addWidget(child, 0,alignment);
 }
 
 void KTModuleWidgetBase::setFont( const QFont &f)
 {
-	QWidget::setFont(f);
-	adjustSize();
+    QWidget::setFont(f);
+    adjustSize();
 }
 
 bool KTModuleWidgetBase::event( QEvent * e )
 {
-	if ( e->type() == QEvent::Hide )
-	{
-		emit activate(false);
-	}
-	else if ( e->type() == QEvent::Show )
-	{
-		emit activate(true);
-	}
+    if (e->type() == QEvent::Hide) {
+        emit activate(false);
+    } else if (e->type() == QEvent::Show) {
+               emit activate(true);
+    }
 
-	return QWidget::event(e );
+    return QWidget::event(e);
 }
 
 void KTModuleWidgetBase::enterEvent(QEvent *e)
 {
-	Q_UNUSED(e);
+    Q_UNUSED(e);
 }
 
 void KTModuleWidgetBase::leaveEvent(QEvent *e)
 {
-	Q_UNUSED(e);
+    Q_UNUSED(e);
 }
 
 QBoxLayout *KTModuleWidgetBase::boxLayout()
 {
-	return k->container;
+    return k->container;
 }
 
 bool KTModuleWidgetBase::handleProjectResponse(KTProjectResponse *response)
 {
-	return handleResponse(response);
+    return handleResponse(response);
 }
 
 void KTModuleWidgetBase::frameResponse(KTFrameResponse *frameResponse)
 {
-	Q_UNUSED(frameResponse);
+    Q_UNUSED(frameResponse);
 }
 
 void KTModuleWidgetBase::layerResponse(KTLayerResponse *layerResponse)
 {
-	Q_UNUSED(layerResponse);
+    Q_UNUSED(layerResponse);
 }
 
 void KTModuleWidgetBase::sceneResponse(KTSceneResponse *sceneResponse)
 {
-	Q_UNUSED(sceneResponse);
+    Q_UNUSED(sceneResponse);
 }
 
 void KTModuleWidgetBase::projectResponse(KTProjectResponse *projectResponse)
 {
-	Q_UNUSED(projectResponse);
+    Q_UNUSED(projectResponse);
 }
 
 void KTModuleWidgetBase::itemResponse(KTItemResponse *itemResponse)
 {
-	Q_UNUSED(itemResponse);
+    Q_UNUSED(itemResponse);
 }
 
 void KTModuleWidgetBase::libraryResponse(KTLibraryResponse *libraryResponse)
 {
-	Q_UNUSED(libraryResponse);
+    Q_UNUSED(libraryResponse);
 }

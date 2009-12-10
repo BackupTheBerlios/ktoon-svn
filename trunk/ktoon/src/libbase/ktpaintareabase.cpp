@@ -301,13 +301,14 @@ void KTPaintAreaBase::drawForeground( QPainter *painter, const QRectF &rect )
 {
     if (KTFrame *frame = k->scene->currentFrame()) {
         if (frame->isLocked()) {
-            painter->fillRect(rect, QColor(201,201,201, 200));
-            painter->setFont(QFont("Arial", 30) );
-            QFontMetricsF fm(painter->font());
             QString text = tr("Locked");
+            QFont kfont(QFont("Arial", 20));
+            QFontMetricsF fm(kfont);
+            painter->setFont(kfont);
 
-            painter->drawText(QPointF(k->scene->sceneRect().topRight().x() - fm.width(text), 
-                              (k->scene->sceneRect().topRight().y() + fm.height()) / 2), text);
+            painter->fillRect(rect, QColor(201,201,201, 200));
+            painter->drawText(QPointF(k->scene->sceneRect().topRight().x() - fm.width(text) - 5, 
+                              k->scene->sceneRect().topRight().y() + fm.height() - 5), text);
         }
     }
 }

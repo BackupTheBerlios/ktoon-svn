@@ -33,114 +33,114 @@
 */
 class STORE_EXPORT KTProjectResponse
 {
-	public:
-		enum Mode
-		{
-			None = 0x00,
-			Do,
-			Redo,
-			Undo
-		};
-		
-		KTProjectResponse(int part, int action);
-		virtual ~KTProjectResponse();
-		
-		int part() const;
-		int action() const;
-		
-		int originalAction() const;
-		
-		void setArg(const QString &value);
-		void setData(const QByteArray &data);
-		void setMode(Mode mode);
-		
-		void setExternal(bool e);
-		bool external() const;
-		
-		Mode mode() const;
-		
-		KTProjectRequestArgument arg() const;
-		QByteArray data() const;
-		
-	private:
-		class Private;
-		Private *const k;
+    public:
+        enum Mode
+             {
+               None = 0x00,
+               Do,
+               Redo,
+               Undo
+             };
+
+        KTProjectResponse(int part, int action);
+        virtual ~KTProjectResponse();
+
+        int part() const;
+        int action() const;
+
+        int originalAction() const;
+
+        void setArg(const QString &value);
+        void setData(const QByteArray &data);
+        void setMode(Mode mode);
+
+        void setExternal(bool e);
+        bool external() const;
+
+        Mode mode() const;
+
+        KTProjectRequestArgument arg() const;
+        QByteArray data() const;
+
+    private:
+        class Private;
+        Private *const k;
 };
 
 class KTSceneResponse : public KTProjectResponse
 {
-	public:
-		KTSceneResponse(int part, int action);
-		~KTSceneResponse();
-		int sceneIndex() const;
-		void setSceneIndex(int index);
-		
-		void setState(const QString &state);
-		QString state() const;
-		void setScenes(Scenes scenes);
-		
-	private:
-		int m_sceneIndex;
-		QString m_state;
-		Scenes m_scenes;
+    public:
+        KTSceneResponse(int part, int action);
+        ~KTSceneResponse();
+        int sceneIndex() const;
+        void setSceneIndex(int index);
+
+        void setState(const QString &state);
+        QString state() const;
+        void setScenes(Scenes scenes);
+
+    private:
+        int m_sceneIndex;
+        QString m_state;
+        Scenes m_scenes;
 };
 
 class KTLayerResponse : public KTSceneResponse
 {
-	public:
-		KTLayerResponse(int part, int action);
-		~KTLayerResponse();
-		int layerIndex() const;
-		void setLayerIndex(int index);
-	private:
-		int m_layerIndex;
+    public:
+        KTLayerResponse(int part, int action);
+        ~KTLayerResponse();
+        int layerIndex() const;
+        void setLayerIndex(int index);
+
+    private:
+        int m_layerIndex;
 };
 
 class KTFrameResponse : public KTLayerResponse
 {
-	public:
-		KTFrameResponse(int part, int action);
-		~KTFrameResponse();
-		int frameIndex() const;
-		void setFrameIndex(int index);
-	private:
-		int m_frameIndex;
+    public:
+        KTFrameResponse(int part, int action);
+        ~KTFrameResponse();
+        int frameIndex() const;
+        void setFrameIndex(int index);
+
+    private:
+        int m_frameIndex;
 };
 
 class KTItemResponse : public KTFrameResponse
 {
-	public:
-		KTItemResponse(int part, int action);
-		~KTItemResponse();
-		int itemIndex() const;
-		void setItemIndex(int index);
-	private:
-		int m_itemIndex;
+    public:
+        KTItemResponse(int part, int action);
+        ~KTItemResponse();
+        int itemIndex() const;
+        void setItemIndex(int index);
+
+    private:
+        int m_itemIndex;
 };
 
 class KTLibraryResponse : public KTFrameResponse
 {
-	public:
-		KTLibraryResponse(int part, int action);
-		~KTLibraryResponse();
-		
-		void setSymbolType(int symtype);
-		int symbolType() const;
-		
-	private:
-		int m_symbolType;
+    public:
+        KTLibraryResponse(int part, int action);
+        ~KTLibraryResponse();
+        void setSymbolType(int symtype);
+        int symbolType() const;
+
+    private:
+        int m_symbolType;
 };
 
 class KTProjectResponseFactory
 {
-	private:
-		KTProjectResponseFactory();
-		
-	public:
-		~KTProjectResponseFactory();
-		
-		static KTProjectResponse *create(int part, int action);
+    private:
+        KTProjectResponseFactory();
+
+    public:
+        ~KTProjectResponseFactory();
+        static KTProjectResponse *create(int part, int action);
 };
 
 #endif
-

@@ -33,48 +33,45 @@
 
 struct KTGraphicObject::Private
 {
-	QString name;
-	QGraphicsItem *item;
-	
-	KTItemTweener *tweener;
-	
-	KTFrame *frame;
+    QString name;
+    QGraphicsItem *item;
+    KTItemTweener *tweener;
+    KTFrame *frame;
 };
 
 KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
 	: QObject(parent), k(new Private)
 {
-	#ifdef K_DEBUG
-		KINIT;
-	#endif
-	
-	k->item = item;
-	k->tweener = 0;
-	k->frame = parent;
-	
-	initItemData();
-}
+    #ifdef K_DEBUG
+           KINIT;
+    #endif
 
+    k->item = item;
+    k->tweener = 0;
+    k->frame = parent;
+
+    initItemData();
+}
 
 KTGraphicObject::~KTGraphicObject()
 {
-	#ifdef K_DEBUG
-		KEND;
-	#endif
-	if( k->item )
-	{
-// 		if ( QGraphicsScene *scene = d->item->scene() )
-// 		{
-// 			scene->removeItem(d->item);
-// 		}
-		delete k->item;
-	}
-	
-	if(k->tweener && k->frame->scene())
-	{
-		k->frame->scene()->removeTweeningObject(this);
-	}
-	delete k;
+    #ifdef K_DEBUG
+           KEND;
+    #endif
+
+    if (k->item) {
+        /*
+          if ( QGraphicsScene *scene = k->item->scene() ) {
+               scene->removeItem(k->item);
+          }
+        */
+        delete k->item;
+    }
+
+    if (k->tweener && k->frame->scene())
+        k->frame->scene()->removeTweeningObject(this);
+
+    delete k;
 }
 
 void KTGraphicObject::fromXml(const QString &xml )
@@ -83,98 +80,84 @@ void KTGraphicObject::fromXml(const QString &xml )
 
 QDomElement KTGraphicObject::toXml(QDomDocument &doc) const
 {
-	QDomElement object = doc.createElement("object");
-	if ( KTAbstractSerializable *is = dynamic_cast<KTAbstractSerializable *>(k->item) )
-	{
-		object.appendChild(is->toXml(doc));
-	}
-	
-	if(k->tweener)
-	{
-		object.appendChild(k->tweener->toXml(doc));
-	}
-	
-	return object;
-}
+    QDomElement object = doc.createElement("object");
+ 
+    if (KTAbstractSerializable *is = dynamic_cast<KTAbstractSerializable *>(k->item))
+        object.appendChild(is->toXml(doc));
 
+    if (k->tweener)
+        object.appendChild(k->tweener->toXml(doc));
+
+    return object;
+}
 
 void KTGraphicObject::setItem(QGraphicsItem *item)
 {
-	k->item = item;
-	initItemData();
+    k->item = item;
+    initItemData();
 }
 
 QGraphicsItem *KTGraphicObject::item() const
 {
-	return k->item;
+    return k->item;
 }
 
 void KTGraphicObject::setObjectName(const QString &name)
 {
-	k->name = name;
+    k->name = name;
 }
 
 QString KTGraphicObject::objectName() const
 {
-	return k->name;
+    return k->name;
 }
 
 void KTGraphicObject::initItemData()
 {
-	
-	if(! k->item->data(ScaleX).isValid())
-	{
-		k->item->setData(ScaleX, 1.0);
-	}
-	if(! k->item->data(ScaleY).isValid())
-	{
-		k->item->setData(ScaleY, 1.0);
-	}
-	if(! k->item->data(Rotate).isValid())
-	{
-		k->item->setData(Rotate, 0.0);
-	}
-	if(! k->item->data(TranslateX).isValid())
-	{
-		k->item->setData(TranslateX, 0.0);
-	}
-	if(! k->item->data(TranslateY).isValid())
-	{
-		k->item->setData(TranslateY, 0.0);
-	}
+    if (! k->item->data(ScaleX).isValid())
+        k->item->setData(ScaleX, 1.0);
+
+    if (! k->item->data(ScaleY).isValid())
+        k->item->setData(ScaleY, 1.0);
+
+    if (! k->item->data(Rotate).isValid())
+        k->item->setData(Rotate, 0.0);
+
+    if (! k->item->data(TranslateX).isValid())
+        k->item->setData(TranslateX, 0.0);
+
+    if (! k->item->data(TranslateY).isValid())
+        k->item->setData(TranslateY, 0.0);
 }
 
 void KTGraphicObject::setTweener(KTItemTweener *tweener)
 {
-	k->tweener = tweener;
-	
-	if( k->tweener )
-	{
-		k->tweener->setItem(k->item);
-		k->frame->scene()->addTweeningObject(this);
-	}
-	else
-	{
-		k->frame->scene()->removeTweeningObject(this);
-	}
+    k->tweener = tweener;
+
+    if (k->tweener) {
+        k->tweener->setItem(k->item);
+        k->frame->scene()->addTweeningObject(this);
+    } else {
+        k->frame->scene()->removeTweeningObject(this);
+    }
 }
 
 KTItemTweener *KTGraphicObject::tweener() const
 {
-	return k->tweener;
+    return k->tweener;
 }
 
 KTFrame *KTGraphicObject::frame() const
 {
-	return k->frame;
+    return k->frame;
 }
 
 int KTGraphicObject::logicalIndex() const
 {
-	return k->frame->logicalIndexOf(const_cast<KTGraphicObject *>(this));
+    return k->frame->logicalIndexOf(const_cast<KTGraphicObject *>(this));
 }
 
 int KTGraphicObject::visualIndex() const
 {
-	return k->frame->visualIndexOf(const_cast<KTGraphicObject *>(this));
+    return k->frame->visualIndexOf(const_cast<KTGraphicObject *>(this));
 }

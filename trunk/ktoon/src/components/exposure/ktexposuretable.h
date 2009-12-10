@@ -91,9 +91,9 @@ class KTExposureTable : public QTableWidget
         void requestRenameFrame(int indexLayer, int indexFrame,const QString & name);
         void requestSelectFrame(int indexLayer, int indexFrame);
 
-       void requestRenameLayer(int indexLayer, const QString & name);
-       void requestMoveLayer(int oldIndex, int newIndex);
-       void requestChangeVisiblityLayer(int visualIndexLayer, bool visibility);
+        void requestRenameLayer(int indexLayer, const QString & name);
+        void requestMoveLayer(int oldIndex, int newIndex);
+        void requestChangeVisiblityLayer(int visualIndexLayer, bool visibility);
 };
 
 #endif
