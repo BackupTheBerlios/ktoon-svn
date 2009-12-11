@@ -34,9 +34,6 @@ KTSceneTabWidget::KTSceneTabWidget(QWidget *parent) : QFrame(parent)
    QVBoxLayout *layout = new QVBoxLayout(this);
    layout->setMargin(1);
 
-   //QLabel *header = new QLabel("Foreground -> Background");
-   //layout->addWidget(header);
-
    tabber = new QTabWidget;
    layout->addWidget(tabber);
 
@@ -45,6 +42,11 @@ KTSceneTabWidget::KTSceneTabWidget(QWidget *parent) : QFrame(parent)
 
 KTSceneTabWidget::~KTSceneTabWidget()
 {
+}
+
+QTabWidget* KTSceneTabWidget::TabWidget()
+{
+   return tabber;
 }
 
 void KTSceneTabWidget::removeAllTabs()
@@ -60,8 +62,8 @@ void KTSceneTabWidget::addScene(int index, const QString &name, KTExposureTable 
     QVBoxLayout *layout = new QVBoxLayout(frame);
     layout->setMargin(1);
 
-    QLabel *header = new QLabel("Foreground -> Background");
-    layout->addWidget(header);
+    QLabel *header = new QLabel("Foreground <<< Background");
+    layout->addWidget(header, 0, Qt::AlignHCenter);
     layout->addWidget(table);
     frame->setLayout(layout);
 
@@ -72,14 +74,7 @@ void KTSceneTabWidget::addScene(int index, const QString &name, KTExposureTable 
 KTExposureTable* KTSceneTabWidget::getCurrentTable() 
 {
     int index = currentIndex();
-    /*
-    KTExposureTable *table = tables.value(index);
-    if (table) 
-        return table;
 
-    return 0;
-    */
-  
     return getTable(index);
 }
 
@@ -98,52 +93,3 @@ int KTSceneTabWidget::currentIndex()
     int index = tabber->currentIndex();
     return index;
 }
-
-void KTSceneTabWidget::setCurrentIndex(int index) 
-{
-    tabber->setCurrentIndex(index);
-}
-
-void KTSceneTabWidget::setTabText(int index, const QString &name)
-{
-    tabber->setTabText(index, name);
-}
-
-void KTSceneTabWidget::removeTab(int index)
-{
-    tabber->removeTab(index);
-}
-
-int KTSceneTabWidget::count()
-{
-    return tabber->count();
-}
-
-/*
-#ifndef QT_NO_WHEELEVENT
-void KTSceneTabWidget::wheelEvent(QWheelEvent *ev)
-{
-    QRect rect = tabBar()->rect();
-    rect.setWidth(width());
-
-    if (rect.contains(ev->pos()))
-        wheelMove(ev->delta());
-}
-
-void KTSceneTabWidget::wheelMove( int delta )
-{
-    if (count() > 1) {
-        int current = currentIndex();
-        if (delta < 0) {
-            current = (current + 1) % count();
-        } else {
-            current--;
-            if (current < 0)
-                current = count() - 1;
-        }
-        setCurrentIndex(current);
-    }
-}
-
-#endif
-*/

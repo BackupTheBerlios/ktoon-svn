@@ -429,7 +429,7 @@ int KTExposureTable::currentFrame() const
 
 void KTExposureTable::insertLayer(int index, const QString & name)
 {
-    kDebug() << "*** Inserting Layer column!"; 
+    //kDebug() << "*** Inserting Layer column! - Index: " << index; 
     insertColumn(index);
     k->header->insertLayer(index, name);
 }

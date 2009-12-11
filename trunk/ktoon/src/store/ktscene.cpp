@@ -132,6 +132,8 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
 
     k->layers.insert(position, layer);
 
+    kFatal() << "*** Layer logical position from KTScene: " << position;
+
     if (loaded)
         KTProjectLoader::createLayer(project()->visualIndexOf(this), position, layer->layerName(), project());
 

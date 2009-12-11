@@ -33,197 +33,171 @@
 
 bool KTCommandExecutor::createLayer(KTLayerResponse *response)
 {
-	int scenePosition = response->sceneIndex();
-	int position = response->layerIndex();
-	QString name = response->arg().toString();
-	
-	QString state = response->state();
-	
-	KTScene *scene = m_project->scene(scenePosition);
-	
-	if ( scene )
-	{
-		KTLayer *layer = scene->createLayer(position);
-		
-		if ( ! layer ) return false;
-		
-		if (!name.isEmpty())
-		{
-			layer->setLayerName( name );
-		}
-		else
-		{
-			response->setArg(layer->layerName());
-		}
-		
-		emit responsed(response);
-		
-		layer->fromXml( state );
-		response->setArg(layer->layerName());
-		
-		return true;
-	}
-	return false;
+    int scenePosition = response->sceneIndex();
+    int position = response->layerIndex();
+
+    kFatal() << "*** Logical Position: " << position;
+
+    QString name = response->arg().toString();
+    QString state = response->state();
+
+    KTScene *scene = m_project->scene(scenePosition);
+
+    if (scene) {
+        KTLayer *layer = scene->createLayer(position);
+
+        if (! layer) 
+            return false;
+
+        if (!name.isEmpty())
+            layer->setLayerName(name);
+        else
+            response->setArg(layer->layerName());
+
+        emit responsed(response);
+
+        layer->fromXml(state);
+        response->setArg(layer->layerName());
+
+        return true;
+    }
+
+    return false;
 }
 
 
 bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
 {
-	int scenePos = response->sceneIndex();
-	int position = response->layerIndex();
-	
-	KTScene *scene = m_project->scene(scenePos);
-	
-	if ( scene )
-	{
-		KTLayer *layer = scene->layer( position );
-		if ( layer )
-		{
-			QDomDocument document;
-			document.appendChild(layer->toXml(document));
-			response->setState(document.toString());
-			response->setArg(layer->layerName());
-			
-			if ( scene->removeLayer(position) )
-			{
-				emit responsed(response);
-				
-				return true;
-			}
-		}
-	}
-	
-	return false;
+    int scenePos = response->sceneIndex();
+    int position = response->layerIndex();
+
+    KTScene *scene = m_project->scene(scenePos);
+
+    if (scene) {
+        KTLayer *layer = scene->layer(position);
+        if (layer) {
+            QDomDocument document;
+            document.appendChild(layer->toXml(document));
+            response->setState(document.toString());
+            response->setArg(layer->layerName());
+
+            if (scene->removeLayer(position)) {
+                emit responsed(response);
+
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 
 bool KTCommandExecutor::moveLayer(KTLayerResponse *response)
 {
-	int scenePos = response->sceneIndex();
-	int position = response->layerIndex();
-	int newPosition = response->arg().toInt();
-	
-	
-	KTScene *scene = m_project->scene(scenePos);
-	
-	if ( !scene)
-	{
-		return false;
-	}
-	
-	if ( ! scene->moveLayer(position, newPosition) )
-	{
-		#ifdef K_DEBUG
-		kWarning() << "Failed moving layer";
-		#endif
-		return false;
-	}
-	else
-	{
-		emit responsed(response);
-		return true;
-		
-	}
-	return false;
-}
+    int scenePos = response->sceneIndex();
+    int position = response->layerIndex();
+    int newPosition = response->arg().toInt();
 
+    KTScene *scene = m_project->scene(scenePos);
+
+    if (!scene)
+        return false;
+
+    if (! scene->moveLayer(position, newPosition)) {
+        #ifdef K_DEBUG
+               kWarning() << "Failed moving layer";
+        #endif
+        return false;
+    } else {
+        emit responsed(response);
+        return true;
+    }
+
+    return false;
+}
 
 bool KTCommandExecutor::lockLayer(KTLayerResponse *response)
 {
-	int scenePos = response->sceneIndex();
-	int position = response->layerIndex();
-	bool lock = response->arg().toBool();
-	
-	KTScene *scene = m_project->scene(scenePos);
-	
-	if ( !scene)
-	{
-		return false;
-	}
-	
-	KTLayer *layer = scene->layer(position);
-	
-	if ( layer )
-	{
-		layer->setLocked(lock);
-		emit responsed(response);
-		return true;
-	}
-	
-	return false;
+    int scenePos = response->sceneIndex();
+    int position = response->layerIndex();
+    bool lock = response->arg().toBool();
+
+    KTScene *scene = m_project->scene(scenePos);
+
+    if (!scene)
+        return false;
+
+    KTLayer *layer = scene->layer(position);
+
+    if (layer) {
+        layer->setLocked(lock);
+        emit responsed(response);
+        return true;
+    }
+
+    return false;
 }
-
-
 
 bool KTCommandExecutor::renameLayer(KTLayerResponse *response)
 {
-	int scenePos = response->sceneIndex();
-	int position = response->layerIndex();
-	QString newName = response->arg().toString();
-	
-	#ifdef K_DEBUG
-	kWarning() << "Renamed layer: " << newName;
-	#endif
-	
-	QString oldName;
-	
-	KTScene *scene = m_project->scene(scenePos);
-	
-	if ( !scene)
-	{
-		return false;
-	}
-	
-	KTLayer *layer = scene->layer(position);
-	
-	if ( layer )
-	{
-		QString current = layer->layerName();
-		
-		layer->setLayerName( newName );
-		emit responsed(response);
-		
-		response->setArg(current);
-		
-		return true;
-	}
-	
-	return false;
+    int scenePos = response->sceneIndex();
+    int position = response->layerIndex();
+    QString newName = response->arg().toString();
+
+    #ifdef K_DEBUG
+           kWarning() << "Renamed layer: " << newName;
+    #endif
+
+    QString oldName;
+
+    KTScene *scene = m_project->scene(scenePos);
+
+    if (!scene)
+        return false;
+
+    KTLayer *layer = scene->layer(position);
+
+    if (layer) {
+        QString current = layer->layerName();
+        layer->setLayerName(newName);
+
+        emit responsed(response);
+        response->setArg(current);
+
+        return true;
+    }
+
+    return false;
 }
-
-
 
 bool KTCommandExecutor::selectLayer(KTLayerResponse *response)
 {
-	emit responsed(response);
-	return true;
+    emit responsed(response);
+
+    return true;
 }
 
 
 bool KTCommandExecutor::setLayerVisibility(KTLayerResponse *response)
 {
-	int scenePos = response->sceneIndex();
-	int position = response->layerIndex();
-	bool view = response->arg().toBool();
-	
-	
-	KTScene *scene = m_project->scene(scenePos);
-	
-	if ( !scene)
-	{
-		return false;
-	}
-	
-	KTLayer *layer = scene->layer(position);
-	
-	if ( layer )
-	{
-		layer->setVisible(view);
-		responsed(response);
-		return true;
-	}
-	
-	return false;
+    int scenePos = response->sceneIndex();
+    int position = response->layerIndex();
+    bool view = response->arg().toBool();
+
+    KTScene *scene = m_project->scene(scenePos);
+
+    if (!scene)
+        return false;
+
+    KTLayer *layer = scene->layer(position);
+
+    if (layer) {
+        layer->setVisible(view);
+        responsed(response);
+
+        return true;
+    }
+
+    return false;
 }
-
-

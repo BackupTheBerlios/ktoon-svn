@@ -36,64 +36,60 @@ class KTProject;
 class KTPaintAreaRotator;
 
 /**
- * Esta clase provee un area para realizar diferentes trazos
+ * This class provides an area to draw with some kind of brushes
  * @author Jorge Cuadrado \<kuadrosx@toonka.com\> - David Cuadrado \<krawek@toonka.com\>
 */
 class KTOON_EXPORT KTPaintAreaBase : public QGraphicsView
 {
-	Q_OBJECT;
-	public:
-		KTPaintAreaBase(QWidget * parent = 0);
-		~KTPaintAreaBase();
-		
-		void setAntialiasing(bool use);
-		void setUseOpenGL(bool opengl);
-		void setDrawGrid(bool draw);
-		void setTool(KTToolPlugin *tool);
-		
-		bool drawGrid() const;
-		
-		void scaleView(qreal scaleFactor);
-		
-		void setRotationAngle(int angle);
-		
-		KTBrushManager *brushManager() const;
-		
-		QRectF drawingRect() const;
-		KTGraphicsScene *graphicsScene() const;
-		
-	private:
-		virtual void saveState();
-		virtual void restoreState();
-		
-	protected:
-		virtual void mousePressEvent( QMouseEvent * event  );
-		virtual void mouseMoveEvent( QMouseEvent * event );
-		virtual void mouseReleaseEvent(QMouseEvent *event);
-		virtual void tabletEvent( QTabletEvent * event );
-		virtual void wheelEvent( QWheelEvent *event );
-		
-		virtual bool viewportEvent(QEvent *e);
-		
-		
-	signals:
-		void cursorPosition(const QPointF &pos);
-		void requestTriggered(const KTProjectRequest *event);
-		void changedZero(const QPointF &zero);
-		void scaled(double factor);
-		
-	public slots:
-		void centerDrawingArea();
-		
-	protected:
-		virtual void drawBackground(QPainter *painter, const QRectF &rect);
-		virtual void drawForeground( QPainter *painter, const QRectF &rect );
-		
-		virtual bool canPaint() const;
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    public:
+        KTPaintAreaBase(QWidget * parent = 0);
+        ~KTPaintAreaBase();
+
+        void setAntialiasing(bool use);
+        void setUseOpenGL(bool opengl);
+        void setDrawGrid(bool draw);
+        void setTool(KTToolPlugin *tool);
+
+        bool drawGrid() const;
+
+        void scaleView(qreal scaleFactor);
+        void setRotationAngle(int angle);
+
+        KTBrushManager *brushManager() const;
+
+        QRectF drawingRect() const;
+        KTGraphicsScene *graphicsScene() const;
+
+    private:
+        virtual void saveState();
+        virtual void restoreState();
+
+    protected:
+        virtual void mousePressEvent(QMouseEvent * event);
+        virtual void mouseMoveEvent(QMouseEvent * event);
+        virtual void mouseReleaseEvent(QMouseEvent *event);
+        virtual void tabletEvent(QTabletEvent * event);
+        virtual void wheelEvent(QWheelEvent *event);
+        virtual bool viewportEvent(QEvent *e);
+
+    signals:
+        void cursorPosition(const QPointF &pos);
+        void requestTriggered(const KTProjectRequest *event);
+        void changedZero(const QPointF &zero);
+        void scaled(double factor);
+
+    public slots:
+        void centerDrawingArea();
+
+    protected:
+        virtual void drawBackground(QPainter *painter, const QRectF &rect);
+        virtual void drawForeground(QPainter *painter, const QRectF &rect);
+        virtual bool canPaint() const;
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

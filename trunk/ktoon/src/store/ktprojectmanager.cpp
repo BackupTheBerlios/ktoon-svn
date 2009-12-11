@@ -164,7 +164,6 @@ void KTProjectManager::setupNewProject()
     handleProjectRequest(&request);
 
     request = KTRequestBuilder::createLayerRequest(0, 0, KTProjectRequest::Add, QString());
-
     handleProjectRequest(&request);
 
     request = KTRequestBuilder::createFrameRequest(0, 0, 0, KTProjectRequest::Add, QString());

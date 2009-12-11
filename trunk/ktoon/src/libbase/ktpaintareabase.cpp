@@ -100,7 +100,7 @@ KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), k(ne
     k->angle = 0;
 
     k->rotator = new KTPaintAreaRotator(this, this);
-    k->drawingRect = QRectF(QPointF(0,0), QSizeF( 500, 400 ) ); // FIXME: configurable
+    k->drawingRect = QRectF(QPointF(0,0), QSizeF(500, 400)); // FIXME: configurable
 
     k->scene->setSceneRect(k->drawingRect);
     setScene(k->scene);
@@ -113,13 +113,13 @@ KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), k(ne
 
 void KTPaintAreaBase::saveState()
 {
-    KConfig *config = kApp->config( "PaintArea" );
+    KConfig *config = kApp->config("PaintArea");
     config->setValue("RenderHints", int(renderHints()));
 }
 
 void KTPaintAreaBase::restoreState()
 {
-    KConfig *config = kApp->config( "PaintArea" );
+    KConfig *config = kApp->config("PaintArea");
 
     int renderHints = config->value("RenderHints", int(this->renderHints())).toInt();
     setRenderHints(QPainter::RenderHints(renderHints));
@@ -159,7 +159,7 @@ void KTPaintAreaBase::setUseOpenGL(bool opengl)
         if (opengl) {
             setViewport(new GLDevice());
         } else {
-                // setViewport( new KTImageDevice() );
+                // setViewport(new KTImageDevice());
         }
 #else
         Q_UNUSED(opengl);
@@ -218,14 +218,12 @@ void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )
         && (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier))) {
         setUpdatesEnabled(false);
         setDragMode(QGraphicsView::NoDrag);
-
 	QPointF p1 = event->pos();
         QPointF p2 = k->drawingRect.center();
         k->rotator->rotateTo( (int)(-(180*KTGraphicalAlgorithm::angleForPos(p1,p2))/M_PI) );
         setUpdatesEnabled(true);
     } else {
         QGraphicsView::mouseMoveEvent(event);
-
         if (!k->scene->mouseGrabberItem() && k->scene->isDrawing()) { // HACK
             QGraphicsSceneMouseEvent mouseEvent(QEvent::GraphicsSceneMouseMove);
             mouseEvent.setWidget(viewport());
@@ -280,16 +278,17 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 
     emit changedZero(painter->matrix().map(QPointF(0,0)));
 
+    // if enabled draw grid
     if (k->drawGrid) {
         int sx = (int)painter->matrix().m11();
         int sy = (int)painter->matrix().m22();
         painter->resetMatrix();
         painter->scale(sx, sy);
-        painter->setPen( QPen(QColor(0,0,180, 50), 1) );
+        painter->setPen(QPen(QColor(0,0,180, 50), 1));
 
-        for (int i = 0; i < qMax(width(), height()); i+= 10) {
-             painter->drawLine(i, 0, i, height() );
-             painter->drawLine(0, i, width(), i );
+        for (int i = 3; i < qMax(width(), height()); i+= 10) {
+             painter->drawLine(i, 0, i, height());
+             painter->drawLine(0, i, width(), i);
         }
     }
 
@@ -297,7 +296,7 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
     painter->restore();
 }
 
-void KTPaintAreaBase::drawForeground( QPainter *painter, const QRectF &rect )
+void KTPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
 {
     if (KTFrame *frame = k->scene->currentFrame()) {
         if (frame->isLocked()) {
@@ -364,7 +363,7 @@ void KTPaintAreaBase::scaleView(qreal scaleFactor)
 
 void KTPaintAreaBase::setRotationAngle(int angle)
 {
-    rotate(angle - k->angle );
+    rotate(angle - k->angle);
     k->angle = angle;
 }
 

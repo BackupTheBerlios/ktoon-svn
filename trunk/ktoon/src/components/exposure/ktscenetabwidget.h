@@ -40,33 +40,18 @@ class K_GUI_EXPORT KTSceneTabWidget : public QFrame
     public:
         KTSceneTabWidget(QWidget *parent = 0);
         ~KTSceneTabWidget();
+        QTabWidget* TabWidget();
         void addScene(int index, const QString &name, KTExposureTable *table = 0);
         KTExposureTable* getCurrentTable();
         KTExposureTable* getTable(int index);
         int currentIndex();
-        void setCurrentIndex(int index);
-        void setTabText(int index, const QString &name);
-        void removeTab(int index);
-        int count(); 
-        QTabWidget *tabber;
 
     private:
         QHash<int, KTExposureTable *> tables;
+        QTabWidget *tabber;
 
     public slots:
         void removeAllTabs();
-
-/*
-    protected:
-        #ifndef QT_NO_WHEELEVENT
-                virtual void wheelEvent(QWheelEvent *e);
-        #endif
-
-    protected slots:
-        #ifndef QT_NO_WHEELEVENT
-                virtual void wheelMove(int delta);
-        #endif
-*/
 };
 
 #endif

@@ -45,7 +45,6 @@ class KTViewCamera::Status : public QStatusBar
         bool loop();
 
     private:
-        //QLabel *m_fps;
         QSpinBox *m_fps;
         QLabel *m_sceneName;
         QLabel *m_total;
