@@ -29,7 +29,6 @@ module RQonf
 end
 @
 }
-
     conf.setTestDir("configure.tests")
     conf.verifyQtVersion("4.2.0")
     conf.createTests
@@ -43,11 +42,15 @@ end
     config.addModule("xml")
     config.addModule("network")
 
+    Info.info << "Debug support... "
+
     if conf.hasArgument?("with-debug")
        config.addDefine("K_DEBUG")
+       print "[ On ]\n"
     else
        config.addDefine("K_NODEBUG")
        config.addOption("silent")
+       print "[ Off ]\n"
     end
 
     config.addDefine(%@KLIB_PREFIX='\\\\"'#{conf.destdir}'\\\\"'@)
