@@ -37,7 +37,7 @@ class KTConfigurationArea : public QDockWidget
         KTConfigurationArea(QWidget *parent = 0);
         ~KTConfigurationArea();
 
-        void setConfigurator(QWidget *widget);
+        void setConfigurator(QWidget *widget, int maxWidth = 0);
 
         QSize sizeHint() const;
 

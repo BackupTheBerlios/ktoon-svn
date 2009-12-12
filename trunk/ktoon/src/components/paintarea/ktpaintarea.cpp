@@ -76,12 +76,16 @@ struct KTPaintArea::Private
 
 KTPaintArea::KTPaintArea(const KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
 {
+    K_FUNCINFO;
+
     k->project = project;
     k->currentSceneIndex = 0;
 
     setCurrentScene(0);
-    if (graphicsScene()->scene())
-        graphicsScene()->setCurrentFrame( 0, 0 );
+
+    if (graphicsScene()->scene()) {
+        graphicsScene()->setCurrentFrame(0, 0);
+    }
 }
 
 KTPaintArea::~KTPaintArea()
@@ -177,6 +181,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
                  setUpdatesEnabled(true);
 
                  sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
+                 kFatal() << "Calling out drawPhotogram() from KTPaintArea / frameResponse"; 
                  sscene->drawPhotogram(event->frameIndex());
                  setCurrentScene( event->sceneIndex() );
 
@@ -215,6 +220,7 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
         sscene->setLayerVisible(event->layerIndex(), event->arg().toBool());
 
     if (event->action() != KTProjectRequest::Add ||  event->action() != KTProjectRequest::Remove) {
+        kFatal() << "Calling out drawPhotogram() from KTPaintArea / layerResponse";
         graphicsScene()->drawCurrentPhotogram();
         viewport()->update(scene()->sceneRect().toRect() );
     }
@@ -249,6 +255,7 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
                     viewport()->update();
                     break;
                default:
+                    kFatal() << "Calling out drawPhotogram() from KTPaintArea / itemResponse";
                     graphicsScene()->drawCurrentPhotogram();
                     viewport()->update(scene()->sceneRect().toRect() );
                     break;

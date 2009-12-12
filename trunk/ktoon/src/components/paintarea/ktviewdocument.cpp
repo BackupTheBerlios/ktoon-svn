@@ -82,6 +82,10 @@ struct KTViewDocument::Private
 
 KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindow(parent), k(new Private)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     setWindowIcon(QPixmap(THEME_DIR + "/icons/layer_pic.png") ); // FIXME: new image for documents
 
     k->actionManager = new KActionManager(this);
@@ -89,7 +93,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
     QFrame *frame = new QFrame(this, Qt::FramelessWindowHint);
     
     QGridLayout *layout = new QGridLayout(frame);
- 
+
     k->paintArea = new KTPaintArea(project, frame);
     connect(k->paintArea, SIGNAL(scaled(double)), this, SLOT(scaleRuler(double)));
 
@@ -583,9 +587,12 @@ void KTViewDocument::selectTool()
     if (action) {
         KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
         QString toolStr = action->text();
+        kDebug() << "*** Brush: " << toolStr;
+        int maxWidth = 0;
 
         switch (tool->toolType()) {
                 case KTToolInterface::Brush: 
+                     maxWidth = 130;
                      k->brushesMenu->setDefaultAction(action);
                      k->brushesMenu->setActiveAction(action);
                      if (!action->icon().isNull())
@@ -616,7 +623,7 @@ void KTViewDocument::selectTool()
         QWidget *toolConfigurator = tool->configurator();
 
         if (toolConfigurator) {
-            k->configurationArea->setConfigurator(toolConfigurator);
+            k->configurationArea->setConfigurator(toolConfigurator, maxWidth);
             toolConfigurator->show();
             if (!k->configurationArea->isVisible())
                 k->configurationArea->show();
@@ -765,9 +772,9 @@ void KTViewDocument::createMenu()
      k->editMenu->addSeparator();
      k->editMenu->addAction(k->actionManager->find("selectAll"));
      k->editMenu->addSeparator();
-	// k->editMenu->addAction(d->actionManager->find("localflipv"));
-	// k->editMenu->addAction(d->actionManager->find("localfliph"));
-	// k->editMenu->addSeparator();
+     // k->editMenu->addAction(d->actionManager->find("localflipv"));
+     // k->editMenu->addAction(d->actionManager->find("localfliph"));
+     // k->editMenu->addSeparator();
      k->editMenu->addAction(k->actionManager->find("properties"));
 
      k->viewMenu = new QMenu(tr( "&View" ), this);

@@ -71,7 +71,7 @@ QSize  KTConfigurationArea::sizeHint() const
     return QDockWidget::sizeHint();
 }
 
-void KTConfigurationArea::setConfigurator(QWidget *w)
+void KTConfigurationArea::setConfigurator(QWidget *w, int maxWidth)
 {
     Q_CHECK_PTR(w);
     QWidget *old = widget();
@@ -83,6 +83,10 @@ void KTConfigurationArea::setConfigurator(QWidget *w)
         old->hide();
 
     setWidget(w);
+
+    if (maxWidth > 0)
+        setMaximumWidth(maxWidth);
+
     showConfigurator();
 }
 

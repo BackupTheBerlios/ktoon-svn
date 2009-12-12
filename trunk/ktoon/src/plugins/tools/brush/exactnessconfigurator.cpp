@@ -52,11 +52,14 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 
     mainLayout->addLayout(layout);
 
+    QLabel *previews = new QLabel(tr("My Values:"));
+    previews->setAlignment(Qt::AlignHCenter);
+    mainLayout->addWidget(previews);
+
     m_table = new QTableWidget(3,3);
-    connect(m_table, SIGNAL(itemClicked ( QTableWidgetItem *)), this, SLOT(updateValueFromItem(QTableWidgetItem *)));
+    connect(m_table, SIGNAL(itemClicked(QTableWidgetItem *)), this, SLOT(updateValueFromItem(QTableWidgetItem *)));
 
     m_table->setSelectionMode(QAbstractItemView::SingleSelection);
-
     m_table->horizontalHeader()->hide();
     m_table->verticalHeader()->hide();
 
@@ -73,11 +76,11 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
     m_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    m_table->setMaximumHeight(15*m_table->rowCount() + 3);
-    m_table->horizontalHeader()->setResizeMode(QHeaderView::Custom);
+    m_table->setMaximumHeight(22*m_table->rowCount() + 3);
+    m_table->verticalHeader()->setResizeMode(QHeaderView::Stretch);
+    m_table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
     mainLayout->addWidget(m_table);
-    //mainLayout->addStretch(2);
 
     QBoxLayout *buttonLayout = new QBoxLayout(QBoxLayout::LeftToRight);
 

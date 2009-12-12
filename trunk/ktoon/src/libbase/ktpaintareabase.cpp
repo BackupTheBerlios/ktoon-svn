@@ -342,8 +342,10 @@ bool KTPaintAreaBase::viewportEvent(QEvent *e)
     bool ret = QGraphicsView::viewportEvent(e);
 
     if (e->type() == QEvent::Show) {
-        if (k->scene->items().isEmpty())
+        if (k->scene->items().isEmpty()) {
+            kFatal() << "*** Calling drawCurrentPhotogram() from KTPaintAreaBase";
             k->scene->drawCurrentPhotogram();
+        }
     }
 
     return ret;

@@ -45,7 +45,7 @@
 
 Brush::Brush() : m_configurator(0), m_item(0)
 {
-	setupActions();
+    setupActions();
 }
 
 Brush::~Brush()
@@ -54,163 +54,142 @@ Brush::~Brush()
 
 void Brush::init(KTGraphicsScene *scene)
 {
-	foreach(QGraphicsView * view, scene->views())
-	{
-		view->setDragMode ( QGraphicsView::NoDrag );
-		
-		Q_CHECK_PTR(view->scene());
-		if ( QGraphicsScene *scene = qobject_cast<QGraphicsScene *>(view->scene()) )
-		{
-			foreach(QGraphicsItem *item, scene->items() )
-			{
-				item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-				item->setFlag(QGraphicsItem::ItemIsMovable, false);
-			}
-		}
-	}
+    foreach (QGraphicsView * view, scene->views()) {
+             view->setDragMode(QGraphicsView::NoDrag);
+             Q_CHECK_PTR(view->scene());
+             if (QGraphicsScene *scene = qobject_cast<QGraphicsScene *>(view->scene())) {
+                 foreach (QGraphicsItem *item, scene->items()) {
+                          item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                          item->setFlag(QGraphicsItem::ItemIsMovable, false);
+                 }
+             }
+    }
 }
 
 QStringList Brush::keys() const
 {
-	return QStringList() << tr("Pencil") ;
+    return QStringList() << tr("Pencil") ;
 }
 
 void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	m_firstPoint = input->pos();
-	
-	m_path = QPainterPath();
-	m_path.moveTo(m_firstPoint);
-	
-	m_oldPos = input->pos();
-	
-	m_item = new KTPathItem();
-	
-	m_item->setPen( brushManager->pen() );
-	
-	scene->addItem( m_item );
+    m_firstPoint = input->pos();
+
+    m_path = QPainterPath();
+    m_path.moveTo(m_firstPoint);
+
+    m_oldPos = input->pos();
+
+    m_item = new KTPathItem();
+
+    m_item->setPen(brushManager->pen());
+
+    scene->addItem(m_item);
 }
 
 void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	Q_UNUSED(brushManager);
-	
-	QPointF lastPoint = input->pos();
-	
-	foreach(QGraphicsView * view, scene->views())
-	{
-		view->setDragMode (QGraphicsView::NoDrag);
-	}
-	
-// 	QPainterPath path;
-// 	path.setFillRule ( Qt::WindingFill );
-	
-	m_path.moveTo( m_oldPos);
-	m_path.lineTo( lastPoint );
-	
-// 	m_path.addPath(path);
-	m_item->setPath(m_path);
-	m_oldPos = lastPoint;
+    Q_UNUSED(brushManager);
+
+    QPointF lastPoint = input->pos();
+
+    foreach (QGraphicsView * view, scene->views())
+             view->setDragMode(QGraphicsView::NoDrag);
+
+    m_path.moveTo( m_oldPos);
+    m_path.lineTo( lastPoint );
+
+    m_item->setPath(m_path);
+    m_oldPos = lastPoint;
 }
 
 void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	Q_UNUSED(scene);
-	
-	double smoothness = m_configurator->exactness();
-	
-	if ( m_firstPoint == input->pos() && m_path.elementCount() == 1)
-	{
-		smoothness = 0;
-		m_path.addEllipse(input->pos().x(), input->pos().y(), brushManager->pen().width(), brushManager->pen().width());
-	}
-	
-	m_firstPoint = QPoint(0,0);
-	
-	smoothPath( m_path, smoothness );
-	
-	m_item->setBrush( brushManager->brush() );
-	m_item->setPath(m_path);
-	
-	
-	// Add KTProjectRequest
-	
-	QDomDocument doc;
-	doc.appendChild(m_item->toXml( doc ));
-	
-	KTProjectRequest request = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString() );
-	
-	emit requested(&request);
+    Q_UNUSED(scene);
+
+    double smoothness = m_configurator->exactness();
+
+    if (m_firstPoint == input->pos() && m_path.elementCount() == 1) {
+        smoothness = 0;
+        m_path.addEllipse(input->pos().x(), input->pos().y(), brushManager->pen().width(), brushManager->pen().width());
+    }
+
+    m_firstPoint = QPoint(0,0);
+
+    smoothPath(m_path, smoothness);
+
+    m_item->setBrush( brushManager->brush());
+    m_item->setPath(m_path);
+
+    // Add KTProjectRequest
+
+    QDomDocument doc;
+    doc.appendChild(m_item->toXml(doc));
+
+    KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString());
+
+    emit requested(&request);
 }
 
 void Brush::smoothPath(QPainterPath &path, double smoothness, int from, int to)
 {
-	QPolygonF pol;
-	QList<QPolygonF> polygons = path.toSubpathPolygons();
-	
-	QList<QPolygonF>::iterator it = polygons.begin();
-	
-	
-	QPolygonF::iterator pointIt;
-	while(it != polygons.end() )
-	{
-		pointIt = (*it).begin();
-		
-		while(pointIt <= (*it).end()-2)
-		{
-			pol << (*pointIt);
-			pointIt += 2;
-		}
-		++it;
-	}
-	
-	if(smoothness > 0)
-	{
-		path = KTGraphicalAlgorithm::bezierFit(pol, smoothness, from, to);
-	}
-	else
-	{
-		path = QPainterPath();
-		path.addPolygon(pol);
-	}
+    QPolygonF pol;
+    QList<QPolygonF> polygons = path.toSubpathPolygons();
+
+    QList<QPolygonF>::iterator it = polygons.begin();
+
+    QPolygonF::iterator pointIt;
+
+    while (it != polygons.end()) {
+           pointIt = (*it).begin();
+
+           while (pointIt <= (*it).end()-2) {
+                  pol << (*pointIt);
+                  pointIt += 2;
+           }
+           ++it;
+    }
+
+    if (smoothness > 0) {
+        path = KTGraphicalAlgorithm::bezierFit(pol, smoothness, from, to);
+    } else {
+        path = QPainterPath();
+        path.addPolygon(pol);
+    }
 }
 
 void Brush::setupActions()
 {
-	KAction *pencil = new KAction( QIcon(brush_xpm), tr("Pencil"), this);
-	pencil->setShortcut( QKeySequence(tr("Ctrl+B")) );
-	
-	QPixmap pix(THEME_DIR+"/cursors/pencil.png");
-	pencil->setCursor( QCursor(pix, 0, pix.height()) );
-	
-	m_actions.insert( tr("Pencil"), pencil );
+    KAction *pencil = new KAction( QIcon(brush_xpm), tr("Pencil"), this);
+    pencil->setShortcut( QKeySequence(tr("Ctrl+B")) );
+
+    QPixmap pix(THEME_DIR + "/cursors/pencil.png");
+    pencil->setCursor(QCursor(pix, 0, pix.height()));
+
+    m_actions.insert(tr("Pencil"), pencil);
 }
 
 QMap<QString, KAction *> Brush::actions() const
 {
-	return m_actions;
+    return m_actions;
 }
 
 int Brush::toolType() const
 {
-	return KTToolInterface::Brush;
+    return KTToolInterface::Brush;
 }
 
 QWidget *Brush::configurator() 
 {
-	if ( ! m_configurator )
-	{
-		m_configurator = new ExactnessConfigurator;
-	}
-	
-	return m_configurator;
-}
+    if (! m_configurator)
+        m_configurator = new ExactnessConfigurator;
 
+    return m_configurator;
+}
 
 void Brush::aboutToChangeTool() 
 {
 }
 
-
-Q_EXPORT_PLUGIN2(kt_brush, Brush );
+Q_EXPORT_PLUGIN2(kt_brush, Brush);
 

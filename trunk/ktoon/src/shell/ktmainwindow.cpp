@@ -504,9 +504,10 @@ void KTMainWindow::openProject(const QString &path)
 			
             // TODO: move this code to the project manager class
             KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Select);
-            response.setFrameIndex(0);
             response.setSceneIndex(0);
             response.setLayerIndex(0);
+            response.setFrameIndex(0);
+
             m_viewDoc->handleProjectResponse(&response);
             m_exposureSheet->handleProjectResponse(&response);
             m_timeLine->handleProjectResponse(&response);

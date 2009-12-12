@@ -62,7 +62,7 @@ void KTSceneTabWidget::addScene(int index, const QString &name, KTExposureTable 
     QVBoxLayout *layout = new QVBoxLayout(frame);
     layout->setMargin(1);
 
-    QLabel *header = new QLabel("Foreground <<< Background");
+    QLabel *header = new QLabel("Background >>> Foreground");
     layout->addWidget(header, 0, Qt::AlignHCenter);
     layout->addWidget(table);
     frame->setLayout(layout);

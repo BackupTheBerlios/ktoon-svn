@@ -185,8 +185,8 @@ void KTExposureHeader::setLastFrame(int logicalIndex, int num)
 
 void KTExposureHeader::mousePressEvent(QMouseEvent * event)
 {
-    int section = logicalIndexAt(  event->pos() );
-    int x = sectionViewportPosition ( section ) + 3;
+    int section = logicalIndexAt(event->pos());
+    int x = sectionViewportPosition(section) + 3;
 
     QRect rect(x+3, 3, height()-3, height()-3);
     if (rect.contains(event->pos()))
@@ -345,7 +345,7 @@ void KTExposureTable::emitRequestRenameFrame( QTableWidgetItem * item )
 void KTExposureTable::emitRequestSelectFrame(  int currentRow_, int currentColumn_, int previousRow, int previousColumn )
 {
     if (previousRow != currentRow_ || previousColumn != currentColumn_)
-        emit  requestSelectFrame(currentLayer(), currentRow() );
+        emit  requestSelectFrame(currentLayer(), currentRow());
 }
 
 void KTExposureTable::emitRequestMoveLayer( int , int oldVisualIndex, int newVisualIndex  )

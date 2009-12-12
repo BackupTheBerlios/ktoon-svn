@@ -71,7 +71,7 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
         void requestMoveSelectedItems(QAction *action);
 
     protected:
-        void mousePressEvent( QMouseEvent * event  );
+        void mousePressEvent(QMouseEvent * event);
         void frameResponse(KTFrameResponse *event);
         void layerResponse(KTLayerResponse *event);
         void sceneResponse(KTSceneResponse *event);

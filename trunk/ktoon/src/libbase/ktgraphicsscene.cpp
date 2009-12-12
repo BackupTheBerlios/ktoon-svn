@@ -80,6 +80,10 @@ struct KTGraphicsScene::Private
 
 KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     setItemIndexMethod(QGraphicsScene::NoIndex);
     setCurrentFrame(-1, -1);
 
@@ -112,10 +116,12 @@ KTGraphicsScene::~KTGraphicsScene()
 
 void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     k->framePosition.layer = layer;
     k->framePosition.frame = frame;
-
-    kFatal() << "*** Drawing: Layer -> " << layer << " : frame -> " << frame;
 
     foreach (QGraphicsView *view, views())
              view->setDragMode(QGraphicsView::NoDrag);
@@ -151,6 +157,8 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
     bool valid = false;
 
+    // Drawing frames from another layers
+
     foreach (KTLayer *layer, k->scene->layers().values()) {
              if (layer->isVisible()) {
                  if (k->onionSkin.previous > 0) {
@@ -185,6 +193,8 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                  }
              }
     }
+
+    // Drawing tweening objects
 	
     if (valid) {
         foreach (KTGraphicObject *object, k->scene->tweeningObjects()) {
@@ -291,6 +301,10 @@ KTFrame *KTGraphicsScene::currentFrame()
 void KTGraphicsScene::setCurrentScene(KTScene *scene)
 {
     Q_CHECK_PTR(scene);
+
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
 
     if (k->tool)
         k->tool->aboutToChangeScene(this);
@@ -480,7 +494,10 @@ bool KTGraphicsScene::event(QEvent *e)
 
 void KTGraphicsScene::itemResponse(KTItemResponse *event)
 {
-    K_FUNCINFOX("scene");
+    #ifdef K_DEBUG
+           K_FUNCINFOX("scene");
+    #endif
+
     if (k->tool) {
         // k->tool->init(this); //FIXME:k->tool->init(this); in itemResponse ???
         k->tool->itemResponse(event);

@@ -66,7 +66,7 @@ KTExposureSheet::KTExposureSheet(QWidget *parent) : KTModuleWidgetBase(parent, "
     addChild(k->actionBar, Qt::AlignCenter);
 
     k->scenes = new KTSceneTabWidget(this);
-    connect(k->scenes, SIGNAL(currentChanged(int)), this, SLOT(emitRequestChangeScene(int)));
+    connect(k->scenes->TabWidget(), SIGNAL(currentChanged(int)), this, SLOT(emitRequestChangeScene(int)));
     addChild(k->scenes);
     createMenu();
 }
@@ -143,14 +143,12 @@ void KTExposureSheet::applyAction(int action)
                {
                  int layer = k->currentTable->columnCount();
 
-                 kFatal() << "Table currentIndex(): " << k->scenes->currentIndex(); 
- 
                  KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(),
                                           layer, KTProjectRequest::Add);
                  emit requestTriggered(&event);
 
                  event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), layer, 0, 
-                         KTProjectRequest::Add, QString());
+                                                                     KTProjectRequest::Add, QString());
                  emit requestTriggered(&event);
                }
                break;
@@ -376,10 +374,7 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
            break;
            case KTProjectRequest::Select:
             {
-                #ifdef K_DEBUG
-                       kFatal() << "Select scene " << e->sceneIndex();
-                #endif
-                setScene( e->sceneIndex() );
+                setScene(e->sceneIndex());
             }
            break;
     }
@@ -395,7 +390,6 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
         switch (e->action()) {
                 case KTProjectRequest::Add:
                  {
-                     kDebug() << "*** Adding Layer - Index #" << e->layerIndex() << " (Name: " << e->arg().toString() << ")";
                      scene->insertLayer(e->layerIndex(), e->arg().toString());
                  }
                 break;
@@ -449,6 +443,10 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 case KTProjectRequest::Add:
                  {
                      scene->setUseFrame(e->layerIndex(), e->frameIndex(),  e->arg().toString(), e->external());
+                     if (e->layerIndex() == 0 && e->frameIndex() == 0) {
+                         setScene(e->sceneIndex());
+                         scene->selectFrame(e->layerIndex(), e->frameIndex());
+                     }
                  }
                 break;
                 case KTProjectRequest::Remove:
