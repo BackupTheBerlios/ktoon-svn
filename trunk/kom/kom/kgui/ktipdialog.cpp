@@ -101,7 +101,7 @@ void KTipDialog::setupGUI()
 	buttonLayout->addWidget(nextTip);
 	connect(nextTip, SIGNAL(clicked()), this, SLOT(showNextTip()));
 	
-	QPushButton *close = new QPushButton(tr("close"));
+	QPushButton *close = new QPushButton(tr("Close"));
 	buttonLayout->addWidget(close);
 	connect(close, SIGNAL(clicked()), this, SLOT(accept()));
 	
