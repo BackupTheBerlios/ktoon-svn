@@ -36,25 +36,25 @@ class QCheckBox;
 */
 class TextConfigurator : public QWidget
 {
-	Q_OBJECT
-	public:
-		TextConfigurator(QWidget *parent = 0);
-		~TextConfigurator();
-		QString text() const;
-		
-		QFont textFont() const;
-		
-		void setDocument(QTextDocument *doc);
-		
-		bool isHtml() const;
-		
-	private slots:
-		void changeFont();
-		
-	private:
-		QTextEdit *m_text;
-		KFontChooser *m_fontChooser;
-		QCheckBox *m_isHtml;
+    Q_OBJECT
+    public:
+        TextConfigurator(QWidget *parent = 0);
+        ~TextConfigurator();
+        QString text() const;
+
+        QFont textFont() const;
+
+        void setDocument(QTextDocument *doc);
+
+        bool isHtml() const;
+
+    private slots:
+        void changeFont();
+
+    private:
+        QTextEdit *m_text;
+        KFontChooser *m_fontChooser;
+        QCheckBox *m_isHtml;
 };
 
 #endif

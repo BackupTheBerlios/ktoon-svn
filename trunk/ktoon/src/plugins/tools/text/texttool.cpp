@@ -108,7 +108,7 @@ void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
     else
         m_item->setPlainText(m_configurator->text());
 
-    m_item->setFont( m_configurator->textFont() );
+    m_item->setFont(m_configurator->textFont());
 
     scene->addItem(m_item);
 
@@ -145,7 +145,7 @@ void TextTool::aboutToChangeScene(KTGraphicsScene *scene)
 
 void TextTool::setupActions()
 {
-    KAction *pencil = new KAction( QIcon(THEME_DIR+"/icons/text.png"), tr("Text"), this);
+    KAction *pencil = new KAction( QIcon(THEME_DIR + "/icons/text.png"), tr("Text"), this);
     pencil->setShortcut( QKeySequence(tr("Ctrl+T")) );
 
     m_actions.insert(tr("Text"), pencil);

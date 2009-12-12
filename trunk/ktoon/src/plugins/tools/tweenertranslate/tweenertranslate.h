@@ -33,42 +33,41 @@
 
 class TweenerTranslate : public KTToolPlugin
 {
-	Q_OBJECT;
-	public:
-		TweenerTranslate();
-		virtual ~TweenerTranslate();
-		virtual void init(KTGraphicsScene *scene);
+    Q_OBJECT;
+    public:
 
-		virtual QStringList keys() const;
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        TweenerTranslate();
+        virtual ~TweenerTranslate();
+        virtual void init(KTGraphicsScene *scene);
 
-		virtual QMap<QString, KAction *>actions() const;
+        virtual QStringList keys() const;
+        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual QMap<QString, KAction *>actions() const;
 
-		int toolType() const;
+        int toolType() const;
 
-		virtual QWidget *configurator();
+        virtual QWidget *configurator();
 
-		void aboutToChangeScene(KTGraphicsScene *scene);
-		
-		virtual void aboutToChangeTool();
-		
-		bool isComplete() const;
-		
-	private:
-		void setupActions();
-	
-	private:
-		struct Private;
-		Private *const k;
-		
-	public slots:
-		void setCreatePath();
-		void setSelect();
-		void applyTweener();
-		void updatePath();
-		
+        void aboutToChangeScene(KTGraphicsScene *scene);
+
+        virtual void aboutToChangeTool();
+
+        bool isComplete() const;
+
+    private:
+        void setupActions();
+
+    private:
+        struct Private;
+        Private *const k;
+
+    public slots:
+        void setCreatePath();
+        void setSelect();
+        void applyTweener();
+        void updatePath();
 };
 
 #endif

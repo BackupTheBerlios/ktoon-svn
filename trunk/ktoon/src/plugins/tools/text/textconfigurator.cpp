@@ -32,25 +32,24 @@
 
 TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
 {
-	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this );
-	setLayout(layout);
-	
-	m_fontChooser = new KFontChooser;
-	layout->addWidget(m_fontChooser);
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    setLayout(layout);
 
-	m_text = new QTextEdit(this);
-	layout->addWidget(m_text);
-	
-	m_isHtml = new QCheckBox(tr("html"));
-	layout->addWidget(m_isHtml);
-	
-	layout->addStretch(1);
-	
-	connect(m_fontChooser, SIGNAL(fontChanged()), this, SLOT(changeFont()));
-	
-	new KSpellHighlighter(m_text->document());
+    m_fontChooser = new KFontChooser;
+    layout->addWidget(m_fontChooser);
+
+    m_text = new QTextEdit(this);
+    layout->addWidget(m_text);
+
+    m_isHtml = new QCheckBox(tr("html"));
+    layout->addWidget(m_isHtml);
+
+    layout->addStretch(1);
+
+    connect(m_fontChooser, SIGNAL(fontChanged()), this, SLOT(changeFont()));
+
+    new KSpellHighlighter(m_text->document());
 }
-
 
 TextConfigurator::~TextConfigurator()
 {
@@ -58,28 +57,28 @@ TextConfigurator::~TextConfigurator()
 
 QString TextConfigurator::text() const
 {
-	return m_text->toPlainText();
+    return m_text->toPlainText();
 }
 
 QFont TextConfigurator::textFont() const
 {
-	return m_fontChooser->font();
+    return m_fontChooser->font();
 }
 
 void TextConfigurator::changeFont()
 {
-	QFont font = m_fontChooser->font();
-	m_text->setFont(font);
-	
-	adjustSize();
+    QFont font = m_fontChooser->font();
+    m_text->setFont(font);
+
+    adjustSize();
 }
 
 void TextConfigurator::setDocument(QTextDocument *doc)
 {
-	m_text->setDocument( doc );
+    m_text->setDocument(doc);
 }
 
 bool TextConfigurator::isHtml() const
 {
-	return m_isHtml->isChecked();
+    return m_isHtml->isChecked();
 }

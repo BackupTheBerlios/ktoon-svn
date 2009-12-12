@@ -348,15 +348,15 @@ void KTViewDocument::createTools()
     // Brushes menu
     k->brushesMenu = new QMenu(tr("Brushes"), k->toolbar);
     k->brushesMenu->setIcon( QPixmap(THEME_DIR+"/icons/brush.png") );
-    connect( k->brushesMenu, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
+    connect(k->brushesMenu, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu(QAction*)));
 
     k->toolbar->addAction(k->brushesMenu->menuAction());
 
     // Selection menu
 
-    k->selectionMenu = new QMenu( tr("selection"), k->toolbar );
+    k->selectionMenu = new QMenu( tr("Selection"), k->toolbar );
     k->selectionMenu->setIcon(QPixmap(THEME_DIR+"/icons/selection.png"));
-    connect( k->selectionMenu, SIGNAL(triggered (QAction*)), this, SLOT(selectToolFromMenu( QAction*)));
+    connect(k->selectionMenu, SIGNAL(triggered (QAction*)), this, SLOT(selectToolFromMenu(QAction*)));
 
     k->toolbar->addAction(k->selectionMenu->menuAction());
 
@@ -391,7 +391,7 @@ void KTViewDocument::createTools()
 	k->toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/bezier.png"), tr( "&Pen" ), k->paintArea, SLOT( slotPen()), 
 			        tr("N"));
 	
-	k->toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/line.png"), tr( "&line" ), k->paintArea, SLOT( slotLine()),
+	k->toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/line.png"), tr( "&Line" ), k->paintArea, SLOT( slotLine()),
 				tr("L"));
 	
 	k->toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/square.png"), tr( "&Rectangle" ), k->paintArea, 
@@ -526,27 +526,40 @@ void KTViewDocument::loadPlugins()
 
                       switch (tool->toolType()) {
                               case KTToolInterface::Brush:
+                                 {
+                                   // Temporary code
+                                   QString toolStr = act->text();
+                                   if (toolStr.compare("Tweener Translator") == 0) {
+                                       act->setDisabled(true); 
+                                   }
                                    k->brushesMenu->addAction(act);
                                    if (!k->brushesMenu->activeAction())
                                        act->trigger();
-                                   break;
+                                 }
+                                 break;
                               case KTToolInterface::Selection:
+                                 {
                                    k->selectionMenu->addAction(act);
                                    if (!k->selectionMenu->activeAction())
                                        act->trigger();
-                                   break;
+                                 }
+                                 break;
                               case KTToolInterface::Fill:
+                                 {
                                    k->fillMenu->addAction(act);
                                    if (!k->fillMenu->activeAction())
                                        act->trigger();
-                                   break;
+                                 }
+                                 break;
                                case KTToolInterface::View:
+                                 {
                                    k->viewToolMenu->addAction(act);
                                    if (!k->viewToolMenu->activeAction())
                                        act->trigger();
-                                   break;
+                                 }
+                                 break;
                                default:
-                                   break;
+                                 break;
                       }
                       // k->paintArea->setTool(tool, *it);
                   }
@@ -587,12 +600,18 @@ void KTViewDocument::selectTool()
     if (action) {
         KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
         QString toolStr = action->text();
-        kDebug() << "*** Brush: " << toolStr;
+        kDebug() << "Brush: " << toolStr;
         int maxWidth = 0;
 
         switch (tool->toolType()) {
                 case KTToolInterface::Brush: 
-                     maxWidth = 130;
+                     if (toolStr.compare("Pencil")==0) {
+                         maxWidth = 130;
+                     } else if (toolStr.compare("Text")==0) {
+                                maxWidth = 350;
+                     } else if (toolStr.compare("Tweener Translator")==0) {
+                                maxWidth = 300;
+                     }
                      k->brushesMenu->setDefaultAction(action);
                      k->brushesMenu->setActiveAction(action);
                      if (!action->icon().isNull())

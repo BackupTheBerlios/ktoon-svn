@@ -43,11 +43,15 @@ _EOH_
 	config.addDefine("VERSION=0.9a")
 	config.addDefine('VERSION_STR=\\\\\"0.9a+Phoenix\\\\\"')
 
+        Info.info << "Debug support... "
+
         if conf.hasArgument?("with-debug")
            config.addDefine("K_DEBUG")
+           print "[ On ]\n"
         else
            config.addDefine("K_NODEBUG")
            config.addOption("silent")
+           print "[ Off ]\n"
         end
 	
 	unix = config.addScope("unix")
