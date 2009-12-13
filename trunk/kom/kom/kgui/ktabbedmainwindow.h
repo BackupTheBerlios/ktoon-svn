@@ -60,6 +60,7 @@ class K_IDEAL_EXPORT KTabbedMainWindow : public KMainWindow
 
     signals:
         void widgetChanged(QWidget *widget);
+        void tabHasChanged(int);
 		
     private slots:
         void emitWidgetChanged(int index);

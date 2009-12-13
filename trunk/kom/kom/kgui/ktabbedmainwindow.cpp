@@ -166,6 +166,7 @@ void KTabbedMainWindow::emitWidgetChanged(int index)
     if (index != -1) {
         QWidget *w = m_tabWidget->widget(index);
         setCurrentPerspective(index + 1); 
+        emit tabHasChanged(index);       
     }
 }
 
