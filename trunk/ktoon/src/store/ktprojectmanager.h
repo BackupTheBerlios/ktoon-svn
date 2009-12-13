@@ -75,11 +75,12 @@ class STORE_EXPORT KTProjectManager : public QObject
         virtual void createCommand(const KTProjectRequest *request, bool addToStack);
 
     private slots:
-        void emitResponse( KTProjectResponse *response);
+        void emitResponse(KTProjectResponse *response);
 
     signals:
-        void responsed(KTProjectResponse *reponse );
+        void responsed(KTProjectResponse *reponse);
         void requestOpenProject(const QString& filename);
+        //void updateAnimationModule(KTProject *project, int sceneIndex, int layerIndex, int frameIndex);
 
     private:
         class Private;

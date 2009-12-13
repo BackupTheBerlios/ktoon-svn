@@ -73,9 +73,9 @@ KTAnimationRenderer::~KTAnimationRenderer()
 void KTAnimationRenderer::setScene(KTScene *scene)
 {
     k->scene->setCurrentScene(scene);
-    k->scene->setSceneRect(QRectF(QPointF(0,0), QSizeF( 500, 400 ) )); // FIXME: this isn't real size
+    k->scene->setSceneRect(QRectF(QPointF(0,0), QSizeF(500, 400))); // FIXME: this isn't real size
 
-    k->scene->drawPhotogram(0); // ###: Why whithout this don't work?
+    k->scene->drawPhotogram(0); // ###: Why whithout this doesn't work?
     k->currentPhotogram = -1;
 
     k->totalPhotograms = k->calculateTotalPhotograms(scene);
@@ -96,10 +96,15 @@ bool KTAnimationRenderer::nextPhotogram()
     return true;
 }
 
+void KTAnimationRenderer::renderPhotogram(int index) 
+{
+    k->scene->drawPhotogram(index);
+}
+
 void KTAnimationRenderer::render(QPainter *painter)
 {
     k->scene->render(painter, QRect(0, 0, painter->device()->width(), painter->device()->height()), 
-                     k->scene->sceneRect().toRect(), Qt::IgnoreAspectRatio );
+                     k->scene->sceneRect().toRect(), Qt::IgnoreAspectRatio);
 }
 
 int KTAnimationRenderer::currentPhotogram() const

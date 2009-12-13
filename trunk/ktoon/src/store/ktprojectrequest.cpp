@@ -41,100 +41,92 @@ KTProjectRequestArgument::~KTProjectRequestArgument()
 
 void KTProjectRequestArgument::operator = (const QString &value)
 {
-	setValue(value);
+    setValue(value);
 }
 
 void KTProjectRequestArgument::setValue(const QString &value)
 {
-	m_value = value;
+    m_value = value;
 }
 
 bool KTProjectRequestArgument::toBool()
 {
-	if ( m_value == "false" || m_value == "0" )
-	{
-		return false;
-	}
-	
-	return true;
+    if (m_value == "false" || m_value == "0")
+        return false;
+
+    return true;
 }
 
 int KTProjectRequestArgument::toInt()
 {
-	return m_value.toInt();
+    return m_value.toInt();
 }
 
 double KTProjectRequestArgument::toReal()
 {
-	return m_value.toDouble();
+    return m_value.toDouble();
 }
 
 QString KTProjectRequestArgument::toString()
 {
-	return m_value;
+    return m_value;
 }
 
 struct KTProjectRequest::Private
 {
-	Private(const QString &xml) : xml(xml), id(Project), isExternal(false)
-	{
-	}
-	
-	QString xml;
-	int id;
-	bool isExternal;
+    Private(const QString &xml) : xml(xml), id(Project), isExternal(false) 
+     {
+     }
+
+    QString xml;
+    int id;
+    bool isExternal;
 };
 
 KTProjectRequest::KTProjectRequest(const QString &xml) : k(new Private(xml))
 {
 }
 
-
 KTProjectRequest::~KTProjectRequest()
 {
-	delete k;
+    delete k;
 }
-
 
 void KTProjectRequest::setId(int id)
 {
-	k->id = id;
+    k->id = id;
 }
 
 int KTProjectRequest::id() const
 {
-	return k->id;
+    return k->id;
 }
-
-
 
 bool KTProjectRequest::isValid() const
 {
-	return !k->xml.isEmpty(); // TODO: Verficar que sea XML
+     return !k->xml.isEmpty(); // TODO: Verficar que sea XML
 }
-
 
 QString KTProjectRequest::xml() const
 {
-	return k->xml;
+     return k->xml;
 }
 
 void KTProjectRequest::setExternal(bool b)
 {
-	k->isExternal = b;
+     k->isExternal = b;
 }
 
 bool KTProjectRequest::isExternal() const
 {
-	return k->isExternal;
+     return k->isExternal;
 }
 
 KTProjectRequest &KTProjectRequest::operator=(const KTProjectRequest &other)
 {
-	k->xml = other.k->xml;
-	k->id = other.k->id;
-	k->isExternal = other.k->isExternal;
-	
-	return *this;
-}
+    k->xml = other.k->xml;
+    k->id = other.k->id;
+    k->isExternal = other.k->isExternal;
 
+    return *this;
+}

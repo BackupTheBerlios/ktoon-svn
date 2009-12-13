@@ -167,6 +167,10 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
 
 void KTPaintArea::frameResponse(KTFrameResponse *event)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     if (graphicsScene()->isDrawing()) 
         return;
 
@@ -183,7 +187,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
                  sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
                  kFatal() << "Calling out drawPhotogram() from KTPaintArea / frameResponse"; 
                  sscene->drawPhotogram(event->frameIndex());
-                 setCurrentScene( event->sceneIndex() );
+                 setCurrentScene(event->sceneIndex());
 
                  #ifdef K_DEBUG
                         kDebug("paintarea") << "frame: " << event->frameIndex() << " " << "layer: " << event->layerIndex();

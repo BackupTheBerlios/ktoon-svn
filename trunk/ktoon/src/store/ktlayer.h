@@ -115,6 +115,8 @@ class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 		
 		int logicalIndex() const;
 		int visualIndex() const;
+
+                int framesNumber() const;
 		
 	public:
 		virtual void fromXml(const QString &xml );

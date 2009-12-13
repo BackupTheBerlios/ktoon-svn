@@ -48,6 +48,8 @@ class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectResp
         void setCurrentScene(int index);
         KTScene *currentScene() const;
         void setFPS(int fps);
+        void refreshAnimation(const KTProject *project);
+        void renderFrame(int index);
 
     public slots:
         virtual void render();
@@ -55,7 +57,6 @@ class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectResp
         virtual void stop();
         virtual void nextFrame();
         virtual void previousFrame();
-
 
     private slots:
         void advance();
@@ -77,7 +78,7 @@ class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectResp
 
     protected:
         void paintEvent(QPaintEvent *e);
-        void resizeEvent ( QResizeEvent * event );
+        void resizeEvent(QResizeEvent * event);
 
     private:
         struct Private;

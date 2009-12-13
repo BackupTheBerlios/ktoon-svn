@@ -56,6 +56,7 @@ class KTViewCamera : public QFrame
     public slots:
         bool handleProjectResponse(KTProjectResponse *event);
         void setFPS(int fps);
+        void updatePhotograms(KTProject *project);
 
     signals:
         void requestTriggered(const KTProjectRequest *event);

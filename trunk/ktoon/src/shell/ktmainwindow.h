@@ -161,6 +161,7 @@ class KTMainWindow : public KTabbedMainWindow
           void changePerspective(QAction *a);
 
           void addPage(QWidget *widget);
+          void updateAnimation(int index);
 
     private slots:
           void messageToStatus(const QString &);
@@ -216,9 +217,11 @@ class KTMainWindow : public KTabbedMainWindow
           KToolView *helpView;
           KToolView *timeView;
           KToolView *exportView;
+          KTViewCamera *viewCamera;
 
     signals:
           void responsed(KTProjectResponse *);
+          void updateAnimationModule(KTProject *, int, int, int);
 };
 
 #endif

@@ -242,3 +242,9 @@ void KTViewCamera::setFPS(int fps)
     m_status->setFPS(fps);
     m_animationArea->setFPS(fps);
 }
+
+void KTViewCamera::updatePhotograms(KTProject *project)
+{
+    kFatal() << "*** Updating graphics from KTViewCamera...";
+    m_animationArea->refreshAnimation(project);
+}

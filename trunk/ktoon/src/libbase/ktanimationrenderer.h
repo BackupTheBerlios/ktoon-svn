@@ -38,6 +38,7 @@ class KTAnimationRenderer
         void setScene(KTScene *scene);
 
         bool nextPhotogram();
+        void renderPhotogram(int index);
         void render(QPainter *painter);
 
         int currentPhotogram() const;

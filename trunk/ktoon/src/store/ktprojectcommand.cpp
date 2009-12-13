@@ -44,71 +44,66 @@ struct KTProjectCommand::Private
 
 KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectRequest *request) : QUndoCommand(), k(new Private())
 {
-	k->executor = executor;
-	k->executed = false;
-	
-	KTRequestParser parser;
-	if ( ! parser.parse( request->xml() ) )
-	{
-		qFatal("==> KTProjectCommand::KTProjectCommand()");
-	}
-	k->response = parser.response();
-	
-	k->response->setExternal(request->isExternal());
-	
-	if ( !k->response ) qFatal("Unparsed response!");
-	
-	initText();
+    k->executor = executor;
+    k->executed = false;
+
+    KTRequestParser parser;
+    if (! parser.parse(request->xml()))
+        qFatal("==> KTProjectCommand::KTProjectCommand()");
+
+    k->response = parser.response();
+    k->response->setExternal(request->isExternal());
+
+    if (!k->response) 
+        qFatal("Unparsed response!");
+
+    initText();
 }
 
 KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, KTProjectResponse *response) : QUndoCommand(), k(new Private)
 {
-	k->executor = executor;
-	k->response = response;
-	k->executed = false;
-	initText();
+    k->executor = executor;
+    k->response = response;
+    k->executed = false;
+    initText();
 }
-
 
 void KTProjectCommand::initText()
 {
-	switch( k->response->part() )
-	{
-		case KTProjectRequest::Frame:
-		{
-			setText(actionString( k->response->action() ) +" frame" );
-		}
-		break;
-		case KTProjectRequest::Layer:
-		{
-			setText(actionString( k->response->action() )+" layer");
-		}
-		break;
-		case KTProjectRequest::Scene:
-		{
-			setText(actionString( k->response->action() )+" scene");
-		}
-		break;
-		case KTProjectRequest::Item:
-		{
-			setText(actionString( k->response->action() )+" item");
-		}
-		break;
-		
-		case KTProjectRequest::Library:
-		{
-			setText(actionString( k->response->action() )+" symbol");
-		}
-		break;
-		
-		default:
-		{
-			#ifdef K_DEBUG
-				kfDebug << "CAN'T HANDLE ID: " << k->response->part();
-			#endif
-		}
-		break;
-	}
+    switch (k->response->part()) {
+            case KTProjectRequest::Frame:
+             {
+                 setText(actionString( k->response->action() ) +" frame" );
+             }
+             break;
+            case KTProjectRequest::Layer:
+             {
+                 setText(actionString( k->response->action() )+" layer");
+             }
+             break;
+            case KTProjectRequest::Scene:
+             {
+                 setText(actionString( k->response->action() )+" scene");
+             }
+            break;
+            case KTProjectRequest::Item:
+             {
+                 setText(actionString( k->response->action() )+" item");
+             }
+            break;
+            case KTProjectRequest::Library:
+             {
+                 setText(actionString( k->response->action() )+" symbol");
+             }
+            break;
+            default:
+             {
+                 #ifdef K_DEBUG
+                        kfDebug << "CAN'T HANDLE ID: " << k->response->part();
+                  #endif
+             }
+            break;
+    }
 }
 
 QString KTProjectCommand::actionString(int action)

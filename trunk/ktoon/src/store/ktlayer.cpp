@@ -250,3 +250,7 @@ int KTLayer::visualIndex() const
     return scene()->visualIndexOf(const_cast<KTLayer *>(this));
 }
 
+int KTLayer::framesNumber() const
+{
+    return k->framesCount;
+}

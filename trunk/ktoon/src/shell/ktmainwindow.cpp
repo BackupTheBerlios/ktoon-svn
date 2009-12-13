@@ -222,8 +222,14 @@ void KTMainWindow::viewNewDocument(const QString &title)
       
         m_viewDoc->setAntialiasing(true);
 
-        KTViewCamera *viewCamera = new KTViewCamera(m_projectManager->project());
+        // KTViewCamera *
+        viewCamera = new KTViewCamera(m_projectManager->project());
         ui4project(viewCamera);
+
+        //connect(m_projectManager, SIGNAL(updateAnimationModule(KTProject *, int, int, int)), viewCamera,
+        //        SLOT(updatePhotograms(KTProject *, int, int, int)));
+
+        connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateAnimation(int)));
 
         m_animationSpace = new KTAnimationspace(viewCamera);
         m_animationSpace->setWindowIcon(QIcon(THEME_DIR + "/icons/animation_mode.png"));
@@ -924,6 +930,16 @@ void KTMainWindow::addPage(QWidget *widget)
     addWidget(widget);
 }
 
+void KTMainWindow::updateAnimation(int index)
+{
+    if (index == 1) {
+        kFatal() << "Updating video module! :)";
+        viewCamera->updatePhotograms(m_projectManager->project());
+    } else {
+        kFatal() << "Updating illustration module! :)";
+    }
+}
+
 /**
  * @if english 
  * This method exports the animation project to a video/image format.
@@ -938,3 +954,4 @@ void KTMainWindow::exportProject()
     KTExportWidget exportWidget(m_projectManager->project(), this);
     exportWidget.exec();
 }
+

@@ -31,7 +31,6 @@
 #include "ktlayer.h"
 #include "ktframe.h"
 
-
 #include "ktprojectrequest.h"
 #include "ktprojectcommand.h"
 #include "ktcommandexecutor.h"
@@ -65,6 +64,9 @@ class KTProjectManager::Private
     public:
         KTProject *project;
         bool isModified;
+        int sceneIndex;
+        int layerIndex;
+        int frameIndex;
         KTAbstractProjectHandler *handler;
         QUndoStack *undoStack;
         KTCommandExecutor *commandExecutor;
@@ -270,38 +272,43 @@ void KTProjectManager::handleProjectRequest(const KTProjectRequest *request)
     // TODO: the handler must advise when to build the command
 	
     if (k->handler)
-        k->handler->handleProjectRequest( request );
+        k->handler->handleProjectRequest(request);
     else
         qDebug("ERROR: NO HANDLER");
 }
 
 void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+           kWarning() << request->xml();
+    #endif
+
     KTRequestParser parser;
 
-    if (parser.parse( request->xml())) {
+    if (parser.parse(request->xml())) {
         if (KTFrameResponse *response = static_cast<KTFrameResponse *>(parser.response())) {
-            int scenePos = response->sceneIndex();
-            int layerPos = response->layerIndex();
-            int position = response->frameIndex();
+            k->sceneIndex = response->sceneIndex();
+            k->layerIndex = response->layerIndex();
+            k->frameIndex = response->frameIndex();
 
             if (response->action() == KTProjectRequest::Copy) {
-                KTScene *scene = k->project->scene(scenePos);
+                KTScene *scene = k->project->scene(k->sceneIndex);
                 if (scene) {
-                    KTLayer *layer = scene->layer(layerPos);
+                    KTLayer *layer = scene->layer(k->layerIndex);
                     if (layer) {
-                        KTFrame *frame = layer->frame(position);
+                        KTFrame *frame = layer->frame(k->frameIndex);
                         if (frame) {
                             QDomDocument doc;
                             doc.appendChild(frame->toXml(doc));
                             k->copyFrame = doc.toString(0);
-                            response->setArg( k->copyFrame );
+                            response->setArg(k->copyFrame);
                         }
                     }
                 }
             } else if (response->action() == KTProjectRequest::Paste) {
                        response->setArg(k->copyFrame);
-                       handleProjectRequest( & KTRequestBuilder::fromResponse(response));
+                       handleProjectRequest(& KTRequestBuilder::fromResponse(response));
                        return;
             }
         }
@@ -355,8 +362,9 @@ void KTProjectManager::emitResponse(KTProjectResponse *response)
            K_FUNCINFO << response->action();
     #endif
 
-    if (response->action() != KTProjectRequest::Select)
+    if (response->action() != KTProjectRequest::Select) {
         k->isModified = true;
+    }
 
     if (!k->handler) {
         emit responsed(response);

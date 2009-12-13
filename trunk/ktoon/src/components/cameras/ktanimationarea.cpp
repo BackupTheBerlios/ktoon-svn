@@ -40,7 +40,7 @@ struct KTAnimationArea::Private
     const KTProject *project;
 
     bool draw;
-    bool ciclicAnimation;
+    bool cyclicAnimation;
 
     int currentFramePosition;
     int currentSceneIndex;
@@ -59,7 +59,7 @@ KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QF
     k->project = project;
 
     k->draw = false;
-    k->ciclicAnimation = false;
+    k->cyclicAnimation = false;
     k->isRendered = false;
 
     k->currentSceneIndex = -1;
@@ -77,7 +77,11 @@ KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QF
     connect(k->timer, SIGNAL(timeout()), this, SLOT(advance()));
     setCurrentScene(0);
 
-    nextFrame();
+    KTScene *scene = project->scene(0);
+    KTLayer *layer = scene->layer(0);
+
+    if (layer->framesNumber() > 1)
+        nextFrame();
 }
 
 
@@ -165,7 +169,7 @@ void KTAnimationArea::previousFrame()
 void KTAnimationArea::advance()
 {
     if (k->project) {
-        if (k->ciclicAnimation && k->currentFramePosition >= k->photograms.count())
+        if (k->cyclicAnimation && k->currentFramePosition >= k->photograms.count())
             k->currentFramePosition = 0;
 
             if (k->currentFramePosition == 0) {
@@ -176,7 +180,7 @@ void KTAnimationArea::advance()
             if (k->currentFramePosition < k->photograms.count()) {
                 repaint();
                 k->currentFramePosition++;
-            } else if (!k->ciclicAnimation) {
+            } else if (!k->cyclicAnimation) {
                 stop();
             }
     }
@@ -192,27 +196,27 @@ void KTAnimationArea::layerResponse(KTLayerResponse *)
 
 void KTAnimationArea::sceneResponse(KTSceneResponse *event)
 {
-     #ifdef K_DEBUG
-            K_FUNCINFOX("animation");
-     #endif
+    #ifdef K_DEBUG
+           K_FUNCINFOX("animation");
+    #endif
 
-     switch (event->action()) {
-             case KTProjectRequest::Select:
-              {
-                  setCurrentScene(event->sceneIndex());
-              }
-             break;
-             case KTProjectRequest::Remove:
-              {
-                  if (event->sceneIndex() == k->currentSceneIndex) {
-                      if (k->currentSceneIndex != 0)
-                          setCurrentScene(k->currentSceneIndex-1);
-                  }
-              }
-             break;
-             default: 
-             break;
-    }
+    switch (event->action()) {
+            case KTProjectRequest::Select:
+             {
+                 setCurrentScene(event->sceneIndex());
+             }
+            break;
+            case KTProjectRequest::Remove:
+             {
+                 if (event->sceneIndex() == k->currentSceneIndex) {
+                     if (k->currentSceneIndex != 0)
+                         setCurrentScene(k->currentSceneIndex-1);
+                 }
+             }
+            break;
+            default: 
+            break;
+   }
 }
 
 void KTAnimationArea::projectResponse(KTProjectResponse *)
@@ -258,12 +262,40 @@ void KTAnimationArea::render()
     k->isRendered = true;
 }
 
+void KTAnimationArea::renderFrame(int index)
+{
+    KTScene *scene = k->project->scene(k->currentSceneIndex);
+
+    if (!scene)
+        return;
+
+    kFatal() << "Follow me 1: " << index;
+
+    KTAnimationRenderer renderer;
+    renderer.setScene(scene);
+
+    kFatal() << "Follow me 1: " << index;
+
+    renderer.renderPhotogram(index);
+
+    kFatal() << "Follow me 1: " << index;
+
+    QImage renderized = QImage(size(), QImage::Format_RGB32);
+    renderized.fill(qRgb(255, 255, 255));
+
+    QPainter painter(&renderized);
+    painter.setRenderHint(QPainter::Antialiasing);
+    renderer.render(&painter);
+
+    k->photograms[index] = renderized;
+}
+
 QSize KTAnimationArea::sizeHint() const
 {
     return k->renderCamera.size();
 }
 
-void  KTAnimationArea::resizeEvent (QResizeEvent * e)
+void  KTAnimationArea::resizeEvent(QResizeEvent * e)
 {
     QFrame::resizeEvent(e);
 
@@ -278,7 +310,7 @@ void  KTAnimationArea::resizeEvent (QResizeEvent * e)
 
 void KTAnimationArea::setLoop(bool loop)
 {
-    k->ciclicAnimation = loop;
+    k->cyclicAnimation = loop;
 }
 
 void KTAnimationArea::setCurrentScene(int index)
@@ -291,3 +323,9 @@ KTScene *KTAnimationArea::currentScene() const
     return k->project->scene(k->currentSceneIndex);
 }
 
+void KTAnimationArea::refreshAnimation(const KTProject *project) 
+{
+    k->project = project;
+    render();
+    repaint();
+}

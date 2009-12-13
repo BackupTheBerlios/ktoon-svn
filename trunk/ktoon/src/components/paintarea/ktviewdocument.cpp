@@ -86,12 +86,11 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
            K_FUNCINFO;
     #endif
 
-    setWindowIcon(QPixmap(THEME_DIR + "/icons/layer_pic.png") ); // FIXME: new image for documents
+    setWindowIcon(QPixmap(THEME_DIR + "/icons/layer_pic.png")); // FIXME: new image for documents
 
     k->actionManager = new KActionManager(this);
 
     QFrame *frame = new QFrame(this, Qt::FramelessWindowHint);
-    
     QGridLayout *layout = new QGridLayout(frame);
 
     k->paintArea = new KTPaintArea(project, frame);
@@ -125,7 +124,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
             break;
     }
 	
-    connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)),  this,  SLOT(showPos(const QPointF &)) );
+    connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)),  this,  SLOT(showPos(const QPointF &)));
 	
     connect(k->paintArea, SIGNAL(cursorPosition(const QPointF &)), k->verticalRuler, 
                           SLOT(movePointers(const QPointF&)));
@@ -240,7 +239,7 @@ void KTViewDocument::setupDrawActions()
 
     ungroup->setStatusTip(tr("Ungroups the selected object"));
 
-/*
+    /*
     KAction *zoomIn = new KAction(QPixmap(THEME_DIR + "/icons/zood->in.png"), tr("Zoom In"), 
                                    QKeySequence(Qt::CTRL+Qt::Key_Plus), k->paintArea, SLOT(zoomIn()), k->actionManager,
                                    "zood->in");
@@ -258,7 +257,7 @@ void KTViewDocument::setupDrawActions()
                                    QKeySequence(Qt::CTRL+Qt::Key_Minus), k->paintArea, SLOT(zoomOut()), 
                                    k->actionManager, "zood->out");
     // k->viewPreviousGroup->addAction(zoomOut);
-*/
+    */
 
     k->viewPreviousGroup = new QActionGroup(this);
     k->viewPreviousGroup->setExclusive(true);
@@ -273,7 +272,7 @@ void KTViewDocument::setupDrawActions()
 
     noPrevious->setChecked(true);
 
-    KAction *onePrevious = new KAction(QPixmap(THEME_DIR+"/icons/previous.png"), tr("Previous One"), 
+    KAction *onePrevious = new KAction(QPixmap(THEME_DIR + "/icons/previous.png"), tr("Previous One"), 
 	                               QKeySequence(Qt::Key_2), this, SLOT(onePreviousOnionSkin()), k->actionManager,
                                        "previews_one");
 
@@ -290,65 +289,64 @@ void KTViewDocument::setupDrawActions()
     twoPrevious->setStatusTip(tr("Shows the previous 2 onion skins"));
     twoPrevious->setCheckable (true);
 	
-    KAction *threePrevious = new KAction( QPixmap(THEME_DIR+"/icons/previous3.png" ), tr( "Previous Three" ),
-                                          QKeySequence(Qt::Key_4), this, SLOT(threePreviousOnionSkin()), 
-                                          k->actionManager, "previews_three");
+    KAction *threePrevious = new KAction(QPixmap(THEME_DIR+"/icons/previous3.png"), tr("Previous Three"),
+                                         QKeySequence(Qt::Key_4), this, SLOT(threePreviousOnionSkin()), 
+                                         k->actionManager, "previews_three");
 
     k->viewPreviousGroup->addAction(threePrevious);
-    threePrevious->setCheckable ( true );
+    threePrevious->setCheckable(true);
     threePrevious->setStatusTip(tr("Shows the previous 3 onion skins" ));
 
     // NEXT 
-    k->viewNextGroup = new QActionGroup( this );
-    k->viewNextGroup->setExclusive( true );
+    k->viewNextGroup = new QActionGroup(this);
+    k->viewNextGroup->setExclusive(true);
 	
-    KAction *noNext = new KAction( QPixmap(THEME_DIR+"/icons/no_next.png" ), tr( "No Next" ), 
-                                   QKeySequence(Qt::CTRL+Qt::Key_1), this, SLOT(disableNextOnionSkin()), 
-                                   k->actionManager, "no_next");
+    KAction *noNext = new KAction(QPixmap(THEME_DIR + "/icons/no_next.png"), tr("No Next"), 
+                                  QKeySequence(Qt::CTRL+Qt::Key_1), this, SLOT(disableNextOnionSkin()), 
+                                  k->actionManager, "no_next");
 
     k->viewNextGroup->addAction(noNext);
 
-    noNext->setCheckable ( true );
+    noNext->setCheckable(true);
     noNext->setStatusTip(tr("Disables next onion skin visualization"));
 	
-    KAction *oneNext = new KAction( QPixmap(THEME_DIR+"/icons/next.png" ), tr( "Next One" ), 
-                                    QKeySequence(Qt::CTRL+Qt::Key_2), this, SLOT(oneNextOnionSkin()), k->actionManager,
-                                    "next_one");
+    KAction *oneNext = new KAction(QPixmap(THEME_DIR + "/icons/next.png"), tr("Next One"), 
+                                   QKeySequence(Qt::CTRL+Qt::Key_2), this, SLOT(oneNextOnionSkin()), k->actionManager,
+                                   "next_one");
     k->viewNextGroup->addAction(oneNext);
 
-    oneNext->setCheckable ( true );
+    oneNext->setCheckable(true);
     oneNext->setStatusTip(tr("Shows the next onion skin"));
 	
-    KAction *twoNext = new KAction( QPixmap(THEME_DIR+"/icons/next2.png" ), tr( "Next Two" ), 
-                                    QKeySequence(Qt::CTRL+Qt::Key_3), this, SLOT(twoNextOnionSkin()), k->actionManager,
-                                    "next_two");
+    KAction *twoNext = new KAction(QPixmap(THEME_DIR + "/icons/next2.png"), tr("Next Two"), 
+                                   QKeySequence(Qt::CTRL+Qt::Key_3), this, SLOT(twoNextOnionSkin()), k->actionManager,
+                                   "next_two");
     k->viewNextGroup->addAction(twoNext);
 
-    twoNext->setCheckable( true );
+    twoNext->setCheckable(true);
     twoNext->setStatusTip(tr("Shows the next 2 onion skins"));
 
-    KAction *threeNext = new KAction( QPixmap(THEME_DIR+"/icons/next3.png" ), tr( "Next Three" ), 
-                                      QKeySequence(Qt::CTRL+Qt::Key_4), this, SLOT(threeNextOnionSkin()), 
-                                      k->actionManager, "next_three");
+    KAction *threeNext = new KAction(QPixmap(THEME_DIR+"/icons/next3.png"), tr("Next Three"), 
+                                     QKeySequence(Qt::CTRL+Qt::Key_4), this, SLOT(threeNextOnionSkin()), 
+                                     k->actionManager, "next_three");
     k->viewNextGroup->addAction(threeNext);
 	
-    threeNext->setCheckable(true );
+    threeNext->setCheckable(true);
     threeNext->setStatusTip(tr("Shows the next 3 onion skins"));
 }
-
 
 void KTViewDocument::createTools()
 {
     k->toolbar = new QToolBar(tr("Draw tools"), this);
-    k->toolbar->setIconSize( QSize(16,16) );
-    addToolBar ( Qt::LeftToolBarArea, k->toolbar );
+    k->toolbar->setIconSize(QSize(16,16));
+    addToolBar(Qt::LeftToolBarArea, k->toolbar);
 
     connect(k->toolbar, SIGNAL(actionTriggered(QAction *)), this, SLOT(selectToolFromMenu(QAction *)));
 
     // Brushes menu
     k->brushesMenu = new QMenu(tr("Brushes"), k->toolbar);
-    k->brushesMenu->setIcon( QPixmap(THEME_DIR+"/icons/brush.png") );
-    connect(k->brushesMenu, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu(QAction*)));
+    k->brushesMenu->setIcon(QPixmap(THEME_DIR + "/icons/brush.png"));
+    connect(k->brushesMenu, SIGNAL(triggered (QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
 
     k->toolbar->addAction(k->brushesMenu->menuAction());
 
@@ -728,23 +726,25 @@ void KTViewDocument::createToolBar()
 
     k->barGrid->addAction(k->actionManager->find("group"));
     k->barGrid->addAction(k->actionManager->find("ungroup"));
-	
-    // k->barGrid->addSeparator();
-    // k->barGrid->addAction(d->actionManager->find("undo"));
-    // k->barGrid->addAction(d->actionManager->find("redo"));
-    // k->barGrid->addSeparator();
-    // k->barGrid->addAction(d->actionManager->find("zood->in"));
-    // k->barGrid->addWidget(d->zoomFactorSpin);
-    // k->barGrid->addAction(d->actionManager->find("zood->out"));
-    // k->barGrid->addSeparator();
-    // k->barGrid->addActions(d->editGroup->actions());
-    // k->barGrid->addSeparator();
+
+    /*	
+     k->barGrid->addSeparator();
+     k->barGrid->addAction(d->actionManager->find("undo"));
+     k->barGrid->addAction(d->actionManager->find("redo"));
+     k->barGrid->addSeparator();
+     k->barGrid->addAction(d->actionManager->find("zood->in"));
+     k->barGrid->addWidget(d->zoomFactorSpin);
+     k->barGrid->addAction(d->actionManager->find("zood->out"));
+     k->barGrid->addSeparator();
+     k->barGrid->addActions(d->editGroup->actions());
+     k->barGrid->addSeparator();
+    */
 
     k->barGrid->addSeparator();
     k->barGrid->addActions(k->viewPreviousGroup->actions());
 
     QSpinBox *prevOnionSkinSpin = new QSpinBox(this);
-    connect(prevOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setPreviousOnionSkin(int)));
+    connect(prevOnionSkinSpin, SIGNAL(valueChanged(int)), this, SLOT(setPreviousOnionSkin(int)));
 
     k->barGrid->addWidget(prevOnionSkinSpin);
     k->barGrid->addSeparator();
