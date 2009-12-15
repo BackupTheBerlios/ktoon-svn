@@ -31,7 +31,6 @@
 #include "ktanimationarea.h"
 #include "ktcamerabar.h"
 
-
 class KTProjectResponse;
 class QCheckBox;
 
@@ -42,7 +41,7 @@ class KTViewCamera : public QFrame
 {
     Q_OBJECT
     public:
-        KTViewCamera(KTProject *project, QWidget *parent = 0);
+        KTViewCamera(KTProject *work, QWidget *parent = 0);
         ~KTViewCamera();
 
         QSize sizeHint() const;
@@ -57,6 +56,7 @@ class KTViewCamera : public QFrame
         bool handleProjectResponse(KTProjectResponse *event);
         void setFPS(int fps);
         void updatePhotograms(KTProject *project);
+        void exportDialog();
 
     signals:
         void requestTriggered(const KTProjectRequest *event);
@@ -67,7 +67,8 @@ class KTViewCamera : public QFrame
 
         class Status;
         Status *m_status;
-
+    
+        KTProject *project;
         //QCheckBox *m_loop;
 };
 

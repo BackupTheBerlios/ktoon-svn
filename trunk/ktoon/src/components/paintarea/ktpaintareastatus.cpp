@@ -58,7 +58,7 @@ class ColorWidget : public QWidget
 
 QSize ColorWidget::sizeHint() const
 {
-    QSize size(30, -1);
+    QSize size(20, 20);
     return size;
 }
 
@@ -99,6 +99,7 @@ BrushStatus::BrushStatus()
 
     layout->addWidget(new KSeparator(Qt::Vertical));
     layout->addWidget(new QLabel(tr("Current Color")));
+    layout->addSpacing(3);
     layout->addWidget(m_pen);
     layout->addSpacing(5);
     //layout->addWidget(new KSeparator(Qt::Vertical));

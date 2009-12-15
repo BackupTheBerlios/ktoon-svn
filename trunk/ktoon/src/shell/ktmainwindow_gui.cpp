@@ -134,15 +134,15 @@ void KTMainWindow::createGUI()
     addToolView(m_scriptEditor, Qt::BottomDockWidgetArea, Drawing);
 #endif
 
+    /*
     // Adding the export widget to the bottom side of the interface
-
     KTExportWidget *m_exportWidget = new KTExportWidget(m_projectManager->project());
     exportView = addToolView(m_exportWidget, Qt::BottomDockWidgetArea, All);
     connectToDisplays(m_exportWidget);
-
-    // Adding the camera widget to the bottom side of the interface
+    */
 
     /*
+    // Adding the camera widget to the bottom side of the interface
     m_cameraWidget = new KTCameraWidget(m_projectManager->project());
     view = addToolView(m_cameraWidget, Qt::BottomDockWidgetArea, Animation);
     m_actionManager->insert(view->toggleViewAction(), "show camera");
@@ -337,35 +337,35 @@ void KTMainWindow::setupActions()
 
 void KTMainWindow::setupFileActions()
 {
-    KAction *newProject = new KAction(QPixmap( THEME_DIR+"/icons/project.png"), tr("New project"), QKeySequence(),
+    KAction *newProject = new KAction(QPixmap(THEME_DIR + "/icons/project.png"), tr("New project"), QKeySequence(),
                                       this, SLOT(newProject()), m_actionManager);
     newProject->setStatusTip(tr("Open new project"));
     m_actionManager->insert(newProject, "newproject", "file");
 
-    KAction *openFile = new KAction(QPixmap(THEME_DIR+"/icons/open.png"), tr( "Open project" ), tr("Ctrl+O"), 
+    KAction *openFile = new KAction(QPixmap(THEME_DIR + "/icons/open.png"), tr( "Open project" ), tr("Ctrl+O"), 
                                     this, SLOT(openProject()), m_actionManager);
     m_actionManager->insert( openFile, "openproject", "file" );
     openFile->setStatusTip(tr("Load existent project"));
 
-    KAction *openNetFile = new KAction(QPixmap(THEME_DIR+"/icons/open.png"), tr("Open project from server..."), 
+    KAction *openNetFile = new KAction(QPixmap(THEME_DIR + "/icons/open.png"), tr("Open project from server..."), 
                                        tr(""), this, SLOT(openProjectFromServer()), m_actionManager);
     m_actionManager->insert(openNetFile, "opennetproject", "file");
 
-    KAction *importNetFile = new KAction(QPixmap(THEME_DIR+""), tr("Import project to server..."), tr(""), this, 
+    KAction *importNetFile = new KAction(QPixmap(THEME_DIR + ""), tr("Import project to server..."), tr(""), this, 
                                          SLOT(importProjectToServer()), m_actionManager);
     m_actionManager->insert(importNetFile, "importprojectserver", "file");
 
-    KAction *save = new KAction(QPixmap(THEME_DIR+"/icons/save.png"), tr( "Save project" ),
+    KAction *save = new KAction(QPixmap(THEME_DIR + "/icons/save.png"), tr( "Save project" ),
                                 QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager);
-    m_actionManager->insert( save, "saveproject", "file" );
+    m_actionManager->insert(save, "saveproject", "file");
     save->setStatusTip(tr("Save current project in current location"));
 
-    KAction *saveAs = new KAction( tr( "Save project &As..." ), m_actionManager);
+    KAction *saveAs = new KAction(tr( "Save project &As..." ), m_actionManager);
     connect(saveAs, SIGNAL(triggered()), this, SLOT(saveAs()));
     saveAs->setStatusTip(tr("Open dialog box to save current project in any location"));
-    m_actionManager->insert( saveAs, "saveprojectas", "file");
+    m_actionManager->insert(saveAs, "saveprojectas", "file");
 
-    KAction *close = new KAction(QPixmap(THEME_DIR+"/icons/close.png"), tr( "Cl&ose project" ), 
+    KAction *close = new KAction(QPixmap(THEME_DIR + "/icons/close.png"), tr( "Cl&ose project" ), 
                                  QKeySequence(tr("Ctrl+W")), m_actionManager);
     connect(close, SIGNAL(triggered()), this, SLOT(closeProject()));
     close->setStatusTip(tr("Close active project"));
@@ -376,16 +376,16 @@ void KTMainWindow::setupFileActions()
     KAction *importPalette = new KAction(QPixmap(THEME_DIR+"/icons/import.png"), tr("&Import GIMP palettes..."),
                                          QKeySequence(), this, SLOT(importPalettes()), m_actionManager);
     importPalette->setStatusTip(tr("Import palettes"));
-    m_actionManager->insert( importPalette, "importpalettes", "file" );
+    m_actionManager->insert(importPalette, "importpalettes", "file");
 
     // Export Project action
     KAction *exportProject = new KAction(QPixmap(THEME_DIR+"/icons/export.png"), tr("&Export..."), QKeySequence(),
                                          this, SLOT(exportProject()), m_actionManager);
-    exportProject->setStatusTip(tr("Export project to different formats"));
+    exportProject->setStatusTip(tr("Export project to several video formats"));
     m_actionManager->insert(exportProject, "export", "file");
 
     // Exit action
-    KAction *exit = new KAction(QPixmap(THEME_DIR+"/icons/close.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")),
+    KAction *exit = new KAction(QPixmap(THEME_DIR+"/icons/close.png"), tr("E&xit"),  QKeySequence(tr("Ctrl+Q")),
                                 qApp, SLOT(closeAllWindows()), m_actionManager);
     exit->setStatusTip(tr("Close application"));
     m_actionManager->insert(exit, "exit", "file");

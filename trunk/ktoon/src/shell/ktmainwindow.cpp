@@ -304,8 +304,6 @@ bool KTMainWindow::closeProject()
 
     }
 
-    setUpdatesEnabled(false);
-
     if (exposureView->isExpanded())
         exposureView->expandDock(false);
 
@@ -327,9 +325,12 @@ bool KTMainWindow::closeProject()
     if (timeView->isExpanded())
         timeView->expandDock(false);
 
+    /*
     if (exportView->isExpanded())
         exportView->expandDock(false);
+    */
 
+    setUpdatesEnabled(false);
     enableToolViews(false);
     setMenuItemsContext(false);
 

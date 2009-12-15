@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include "ktviewcamera.h"
+#include "ktexportwidget.h"
 #include <kcore/kdebug.h>
 
 #include <QStatusBar>
@@ -40,7 +41,7 @@ class KTViewCamera::Status : public QStatusBar
 
         void setFPS(int fps);
         void setSceneName(const QString &name);
-        void setTotalFrames(const QString &total);
+        void setFramesTotal(const QString &total);
         void addWidget(QWidget *widget, int stretch = 0);
         bool loop();
 
@@ -51,7 +52,6 @@ class KTViewCamera::Status : public QStatusBar
         QHBoxLayout *m_sceneInfoLayout;
         QCheckBox *m_loop;
 };
-
 
 KTViewCamera::Status::Status(KTViewCamera *camera, QWidget *parent) : QStatusBar(parent)
 {
@@ -101,8 +101,17 @@ KTViewCamera::Status::Status(KTViewCamera *camera, QWidget *parent) : QStatusBar
     m_sceneInfoLayout->addSpacing(20);
 
     m_loop = new QCheckBox(tr("Loop"));
+    m_loop->setFont(font);
     connect(m_loop, SIGNAL(clicked()), camera, SLOT(setLoop()));
     m_sceneInfoLayout->addWidget(m_loop,1);
+
+    m_sceneInfoLayout->addSpacing(20);
+
+    QPushButton *exportButton = new QPushButton("Export");
+    exportButton->setIcon(QIcon(THEME_DIR + "/icons/export.png"));
+    exportButton->setFont(font);
+    connect(exportButton, SIGNAL(pressed()), camera, SLOT(exportDialog()));
+    m_sceneInfoLayout->addWidget(exportButton,1);
 
     addPermanentWidget(sceneInfo,2);
     sceneInfo->show();
@@ -110,7 +119,6 @@ KTViewCamera::Status::Status(KTViewCamera *camera, QWidget *parent) : QStatusBar
 
 KTViewCamera::Status::~Status()
 {
-
 }
 
 void KTViewCamera::Status::setFPS(int fps)
@@ -123,7 +131,7 @@ void KTViewCamera::Status::setSceneName(const QString &name)
     m_sceneName->setText(name);
 }
 
-void KTViewCamera::Status::setTotalFrames(const QString &total)
+void KTViewCamera::Status::setFramesTotal(const QString &total)
 {
     m_total->setText(total);
 }
@@ -141,11 +149,13 @@ bool KTViewCamera::Status::loop()
     return m_loop->isChecked();
 }
 
-KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QFrame(parent)
+KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
 {
     #ifdef K_DEBUG
            KINIT;
     #endif
+
+    project = work;
 
     setObjectName("KTViewCamera_");
     setWindowTitle(tr("Render Camera Preview"));
@@ -186,7 +196,6 @@ KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QFrame(parent)
     KTScene *scene = project->scene(0);
     if (scene)
         m_status->setSceneName(scene->sceneName());
-        //m_status->setTotalFrames(scene->);
 
     m_status->setFPS(project->fps());
 
@@ -245,6 +254,15 @@ void KTViewCamera::setFPS(int fps)
 
 void KTViewCamera::updatePhotograms(KTProject *project)
 {
-    kFatal() << "*** Updating graphics from KTViewCamera...";
     m_animationArea->refreshAnimation(project);
+    KTScene *scene = project->scene(0);
+    QString total; 
+    total =  total.setNum(scene->framesTotal()); 
+    m_status->setFramesTotal(total); 
+}
+
+void KTViewCamera::exportDialog()
+{
+    KTExportWidget exportWidget(project, this);
+    exportWidget.exec();
 }
