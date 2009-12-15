@@ -330,3 +330,14 @@ QList<KTGraphicObject *> KTScene::tweeningObjects() const
     return k->tweeningObjects;
 }
 
+int KTScene::framesTotal()
+{
+    int total = 0;
+    foreach (KTLayer *layer, k->layers.values()) {
+             int frames =layer->framesNumber();
+             if (frames > total)
+                 total = frames;
+    }
+
+    return total;
+}

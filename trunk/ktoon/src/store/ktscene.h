@@ -122,6 +122,7 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
         void addTweeningObject(KTGraphicObject *object);
         void removeTweeningObject(KTGraphicObject *object);
         QList<KTGraphicObject *> tweeningObjects() const;
+        int framesTotal();
 
     public:
         virtual void fromXml(const QString &xml);
