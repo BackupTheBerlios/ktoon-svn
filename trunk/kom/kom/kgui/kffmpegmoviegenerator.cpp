@@ -20,6 +20,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#define INT64_C
+#define __STDC_CONSTANT_MACROS
+#include <stdint.h>
+
 #include "kffmpegmoviegenerator.h"
 
 #include <QDir>
@@ -78,7 +82,6 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
     }
 
     c = st->codec;
-
     c->codec_id = CodecID(codec_id);
     c->codec_type = CODEC_TYPE_VIDEO;
 
@@ -107,7 +110,11 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
     }
 
     // some formats want stream headers to be seperate
-    if (!strcmp(oc->oformat->name, "mp4") || !strcmp(oc->oformat->name, "mov") || !strcmp(oc->oformat->name, "3gp")) 
+
+    // if (!strcmp(oc->oformat->name, "mp4") || !strcmp(oc->oformat->name, "mov") 
+    //    || !strcmp(oc->oformat->name, "3gp")) 
+
+    if (oc->oformat->flags & AVFMT_GLOBALHEADER)
         c->flags |= CODEC_FLAG_GLOBAL_HEADER;
 	
     return st;
@@ -295,12 +302,14 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
     if (oc->oformat->flags & AVFMT_RAWPICTURE) { // Exporting images array
         AVPacket pkt;
         av_init_packet(&pkt);
+
         pkt.flags |= PKT_FLAG_KEY;
         pkt.stream_index= video_st->index;
         pkt.data= (uint8_t *)picturePtr;
         pkt.size= sizeof(AVPicture);
         
-        ret = av_write_frame(oc, &pkt);
+        //ret = av_write_frame(oc, &pkt);
+        ret = av_interleaved_write_frame(oc, &pkt);
 
     } else { // Exporting movies
         out_size = avcodec_encode_video(c, videOutbuf, videOutbufSize, picturePtr);
@@ -308,31 +317,36 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
         if (out_size > 0) {
             AVPacket pkt;
             av_init_packet(&pkt);
-            pkt.pts= av_rescale_q(c->coded_frame->pts, c->time_base, video_st->time_base);
+
+            if (c->coded_frame->pts != (int64_t) AV_NOPTS_VALUE) 
+                pkt.pts= av_rescale_q(c->coded_frame->pts, c->time_base, video_st->time_base);
 
             if (c->coded_frame->key_frame)
                 pkt.flags |= PKT_FLAG_KEY;
-                pkt.stream_index = video_st->index;
-                pkt.data= videOutbuf;
-                pkt.size= out_size;
-                ret = av_write_frame(oc, &pkt);
-            } else {
-                ret = 0;
-            }
+            pkt.stream_index = video_st->index;
+            pkt.data= videOutbuf;
+            pkt.size= out_size;
+
+            /* write the compressed frame in the media file */
+            ret = av_interleaved_write_frame(oc, &pkt);
+            //ret = av_write_frame(oc, &pkt);
+        } else {
+            ret = 0;
         }
+   }
 
-        if (ret != 0) {
-            errorMsg = "ffmpeg error: Could not write video frame. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
+   if (ret != 0) {
+       errorMsg = "ffmpeg error: Could not write video frame. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
 
-            #ifdef K_DEBUG
-                   kError() << errorMsg;
-            #endif
-            return false;
-        }
+       #ifdef K_DEBUG
+              kError() << errorMsg;
+       #endif
+       return false;
+   }
 
-        frameCount++;
+   frameCount++;
 
-        return true;
+   return true;
 }
 
 void KFFMpegMovieGenerator::Private::closeVideo(AVStream *st)
@@ -423,7 +437,7 @@ bool KFFMpegMovieGenerator::begin()
 
     dump_format(k->oc, 0, k->movieFile.toLocal8Bit().data(), 1);
 
-    if (!k->openVideo(k->oc, k->video_st) ) {
+    if (!k->openVideo(k->oc, k->video_st)) {
         #ifdef K_DEBUG
                kError() << "Can't open video";
         #endif
@@ -479,6 +493,7 @@ void KFFMpegMovieGenerator::end()
 
     int streams_total = k->oc->nb_streams;
     for (int i = 0; i < streams_total; i++) {
+         av_freep(&k->oc->streams[i]->codec);  
          av_freep(&k->oc->streams[i]);
     }
 
