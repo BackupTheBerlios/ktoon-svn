@@ -113,7 +113,7 @@ void KTPaintArea::setCurrentScene(int index)
 void KTPaintArea::mousePressEvent(QMouseEvent *event)
 {
     if (event->buttons() == Qt::RightButton) {
-        if (QGraphicsItem *item = scene()->itemAt( mapToScene(event->pos()))) {
+        if (QGraphicsItem *item = scene()->itemAt(mapToScene(event->pos()))) {
             item->setFlag(QGraphicsItem::ItemIsSelectable, true);
             item->setSelected(true);
         }
@@ -131,7 +131,7 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
         menu->addSeparator();
         QMenu *order = new QMenu(tr("Order"));
 
-        connect(order, SIGNAL(triggered( QAction* )), this, SLOT(requestMoveSelectedItems( QAction *)));
+        connect(order, SIGNAL(triggered(QAction*)), this, SLOT(requestMoveSelectedItems(QAction *)));
         order->addAction(tr("Send to back"))->setData(MoveBack);
         order->addAction(tr("Bring to front"))->setData(MoveFront);
         order->addAction(tr("Send backwards"))->setData(MoveBackwards);
@@ -159,9 +159,7 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
         menu->exec(event->globalPos());
 
     } else {
-
         KTPaintAreaBase::mousePressEvent(event);
-
     }
 }
 
@@ -212,21 +210,25 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 
 void KTPaintArea::layerResponse(KTLayerResponse *event)
 {
-    if (graphicsScene()->isDrawing()) 
+    if (graphicsScene()->isDrawing()) { 
+        kFatal() << "*** I'm drawing!!!";
         return;
+    }
 
     KTGraphicsScene *sscene = graphicsScene();
 
     if (!sscene->scene()) 
         return;
 
-    if (event->action() == KTProjectRequest::View)
+    if (event->action() == KTProjectRequest::View) {
+        kFatal() << "*** Handling KTProjectRequest::View";
         sscene->setLayerVisible(event->layerIndex(), event->arg().toBool());
+    }
 
     if (event->action() != KTProjectRequest::Add ||  event->action() != KTProjectRequest::Remove) {
         kFatal() << "Calling out drawPhotogram() from KTPaintArea / layerResponse";
         graphicsScene()->drawCurrentPhotogram();
-        viewport()->update(scene()->sceneRect().toRect() );
+        viewport()->update(scene()->sceneRect().toRect());
     }
 }
 
@@ -245,7 +247,7 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
                  break;
             case KTProjectRequest::Remove:
                  if (event->sceneIndex() == k->currentSceneIndex)
-                     setCurrentScene( k->currentSceneIndex-1);
+                     setCurrentScene(k->currentSceneIndex-1);
                  break;
             default: break;
      }

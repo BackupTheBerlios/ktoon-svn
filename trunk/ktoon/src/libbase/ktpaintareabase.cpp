@@ -331,8 +331,8 @@ void KTPaintAreaBase::centerDrawingArea()
 
 void KTPaintAreaBase::wheelEvent(QWheelEvent *event)
 {
-    if (event->modifiers () == Qt::ControlModifier)
-        scaleView(pow(( double)2, -event->delta() / 240.0));
+    if (event->modifiers() == Qt::ControlModifier)
+        scaleView(pow((double)2, -event->delta() / 240.0));
     else
         QGraphicsView::wheelEvent(event);
 }

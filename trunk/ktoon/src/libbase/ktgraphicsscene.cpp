@@ -129,6 +129,7 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 
 void KTGraphicsScene::drawCurrentPhotogram()
 {
+    kFatal() << "*** Executing drawCurrentPhotogram()";
     drawPhotogram(k->framePosition.frame);
 }
 
@@ -160,7 +161,9 @@ void KTGraphicsScene::drawPhotogram(int photogram)
     // Drawing frames from another layers
 
     foreach (KTLayer *layer, k->scene->layers().values()) {
+
              if (layer->isVisible()) {
+
                  if (k->onionSkin.previous > 0) {
                      double opacityFactor = 0.5 / (double)qMin(layer->frames().count(),k->onionSkin.previous);
                      double opacity = 0.6;
@@ -220,7 +223,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
         k->tool->updateScene(this);
 }
 
-void KTGraphicsScene::addFrame(KTFrame *frame, double opacity )
+void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
 {
     if (frame) {
         foreach (KTGraphicObject *object, frame->graphics().values())
