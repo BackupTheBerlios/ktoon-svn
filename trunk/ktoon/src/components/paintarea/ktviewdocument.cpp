@@ -155,6 +155,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
     connect(k->paintArea->brushManager(), SIGNAL(penChanged(const QPen&)), status, SLOT(setPen(const QPen &)));
 
     QTimer::singleShot(1000, this, SLOT(loadPlugins()));
+
 }
 
 KTViewDocument::~KTViewDocument()
@@ -196,11 +197,21 @@ void KTViewDocument::showPos(const QPointF &p)
 
 void KTViewDocument::setupDrawActions()
 {
-    KAction *showGrid = new KAction(QPixmap(THEME_DIR + "/icons/subgrid.png"), tr("Show grid"), QKeySequence(tr("Ctrl+L")), 
-                                     this, SLOT(toggleShowGrid()), k->actionManager, "show_grid");
-    showGrid->setCheckable(true);
-
     /*
+    QAction * undo = m_projectManager->undoHistory()->createUndoAction(this, tr("Undo"));
+    undo->setShortcut(QKeySequence(QKeySequence::Undo));
+    toolbar->addAction(undo);
+
+    QAction *redo =  m_projectManager->undoHistory()->createRedoAction(this);
+    redo->setShortcut(QKeySequence(QKeySequence::Redo));
+    toolbar->addAction(redo);
+
+    undo->setIcon(QPixmap(THEME_DIR + "/icons/undo.png"));
+    redo->setIcon(QPixmap(THEME_DIR + "/icons/redo.png"));
+
+    kApp->insertGlobalAction(undo, "undo");
+    kApp->insertGlobalAction(redo, "redo");
+
     KAction *undo = new KAction(QPixmap(THEME_DIR + "/icons/undo.png"), tr("&Undo"), QKeySequence(tr("Ctrl+U")), 
                                  this, SLOT(undo()), k->actionManager, "undo");
     undo->setStatusTip(tr("Undo last operation"));
@@ -209,6 +220,10 @@ void KTViewDocument::setupDrawActions()
                                  this, SLOT(redo()), k->actionManager, "redo");
     redo->setStatusTip(tr("Redo last operation"));
     */
+
+    KAction *showGrid = new KAction(QPixmap(THEME_DIR + "/icons/subgrid.png"), tr("Show grid"), QKeySequence(tr("Ctrl+L")),
+                                     this, SLOT(toggleShowGrid()), k->actionManager, "show_grid");
+    showGrid->setCheckable(true);
 
     KAction *copy = new KAction( QPixmap(THEME_DIR + "/icons/copy.png"), tr("C&opy"), QKeySequence(tr("Ctrl+C")),
                                  k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
@@ -361,19 +376,19 @@ void KTViewDocument::createTools()
     // Fill menu
     k->fillMenu = new QMenu(tr("Fill"), k->toolbar);
     k->fillMenu->setIcon(QPixmap(THEME_DIR+"/icons/fill.png"));
-    connect(k->fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu( QAction* )));
+    connect(k->fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
 
     k->toolbar->addAction(k->fillMenu->menuAction());
 
     // View menu
     k->viewToolMenu = new QMenu(tr("View"), k->toolbar);
     k->viewToolMenu->setIcon(QPixmap(THEME_DIR+"/icons/magnifying.png"));
-    connect(k->fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu( QAction* )));
+    connect(k->fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
 
     k->toolbar->addAction(k->viewToolMenu->menuAction());
 	
 /*
-	k->toolsSelection->addAction(QPixmap(THEME_DIR+"/icons/nodes.png"), tr( "Con&tour Selection" ), k->paintArea, 
+	k->toolsSelection->addAction(QPixmap(THEME_DIR+"/icons/nodes.png"), tr("Con&tour Selection"), k->paintArea, 
 				     SLOT( slotContourSelection()), tr("T") );
 	
 	k->toolsDraw = new QMenu( k->toolbar );
@@ -525,35 +540,38 @@ void KTViewDocument::loadPlugins()
                       switch (tool->toolType()) {
                               case KTToolInterface::Brush:
                                  {
-                                   // Temporary code
+                                   // Temporary code - SQA Issue
                                    QString toolStr = act->text();
-                                   if (toolStr.compare("Tweener Translator") == 0) {
+                                   if (toolStr.compare(tr("Tweener Translator")) == 0) {
                                        act->setDisabled(true); 
                                    }
-                                   k->brushesMenu->addAction(act);
-                                   if (!k->brushesMenu->activeAction())
+
+                                   if (toolStr.compare(tr("Pencil")) == 0)
                                        act->trigger();
+
+                                   k->brushesMenu->addAction(act);
                                  }
                                  break;
                               case KTToolInterface::Selection:
                                  {
                                    k->selectionMenu->addAction(act);
-                                   if (!k->selectionMenu->activeAction())
-                                       act->trigger();
+                                   // if (!k->selectionMenu->activeAction())
+                                   //    act->trigger();
                                  }
                                  break;
                               case KTToolInterface::Fill:
                                  {
                                    k->fillMenu->addAction(act);
-                                   if (!k->fillMenu->activeAction())
-                                       act->trigger();
+                                   // if (!k->fillMenu->activeAction())
+                                   //    act->trigger();
                                  }
                                  break;
                                case KTToolInterface::View:
                                  {
                                    k->viewToolMenu->addAction(act);
-                                   if (!k->viewToolMenu->activeAction())
-                                       act->trigger();
+                                   // if (!k->viewToolMenu->activeAction()) {
+                                   //    act->trigger();
+                                   //}
                                  }
                                  break;
                                default:
@@ -598,7 +616,7 @@ void KTViewDocument::selectTool()
     if (action) {
         KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
         QString toolStr = action->text();
-        kDebug() << "Brush: " << toolStr;
+        kDebug() << "*** Brush: " << toolStr;
         int maxWidth = 0;
 
         switch (tool->toolType()) {
@@ -705,7 +723,7 @@ void KTViewDocument::updateZoomFactor(double f)
 void KTViewDocument::createToolBar()
 {
     k->barGrid = new QToolBar(tr("Paint area actions"), this);
-    k->barGrid->setIconSize( QSize(16,16) );
+    k->barGrid->setIconSize(QSize(16,16));
 
     addToolBar(k->barGrid);
 

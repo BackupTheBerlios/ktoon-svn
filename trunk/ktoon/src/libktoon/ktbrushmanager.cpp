@@ -30,9 +30,9 @@
 
 struct KTBrushManager::Private
 {
-	Private() : pen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap)), brush(Qt::transparent) {}
-	QPen pen;
-	QBrush brush;
+    Private() : pen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap)), brush(Qt::transparent) {}
+    QPen pen;
+    QBrush brush;
 };
 
 KTBrushManager::KTBrushManager(QObject * parent) : QObject(parent), k(new Private)
@@ -41,60 +41,59 @@ KTBrushManager::KTBrushManager(QObject * parent) : QObject(parent), k(new Privat
 
 KTBrushManager::KTBrushManager(const QPen &pen, const QBrush &brush, QObject * parent) : QObject(parent), k(new Private)
 {
-	k->pen = pen;
-	k->brush = brush;
+    k->pen = pen;
+    k->brush = brush;
 }
 
 KTBrushManager::~KTBrushManager()
 {
-	delete k;
+    delete k;
 }
 
 void KTBrushManager::setPen(const QPen &pen)
 {
-	k->pen = pen;
-	emit penChanged( pen );
+    k->pen = pen;
+    emit penChanged(pen);
 }
 
 void KTBrushManager::setPenBrush(const QBrush &brush)
 {
-	k->pen.setBrush(brush);
-	emit penChanged( k->pen );
+    k->pen.setBrush(brush);
+    emit penChanged(k->pen);
 }
 
 QPen KTBrushManager::pen() const
 {
-	return k->pen;
+    return k->pen;
 }
 
 void KTBrushManager::setBrush(const QBrush &brush)
 {
-	k->brush = brush;
-	emit brushChanged( brush );
+    k->brush = brush;
+    emit brushChanged(brush);
 }
 
 QBrush KTBrushManager::brush() const
 {
-	return k->brush;
+    return k->brush;
 }
-
 
 int KTBrushManager::penWidth() const
 {
-	return k->pen.width();
+    return k->pen.width();
 }
 
 QColor KTBrushManager::penColor() const
 {
-	return k->pen.color();
+    return k->pen.color();
 }
 
 QBrush KTBrushManager::penBrush() const
 {
-	return k->pen.brush();
+    return k->pen.brush();
 }
 
 QBrush KTBrushManager::brushColor() const
 {
-	return k->brush.color();
+    return k->brush.color();
 }

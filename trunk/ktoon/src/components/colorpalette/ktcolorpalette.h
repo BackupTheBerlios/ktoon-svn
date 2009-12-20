@@ -53,7 +53,7 @@ class KTColorPalette : public KTModuleWidgetBase
         void setupDisplayColor();
 
     protected:
-        void mousePressEvent ( QMouseEvent * e );
+        void mousePressEvent(QMouseEvent * e);
 
     public slots:
         void setColor(const QBrush &brush);

@@ -238,7 +238,7 @@ void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )
          }
     }
 
-    emit cursorPosition( mapToScene( event->pos() ) );
+    emit cursorPosition(mapToScene(event->pos()));
 }
 
 void KTPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
@@ -261,7 +261,7 @@ void KTPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
 
 void KTPaintAreaBase::tabletEvent( QTabletEvent * event )
 {
-    QGraphicsView::tabletEvent(event );
+    QGraphicsView::tabletEvent(event);
 }
 
 void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
@@ -272,7 +272,7 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
     bool hasAntialiasing = painter->renderHints() & QPainter::Antialiasing;
 
     painter->setRenderHint(QPainter::Antialiasing, false);
-    painter->setPen(QPen(QColor(0,0,0,180), 3));
+    painter->setPen(QPen(QColor(0,0,0,180), 2));
     painter->fillRect(k->drawingRect, Qt::white);
     painter->drawRect(k->drawingRect);
 

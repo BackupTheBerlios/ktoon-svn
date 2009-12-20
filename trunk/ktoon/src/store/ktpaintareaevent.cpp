@@ -30,17 +30,17 @@ KTPaintAreaEvent::~KTPaintAreaEvent()
 
 KTPaintAreaEvent::Action KTPaintAreaEvent::action() const
 {
-	return m_action;
+    return m_action;
 }
 
 QVariant KTPaintAreaEvent::data() const
 {
-	return m_data;
+    return m_data;
 }
 
 KTPaintAreaEvent *KTPaintAreaEvent::clone() const
 {
-	KTPaintAreaEvent *event = new KTPaintAreaEvent( action(), data() );	
-	return event;
-}
+    KTPaintAreaEvent *event = new KTPaintAreaEvent( action(), data() );	
 
+    return event;
+}

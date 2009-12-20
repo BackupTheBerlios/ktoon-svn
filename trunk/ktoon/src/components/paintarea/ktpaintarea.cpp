@@ -139,8 +139,10 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
 
         menu->addMenu(order);
         menu->addSeparator();
-        menu->addAction(tr("Add to library..."), this, SLOT(addSelectedItemsToLibrary()));
-        menu->addSeparator();
+
+        // Code commented temporary while SQA is done
+        //menu->addAction(tr("Add to library..."), this, SLOT(addSelectedItemsToLibrary()));
+        //menu->addSeparator();
 
         if (scene()->selectedItems().isEmpty()) {
             del->setEnabled(false);
@@ -392,7 +394,7 @@ void KTPaintArea::copyItems()
         if (currentScene) {
             foreach (QGraphicsItem *item, selecteds) {
                      QDomDocument orig;
-                     orig.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( orig ));
+                     orig.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(orig));
                      k->copiesXml << orig.toString();
 
                      // Paint it to clipbard

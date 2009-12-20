@@ -490,12 +490,12 @@ void KTMainWindow::setupToolBar()
     undo->setShortcut(QKeySequence(QKeySequence::Undo));
     toolbar->addAction(undo);
 
-    QAction *redo =  m_projectManager->undoHistory()->createRedoAction ( this );
+    QAction *redo =  m_projectManager->undoHistory()->createRedoAction(this);
     redo->setShortcut(QKeySequence(QKeySequence::Redo));
     toolbar->addAction(redo);
 
-    undo->setIcon( QPixmap(THEME_DIR+"/icons/undo.png" ));
-    redo->setIcon(QPixmap(THEME_DIR+"/icons/redo.png" ));
+    undo->setIcon(QPixmap(THEME_DIR + "/icons/undo.png"));
+    redo->setIcon(QPixmap(THEME_DIR + "/icons/redo.png"));
 
     kApp->insertGlobalAction(undo, "undo");
     kApp->insertGlobalAction(redo, "redo");

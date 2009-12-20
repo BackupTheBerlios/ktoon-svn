@@ -29,26 +29,26 @@
 */
 class STORE_EXPORT KTPaintAreaEvent
 {
-	public:
-		enum Action
-		{
-			None = 0,
-			ChangePen,
-			ChangePenBrush,
-			ChangeBrush
-		};
-		
-		KTPaintAreaEvent(Action action, const QVariant &data);
-		virtual ~KTPaintAreaEvent();
-		
-		Action action() const;
-		QVariant data() const;
-		
-		virtual KTPaintAreaEvent *clone() const;
-		
-	private:
-		Action m_action;
-		QVariant m_data;
+    public:
+        enum Action
+          {
+             None = 0,
+             ChangePen,
+             ChangePenBrush,
+             ChangeBrush
+          };
+
+        KTPaintAreaEvent(Action action, const QVariant &data);
+        virtual ~KTPaintAreaEvent();
+
+        Action action() const;
+        QVariant data() const;
+
+        virtual KTPaintAreaEvent *clone() const;
+
+    private:
+        Action m_action;
+        QVariant m_data;
 };
 
 #endif

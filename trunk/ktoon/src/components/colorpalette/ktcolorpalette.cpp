@@ -80,7 +80,7 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
     k->type = Solid;
 
     setWindowTitle(tr("Color Palette"));
-    setWindowIcon(QPixmap(THEME_DIR + "/icons/color_palette.png") );
+    setWindowIcon(QPixmap(THEME_DIR + "/icons/color_palette.png"));
 
     k->splitter = new QSplitter(Qt::Vertical, this);
     addChild(k->splitter);
@@ -178,17 +178,16 @@ void KTColorPalette::setupDisplayColor()
     k->labelType->addItem(tr("Solid"));
     k->labelType->addItem(tr("Gradient"));
 
-    connect(k->labelType, SIGNAL(activated ( const QString & )), this, SLOT(changeBrushType(const QString &)));
+    connect(k->labelType, SIGNAL(activated(const QString &)), this, SLOT(changeBrushType(const QString &)));
 
     vlayout->addWidget(k->labelType);
 
     k->outlineAndFillColors = new KDualColorButton(k->currentOutlineColor, k->currentFillColor, viewColor);
-    k->outlineAndFillColors->setSizePolicy ( QSizePolicy::Fixed, QSizePolicy::Fixed );
-    connect( k->outlineAndFillColors,  SIGNAL(currentChanged(KDualColorButton::DualColor)),this, SLOT(changeTypeColor(KDualColorButton::DualColor)));
+    k->outlineAndFillColors->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(k->outlineAndFillColors,  SIGNAL(currentChanged(KDualColorButton::DualColor)),this, SLOT(changeTypeColor(KDualColorButton::DualColor)));
 
-    connect(k->outlineAndFillColors,  SIGNAL(fgChanged(const QBrush &)),this, SLOT(
-    setFG(const QBrush &)));
-    connect(k->outlineAndFillColors,  SIGNAL(bgChanged(const QBrush &)),this, SLOT(setBG( const QBrush &)));
+    connect(k->outlineAndFillColors, SIGNAL(fgChanged(const QBrush &)),this, SLOT(setFG(const QBrush &)));
+    connect(k->outlineAndFillColors, SIGNAL(bgChanged(const QBrush &)),this, SLOT(setBG(const QBrush &)));
 
     vlayout->addWidget(k->outlineAndFillColors);
 
@@ -197,14 +196,14 @@ void KTColorPalette::setupDisplayColor()
 
     layoutName->addWidget(new QLabel( "<b>HTML</b>", viewColor));
     k->nameColor = new QLineEdit(viewColor);
-    QFontMetrics fm( font() );
-    k->nameColor->setMaximumWidth( fm.width ( " #000000 " ) );
+    QFontMetrics fm(font());
+    k->nameColor->setMaximumWidth(fm.width("#000000"));
 	
-    connect( k->nameColor, SIGNAL(editingFinished()), this, SLOT(updateColor()));
+    connect(k->nameColor, SIGNAL(editingFinished()), this, SLOT(updateColor()));
     layoutName->addWidget(k->nameColor);
     vlayout->addLayout(layoutName);
 
-    addChild( viewColor);
+    addChild(viewColor);
 }
 
 void KTColorPalette::setColor(const QBrush& brush)
@@ -236,15 +235,15 @@ void KTColorPalette::setColor(const QBrush& brush)
                    k->gradientManager->setGradient(gradient);
     }
 
-    // FIXME: emitir estos eventos independientemente segun sea escogido.
-// 	{
-		KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, k->outlineAndFillColors->background());
-		emit paintAreaEventTriggered( &event );
-// 	}
-// 	{
-		KTPaintAreaEvent event2(KTPaintAreaEvent::ChangePenBrush, k->outlineAndFillColors->foreground());
-		emit paintAreaEventTriggered( &event2 );
-// 	}
+    if (k->outlineAndFillColors->background().color() != Qt::transparent) {
+        KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, k->outlineAndFillColors->background());
+        emit paintAreaEventTriggered(&event);
+    }
+
+    if (k->outlineAndFillColors->foreground().color() != Qt::transparent) {
+        KTPaintAreaEvent event2(KTPaintAreaEvent::ChangePenBrush, k->outlineAndFillColors->foreground());
+        emit paintAreaEventTriggered(&event2);
+    }
 }
 
 void KTColorPalette::setFG(const QBrush &brush)
@@ -318,7 +317,7 @@ void KTColorPalette::parsePaletteFile(const QString &file)
     k->containerPalette->readPaletteFile(file);
 }
 
-void KTColorPalette::mousePressEvent ( QMouseEvent * e )
+void KTColorPalette::mousePressEvent(QMouseEvent * e)
 {
     if (e->button () == Qt::RightButton) {
         QMenu *menu = new QMenu(tr("type brush"), this);
@@ -341,4 +340,3 @@ void KTColorPalette::changeBrushType(const QString& type)
             k->labelType->setCurrentIndex(index);
     }
 }
-
