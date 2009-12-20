@@ -23,8 +23,7 @@
 #include "kaction.h"
 #include "kactionmanager.h"
 
-
-KAction::KAction(QObject * parent, const QString &id ) : QAction(parent)
+KAction::KAction(QObject * parent, const QString &id) : QAction(parent)
 {
     if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
         initWithManager(m, id);
@@ -42,11 +41,11 @@ KAction::KAction(const QIcon & icon, const QString & text, QObject * parent, con
         initWithManager( m, id );
 }
 
-KAction::KAction(const QIcon & icon, QObject *parent, const QString &id ) : QAction(parent)
+KAction::KAction(const QIcon & icon, QObject *parent, const QString &id) : QAction(parent)
 {
     setIcon(icon);
-    if (KActionManager *m = dynamic_cast<KActionManager *>(parent) )
-        initWithManager( m , id);
+    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
+        initWithManager(m , id);
 }
 
 KAction::KAction(const QIcon & icon, const QString & text, const QString &key, QObject * parent, const QString &id) : QAction(icon,text,parent)
@@ -61,7 +60,7 @@ KAction::KAction(const QIcon & icon, const QKeySequence &key, QObject * parent, 
     setIcon(icon);
     setShortcut(key);
 
-    if (KActionManager *m = dynamic_cast<KActionManager *>(parent) )
+    if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
         initWithManager(m, id);
 }
 
