@@ -484,6 +484,10 @@ void KTMainWindow::setupToolBar()
     toolbar->setIconSize( QSize(22,22) );
     addToolBar(Qt::TopToolBarArea, toolbar);
 
+    toolbar->addAction(m_actionManager->find("newproject"));
+    toolbar->addAction(m_actionManager->find("openproject"));
+
+    /*
     // KCommandHistory *history = new KCommandHistory(m_undoCommands, this);
 
     QAction * undo = m_projectManager->undoHistory()->createUndoAction(this, tr("Undo"));
@@ -499,6 +503,7 @@ void KTMainWindow::setupToolBar()
 
     kApp->insertGlobalAction(undo, "undo");
     kApp->insertGlobalAction(redo, "redo");
+    */
 }
 
 /**
@@ -587,4 +592,20 @@ void KTMainWindow::changePerspective(QAction *a)
     int perspective = a->data().toInt();
     setCurrentTab(perspective - 1);
     a->setChecked(true);
+}
+
+void KTMainWindow::setUndoRedoActions()
+{
+    // Setting undo/redo actions
+    QAction *undo = m_projectManager->undoHistory()->createUndoAction(this, tr("Undo"));
+    undo->setShortcut(QKeySequence(QKeySequence::Undo));
+
+    QAction *redo =  m_projectManager->undoHistory()->createRedoAction(this);
+    redo->setShortcut(QKeySequence(QKeySequence::Redo));
+
+    undo->setIcon(QPixmap(THEME_DIR + "/icons/undo.png"));
+    redo->setIcon(QPixmap(THEME_DIR + "/icons/redo.png"));
+
+    kApp->insertGlobalAction(undo, "undo");
+    kApp->insertGlobalAction(redo, "redo");
 }

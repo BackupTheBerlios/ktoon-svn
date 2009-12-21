@@ -206,6 +206,9 @@ void KTMainWindow::viewNewDocument(const QString &title)
     #endif
 
     if (m_projectManager->isOpen()) {
+        // Setting undo/redo actions
+        setUndoRedoActions();
+
         messageToStatus(tr("Opening a new paint area..."));
         KOsd::self()->display(tr("Opening a new document..."));
 
@@ -225,9 +228,6 @@ void KTMainWindow::viewNewDocument(const QString &title)
         // KTViewCamera *
         viewCamera = new KTViewCamera(m_projectManager->project());
         ui4project(viewCamera);
-
-        //connect(m_projectManager, SIGNAL(updateAnimationModule(KTProject *, int, int, int)), viewCamera,
-        //        SLOT(updatePhotograms(KTProject *, int, int, int)));
 
         connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateAnimation(int)));
 
@@ -384,7 +384,7 @@ bool KTMainWindow::setupNetworkProject(const QString& projectName ,const QString
         params->setPort(cndialog->port());
         params->setLogin(cndialog->login());
         params->setPassword(cndialog->password());
-        params->setProjectName( projectName );
+        params->setProjectName(projectName);
 
         return setupNetworkProject(params);
     }
@@ -407,7 +407,7 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
     if (closeProject()) {
         KTNetProjectManagerHandler *netProjectManagerHandler =  new KTNetProjectManagerHandler;
         connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(viewNewDocument(const QString&)));
-        m_projectManager->setHandler( netProjectManagerHandler );
+        m_projectManager->setHandler(netProjectManagerHandler);
         m_projectManager->setParams(params);
         m_isNetworkProject = true;
 
@@ -416,7 +416,7 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
             delete m_viewChat;
         }
 
-        m_viewChat = addToolView(netProjectManagerHandler->comunicationWidget(),  Qt::RightDockWidgetArea, All);
+        m_viewChat = addToolView(netProjectManagerHandler->comunicationWidget(), Qt::RightDockWidgetArea, All);
         m_viewChat->setVisible(false);
 
         return true;
@@ -459,7 +459,7 @@ bool KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
 
 void KTMainWindow::openProject()
 {
-     QString package = QFileDialog::getOpenFileName( this, tr("Import project package"), CACHE_DIR, 
+     QString package = QFileDialog::getOpenFileName(this, tr("Import project package"), CACHE_DIR, 
                        tr("KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)"));
 
      if (package.isEmpty()) 

@@ -20,6 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "ktapplication.h"
 #include "ktviewdocument.h"
 
 // KOM
@@ -197,54 +198,35 @@ void KTViewDocument::showPos(const QPointF &p)
 
 void KTViewDocument::setupDrawActions()
 {
-    /*
-    QAction * undo = m_projectManager->undoHistory()->createUndoAction(this, tr("Undo"));
-    undo->setShortcut(QKeySequence(QKeySequence::Undo));
-    toolbar->addAction(undo);
-
-    QAction *redo =  m_projectManager->undoHistory()->createRedoAction(this);
-    redo->setShortcut(QKeySequence(QKeySequence::Redo));
-    toolbar->addAction(redo);
-
-    undo->setIcon(QPixmap(THEME_DIR + "/icons/undo.png"));
-    redo->setIcon(QPixmap(THEME_DIR + "/icons/redo.png"));
-
-    kApp->insertGlobalAction(undo, "undo");
-    kApp->insertGlobalAction(redo, "redo");
-
-    KAction *undo = new KAction(QPixmap(THEME_DIR + "/icons/undo.png"), tr("&Undo"), QKeySequence(tr("Ctrl+U")), 
-                                 this, SLOT(undo()), k->actionManager, "undo");
-    undo->setStatusTip(tr("Undo last operation"));
-
-    KAction *redo = new KAction(QPixmap(THEME_DIR + "/icons/redo.png"), tr("&Redo"), QKeySequence(tr("Ctrl+R")), 
-                                 this, SLOT(redo()), k->actionManager, "redo");
-    redo->setStatusTip(tr("Redo last operation"));
-    */
-
-    KAction *showGrid = new KAction(QPixmap(THEME_DIR + "/icons/subgrid.png"), tr("Show grid"), QKeySequence(tr("Ctrl+L")),
-                                     this, SLOT(toggleShowGrid()), k->actionManager, "show_grid");
+    KAction *showGrid = new KAction(QPixmap(THEME_DIR + "/icons/subgrid.png"), 
+                                    tr("Show grid"), QKeySequence(tr("Ctrl+L")),
+                                    this, SLOT(toggleShowGrid()), k->actionManager, "show_grid");
     showGrid->setCheckable(true);
 
-    KAction *copy = new KAction( QPixmap(THEME_DIR + "/icons/copy.png"), tr("C&opy"), QKeySequence(tr("Ctrl+C")),
+    KAction *copy = new KAction(QPixmap(THEME_DIR + "/icons/copy.png"), 
+                                tr("C&opy"), QKeySequence(tr("Ctrl+C")),
                                  k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
     copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
 
-    KAction *paste = new KAction( QPixmap(THEME_DIR + "/icons/paste.png"), tr("&Paste"), QKeySequence(tr("Ctrl+V")),
-                                  k->paintArea, SLOT(pasteItems()), k->actionManager, "paste");
+    KAction *paste = new KAction(QPixmap(THEME_DIR + "/icons/paste.png"), 
+                                 tr("&Paste"), QKeySequence(tr("Ctrl+V")),
+                                 k->paintArea, SLOT(pasteItems()), k->actionManager, "paste");
     paste->setStatusTip(tr("Pastes the clipboard into the current document"));
 
-    KAction *cut = new KAction(QPixmap(THEME_DIR + "/icons/cut.png"), tr("&Cut"), QKeySequence(tr("Ctrl+X")),
-                                k->paintArea, SLOT(cutItems()),k->actionManager, "cut");
+    KAction *cut = new KAction(QPixmap(THEME_DIR + "/icons/cut.png"), 
+                               tr("&Cut"), QKeySequence(tr("Ctrl+X")),
+                               k->paintArea, SLOT(cutItems()),k->actionManager, "cut");
     cut->setStatusTip(tr("Cuts the selected items"));
 
     KAction *del = new KAction(QPixmap(THEME_DIR + "/icons/delete.png"), tr("Delete"), 
-                                QKeySequence(Qt::Key_Delete), k->paintArea, SLOT(deleteItems()), k->actionManager, "delete");
+                               QKeySequence(Qt::Key_Delete), k->paintArea, SLOT(deleteItems()), 
+                               k->actionManager, "delete");
 	
     del->setStatusTip(tr("Deletes the selected object"));
 
     KAction *group = new KAction(QPixmap(THEME_DIR + "/icons/group.png"), tr("&Group"),   
-                                  QKeySequence(tr("Ctrl+G")), k->paintArea, SLOT(groupItems()), k->actionManager,
-                                  "group");
+                                 QKeySequence(tr("Ctrl+G")), k->paintArea, SLOT(groupItems()), 
+                                 k->actionManager, "group");
 
     group->setStatusTip(tr("Group the selected objects into a single one"));
 
@@ -256,8 +238,8 @@ void KTViewDocument::setupDrawActions()
 
     /*
     KAction *zoomIn = new KAction(QPixmap(THEME_DIR + "/icons/zood->in.png"), tr("Zoom In"), 
-                                   QKeySequence(Qt::CTRL+Qt::Key_Plus), k->paintArea, SLOT(zoomIn()), k->actionManager,
-                                   "zood->in");
+                                  QKeySequence(Qt::CTRL+Qt::Key_Plus), k->paintArea, SLOT(zoomIn()), 
+                                  k->actionManager, "zood->in");
 
     k->zoomFactorSpin = new QSpinBox();
     k->zoomFactorSpin->setMaximum(200);
@@ -727,19 +709,18 @@ void KTViewDocument::createToolBar()
 
     addToolBar(k->barGrid);
 
-    k->barGrid->addAction(k->actionManager->find("show_grid"));
-    k->barGrid->addSeparator();
+    k->barGrid->addAction(kApp->findGlobalAction("undo"));
+    k->barGrid->addAction(kApp->findGlobalAction("redo"));
 
-    /*
-    k->barGrid->addAction(k->actionManager->find("undo"));
-    k->barGrid->addAction(k->actionManager->find("redo"));
     k->barGrid->addSeparator();
-    */
 
     k->barGrid->addAction(k->actionManager->find("copy"));
     k->barGrid->addAction(k->actionManager->find("paste"));
     k->barGrid->addAction(k->actionManager->find("cut"));
     k->barGrid->addAction(k->actionManager->find("delete"));
+    k->barGrid->addSeparator();
+
+    k->barGrid->addAction(k->actionManager->find("show_grid"));
     k->barGrid->addSeparator();
 
     k->barGrid->addAction(k->actionManager->find("group"));

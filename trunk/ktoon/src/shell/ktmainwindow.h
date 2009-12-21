@@ -117,7 +117,8 @@ class KTMainWindow : public KTabbedMainWindow
          bool setupNetworkProject(const QString& projectName = QString(), const QString &server = QString(), int port = -1);
          bool setupNetworkProject(KTProjectManagerParams *params);
          bool setupLocalProject(KTProjectManagerParams *params);
-		
+         void setUndoRedoActions();
+
     protected:
          /**
           *  Event for main window closing control
