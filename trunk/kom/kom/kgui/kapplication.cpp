@@ -37,165 +37,144 @@
 
 KApplication::KApplication(int & argc, char ** argv) : QApplication(argc, argv)
 {
-	KINIT;
-	
-	QApplication::setEffectEnabled( Qt::UI_AnimateMenu, true);
-	QApplication::setEffectEnabled( Qt::UI_AnimateCombo, true);
-	QApplication::setEffectEnabled( Qt::UI_FadeMenu, true);
-	QApplication::setEffectEnabled( Qt::UI_FadeTooltip, true);
-	
-	parseArgs(argc, argv);
-	
-	m_actionManager = new KActionManager(this);
-}
+    KINIT;
 
+    QApplication::setEffectEnabled( Qt::UI_AnimateMenu, true);
+    QApplication::setEffectEnabled( Qt::UI_AnimateCombo, true);
+    QApplication::setEffectEnabled( Qt::UI_FadeMenu, true);
+    QApplication::setEffectEnabled( Qt::UI_FadeTooltip, true);
+
+    parseArgs(argc, argv);
+
+    m_actionManager = new KActionManager(this);
+}
 
 KApplication::~KApplication()
 {
-	KEND;
-	
-	KCONFIG->sync();
+    KEND;
+
+    KCONFIG->sync();
 }
 
 void KApplication::applyTheme(const QString &file)
 {
-	m_themeManager.applyTheme(file);
+    m_themeManager.applyTheme(file);
 }
 
 void KApplication::applyTheme(const KThemeDocument &kd)
 {
-	m_themeManager.applyTheme(kd);
+    m_themeManager.applyTheme(kd);
 }
 
 void KApplication::applyColors(ColorSchema cs)
 {
-	QPalette pal = QApplication::palette();
-	switch (cs)
-	{
-		case DarkBlue:
-		{
-			const QColor bg( 32,32,82 );
-			const QColor bgAlt( 57, 64, 98 );
-			
-			pal.setColor( QPalette::Text, Qt::white );
-			pal.setColor( QPalette::Base, bg );
-			pal.setColor( QPalette::Foreground, 0xd7d7ef );
-			pal.setColor( QPalette::Background, bgAlt );
-		
-			pal.setColor( QPalette::Button, bgAlt );
-			pal.setColor( QPalette::ButtonText, 0xd7d7ef );
-		
-			pal.setColor( QPalette::Highlight, Qt::white );
-			pal.setColor( QPalette::HighlightedText, bg );
-			int h,s,v;
-			bgAlt.getHsv( &h, &s, &v );
-			pal.setColor( QPalette::Midlight, QColor( h, s/3, (int)(v * 1.2)/*,QColor::Hsv*/ ) );
-		}
-		break;
-	}
-	applyPalette(pal);
+    QPalette pal = QApplication::palette();
+
+    switch (cs) {
+            case DarkBlue:
+               {
+                  const QColor bg(32, 32, 82);
+                  const QColor bgAlt(57, 64, 98);
+
+                  pal.setColor(QPalette::Text, Qt::white);
+                  pal.setColor(QPalette::Base, bg);
+                  pal.setColor(QPalette::Foreground, 0xd7d7ef);
+                  pal.setColor(QPalette::Background, bgAlt);
+
+                  pal.setColor(QPalette::Button, bgAlt);
+                  pal.setColor(QPalette::ButtonText, 0xd7d7ef);
+
+                  pal.setColor(QPalette::Highlight, Qt::white);
+                  pal.setColor(QPalette::HighlightedText, bg);
+                  int h, s, v;
+                  bgAlt.getHsv(&h, &s, &v);
+                  pal.setColor(QPalette::Midlight, QColor(h, s/3, (int)(v * 1.2)));
+               }
+            break;
+    }
+
+    applyPalette(pal);
 }
 
 void KApplication::applyPalette(const QPalette &pal)
 {
-	setPalette(pal);
-	
-	QWidgetList list = allWidgets ();
-	for( int i = 0; i < list.count(); i++ )
-	{
-		QObject *o = list[i];
-		if ( o )
-		{
-			static_cast<QWidget*>(o)->setPalette(pal);
-		}
-	}
+    setPalette(pal);
+
+    QWidgetList list = allWidgets ();
+    for (int i = 0; i < list.count(); i++) {
+         QObject *o = list[i];
+         if (o)
+             static_cast<QWidget*>(o)->setPalette(pal);
+    }
 }
 
 void KApplication::changeFont(const QFont &font)
 {
-	QApplication::setFont(font, "QWidget");
-// 	if ( mainWidget() )
-// 	{
-// 		QObjectList* const list = mainWidget()->queryList("QWidget");
-// 		for( QObject *o = list->first(); o; o = list->next() )
-// 		{
-// 			if ( o )
-// 			{
-// 				QWidget *widget = static_cast<QWidget*>(o);
-// 				widget->setFont(font);
-// 			}
-// 		}
-// 		delete list;
-// 	}
+    QApplication::setFont(font, "QWidget");
 }
 
 KConfig *KApplication::config(const QString &group )
 {
-	KConfig *config = KConfig::instance();
-	
-	config->beginGroup( group );
-	
-	return config;
+    KConfig *config = KConfig::instance();
+    config->beginGroup(group);
+
+    return config;
 }
 
 void KApplication::parseArgs(int &argc, char **argv)
 {
-	for(int i = 0; i < argc; i++)
-	{
-		QString opt = QString(argv[i]).simplified();
-		if ( opt.startsWith("--") )
-		{
-			QString arg = "";
-			if ( argv[i+1] && ! QString(argv[i+1]).startsWith("-") )
-				arg = QString(argv[i+1]).simplified();
-			m_parseArgs.insert(opt.remove(0,2), arg);
-		}
-		else if (opt.startsWith("-") )
-		{
-			QString arg = "";
-			if ( argv[i+1] && ! QString(argv[i+1]).startsWith("-") )
-				arg = QString(argv[i+1]).simplified();
-			
-			m_parseArgs.insert(opt.remove(0,1), arg );
-		}
-	}
+    for (int i = 0; i < argc; i++) {
+         QString opt = QString(argv[i]).simplified();
+         if (opt.startsWith("--")) {
+             QString arg = "";
+             if (argv[i+1] && ! QString(argv[i+1]).startsWith("-"))
+                 arg = QString(argv[i+1]).simplified();
+             m_parseArgs.insert(opt.remove(0,2), arg);
+         } else if (opt.startsWith("-")) {
+                    QString arg = "";
+                    if (argv[i+1] && ! QString(argv[i+1]).startsWith("-"))
+                        arg = QString(argv[i+1]).simplified();
+
+                    m_parseArgs.insert(opt.remove(0,1), arg );
+         }
+    }
 }
 
 bool KApplication::isArg(const QString &arg)
 {
-	return m_parseArgs.keys().contains(arg);
+    return m_parseArgs.keys().contains(arg);
 }
 
 QString KApplication::getParam(const QString &arg)
 {
-	if ( ! m_parseArgs.contains(arg) )
-		return "";
-	return m_parseArgs[arg];
+    if (! m_parseArgs.contains(arg))
+        return "";
+
+    return m_parseArgs[arg];
 }
 
 bool KApplication::firstRun() 
 {
-	return false;
+    return false;
 }
 
 bool KApplication::insertGlobalAction(QAction *action, const QString& id)
 {
-	if (m_actionManager->insert( action, id, "global") )
-	{
-		action->setShortcutContext(Qt::ApplicationShortcut);
-		return true;
-	}
-	
-	return false;
+    if (m_actionManager->insert(action, id, "global")) {
+        action->setShortcutContext(Qt::ApplicationShortcut);
+        return true;
+    }
+
+    return false;
 }
 
 void KApplication::removeGlobalAction(QAction *action)
 {
-	m_actionManager->remove( action, "global");
+    m_actionManager->remove(action, "global");
 }
 
 QAction *KApplication::findGlobalAction(const QString &id)
 {
-	return m_actionManager->find( id, "global");
+    return m_actionManager->find(id, "global");
 }
 

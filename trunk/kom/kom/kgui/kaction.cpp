@@ -38,7 +38,7 @@ KAction::KAction(const QString & text, QObject * parent, const QString &id) : QA
 KAction::KAction(const QIcon & icon, const QString & text, QObject * parent, const QString &id) : QAction(icon, text, parent)
 {
     if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
-        initWithManager( m, id );
+        initWithManager(m, id);
 }
 
 KAction::KAction(const QIcon & icon, QObject *parent, const QString &id) : QAction(parent)
@@ -48,7 +48,7 @@ KAction::KAction(const QIcon & icon, QObject *parent, const QString &id) : QActi
         initWithManager(m , id);
 }
 
-KAction::KAction(const QIcon & icon, const QString & text, const QString &key, QObject * parent, const QString &id) : QAction(icon,text,parent)
+KAction::KAction(const QIcon & icon, const QString & text, const QString &key, QObject * parent, const QString &id) : QAction(icon, text, parent)
 {
     setShortcut(QKeySequence(key));
     if (KActionManager *m = dynamic_cast<KActionManager *>(parent))

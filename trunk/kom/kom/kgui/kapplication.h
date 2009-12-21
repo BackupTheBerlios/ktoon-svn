@@ -64,8 +64,8 @@ typedef QMap<QString, QString> ParseArgs;
 */
 class K_GUI_EXPORT KApplication : public QApplication
 {
-	Q_OBJECT
-	public:
+    Q_OBJECT
+    public:
 		enum ColorSchema { DarkBlue };
 		/**
 		 * @if english
@@ -224,7 +224,7 @@ class K_GUI_EXPORT KApplication : public QApplication
 		 */			
 		QAction *findGlobalAction(const QString &id);
 		
-	public slots:
+    public slots:
 		/**
 		 * @if english
 		 * Opens a settings wizard the first time the application is launched
@@ -236,7 +236,7 @@ class K_GUI_EXPORT KApplication : public QApplication
 		 */
 		virtual bool firstRun();
 		
-	private:
+    private:
 		ParseArgs m_parseArgs;
 		KThemeManager m_themeManager;
 		KActionManager *m_actionManager;
