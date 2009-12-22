@@ -36,19 +36,20 @@ class ClickableLabel;
  */
 class Q_GUI_EXPORT SettingsContainer : public QScrollArea
 {
-	Q_ENUMS( CollapseState );
-	Q_OBJECT;
-	public:
-		enum CollapseState { Collapsed, Uncollapsed };
-		SettingsContainer( QWidget *parent = 0 );
-		~SettingsContainer();
+    Q_ENUMS(CollapseState);
+    Q_OBJECT;
 
-		CollapsibleWidget* insertWidget( QWidget* w, const QString& name );
+    public:
+        enum CollapseState { Collapsed, Uncollapsed };
+        SettingsContainer(QWidget *parent = 0);
+        ~SettingsContainer();
 
-	private:
-		Q_DISABLE_COPY( SettingsContainer );
-		class Private;
-		Private *k;
+        CollapsibleWidget* insertWidget(QWidget* w, const QString& name);
+
+    private:
+        Q_DISABLE_COPY(SettingsContainer);
+        class Private;
+        Private *k;
 };
 
 /**
@@ -57,31 +58,29 @@ class Q_GUI_EXPORT SettingsContainer : public QScrollArea
  */
 class Q_GUI_EXPORT CollapsibleWidget : public QWidget
 {
-	Q_OBJECT
-	public:
-		CollapsibleWidget(QWidget *parent = 0);
-		CollapsibleWidget(const QString& caption, QWidget *parent = 0);
-		~CollapsibleWidget();
-    
-		QString caption() const;
-		bool isExpanded() const;
+    Q_OBJECT
+    public:
+        CollapsibleWidget(QWidget *parent = 0);
+        CollapsibleWidget(const QString& caption, QWidget *parent = 0);
+        ~CollapsibleWidget();
+  
+        QString caption() const;
+        bool isExpanded() const;
 
-		QWidget* innerWidget() const;
-		void setInnerWidget( QWidget *w);
+        QWidget* innerWidget() const;
+        void setInnerWidget( QWidget *w);
 
-	public slots:
-		void setExpanded(bool collapsed);
-		void setCaption(const QString& caption);
+    public slots:
+        void setExpanded(bool collapsed);
+        void setCaption(const QString& caption);
 
+    protected:
+        void init();
 
-	protected:
-		void init();
-
-	private:
-		Q_DISABLE_COPY( CollapsibleWidget );
-		class Private;
-		Private *k;
+    private:
+        Q_DISABLE_COPY(CollapsibleWidget);
+        class Private;
+        Private *k;
 };
 
 #endif // COLLAPSIBLEWIDGET_H
-

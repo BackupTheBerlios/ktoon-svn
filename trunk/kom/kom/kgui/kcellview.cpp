@@ -32,16 +32,15 @@
 
 #include "kdebug.h"
 
-
 ////////// KCellViewItemDelegate ///////////
 
 class KCellViewItemDelegate : public QAbstractItemDelegate
 {
-	public:
-		KCellViewItemDelegate(QObject * parent = 0 );
-		~KCellViewItemDelegate();
-		virtual void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
-		virtual QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+    public:
+        KCellViewItemDelegate(QObject * parent = 0);
+        ~KCellViewItemDelegate();
+        virtual void paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const;
+        virtual QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const;
 };
 
 KCellViewItemDelegate::KCellViewItemDelegate(QObject * parent) :  QAbstractItemDelegate(parent)
@@ -52,156 +51,140 @@ KCellViewItemDelegate::~KCellViewItemDelegate()
 {
 }
 
-void KCellViewItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+void KCellViewItemDelegate::paint (QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
-	Q_ASSERT(index.isValid());
-	const QAbstractItemModel *model = index.model();
-	Q_ASSERT(model);
-	
-	QVariant value;
+    Q_ASSERT(index.isValid());
+    const QAbstractItemModel *model = index.model();
+    Q_ASSERT(model);
 
-	QStyleOptionViewItem opt = option;
+    QVariant value;
 
-    	// do layout
-	QImage img = qvariant_cast<QImage>(model->data(index,Qt::DisplayRole));
-	
-	if( ! img.isNull() )
-	{
-		painter->drawImage(opt.rect, img);
-	}
-	
-	// draw the background color
-	value = model->data(index, Qt::BackgroundColorRole);
-	if (value.isValid()/* && qvariant_cast<QBrush>(value).isValid()*/)
-	{
-		QBrush brush = qvariant_cast<QBrush>(value);
-		
-		if ( brush.gradient() )
-		{
-			QMatrix m;
-			m.translate(option.rect.topLeft().x(), option.rect.topLeft().y());
-			m.scale((float)(option.rect.width())/100.0 , (float)(option.rect.height())/100.0 );
-			
-			brush.setMatrix(m);
-			
-			painter->fillRect(option.rect, brush);
-		}
-		else
-		{
-			painter->fillRect(option.rect, brush);
-		}
-	}
-	
-	
-	// Selection!
-	if (option.showDecorationSelected && (option.state & QStyle::State_Selected))
-	{
-		QPalette::ColorGroup cg = option.state & QStyle::State_Enabled ? QPalette::Normal : QPalette::Disabled;
-		
-		painter->save();
-		painter->setPen(QPen(option.palette.brush(cg, QPalette::Highlight), 3));
-		painter->drawRect(option.rect.adjusted(1,1,-2,-2));
-		painter->restore();
-	}
+    QStyleOptionViewItem opt = option;
+
+    // do layout
+    QImage img = qvariant_cast<QImage>(model->data(index,Qt::DisplayRole));
+
+    if (! img.isNull())
+        painter->drawImage(opt.rect, img);
+
+    // draw the background color
+    value = model->data(index, Qt::BackgroundColorRole);
+
+    if (value.isValid()) {
+        QBrush brush = qvariant_cast<QBrush>(value);
+
+        if (brush.gradient()) {
+            QMatrix m;
+            m.translate(option.rect.topLeft().x(), option.rect.topLeft().y());
+            m.scale((float)(option.rect.width())/100.0 , (float)(option.rect.height())/100.0);
+            brush.setMatrix(m);
+            painter->fillRect(option.rect, brush);
+        } else {
+            painter->fillRect(option.rect, brush);
+        }
+    }
+
+    // Selection!
+    if (option.showDecorationSelected && (option.state & QStyle::State_Selected)) {
+        QPalette::ColorGroup cg = option.state & QStyle::State_Enabled ? QPalette::Normal : QPalette::Disabled;
+        painter->save();
+        painter->setPen(QPen(option.palette.brush(cg, QPalette::Highlight), 3));
+        painter->drawRect(option.rect.adjusted(1,1,-2,-2));
+        painter->restore();
+    }
 }
 
-QSize KCellViewItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
+QSize KCellViewItemDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
-	Q_ASSERT(index.isValid());
-	const QAbstractItemModel *model = index.model();
-	Q_ASSERT(model);
+    Q_ASSERT(index.isValid());
+    const QAbstractItemModel *model = index.model();
+    Q_ASSERT(model);
 
-	QVariant value = model->data(index, Qt::FontRole);
-	QFont fnt = value.isValid() ? qvariant_cast<QFont>(value) : option.font;
-	QString text = model->data(index, Qt::DisplayRole).toString();
-	QRect pixmapRect;
-	if (model->data(index, Qt::DecorationRole).isValid())
-		pixmapRect = QRect(0, 0, option.decorationSize.width(),
-				   option.decorationSize.height());
+    QVariant value = model->data(index, Qt::FontRole);
+    QFont fnt = value.isValid() ? qvariant_cast<QFont>(value) : option.font;
+    QString text = model->data(index, Qt::DisplayRole).toString();
+    QRect pixmapRect;
 
-	QFontMetrics fontMetrics(fnt);
-	
-	return (pixmapRect).size();
+    if (model->data(index, Qt::DecorationRole).isValid())
+        pixmapRect = QRect(0, 0, option.decorationSize.width(),
+
+    option.decorationSize.height());
+    QFontMetrics fontMetrics(fnt);
+
+    return (pixmapRect).size();
 }
-
 
 ////////// KCellViewItem ////////
 KCellViewItem::KCellViewItem() : QTableWidgetItem(UserType)
 {
-	setFlags(Qt::ItemIsEditable
-		      |Qt::ItemIsSelectable
-		      |Qt::ItemIsUserCheckable
-		      |Qt::ItemIsEnabled
-		      |Qt::ItemIsDragEnabled
-			|Qt::ItemIsDropEnabled);
+     setFlags(Qt::ItemIsEditable
+             |Qt::ItemIsSelectable
+             |Qt::ItemIsUserCheckable
+             |Qt::ItemIsEnabled
+             |Qt::ItemIsDragEnabled
+             |Qt::ItemIsDropEnabled);
 }
 
 KCellViewItem::~KCellViewItem()
 {
 }
 
-
 QImage KCellViewItem::image() const
 {
-	return qvariant_cast<QImage>(data(Qt::DisplayRole));
+    return qvariant_cast<QImage>(data(Qt::DisplayRole));
 }
 
 QBrush KCellViewItem::background() const
 {
-	return qvariant_cast<QBrush>(data(Qt::BackgroundColorRole));
+    return qvariant_cast<QBrush>(data(Qt::BackgroundColorRole));
 }
 	
 ////////// KCellView  ///////////
 KCellView::KCellView(int MAX_COLUMNS, QWidget *parent) : QTableWidget(parent), m_countColor(0),  m_col(0), m_row(0), MAX_COLUMNS(MAX_COLUMNS)
 {
-	setup();
+    setup();
 }
 
 KCellView::KCellView(int rows, int columns, int MAX_COLUMNS, QWidget *parent)
-	: QTableWidget(rows, columns, parent), m_countColor(0),  m_col(0), m_row(0), MAX_COLUMNS(MAX_COLUMNS)
+          : QTableWidget(rows, columns, parent), m_countColor(0),  m_col(0), m_row(0), MAX_COLUMNS(MAX_COLUMNS)
 {
-	setup();
+    setup();
 }
 
 void KCellView::setup()
 {
-	setItemDelegate( new KCellViewItemDelegate(this));
-	
-	setSelectionBehavior(QAbstractItemView::SelectItems);
-	setSelectionMode (QAbstractItemView::SingleSelection);
-	
-	verticalHeader()->hide();
-	horizontalHeader()->hide();
-	
-	setItemSize( 18, 18 );
-	
-	horizontalHeader()->setResizeMode(QHeaderView::Custom);
-	verticalHeader()->setResizeMode(QHeaderView::Custom);
-	
-// #if QT_VERSION >= 0x040100
-// 	setAutoFillBackground(true);
-// #endif
+    setItemDelegate(new KCellViewItemDelegate(this));
+
+    setSelectionBehavior(QAbstractItemView::SelectItems);
+    setSelectionMode(QAbstractItemView::SingleSelection);
+
+    verticalHeader()->hide();
+    horizontalHeader()->hide();
+
+    setItemSize(18, 18);
+
+    horizontalHeader()->setResizeMode(QHeaderView::Custom);
+    verticalHeader()->setResizeMode(QHeaderView::Custom);
 }
 
 void KCellView::setItemSize(int w, int h)
 {
-	m_rectHeight = h;
-	m_rectWidth = w;
-	QTimer::singleShot( 0, this, SLOT(fixSize()));
+    m_rectHeight = h;
+    m_rectWidth = w;
+    QTimer::singleShot(0, this, SLOT(fixSize()));
 }
 	
 void KCellView::fixSize()
 {
-	setUpdatesEnabled(false);
-	for(int column = 0; column < columnCount(); column++)
-	{
-		horizontalHeader()->resizeSection(column, m_rectWidth);
-	}
-	for( int row = 0; row < rowCount(); row++)
-	{
-		verticalHeader()->resizeSection(row, m_rectHeight);
-	}
-	setUpdatesEnabled(true);
+    setUpdatesEnabled(false);
+
+    for (int column = 0; column < columnCount(); column++)
+         horizontalHeader()->resizeSection(column, m_rectWidth);
+
+    for (int row = 0; row < rowCount(); row++)
+         verticalHeader()->resizeSection(row, m_rectHeight);
+
+    setUpdatesEnabled(true);
 }
 
 
@@ -211,65 +194,53 @@ KCellView::~KCellView()
 
 QStyleOptionViewItem KCellView::viewOptions() const
 {
-	QStyleOptionViewItem option = QAbstractItemView::viewOptions();
-	option.showDecorationSelected = true;
-	option.decorationSize = QSize(22,22);
-	option.decorationPosition = QStyleOptionViewItem::Right;
-	
-	return option;
+    QStyleOptionViewItem option = QAbstractItemView::viewOptions();
+    option.showDecorationSelected = true;
+    option.decorationSize = QSize(22, 22);
+    option.decorationPosition = QStyleOptionViewItem::Right;
+
+    return option;
 }
 
 void KCellView::addItem(KCellViewItem *item)
 {
-	if( columnCount() < MAX_COLUMNS)
-	{
-		insertColumn( columnCount() );
-	}
-	
-	if( m_countColor % MAX_COLUMNS == 0)
-	{
-		insertRow( rowCount() );
-		m_row++;
-		m_col = 0;
-	}
-	else
-	{
-		m_col++;
-	}
-	
-	
-	m_countColor++;
-	setItem(m_row-1 , m_col , item);
-	
-	fixSize();
+    if (columnCount() < MAX_COLUMNS)
+        insertColumn(columnCount());
+
+    if (m_countColor % MAX_COLUMNS == 0) {
+        insertRow( rowCount() );
+        m_row++;
+        m_col = 0;
+    } else {
+        m_col++;
+    }
+
+    m_countColor++;
+    setItem(m_row-1 , m_col , item);
+
+    fixSize();
 }
 
 void KCellView::addItem(const QBrush& b)
 {
-	KCellViewItem *item = new KCellViewItem;
-	item->setBackground(b);
-	
-	addItem( item );
+    KCellViewItem *item = new KCellViewItem;
+    item->setBackground(b);
+
+    addItem(item);
 }
 
 void KCellView::addItem(const QImage &i)
 {
-	KCellViewItem *item = new KCellViewItem;
-	item->setData(Qt::DisplayRole, i);
-	
-	addItem( item );
-}
+    KCellViewItem *item = new KCellViewItem;
+    item->setData(Qt::DisplayRole, i);
 
+    addItem(item);
+}
 
 void KCellView::wheelEvent(QWheelEvent *event)
 {
-	if(event->modifiers () == Qt::ControlModifier)
-	{
-		SHOW_VAR(event->delta());
-	}
-	else
-	{
-		QTableWidget::wheelEvent(event);
-	}
+    if (event->modifiers () == Qt::ControlModifier)
+        SHOW_VAR(event->delta());
+    else
+        QTableWidget::wheelEvent(event);
 }
-

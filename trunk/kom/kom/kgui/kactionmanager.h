@@ -39,7 +39,7 @@ class QToolBar;
 class QMenuBar;
 
 /**
- * @short la clase DActionManager provee de un manejador de acciones, este manejador facilita el acceso y ordenamiento a las acciones contieniendo todas las acciones de la aplicacion.
+ * @short class KActionManager provides an action manager, this handler makes easier the access and sort of any action of the app.
  * @author David Cuadrado \<krawek@gmail.com\>
 */
 
@@ -62,7 +62,7 @@ class K_GUI_EXPORT KActionManager : public QObject
 
         QMenuBar *setupMenuBar(QMenuBar *menu, const QStringList &containers, bool clear = true);
         QMenu *setupMenu(QMenu *menu, const QString &container, bool clear = true);
-        QToolBar *setupToolBar(QToolBar *toolBar, const QString &container, bool clear = true );
+        QToolBar *setupToolBar(QToolBar *toolBar, const QString &container, bool clear = true);
 
     private:
         KActionContainer m_actionContainer;

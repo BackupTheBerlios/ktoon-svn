@@ -26,16 +26,15 @@
 
 KCircleButtonBar::KCircleButtonBar(int radio, QWidget *parent) : QFrame(parent), m_radio(radio), m_buttonCount(0), m_offset(30)
 {	
-	m_layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
-	m_layout->setSpacing(0);
-	m_layout->setMargin(0);
-	
-	m_mask = QPixmap( (m_buttonCount+1)*m_radio+m_offset*2+m_offset/2, m_radio+10);
-	m_mask.fill(Qt::transparent);
-	
-	setLayout(m_layout);
-}
+    m_layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
+    m_layout->setSpacing(0);
+    m_layout->setMargin(0);
 
+    m_mask = QPixmap((m_buttonCount+1)*m_radio+m_offset*2+m_offset/2, m_radio+10);
+    m_mask.fill(Qt::transparent);
+
+    setLayout(m_layout);
+}
 
 KCircleButtonBar::~KCircleButtonBar()
 {
@@ -43,62 +42,52 @@ KCircleButtonBar::~KCircleButtonBar()
 
 void KCircleButtonBar::paintEvent(QPaintEvent *)
 {
-	QPainter painter(this);
-	painter.setRenderHint(QPainter::Antialiasing);
-	
-	setMinimumSize( m_mask.size() );
-	
-	painter.setPen(QPen(palette().color(QPalette::Foreground ),5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-	
-	painter.drawPath(m_border);
-	
-	QPalette pal = palette();
-	
-	pal.setColor(QPalette::Background, pal.color(QPalette::Button ));
-	setPalette(pal);
-	
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    setMinimumSize(m_mask.size());
+
+    painter.setPen(QPen(palette().color(QPalette::Foreground ),5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter.drawPath(m_border);
+
+    QPalette pal = palette();
+    pal.setColor(QPalette::Background, pal.color(QPalette::Button));
+    setPalette(pal);
 }
 
 KCircleButton *KCircleButtonBar::addButton(const QPixmap &pix)
 {
-	m_buttonCount++;
+    m_buttonCount++;
+
+    m_mask = QPixmap((m_buttonCount+1)*m_radio+m_offset*3, m_radio+10);
+    m_mask.fill(Qt::transparent);
+
+    KCircleButton *but = new KCircleButton(m_radio,true, this);
 	
-	m_mask = QPixmap( (m_buttonCount+1)*m_radio+m_offset*3, m_radio+10);
-	m_mask.fill(Qt::transparent);
-	
-	KCircleButton *but = new KCircleButton(m_radio,true, this);
-	
-	
-	m_layout->addWidget(but);
-	but->setIcon(pix);
-	
-	return but;
+    m_layout->addWidget(but);
+    but->setIcon(pix);
+
+    return but;
 }
 
 void KCircleButtonBar::resizeEvent(QResizeEvent *)
 {
-	m_border = QPainterPath();
-	m_border.moveTo(m_offset, 0);
-	m_border.cubicTo(
-			m_offset, 0,
-	0, m_mask.height()/2,
-	m_offset, m_mask.height()
-			);
-	
-	m_border.lineTo(m_mask.width()-m_offset,  m_mask.height());
-	
-	m_border.cubicTo(
-			m_mask.width()-m_offset,  m_mask.height(),
-	m_mask.width(), m_mask.height()/2,
-	m_mask.width()-m_offset, 0
-			);
-	m_border.lineTo(m_offset, 0);
-	
-	QPainter p(&m_mask);
-	p.setPen(QPen(Qt::black,1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-	p.setBrush(Qt::red);
-	p.drawPath(m_border);
-	
-	setMask(m_mask.mask());
+    m_border = QPainterPath();
+    m_border.moveTo(m_offset, 0);
+    m_border.cubicTo(m_offset, 0, 0, m_mask.height()/2, m_offset, m_mask.height());
+
+    m_border.lineTo(m_mask.width()-m_offset, m_mask.height());
+
+    m_border.cubicTo(m_mask.width()-m_offset, m_mask.height(), m_mask.width(), 
+                     m_mask.height()/2, m_mask.width()-m_offset, 0);
+
+    m_border.lineTo(m_offset, 0);
+
+    QPainter p(&m_mask);
+    p.setPen(QPen(Qt::black,1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    p.setBrush(Qt::red);
+    p.drawPath(m_border);
+
+    setMask(m_mask.mask());
 }
 

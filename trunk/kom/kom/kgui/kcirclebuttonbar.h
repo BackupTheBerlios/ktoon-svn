@@ -49,38 +49,37 @@ class QPainterPath;
 
 class K_GUI_EXPORT KCircleButtonBar : public QFrame
 {
-	public:
-		/**
-		 * Constructs a KCircleButtonBar
-		 */
-		KCircleButtonBar(int radio = 40, QWidget *parent= 0);
-		/**
-		 * Destructor
-		 */
-		~KCircleButtonBar();
-		/**
-		 * Add button in KCircleButtonBar
-		 * @param pix image of new KCircleButton
-		 * @return pointer of new KCircleButton
-		 */
-		KCircleButton *addButton(const QPixmap &pix);
-		
-	private:
-		QPixmap m_mask;
-		
-		int m_radio;
-		int m_buttonCount;
-		
-		QBoxLayout *m_layout;
-		
-		int m_offset;
-	
-	protected:
-		void paintEvent(QPaintEvent *e);
-		void resizeEvent(QResizeEvent *e);
-		
-		QPainterPath m_border;
+    public:
+        /**
+         * Constructs a KCircleButtonBar
+         */
+        KCircleButtonBar(int radio = 40, QWidget *parent= 0);
 
+        /**
+         * Destructor
+         */
+        ~KCircleButtonBar();
+
+        /**
+         * Add button in KCircleButtonBar
+         * @param pix image of new KCircleButton
+         * @return pointer of new KCircleButton
+         */
+         KCircleButton *addButton(const QPixmap &pix);
+
+    private:
+        QPixmap m_mask;
+        int m_radio;
+        int m_buttonCount;
+
+        QBoxLayout *m_layout;
+        int m_offset;
+
+    protected:
+        void paintEvent(QPaintEvent *e);
+        void resizeEvent(QResizeEvent *e);
+
+        QPainterPath m_border;
 };
 
 #endif
