@@ -103,7 +103,7 @@ class K_GUI_EXPORT KAction : public QAction
          */
         KAction(const QIcon & icon, const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id = QString());
 
-        KAction (const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id = QString());
+        KAction(const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id = QString());
 
         /**
          * Destructor.

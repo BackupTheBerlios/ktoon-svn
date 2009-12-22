@@ -37,29 +37,25 @@
 */
 class K_CORE_EXPORT KSpellInterface
 {
-	public:
-		virtual ~KSpellInterface() {}
-		/**
-		 * @if english
-		 * This function must check if a word is right
-		 * @elseif spanish
-		 * Esta funcion debe chequear si una palabra es correcta
-		 * @endif
-		 * @param word 
-		 * @return 
-		 */
-		virtual bool checkWord(const QString &word) = 0;
-		
-		/**
-		 * @if english
-		 * This function must return a list of suggestion
-		 * @elseif spanish
-		 * Esta funcion debe retorna una lista de sugerencias
-		 * @endif
-		 * @param word 
-		 * @return 
-		 */
-		virtual QStringList suggestions(const QString &word) = 0;
+    public:
+        virtual ~KSpellInterface() {}
+        /**
+         * @if english
+         * This function checks out if a word is well spelled 
+         * @endif
+         * @param word 
+         * @return 
+         */
+        virtual bool checkWord(const QString &word) = 0;
+        
+        /**
+         * @if english
+         * This function returns a list of suggested words
+         * @endif
+         * @param word 
+         * @return 
+         */
+        virtual QStringList suggestions(const QString &word) = 0;
 };
 
 #endif

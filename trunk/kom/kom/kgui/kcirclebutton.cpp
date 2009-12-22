@@ -39,12 +39,12 @@
 
 static const char * new_xpm[] = {
 "12 16 6 1",
-" 	c #040404",
-".	c None",
-"X	c white",
-"o	c #808304",
-"O	c black",
-"+	c #f3f7f3",
+"     c #040404",
+".    c None",
+"X    c white",
+"o    c #808304",
+"O    c black",
+"+    c #f3f7f3",
 "       .....",
 " XXXXX  ....",
 " XXXXX X ...",
@@ -64,260 +64,213 @@ static const char * new_xpm[] = {
 
 class KCircleButton::Animator
 {
-	public:
-		Animator() : aStep(0), aBegin(false), m_interval(50) 
-		{
-			aTimer = new QTimer;
-		}
-		~Animator() {};
-		
-		void begin()
-		{
-			aTimer->start(m_interval);
-		}
-		void end()
-		{
-			aTimer->stop();
-		}
-		
-		QTimer *aTimer;
-		int aStep;
-		bool aBegin;
-		
-	private:
-		int m_interval;
+    public:
+        Animator() : aStep(0), aBegin(false), m_interval(50) 
+        {
+            aTimer = new QTimer;
+        }
+        ~Animator() {};
+        
+        void begin()
+        {
+            aTimer->start(m_interval);
+        }
+
+        void end()
+        {
+            aTimer->stop();
+        }
+        
+        QTimer *aTimer;
+        int aStep;
+        bool aBegin;
+        
+    private:
+        int m_interval;
 };
 
 KCircleButton::KCircleButton(int diameter, bool animate, QWidget *parent) : QPushButton(parent), m_diameter(diameter)
 {
-	show();
+    show();
 
-	m_pix = QPixmap(new_xpm);
-	
-	setIcon(m_pix);
-	
-	paintMask();
-	
-	setMaximumSize(m_diameter, m_diameter);
-	
-	m_animator = new Animator;
-	
-	if ( animate )
-	{
-		connect(m_animator->aTimer, SIGNAL(timeout()), this, SLOT(animate()));
-	}
+    m_pix = QPixmap(new_xpm);
+    
+    setIcon(m_pix);
+    
+    paintMask();
+    
+    setMaximumSize(m_diameter, m_diameter);
+    
+    m_animator = new Animator;
+    
+    if (animate)
+        connect(m_animator->aTimer, SIGNAL(timeout()), this, SLOT(animate()));
 }
 
 KCircleButton::~KCircleButton()
 {
-	delete m_animator;
+    delete m_animator;
 }
 
 QSize KCircleButton::sizeHint() const
 {
-	// int radio = m_diameter/2;
-	ensurePolished();
+    ensurePolished();
 
-	int w = 0, h = 0;
+    int w = 0, h = 0;
 
-	QStyleOptionButton opt = styleOption();
+    QStyleOptionButton opt = styleOption();
 
-    	// calculate contents size...
-	if (!icon().isNull())
-	{
-		int ih = opt.iconSize.height();
-		int iw = opt.iconSize.width() + 4;
-		w += iw;
-		h = qMax(h, ih);
-	}
+    // calculate contents size...
+    if (!icon().isNull()) {
+        int ih = opt.iconSize.height();
+        int iw = opt.iconSize.width() + 4;
+        w += iw;
+        h = qMax(h, ih);
+    }
 
-	if (menu())
-	{
-		w += style()->pixelMetric(QStyle::PM_MenuButtonIndicator, &opt, this);
-	}
-	
-	QString s(text());
-	bool empty = s.isEmpty();
-	if (empty)
-	{
-		s = QString::fromLatin1("XXXX");
-	}
-	
-	QFontMetrics fm = fontMetrics();
-	QSize sz = fm.size(Qt::TextShowMnemonic, s);
-	if(!empty || !w)
-	{
-		w += sz.width();
-	}
-	if(!empty || !h)
-	{
-		h = qMax(h, sz.height());
-	}
-	return (style()->sizeFromContents(QStyle::CT_PushButton, &opt, QSize(w, h), this).expandedTo(QApplication::globalStrut()));
+    if (menu())
+        w += style()->pixelMetric(QStyle::PM_MenuButtonIndicator, &opt, this);
+    
+    QString s(text());
+    bool empty = s.isEmpty();
+
+    if (empty)
+        s = QString::fromLatin1("XXXX");
+    
+    QFontMetrics fm = fontMetrics();
+    QSize sz = fm.size(Qt::TextShowMnemonic, s);
+
+    if (!empty || !w)
+        w += sz.width();
+
+    if (!empty || !h)
+        h = qMax(h, sz.height());
+
+    return (style()->sizeFromContents(QStyle::CT_PushButton, &opt, QSize(w, h), this).expandedTo(QApplication::globalStrut()));
 }
 
 QStyleOptionButton KCircleButton::styleOption() const
 {
-	QStyleOptionButton opt;
-	opt.init(this);
+    QStyleOptionButton opt;
+    opt.init(this);
 
-	if (isEnabled())
-		opt.state |= QStyle::State_Enabled;
-	if (hasFocus())
-		opt.state |= QStyle::State_HasFocus;
-	if (isDown())
-		opt.state |= QStyle::State_Sunken;
-// 	if (isOn())
-// 		opt.state |= QStyle::State_On;
-	if (! isFlat() && ! isDown())
-		opt.state |= QStyle::State_Raised;
-	opt.features = isDefault() ? QStyleOptionButton::DefaultButton : QStyleOptionButton::None;
+    if (isEnabled())
+        opt.state |= QStyle::State_Enabled;
 
-	opt.text = text();
+    if (hasFocus())
+        opt.state |= QStyle::State_HasFocus;
 
-	opt.icon = icon();
-	opt.iconSize = QSize(m_diameter,m_diameter);
+    if (isDown())
+        opt.state |= QStyle::State_Sunken;
 
-	QRect r = rect();
+    if (! isFlat() && ! isDown())
+        opt.state |= QStyle::State_Raised;
 
-// 	opt.rect = r;
-	opt.rect = QRect(r.x(),r.y(), m_diameter, m_diameter);
-	
-// 	opt.palette.setColor(QPalette::Button, Qt::gray);
-// 	opt.palette.setColor(QPalette::ButtonText, Qt::green);
+    opt.features = isDefault() ? QStyleOptionButton::DefaultButton : QStyleOptionButton::None;
+    opt.text = text();
+    opt.icon = icon();
+    opt.iconSize = QSize(m_diameter,m_diameter);
 
-	return opt;
+    QRect r = rect();
+
+    opt.rect = QRect(r.x(),r.y(), m_diameter, m_diameter);
+    
+    return opt;
 }
 
 void KCircleButton::paintMask()
 {
-	m_mask = QPixmap(m_diameter, m_diameter);
-	m_mask.fill(Qt::transparent);
-	
-	QPainter paintMask(&m_mask);
-	paintMask.setRenderHint(QPainter::Antialiasing);
-	paintMask.setPen(QPen(palette().color(QPalette::Foreground ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-	paintMask.setBrush(QBrush(palette().color(QPalette::Foreground )));
-	
-	paintMask.drawEllipse(QRect(rect().x(),rect().y(),m_diameter, m_diameter));
-	
-	setMask(m_mask.mask());
-	paintMask.end();
+    m_mask = QPixmap(m_diameter, m_diameter);
+    m_mask.fill(Qt::transparent);
+    
+    QPainter paintMask(&m_mask);
+    paintMask.setRenderHint(QPainter::Antialiasing);
+    paintMask.setPen(QPen(palette().color(QPalette::Foreground ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    paintMask.setBrush(QBrush(palette().color(QPalette::Foreground )));
+    
+    paintMask.drawEllipse(QRect(rect().x(),rect().y(),m_diameter, m_diameter));
+    
+    setMask(m_mask.mask());
+    paintMask.end();
 }
 
 void KCircleButton::paintEvent(QPaintEvent *e)
 {
-// 	qDebug("Painting");
-
-// 	paintMask();
-	
-	QPainter painter(this);
-	painter.setRenderHint(QPainter::Antialiasing);
-	
-	QStyleOptionButton option = styleOption();
-	
-	style()->drawControl(QStyle::CE_PushButton, &option, &painter, this);
-	
-	painter.save();
-	
-// 	painter.setBrush(QBrush(Qt::black));
-	
-	QPainterPath path;
-	int internalRadio = m_diameter;
-	
-	// pen
-	painter.setPen(QPen(palette().color(QPalette::Foreground ), 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-	
-	path.addEllipse( rect().x(), rect().y(), m_diameter, m_diameter   );
-	painter.drawPath(path);
-	
-	path = QPainterPath();
-	
-	internalRadio /= 10;
-	
-	// pen
-	painter.setPen(QPen(palette().color(QPalette::ButtonText), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin) );
-	
-	path.addEllipse( rect().x()+internalRadio, rect().y()+internalRadio, m_diameter-internalRadio*2, m_diameter-internalRadio*2   );
-	
-	painter.drawPath(path);
-	
-	path = QPainterPath();
-	
-	// pen
-	painter.setPen(QPen(palette().color(QPalette::Foreground ), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin) );
-	internalRadio += 2;
-	
-	path.addEllipse( rect().x()+internalRadio, rect().y()+internalRadio, m_diameter-internalRadio*2, m_diameter-internalRadio*2   );
-	painter.drawPath(path);
-	
-	painter.restore();
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    
+    QStyleOptionButton option = styleOption();
+    
+    style()->drawControl(QStyle::CE_PushButton, &option, &painter, this);
+    
+    painter.save();
+    
+    QPainterPath path;
+    int internalRadio = m_diameter;
+    
+    // pen
+    painter.setPen(QPen(palette().color(QPalette::Foreground ), 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    
+    path.addEllipse( rect().x(), rect().y(), m_diameter, m_diameter);
+    painter.drawPath(path);
+    
+    path = QPainterPath();
+    
+    internalRadio /= 10;
+    
+    // pen
+    painter.setPen(QPen(palette().color(QPalette::ButtonText), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    
+    path.addEllipse( rect().x()+internalRadio, rect().y()+internalRadio, m_diameter-internalRadio*2, m_diameter-internalRadio*2);
+    
+    painter.drawPath(path);
+    
+    path = QPainterPath();
+    
+    // pen
+    painter.setPen(QPen(palette().color(QPalette::Foreground ), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    internalRadio += 2;
+    
+    path.addEllipse( rect().x()+internalRadio, rect().y()+internalRadio, m_diameter-internalRadio*2, m_diameter-internalRadio*2);
+    painter.drawPath(path);
+    
+    painter.restore();
 }
 
 void KCircleButton::animate()
 {
-	if ( m_animator->aBegin )
-	{
-// 		m_animator->aStep++;
-		
-		m_animator->aStep += 2;
-		
-// 		setMinimumSize(QSize(m_diameter,m_diameter + m_animator->aStep));
-// 		setIconSize(QSize(m_diameter,m_diameter + m_animator->aStep));
-	}
-	else
-	{
-		m_animator->aStep -= 2;
-// 		m_animator->aStep--;
-		
-// 		setMinimumSize(QSize(m_diameter,m_diameter - m_animator->aStep));
-// 		setIconSize(QSize(m_diameter,m_diameter - m_animator->aStep));
-	}
-	
-	if ( m_animator->aStep <= m_diameter - 5 )
-	{
-// 		m_animator->aStep++;
-		m_animator->aBegin = true;
-	}
-	
-	if ( m_animator->aBegin && m_animator->aStep >= m_diameter + 5 )
-	{
-		m_animator->aBegin = false;
-	}
-	
-	setMinimumSize( m_diameter, m_animator->aStep);
-	
-// 	m_animator->aBegin = !m_animator->aBegin;
-	
-// 	update();
+    if (m_animator->aBegin)
+        m_animator->aStep += 2;
+    else
+        m_animator->aStep -= 2;
+    
+    if (m_animator->aStep <= m_diameter - 5)
+        m_animator->aBegin = true;
+    
+    if (m_animator->aBegin && m_animator->aStep >= m_diameter + 5)
+        m_animator->aBegin = false;
+    
+    setMinimumSize(m_diameter, m_animator->aStep);
 }
 
 void KCircleButton::enterEvent(QEvent *)
 {
-	m_animator->aStep = m_diameter;
-	
-	m_animator->begin();
-	m_animator->aBegin = true;
-	
-	update();
+    m_animator->aStep = m_diameter;
+    
+    m_animator->begin();
+    m_animator->aBegin = true;
+    
+    update();
 }
 
 void KCircleButton::leaveEvent(QEvent *) 
 {
-	m_animator->aBegin = false;
-	m_animator->aStep = 0;
-	
-	m_animator->end();
-	
-	
-	setMaximumSize(m_diameter, m_diameter);
-	setMinimumSize(m_diameter, m_diameter);
-	setIconSize(QSize(m_diameter,m_diameter));
-	
-// 	if ( m_animator->aStep >= 4 )
-// 	{
-// 		m_animator->aStep++;
-// 	}
+    m_animator->aBegin = false;
+    m_animator->aStep = 0;
+    
+    m_animator->end();
+    
+    setMaximumSize(m_diameter, m_diameter);
+    setMinimumSize(m_diameter, m_diameter);
+    setIconSize(QSize(m_diameter,m_diameter));
 }
-
-

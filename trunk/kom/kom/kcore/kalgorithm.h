@@ -29,44 +29,39 @@
 #include "kglobal.h"
 
 /**
- * Class that contains generic useful algorithms about random values
+ * Class containing generic useful algorithms about random values
  * @author David Cuadrado <krawek@gmail.com>
 */
 
 class K_CORE_EXPORT KAlgorithm
 {
-	public:
-		/**
-		 * @if english
-		 * Returns a random integer
-		 * @elseif spanish
-		 * Retorna una entero aleatorio
-		 * @endif
-		 * @return 
-		 */
-		static int random();
-		/**
-		 * @if english
-		 * Returns an random string, this may be useful for example temporaly files
-		 * @elseif spanish
-		 * Retorna una cadena de caracteres aleatoria, esta funcion puede ser muy util por ejemplo para archivos temporales
-		 * @endif
-		 * @param length 
-		 * @return 
-		 */
-		static QString randomString(int length);
-		
-		/**
-		 * @if english
-		 * Returns a random color
-		 * @elseif spanish
-		 * Retorna un color aleatorio
-		 * @endif
-		 * 
-		 * @param withAlpha 
-		 * @return 
-		 */
-		static QColor randomColor(bool withAlpha = false);
+    public:
+        /**
+         * @if english
+         * Returns a random integer
+         * @endif
+         * @return 
+         */
+        static int random();
+
+        /**
+         * @if english
+         * Returns a random string, this may be useful for temporary file names
+         * @endif
+         * @param length 
+         * @return 
+         */
+        static QString randomString(int length);
+
+        /**
+         * @if english
+         * Returns a random color
+         * @endif
+         * 
+         * @param withAlpha 
+         * @return 
+         */
+        static QColor randomColor(bool withAlpha = false);
 };
 
 #endif

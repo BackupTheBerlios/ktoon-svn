@@ -32,12 +32,12 @@
  * @if english
  * This class represents a spell highlighter, the common use is in QTextEdit documents
  * @code
- * new DSpellHighlighter(textEdit->document());
+ * new KSpellHighlighter(textEdit->document());
  * @endcode
  * @elseif spanish
  * Esta clase representa un destacador de ortografia, su uso mas comun es en documentos de QTextEdit
  * @code
- * new DSpellHighlighter(textEdit->document());
+ * new KSpellHighlighter(textEdit->document());
  * @endcode
  * @endif
  * @author David Cuadrado <krawek@gmail.com>
@@ -45,39 +45,33 @@
 
 class K_CORE_EXPORT KSpellHighlighter : public QSyntaxHighlighter
 {
-	public:
-		/**
-		 * @if english
-		 * Default constructor
-		 * @elseif spanish
-		 * Constructor por defecto
-		 * @endif
-		 * @param parent 
-		 * @return 
-		 */
-		KSpellHighlighter(QTextDocument * parent);
-		/**
-		 * Destructor
-		 * @return 
-		 */
-		~KSpellHighlighter();
-		
-		/**
-		 * @if english
-		 * Sets the resalt color
-		 * @elseif spanish
-		 * Pone el color de resaltado del widget
-		 * @endif
-		 * @param color 
-		 */
-		void setResaltColor(const QColor &color);
-		
-	protected:
-		virtual void highlightBlock ( const QString & text );
-		
-	private:
-		QColor m_resaltColor;
-		KSpeller *m_speller;
+    public:
+        /**
+         * @if english
+         * Default constructor
+         * @param parent 
+         * @return 
+         */
+        KSpellHighlighter(QTextDocument * parent);
+        /**
+         * Destructor
+         * @return 
+         */
+        ~KSpellHighlighter();
+        
+        /**
+         * @if english
+         * Sets the highlight color
+         * @param color 
+         */
+        void setResaltColor(const QColor &color);
+        
+    protected:
+        virtual void highlightBlock(const QString & text);
+        
+    private:
+        QColor m_resaltColor;
+        KSpeller *m_speller;
 };
 
 #endif

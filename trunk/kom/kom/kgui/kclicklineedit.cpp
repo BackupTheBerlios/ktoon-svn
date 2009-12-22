@@ -24,86 +24,75 @@
 
 #include <QPainter>
 
-
 struct KClickLineEdit::Private
 {
-	QString clickMessage;
-	bool drawClickMsg;
+    QString clickMessage;
+    bool drawClickMsg;
 };
 
-KClickLineEdit::KClickLineEdit( const QString &msg, QWidget *parent) : QLineEdit(parent), k(new Private)
+KClickLineEdit::KClickLineEdit(const QString &msg, QWidget *parent) : QLineEdit(parent), k(new Private)
 {
-	k->drawClickMsg = true;
-	setClickMessage( msg );
-	
-	setFocusPolicy ( Qt::ClickFocus );
-	
-	setStyleSheet(QString(":enabled { padding-right: %1; }").arg(8));
+    k->drawClickMsg = true;
+    setClickMessage(msg);
+    
+    setFocusPolicy(Qt::ClickFocus);
+    
+    setStyleSheet(QString(":enabled { padding-right: %1; }").arg(8));
 }
 
 KClickLineEdit::~KClickLineEdit()
 {
-	delete k;
+    delete k;
 }
 
-void KClickLineEdit::setClickMessage( const QString &msg )
+void KClickLineEdit::setClickMessage(const QString &msg)
 {
-	k->clickMessage = msg;
-	repaint();
+    k->clickMessage = msg;
+    repaint();
 }
 
 QString KClickLineEdit::clickMessage() const
 {
-	return k->clickMessage;
+    return k->clickMessage;
 }
 
-
-void KClickLineEdit::setText( const QString &txt )
+void KClickLineEdit::setText(const QString &txt)
 {
-	k->drawClickMsg = txt.isEmpty();
-	repaint();
-	QLineEdit::setText( txt );
+    k->drawClickMsg = txt.isEmpty();
+    repaint();
+    QLineEdit::setText(txt);
 }
 
-void KClickLineEdit::paintEvent( QPaintEvent *e )
+void KClickLineEdit::paintEvent(QPaintEvent *e)
 {
-	QLineEdit::paintEvent(e);
-	
-	QPainter p(this);
-	if ( k->drawClickMsg == true && !hasFocus() )
-	{
-		QPen tmp = p.pen();
-		p.setPen( palette().color( QPalette::Disabled, QPalette::Text ) );
-		QRect cr = contentsRect();
-		
-		cr.adjust(3, 0, 0 ,0);
-		p.drawText( cr, Qt::AlignVCenter, k->clickMessage );
-		p.setPen( tmp );
-	}
+    QLineEdit::paintEvent(e);
+    
+    QPainter p(this);
+    if (k->drawClickMsg == true && !hasFocus()) {
+        QPen tmp = p.pen();
+        p.setPen(palette().color(QPalette::Disabled, QPalette::Text));
+        QRect cr = contentsRect();
+        
+        cr.adjust(3, 0, 0 ,0);
+        p.drawText(cr, Qt::AlignVCenter, k->clickMessage);
+        p.setPen( tmp );
+    }
 }
 
-
-void KClickLineEdit::focusInEvent( QFocusEvent *ev )
+void KClickLineEdit::focusInEvent(QFocusEvent *ev)
 {
-	if ( k->drawClickMsg == true ) 
-	{
-		k->drawClickMsg = false;
-		repaint();
-	}
-	QLineEdit::focusInEvent( ev );
+    if (k->drawClickMsg == true) {
+        k->drawClickMsg = false;
+        repaint();
+    }
+    QLineEdit::focusInEvent(ev);
 }
 
-
-void KClickLineEdit::focusOutEvent( QFocusEvent *ev )
+void KClickLineEdit::focusOutEvent(QFocusEvent *ev)
 {
-	if ( text().isEmpty() ) 
-	{
-		k->drawClickMsg = true;
-		repaint();
-	}
-	QLineEdit::focusOutEvent( ev );
+    if (text().isEmpty()) {
+        k->drawClickMsg = true;
+        repaint();
+    }
+    QLineEdit::focusOutEvent(ev);
 }
-
-
-
-

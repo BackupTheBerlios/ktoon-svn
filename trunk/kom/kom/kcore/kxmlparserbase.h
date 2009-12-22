@@ -31,42 +31,41 @@
 */
 class K_CORE_EXPORT KXmlParserBase : public QXmlDefaultHandler
 {
-	public:
-		~KXmlParserBase();
-		
-		
-	protected:
-		KXmlParserBase();
-		
-		bool startDocument();
-		bool endDocument();
-		
-		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
-		bool characters(const QString & ch);
-		bool endElement( const QString& ns, const QString& localname, const QString& qname);
-		bool error ( const QXmlParseException & exception );
-		bool fatalError ( const QXmlParseException & exception );
-		
-	protected:
-		void setReadText(bool read);
-		void setIgnore(bool ignore);
-		
-	public:
-		virtual void initialize();
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts) = 0;
-		virtual bool endTag(const QString &tag) = 0;
-		virtual void text(const QString &text) = 0;
-		
-	public:
-		QString currentTag() const;
-		QString root() const;
-		
-		bool parse(const QString &doc);
-		bool parse(QFile *file);
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+        ~KXmlParserBase();
+        
+    protected:
+        KXmlParserBase();
+        
+        bool startDocument();
+        bool endDocument();
+        
+        bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
+        bool characters(const QString & ch);
+        bool endElement(const QString& ns, const QString& localname, const QString& qname);
+        bool error(const QXmlParseException & exception);
+        bool fatalError(const QXmlParseException & exception);
+        
+    protected:
+        void setReadText(bool read);
+        void setIgnore(bool ignore);
+        
+    public:
+        virtual void initialize();
+        virtual bool startTag(const QString &tag, const QXmlAttributes &atts) = 0;
+        virtual bool endTag(const QString &tag) = 0;
+        virtual void text(const QString &text) = 0;
+        
+    public:
+        QString currentTag() const;
+        QString root() const;
+        
+        bool parse(const QString &doc);
+        bool parse(QFile *file);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

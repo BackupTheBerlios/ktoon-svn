@@ -35,45 +35,40 @@ class QAction;
 */
 class KCommandHistory : public QObject
 {
-	Q_OBJECT;
-	
-	public:
-		KCommandHistory(QUndoStack *stack, QObject *parent = 0);
-		~KCommandHistory();
-		
-		QAction *redoAction() const;
-		QAction *undoAction() const;
-		
-		QUndoStack *stack() const;
-		
-	public slots:
-		void enableRedoMenu(bool e);
-		void enableUndoMenu(bool e);
-		
-		void undo();
-		void redo();
-		
-	private:
-		void updateMenu();
-		
-	private slots:
-		void updateFromIndex(int idx);
-		void undoFromAction(QAction *a);
-		void redoFromAction(QAction *a);
-		
-	private:
-		QUndoStack *m_stack;
-		QMenu *m_redoMenu;
-		QMenu *m_undoMenu;
-		
-		int m_currentIndex;
-		
-		QHash<int, QAction *> m_actions;
-		
-		bool m_isLastRedo;
+    Q_OBJECT;
+    
+    public:
+        KCommandHistory(QUndoStack *stack, QObject *parent = 0);
+        ~KCommandHistory();
+        
+        QAction *redoAction() const;
+        QAction *undoAction() const;
+        
+        QUndoStack *stack() const;
+        
+    public slots:
+        void enableRedoMenu(bool e);
+        void enableUndoMenu(bool e);
+        
+        void undo();
+        void redo();
+        
+    private:
+        void updateMenu();
+        
+    private slots:
+        void updateFromIndex(int idx);
+        void undoFromAction(QAction *a);
+        void redoFromAction(QAction *a);
+        
+    private:
+        QUndoStack *m_stack;
+        QMenu *m_redoMenu;
+        QMenu *m_undoMenu;
+        
+        int m_currentIndex;
+        QHash<int, QAction *> m_actions;
+        bool m_isLastRedo;
 };
 
 #endif
-
-
-

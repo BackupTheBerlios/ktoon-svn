@@ -28,52 +28,43 @@
 KSpeller::KSpeller(QObject *parent) : QObject(parent), m_speller(0)
 {
 #if defined(HAVE_ASPELL)
-	m_speller = new KAspellChecker;
+    m_speller = new KAspellChecker;
 #else
 #warning NO SPELL MACROS DEFINED!
 #endif
 }
 
-
 KSpeller::~KSpeller()
 {
-	if (m_speller) delete m_speller;
+    if (m_speller) 
+        delete m_speller;
 }
 
 bool KSpeller::checkWord(const QString &word)
 {
-	if( m_speller)
-	{
-		return m_speller->checkWord(removeExtraCharacters(word));
-	}
-	return false;
+    if (m_speller)
+        return m_speller->checkWord(removeExtraCharacters(word));
+
+    return false;
 }
 
 QStringList KSpeller::suggestions(const QString &word)
 {
-	if ( m_speller )
-	{
-		return m_speller->suggestions(removeExtraCharacters(word));
-	}
-	
-	return QStringList();
+    if (m_speller)
+        return m_speller->suggestions(removeExtraCharacters(word));
+    
+    return QStringList();
 }
 
 QString KSpeller::removeExtraCharacters(const QString &str)
 {
-	QString result = str;
-	
-	if ( !result[0].isLetterOrNumber() )
-	{
-		result.remove(0,1);
-	}
-	
-	if(!result[result.length()-1].isLetterOrNumber() )
-	{
-		result.remove(result.length()-1,1);
-	}
-	
-	return result;
+    QString result = str;
+    
+    if (!result[0].isLetterOrNumber())
+        result.remove(0,1);
+    
+    if (!result[result.length()-1].isLetterOrNumber())
+        result.remove(result.length()-1,1);
+    
+    return result;
 }
-
-

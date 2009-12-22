@@ -64,7 +64,7 @@ class K_GUI_EXPORT KAnimWidget : public QWidget
           * @param parent 
           */
         KAnimWidget(ListOfPixmaps lop, QWidget *parent = 0);
-		
+
         /**
          * Destructor
          */
@@ -97,7 +97,7 @@ class K_GUI_EXPORT KAnimWidget : public QWidget
          * Draws animation
          */
         void paintEvent(QPaintEvent *e);
-		
+
     private:
         Type m_type;
         class Controller;

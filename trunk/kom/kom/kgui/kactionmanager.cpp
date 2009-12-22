@@ -60,7 +60,7 @@ bool KActionManager::insert(QAction *action, const QString &_id, const QString &
     }
 
     action->setParent(this);
-    m_actionContainer[container].insert( id, action );
+    m_actionContainer[container].insert(id, action);
 
     return true;
 }

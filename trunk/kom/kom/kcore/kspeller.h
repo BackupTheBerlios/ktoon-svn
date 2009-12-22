@@ -36,19 +36,19 @@
 */
 class K_CORE_EXPORT KSpeller : public QObject
 {
-	Q_OBJECT;
-	public:
-		KSpeller(QObject *parent = 0);
-		~KSpeller();
-		
-		bool checkWord(const QString &word);
-		QStringList suggestions(const QString &word);
-		
-	private:
-		QString removeExtraCharacters(const QString &str);
-		
-	private:
-		KSpellInterface *m_speller;
+    Q_OBJECT;
+    public:
+        KSpeller(QObject *parent = 0);
+        ~KSpeller();
+        
+        bool checkWord(const QString &word);
+        QStringList suggestions(const QString &word);
+        
+    private:
+        QString removeExtraCharacters(const QString &str);
+        
+    private:
+        KSpellInterface *m_speller;
 };
 
 #endif

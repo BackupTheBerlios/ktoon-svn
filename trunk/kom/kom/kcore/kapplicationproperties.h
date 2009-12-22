@@ -31,32 +31,31 @@
 */
 class K_CORE_EXPORT KApplicationProperties
 {
-	protected:
-		KApplicationProperties();
-		virtual ~KApplicationProperties();
+    protected:
+        KApplicationProperties();
+        virtual ~KApplicationProperties();
+
+    public:
+        void setDataDir(const QString &v);
+        void setHomeDir(const QString &v);
+        void setThemeDir(const QString &v);
+        void setCacheDir(const QString &v);
+        void setVersion(const QString &v);
+
+        virtual QString dataDir() const;
+        virtual QString homeDir() const;
+        virtual QString themeDir() const;
+        virtual QString configDir() const;
+        virtual QString cacheDir() const;
+        virtual QString version() const;
+
+        static KApplicationProperties *instance();
 		
-	public:
-		void setDataDir(const QString &v);
-		void setHomeDir(const QString &v);
-		void setThemeDir(const QString &v);
-		void setCacheDir(const QString &v);
-		void setVersion(const QString &v);
-		
-		
-		virtual QString dataDir() const;
-		virtual QString homeDir() const;
-		virtual QString themeDir() const;
-		virtual QString configDir() const;
-		virtual QString cacheDir() const;
-		virtual QString version() const;
-		
-		static KApplicationProperties *instance();
-		
-	private:
-		static KApplicationProperties *s_instance;
-		
-		struct Private;
-		Private *const k;
+    private:
+        static KApplicationProperties *s_instance;
+
+    struct Private;
+        Private *const k;
 };
 
 #define kAppProp KApplicationProperties::instance()

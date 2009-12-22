@@ -28,236 +28,198 @@
 
 KCommandHistory::KCommandHistory(QUndoStack *stack, QObject *parent) : QObject(parent), m_stack(stack), m_currentIndex(0), m_isLastRedo(false)
 {
-	m_undoMenu = new QMenu(tr("Undo"));
-	m_redoMenu = new QMenu(tr("Redo"));
-	
-	m_undoMenu->menuAction()->setEnabled(false);
-	m_redoMenu->menuAction()->setEnabled(false);
-	
-	connect(m_undoMenu->menuAction(), SIGNAL(triggered()), this, SLOT(undo()));
-	connect(m_redoMenu->menuAction(), SIGNAL(triggered()), this, SLOT(redo()));
-	
-	connect(m_undoMenu, SIGNAL(triggered(QAction *)), this, SLOT(undoFromAction(QAction *)));
-	connect(m_redoMenu, SIGNAL(triggered(QAction *)), this, SLOT(redoFromAction(QAction *)));
-	
-	connect( m_stack, SIGNAL(indexChanged(int)), this, SLOT(updateFromIndex(int)));
-	connect(m_stack, SIGNAL(canRedoChanged(bool)), this, SLOT(enableRedoMenu(bool)));
-	connect(m_stack, SIGNAL(canUndoChanged(bool)), this, SLOT(enableUndoMenu(bool)));
-	
-	updateMenu();
+    m_undoMenu = new QMenu(tr("Undo"));
+    m_redoMenu = new QMenu(tr("Redo"));
+    
+    m_undoMenu->menuAction()->setEnabled(false);
+    m_redoMenu->menuAction()->setEnabled(false);
+    
+    connect(m_undoMenu->menuAction(), SIGNAL(triggered()), this, SLOT(undo()));
+    connect(m_redoMenu->menuAction(), SIGNAL(triggered()), this, SLOT(redo()));
+    
+    connect(m_undoMenu, SIGNAL(triggered(QAction *)), this, SLOT(undoFromAction(QAction *)));
+    connect(m_redoMenu, SIGNAL(triggered(QAction *)), this, SLOT(redoFromAction(QAction *)));
+    
+    connect( m_stack, SIGNAL(indexChanged(int)), this, SLOT(updateFromIndex(int)));
+    connect(m_stack, SIGNAL(canRedoChanged(bool)), this, SLOT(enableRedoMenu(bool)));
+    connect(m_stack, SIGNAL(canUndoChanged(bool)), this, SLOT(enableUndoMenu(bool)));
+    
+    updateMenu();
 }
-
 
 KCommandHistory::~KCommandHistory()
 {
 }
 
-
 QUndoStack *KCommandHistory::stack() const
 {
-	return m_stack;
+    return m_stack;
 }
 
 QAction *KCommandHistory::redoAction() const
 {
-	return m_redoMenu->menuAction();
+    return m_redoMenu->menuAction();
 }
 
 QAction *KCommandHistory::undoAction() const
 {
-	return m_undoMenu->menuAction();
+    return m_undoMenu->menuAction();
 }
 
 void KCommandHistory::updateMenu()
 {
-	for(int i = 0; i < m_stack->index(); i++ )
-	{
-		m_redoMenu->addAction(m_stack->text(i))->setData(i);
-	}
-	
-	for(int i = m_stack->index(); i < m_stack->count(); i++)
-	{
-		m_undoMenu->addAction(m_stack->text(i))->setData(i);
-	}
-	
-	m_currentIndex = m_stack->index();
+    for (int i = 0; i < m_stack->index(); i++)
+         m_redoMenu->addAction(m_stack->text(i))->setData(i);
+    
+    for (int i = m_stack->index(); i < m_stack->count(); i++)
+         m_undoMenu->addAction(m_stack->text(i))->setData(i);
+    
+    m_currentIndex = m_stack->index();
 }
 
 void KCommandHistory::updateFromIndex(int idx)
 {
-	qDebug("HEY!!!!!!!!!!!");
-	
-// 	idx--;
-	
-	kfDebug << idx << " == " << m_stack->count() << " == " << m_currentIndex;
-	kDebug() << m_stack->text(idx-1);
-	
-	if (idx > m_stack->count() )
-	{
-		qDebug("OUT!!!");
-// 		m_stack->blockSignals(true);
-		m_stack->setIndex(m_stack->count());
-// 		m_stack->blockSignals(false);
-		return;
-	}
-	
-	if ( idx == m_stack->count()  && !m_isLastRedo) // Added
-	{
-		qDebug("ADDING!!!!");
-		QAction *a = m_undoMenu->addAction(m_stack->text(idx-1));
-		a->setData(idx/*-1*/);
-		a->setText(QString::number(idx)+": "+m_stack->text(idx-1));
-		
-		m_actions.insert(idx/*-1*/, a);
-		
-		m_undoMenu->menuAction()->setEnabled(true);
-		m_undoMenu->setDefaultAction(a);
-		m_undoMenu->setActiveAction(a);
-		
-		m_redoMenu->clear();
-	}
-	else if ( idx > m_currentIndex )
-	{
-		// redo clicked
-		qDebug("REDO");
-		kDebug() << idx << " " << m_currentIndex;
-		
-		if ( m_actions.contains(idx) )
-		{
-			m_redoMenu->removeAction(m_actions[idx] );
-			m_undoMenu->addAction(m_actions[idx] );
-		
-			m_undoMenu->menuAction()->setEnabled(true);
-		}
-		else
-			kError() << "Error!";
-	}
-	else if ( idx < m_currentIndex )
-	{
-		// Undo clicked
-		qDebug("UNDO");
-		kDebug() << idx << " " << m_currentIndex;
-		
-		if ( m_actions.contains(idx-1) )
-		{
-			m_undoMenu->removeAction(m_actions[idx-1] );
-			m_redoMenu->addAction(m_actions[idx-1] );
-			
-			m_redoMenu->menuAction()->setEnabled(true);
-		}
-		else
-			kError() << "Error!";
-	}
-	
-	m_currentIndex = m_stack->index();
+    qDebug("*** KCommandHistory::updateFromIndex");
+    
+    kfDebug << idx << " == " << m_stack->count() << " == " << m_currentIndex;
+    kDebug() << m_stack->text(idx-1);
+    
+    if (idx > m_stack->count()) {
+        qDebug("*** Exiting...");
+        m_stack->setIndex(m_stack->count());
+        return;
+    }
+    
+    if (idx == m_stack->count()  && !m_isLastRedo) { // Added
+        QAction *a = m_undoMenu->addAction(m_stack->text(idx-1));
+        a->setData(idx);
+        a->setText(QString::number(idx)+": "+m_stack->text(idx-1));
+        
+        m_actions.insert(idx, a);
+        
+        m_undoMenu->menuAction()->setEnabled(true);
+        m_undoMenu->setDefaultAction(a);
+        m_undoMenu->setActiveAction(a);
+        
+        m_redoMenu->clear();
+    } else if (idx > m_currentIndex) {
+               // redo clicked
+               qDebug("REDO");
+               kDebug() << idx << " " << m_currentIndex;
+        
+               if (m_actions.contains(idx)) {
+                   m_redoMenu->removeAction(m_actions[idx]);
+                   m_undoMenu->addAction(m_actions[idx]);
+                   m_undoMenu->menuAction()->setEnabled(true);
+               } else {
+                   kError() << "Error!";
+               }
+    } else if (idx < m_currentIndex) {
+        // Undo clicked
+        qDebug("UNDO");
+        kDebug() << idx << " " << m_currentIndex;
+        
+        if (m_actions.contains(idx-1)) {
+            m_undoMenu->removeAction(m_actions[idx-1]);
+            m_redoMenu->addAction(m_actions[idx-1]);
+            m_redoMenu->menuAction()->setEnabled(true);
+        } else {
+            kError() << "Error!";
+        }
+    }
+    
+    m_currentIndex = m_stack->index();
 }
-
 
 void KCommandHistory::undoFromAction(QAction *a)
 {
-	
-	int idx = a->data().toInt();
-	
-	
-	kfDebug << "AQUI!!! " << idx;
-	
-	m_stack->blockSignals(true);
-	for(int i = qMin(idx, m_currentIndex); i < qMax(idx, m_currentIndex); i++ )
-	{
-		if ( !m_stack->canUndo() )
-		{
-			kError() << "Cannot undo!!!";
-			break;
-		}
-		
-		m_stack->undo();
-		
-		if ( m_actions.contains(i) )
-		{
-			m_undoMenu->removeAction(m_actions[i]);
-			m_redoMenu->addAction(m_actions[i]);
-		}
-		else
-			qDebug("NO LO CONTIENE!!!!!!!!!");
-	}
-	
-	if ( m_undoMenu->isEmpty() ) 
-		m_undoMenu->menuAction()->setEnabled(false);
-	else 
-		m_undoMenu->menuAction()->setEnabled(true);
-	
-	if ( !m_redoMenu->isEmpty() ) m_redoMenu->menuAction()->setEnabled(true);
-	
-	m_undoMenu->setDefaultAction(m_actions[m_stack->index()]);
-	m_stack->blockSignals(false);
+    int idx = a->data().toInt();
+    m_stack->blockSignals(true);
+
+    for (int i = qMin(idx, m_currentIndex); i < qMax(idx, m_currentIndex); i++) {
+        if (!m_stack->canUndo()) {
+            kError() << "Cannot undo!!!";
+            break;
+        }
+        
+        m_stack->undo();
+        
+        if (m_actions.contains(i)) {
+            m_undoMenu->removeAction(m_actions[i]);
+            m_redoMenu->addAction(m_actions[i]);
+        } else {
+            qDebug("History item not found!");
+        }
+    }
+    
+    if (m_undoMenu->isEmpty()) 
+        m_undoMenu->menuAction()->setEnabled(false);
+    else 
+        m_undoMenu->menuAction()->setEnabled(true);
+    
+    if (!m_redoMenu->isEmpty()) 
+        m_redoMenu->menuAction()->setEnabled(true);
+    
+    m_undoMenu->setDefaultAction(m_actions[m_stack->index()]);
+    m_stack->blockSignals(false);
 }
 
 void KCommandHistory::redoFromAction(QAction *a)
 {
-	int idx = a->data().toInt();
-	
-	m_stack->blockSignals(true);
-	for(int i = qMax(idx, m_currentIndex)-1; i >= qMin(idx, m_currentIndex)-1; i--)
-	{
-		SHOW_VAR(i);
-		if ( !m_stack->canRedo() )
-		{
-			kError() << "Cannot redo!!!";
-			break;
-		}
-		
-		m_stack->redo();
-		
-		if (m_actions.contains(i) )
-		{
-			m_redoMenu->removeAction(m_actions[i]);
-			m_undoMenu->addAction(m_actions[i]);
-		}
-		else
-			qDebug("ERROR REDO");
-	}
-	
-	if ( m_redoMenu->isEmpty() )
-		m_redoMenu->menuAction()->setEnabled(false);
-	else
-		m_redoMenu->menuAction()->setEnabled(true);
-	
-	if ( !m_undoMenu->isEmpty() ) m_undoMenu->menuAction()->setEnabled(true);
-	
-	if ( m_actions.contains(m_stack->index()+1 ) )
-	{
-		m_redoMenu->setDefaultAction(m_actions[m_stack->index()+1]);
-	}
-	
-	m_stack->blockSignals(false);
-}
+    int idx = a->data().toInt();
+    
+    m_stack->blockSignals(true);
+    for (int i = qMax(idx, m_currentIndex)-1; i >= qMin(idx, m_currentIndex)-1; i--) {
+         SHOW_VAR(i);
+         if (!m_stack->canRedo()) {
+             kError() << "Cannot redo!!!";
+             break;
+         }
+        
+         m_stack->redo();
+        
+         if (m_actions.contains(i)) {
+             m_redoMenu->removeAction(m_actions[i]);
+             m_undoMenu->addAction(m_actions[i]);
+         } else {
+             qDebug("ERROR REDO");
+        }
+    }
+    
+    if (m_redoMenu->isEmpty())
+        m_redoMenu->menuAction()->setEnabled(false);
+    else
+        m_redoMenu->menuAction()->setEnabled(true);
+    
+    if (!m_undoMenu->isEmpty()) 
+        m_undoMenu->menuAction()->setEnabled(true);
+    
+    if (m_actions.contains(m_stack->index()+1))
+        m_redoMenu->setDefaultAction(m_actions[m_stack->index()+1]);
 
+    m_stack->blockSignals(false);
+}
 
 void KCommandHistory::enableRedoMenu(bool e)
 {
-	K_FUNCINFO;
-	m_redoMenu->menuAction()->setEnabled(e);
+    K_FUNCINFO;
+    m_redoMenu->menuAction()->setEnabled(e);
 }
 
 void KCommandHistory::enableUndoMenu(bool e)
 {
-	K_FUNCINFO;
-	m_undoMenu->menuAction()->setEnabled(e);
+    K_FUNCINFO;
+    m_undoMenu->menuAction()->setEnabled(e);
 }
 
 void KCommandHistory::undo()
 {
-	m_isLastRedo = false;
-// 	m_stack->blockSignals(true);
-	m_stack->undo();
-// 	m_stack->blockSignals(false);
+    m_isLastRedo = false;
+    m_stack->undo();
 }
 
 void KCommandHistory::redo()
 {
-	m_isLastRedo = true;
-// 	m_stack->blockSignals(true);
-	m_stack->redo();
-// 	m_stack->blockSignals(false);
+    m_isLastRedo = true;
+    m_stack->redo();
 }
-

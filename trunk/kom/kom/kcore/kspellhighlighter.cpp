@@ -25,36 +25,30 @@
 
 KSpellHighlighter::KSpellHighlighter(QTextDocument * parent) : QSyntaxHighlighter(parent)
 {
-	m_resaltColor = Qt::darkMagenta;
-	m_speller = new KSpeller;
+    m_resaltColor = Qt::darkMagenta;
+    m_speller = new KSpeller;
 }
-
 
 KSpellHighlighter::~KSpellHighlighter()
 {
-	delete m_speller;
+    delete m_speller;
 }
 
 void KSpellHighlighter::setResaltColor(const QColor &color)
 {
-	m_resaltColor = color;
+    m_resaltColor = color;
 }
 
-void KSpellHighlighter::highlightBlock ( const QString & text )
+void KSpellHighlighter::highlightBlock(const QString & text)
 {
-	QTextCharFormat format;
-	format.setFontWeight(QFont::Bold);
-	format.setForeground(m_resaltColor);
-	
-	QStringList words = text.split(' ');
-	
-	foreach(QString w, words)
-	{
-		if ( !m_speller->checkWord( w ) )
-		{
-			setFormat( text.indexOf(w), w.length(), format);
-		}
-	}
+    QTextCharFormat format;
+    format.setFontWeight(QFont::Bold);
+    format.setForeground(m_resaltColor);
+    
+    QStringList words = text.split(' ');
+    
+    foreach (QString w, words) {
+    	     if (!m_speller->checkWord(w))
+                 setFormat( text.indexOf(w), w.length(), format);
+    }
 }
-
-

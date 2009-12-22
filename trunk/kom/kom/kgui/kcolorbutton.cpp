@@ -39,78 +39,69 @@
 #include <QDragEnterEvent>
 #include <QMouseEvent>
 
-
-KColorButton::KColorButton(QWidget* parent) : QAbstractButton( parent )
+KColorButton::KColorButton(QWidget* parent) : QAbstractButton(parent)
 {
-	setMinimumSize( minimumSizeHint() );
-	setAcceptDrops( true );
-	setCursor(QCursor(Qt::PointingHandCursor));
+    setMinimumSize(minimumSizeHint());
+    setAcceptDrops(true);
+    setCursor(QCursor(Qt::PointingHandCursor));
 
-	connect( this, SIGNAL(clicked()), SLOT(showEditor()));
+    connect(this, SIGNAL(clicked()), SLOT(showEditor()));
 }
-
 
 KColorButton::~KColorButton()
 {
 }
 
-
 /*
  * Sets the color of this button
  */
-void KColorButton::setColor( const QColor& color )
+void KColorButton::setColor(const QColor& color)
 {
-	m_color = color;
-	update();
+    m_color = color;
+    update();
 }
-
 
 /*
  * Returns the color of this button
  */
 QColor KColorButton::color() const
 {
-	return m_color;
+    return m_color;
 }
-
 
 /*
  * Returns the size hint for this widget.
  */
 QSize KColorButton::sizeHint() const
 {
-	return QSize( 50, 25 );
+    return QSize(50, 25);
 }
-
 
 /*
  * Returns the minumum size hint for this widget.
  */
 QSize KColorButton::minimumSizeHint() const
 {
-	return QSize( 50, 25 );
+    return QSize(50, 25);
 }
-
 
 /*
  * Draws the button.
  */
 void KColorButton::paintEvent(QPaintEvent *)
 {
-	QPainter painter(this);
-	
-	QStyleOptionButton opt;
-	if ( isChecked() )
-	{
-		opt.state |= QStyle::State_Raised;
-	}
-	
-	opt.rect = rect();
-	
-	opt.palette.setColor(QPalette::Button, m_color);
-	opt.palette.setColor(QPalette::Background, m_color);
-	
-	style()->drawControl(QStyle::CE_PushButtonBevel, &opt, &painter, this);
+    QPainter painter(this);
+    
+    QStyleOptionButton opt;
+
+    if (isChecked())
+        opt.state |= QStyle::State_Raised;
+    
+    opt.rect = rect();
+    opt.palette.setColor(QPalette::Button, m_color);
+    opt.palette.setColor(QPalette::Background, m_color);
+    
+    style()->drawControl(QStyle::CE_PushButtonBevel, &opt, &painter, this);
 }
 
 /*
@@ -118,27 +109,25 @@ void KColorButton::paintEvent(QPaintEvent *)
  */
 void KColorButton::showEditor()
 {
-	QColor c = QColorDialog::getColor( palette().background().color(), this );
+    QColor c = QColorDialog::getColor( palette().background().color(), this);
 
-	if (!c.isValid())
-		return;
+    if (!c.isValid())
+        return;
 
-	setColor( c );
-	
-	m_color = c;
-	emit colorChanged(c);
+    setColor(c);
+    
+    m_color = c;
+    emit colorChanged(c);
 }
-
 
 /*
  * Handles the mouse press event.
  */
 void KColorButton::mousePressEvent(QMouseEvent* e)
 {
-	QAbstractButton::mousePressEvent(e);
-	m_position = e->pos();
+    QAbstractButton::mousePressEvent(e);
+    m_position = e->pos();
 }
-
 
 #ifndef QT_NO_DRAGANDDROP
 
@@ -147,101 +136,82 @@ void KColorButton::mousePressEvent(QMouseEvent* e)
  */
 void KColorButton::mouseMoveEvent(QMouseEvent* e)
 {
-	QAbstractButton::mouseMoveEvent( e );
+    QAbstractButton::mouseMoveEvent(e);
 
-	if ((e->pos() - m_position).manhattanLength() <  QApplication::startDragDistance())
-		return;
+    if ((e->pos() - m_position).manhattanLength() <  QApplication::startDragDistance())
+        return;
 
-	QDrag *drag = new QDrag( this );
-	QPixmap pix( 25, 25 );
-	pix.fill( m_color );
-		
-	QPainter painter( &pix );
-	painter.drawRect( 0, 0, pix.width(), pix.height() );
-	painter.end();
-	
-	QMimeData *mimeData = new QMimeData;
-	mimeData->setColorData(m_color);
-		
-	drag->setMimeData(mimeData);
-	drag->setPixmap( pix );
-		
-	/*Qt::DropAction dropAction = */
-	drag->start(Qt::MoveAction);
-
+    QDrag *drag = new QDrag(this);
+    QPixmap pix(25, 25);
+    pix.fill(m_color);
+        
+    QPainter painter(&pix);
+    painter.drawRect(0, 0, pix.width(), pix.height());
+    painter.end();
+    
+    QMimeData *mimeData = new QMimeData;
+    mimeData->setColorData(m_color);
+        
+    drag->setMimeData(mimeData);
+    drag->setPixmap(pix);
+        
+    drag->start(Qt::MoveAction);
 }
-
 
 /*
  * Accepts or ignores a drag enter event.
  */
-void KColorButton::dragEnterEvent( QDragEnterEvent *event )
+void KColorButton::dragEnterEvent(QDragEnterEvent *event)
 {
-	setFocus();
+    setFocus();
 
-	if (event->mimeData()->hasColor()) 
-	{
-		if (event->source() == this) 
-		{
-			event->setDropAction(Qt::MoveAction);
-			event->accept();
-		} 
-		else
-		{
-			event->acceptProposedAction();
-		}
-	} 
-	else 
-	{
-		event->ignore();
-	}
+    if (event->mimeData()->hasColor()) {
+        if (event->source() == this) {
+            event->setDropAction(Qt::MoveAction);
+            event->accept();
+        } else {
+            event->acceptProposedAction();
+        }
+    } else {
+        event->ignore();
+    }
 }
 
-void KColorButton::setPalette ( const QPalette & pal)
+void KColorButton::setPalette(const QPalette & pal)
 {
-	m_color = pal.button().color();
+    m_color = pal.button().color();
 }
 
 /*
  * Accepts or ignores a drag move event.
  */
-void KColorButton::dragMoveEvent( QDragMoveEvent *event )
+void KColorButton::dragMoveEvent(QDragMoveEvent *event)
 {
-	if ( event->mimeData()->hasColor() )
-	{
-		event->acceptProposedAction();
-	}
-	else
-	{
-		event->ignore();
-	}
+    if (event->mimeData()->hasColor())
+        event->acceptProposedAction();
+    else
+        event->ignore();
 }
-
 
 /*
  * If a color has been dragged, it will become the new color of this button.
  */
-void KColorButton::dropEvent( QDropEvent *event )
+void KColorButton::dropEvent(QDropEvent *event)
 {
-	if (event->mimeData()->hasColor())
-	{
-		QColor color = qvariant_cast<QColor>(event->mimeData()->colorData());
-		setColor( color );
+    if (event->mimeData()->hasColor()) {
+        QColor color = qvariant_cast<QColor>(event->mimeData()->colorData());
+        setColor(color);
 
-		if (event->source() == this) 
-		{
-			event->setDropAction(Qt::MoveAction);
-			event->accept();
-		} 
-		else 
-		{
-			event->acceptProposedAction();
-		}
-	} 
-	else 
-	{
-		event->ignore();
-	}
+        if (event->source() == this) {
+            event->setDropAction(Qt::MoveAction);
+            event->accept();
+        } else {
+            event->acceptProposedAction();
+        }
+
+    } else {
+        event->ignore();
+    }
 }
 
 #endif // QT_NO_DRAGANDDROP

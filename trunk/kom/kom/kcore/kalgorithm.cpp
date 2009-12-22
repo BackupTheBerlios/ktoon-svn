@@ -34,53 +34,55 @@
 
 int KAlgorithm::random()
 {
-	static bool init = false;
-	if (!init)
-	{
-		unsigned int seed;
-#ifdef Q_OS_LINUX
-		init = true;
-		int fd = open("/dev/urandom", O_RDONLY);
-		if (fd < 0 || ::read(fd, &seed, sizeof(seed)) != sizeof(seed))
-		{
-			srand(getpid());
-			seed = rand()+time(0);
-		}
-		if (fd >= 0) close(fd);
-#else
-		seed = ::time(0);
-#endif
-		srand(seed);
-	}
-	return rand();
+    static bool init = false;
+
+    if (!init) {
+        unsigned int seed;
+        #ifdef Q_OS_LINUX
+               init = true;
+               int fd = open("/dev/urandom", O_RDONLY);
+               if (fd < 0 || ::read(fd, &seed, sizeof(seed)) != sizeof(seed)) {
+                   srand(getpid());
+                   seed = rand()+time(0);
+               }
+               if (fd >= 0) 
+                   close(fd);
+        #else
+               seed = ::time(0);
+        #endif
+        srand(seed);
+    }
+
+    return rand();
 }
 
 QString KAlgorithm::randomString(int length)
 {
-	if (length <=0 ) return QString();
+    if (length <=0) 
+        return QString();
 
-	QString str; str.resize( length );
-	int i = 0;
-	while (length--)
-	{
-		int r=random() % 62;
-		r+=48;
-		if (r>57) r+=7;
-		if (r>90) r+=6;
-		str[i++] =  char(r);
-	}
-	return str;
+    QString str; str.resize(length);
+
+    int i = 0;
+    while (length--) {
+           int r=random() % 62;
+           r+=48;
+           if (r>57) 
+               r+=7;
+           if (r>90) 
+               r+=6;
+           str[i++] =  char(r);
+    }
+
+    return str;
 }
 
 QColor KAlgorithm::randomColor(bool withAlpha)
 {
-	QColor c(random() % 255, random() % 255, random() % 255 );
-	
-	if ( withAlpha )
-	{
-		c.setAlpha(random() % 255);
-	}
-	
-	return c;
-}
+    QColor c(random() % 255, random() % 255, random() % 255);
 
+    if (withAlpha)
+        c.setAlpha(random() % 255);
+
+    return c;
+}

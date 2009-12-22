@@ -41,26 +41,25 @@ class QListWidgetItem;
 */
 class K_GUI_EXPORT KConfigurationDialog : public QDialog
 {
-	Q_OBJECT
-	public:
-		KConfigurationDialog(QWidget *parent = 0);
-		~KConfigurationDialog();
-		
-		
-		void addPage(QWidget *page, const QString &label, const QIcon &icon);
-		QWidget *currentPage() const;
-		
-	public slots:
-		virtual void ok();
-		virtual void cancel();
-		virtual void apply();
-		
-	private slots:
-		void changePage(QListWidgetItem *, QListWidgetItem*);
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT
+    public:
+        KConfigurationDialog(QWidget *parent = 0);
+        ~KConfigurationDialog();
+        
+        void addPage(QWidget *page, const QString &label, const QIcon &icon);
+        QWidget *currentPage() const;
+        
+    public slots:
+        virtual void ok();
+        virtual void cancel();
+        virtual void apply();
+        
+    private slots:
+        void changePage(QListWidgetItem *, QListWidgetItem*);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

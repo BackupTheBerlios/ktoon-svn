@@ -48,7 +48,7 @@ KButtonBar::KButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent)
             case Qt::RightToolBarArea:
                  {
                     setWindowTitle(tr("Right button bar"));
-		 }
+                 }
                  break;
             case Qt::BottomToolBarArea:
                  {
@@ -73,7 +73,6 @@ KButtonBar::KButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent)
     connect(&m_buttons, SIGNAL(buttonClicked(QAbstractButton *)), this, SLOT(hideOthers(QAbstractButton *)));
 }
 
-
 KButtonBar::~KButtonBar()
 {
 }
@@ -97,12 +96,10 @@ QMenu *KButtonBar::createMenu()
 
     connect(a, SIGNAL(triggered(bool)), this, SLOT(setExclusive(bool)));
 
-//#if QT_VERSION >= 0x040200
     a = menu->addAction(tr("Auto hide"));
     a->setCheckable(true);
     a->setChecked(autohide());
-    connect(a, SIGNAL(triggered(bool)), this, SLOT(setAutoHide( bool )));
-//#endif 
+    connect(a, SIGNAL(triggered(bool)), this, SLOT(setAutoHide(bool)));
 
     return menu;
 }
@@ -227,7 +224,7 @@ void KButtonBar::hideOthers(QAbstractButton *source)
 
     m_buttons.setExclusive(false);
 
-    setUpdatesEnabled( false );
+    setUpdatesEnabled(false);
 
     foreach (QAbstractButton *b, m_buttons.buttons()) {
              KViewButton *button = static_cast<KViewButton *>(b);

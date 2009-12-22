@@ -31,88 +31,84 @@
 
 struct KTipDatabase::Private
 {
-	QList<KTip> tips;
-	int currentTipIndex;
+    QList<KTip> tips;
+    int currentTipIndex;
 };
 
 KTipDatabase::KTipDatabase(const QString &file) : k(new Private)
 {
-	loadTips( file );
-	
-	if ( !k->tips.isEmpty() )
-	{
-		k->currentTipIndex = KAlgorithm::random() % k->tips.count();
-	}
+    loadTips(file);
+    
+    if (!k->tips.isEmpty())
+        k->currentTipIndex = KAlgorithm::random() % k->tips.count();
 }
-
 
 KTipDatabase::~KTipDatabase()
 {
-	delete k;
+    delete k;
 }
 
 KTip KTipDatabase::tip() const
 {
-	if (k->currentTipIndex >= 0 && k->currentTipIndex < k->tips.count() )
-		return k->tips[k->currentTipIndex];
-	return KTip();
+    if (k->currentTipIndex >= 0 && k->currentTipIndex < k->tips.count())
+        return k->tips[k->currentTipIndex];
+
+    return KTip();
 }
 
 void KTipDatabase::nextTip()
 {
-	if (k->tips.isEmpty())
-		return ;
-	k->currentTipIndex += 1;
-	if (k->currentTipIndex >= (int) k->tips.count())
-	{
-		k->currentTipIndex = 0;
-	}
+    if (k->tips.isEmpty())
+        return ;
+
+    k->currentTipIndex += 1;
+
+    if (k->currentTipIndex >= (int) k->tips.count())
+        k->currentTipIndex = 0;
 }
 
 void KTipDatabase::prevTip()
 {
-	if (k->tips.isEmpty())
-		return ;
-	k->currentTipIndex -= 1;
-	if (k->currentTipIndex < 0)
-	{
-		k->currentTipIndex = k->tips.count() - 1;
-	}
+    if (k->tips.isEmpty())
+        return ;
+
+    k->currentTipIndex -= 1;
+
+    if (k->currentTipIndex < 0)
+        k->currentTipIndex = k->tips.count() - 1;
 }
 
 void KTipDatabase::loadTips(const QString &filePath)
 {
-	QDomDocument doc;
-	QFile file(filePath);
-	
-	if (!file.open(QIODevice::ReadOnly))
-	{
-		return;
-	}
-	
-	if (!doc.setContent(&file))
-	{
-		file.close();
-		return;
-	}
-	file.close();
-	
-	QDomElement docElem = doc.documentElement();
-	QDomNode n = docElem.firstChild();
-	while(!n.isNull())
-	{
-		QDomElement e = n.toElement();
-		if(!e.isNull())
-		{
-			if ( e.tagName() == "tip" )
-			{
-				KTip tip;
-				tip.text = e.text();
-				k->tips << tip;
-			}
-		}
-		n = n.nextSibling();
-	}
+    QDomDocument doc;
+    QFile file(filePath);
+    
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+    
+    if (!doc.setContent(&file)) {
+        file.close();
+        return;
+    }
+    file.close();
+    
+    QDomElement docElem = doc.documentElement();
+    QDomNode n = docElem.firstChild();
+
+    while(!n.isNull()) {
+
+        QDomElement e = n.toElement();
+
+        if(!e.isNull()) {
+            if (e.tagName() == "tip") {
+                KTip tip;
+                tip.text = e.text();
+                k->tips << tip;
+            }
+        }
+        n = n.nextSibling();
+
+    }
 }
 
 

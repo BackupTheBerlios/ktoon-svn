@@ -25,7 +25,7 @@
 #include <QApplication>
 
 KCircleButtonBar::KCircleButtonBar(int radio, QWidget *parent) : QFrame(parent), m_radio(radio), m_buttonCount(0), m_offset(30)
-{	
+{    
     m_layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
     m_layout->setSpacing(0);
     m_layout->setMargin(0);
@@ -62,8 +62,8 @@ KCircleButton *KCircleButtonBar::addButton(const QPixmap &pix)
     m_mask = QPixmap((m_buttonCount+1)*m_radio+m_offset*3, m_radio+10);
     m_mask.fill(Qt::transparent);
 
-    KCircleButton *but = new KCircleButton(m_radio,true, this);
-	
+    KCircleButton *but = new KCircleButton(m_radio, true, this);
+    
     m_layout->addWidget(but);
     but->setIcon(pix);
 

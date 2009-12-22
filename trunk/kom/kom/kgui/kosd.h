@@ -52,7 +52,7 @@ class K_GUI_EXPORT KOsd : public QWidget
         };
         ~KOsd();
 	
-        void display( const QString & message, Level level = Info, int ms = -1 );
+        void display(const QString & message, Level level = Info, int ms = -1);
 
         static KOsd *self();
 
@@ -60,8 +60,8 @@ class K_GUI_EXPORT KOsd : public QWidget
         void animate();
 
     protected:
-        void paintEvent( QPaintEvent * e );
-        void mousePressEvent( QMouseEvent * e );
+        void paintEvent(QPaintEvent * e);
+        void mousePressEvent(QMouseEvent * e);
 
     private:
         void drawPixmap(const QBrush &background, const QBrush &foreground);

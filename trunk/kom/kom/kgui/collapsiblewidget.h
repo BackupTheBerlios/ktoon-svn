@@ -31,8 +31,8 @@ class ClickableLabel;
 
 /**
   @short A scrollable container that contains groups of settings,
-	 usually in the form of CollapsibleWidgets.
-	 @author Daniel Molkentin <molkentin@kde.org>
+         usually in the form of CollapsibleWidgets.
+  @author Daniel Molkentin <molkentin@kde.org>
  */
 class Q_GUI_EXPORT SettingsContainer : public QScrollArea
 {
@@ -68,7 +68,7 @@ class Q_GUI_EXPORT CollapsibleWidget : public QWidget
         bool isExpanded() const;
 
         QWidget* innerWidget() const;
-        void setInnerWidget( QWidget *w);
+        void setInnerWidget(QWidget *w);
 
     public slots:
         void setExpanded(bool collapsed);

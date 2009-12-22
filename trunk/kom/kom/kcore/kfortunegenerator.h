@@ -29,25 +29,20 @@
 */
 class KFortuneGenerator
 {
-	public:
-		~KFortuneGenerator();
-		static KFortuneGenerator *self();
+    public:
+        ~KFortuneGenerator();
+        static KFortuneGenerator *self();
+        QString generate();
 		
-		QString generate();
-		
-	protected:
-		KFortuneGenerator();
-		void findFortunePath();
-		
-		
-		
-	private:
-		struct Private;
-		Private *const k;
-		
-		static KFortuneGenerator *s_self;
+    protected:
+        KFortuneGenerator();
+        void findFortunePath();
+
+    private:
+        struct Private;
+        Private *const k;
+
+        static KFortuneGenerator *s_self;
 };
 
 #endif
-
-

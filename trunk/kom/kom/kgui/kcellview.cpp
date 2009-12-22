@@ -51,7 +51,7 @@ KCellViewItemDelegate::~KCellViewItemDelegate()
 {
 }
 
-void KCellViewItemDelegate::paint (QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
+void KCellViewItemDelegate::paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
     Q_ASSERT(index.isValid());
     const QAbstractItemModel *model = index.model();
@@ -138,7 +138,7 @@ QBrush KCellViewItem::background() const
 {
     return qvariant_cast<QBrush>(data(Qt::BackgroundColorRole));
 }
-	
+    
 ////////// KCellView  ///////////
 KCellView::KCellView(int MAX_COLUMNS, QWidget *parent) : QTableWidget(parent), m_countColor(0),  m_col(0), m_row(0), MAX_COLUMNS(MAX_COLUMNS)
 {
@@ -173,7 +173,7 @@ void KCellView::setItemSize(int w, int h)
     m_rectWidth = w;
     QTimer::singleShot(0, this, SLOT(fixSize()));
 }
-	
+    
 void KCellView::fixSize()
 {
     setUpdatesEnabled(false);

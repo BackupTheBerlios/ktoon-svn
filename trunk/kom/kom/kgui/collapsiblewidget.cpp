@@ -29,15 +29,15 @@ class ClickableLabel : public QLabel
 {
     Q_OBJECT
     public:
-        ClickableLabel( QWidget* parent = 0 );
+        ClickableLabel(QWidget* parent = 0);
         ~ClickableLabel();
-		
+
     protected:
         void paintEvent(QPaintEvent *e);
         void enterEvent(QEvent * e);
         void leaveEvent(QEvent *e);
         void mousePressEvent(QMouseEvent *e);
-		
+
     signals:
         void clicked();
 
@@ -113,7 +113,6 @@ ArrowButton::ArrowButton(QWidget *parent)
     : QAbstractButton(parent)
 {
 }
-
 
 ArrowButton::~ArrowButton()
 {

@@ -143,7 +143,7 @@ void KOsd::display(const QString &message, Level level, int ms)
     setMask(mask);
 
     maskPainter.end();
-	
+   
     drawPixmap(background, foreground);
 
     // show widget and schedule a repaint

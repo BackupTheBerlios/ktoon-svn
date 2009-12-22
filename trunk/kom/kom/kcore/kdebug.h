@@ -52,7 +52,7 @@
 #define FUNC_NOT_IMPLEMENTED kWarning() << __FILE__<<":"<<__LINE__ << " not implemented yet";
 #endif
 
-#define K_CHECKPTR(ptr) if ( ptr == 0 ) { dFatal() << __PRETTY_FUNCTION__ << ": " << #ptr << " is NULL"; } 
+#define K_CHECKPTR(ptr) if ( ptr == 0 ) { kFatal() << __PRETTY_FUNCTION__ << ": " << #ptr << " is NULL"; } 
 #define SHOW_VAR(arg) kDebug() << #arg << " = " << arg;
 
 class QPalette;
@@ -86,334 +86,353 @@ template <class T> class QList;
 
 enum DebugType
 {
-	KDebugMsg = 0,
-	KWarningMsg,
-	KErrorMsg,
-	KFatalMsg
+    KDebugMsg = 0,
+    KWarningMsg,
+    KErrorMsg,
+    KFatalMsg
 };
 
 enum DebugOutput
 {
-	KDefault = -1,
-	KNone = 0,
-	KFileOutput,
-	KBoxOutput,
-	KShellOutput,
-	KBrowserOutput
+    KDefault = -1,
+    KNone = 0,
+    KFileOutput,
+    KBoxOutput,
+    KShellOutput,
+    KBrowserOutput
 };
 
 #if !defined(K_NODEBUG)
 class K_CORE_EXPORT KDebug
 {
-	public:
-		class Streamer : public QObject
-		{
-			public:
-				Streamer() : space(true) {}
-				~Streamer() {};
-				QString buffer;
-				bool space;
-				Streamer & operator<< ( QChar c )
-				{
-					buffer += c;
-					return *this;
-				}
-				Streamer & operator<< ( signed short i )
-				{
-					buffer += QString::number(i);
-					return *this;
-				}
-				Streamer & operator<< ( float f )
-				{
-					buffer += QString::number(f);
-					return *this;
-				}
-				Streamer & operator<< ( const QString & string )
-				{
-					buffer += string;
-					return *this;
-				}
-				Streamer & operator<< ( char c )
-				{
-					buffer += c;
-					return *this;
-				}
-				Streamer & operator<< ( unsigned short i )
-				{
-					buffer += QString::number(i);
-					return *this;
-				}
-				Streamer & operator<< ( signed int i )
-				{
-					buffer += QString::number(i);
-					return *this;
-				}
-				Streamer & operator<< ( unsigned int i )
-				{
-					buffer += QString::number(i);
-					return *this;
-				}
-				Streamer & operator<< ( signed long i )
-				{
-					buffer += QString::number(i);
-					return *this;
-				}
-				Streamer & operator<< ( unsigned long i )
-				{
-					buffer += QString::number(i);
-					return *this;
-				}
-				Streamer & operator<< ( qlonglong i )
-				{
-					buffer += QString::number(i);
-					return *this;
-				}
-				Streamer & operator<< ( qulonglong i )
-				{
-					buffer += QString::number(i);
-					return *this;
-				}
-				Streamer & operator<< ( double f )
-				{
-					buffer += QString::number(f);
-					return *this;
-				}
-				Streamer & operator<< ( const QByteArray & array )
-				{
-					buffer += array.data();
-					return *this;
-				}
-				Streamer & operator<< ( const char * string )
-				{
-					buffer += string;
-					return *this;
-				}
-				Streamer & operator<< ( const void * /*ptr*/ )
-				{
-					
-					return *this;
-				}
-		} *streamer;
-		
-		
-		KDebug(DebugType t, const QString &area, DebugOutput o);
-		KDebug(const KDebug &);
-		~KDebug();
-		
-		static void setForceDisableGUI();
-		
-		inline KDebug &operator<<(QTextStreamManipulator /*m*/)
-		{ 
-// 			streamer->ts << m; 
-			return *this; 
-		}
-		
-		inline KDebug &operator<<(QTextStreamFunction /*f*/)
-		{
-// 			streamer->ts << f;
-			return *this;
-		}
-		
-		inline KDebug& operator << (const QString &str)
-		{
-			*streamer << "\"" << str << "\"";
-			return *this;
-		};
-		
-		inline KDebug& operator << (char c)
-		{
-			*streamer << "\'" << c << "\'";
-			return *this;
-		};
-		
-		inline KDebug &operator<<(bool t) 
-		{ 
-			*streamer << (t ? "true" : "false"); 
-			return *this; 
-		}
+    public:
+        class Streamer : public QObject
+            {
+                public:
+                    Streamer() : space(true) {}
+                    ~Streamer() {};
+                    QString buffer;
+                    bool space;
 
-		inline KDebug &operator<<(signed short t) 
-		{ 
-			*streamer << t; 
-			return *this; 
-		}
-		inline KDebug &operator<<(unsigned short t) 
-		{ 
-			*streamer << t; 
-			return *this; 
-		}
-		inline KDebug &operator<<(signed int t) 
-		{ 
-			*streamer << t; 
-			return *this; 
-		}
-		inline KDebug &operator<<(unsigned int t) 
-		{ 
-			*streamer << t; 
-			return *this; 
-		}
-		inline KDebug &operator<<(signed long t) 
-		{ 
-			*streamer << t; 
-			return *this; 
-		}
-		inline KDebug &operator<<(unsigned long t) 
-		{ 
-			*streamer << t; 
-			return *this; 
-		}
-		inline KDebug &operator<<(float t) 
-		{ 
-			*streamer << t; 
-			return *this; 
-		}
-		inline KDebug &operator<<(double t) 
-		{ 
-			*streamer << t; 
-			return *this; 
-		}
-		inline KDebug &operator<<(const char* t) 
-		{ 
-			*streamer << t; 
-			return *this; 
-		}
-		
-		KDebug& operator<<( const QDateTime& );
-		KDebug& operator<<( const QDate&     );
-		KDebug& operator<<( const QTime&     );
-		KDebug& operator<<( const QPoint & ) ;
-		KDebug& operator<<( const QPointF & ) ;
-		KDebug& operator<<( const QSize & ) ;
-		KDebug& operator<<( const QRect & ) ;
-		KDebug& operator<<( const QVariant & );
-		KDebug& operator << (const QEvent*);
-		KDebug& operator<<( const QStringList & );
-		
-		
+                    Streamer & operator << (QChar c)
+                        {
+                            buffer += c;
+                            return *this;
+                        }
+
+                    Streamer & operator << (signed short i)
+                        {
+                            buffer += QString::number(i);
+                            return *this;
+                        }
+
+                    Streamer & operator << (float f)
+                        {
+                            buffer += QString::number(f);
+                            return *this;
+                        }
+
+                    Streamer & operator << (const QString & string)
+                        {
+                            buffer += string;
+                            return *this;
+                        }
+
+                    Streamer & operator << (char c)
+                        {
+                            buffer += c;
+                            return *this;
+                        }
+
+                    Streamer & operator << (unsigned short i)
+                        {
+                            buffer += QString::number(i);
+                            return *this;
+                        }
+
+                    Streamer & operator << (signed int i)
+                        {
+                            buffer += QString::number(i);
+                            return *this;
+                        }
+
+                    Streamer & operator << (unsigned int i)
+                        {
+                            buffer += QString::number(i);
+                            return *this;
+                        }
+
+                    Streamer & operator << (signed long i)
+                        {
+                            buffer += QString::number(i);
+                            return *this;
+                        }
+
+                    Streamer & operator << (unsigned long i)
+                        {
+                            buffer += QString::number(i);
+                            return *this;
+                        }
+
+                    Streamer & operator << (qlonglong i)
+                        {
+                            buffer += QString::number(i);
+                            return *this;
+                        }
+
+                    Streamer & operator << (qulonglong i)
+                        {
+                            buffer += QString::number(i);
+                            return *this;
+                        }
+
+                    Streamer & operator << (double f)
+                        {
+                            buffer += QString::number(f);
+                            return *this;
+                        }
+
+                    Streamer & operator << (const QByteArray & array)
+                        {
+                            buffer += array.data();
+                            return *this;
+                        }
+
+                    Streamer & operator << (const char * string)
+                        {
+                            buffer += string;
+                            return *this;
+                        }
+
+                    Streamer & operator << (const void *)
+                        {
+                            return *this;
+                        }
+        } *streamer;
+        
+        KDebug(DebugType t, const QString &area, DebugOutput o);
+        KDebug(const KDebug &);
+        ~KDebug();
+        
+        static void setForceDisableGUI();
+        
+        inline KDebug &operator << (QTextStreamManipulator /*m*/)
+        { 
+            return *this; 
+        }
+        
+        inline KDebug &operator << (QTextStreamFunction /*f*/)
+        {
+            return *this;
+        }
+        
+        inline KDebug& operator << (const QString &str)
+        {
+            *streamer << "\"" << str << "\"";
+            return *this;
+        };
+        
+        inline KDebug& operator << (char c)
+        {
+            *streamer << "\'" << c << "\'";
+            return *this;
+        };
+        
+        inline KDebug &operator << (bool t) 
+        { 
+            *streamer << (t ? "true" : "false"); 
+            return *this; 
+        }
+
+        inline KDebug &operator << (signed short t) 
+        { 
+            *streamer << t; 
+            return *this; 
+        }
+
+        inline KDebug &operator << (unsigned short t) 
+        { 
+            *streamer << t; 
+            return *this; 
+        }
+
+        inline KDebug &operator << (signed int t) 
+        { 
+            *streamer << t; 
+            return *this; 
+        }
+
+        inline KDebug &operator << (unsigned int t) 
+        { 
+            *streamer << t; 
+            return *this; 
+        }
+
+        inline KDebug &operator << (signed long t) 
+        { 
+            *streamer << t; 
+            return *this; 
+        }
+
+        inline KDebug &operator << (unsigned long t) 
+        { 
+            *streamer << t; 
+            return *this; 
+        }
+
+        inline KDebug &operator << (float t) 
+        { 
+            *streamer << t; 
+            return *this; 
+        }
+
+        inline KDebug &operator << (double t) 
+        { 
+            *streamer << t; 
+            return *this; 
+        }
+
+        inline KDebug &operator << (const char* t) 
+        { 
+            *streamer << t; 
+            return *this; 
+        }
+        
+        KDebug& operator << (const QDateTime&);
+        KDebug& operator << (const QDate&);
+        KDebug& operator << (const QTime&);
+        KDebug& operator << (const QPoint &);
+        KDebug& operator << (const QPointF &);
+        KDebug& operator << (const QSize &);
+        KDebug& operator << (const QRect &);
+        KDebug& operator << (const QVariant &);
+        KDebug& operator << (const QEvent*);
+        KDebug& operator << (const QStringList &);
+        
+        
 #ifdef QT_GUI_LIB
-		void resaltWidget(QWidget *w, const QColor &color = QColor(Qt::magenta));
-		
-		KDebug& operator<<( const QPixmap& p );
-		KDebug& operator<<( const QIcon& p );
-		KDebug& operator<<( const QImage& p );
-		KDebug& operator<<( const QRegion & );
-		KDebug& operator<<( const QColor & );
-		KDebug& operator<<( const QPen & );
-		KDebug& operator<<( const QBrush & );
-		KDebug& operator << (const QWidget*);
-		KDebug& operator << (const QLinearGradient &);
-		KDebug& operator << (const QRadialGradient &);
-		KDebug& operator << (const QConicalGradient &);
-		KDebug& operator << (const QGradient *);
-		KDebug& operator << (const QMatrix &);
-		
-		static QTextBrowser *browser();
+        void resaltWidget(QWidget *w, const QColor &color = QColor(Qt::magenta));
+        
+        KDebug& operator << (const QPixmap& p);
+        KDebug& operator << (const QIcon& p);
+        KDebug& operator << (const QImage& p);
+        KDebug& operator << (const QRegion &);
+        KDebug& operator << (const QColor &);
+        KDebug& operator << (const QPen &);
+        KDebug& operator << (const QBrush &);
+        KDebug& operator << (const QWidget*);
+        KDebug& operator << (const QLinearGradient &);
+        KDebug& operator << (const QRadialGradient &);
+        KDebug& operator << (const QConicalGradient &);
+        KDebug& operator << (const QGradient *);
+        KDebug& operator << (const QMatrix &);
+        
+        static QTextBrowser *browser();
 #endif
-		
-		
-		template <class T> KDebug& operator << ( const QList<T> &list );
-		
-	private slots:
-		void write();
-		
-	private:
-		DebugType m_type;
-		QString m_toWrite;
-		DebugOutput m_output;
-		
-		QString m_area;
+  
+        template <class T> KDebug& operator << ( const QList<T> &list );
+        
+    private slots:
+        void write();
+        
+    private:
+        DebugType m_type;
+        QString m_toWrite;
+        DebugOutput m_output;
+        
+        QString m_area;
 };
 
-template <class T> KDebug &KDebug::operator<<( const QList<T> &list )
+template <class T> KDebug &KDebug::operator << (const QList<T> &list)
 {
-	*this << "(";
-	typename QList<T>::ConstIterator it = list.begin();
-	if ( !list.isEmpty() ) 
-	{
-		*this << *it++;
-	}
-	for ( ; it != list.end(); ++it ) 
-	{
-		*this << "," << *it;
-	}
-	*this << ")";
-	return *this;
+    *this << "(";
+    typename QList<T>::ConstIterator it = list.begin();
+
+    if (!list.isEmpty()) 
+        *this << *it++;
+
+    for (; it != list.end(); ++it) 
+         *this << "," << *it;
+
+    *this << ")";
+
+    return *this;
 }
 
 // Global functions
 
 inline KDebug kDebug(const QString &area = QString(), int output = KDefault)
 {
-	return KDebug(KDebugMsg, area, DebugOutput(output));
+    return KDebug(KDebugMsg, area, DebugOutput(output));
 }
 
 inline KDebug kDebug(int area, int output = KDefault)
 {
-	return KDebug(KDebugMsg, QString::number(area), DebugOutput(output));
+    return KDebug(KDebugMsg, QString::number(area), DebugOutput(output));
 }
 
 inline KDebug kFatal(const QString &area = QString(), int output = KDefault)
 {
-	return KDebug(KFatalMsg, area, DebugOutput(output));
+    return KDebug(KFatalMsg, area, DebugOutput(output));
 }
 
 inline KDebug kFatal(int area, int output = KDefault)
 {
-	return KDebug(KFatalMsg, QString::number(area), DebugOutput(output));
+    return KDebug(KFatalMsg, QString::number(area), DebugOutput(output));
 }
 
 inline KDebug kError(const QString &area = QString(), int output = KDefault)
 {
-	return KDebug(KErrorMsg, area, DebugOutput(output));
+    return KDebug(KErrorMsg, area, DebugOutput(output));
 }
 
 inline KDebug kError(int area, int output = KDefault)
 {
-	return KDebug(KErrorMsg, QString::number(area), DebugOutput(output));
+    return KDebug(KErrorMsg, QString::number(area), DebugOutput(output));
 }
 
 inline KDebug kWarning(const QString &area = QString(), int output = KDefault)
 {
-	return KDebug(KWarningMsg, area, DebugOutput(output));
+    return KDebug(KWarningMsg, area, DebugOutput(output));
 }
 
 inline KDebug kWarning(int area, int output = KDefault)
 {
-	return KDebug(KWarningMsg, QString::number(area), DebugOutput(output));
+    return KDebug(KWarningMsg, QString::number(area), DebugOutput(output));
 }
 
 #else // K_NODEBUG
 
 class KNDebug
 {
-	public:
-		inline KNDebug(){}
-		inline KNDebug(const KNDebug &){}
-		inline ~KNDebug(){}
-		inline KNDebug &operator<<(QTextStreamFunction) { return *this; }
-		inline KNDebug &operator<<(QTextStreamManipulator) { return *this; }
-		inline KNDebug &space() { return *this; }
-		inline KNDebug &nospace() { return *this; }
-		inline KNDebug &maybeSpace() { return *this; }
-		template<typename T> inline KNDebug &operator<<(const T &) { return *this; }
-		
-#ifdef QT_GUI_LIB
-		void resaltWidget(QWidget */*w*/, const QColor &/*color*/ = QColor(Qt::magenta))
-		{
-		}
-		
-		static QTextBrowser *browser() { return 0; };
-#endif
+    public:
+        inline KNDebug(){}
+        inline KNDebug(const KNDebug &){}
+        inline ~KNDebug(){}
+        inline KNDebug &operator<<(QTextStreamFunction) { return *this; }
+        inline KNDebug &operator<<(QTextStreamManipulator) { return *this; }
+        inline KNDebug &space() { return *this; }
+        inline KNDebug &nospace() { return *this; }
+        inline KNDebug &maybeSpace() { return *this; }
+        template<typename T> inline KNDebug &operator<<(const T &) { return *this; }
+
+        #ifdef QT_GUI_LIB
+               void resaltWidget(QWidget */*w*/, const QColor &/*color*/ = QColor(Qt::magenta))
+               {
+               }
+
+               static QTextBrowser *browser() { return 0; };
+        #endif
 };
 
 inline KNDebug kDebug(int = 0,int = KDefault)
 {
-	return KNDebug();
+    return KNDebug();
 }
 
 inline KNDebug kDebug(const QString &, int = KDefault)
 {
-	return KNDebug();
+    return KNDebug();
 }
 
 #define kFatal kDebug

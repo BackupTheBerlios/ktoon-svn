@@ -24,7 +24,7 @@
 #define CCBUTTON_H
 /**
  * @file kcirclebutton.h
- * Include this file if you need the class DCircleButton
+ * Include this file if you need the class KCircleButton
  */
 #include <QPushButton>
 #include <QStyleOptionButton>
@@ -37,52 +37,51 @@
 
 class K_GUI_EXPORT KCircleButton : public QPushButton
 {
-	Q_OBJECT
-	public:
-		/**
-		 * Constructs a DCircleButton
-		 */
-		KCircleButton(int diameter, bool animate = true, QWidget *parent = 0);
-		/**
-		 * Destructor
-		 */
-		~KCircleButton();
-		
-		QStyleOptionButton styleOption() const;
-		QSize sizeHint() const;
-		
-	protected:
-		/**
-		 * Paints the button
-		 * @param e 
-		 */
-		void paintEvent(QPaintEvent *e);
-		
-		/**
-		 * Init animation
-		 */
-		void enterEvent(QEvent *);
-		/**
-		 * End animation
-		 */
-		void leaveEvent(QEvent *);
-		
-		/**
-		 * Creates mask of button
-		 */
-		virtual void paintMask();
-		
-	private slots:
-		void animate();
-		
-	private:
-		QPixmap m_mask;
-		QPixmap m_pix;
-		int m_diameter : 22;
-		
-		class Animator;
-		Animator *m_animator;
-
+    Q_OBJECT
+    public:
+        /**
+         * Constructs a KCircleButton
+         */
+        KCircleButton(int diameter, bool animate = true, QWidget *parent = 0);
+        /**
+         * Destructor
+         */
+        ~KCircleButton();
+        
+        QStyleOptionButton styleOption() const;
+        QSize sizeHint() const;
+        
+    protected:
+        /**
+         * Paints the button
+         * @param e 
+         */
+        void paintEvent(QPaintEvent *e);
+        
+        /**
+         * Init animation
+         */
+        void enterEvent(QEvent *);
+        /**
+         * End animation
+         */
+        void leaveEvent(QEvent *);
+        
+        /**
+         * Creates mask of button
+         */
+        virtual void paintMask();
+        
+    private slots:
+        void animate();
+        
+    private:
+        QPixmap m_mask;
+        QPixmap m_pix;
+        int m_diameter : 22;
+        
+        class Animator;
+        Animator *m_animator;
 };
 
 #endif

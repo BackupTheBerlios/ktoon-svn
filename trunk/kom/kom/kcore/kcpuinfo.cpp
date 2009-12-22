@@ -172,5 +172,3 @@ static int getCpuFeatures()
 }
 
 unsigned int KCPUInfo::s_features = getCpuFeatures();
-
-

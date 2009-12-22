@@ -35,54 +35,52 @@
 class KNodeGroup;
 class KControlNode : public QObject, public QGraphicsItem
 {
-	Q_OBJECT;
-	
-	public:
-		
-		KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos = QPoint(0,0) ,  QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
-		
-		~KControlNode();
-		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
-		QRectF boundingRect() const;
-		enum { Type = UserType + 100 };
-		
-		int type() const { return Type; }
-// 		int typeNodeEditor() const;
-		
-		void setLeft( KControlNode *left);
-		void setRight( KControlNode *right);
-		void setNodeParent( KControlNode *nodeParent);
-		int index() const;
-		
-		void setParentI( QGraphicsItem * newParent ); // ### setParentI no es una convencion, buscar un mejor nombre
-		QGraphicsItem *parentI();
-		
-		
-		KControlNode *left();
-		KControlNode *right();
-		KControlNode *nodeParent();
-		
-		void setNotChange(bool notChange);
-		
-	protected:
-		QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-		void mousePressEvent(QGraphicsSceneMouseEvent *event);
-		void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
-		
-	private:
-		void paintLinesToChilds(QPainter * painter);
-		
-	public slots:
-		void setVisibleChilds(bool visible);
-		void setSeletedChilds(bool select);
-		
-	signals:
-		void showBrothers(bool show);
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    
+    public:
+        
+        KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos = QPoint(0,0) ,  QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
+        
+        ~KControlNode();
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
+        QRectF boundingRect() const;
+        enum { Type = UserType + 100 };
+        
+        int type() const { return Type; }
+        
+        void setLeft(KControlNode *left);
+        void setRight(KControlNode *right);
+        void setNodeParent(KControlNode *nodeParent);
+        int index() const;
+        
+        void setParentI(QGraphicsItem * newParent); // ### setParentI is not a significant name, pick one better 
+        QGraphicsItem *parentI();
+        
+        KControlNode *left();
+        KControlNode *right();
+        KControlNode *nodeParent();
+        
+        void setNotChange(bool notChange);
+        
+    protected:
+        QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+        void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
+     
+    private:
+        void paintLinesToChilds(QPainter * painter);
+        
+    public slots:
+        void setVisibleChilds(bool visible);
+        void setSeletedChilds(bool select);
+        
+    signals:
+        void showBrothers(bool show);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

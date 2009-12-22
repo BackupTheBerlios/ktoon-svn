@@ -27,53 +27,46 @@ KFortuneGenerator *KFortuneGenerator::s_self = 0;
 
 struct KFortuneGenerator::Private
 {
-	bool isValid;
-	QString fortunePath;
+    bool isValid;
+    QString fortunePath;
 };
-
 
 KFortuneGenerator::KFortuneGenerator() : k(new Private())
 {
-	findFortunePath();
+    findFortunePath();
 }
-
 
 KFortuneGenerator::~KFortuneGenerator()
 {
-	delete k;
+    delete k;
 }
 
 KFortuneGenerator *KFortuneGenerator::self()
 {
-	if ( !s_self )
-		s_self = new KFortuneGenerator;
-	
-	return s_self;
+    if (!s_self)
+        s_self = new KFortuneGenerator;
+
+    return s_self;
 }
 
 void KFortuneGenerator::findFortunePath()
 {
-	k->fortunePath = "fortune";
-	if ( QProcess::execute(k->fortunePath) == 0 )
-	{
-		k->isValid = true;
-	}
-	else
-	{
-		k->isValid = false;
-	}
+    k->fortunePath = "fortune";
+
+    if (QProcess::execute(k->fortunePath) == 0)
+        k->isValid = true;
+    else
+        k->isValid = false;
 }
 
 QString KFortuneGenerator::generate()
 {
-	if ( !k->isValid )
-		return "";
-	
-	QProcess proc;
-	proc.start(k->fortunePath);
-	
-	proc.waitForFinished();
-	
-	return proc.readAllStandardOutput();
-}
+    if (!k->isValid)
+        return "";
 
+    QProcess proc;
+    proc.start(k->fortunePath);
+    proc.waitForFinished();
+
+    return proc.readAllStandardOutput();
+}

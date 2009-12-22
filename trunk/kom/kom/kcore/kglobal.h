@@ -33,7 +33,6 @@
 # define K_SOUND_EXPORT
 #endif
 
-
 #include "kapplicationproperties.h"
 
 #define DATA_DIR kAppProp->dataDir()
@@ -43,8 +42,4 @@
 
 #define CACHE_DIR kAppProp->cacheDir()
 
-
 #endif
-
-
-

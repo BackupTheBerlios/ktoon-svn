@@ -36,50 +36,42 @@ struct AspellSpeller;
 
 /**
  * @if english
- * 
- * @elseif spanish
- * Interfaz para aspell
+ * Interface for spell 
  * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
 class K_CORE_EXPORT KAspellChecker : public KSpellInterface
 {
-	public:
-		/**
-		 * @if english
-		 * Translate
-		 * @endif
-		 * @if spanish
-		 * Constructor por defecto
-		 * @endif
-		 */
-		KAspellChecker();
+    public:
+        /**
+         * @if english
+         * Translate
+         * @endif
+         */
+        KAspellChecker();
+
+        /**
+         * @if english
+         * Destructor
+         * @endif
+         */
+        virtual ~KAspellChecker();
+
+        /**
+         * Reimplementing KSpellInterface, this function verifies if a word is well spelled
+         */
+        bool checkWord(const QString &word);
+
+        /**
+         * Returns a suggestions list for a word if it is bad spelled
+         */
+        QStringList suggestions(const QString &word);
 		
-		/**
-		 * @if english
-		 * Destructor
-		 * @endif
-		 * @if spanish
-		 * Destructor
-		 * @endif
-		 */
-		virtual ~KAspellChecker();
+    private:
+        bool init();
 		
-		/**
-		 * Reimplementado de KSpellInterface, esta funcion verifica si una palabra esta bien escrita
-		 */
-		bool checkWord(const QString &word);
-		
-		/**
-		 * Retorna una lista de palabras sugeridas para una palabra mal escrita
-		 */
-		QStringList suggestions(const QString &word);
-		
-	private:
-		bool init();
-		
-	private:
-		AspellSpeller *m_speller;
+    private:
+        AspellSpeller *m_speller;
 };
 
 #endif

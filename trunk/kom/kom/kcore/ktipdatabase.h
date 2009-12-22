@@ -34,20 +34,20 @@
 
 struct KTip
 {
-	QString text;
+    QString text;
 };
 
 /**
  * @class KTipDatabase
  * 
- * Esta clase esta encargada de manejar la base de datos de mensajes de ayuda, utiles o deseados que se quieran mostrar en la aplicaci�n.
+ * This class handles the tips database about the application
  * 
  * El archivo de base de datos tiene la siguiente forma:
  * 
  * @verbatim
  * \<TipOfDay\>
- * 	\<tip>Tip1.\</tip\>
- * 	\<tip>Tipn\</tip\>
+ *     \<tip>Tip1.\</tip\>
+ *     \<tip>Tipn\</tip\>
  * \</TipOfDay\>
  * @endverbatim
  * 
@@ -56,20 +56,19 @@ struct KTip
 
 class K_CORE_EXPORT KTipDatabase
 {
-	public:
-		KTipDatabase(const QString &file);
-		~KTipDatabase();
-		KTip tip() const;
-		void nextTip();
-		void prevTip();
-		
-	private:
-		void loadTips(const QString &file);
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+        KTipDatabase(const QString &file);
+        ~KTipDatabase();
+        KTip tip() const;
+        void nextTip();
+        void prevTip();
+        
+    private:
+        void loadTips(const QString &file);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
-
 
 #endif

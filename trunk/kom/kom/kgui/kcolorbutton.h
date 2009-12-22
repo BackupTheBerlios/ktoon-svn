@@ -35,37 +35,37 @@ class QColor;
 
 class K_GUI_EXPORT KColorButton : public QAbstractButton
 {
-	Q_OBJECT;
-	Q_PROPERTY( QColor color READ color WRITE setColor );
+    Q_OBJECT;
+    Q_PROPERTY(QColor color READ color WRITE setColor);
 
-	public:
-		KColorButton( QWidget* parent = 0);
-		~KColorButton();
+    public:
+        KColorButton(QWidget* parent = 0);
+        ~KColorButton();
 
-		void setColor( const QColor& );
-		QColor color() const;
+        void setColor(const QColor& );
+        QColor color() const;
 
-		QSize sizeHint() const;
-		QSize minimumSizeHint() const;
-		void setPalette ( const QPalette & );
+        QSize sizeHint() const;
+        QSize minimumSizeHint() const;
+        void setPalette(const QPalette &);
 
-	public slots:
-		virtual void showEditor();
+    public slots:
+        virtual void showEditor();
 
-	signals:
-		void colorChanged(const QColor &color);
+    signals:
+        void colorChanged(const QColor &color);
 
-	protected:
-		void paintEvent(QPaintEvent *e);
-		void mousePressEvent(QMouseEvent* e);
-		void mouseMoveEvent(QMouseEvent* e);
-		void dragEnterEvent(QDragEnterEvent* e);
-		void dragMoveEvent(QDragMoveEvent* e);
-		void dropEvent(QDropEvent* e);
+    protected:
+        void paintEvent(QPaintEvent *e);
+        void mousePressEvent(QMouseEvent* e);
+        void mouseMoveEvent(QMouseEvent* e);
+        void dragEnterEvent(QDragEnterEvent* e);
+        void dragMoveEvent(QDragMoveEvent* e);
+        void dropEvent(QDropEvent* e);
 
-	private:
-		QColor m_color;
-		QPoint m_position;
+    private:
+        QColor m_color;
+        QPoint m_position;
 };
 
 #endif //KCOLORBUTTON_H

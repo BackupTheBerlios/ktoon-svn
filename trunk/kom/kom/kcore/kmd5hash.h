@@ -33,7 +33,6 @@
 #ifndef KMD5HASH_H
 #define KMD5HASH_H
 
-
 #include "kcore/kglobal.h"
 
 class QByteArray;
@@ -42,24 +41,24 @@ class QFile;
 
 class K_CORE_EXPORT KMD5Hash
 {
-	public:
-		static QString hash(const QString &str);
-		static QString hashData(const QByteArray& bytes);
-		static QString hashData(const char* bytes, int size);
-		static QString hashFile(QFile& file);
-		static QString hashFile(const QString& filename);
+    public:
+        static QString hash(const QString &str);
+        static QString hashData(const QByteArray& bytes);
+        static QString hashData(const char* bytes, int size);
+        static QString hashFile(QFile& file);
+        static QString hashFile(const QString& filename);
 
-	private:
-		struct md5Context
-		{
-			unsigned int buffer[4];
-			unsigned int bits[2];
-			unsigned char in[64];
-		};
+    private:
+        struct md5Context
+        {
+            unsigned int buffer[4];
+            unsigned int bits[2];
+            unsigned char in[64];
+        };
 
-		static void updateHash(md5Context* context, const char* data, long int length);
-		static void md5Transform(unsigned int buf[4], unsigned int const in[16]);
-		static QString finalize(md5Context& ctx);
+        static void updateHash(md5Context* context, const char* data, long int length);
+        static void md5Transform(unsigned int buf[4], unsigned int const in[16]);
+        static QString finalize(md5Context& ctx);
 };
 
 #endif

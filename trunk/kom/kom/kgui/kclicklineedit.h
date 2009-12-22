@@ -28,26 +28,23 @@
 
 class K_GUI_EXPORT KClickLineEdit : public QLineEdit
 {
-	public:
-		KClickLineEdit( const QString &msg, QWidget *parent = 0 );
-		~KClickLineEdit();
-		
-		void setClickMessage( const QString &msg );
-		QString clickMessage() const;
-		
-		virtual void setText( const QString& txt );
-	
-	protected:
-		virtual void paintEvent( QPaintEvent *ev );
-		virtual void focusInEvent( QFocusEvent *ev );
-		virtual void focusOutEvent( QFocusEvent *ev );
-	
-	private:
-		struct Private;
-		Private *const k;
-
+    public:
+        KClickLineEdit(const QString &msg, QWidget *parent = 0);
+        ~KClickLineEdit();
+        
+        void setClickMessage(const QString &msg);
+        QString clickMessage() const;
+        
+        virtual void setText(const QString& txt);
+    
+    protected:
+        virtual void paintEvent(QPaintEvent *ev);
+        virtual void focusInEvent(QFocusEvent *ev);
+        virtual void focusOutEvent(QFocusEvent *ev);
+    
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif
-
-
