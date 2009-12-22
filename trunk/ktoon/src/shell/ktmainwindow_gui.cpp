@@ -486,24 +486,9 @@ void KTMainWindow::setupToolBar()
 
     toolbar->addAction(m_actionManager->find("newproject"));
     toolbar->addAction(m_actionManager->find("openproject"));
-
-    /*
-    // KCommandHistory *history = new KCommandHistory(m_undoCommands, this);
-
-    QAction * undo = m_projectManager->undoHistory()->createUndoAction(this, tr("Undo"));
-    undo->setShortcut(QKeySequence(QKeySequence::Undo));
-    toolbar->addAction(undo);
-
-    QAction *redo =  m_projectManager->undoHistory()->createRedoAction(this);
-    redo->setShortcut(QKeySequence(QKeySequence::Redo));
-    toolbar->addAction(redo);
-
-    undo->setIcon(QPixmap(THEME_DIR + "/icons/undo.png"));
-    redo->setIcon(QPixmap(THEME_DIR + "/icons/redo.png"));
-
-    kApp->insertGlobalAction(undo, "undo");
-    kApp->insertGlobalAction(redo, "redo");
-    */
+    toolbar->addAction(m_actionManager->find("saveproject"));
+    toolbar->addAction(m_actionManager->find("saveprojectas"));
+    toolbar->addAction(m_actionManager->find("closeproject"));
 }
 
 /**
