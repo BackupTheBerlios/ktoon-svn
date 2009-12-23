@@ -72,7 +72,6 @@ void KCellViewItemDelegate::paint(QPainter * painter, const QStyleOptionViewItem
 
     if (value.isValid()) {
         QBrush brush = qvariant_cast<QBrush>(value);
-
         if (brush.gradient()) {
             QMatrix m;
             m.translate(option.rect.topLeft().x(), option.rect.topLeft().y());
@@ -106,10 +105,9 @@ QSize KCellViewItemDelegate::sizeHint(const QStyleOptionViewItem & option, const
     QRect pixmapRect;
 
     if (model->data(index, Qt::DecorationRole).isValid())
-        pixmapRect = QRect(0, 0, option.decorationSize.width(),
+        pixmapRect = QRect(0, 0, option.decorationSize.width(), option.decorationSize.height());
 
-    option.decorationSize.height());
-    QFontMetrics fontMetrics(fnt);
+    //QFontMetrics fontMetrics(fnt);
 
     return (pixmapRect).size();
 }
@@ -208,7 +206,7 @@ void KCellView::addItem(KCellViewItem *item)
         insertColumn(columnCount());
 
     if (m_countColor % MAX_COLUMNS == 0) {
-        insertRow( rowCount() );
+        insertRow(rowCount());
         m_row++;
         m_col = 0;
     } else {
@@ -239,8 +237,9 @@ void KCellView::addItem(const QImage &i)
 
 void KCellView::wheelEvent(QWheelEvent *event)
 {
-    if (event->modifiers () == Qt::ControlModifier)
+    if (event->modifiers() == Qt::ControlModifier) {
         SHOW_VAR(event->delta());
-    else
+    } else {
         QTableWidget::wheelEvent(event);
+    }
 }
