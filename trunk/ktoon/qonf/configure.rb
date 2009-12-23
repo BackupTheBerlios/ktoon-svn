@@ -84,12 +84,11 @@ RQonf::Makefile::override( ARGV[0].to_s, "#{@destdir}", "#{@statusFile}" )
 		
 		Info.info << "Updating makefiles..." << $endl
 		
-		
 		@makefiles = Makefile::findMakefiles(Dir.getwd)
 		
 		@makefiles.each { |makefile|
-			Makefile::override(makefile, @destdir, @statusFile)
-		}
+	                   Makefile::override(makefile, @destdir, @statusFile)
+	        }
 	end
 	
 	private

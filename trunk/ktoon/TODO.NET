@@ -1,7 +1,3 @@
-
-* Implementar GUI para seleccionar usuarios que pueden participar en un proyecto
-* Crear un usuario por defecto y la estructura basica de la base de datos de usuarios en el servidor
-
-* Separar deshacer/rehacer por clientes
-
-
+* Create the GUI to select the users group for a net project
+* Create a default user and the basic structure for the users database in the server 
+* Separate undo/redo for every client

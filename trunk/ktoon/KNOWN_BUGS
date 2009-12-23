@@ -1,3 +1,5 @@
+FIRST: Translate all this into english... ok, at least try it
+
 - Revisar operaciones con componentes agrupados: library
 
 - Los grupos no guardan o cargan bien la matriz de transformacion
@@ -6,7 +8,6 @@
 - Dibujar el onion skin en un Z mas profundo
 - Cargar JPEGS
 - Mover frames en red
-
 
 - Algunas herramientas tienen punteros indefinidos cuando se cierra el proyecto (ej. select)+
 
@@ -17,7 +18,6 @@
 - En la herramienta de contornos, se necesita mover un nodo para que se dibujen los hijos +
 - Cuando el item se mueva, no poner nodos de rotar +
 
-
 - existe un crash en polyline dibujando lineas, cambiando de frames, seleccionando otra vez herramienta de polyline +
 - Se crean dos areas de dibujo cuando se crea un proyecto en red +
 - Revisar herramienta de lapiz +
@@ -25,6 +25,3 @@
 - Revisar operaciones con componentes agrupados: tweening +
 - Crash copiando y pegando items agrupados +
 - Cargar grupo +
-
-
-

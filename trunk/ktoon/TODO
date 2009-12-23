@@ -1,4 +1,3 @@
-
 - Tools -
 	* fill +
 	* selection
@@ -16,7 +15,6 @@
 	* Tweening +
 	* Library +
 
-
 - Store -
 	* Item
 		- Flip
@@ -28,9 +26,6 @@
 
 - General -
 	* Export to SVG
-	* Import to SVG
+	* Import from SVG
 	* Import Bitmaps +
-
-
-
 
