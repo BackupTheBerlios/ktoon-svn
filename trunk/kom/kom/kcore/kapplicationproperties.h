@@ -36,12 +36,14 @@ class K_CORE_EXPORT KApplicationProperties
         virtual ~KApplicationProperties();
 
     public:
+        void setShareDir(const QString &v);
         void setDataDir(const QString &v);
         void setHomeDir(const QString &v);
         void setThemeDir(const QString &v);
         void setCacheDir(const QString &v);
         void setVersion(const QString &v);
 
+        virtual QString shareDir() const;
         virtual QString dataDir() const;
         virtual QString homeDir() const;
         virtual QString themeDir() const;

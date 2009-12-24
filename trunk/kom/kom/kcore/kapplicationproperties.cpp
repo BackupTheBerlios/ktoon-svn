@@ -32,6 +32,7 @@ KApplicationProperties *KApplicationProperties::s_instance = 0;
 struct KApplicationProperties::Private
 {
     QString homeDir;
+    QString shareDir;
     QString dataDir;
     QString themeDir;
     QString version;
@@ -45,6 +46,11 @@ KApplicationProperties::KApplicationProperties() : k(new Private)
 KApplicationProperties::~KApplicationProperties()
 {
     delete k;
+}
+
+void KApplicationProperties::setShareDir(const QString &v)
+{
+    k->shareDir = v;
 }
 
 void KApplicationProperties::setDataDir(const QString &v)
@@ -72,15 +78,22 @@ void KApplicationProperties::setVersion(const QString &v)
     k->version = v;
 }
 
+QString KApplicationProperties::shareDir() const
+{
+    if (k->shareDir.isEmpty())
+        return k->homeDir;
+
+    return k->shareDir + "/";
+}
+
 QString KApplicationProperties::dataDir() const
 {
     if (k->dataDir.isEmpty()) {
         QString locale = QString(QLocale::system().name()).left(2);
-
         if (locale.length() < 2)
             locale = "en";
 
-        return k->homeDir + "/data/" + locale + "/";
+        return k->shareDir + "/data/" + locale + "/";
     }
 
     return k->dataDir;
@@ -94,7 +107,7 @@ QString KApplicationProperties::homeDir() const
 QString KApplicationProperties::themeDir() const
 {
     if (k->themeDir.isEmpty())
-        return k->homeDir + "/themes/default" + "/";
+        return k->shareDir + "/themes/default" + "/";
 
     return k->themeDir;
 }

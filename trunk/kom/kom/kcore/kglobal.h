@@ -35,6 +35,7 @@
 
 #include "kapplicationproperties.h"
 
+#define SHARE_DIR kAppProp->shareDir()
 #define DATA_DIR kAppProp->dataDir()
 #define THEME_DIR kAppProp->themeDir()
 #define HOME_DIR kAppProp->homeDir()

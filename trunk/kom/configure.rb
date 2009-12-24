@@ -46,11 +46,11 @@ end
 
     if conf.hasArgument?("with-debug")
        config.addDefine("K_DEBUG")
-       print "[ On ]\n"
+       print "[ ON ]\n"
     else
        config.addDefine("K_NODEBUG")
        config.addOption("silent")
-       print "[ Off ]\n"
+       print "[ OFF ]\n"
     end
 
     config.addDefine(%@KLIB_PREFIX='\\\\"'#{conf.destdir}'\\\\"'@)
