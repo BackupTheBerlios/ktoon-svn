@@ -126,10 +126,12 @@ int main(int argc, char ** argv)
 
    kAppProp->setThemeDir(SHARE_DIR + "themes/default" + "/");
 
+   /*
    kDebug() << "HOME_DIR: " << HOME_DIR;
    kDebug() << "SHARE_DIR: " << SHARE_DIR;
    kDebug() << "DATA_DIR: " << DATA_DIR;
    kDebug() << "THEME_DIR: " << THEME_DIR;
+   */
 
    // Setting the repository directory (where the projects are saved)
    application.createCache(KCONFIG->value("Cache").toString());

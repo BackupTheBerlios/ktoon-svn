@@ -140,7 +140,18 @@ class Configure
         if @options['sharedir'].nil? then
            @options['sharedir'] = @options['prefix'] + "/share"
         end
-        # here is where the ktoon launcher script must be created!
+        newfile = "#!/bin/bash\n\n"
+        newfile += "export KTOON_HOME=\"" + @options['prefix'] + "\"\n"
+        newfile += "export KTOON_SHARE=\"" + @options['sharedir'] + "\"\n"
+        newfile += "export KTOON_LIB=\"" + @options['libdir'] + "\"\n"
+        newfile += "export KTOON_INCLUDE=\"" + @options['includedir'] + "\"\n"
+        newfile += "export KTOON_BIN=\"" + @options['bindir'] + "\"\n\n"
+        newfile += "export LD_LIBRARY_PATH=\"\$\{KTOON_LIB\}:/usr/lib/kom/plugins:$LD_LIBRARY_PATH\"\n\n"
+        newfile += "exec ${KTOON_BIN}/ktoon.bin $*"
+
+        launcher = File.open("launcher/ktoon", "w") { |f|
+                   f << newfile
+        }
     end
 end
 end # module
