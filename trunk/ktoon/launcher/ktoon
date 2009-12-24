@@ -1,8 +1,11 @@
 #!/bin/bash
 
 export KTOON_HOME="/usr/local/ktoon"
-export KTOON_DATA="/usr/local/ktoon"
+export KTOON_SHARE="/usr/local/ktoon"
+export KTOON_LIB="/usr/local/ktoon/lib"
+export KTOON_INCLUDE="/usr/local/ktoon/include"
+export KTOON_BIN="/usr/local/ktoon/bin";
 
-export LD_LIBRARY_PATH="${KTOON_HOME}/lib:/usr/lib/kom/plugins:$LD_LIBRARY_PATH"
-exec ${KTOON_HOME}/bin/ktoon.bin $*
+export LD_LIBRARY_PATH="${KTOON_LIB}:/usr/lib/kom/plugins:$LD_LIBRARY_PATH"
 
+exec ${KTOON_BIN}/ktoon.bin $*
