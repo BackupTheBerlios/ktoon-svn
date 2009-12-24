@@ -81,7 +81,7 @@ void KApplicationProperties::setVersion(const QString &v)
 QString KApplicationProperties::shareDir() const
 {
     if (k->shareDir.isEmpty())
-        return k->homeDir;
+        return k->homeDir + "/share";
 
     return k->shareDir + "/";
 }
