@@ -79,7 +79,7 @@ end
     conf.createMakefiles
 
     conf.qmake.run
-    RQonf::Makefile::override("#{Dir.getwd}/Makefile", "", conf.statusFile)
+    RQonf::Makefile::override("#{Dir.getwd}/Makefile", "")
 
     puts %@ Note: Make sure "#{qonfdestdir}" is in your RUBYLIB@
 	

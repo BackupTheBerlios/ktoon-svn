@@ -8,10 +8,10 @@ require 'qonf/makefile'
 module RQonf
 
 class Configure
-    attr_reader :qmake, :statusFile, :destdir
+    attr_reader :qmake, :destdir
 
     def initialize(args)
-        @statusFile = Dir.getwd+"/configure.status"
+        #@statusFile = Dir.getwd + "/configure.status"
 
         @tests = []
         @testsDir = Dir.getwd
@@ -34,12 +34,12 @@ class Configure
            @destdir = File.expand_path(@options['prefix'])
         end
 
-        File.open(@statusFile, "w" ) { |file|
-                  file << %@
-    require 'qonf/makefile'
-    RQonf::Makefile::override( ARGV[0].to_s, "#{@destdir}", "#{@statusFile}" )
-    @
-        }
+        #File.open(@statusFile, "w" ) { |file|
+        #          file << %@
+        #require 'qonf/makefile'
+        #RQonf::Makefile::override( ARGV[0].to_s, "#{@destdir}", "#{@statusFile}" )
+        #@
+        #}
     end
 
     def hasArgument?(arg)
@@ -77,7 +77,7 @@ class Configure
                end
         }
     end
-	
+    
     def createMakefiles
         Info.info << "Creating makefiles..." << $endl
         @qmake.run("", true)
@@ -87,7 +87,7 @@ class Configure
         @makefiles = Makefile::findMakefiles(Dir.getwd)
 
         @makefiles.each { |makefile|
-                   Makefile::override(makefile, @destdir, @statusFile)
+                   Makefile::override(makefile, @destdir)
         }
     end
 

@@ -46,7 +46,7 @@ class DetectOS
                }
             end
         }
-		
+        
         Dir.chdir(cwd)
 
         if `uname`.downcase == "linux"

@@ -1,0 +1,126 @@
+cd kom/ && make -f Makefile install
+make[1]: Entering directory `/home/xtingray/tmp/kom/kom'
+cd kcore/ && make -f Makefile install
+make[2]: Entering directory `/home/xtingray/tmp/kom/kom/kcore'
+install -m 644 -p /home/xtingray/tmp/kom/kom/kcore/kalgorithm.h /tmp/test/include/kcore/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kcore/kapplicationproperties.h /tmp/test/include/kcore/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kcore/kaspellchecker.h /tmp/test/include/kcore/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kcore/kconfig.h /tmp/test/include/kcore/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kcore/kcpuinfo.h /tmp/test/include/kcore/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kcore/kdebug.h /tmp/test/include/kcore/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kcore/kfortunegenerator.h /tmp/test/include/kcore/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kcore/kglobal.h /tmp/test/include/kcore/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kcore/kmd5hash.h /tmp/test/include/kcore/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kcore/kspeller.h /tmp/test/include/kcore/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kcore/kspellhighlighter.h /tmp/test/include/kcore/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kcore/kspellinterface.h /tmp/test/include/kcore/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kcore/ktipdatabase.h /tmp/test/include/kcore/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kcore/kxmlparserbase.h /tmp/test/include/kcore/
+install -m 755 -p "libkcore.so.1.0.0" "/tmp/test/lib/libkcore.so.1.0.0"
+ln -sf "libkcore.so.1.0.0" "/tmp/test/lib/libkcore.so"
+ln -sf "libkcore.so.1.0.0" "/tmp/test/lib/libkcore.so.1"
+ln -sf "libkcore.so.1.0.0" "/tmp/test/lib/libkcore.so.1.0"
+install -m 644 -p "libkcore.prl" "/tmp/test/lib/libkcore.prl"
+make[2]: Leaving directory `/home/xtingray/tmp/kom/kom/kcore'
+cd ksound/ && make -f Makefile install
+make[2]: Entering directory `/home/xtingray/tmp/kom/kom/ksound'
+install -m 755 -p "libksound.so.1.0.0" "/tmp/test/lib/libksound.so.1.0.0"
+ln -sf "libksound.so.1.0.0" "/tmp/test/lib/libksound.so"
+ln -sf "libksound.so.1.0.0" "/tmp/test/lib/libksound.so.1"
+ln -sf "libksound.so.1.0.0" "/tmp/test/lib/libksound.so.1.0"
+install -m 644 -p /home/xtingray/tmp/kom/kom/ksound/kaudioengineiface.h /tmp/test/include/ksound/
+install -m 644 -p /home/xtingray/tmp/kom/kom/ksound/kaudioplayer.h /tmp/test/include/ksound/
+make[2]: Leaving directory `/home/xtingray/tmp/kom/kom/ksound'
+cd kgui/ && make -f Makefile install
+make[2]: Entering directory `/home/xtingray/tmp/kom/kom/kgui'
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/collapsiblewidget.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kaction.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kactionmanager.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kanimwidget.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kapplication.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kbuttonbar.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kcellview.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kcirclebutton.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kcirclebuttonbar.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kclicklineedit.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kcollapsiblewidget.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kcolorbutton.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kcommandhistory.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kconfigurationdialog.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kcontrolnode.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kdatepicker.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kdatetable.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kdatewidget.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kdoublecombobox.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kdualcolorbutton.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/keditspinbox.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kelabel.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kexportwizard.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kffmpegmoviegenerator.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kflashwidget.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kflatbutton.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kfontchooser.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kformfactory.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kformvalidator.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kideality.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kimagebutton.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kimageeffect.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kindicatordrawer.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kitemselector.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kmainwindow.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kmainwindowabstractsettings.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kmainwindowfactory.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kmoviegenerator.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kmoviegeneratorinterface.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/knodegroup.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/koptionaldialog.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kosd.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kpathhelper.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kradiobuttongroup.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/krulerbase.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kseparator.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/ksqueezelabel.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kstackedmainwindow.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kstylecombobox.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/ktabbedmainwindow.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/ktabdialog.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/ktabwidget.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kterm.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/ktermtab.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kthemedocument.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kthememanager.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/ktipdialog.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/ktoolbox.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/ktoolview.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/ktreelistwidget.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/ktreewidgetsearchline.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kvhbox.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kviewbutton.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kwaitstyle.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kwidgetlistview.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kwizard.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kworkspacemainwindow.h /tmp/test/include/kgui/
+install -m 644 -p /home/xtingray/tmp/kom/kom/kgui/kxyspinbox.h /tmp/test/include/kgui/
+install -m 755 -p "libkgui.so.1.0.0" "/tmp/test/lib/libkgui.so.1.0.0"
+ln -sf "libkgui.so.1.0.0" "/tmp/test/lib/libkgui.so"
+ln -sf "libkgui.so.1.0.0" "/tmp/test/lib/libkgui.so.1"
+ln -sf "libkgui.so.1.0.0" "/tmp/test/lib/libkgui.so.1.0"
+make[2]: Leaving directory `/home/xtingray/tmp/kom/kom/kgui'
+cd plugins/ && make -f Makefile install
+make[2]: Entering directory `/home/xtingray/tmp/kom/kom/plugins'
+cd kgstengine/ && make -f Makefile install
+make[3]: Entering directory `/home/xtingray/tmp/kom/kom/plugins/kgstengine'
+install -m 755 -p "libkgstengine.so" "/tmp/test/lib/kom/plugins/libkgstengine.so"
+make[3]: Leaving directory `/home/xtingray/tmp/kom/kom/plugins/kgstengine'
+make[2]: Leaving directory `/home/xtingray/tmp/kom/kom/plugins'
+make[1]: Leaving directory `/home/xtingray/tmp/kom/kom'
+install -m 644 -p /home/xtingray/tmp/kom/qonf/config.rb /tmp/test/qonf/
+install -m 644 -p /home/xtingray/tmp/kom/qonf/configure.rb /tmp/test/qonf/
+install -m 644 -p /home/xtingray/tmp/kom/qonf/detectos.rb /tmp/test/qonf/
+install -m 644 -p /home/xtingray/tmp/kom/qonf/extensions.rb /tmp/test/qonf/
+install -m 644 -p /home/xtingray/tmp/kom/qonf/info.rb /tmp/test/qonf/
+install -m 644 -p /home/xtingray/tmp/kom/qonf/komconfig.rb /tmp/test/qonf/
+install -m 644 -p /home/xtingray/tmp/kom/qonf/makefile.rb /tmp/test/qonf/
+install -m 644 -p /home/xtingray/tmp/kom/qonf/qmake.rb /tmp/test/qonf/
+install -m 644 -p /home/xtingray/tmp/kom/qonf/qonfexception.rb /tmp/test/qonf/
+install -m 644 -p /home/xtingray/tmp/kom/qonf/test.rb /tmp/test/qonf/

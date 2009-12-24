@@ -16,7 +16,7 @@ class QMake
         @make = "make"
     end
 
-    # This method check if the current version of Qt is valid for KToon compilation	
+    # This method check if the current version of Qt is valid for KToon compilation    
     def findQMake(minqtversion, verbose)
         close_stderr
         qtversion = ""
@@ -60,7 +60,7 @@ class QMake
                             if flag 
                                @path = path
                                open_stderr
-                               break	
+                               break    
                             end
                          end
                      end

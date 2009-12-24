@@ -20,33 +20,26 @@ module RQonf
             makefiles
         end
 
-        def self.override(makefile, destdir, statusFile)
+        def self.override(makefile, destdir)
             newmakefile = ""
-
-            ruby_bin = "#{::Config::CONFIG["bindir"]}/#{::Config::CONFIG["ruby_install_name"]}"
-
             File.open(makefile, "r") { |f|
-                 lines = f.readlines
-
-                 index = 0
-                 while index < lines.size
-                       line = lines[index]
-
-                       if line =~ /^\s+\$\(QMAKE\)/
-                          newmakefile += line
-                          newmakefile += "\t#{ruby_bin} #{statusFile} #{makefile}\n"
-                          index += 1
-                       else
-                          newmakefile += "#{line.gsub( /\$\(INSTALL_ROOT\)/, destdir )}"
-                       end
-
-                       index += 1
-                 end
+                      lines = f.readlines
+                      index = 0
+                      while index < lines.size
+                            line = lines[index]
+                            if line.include? "INSTALL_ROOT" then
+                               newmakefile += "#{line.gsub( /\$\(INSTALL_ROOT\)/, destdir)}"
+                            else
+                               newmakefile += line
+                            end
+                            index += 1
+                      end
             }
 
             File.open(makefile, "w") { |f|
-                 f << newmakefile
+                f << newmakefile
             }
+
         end
     end
 end

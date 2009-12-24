@@ -73,7 +73,7 @@ class Config
             end
         }
     end
-	
+    
     private
         class Scope
             def initialize(name)
@@ -88,7 +88,7 @@ class Config
             def to_s
                 ret = "#{@name} {\n"
                        @variables.each { |key, val|
-                       ret += "	#{key} = #{val}\n"
+                       ret += "    #{key} = #{val}\n"
                 }
                 ret += "}\n"
                 ret
