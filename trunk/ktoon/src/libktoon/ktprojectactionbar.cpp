@@ -120,7 +120,7 @@ void KTProjectActionBar::setup(Actions actions)
 	
 	if ( actions & InsertFrame )
 	{
-		KImageButton *button = new KImageButton(QIcon(THEME_DIR+"/icons/add_frame.png" ), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/add_frame.png" ), size);
 		button->setToolTip(tr("Insert frame") );
 		
 		button->setShortcut(QKeySequence(Qt::Key_Plus));
@@ -134,7 +134,7 @@ void KTProjectActionBar::setup(Actions actions)
 	
 	if ( actions & RemoveFrame )
 	{
-		KImageButton *button = new KImageButton(QIcon(THEME_DIR+"/icons/remove_frame.png"), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/remove_frame.png"), size);
 		button->setToolTip(tr("Remove the frame"));
 		
 		k->actions.addButton(button, RemoveFrame);
@@ -148,7 +148,7 @@ void KTProjectActionBar::setup(Actions actions)
 	 
 	if ( actions & MoveFrameUp )
 	{
-		KImageButton *button = new KImageButton(QIcon(THEME_DIR+"/icons/move_frame_up.png"), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_frame_up.png"), size);
 		button->setToolTip( tr("Move frame up"));
 		
 		k->actions.addButton(button, MoveFrameUp);
@@ -160,7 +160,7 @@ void KTProjectActionBar::setup(Actions actions)
 	
 	if ( actions & MoveFrameDown )
 	{
-		KImageButton *button = new KImageButton(QIcon(THEME_DIR+"/icons/move_frame_down.png"), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_frame_down.png"), size);
 		button->setToolTip(tr("Move frame down") );
 		
 		k->actions.addButton( button, MoveFrameDown);
@@ -172,7 +172,7 @@ void KTProjectActionBar::setup(Actions actions)
 	
 	if ( actions & LockFrame )
 	{
-		KImageButton *button = new KImageButton(QIcon(HOME_DIR+"/themes/default/icons/kilit_pic.png"), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/kilit_pic.png"), size);
 		button->setToolTip(tr("Lock frame") );
 		
 		k->actions.addButton( button, LockFrame);
@@ -183,7 +183,7 @@ void KTProjectActionBar::setup(Actions actions)
 	
 	if ( actions & InsertLayer )
 	{
-		KImageButton *button = new KImageButton(QIcon(HOME_DIR+"/themes/default/icons/add_layer.png"), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/add_layer.png"), size);
 		button->setToolTip(tr("Insert a layer"));
 		
 		k->actions.addButton(button, InsertLayer);
@@ -194,7 +194,7 @@ void KTProjectActionBar::setup(Actions actions)
 	 
 	if ( actions & RemoveLayer )
 	{
-		KImageButton *button = new KImageButton(QIcon( HOME_DIR+"/themes/default/icons/remove_layer.png"), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/remove_layer.png"), size);
 		button->setToolTip(tr("Remove the layer"));
 		
 		k->actions.addButton(button, RemoveLayer);
@@ -241,7 +241,7 @@ void KTProjectActionBar::setup(Actions actions)
 	
 	if ( actions & InsertScene )
 	{
-		KImageButton *button = new KImageButton(QIcon( HOME_DIR+"/themes/default/icons/add_scene.png"), size);  // TODO
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/add_scene.png"), size);  // TODO
 		
 		button->setToolTip(tr("Insert a scene"));
 		
@@ -253,7 +253,7 @@ void KTProjectActionBar::setup(Actions actions)
 	 
 	if ( actions & RemoveScene )
 	{
-		KImageButton *button = new KImageButton(QIcon( THEME_DIR+"/icons/remove_scene.png" ), size);  // TODO
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/remove_scene.png"), size);  // TODO
 		
 		button->setToolTip(tr("Remove the scene"));
 		k->actions.addButton(button, RemoveScene);
@@ -264,9 +264,9 @@ void KTProjectActionBar::setup(Actions actions)
 	 
 	if ( actions & MoveSceneUp )
 	{
-		KImageButton *button = new KImageButton(QIcon( THEME_DIR+"/icons/move_scene_up.png" ), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_scene_up.png" ), size);
 		
-		button->setToolTip(tr("Move scene up")  );
+		button->setToolTip(tr("Move scene up"));
 		
 		k->actions.addButton(button, MoveSceneUp);
 		
@@ -276,7 +276,7 @@ void KTProjectActionBar::setup(Actions actions)
 	 
 	if ( actions & MoveSceneDown )
 	{
-		KImageButton *button = new KImageButton(QIcon(THEME_DIR+"/icons/move_scene_down.png" ), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_scene_down.png" ), size);
 		
 		button->setToolTip( tr("Move scene down"));
 		
@@ -288,7 +288,7 @@ void KTProjectActionBar::setup(Actions actions)
 	
 	if ( actions & LockScene )
 	{
-		KImageButton *button = new KImageButton(QIcon( THEME_DIR+"/icons/lock_scene.png"), size);
+		KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/lock_scene.png"), size);
 		button->setToolTip(tr("Lock scene") );
 		
 		k->actions.addButton( button, LockScene );

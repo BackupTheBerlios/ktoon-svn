@@ -52,7 +52,7 @@ KTExposureSheet::KTExposureSheet(QWidget *parent) : KTModuleWidgetBase(parent, "
 
     k->currentTable = 0;
     setWindowTitle(tr("Exposure Sheet"));
-    setWindowIcon(QPixmap(THEME_DIR + "/icons/exposure_sheet.png"));
+    setWindowIcon(QPixmap(THEME_DIR + "icons/exposure_sheet.png"));
 
     k->actionBar = new KTProjectActionBar( KTProjectActionBar::InsertLayer |
                         KTProjectActionBar::RemoveLayer |

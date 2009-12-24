@@ -108,7 +108,9 @@ void KTMainWindow::createGUI()
 
     // Adding the help widget to the right side of the interface
 
-    m_helper = new KTHelpWidget(HOME_DIR + "data/help/");
+    kDebug() << "SHARE_DIR: " << SHARE_DIR;
+
+    m_helper = new KTHelpWidget(SHARE_DIR + "data/help/");
     helpView = addToolView(m_helper, Qt::RightDockWidgetArea, All);
     m_actionManager->insert(helpView->toggleViewAction(), "show help");
 

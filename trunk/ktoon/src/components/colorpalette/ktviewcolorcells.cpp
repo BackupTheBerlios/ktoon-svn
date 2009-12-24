@@ -128,8 +128,8 @@ void KTViewColorCells::setupForm()
         k->containerPalette->setCurrentIndex(lastIndex);
     }
 	
-    readPalettes(HOME_DIR+"/data/palettes"); // Pre-installed
-    readPalettes(CONFIG_DIR+"/palettes"); // Locals
+    readPalettes(SHARE_DIR + "data/palettes"); // Pre-installed
+    readPalettes(CONFIG_DIR + "/palettes"); // Locals
 }
 
 void KTViewColorCells::readPalettes(const QString &paletteDir)
@@ -144,7 +144,7 @@ void KTViewColorCells::readPalettes(const QString &paletteDir)
         QStringList::ConstIterator it = files.begin();
 
         while (it != files.end()) {
-               readPaletteFile(dir.path()+"/"+*it);
+               readPaletteFile(dir.path() + "/" + *it);
                ++it;
         }
     }
@@ -296,11 +296,11 @@ void KTViewColorCells::addCurrentColor()
             if (15 <= k->currentColor.style() && k->currentColor.style() < 18) {
                 palette = k->customGradientPalette;
                 k->chooserPalette->setCurrentIndex( k->chooserPalette->findText ( k->customGradientPalette->name()));
-                k->containerPalette->setCurrentWidget ( k->customGradientPalette );
+                k->containerPalette->setCurrentWidget(k->customGradientPalette);
             } else {
                 palette = k->customColorPalette;
-                k->chooserPalette->setCurrentIndex( k->chooserPalette->findText ( k->customColorPalette->name()));
-                k->containerPalette->setCurrentWidget ( k->customColorPalette );
+                k->chooserPalette->setCurrentIndex(k->chooserPalette->findText(k->customColorPalette->name()));
+                k->containerPalette->setCurrentWidget(k->customColorPalette);
             }
         }
         palette->addItem(k->currentColor);
@@ -312,7 +312,7 @@ void KTViewColorCells::removeCurrentColor()
      KCellView *palette = qobject_cast<KCellView *>(k->containerPalette->currentWidget());
      if (palette) {
           if (k->defaultPalette != palette) {
-              //TODO: implementar en KCellView removeItem
+              //TODO: Add function removeItem in KCellView
           }
      }
 }
@@ -326,12 +326,12 @@ void KTViewColorCells::setupButtons()
 
     containerButtons->setLayout(bLayout);
 
-    KImageButton *addItem = new KImageButton( QPixmap(THEME_DIR  + "/icons/plussign.png" ) , 22);
+    KImageButton *addItem = new KImageButton( QPixmap(THEME_DIR  + "icons/plussign.png") , 22);
     connect( addItem, SIGNAL( clicked() ), SLOT( addCurrentColor() ));
     addItem->setToolTip(tr( "Add Color" ));
     bLayout->addWidget(addItem);
 
-    KImageButton *removeColor = new KImageButton( QPixmap( THEME_DIR + "/icons/minussign.png"), 22);
+    KImageButton *removeColor = new KImageButton( QPixmap(THEME_DIR + "icons/minussign.png"), 22);
     connect( removeColor, SIGNAL( clicked() ), SLOT( removeCurrentColor() ) );
     removeColor->setToolTip(tr( "Remove Color" ));
     bLayout->addWidget(removeColor);

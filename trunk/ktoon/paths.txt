@@ -1,0 +1,100 @@
+KTOON_SHARE/themes/default/*
+/home/xtingray/tmp/ktoon/src/themes
+/home/xtingray/tmp/ktoon/src/themes/default/icons -> /tmp/ktoon/themes/default/icons/
+/home/xtingray/tmp/ktoon/src/themes/default/cursors -> /tmp/ktoon/themes/default/cursors/
+/home/xtingray/tmp/ktoon/src/themes/default/images -> /tmp/ktoon/themes/default/images/
+
+KTOON_INCLUDE
+/home/xtingray/tmp/ktoon/src/libktoon -> /tmp/ktoon/include/ktoon/
+
+KTOON_LIB
+install -m 755 -p "libktoon.so.1.0.0" "/tmp/ktoon/lib/libktoon.so.1.0.0"
+ln -sf "libktoon.so.1.0.0" "/tmp/ktoon/lib/libktoon.so"
+ln -sf "libktoon.so.1.0.0" "/tmp/ktoon/lib/libktoon.so.1"
+ln -sf "libktoon.so.1.0.0" "/tmp/ktoon/lib/libktoon.so.1.0"
+
+KTOON_INCLUDE
+/home/xtingray/tmp/ktoon/src/store -> /tmp/ktoon/include/store/
+
+KTOON_LIB
+install -m 755 -p "libstore.so.1.0.0" "/tmp/ktoon/lib/libstore.so.1.0.0"
+ln -sf "libstore.so.1.0.0" "/tmp/ktoon/lib/libstore.so"
+ln -sf "libstore.so.1.0.0" "/tmp/ktoon/lib/libstore.so.1"
+ln -sf "libstore.so.1.0.0" "/tmp/ktoon/lib/libstore.so.1.0"
+
+KTOON_INCLUDE
+/home/xtingray/tmp/ktoon/src/libbase -> /tmp/ktoon/include/base/
+
+KTOON_LIB
+install -m 755 -p "libktbase.so.1.0.0" "/tmp/ktoon/lib/libktbase.so.1.0.0"
+ln -sf "libktbase.so.1.0.0" "/tmp/ktoon/lib/libktbase.so"
+ln -sf "libktbase.so.1.0.0" "/tmp/ktoon/lib/libktbase.so.1"
+ln -sf "libktbase.so.1.0.0" "/tmp/ktoon/lib/libktbase.so.1.0"
+
+KTOON_SHARE/data/*
+/home/xtingray/tmp/ktoon/src/libktui/images/es ->  /tmp/ktoon/data/es/images/
+/home/xtingray/tmp/ktoon/src/libktui/images/en ->  /tmp/ktoon/data/en/images/
+
+KTOON_SHARE/data/*
+/home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/ -> /tmp/ktoon/data/palettes/
+/home/xtingray/tmp/ktoon/src/components/help/help -> /tmp/ktoon/data/
+/home/xtingray/tmp/ktoon/src/shell/data/en -> /tmp/ktoon/data/
+/home/xtingray/tmp/ktoon/src/shell/data/es -> /tmp/ktoon/data/
+/home/xtingray/tmp/ktoon/src/shell/data/translations -> /tmp/ktoon/data/
+
+KTOON_BIN
+install -m 755 -p "../../bin/ktoon.bin" "/tmp/ktoon/bin/ktoon.bin"
+
+KTOON_SHARE/plugins 
+/home/xtingray/tmp/ktoon/src/plugins/export/genericexportplugin 
+install -m 755 -p "libgenericexportplugin.so" "/tmp/ktoon/plugins/libgenericexportplugin.so
+
+KTOON_SHARE/plugins
+/home/xtingray/tmp/ktoon/src/plugins/export/smilexportplugin
+install -m 755 -p "libsmilexportplugin.so" "/tmp/ktoon/plugins/libsmilexportplugin.so"
+
+KTOON_SHARE/plugins
+/home/xtingray/tmp/ktoon/src/plugins/export/ffmpegplugin
+install -m 755 -p "libffmpegplugin.so" "/tmp/ktoon/plugins/libffmpegplugin.so"
+
+KTOON_SHARE/plugins
+/home/xtingray/tmp/ktoon/src/plugins/tools/brush
+install -m 755 -p "libbrush.so" "/tmp/ktoon/plugins/libbrush.so"
+
+KTOON_SHARE/plugins
+/home/xtingray/tmp/ktoon/src/plugins/tools/select
+install -m 755 -p "libselect.so" "/tmp/ktoon/plugins/libselect.so"
+
+KTOON_SHARE/plugins
+/home/xtingray/tmp/ktoon/src/plugins/tools/contourselection
+install -m 755 -p "libcontourselection.so" "/tmp/ktoon/plugins/libcontourselection.so"
+
+KTOON_SHARE/plugins
+/home/xtingray/tmp/ktoon/src/plugins/tools/text
+install -m 755 -p "libtext.so" "/tmp/ktoon/plugins/libtext.so"
+
+KTOON_SHARE/plugins
+/home/xtingray/tmp/ktoon/src/plugins/tools/geometrictool
+install -m 755 -p "libgeometrictool.so" "/tmp/ktoon/plugins/libgeometrictool.so"
+
+KTOON_SHARE/plugins
+/home/xtingray/tmp/ktoon/src/plugins/tools/viewtool
+install -m 755 -p "libviewtool.so" "/tmp/ktoon/plugins/libviewtool.so"
+
+KTOON_SHARE/plugins
+/home/xtingray/tmp/ktoon/src/plugins/tools/filltool
+install -m 755 -p "libfilltool.so" "/tmp/ktoon/plugins/libfilltool.so"
+
+KTOON_SHARE/plugins
+/home/xtingray/tmp/ktoon/src/plugins/tools/erasertool
+install -m 755 -p "liberasertool.so" "/tmp/ktoon/plugins/liberasertool.so"
+
+KTOON_SHARE/plugins
+/home/xtingray/tmp/ktoon/src/plugins/tools/polyline
+install -m 755 -p "libpolyline.so" "/tmp/ktoon/plugins/libpolyline.so"
+
+KTOON_SHARE/plugins
+/home/xtingray/tmp/ktoon/src/plugins/tools/tweenertranslate
+install -m 755 -p "libtweenertranslate.so" "/tmp/ktoon/plugins/libtweenertranslate.so"
+
+

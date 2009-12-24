@@ -3,8 +3,11 @@
 # Subdir relative project main directory: ./src/plugins/export/ffmpegplugin
 # Target is a library:  
 
-INSTALLS += target 
 target.path = /plugins/ 
+INSTALLS += target
+
+INSTALL_ROOT = /tmp/test
+
 KDEV_QTVER = 4 
 
 include(../export_config.pri)

@@ -58,8 +58,8 @@ KTLayerManagerHeader::KTLayerManagerHeader(QWidget * parent ) : QHeaderView(Qt::
 	setClickable(true);
 	setCascadingSectionResizes(true);
 	
-	m_lockIcon = QPixmap(THEME_DIR+"/icons/lock.png");
-	m_viewIcon = QPixmap(THEME_DIR+"/icons/show_hide_all_layers.png");
+	m_lockIcon = QPixmap(THEME_DIR + "icons/lock.png");
+	m_viewIcon = QPixmap(THEME_DIR + "icons/show_hide_all_layers.png");
 }
 
 

@@ -56,17 +56,17 @@ bool KTApplication::firstRun()
     QRect size = firstDialog->frameGeometry();
     int configH = size.height();
     int configW = size.width(); 
-    firstDialog->move((screenW-configW)/2,(screenH-configH)/2);
+    firstDialog->move((screenW-configW)/2, (screenH-configH)/2);
 
     QApplication::setActiveWindow(firstDialog);
 
     if (firstDialog->exec() != QDialog::Rejected) {
-        kAppProp->setHomeDir( firstDialog->home() );
+        kAppProp->setHomeDir(firstDialog->home());
         createCache(firstDialog->cache());
 
         KCONFIG->beginGroup("General");
-        KCONFIG->setValue( "Home", HOME_DIR);
-        KCONFIG->setValue( "Cache", CACHE_DIR);
+        KCONFIG->setValue("Home", HOME_DIR);
+        KCONFIG->setValue("Cache", CACHE_DIR);
         KCONFIG->sync();
 
         delete firstDialog;

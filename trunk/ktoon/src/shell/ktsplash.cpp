@@ -37,7 +37,7 @@
 
 KTSplash::KTSplash() : QSplashScreen(0), m_size(3), m_state(0), m_position(0)
 {
-    QImage image(THEME_DIR+"/images/splash.png");
+    QImage image(THEME_DIR + "images/splash.png");
     setPixmap(QPixmap::fromImage(image));
     m_version = tr("Version ")+kAppProp->version();
 

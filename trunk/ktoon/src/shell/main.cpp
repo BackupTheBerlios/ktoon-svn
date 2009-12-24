@@ -117,6 +117,20 @@ int main(int argc, char ** argv)
 
    kAppProp->setHomeDir(KCONFIG->value("Home").toString());
 
+   kAppProp->setShareDir(QString::fromLocal8Bit(::getenv("KTOON_SHARE")));
+
+   QString locale = QString(QLocale::system().name()).left(2);
+   if (locale.length() < 2)
+       locale = "en";
+   kAppProp->setDataDir(SHARE_DIR + "data/" + locale + "/");
+
+   kAppProp->setThemeDir(SHARE_DIR + "themes/default" + "/");
+
+   kDebug() << "HOME_DIR: " << HOME_DIR;
+   kDebug() << "SHARE_DIR: " << SHARE_DIR;
+   kDebug() << "DATA_DIR: " << DATA_DIR;
+   kDebug() << "THEME_DIR: " << THEME_DIR;
+
    // Setting the repository directory (where the projects are saved)
    application.createCache(KCONFIG->value("Cache").toString());
 
@@ -126,7 +140,7 @@ int main(int argc, char ** argv)
        if (! application.firstRun()) {
            // If dialog is canceled or KToon can not be configured, kill the whole application
            #ifdef K_DEBUG
-                  kFatal () << "**********************You need configure the application" << endl;
+                  kFatal () << "********************* You need configure the application" << endl;
            #endif
 
            QMessageBox::critical(0, QObject::tr("Missing..."), 
@@ -149,18 +163,14 @@ int main(int argc, char ** argv)
     if (! themefile.isEmpty()) 
         application.applyTheme(themefile);
 
-    // Loading localization files... now you got KToon in your native language	
-    QString locale = QString(QLocale::system().name()).left(2);
-
-    if (locale.length() < 2)
-        locale = "en";
+    // Loading localization files... now you got KToon in your native language
 
     QTranslator *qttranslator = new QTranslator(&application);
-    qttranslator->load(QString("qt_") + locale, HOME_DIR + "data/translations");
+    qttranslator->load(QString("qt_") + locale, SHARE_DIR + "data/translations");
     application.installTranslator(qttranslator);
 
     QTranslator *translator = new QTranslator(&application);
-    translator->load(QString("ktoon_")+locale,  HOME_DIR + "data/translations");
+    translator->load(QString("ktoon_")+locale,  SHARE_DIR + "data/translations");
     application.installTranslator(translator);
 
     // Time to show the KToon initial splash 
@@ -179,9 +189,9 @@ int main(int argc, char ** argv)
 
     // Looking for plugins for KToon
     #ifdef K_DEBUG
-           kWarning() << "Loading plugins from: " << HOME_DIR << " + plugins";
+           kWarning() << "Loading plugins from: " << SHARE_DIR << " + plugins";
     #endif
-    QApplication::addLibraryPath (HOME_DIR + "plugins");
+    QApplication::addLibraryPath (SHARE_DIR + "plugins");
 
     // Loading visual components required for the Crash Handler
     #ifdef Q_OS_UNIX

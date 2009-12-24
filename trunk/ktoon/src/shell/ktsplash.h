@@ -71,7 +71,7 @@ class KTSplash : public QSplashScreen
          QTimer *m_timer;
 
     protected:
-         void drawContents ( QPainter * painter );
+         void drawContents(QPainter * painter);
 };
 
 #endif

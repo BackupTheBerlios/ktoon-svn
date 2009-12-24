@@ -93,7 +93,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) :
 
     // Loading audio player plugin
     KAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: Move this to the settings 
-
     setObjectName("KTMainWindow_");
 
     // Defining the status bar

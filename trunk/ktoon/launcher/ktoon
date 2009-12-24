@@ -1,6 +1,8 @@
 #!/bin/bash
 
 export KTOON_HOME="/usr/local/ktoon"
+export KTOON_DATA="/usr/local/ktoon"
+
 export LD_LIBRARY_PATH="${KTOON_HOME}/lib:/usr/lib/kom/plugins:$LD_LIBRARY_PATH"
 exec ${KTOON_HOME}/bin/ktoon.bin $*
 

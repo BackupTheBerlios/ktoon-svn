@@ -5,68 +5,72 @@ require 'qonf/info'
 require 'qonf/komconfig'
 
 begin
-	conf = RQonf::Configure.new(ARGV)
+    conf = RQonf::Configure.new(ARGV)
 
-	if conf.hasArgument?("help") or conf.hasArgument?("h")
-		puts <<_EOH_
-Use: #{$0} [options]
-	options:
-		--help, -h:					Show this message
-		--prefix=[prefix], -prefix [prefix]:		Sets prefix
-		--with-debug:					Enable debug
+    if conf.hasArgument?("help") or conf.hasArgument?("h")
+        puts <<_EOH_
+Use: ./configure [options]
+    options:
+        --help, -h:                             Show this message
+        --prefix=[path], -prefix [path]:        Sets installation path [/usr/local]
+        --bindir=[path], -bindir [path]:        Set binaries path [/usr/local/bin]
+        --libdir=[path], -libdir [path]:        Set library path [/usr/local/lib]
+        --includedir=path], -includedir [path]: Set include path [/usr/local/include]
+        --sharedir=path], -share [path]:        Set data path [/usr/local/share]
+        --with-debug:                           Enable debug
 _EOH_
-		exit 0
-	end
+        exit 0
+    end
 
-	conf.setTestDir("configure.tests")
-	conf.verifyQtVersion("4.5.0")
-	conf.createTests
-	
-	config = RQonf::Config.new
-	
-	conf.runTests(config)
+    conf.setTestDir("configure.tests")
+    conf.verifyQtVersion("4.5.0")
+    conf.createTests
+    
+    config = RQonf::Config.new
+    
+    conf.runTests(config)
 
-	config.addModule("core")
-	config.addModule("gui")
-	config.addModule("svg")
-	config.addModule("xml")
-	config.addModule("network")
+    config.addModule("core")
+    config.addModule("gui")
+    config.addModule("svg")
+    config.addModule("xml")
+    config.addModule("network")
 
-	config.addLib("-lkgui")
-	config.addLib("-lkcore")
-	config.addLib("-lksound")
-        config.addLib("-lz")
-	
-	config.addLib("-L#{RQonf::CONFIG["libdir"]}")
-	config.addIncludePath(RQonf::CONFIG["includepath"])
-	
-	config.addDefine("VERSION=0.9a")
-	config.addDefine('VERSION_STR=\\\\\"0.9a+Phoenix\\\\\"')
+    config.addLib("-lkgui")
+    config.addLib("-lkcore")
+    config.addLib("-lksound")
+    config.addLib("-lz")
+    
+    config.addLib("-L#{RQonf::CONFIG["libdir"]}")
+    config.addIncludePath(RQonf::CONFIG["includepath"])
+    
+    config.addDefine("VERSION=0.9a")
+    config.addDefine('VERSION_STR=\\\\\"0.9a+Phoenix\\\\\"')
 
         Info.info << "Debug support... "
 
         if conf.hasArgument?("with-debug")
            config.addDefine("K_DEBUG")
-           print "[ On ]\n"
+           print "[ ON ]\n"
         else
            config.addDefine("K_NODEBUG")
            config.addOption("silent")
-           print "[ Off ]\n"
+           print "[ OFF ]\n"
         end
-	
-	unix = config.addScope("unix")
-	unix.addVariable("MOC_DIR", ".moc")
-	unix.addVariable("UI_DIR", ".ui")
-	unix.addVariable("OBJECTS_DIR", ".obj")
+    
+    unix = config.addScope("unix")
+    unix.addVariable("MOC_DIR", ".moc")
+    unix.addVariable("UI_DIR", ".ui")
+    unix.addVariable("OBJECTS_DIR", ".obj")
 
- 	# The file ktconfig.pri contains all the global variables for the compilation process		
-	config.save("ktconfig.pri")
-	conf.createMakefiles
-	
+     # The file ktconfig.pri contains all the global variables for the compilation process        
+    config.save("ktconfig.pri")
+    conf.createMakefiles
+    
 rescue => err
-	Info.error << "Configure failed. error was: #{err.message}\n"
-	if $DEBUG
-		puts err.backtrace
-	end
+    Info.error << "Configure failed. error was: #{err.message}\n"
+    if $DEBUG
+        puts err.backtrace
+    end
 end
 

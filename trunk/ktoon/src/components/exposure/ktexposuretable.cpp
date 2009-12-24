@@ -240,7 +240,7 @@ void KTExposureHeader::paintSection (QPainter * painter, const QRect & rect, int
     /*
     int pxWidth = 0;
     if (m_layers[logicalIndex].isLocked) {
-        QPixmap pixmap(HOME_DIR + "/themes/default/icons/kilit_pic.png");
+        QPixmap pixmap(THEME_DIR + "icons/kilit_pic.png");
         //painter->drawPixmap(x+fm.width(text)+3, 3, pixmap);
         painter->drawPixmap(x+15, 3, pixmap);
         //pxWidth =  pixmap.width();
@@ -283,7 +283,7 @@ void KTExposureItemDelegate::paint( QPainter *painter, const QStyleOptionViewIte
     if (item) {
 
         //if (item->data(KTExposureTable::IsLocked).toBool()) {
-        //     QPixmap pixmap(HOME_DIR + "/themes/default/icons/kilit_pic.png");
+        //     QPixmap pixmap(THEME_DIR + "icons/kilit_pic.png");
         //     painter->drawPixmap(1, 5, pixmap);
         //} else 
 

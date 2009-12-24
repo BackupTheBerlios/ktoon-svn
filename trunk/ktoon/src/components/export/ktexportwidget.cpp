@@ -401,7 +401,7 @@ ExportTo::ExportTo(const KTProject *project, const KTExportWidget *kt) : KExport
     filePathLayout->addWidget(m_filePath);
 
     QToolButton *button = new QToolButton;
-    button->setIcon(QIcon(THEME_DIR+"/icons/open.png"));
+    button->setIcon(QIcon(THEME_DIR + "icons/open.png"));
     connect(button, SIGNAL(clicked()), this, SLOT(chooseFile()));
     filePathLayout->addWidget(button);
 
@@ -606,7 +606,7 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KExp
     #endif
 
     setWindowTitle(tr("Export"));
-    setWindowIcon(QIcon(THEME_DIR + "/icons/export.png"));
+    setWindowIcon(QIcon(THEME_DIR + "icons/export.png"));
 
     m_pluginSelectionPage = new SelectPlugin();
     addPage(m_pluginSelectionPage);
@@ -636,7 +636,7 @@ KTExportWidget::~KTExportWidget()
 
 void KTExportWidget::loadPlugins()
 {
-    QDir pluginDirectory = QDir(HOME_DIR+"/plugins/");
+    QDir pluginDirectory = QDir(SHARE_DIR + "/plugins/");
 
     foreach (QString fileName, pluginDirectory.entryList(QDir::Files)) {
              QPluginLoader loader(pluginDirectory.absoluteFilePath(fileName));

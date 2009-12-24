@@ -46,14 +46,14 @@ struct KTScenesWidget::Private
     KTScenesList *tableScenes;
 };
 
-KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "KTScenesWidget"), k(new Private)
+KTScenesWidget::KTScenesWidget(QWidget *parent) : KTModuleWidgetBase(parent, "KTScenesWidget"), k(new Private)
 {
     #ifdef K_DEBUG
            KINIT;
     #endif
 
     setWindowTitle(tr("Scenes Manager"));
-    setWindowIcon(QPixmap(THEME_DIR + "/icons/scenes.png"));
+    setWindowIcon(QPixmap(THEME_DIR + "icons/scenes.png"));
     setupButtons();
     setupTableScenes();
 }
@@ -69,8 +69,8 @@ KTScenesWidget::~KTScenesWidget()
 void KTScenesWidget::setupButtons()
 {
     KTProjectActionBar *bar = new KTProjectActionBar(KTProjectActionBar::InsertScene | KTProjectActionBar::RemoveScene );
-    bar->button(KTProjectActionBar::InsertScene)->setIcon(QIcon(HOME_DIR+"/themes/default/icons/plussign.png" ));
-    bar->button(KTProjectActionBar::RemoveScene)->setIcon(QIcon(HOME_DIR+"/themes/default/icons/minussign.png" ));
+    bar->button(KTProjectActionBar::InsertScene)->setIcon(QIcon(THEME_DIR + "icons/plussign.png"));
+    bar->button(KTProjectActionBar::RemoveScene)->setIcon(QIcon(THEME_DIR + "icons/minussign.png"));
 
     connect(bar, SIGNAL(actionSelected( int )), this, SLOT(sendEvent(int)));
 

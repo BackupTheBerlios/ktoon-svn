@@ -80,7 +80,7 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), k(
     k->type = Solid;
 
     setWindowTitle(tr("Color Palette"));
-    setWindowIcon(QPixmap(THEME_DIR + "/icons/color_palette.png"));
+    setWindowIcon(QPixmap(THEME_DIR + "icons/color_palette.png"));
 
     k->splitter = new QSplitter(Qt::Vertical, this);
     addChild(k->splitter);

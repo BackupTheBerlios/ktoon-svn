@@ -108,7 +108,7 @@ KTViewCamera::Status::Status(KTViewCamera *camera, QWidget *parent) : QStatusBar
     m_sceneInfoLayout->addSpacing(20);
 
     QPushButton *exportButton = new QPushButton("Export");
-    exportButton->setIcon(QIcon(THEME_DIR + "/icons/export.png"));
+    exportButton->setIcon(QIcon(THEME_DIR + "icons/export.png"));
     exportButton->setFont(font);
     connect(exportButton, SIGNAL(pressed()), camera, SLOT(exportDialog()));
     m_sceneInfoLayout->addWidget(exportButton,1);
@@ -159,7 +159,7 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
 
     setObjectName("KTViewCamera_");
     setWindowTitle(tr("Render Camera Preview"));
-    setWindowIcon(QPixmap(THEME_DIR + "/icons/camera_preview.png"));
+    setWindowIcon(QPixmap(THEME_DIR + "icons/camera_preview.png"));
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 

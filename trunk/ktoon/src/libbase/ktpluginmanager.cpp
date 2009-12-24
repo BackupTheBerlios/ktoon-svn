@@ -38,72 +38,62 @@ KTPluginManager::KTPluginManager(QObject *parent) : QObject(parent)
 
 KTPluginManager::~KTPluginManager()
 {
-	unloadPlugins();
+    unloadPlugins();
 }
 
 KTPluginManager *KTPluginManager::instance()
 {
-	if (!s_instance)
-	{
-		s_instance = new KTPluginManager;
-	}
-	
-	return s_instance;
+    if (!s_instance)
+        s_instance = new KTPluginManager;
+    
+    return s_instance;
 }
 
 void KTPluginManager::loadPlugins()
 {
-	m_filters.clear();
-	m_tools.clear();
-	
-	QDir m_pluginDirectory = QDir(HOME_DIR+"/plugins/");
+    m_filters.clear();
+    m_tools.clear();
+    
+    QDir m_pluginDirectory = QDir(SHARE_DIR + "plugins/");
 
-	foreach(QString fileName, m_pluginDirectory.entryList(QStringList() << "*.so" << "*.dll" << "*.dy",QDir::Files))
-	{
-		QPluginLoader *loader = new QPluginLoader(m_pluginDirectory.absoluteFilePath(fileName));
-		QObject *plugin = qobject_cast<QObject*>(loader->instance());
-		
-		kDebug("plugins") << "****** Trying to load plugin from: " << fileName;
-		
-		if (plugin)
-		{
-			AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(plugin);
-			KTToolInterface *aTool = qobject_cast<KTToolInterface *>(plugin);
-			
-			if ( aFilter )
-			{
-				m_filters << plugin;
-			}
-			else if (aTool)
-			{
-				m_tools << plugin;
-			}
-			
-			m_loaders << loader;
-		}
-		else
-		{
-			kFatal("plugins") << "Cannot load plugin, error was: " << loader->errorString();
-		}
-	}
+    foreach (QString fileName, m_pluginDirectory.entryList(QStringList() << "*.so" << "*.dll" << "*.dy",QDir::Files)) {
+        QPluginLoader *loader = new QPluginLoader(m_pluginDirectory.absoluteFilePath(fileName));
+        QObject *plugin = qobject_cast<QObject*>(loader->instance());
+        
+        kDebug("plugins") << "****** Trying to load plugin from: " << fileName;
+        
+        if (plugin) {
+            AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(plugin);
+            KTToolInterface *aTool = qobject_cast<KTToolInterface *>(plugin);
+            
+            if (aFilter) {
+                m_filters << plugin;
+            } else if (aTool) {
+                m_tools << plugin;
+            }
+            
+            m_loaders << loader;
+        } else {
+            kFatal("plugins") << "Cannot load plugin, error was: " << loader->errorString();
+        }
+    }
 }
 
 void KTPluginManager::unloadPlugins()
 {
-	kDebug("plugins") << "Unloading plugins...";
-	foreach(QPluginLoader *loader, m_loaders)
-	{
-		delete loader->instance();
-		delete loader;
-	}
+    kDebug("plugins") << "Unloading plugins...";
+    foreach (QPluginLoader *loader, m_loaders) {
+             delete loader->instance();
+             delete loader;
+    }
 }
 
 QObjectList KTPluginManager::tools() const
 {
-	return m_tools;
+    return m_tools;
 }
 
 QObjectList KTPluginManager::filters() const
 {
-	return m_filters;
+    return m_filters;
 }
