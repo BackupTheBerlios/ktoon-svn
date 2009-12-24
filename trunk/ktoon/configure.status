@@ -1,3 +1,0 @@
-
-require 'qonf/makefile'
-RQonf::Makefile::override( ARGV[0].to_s, "prefix/usr/local/ktoonbindir/usr/tmp", "/home/xtingray/tmp/ktoon/configure.status" )

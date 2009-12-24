@@ -7,8 +7,8 @@ INSTALLS += ktdata \
             launcher \
             target 
 target.path = /bin/ 
-launcher.files += "../../install/ktoon" 
-launcher.path = / 
+launcher.files += ../../launcher/ktoon
+launcher.path = /bin/
 ktdata.files += data/* 
 ktdata.path = /data 
 TRANSLATIONS += data/translations/ktoon_es.ts \
@@ -34,8 +34,6 @@ SOURCES += main.cpp \
            configwizard.cpp \
            ktmainwindow_gui.cpp \
            ktlocalprojectmanagerhandler.cpp
-
-
 
 include(shell_config.pri)
 include(../../ktconfig.pri)

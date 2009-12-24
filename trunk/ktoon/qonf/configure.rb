@@ -18,12 +18,10 @@ class Configure
         
         @options = {}
         parseArgs(args)
-        Makefile::setArgs(@options)
         
         @qmake = QMake.new
         
         setPath()       
-
         Makefile::setArgs(@options)
  
     end
@@ -68,7 +66,7 @@ class Configure
         Info.info << "Creating makefiles..." << $endl
         @qmake.run("", true)
         
-        #Info.info << "Updating makefiles..." << $endl
+        Info.info << "Updating makefiles..." << $endl
         
         @makefiles = Makefile::findMakefiles(Dir.getwd)
         
@@ -142,6 +140,7 @@ class Configure
         if @options['sharedir'].nil? then
            @options['sharedir'] = @options['prefix'] + "/share"
         end
+        # here is where the ktoon launcher script must be created!
     end
 end
 end # module

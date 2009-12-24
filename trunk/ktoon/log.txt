@@ -1,459 +1,460 @@
 cd 3rdparty/ && make -f Makefile install
-make[1]: Entering directory `/home/xtingray/tmp/ktoon/3rdparty'
+make[1]: Entering directory `/home/xtingray/ktoon/sources/ktoon/3rdparty'
 cd quazip/ && make -f Makefile install
-make[2]: Entering directory `/home/xtingray/tmp/ktoon/3rdparty/quazip'
+make[2]: Entering directory `/home/xtingray/ktoon/sources/ktoon/3rdparty/quazip'
 make[2]: Nothing to be done for `install'.
-make[2]: Leaving directory `/home/xtingray/tmp/ktoon/3rdparty/quazip'
+make[2]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/3rdparty/quazip'
 cd potrace/ && make -f Makefile install
-make[2]: Entering directory `/home/xtingray/tmp/ktoon/3rdparty/potrace'
+make[2]: Entering directory `/home/xtingray/ktoon/sources/ktoon/3rdparty/potrace'
 make[2]: Nothing to be done for `install'.
-make[2]: Leaving directory `/home/xtingray/tmp/ktoon/3rdparty/potrace'
-make[1]: Leaving directory `/home/xtingray/tmp/ktoon/3rdparty'
+make[2]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/3rdparty/potrace'
+make[1]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/3rdparty'
 cd src/ && make -f Makefile install
-make[1]: Entering directory `/home/xtingray/tmp/ktoon/src'
+make[1]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src'
 cd themes/ && make -f Makefile install
-make[2]: Entering directory `/home/xtingray/tmp/ktoon/src/themes'
+make[2]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/themes'
 cd default/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/themes/default'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/themes/default'
 cd icons/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/themes/default/icons'
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/add_frame.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/add_layer.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/add_scene.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/addfolder.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/align_b.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/align_ch.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/align_cv.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/align_l.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/align_r.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/align_t.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/animation_mode.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/arrow_rotate.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/arrow_selection.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/arrowdown.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/arrowup.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/asterisk.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/bezier.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/bring_to_front.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/brush.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/brushes.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/camera_preview.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/chat.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/close.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/color_palette.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/contour.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/copy.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/cut.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/delete.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/disable.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/document.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/drawing_area.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/dropper.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/ellipse.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/enable.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/eraser.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/export.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/exposure_sheet.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/ff.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/fill.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/fillcolor.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/fit.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/flip-horizontal.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/flip-vertical.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/folder_icon.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/font_config.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/frame.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/front_back_grid.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/gceditor.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/general_config.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/gradient.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/graphic_component.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/grid12.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/grid16.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/group.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/hand.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/help.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/illustration_mode.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/import.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/insert_cg.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/kilit_pic.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/kinas.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/layer.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/layer_pic.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/library.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/light_table.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/line.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/lock.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/lock_layer.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/lock_scene.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/magnifying.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/minussign.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/move_frame_down.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/move_frame_up.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/move_layer_down.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/move_layer_up.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/move_scene_down.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/move_scene_up.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/new.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/next.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/next2.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/next3.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/no_next.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/no_previous.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/node_eraser.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/nodes.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/nogrid.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/ntsc.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/one_backward.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/one_forward.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/open.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/outline_pic.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/paste.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/pencil.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/perspective.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/play.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/plussign.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/polyline.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/previous.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/previous2.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/previous3.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/project.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/properties.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/random_gradient.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/redo.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/remove_frame.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/remove_layer.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/remove_scene.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/removefill.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/render.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/rw.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/save.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/scene.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/scenes.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/selection.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/send_to_back.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/shape_brush.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/show_hide_all_layers.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/side_camera.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/slicer.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/sound_widget.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/spin.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/square.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/stop.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/subgrid.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/text.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/theme_config.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/time_line.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/tools.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/top_camera.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/undo.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/ungroup.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/vchain.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/vchain_broken.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/written_pic.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/zoom_in.png /tmp/ktoon/themes/default/icons/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/icons/zoom_out.png /tmp/ktoon/themes/default/icons/
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/themes/default/icons'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/themes/default/icons'
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/add_frame.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/add_layer.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/add_scene.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/addfolder.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/align_b.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/align_ch.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/align_cv.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/align_l.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/align_r.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/align_t.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/animation_mode.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/arrow_rotate.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/arrow_selection.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/arrowdown.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/arrowup.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/asterisk.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/bezier.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/bring_to_front.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/brush.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/brushes.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/camera_preview.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/chat.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/close.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/color_palette.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/contour.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/copy.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/cut.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/delete.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/disable.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/document.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/drawing_area.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/dropper.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/ellipse.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/enable.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/eraser.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/export.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/exposure_sheet.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/ff.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/fill.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/fillcolor.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/fit.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/flip-horizontal.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/flip-vertical.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/folder_icon.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/font_config.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/frame.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/front_back_grid.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/gceditor.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/general_config.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/gradient.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/graphic_component.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/grid12.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/grid16.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/group.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/hand.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/help.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/illustration_mode.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/import.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/insert_cg.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/kilit_pic.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/kinas.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/layer.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/layer_pic.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/library.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/light_table.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/line.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/lock.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/lock_layer.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/lock_scene.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/magnifying.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/minussign.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/move_frame_down.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/move_frame_up.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/move_layer_down.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/move_layer_up.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/move_scene_down.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/move_scene_up.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/new.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/next.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/next2.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/next3.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/no_next.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/no_previous.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/node_eraser.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/nodes.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/nogrid.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/ntsc.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/one_backward.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/one_forward.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/open.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/outline_pic.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/paste.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/pencil.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/perspective.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/play.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/plussign.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/polyline.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/previous.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/previous2.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/previous3.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/project.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/properties.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/random_gradient.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/redo.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/remove_frame.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/remove_layer.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/remove_scene.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/removefill.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/render.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/rw.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/save.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/scene.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/scenes.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/selection.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/send_to_back.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/shape_brush.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/show_hide_all_layers.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/side_camera.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/slicer.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/sound_widget.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/spin.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/square.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/stop.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/subgrid.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/text.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/theme_config.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/time_line.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/tools.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/top_camera.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/undo.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/ungroup.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/vchain.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/vchain_broken.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/written_pic.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/zoom_in.png /usr/local/ktoon/share/themes/default/icons/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/icons/zoom_out.png /usr/local/ktoon/share/themes/default/icons/
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/themes/default/icons'
 cd cursors/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/themes/default/cursors'
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/bezier.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/brush.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/circle.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/contour.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/contour_fill.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/dropper.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/eraser.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/gradient.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/hand.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/magnifying.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/nodes.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/paint.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/pen.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/pencil.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/select.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/slicer.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/square.png /tmp/ktoon/themes/default/cursors/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/cursors/unpaint.png /tmp/ktoon/themes/default/cursors/
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/themes/default/cursors'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors'
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/bezier.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/brush.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/circle.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/contour.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/contour_fill.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/dropper.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/eraser.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/gradient.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/hand.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/magnifying.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/nodes.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/paint.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/pen.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/pencil.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/select.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/slicer.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/square.png /usr/local/ktoon/share/themes/default/cursors/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors/unpaint.png /usr/local/ktoon/share/themes/default/cursors/
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/themes/default/cursors'
 cd images/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/themes/default/images'
-install -m 644 -p /home/xtingray/tmp/ktoon/src/themes/default/images/splash.png /tmp/ktoon/themes/default/images/
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/themes/default/images'
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/themes/default'
-make[2]: Leaving directory `/home/xtingray/tmp/ktoon/src/themes'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/themes/default/images'
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/themes/default/images/splash.png /usr/local/ktoon/share/themes/default/images/
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/themes/default/images'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/themes/default'
+make[2]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/themes'
 cd libktoon/ && make -f Makefile install
-make[2]: Entering directory `/home/xtingray/tmp/ktoon/src/libktoon'
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/config.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktbrushmanager.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktcompress.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktglobal.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktgradientcreator.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktgradientselector.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktgradientviewer.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktgraphicalgorithm.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktinputdeviceinformation.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktinthash.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktitempreview.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktpackagehandler.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktpaintareaproperties.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktprojectactionbar.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktproxyitem.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktsocketbase.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktsvg2qt.h /tmp/ktoon/include/ktoon/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktoon/ktxmlparserbase.h /tmp/ktoon/include/ktoon/
-install -m 755 -p "libktoon.so.1.0.0" "/tmp/ktoon/lib/libktoon.so.1.0.0"
-ln -sf "libktoon.so.1.0.0" "/tmp/ktoon/lib/libktoon.so"
-ln -sf "libktoon.so.1.0.0" "/tmp/ktoon/lib/libktoon.so.1"
-ln -sf "libktoon.so.1.0.0" "/tmp/ktoon/lib/libktoon.so.1.0"
-make[2]: Leaving directory `/home/xtingray/tmp/ktoon/src/libktoon'
+make[2]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/libktoon'
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/config.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktbrushmanager.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktcompress.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktglobal.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktgradientcreator.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktgradientselector.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktgradientviewer.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktgraphicalgorithm.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktinputdeviceinformation.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktinthash.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktitempreview.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktpackagehandler.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktpaintareaproperties.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktprojectactionbar.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktproxyitem.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktsocketbase.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktsvg2qt.h /usr/local/ktoon/include/ktoon/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktoon/ktxmlparserbase.h /usr/local/ktoon/include/ktoon/
+install -m 755 -p "libktoon.so.1.0.0" "/usr/local/ktoon/lib/libktoon.so.1.0.0"
+ln -sf "libktoon.so.1.0.0" "/usr/local/ktoon/lib/libktoon.so"
+ln -sf "libktoon.so.1.0.0" "/usr/local/ktoon/lib/libktoon.so.1"
+ln -sf "libktoon.so.1.0.0" "/usr/local/ktoon/lib/libktoon.so.1.0"
+make[2]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/libktoon'
 cd store/ && make -f Makefile install
-make[2]: Entering directory `/home/xtingray/tmp/ktoon/src/store'
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktabstractprojectmanagerhandler.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktabstractprojectresponsehandler.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktabstractserializable.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktbuttonitem.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktcommandexecutor.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktellipseitem.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktframe.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktframegroup.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktglobal_store.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktgraphiclibraryitem.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktgraphicobject.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktitemconverter.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktitemfactory.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktitemgroup.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktitemtweener.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktlayer.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktlibrary.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktlibraryfolder.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktlibraryobject.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktlineitem.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktpaintareaevent.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktpalettedocument.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktpathitem.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktpixmapitem.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktproject.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktprojectcommand.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktprojectloader.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktprojectmanager.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktprojectmanagerparams.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktprojectrequest.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktprojectresponse.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktrectitem.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktrequestbuilder.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktrequestparser.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktsaveproject.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktscene.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktserializer.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/ktsoundlayer.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/kttextitem.h /tmp/ktoon/include/store/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/store/kttweenerstep.h /tmp/ktoon/include/store/
-install -m 755 -p "libstore.so.1.0.0" "/tmp/ktoon/lib/libstore.so.1.0.0"
-ln -sf "libstore.so.1.0.0" "/tmp/ktoon/lib/libstore.so"
-ln -sf "libstore.so.1.0.0" "/tmp/ktoon/lib/libstore.so.1"
-ln -sf "libstore.so.1.0.0" "/tmp/ktoon/lib/libstore.so.1.0"
-make[2]: Leaving directory `/home/xtingray/tmp/ktoon/src/store'
+make[2]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/store'
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktabstractprojectmanagerhandler.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktabstractprojectresponsehandler.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktabstractserializable.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktbuttonitem.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktcommandexecutor.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktellipseitem.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktframe.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktframegroup.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktglobal_store.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktgraphiclibraryitem.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktgraphicobject.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktitemconverter.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktitemfactory.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktitemgroup.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktitemtweener.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktlayer.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktlibrary.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktlibraryfolder.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktlibraryobject.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktlineitem.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktpaintareaevent.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktpalettedocument.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktpathitem.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktpixmapitem.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktproject.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktprojectcommand.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktprojectloader.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktprojectmanager.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktprojectmanagerparams.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktprojectrequest.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktprojectresponse.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktrectitem.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktrequestbuilder.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktrequestparser.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktsaveproject.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktscene.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktserializer.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/ktsoundlayer.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/kttextitem.h /usr/local/ktoon/include/store/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/store/kttweenerstep.h /usr/local/ktoon/include/store/
+install -m 755 -p "libstore.so.1.0.0" "/usr/local/ktoon/lib/libstore.so.1.0.0"
+ln -sf "libstore.so.1.0.0" "/usr/local/ktoon/lib/libstore.so"
+ln -sf "libstore.so.1.0.0" "/usr/local/ktoon/lib/libstore.so.1"
+ln -sf "libstore.so.1.0.0" "/usr/local/ktoon/lib/libstore.so.1.0"
+make[2]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/store'
 cd net/ && make -f Makefile install
-make[2]: Entering directory `/home/xtingray/tmp/ktoon/src/net'
+make[2]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/net'
 make[2]: Nothing to be done for `install'.
-make[2]: Leaving directory `/home/xtingray/tmp/ktoon/src/net'
+make[2]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/net'
 cd libbase/ && make -f Makefile install
-make[2]: Entering directory `/home/xtingray/tmp/ktoon/src/libbase'
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libbase/ktanimationrenderer.h /tmp/ktoon/include/base/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libbase/ktexportinterface.h /tmp/ktoon/include/base/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libbase/ktexportpluginobject.h /tmp/ktoon/include/base/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libbase/ktfilterinterface.h /tmp/ktoon/include/base/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libbase/ktgraphicsscene.h /tmp/ktoon/include/base/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libbase/ktguideline.h /tmp/ktoon/include/base/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libbase/ktmodulewidgetbase.h /tmp/ktoon/include/base/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libbase/ktpaintareabase.h /tmp/ktoon/include/base/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libbase/ktpaintarearotator.h /tmp/ktoon/include/base/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libbase/ktpluginmanager.h /tmp/ktoon/include/base/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libbase/kttoolinterface.h /tmp/ktoon/include/base/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libbase/kttoolplugin.h /tmp/ktoon/include/base/
-install -m 755 -p "libktbase.so.1.0.0" "/tmp/ktoon/lib/libktbase.so.1.0.0"
-ln -sf "libktbase.so.1.0.0" "/tmp/ktoon/lib/libktbase.so"
-ln -sf "libktbase.so.1.0.0" "/tmp/ktoon/lib/libktbase.so.1"
-ln -sf "libktbase.so.1.0.0" "/tmp/ktoon/lib/libktbase.so.1.0"
-make[2]: Leaving directory `/home/xtingray/tmp/ktoon/src/libbase'
+make[2]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/libbase'
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libbase/ktanimationrenderer.h /usr/local/ktoon/include/base/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libbase/ktexportinterface.h /usr/local/ktoon/include/base/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libbase/ktexportpluginobject.h /usr/local/ktoon/include/base/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libbase/ktfilterinterface.h /usr/local/ktoon/include/base/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libbase/ktgraphicsscene.h /usr/local/ktoon/include/base/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libbase/ktguideline.h /usr/local/ktoon/include/base/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libbase/ktmodulewidgetbase.h /usr/local/ktoon/include/base/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libbase/ktpaintareabase.h /usr/local/ktoon/include/base/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libbase/ktpaintarearotator.h /usr/local/ktoon/include/base/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libbase/ktpluginmanager.h /usr/local/ktoon/include/base/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libbase/kttoolinterface.h /usr/local/ktoon/include/base/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libbase/kttoolplugin.h /usr/local/ktoon/include/base/
+install -m 755 -p "libktbase.so.1.0.0" "/usr/local/ktoon/lib/libktbase.so.1.0.0"
+ln -sf "libktbase.so.1.0.0" "/usr/local/ktoon/lib/libktbase.so"
+ln -sf "libktbase.so.1.0.0" "/usr/local/ktoon/lib/libktbase.so.1"
+ln -sf "libktbase.so.1.0.0" "/usr/local/ktoon/lib/libktbase.so.1.0"
+make[2]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/libbase'
 cd libktui/ && make -f Makefile install
-make[2]: Entering directory `/home/xtingray/tmp/ktoon/src/libktui'
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktui/images/es/background.png /tmp/ktoon/data/es/images/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktui/images/es/credits.png /tmp/ktoon/data/es/images/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktui/images/es/laboratoon.png /tmp/ktoon/data/es/images/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktui/images/es/sponsors.png /tmp/ktoon/data/es/images/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktui/images/es/toonka.png /tmp/ktoon/data/es/images/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktui/images/en/background.png /tmp/ktoon/data/en/images/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktui/images/en/credits.png /tmp/ktoon/data/en/images/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktui/images/en/laboratoon.png /tmp/ktoon/data/en/images/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktui/images/en/sponsors.png /tmp/ktoon/data/en/images/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/libktui/images/en/toonka.png /tmp/ktoon/data/en/images/
-make[2]: Leaving directory `/home/xtingray/tmp/ktoon/src/libktui'
+make[2]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/libktui'
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktui/images/es/background.png /usr/local/ktoon/share/data/es/images/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktui/images/es/credits.png /usr/local/ktoon/share/data/es/images/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktui/images/es/laboratoon.png /usr/local/ktoon/share/data/es/images/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktui/images/es/sponsors.png /usr/local/ktoon/share/data/es/images/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktui/images/es/toonka.png /usr/local/ktoon/share/data/es/images/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktui/images/en/background.png /usr/local/ktoon/share/data/en/images/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktui/images/en/credits.png /usr/local/ktoon/share/data/en/images/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktui/images/en/laboratoon.png /usr/local/ktoon/share/data/en/images/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktui/images/en/sponsors.png /usr/local/ktoon/share/data/en/images/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/libktui/images/en/toonka.png /usr/local/ktoon/share/data/en/images/
+make[2]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/libktui'
 cd components/ && make -f Makefile install
-make[2]: Entering directory `/home/xtingray/tmp/ktoon/src/components'
+make[2]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/components'
 cd scenes/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/components/scenes'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/components/scenes'
 make[3]: Nothing to be done for `install'.
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/components/scenes'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/components/scenes'
 cd colorpalette/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/components/colorpalette'
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Bears.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Bgold.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Blues.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Borders.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/BrownsAndYellows.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Caramel.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Cascade.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/China.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Coldfire.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/CoolColors.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Cranes.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Darkpastels.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Default.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Ega.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Firecode.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Gold.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Grayblue.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Grays.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/GrayViolet.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Greens.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Hilite.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Khaki.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Lights.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Muted.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/NamedColors.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/News3.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Op2.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Paintjet.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Pastels.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Plasma.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Reds.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/RedsAndPurples.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Royal.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/TangoIconThemePalette.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/toonka.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Topographic.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Visibone.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Visibone2.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Volcano.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/WarmColors.ktpl /tmp/ktoon/data/palettes/
-install -m 644 -p /home/xtingray/tmp/ktoon/src/components/colorpalette/palettes/Web.ktpl /tmp/ktoon/data/palettes/
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/components/colorpalette'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/components/colorpalette'
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Bears.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Bgold.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Blues.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Borders.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/BrownsAndYellows.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Caramel.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Cascade.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/China.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Coldfire.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/CoolColors.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Cranes.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Darkpastels.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Default.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Ega.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Firecode.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Gold.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Grayblue.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Grays.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/GrayViolet.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Greens.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Hilite.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Khaki.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Lights.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Muted.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/NamedColors.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/News3.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Op2.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Paintjet.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Pastels.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Plasma.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Reds.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/RedsAndPurples.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Royal.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/TangoIconThemePalette.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/toonka.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Topographic.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Visibone.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Visibone2.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Volcano.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/WarmColors.ktpl /usr/local/ktoon/share/data/palettes/
+install -m 644 -p /home/xtingray/ktoon/sources/ktoon/src/components/colorpalette/palettes/Web.ktpl /usr/local/ktoon/share/data/palettes/
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/components/colorpalette'
 cd library/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/components/library'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/components/library'
 make[3]: Nothing to be done for `install'.
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/components/library'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/components/library'
 cd timeline/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/components/timeline'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/components/timeline'
 make[3]: Nothing to be done for `install'.
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/components/timeline'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/components/timeline'
 cd exposure/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/components/exposure'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/components/exposure'
 make[3]: Nothing to be done for `install'.
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/components/exposure'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/components/exposure'
 cd export/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/components/export'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/components/export'
 make[3]: Nothing to be done for `install'.
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/components/export'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/components/export'
 cd import/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/components/import'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/components/import'
 make[3]: Nothing to be done for `install'.
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/components/import'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/components/import'
 cd help/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/components/help'
-cp -f -r /home/xtingray/tmp/ktoon/src/components/help/help /tmp/ktoon/data/
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/components/help'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/components/help'
+cp -f -r /home/xtingray/ktoon/sources/ktoon/src/components/help/help /usr/local/ktoon/share/data/
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/components/help'
 cd kinas/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/components/kinas'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/components/kinas'
 make[3]: Nothing to be done for `install'.
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/components/kinas'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/components/kinas'
 cd pen/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/components/pen'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/components/pen'
 make[3]: Nothing to be done for `install'.
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/components/pen'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/components/pen'
 cd paintarea/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/components/paintarea'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/components/paintarea'
 make[3]: Nothing to be done for `install'.
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/components/paintarea'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/components/paintarea'
 cd cameras/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/components/cameras'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/components/cameras'
 make[3]: Nothing to be done for `install'.
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/components/cameras'
-make[2]: Leaving directory `/home/xtingray/tmp/ktoon/src/components'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/components/cameras'
+make[2]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/components'
 cd shell/ && make -f Makefile install
-make[2]: Entering directory `/home/xtingray/tmp/ktoon/src/shell'
-cp -f -r /home/xtingray/tmp/ktoon/src/shell/data/en /tmp/ktoon/data/
-cp -f -r /home/xtingray/tmp/ktoon/src/shell/data/es /tmp/ktoon/data/
-cp -f -r /home/xtingray/tmp/ktoon/src/shell/data/translations /tmp/ktoon/data/
-install -m 755 -p "../../bin/ktoon.bin" "/tmp/ktoon/bin/ktoon.bin"
-make[2]: Leaving directory `/home/xtingray/tmp/ktoon/src/shell'
+make[2]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/shell'
+cp -f -r /home/xtingray/ktoon/sources/ktoon/src/shell/data/en /usr/local/ktoon/share/data/
+cp -f -r /home/xtingray/ktoon/sources/ktoon/src/shell/data/es /usr/local/ktoon/share/data/
+cp -f -r /home/xtingray/ktoon/sources/ktoon/src/shell/data/translations /usr/local/ktoon/share/data/
+install -m 755 -p /home/xtingray/ktoon/sources/ktoon/launcher/ktoon /usr/local/ktoon/bin/
+install -m 755 -p "../../bin/ktoon.bin" "/usr/local/ktoon/bin/ktoon.bin"
+make[2]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/shell'
 cd plugins/ && make -f Makefile install
-make[2]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins'
+make[2]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins'
 cd export/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/export'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/export'
 cd genericexportplugin/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/export/genericexportplugin'
-install -m 755 -p "libgenericexportplugin.so" "/tmp/ktoon/plugins/libgenericexportplugin.so"
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/export/genericexportplugin'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/export/genericexportplugin'
+install -m 755 -p "libgenericexportplugin.so" "/usr/local/ktoon/share/plugins/libgenericexportplugin.so"
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/export/genericexportplugin'
 cd smilexportplugin/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/export/smilexportplugin'
-install -m 755 -p "libsmilexportplugin.so" "/tmp/ktoon/plugins/libsmilexportplugin.so"
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/export/smilexportplugin'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/export/smilexportplugin'
+install -m 755 -p "libsmilexportplugin.so" "/usr/local/ktoon/share/plugins/libsmilexportplugin.so"
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/export/smilexportplugin'
 cd ffmpegplugin/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/export/ffmpegplugin'
-install -m 755 -p "libffmpegplugin.so" "/tmp/ktoon/plugins/libffmpegplugin.so"
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/export/ffmpegplugin'
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/export'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/export/ffmpegplugin'
+install -m 755 -p "libffmpegplugin.so" "/usr/local/ktoon/share/plugins/libffmpegplugin.so"
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/export/ffmpegplugin'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/export'
 cd filters/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/filters'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/filters'
 make[3]: Nothing to be done for `install'.
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/filters'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/filters'
 cd import/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/import'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/import'
 make[3]: Nothing to be done for `install'.
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/import'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/import'
 cd tools/ && make -f Makefile install
-make[3]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/tools'
+make[3]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools'
 cd brush/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/tools/brush'
-install -m 755 -p "libbrush.so" "/tmp/ktoon/plugins/libbrush.so"
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/tools/brush'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/brush'
+install -m 755 -p "libbrush.so" "/usr/local/ktoon/share/plugins/libbrush.so"
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/brush'
 cd select/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/tools/select'
-install -m 755 -p "libselect.so" "/tmp/ktoon/plugins/libselect.so"
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/tools/select'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/select'
+install -m 755 -p "libselect.so" "/usr/local/ktoon/share/plugins/libselect.so"
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/select'
 cd contourselection/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/tools/contourselection'
-install -m 755 -p "libcontourselection.so" "/tmp/ktoon/plugins/libcontourselection.so"
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/tools/contourselection'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/contourselection'
+install -m 755 -p "libcontourselection.so" "/usr/local/ktoon/share/plugins/libcontourselection.so"
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/contourselection'
 cd text/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/tools/text'
-install -m 755 -p "libtext.so" "/tmp/ktoon/plugins/libtext.so"
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/tools/text'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/text'
+install -m 755 -p "libtext.so" "/usr/local/ktoon/share/plugins/libtext.so"
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/text'
 cd geometrictool/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/tools/geometrictool'
-install -m 755 -p "libgeometrictool.so" "/tmp/ktoon/plugins/libgeometrictool.so"
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/tools/geometrictool'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/geometrictool'
+install -m 755 -p "libgeometrictool.so" "/usr/local/ktoon/share/plugins/libgeometrictool.so"
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/geometrictool'
 cd viewtool/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/tools/viewtool'
-install -m 755 -p "libviewtool.so" "/tmp/ktoon/plugins/libviewtool.so"
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/tools/viewtool'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/viewtool'
+install -m 755 -p "libviewtool.so" "/usr/local/ktoon/share/plugins/libviewtool.so"
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/viewtool'
 cd filltool/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/tools/filltool'
-install -m 755 -p "libfilltool.so" "/tmp/ktoon/plugins/libfilltool.so"
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/tools/filltool'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/filltool'
+install -m 755 -p "libfilltool.so" "/usr/local/ktoon/share/plugins/libfilltool.so"
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/filltool'
 cd erasertool/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/tools/erasertool'
-install -m 755 -p "liberasertool.so" "/tmp/ktoon/plugins/liberasertool.so"
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/tools/erasertool'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/erasertool'
+install -m 755 -p "liberasertool.so" "/usr/local/ktoon/share/plugins/liberasertool.so"
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/erasertool'
 cd polyline/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/tools/polyline'
-install -m 755 -p "libpolyline.so" "/tmp/ktoon/plugins/libpolyline.so"
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/tools/polyline'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/polyline'
+install -m 755 -p "libpolyline.so" "/usr/local/ktoon/share/plugins/libpolyline.so"
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/polyline'
 cd tweenertranslate/ && make -f Makefile install
-make[4]: Entering directory `/home/xtingray/tmp/ktoon/src/plugins/tools/tweenertranslate'
-install -m 755 -p "libtweenertranslate.so" "/tmp/ktoon/plugins/libtweenertranslate.so"
-make[4]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/tools/tweenertranslate'
-make[3]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins/tools'
-make[2]: Leaving directory `/home/xtingray/tmp/ktoon/src/plugins'
-make[1]: Leaving directory `/home/xtingray/tmp/ktoon/src'
+make[4]: Entering directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/tweenertranslate'
+install -m 755 -p "libtweenertranslate.so" "/usr/local/ktoon/share/plugins/libtweenertranslate.so"
+make[4]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools/tweenertranslate'
+make[3]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins/tools'
+make[2]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src/plugins'
+make[1]: Leaving directory `/home/xtingray/ktoon/sources/ktoon/src'
