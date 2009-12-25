@@ -293,32 +293,32 @@ void KTProjectCommand::frameCommand()
 	{
 		case KTProjectRequest::Add:
 		{
-			k->executor->createFrame( response );
+			k->executor->createFrame(response);
 		}
 		break;
 		case KTProjectRequest::Remove:
 		{
-			k->executor->removeFrame( response);
+			k->executor->removeFrame(response);
 		}
 		break;
 		case KTProjectRequest::Move:
 		{
-			k->executor->moveFrame( response);
+			k->executor->moveFrame(response);
 		}
 		break;
 		case KTProjectRequest::Lock:
 		{
-			k->executor->lockFrame( response );
+			k->executor->lockFrame(response);
 		}
 		break;
 		case KTProjectRequest::Rename:
 		{
-			k->executor->renameFrame( response );
+			k->executor->renameFrame(response);
 		}
 		break;
 		case KTProjectRequest::Select:
 		{
-			k->executor->selectFrame(response );
+			k->executor->selectFrame(response);
 		}
 		break;
 		case KTProjectRequest::View:

@@ -82,8 +82,8 @@ KTExposureSheet::~KTExposureSheet()
 void KTExposureSheet::createMenu()
 {
     k->menu = new QMenu(tr("actions"));
-    k->menu->addAction(tr("Insert layer"))->setData(KTProjectActionBar::InsertLayer);
-    k->menu->addAction(tr("Remove layer"))->setData(KTProjectActionBar::RemoveLayer);
+    //k->menu->addAction(tr("Insert layer"))->setData(KTProjectActionBar::InsertLayer);
+    //k->menu->addAction(tr("Remove layer"))->setData(KTProjectActionBar::RemoveLayer);
     k->menu->addAction(tr("Insert frame"))->setData(KTProjectActionBar::InsertFrame);
     k->menu->addAction(tr("Remove frame"))->setData(KTProjectActionBar::RemoveFrame);
     k->menu->addAction(tr("Lock frame"))->setData(KTProjectActionBar::LockFrame);
@@ -92,7 +92,7 @@ void KTExposureSheet::createMenu()
     k->menu->addAction(tr("Paste in frame"), this, SLOT(emitRequestPasteInCurrentFrame()));
     k->menu->addAction(tr("Expand frame"), this, SLOT(emitRequestExpandCurrentFrame()));
 
-    connect(k->menu,  SIGNAL(triggered( QAction * )), this, SLOT(actionTiggered(QAction*)));
+    connect(k->menu,  SIGNAL(triggered(QAction *)), this, SLOT(actionTiggered(QAction*)));
 }
 
 void KTExposureSheet::addScene(int index, const QString &name)
@@ -451,6 +451,7 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 break;
                 case KTProjectRequest::Remove:
                  {
+                     kFatal() << "*** Removing frame...";
                      scene->removeFrame(e->layerIndex(), e->frameIndex());
                  }
                 break;

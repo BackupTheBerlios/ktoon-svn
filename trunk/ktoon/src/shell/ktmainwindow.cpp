@@ -962,4 +962,3 @@ void KTMainWindow::exportProject()
     KTExportWidget exportWidget(m_projectManager->project(), this);
     exportWidget.exec();
 }
-

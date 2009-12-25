@@ -129,7 +129,6 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 
 void KTGraphicsScene::drawCurrentPhotogram()
 {
-    kFatal() << "*** Executing drawCurrentPhotogram()";
     drawPhotogram(k->framePosition.frame);
 }
 

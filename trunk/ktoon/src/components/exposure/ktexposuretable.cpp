@@ -52,7 +52,7 @@ class KTExposureHeader: public QHeaderView
     public:
         KTExposureHeader(QWidget * parent = 0);
         ~KTExposureHeader();
-        void paintSection(QPainter *painter, const QRect & rect, int logicalIndex ) const;
+        void paintSection(QPainter *painter, const QRect & rect, int logicalIndex) const;
         void insertLayer(int logicalIndex, const QString &text);
         void setLayerName(int logicalIndex, const QString &text);
         void setLastFrame(int logicalIndex, int num);
@@ -69,7 +69,7 @@ class KTExposureHeader: public QHeaderView
         void hideEditorName();
 
     protected:
-        virtual void mousePressEvent ( QMouseEvent * event );
+        virtual void mousePressEvent(QMouseEvent * event);
 
     private:
         QVector<LayerItem> m_layers;
@@ -77,8 +77,8 @@ class KTExposureHeader: public QHeaderView
         int m_sectionEdited, m_blockSectionMoved;
 
     signals:
-        void changedName(int indexLayer, const QString & name );
-        void visiblityChanged(int indexLayer, bool visibility );
+        void changedName(int indexLayer, const QString & name);
+        void visiblityChanged(int indexLayer, bool visibility);
 };
 
 KTExposureHeader::KTExposureHeader(QWidget * parent) : QHeaderView(Qt::Horizontal , parent), m_sectionEdited(-1),
@@ -102,7 +102,7 @@ KTExposureHeader::~KTExposureHeader()
 
 void KTExposureHeader::emitVisiblityChanged(int section)
 {
-   emit visiblityChanged(visualIndex(section), !m_layers[section].isVisible );
+   emit visiblityChanged(visualIndex(section), !m_layers[section].isVisible);
 }
 
 void KTExposureHeader::setVisibilityChanged(int logicalndex, bool visibility)

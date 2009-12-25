@@ -297,6 +297,7 @@ void KTProjectActionBar::emitActionSelected(int action)
         case RemoveFrame:
         {
             bool noAsk = qvariant_cast<bool>(KCONFIG->value("RemoveWithoutAskFrame", false));
+
             if (! noAsk) {
                 KOptionalDialog dialog(tr("Do you want to remove this frame?"), tr("Remove?"), this);
 
