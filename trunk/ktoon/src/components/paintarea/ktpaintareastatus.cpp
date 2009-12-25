@@ -186,7 +186,6 @@ KTPaintAreaStatus::~KTPaintAreaStatus()
     delete k;
 }
 
-
 void KTPaintAreaStatus::selectAntialiasingHint()
 {
     k->viewDocument->setAntialiasing(k->antialiasHint->isChecked()); 

@@ -27,36 +27,34 @@
 
 struct KTPaintAreaRotator::Private
 {
-	int rotationAngle;
-	KTPaintAreaBase *view;
-	
-	QTimer timer;
+    int rotationAngle;
+    KTPaintAreaBase *view;
+    
+    QTimer timer;
 };
 
 KTPaintAreaRotator::KTPaintAreaRotator(QObject *parent, KTPaintAreaBase *view) : QObject(parent), k(new Private)
 {
-	k->view = view;
-	connect(&k->timer, SIGNAL(timeout()), this, SLOT(applyRotation()));
+    k->view = view;
+    connect(&k->timer, SIGNAL(timeout()), this, SLOT(applyRotation()));
 }
 
 KTPaintAreaRotator::~KTPaintAreaRotator()
 {
-	delete k;
+    delete k;
 }
 
 void KTPaintAreaRotator::rotateTo(int angle)
 {
-	k->rotationAngle = angle;
-	
-	if ( !k->timer.isActive() )
-	{
-		k->timer.start(50);
-	}
+    k->rotationAngle = angle;
+    
+    if (!k->timer.isActive())
+        k->timer.start(50);
 }
 
 void KTPaintAreaRotator::applyRotation()
 {
-	k->view->setRotationAngle(k->rotationAngle);
-	k->timer.stop();
+    k->view->setRotationAngle(k->rotationAngle);
+    k->timer.stop();
 }
 

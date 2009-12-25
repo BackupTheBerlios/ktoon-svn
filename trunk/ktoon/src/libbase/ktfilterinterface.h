@@ -46,12 +46,12 @@ class QKeySequence;
 */
 class KTOON_EXPORT AFilterInterface
 {
-	public:
-		virtual ~AFilterInterface() {}
-		virtual QStringList keys() const = 0;
-		// virtual void filter(const QString &filter, const QList<KTGraphicComponent *> &frame) = 0;
-		
-		virtual QHash<QString, KAction *>actions() = 0;
+    public:
+        virtual ~AFilterInterface() {}
+        virtual QStringList keys() const = 0;
+        // virtual void filter(const QString &filter, const QList<KTGraphicComponent *> &frame) = 0;
+        
+        virtual QHash<QString, KAction *>actions() = 0;
 };
 
 Q_DECLARE_INTERFACE(AFilterInterface, "com.toonka.ktoon.AFilterInterface/0.1");

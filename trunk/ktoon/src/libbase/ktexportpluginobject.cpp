@@ -24,7 +24,6 @@ KTExportPluginObject::KTExportPluginObject(QObject *parent) : QObject(parent)
 {
 }
 
-
 KTExportPluginObject::~KTExportPluginObject()
 {
 }

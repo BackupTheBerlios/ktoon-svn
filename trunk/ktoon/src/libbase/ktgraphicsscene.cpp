@@ -198,7 +198,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
     }
 
     // Drawing tweening objects
-	
+    
     if (valid) {
         foreach (KTGraphicObject *object, k->scene->tweeningObjects()) {
                  if (object->frame()->layer()->isVisible()) {
@@ -433,17 +433,17 @@ void KTGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void KTGraphicsScene::keyPressEvent(QKeyEvent *event)
 {
-	if ( k->tool )
-	{
-		k->tool->keyPressEvent(event);
-		
-		if ( event->isAccepted() )
-		{
-			return;
-		}
-	}
-	
-	QGraphicsScene::keyPressEvent(event);
+    if ( k->tool )
+    {
+        k->tool->keyPressEvent(event);
+        
+        if ( event->isAccepted() )
+        {
+            return;
+        }
+    }
+    
+    QGraphicsScene::keyPressEvent(event);
 }
 
 
@@ -514,7 +514,7 @@ bool KTGraphicsScene::isDrawing() const
 
 KTBrushManager *KTGraphicsScene::brushManager() const
 {
-	return k->brushManager;
+    return k->brushManager;
 }
 
 void KTGraphicsScene::aboutToMousePress()

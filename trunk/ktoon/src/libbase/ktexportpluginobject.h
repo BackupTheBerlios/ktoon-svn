@@ -28,15 +28,16 @@
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
-*/
+ */
+
 class KTOON_EXPORT KTExportPluginObject : public QObject, public KTExportInterface
 {
-	Q_OBJECT;
-	Q_INTERFACES(KTExportInterface);
-	
-	public:
-		KTExportPluginObject(QObject *parent = 0);
-		~KTExportPluginObject();
+    Q_OBJECT;
+    Q_INTERFACES(KTExportInterface);
+    
+    public:
+        KTExportPluginObject(QObject *parent = 0);
+        ~KTExportPluginObject();
 };
 
 #endif

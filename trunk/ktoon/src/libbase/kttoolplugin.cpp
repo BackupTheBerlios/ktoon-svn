@@ -32,7 +32,7 @@
 
 struct KTToolPlugin::Private
 {
-	QString currentTool;
+    QString currentTool;
 };
 
 KTToolPlugin::KTToolPlugin(QObject * parent) : QObject(parent), k(new Private)
@@ -41,59 +41,59 @@ KTToolPlugin::KTToolPlugin(QObject * parent) : QObject(parent), k(new Private)
 
 KTToolPlugin::~KTToolPlugin()
 {
-	delete k;
+    delete k;
 }
 
 void KTToolPlugin::init(KTGraphicsScene *scene)
 {
-	Q_UNUSED(scene);
+    Q_UNUSED(scene);
 }
 
 void KTToolPlugin::updateScene(KTGraphicsScene *scene)
 {
-	Q_UNUSED(scene);
+    Q_UNUSED(scene);
 }
 
 void KTToolPlugin::setCurrentTool(const QString &tool)
 {
-	k->currentTool = tool;
+    k->currentTool = tool;
 }
 
 QString KTToolPlugin::currentTool() const
 {
-	return k->currentTool;
+    return k->currentTool;
 }
 
 void KTToolPlugin::begin()
 {
-	kDebug("tools") << "Begin: " << k->currentTool;
+    kDebug("tools") << "Begin: " << k->currentTool;
 }
 
 void KTToolPlugin::end()
 {
-	kDebug("tools") << "End: " << k->currentTool;
+    kDebug("tools") << "End: " << k->currentTool;
 }
 
 void KTToolPlugin::itemResponse( const KTItemResponse *event)
 {
-	Q_UNUSED(event);
+    Q_UNUSED(event);
 }
 
-void KTToolPlugin::doubleClick(const KTInputDeviceInformation *, KTGraphicsScene * )
+void KTToolPlugin::doubleClick(const KTInputDeviceInformation *, KTGraphicsScene *)
 {
 }
 
 void KTToolPlugin::aboutToChangeScene(KTGraphicsScene *scene)
 {
-	Q_UNUSED(scene);
+    Q_UNUSED(scene);
 }
 
 void KTToolPlugin::keyPressEvent(QKeyEvent *event)
 {
-	Q_UNUSED(event);
+    Q_UNUSED(event);
 }
 
 QMenu *KTToolPlugin::menu() const
 {
-	return 0;
+    return 0;
 }

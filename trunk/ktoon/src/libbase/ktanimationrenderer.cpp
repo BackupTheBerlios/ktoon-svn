@@ -75,7 +75,7 @@ void KTAnimationRenderer::setScene(KTScene *scene)
     k->scene->setCurrentScene(scene);
     k->scene->setSceneRect(QRectF(QPointF(0,0), QSizeF(500, 400))); // FIXME: this isn't real size
 
-    k->scene->drawPhotogram(0); // ###: Why whithout this doesn't work?
+    k->scene->drawPhotogram(0); // ###: Mental Note: Why whithout this doesn't work?
     k->currentPhotogram = -1;
 
     k->totalPhotograms = k->calculateTotalPhotograms(scene);

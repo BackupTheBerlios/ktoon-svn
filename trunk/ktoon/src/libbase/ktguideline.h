@@ -31,30 +31,27 @@
 */
 class KTOON_EXPORT KTLineGuide : public QGraphicsItem
 {
-	public:
-		KTLineGuide(Qt::Orientation o, QGraphicsScene *scene);
-		~KTLineGuide();
-		
-		QRectF boundingRect() const;
-		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0 );
-		
-		void setEnabledSyncCursor(bool enabled);
-		
-	protected:
-		QVariant itemChange(GraphicsItemChange change, const QVariant & value);
-		
-// 		void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
-		void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
-		
-		bool sceneEvent(QEvent *e);
-		
-		
-	private:
-		struct Private;
-		Private * const k;
-		
-		void syncCursor();
-		
+    public:
+        KTLineGuide(Qt::Orientation o, QGraphicsScene *scene);
+        ~KTLineGuide();
+        
+        QRectF boundingRect() const;
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+        
+        void setEnabledSyncCursor(bool enabled);
+        
+    protected:
+        QVariant itemChange(GraphicsItemChange change, const QVariant & value);
+        
+        // void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
+        void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
+        
+        bool sceneEvent(QEvent *e);
+        
+    private:
+        struct Private;
+        Private * const k;
+        void syncCursor();
 };
 
 #endif

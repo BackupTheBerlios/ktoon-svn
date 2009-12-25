@@ -29,23 +29,23 @@
 class KTPaintAreaBase;
 
 /**
-	@author David Cuadrado <krawek@gmail.com>
+    @author David Cuadrado <krawek@gmail.com>
 */
 class KTOON_EXPORT KTPaintAreaRotator : public QObject
 {
-	Q_OBJECT;
-	public:
-		KTPaintAreaRotator(QObject *parent, KTPaintAreaBase *view);
-		~KTPaintAreaRotator();
-		
-		void rotateTo(int angle);
-		
-	private slots:
-		void applyRotation();
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    public:
+        KTPaintAreaRotator(QObject *parent, KTPaintAreaBase *view);
+        ~KTPaintAreaRotator();
+        
+        void rotateTo(int angle);
+        
+    private slots:
+        void applyRotation();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

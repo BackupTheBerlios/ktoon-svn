@@ -41,68 +41,67 @@ class KTItemResponse;
 
 class KTOON_EXPORT KTGraphicsScene : public QGraphicsScene
 {
-	public:
-		KTGraphicsScene();
-		~KTGraphicsScene();
-		
-		void setCurrentFrame(int layer, int frame);
-		
-		void setCurrentScene(KTScene *scene);
-		void drawCurrentPhotogram();
-		
-		void drawItems(QPainter *painter, int numItems, QGraphicsItem *items[], const QStyleOptionGraphicsItem options[], QWidget *widget);
-		
-		void drawPhotogram(int photogram);
-		void addFrame(KTFrame *frame, double opacity = 1.0);
-		void addGraphicObject(KTGraphicObject *object, double opacity = 1.0);
-		
-		void clean();
-		int currentFrameIndex() const;
-		int currentLayerIndex() const;
-		int currentSceneIndex() const;
-		
-		void setNextOnionSkinCount(int n);
-		void setPreviousOnionSkinCount(int n);
-		
-		void setLayerVisible(int layerIndex, bool visible);
-		
-		KTScene *scene() const;
-		
-		KTFrame *currentFrame();
-		
-		void setTool(KTToolPlugin *tool);
-		KTToolPlugin *currentTool() const;
-		
-		bool isDrawing() const;
-		
-		KTBrushManager *brushManager() const;
-		
-		
-		void itemResponse(KTItemResponse *event);
-		
-		void mouseMoved(QGraphicsSceneMouseEvent *event);
-		void mouseReleased(QGraphicsSceneMouseEvent *event);
+    public:
+        KTGraphicsScene();
+        ~KTGraphicsScene();
+        
+        void setCurrentFrame(int layer, int frame);
+        
+        void setCurrentScene(KTScene *scene);
+        void drawCurrentPhotogram();
+        
+        void drawItems(QPainter *painter, int numItems, QGraphicsItem *items[], const QStyleOptionGraphicsItem options[], QWidget *widget);
+        
+        void drawPhotogram(int photogram);
+        void addFrame(KTFrame *frame, double opacity = 1.0);
+        void addGraphicObject(KTGraphicObject *object, double opacity = 1.0);
+        
+        void clean();
+        int currentFrameIndex() const;
+        int currentLayerIndex() const;
+        int currentSceneIndex() const;
+        
+        void setNextOnionSkinCount(int n);
+        void setPreviousOnionSkinCount(int n);
+        
+        void setLayerVisible(int layerIndex, bool visible);
+        
+        KTScene *scene() const;
+        
+        KTFrame *currentFrame();
+        
+        void setTool(KTToolPlugin *tool);
+        KTToolPlugin *currentTool() const;
+        
+        bool isDrawing() const;
+        
+        KTBrushManager *brushManager() const;
+        
+        void itemResponse(KTItemResponse *event);
+        
+        void mouseMoved(QGraphicsSceneMouseEvent *event);
+        void mouseReleased(QGraphicsSceneMouseEvent *event);
 
-		virtual void aboutToMousePress();
-		
-	protected:
-		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-		virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-		virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
-		virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-		virtual void keyPressEvent(QKeyEvent *keyEvent);
-		
-		virtual void dragLeaveEvent( QGraphicsSceneDragDropEvent * event );
-		virtual void dragEnterEvent( QGraphicsSceneDragDropEvent * event );
-		virtual void dragMoveEvent( QGraphicsSceneDragDropEvent * event );
-		virtual void dropEvent( QGraphicsSceneDragDropEvent * event );
-		
-		virtual bool event(QEvent *e);
-		
-		
-	private:
-		struct Private;
-		Private *const k;
+        virtual void aboutToMousePress();
+        
+    protected:
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
+        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual void keyPressEvent(QKeyEvent *keyEvent);
+        
+        virtual void dragLeaveEvent(QGraphicsSceneDragDropEvent * event);
+        virtual void dragEnterEvent(QGraphicsSceneDragDropEvent * event);
+        virtual void dragMoveEvent(QGraphicsSceneDragDropEvent * event);
+        virtual void dropEvent(QGraphicsSceneDragDropEvent * event);
+        
+        virtual bool event(QEvent *e);
+        
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif
