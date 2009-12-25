@@ -47,6 +47,7 @@ class K_IDEAL_EXPORT KViewButton : public QToolButton
         void fade();
         bool isSensible() const;
         bool blending() const;
+        void setActivated(bool flag);
 
         KToolView *toolView() const;
         void setup();

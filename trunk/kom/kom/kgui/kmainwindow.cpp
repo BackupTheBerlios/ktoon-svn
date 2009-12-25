@@ -26,6 +26,8 @@
 #include "kviewbutton.h"
 #include "kmainwindowabstractsettings.h"
 
+#include <kcore/kdebug.h>
+
 #include <QTimer>
 #include <QMenu>
 #include <QApplication>
@@ -92,6 +94,8 @@ void DefaultSettings::save(KMainWindow *w)
 
 void DefaultSettings::restore(KMainWindow *w)
 {
+    kFatal() << "*** Restoring Interface...";
+
     QSettings settings(qApp->applicationName(), "ideality", this);
 
     QHash<Qt::ToolBarArea, KButtonBar *> buttonBars = w->buttonBars();

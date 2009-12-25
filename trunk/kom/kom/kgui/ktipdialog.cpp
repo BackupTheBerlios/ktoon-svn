@@ -87,7 +87,7 @@ void KTipDialog::setupGUI()
 	
 	QHBoxLayout *buttonLayout = new QHBoxLayout;
 	
-	m_showOnStart = new QCheckBox(tr("show on start"));
+	m_showOnStart = new QCheckBox(tr("Show on start"));
 	buttonLayout->addWidget(m_showOnStart);
 	connect(m_showOnStart, SIGNAL(clicked()), this, SLOT(setShowOnStart()));
 	

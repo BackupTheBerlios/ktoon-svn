@@ -1,7 +1,7 @@
 
 module RQonf
     CONFIG = {}
-    CONFIG["prefix"] = "/tmp/test"
-    CONFIG["libdir"] = "/tmp/test/lib"
-    CONFIG["includepath"] = "/tmp/test/include"
+    CONFIG["prefix"] = "/usr"
+    CONFIG["libdir"] = "/usr/lib"
+    CONFIG["includepath"] = "/usr/include"
 end

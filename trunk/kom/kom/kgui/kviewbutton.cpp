@@ -400,3 +400,9 @@ KToolView *KViewButton::toolView() const
 {
     return m_toolView;
 }
+
+void KViewButton::setActivated(bool flag)
+{
+    setChecked(flag);
+    toggled(flag);
+}

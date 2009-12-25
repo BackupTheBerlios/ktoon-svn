@@ -46,11 +46,6 @@ KToolView::~KToolView()
 
 void KToolView::setup(const QString &label)
 {
-/*
-#if QT_VERSION < 0x040200
-    m_area = Qt::AllDockWidgetAreas;
-#endif
-*/
     setFeatures(AllDockWidgetFeatures);
     m_button = new KViewButton(this);
     m_button->setToolTip(label);
@@ -66,12 +61,15 @@ KViewButton *KToolView::button() const
 void KToolView::expandDock(bool flag)
 {
     expanded = flag;
+
     if (flag) {
         show();
     } else { 
         close();
     }
-    m_button->setChecked(flag);
+
+    //m_button->setChecked(flag);
+    m_button->setActivated(flag);
 }
 
 bool KToolView::isExpanded()
@@ -97,7 +95,7 @@ void KToolView::saveSize(bool checked)
     else
         m_size = height();
 
-    setVisible(checked);
+    //setVisible(checked);
 }
 
 QSize KToolView::sizeHint() const
