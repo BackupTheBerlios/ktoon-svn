@@ -64,6 +64,7 @@ class KTViewDocument : public QMainWindow
 
         KTBrushManager *brushManager() const;
         KTPaintAreaCommand *createCommand(const KTPaintAreaEvent *event);
+        void updatePaintArea();
 
     public slots:
         void disablePreviousOnionSkin();

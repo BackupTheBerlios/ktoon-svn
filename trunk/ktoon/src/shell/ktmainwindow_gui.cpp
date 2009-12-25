@@ -226,6 +226,17 @@ void KTMainWindow::setupMenu()
     m_fileMenu->addAction(m_actionManager->find("Exit"));
     m_fileMenu->addSeparator();
 
+    // Setting up the Settings menu
+    setupSettingsActions();
+    m_settingsMenu = new QMenu(tr("&Edit"), this);
+    menuBar()->addMenu(m_settingsMenu);
+
+    // Adding Options wizard and preferences
+    //m_settingsMenu->addAction(m_actionManager->find("wizard"));
+    m_settingsMenu->addAction(m_actionManager->find("preferences"));
+// Temporary out while SQA is done
+    m_actionManager->enable("preferences", false);
+
 // Temporary out while SQA is done
 /*
     // Setting up the insert menu
@@ -283,15 +294,6 @@ void KTMainWindow::setupMenu()
     connect(group, SIGNAL(triggered(QAction *)), this, SLOT(changePerspective(QAction *)));
     menuBar()->addMenu(m_viewMenu);
 	
-    // Setting up the Settings menu
-    setupSettingsActions();
-    m_settingsMenu = new QMenu(tr("&Settings"), this);
-    menuBar()->addMenu(m_settingsMenu);
-
-    // Adding Options wizard and preferences
-    m_settingsMenu->addAction(m_actionManager->find("wizard"));
-    m_settingsMenu->addAction(m_actionManager->find("preferences"));
-
     // Setting up the help menu
     setupHelpActions();
     m_helpMenu = new QMenu(tr("&Help"),this);
@@ -317,7 +319,7 @@ void KTMainWindow::setMenuItemsContext(bool flag)
 void KTMainWindow::setupActions()
 {
 /*
-    KAction *next = new KAction( QPixmap(), tr( "Back Frame" ), QKeySequence(Qt::Key_PageUp), this, 
+    KAction *next = new KAction(QPixmap(), tr( "Back Frame" ), QKeySequence(Qt::Key_PageUp), this, 
                     SLOT(selectBackFrame()), m_actionManager, "BackFrame");
     next->setShortcutContext ( Qt::ApplicationShortcut );
     KAction *back = new KAction( QPixmap(), tr( "Next Frame" ), QKeySequence(Qt::Key_PageDown), this, 
@@ -362,7 +364,7 @@ void KTMainWindow::setupFileActions()
     m_actionManager->insert(save, "saveproject", "file");
     save->setStatusTip(tr("Save current project in current location"));
 
-    KAction *saveAs = new KAction(tr( "Save project &As..." ), m_actionManager);
+    KAction *saveAs = new KAction(QPixmap(THEME_DIR + "icons/copy.png"), tr( "Save project &As..." ), m_actionManager);
     connect(saveAs, SIGNAL(triggered()), this, SLOT(saveAs()));
     saveAs->setStatusTip(tr("Open dialog box to save current project in any location"));
     m_actionManager->insert(saveAs, "saveprojectas", "file");

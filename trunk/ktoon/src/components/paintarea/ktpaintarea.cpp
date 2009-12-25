@@ -62,8 +62,8 @@
 #include "ktproject.h"
 
 /**
- * This class defines all the behavior for the main paint area at ilustration module
- * Here is where all events about the paint area are processed.
+ * This class defines the behavior of the main paint area when ilustration module is on
+ * Here is where all the events about the paint area are processed.
  * @author David Cuadrado <krawek@toonka.com>
 */
 
@@ -245,7 +245,7 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 
      switch(event->action()) {
             case KTProjectRequest::Select:
-                 setCurrentScene( event->sceneIndex() );
+                 setCurrentScene(event->sceneIndex());
                  break;
             case KTProjectRequest::Remove:
                  if (event->sceneIndex() == k->currentSceneIndex)
@@ -541,10 +541,16 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
                          default: 
                               return;
                  }
-                 KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->currentSceneIndex(),
+                 KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
                                           currentScene->currentLayerIndex(), currentScene->currentFrameIndex(),
-                                          value, KTProjectRequest::Move, newPos );
+                                          value, KTProjectRequest::Move, newPos);
                  emit requestTriggered(&event);
              }
     }
+}
+
+void KTPaintArea::updatePaintArea() {
+    KTGraphicsScene* currentScene = graphicsScene();
+    currentScene->drawCurrentPhotogram();
+    //currentScene->update(currentScene->sceneRect());
 }

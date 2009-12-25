@@ -458,13 +458,15 @@ bool KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
 
 void KTMainWindow::openProject()
 {
-     QString package = QFileDialog::getOpenFileName(this, tr("Import project package"), CACHE_DIR, 
-                       tr("KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)"));
+    const char *home = getenv("HOME");
 
-     if (package.isEmpty()) 
-         return;
+    QString package = QFileDialog::getOpenFileName(this, tr("Import project package"), home, 
+                      tr("KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)"));
 
-     openProject(package);
+    if (package.isEmpty()) 
+        return;
+
+    openProject(package);
 }
 
 /**
@@ -582,8 +584,9 @@ void KTMainWindow::importProjectToServer()
                                                (m_projectManager->handler());
 
          if (handler->isValid()) {
+             const char *home = getenv("HOME");
              QString file = QFileDialog::getOpenFileName(this, tr("Import project package"), 
-                                                     CACHE_DIR, tr("KToon Project Package (*.ktn)"));
+                                                     home, tr("KToon Project Package (*.ktn)"));
              KTImportProjectPackage package(file);		
              handler->sendPackage(package);
          }
@@ -652,7 +655,7 @@ void KTMainWindow::aboutKToon()
 */
 void KTMainWindow::showTipDialog()
 {
-    KTipDialog *tipDialog = new KTipDialog(DATA_DIR+"/tips", this);
+    KTipDialog *tipDialog = new KTipDialog(DATA_DIR + "tips", this);
     tipDialog->show();
     // tipDialog.exec();
 }
@@ -668,8 +671,10 @@ void KTMainWindow::showTipDialog()
 
 void KTMainWindow::importPalettes()
 {
-    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import gimp palettes"), QString(), 
-                                                       "Gimp Palette (*.gpl)");
+    const char *home = getenv("HOME");
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Import gimp palettes"), home, 
+                                                       tr("Gimp Palette (*.gpl)"));
+
     m_statusBar->setStatus(tr("Importing palettes"));
     QStringList::ConstIterator it = files.begin();
 	
@@ -680,7 +685,7 @@ void KTMainWindow::importPalettes()
            ++it;
 
            importer.saveFile(CONFIG_DIR + "/palettes");
-           m_colorPalette->parsePaletteFile( importer.filePath() );
+           m_colorPalette->parsePaletteFile( importer.filePath());
            m_statusBar->advance(progress++, files.count());
     }
 }
@@ -784,7 +789,9 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 
 void KTMainWindow::saveAs()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Build project package"), CACHE_DIR, 
+    const char *home = getenv("HOME");
+
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Build project package"), home, 
                        "KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)");
 
     if (fileName.isEmpty())
@@ -937,6 +944,7 @@ void KTMainWindow::updateAnimation(int index)
         viewCamera->updatePhotograms(m_projectManager->project());
     } else {
         kFatal() << "Updating illustration module! :)";
+        m_viewDoc->updatePaintArea();
     }
 }
 
