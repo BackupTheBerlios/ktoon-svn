@@ -120,7 +120,9 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
     return st;
 }
 
-static AVFrame *allocPicture(int pix_fmt, int width, int height)
+//static AVFrame *allocPicture(int pix_fmt, int width, int height)
+
+static AVFrame *allocPicture(enum PixelFormat pix_fmt, int width, int height)
 {
     AVFrame *picture;
     uint8_t *picture_buf;
