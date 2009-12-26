@@ -36,46 +36,42 @@ class KTLibraryObject;
 */
 class STORE_EXPORT KTLibraryObject : public QObject, public KTAbstractSerializable
 {
-	public:
-		enum Type
-		{
-			Item = 0x01,
-			Image,
-			Sound,
-			Svg,
-			Text
-		};
-		
-		KTLibraryObject(QObject *parent = 0);
-		~KTLibraryObject();
-		
-		void setType(int type);
-		int type() const;
-		
-		void setData(const QVariant &data);
-		QVariant data() const;
-		
-		QString dataPath() const;
-		
-		void setSymbolName(const QString &name);
-		QString symbolName() const;
-		
-		
-		bool loadData(const QByteArray &data);
-		bool loadDataFromPath(const QString &dataDir);
-		
-		void saveData(const QString &dataDir);
-		
-	public:
-		virtual void fromXml(const QString &xml );
-		virtual QDomElement toXml(QDomDocument &doc) const;
-		
-	private:
-		struct Private;
-		Private *const k;
-		
+    public:
+        enum Type
+        {
+            Item = 0x01,
+            Image,
+            Sound,
+            Svg,
+            Text
+        };
+        
+        KTLibraryObject(QObject *parent = 0);
+        ~KTLibraryObject();
+        
+        void setType(int type);
+        int type() const;
+        
+        void setData(const QVariant &data);
+        QVariant data() const;
+        
+        QString dataPath() const;
+        
+        void setSymbolName(const QString &name);
+        QString symbolName() const;
+        
+        bool loadData(const QByteArray &data);
+        bool loadDataFromPath(const QString &dataDir);
+        
+        void saveData(const QString &dataDir);
+        
+    public:
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc) const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif
-
-

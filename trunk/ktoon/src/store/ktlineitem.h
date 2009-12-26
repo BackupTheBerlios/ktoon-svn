@@ -26,16 +26,16 @@
 #include "ktglobal_store.h"
 
 /**
-	@author David Cuadrado <krawek@gmail.com>
+    @author David Cuadrado <krawek@gmail.com>
 */
 class STORE_EXPORT KTLineItem : public QGraphicsLineItem, public KTAbstractSerializable
 {
-	public:
-		KTLineItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		~KTLineItem();
-		
-		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc) const;
+    public:
+        KTLineItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+        ~KTLineItem();
+        
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc) const;
 };
 
 #endif

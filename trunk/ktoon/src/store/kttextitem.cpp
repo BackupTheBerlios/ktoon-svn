@@ -28,12 +28,11 @@
 #include <QTimer>
 
 KTTextItem::KTTextItem(QGraphicsItem * parent, QGraphicsScene * scene)
-	: QGraphicsTextItem(parent, scene), m_flags(flags()), m_isEditable(false)
+    : QGraphicsTextItem(parent, scene), m_flags(flags()), m_isEditable(false)
 {
-	setOpenExternalLinks(true);
-	setEditable( false );
+    setOpenExternalLinks(true);
+    setEditable(false);
 }
-
 
 KTTextItem::~KTTextItem()
 {
@@ -43,58 +42,53 @@ void KTTextItem::fromXml(const QString &xml)
 {
 }
 
-
 QDomElement KTTextItem::toXml(QDomDocument &doc) const
 {
-	QDomElement root = doc.createElement("text");
-	
-	QDomText text = doc.createTextNode( toHtml() );
-	root.appendChild( text );
-	
-	root.appendChild( KTSerializer::properties( this, doc));
-	QFont font = this->font();
-	
-	root.appendChild( KTSerializer::font( &font, doc ) );
-	
-	return root;
+    QDomElement root = doc.createElement("text");
+    
+    QDomText text = doc.createTextNode(toHtml());
+    root.appendChild(text);
+    
+    root.appendChild(KTSerializer::properties(this, doc));
+    QFont font = this->font();
+    
+    root.appendChild(KTSerializer::font(&font, doc));
+    
+    return root;
 }
 
 void KTTextItem::setEditable(bool editable)
 {
-	m_isEditable = editable;
-	
-	if ( editable )
-	{
-		m_flags = flags(); // save flags
-		setTextInteractionFlags(Qt::TextEditorInteraction);
-		setFlags( QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable );
-		setFocus(Qt::MouseFocusReason);
-	}
-	else
-	{
-		setTextInteractionFlags(Qt::TextBrowserInteraction);
-		setFlags(  QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable ); // restore flags
-	}
-	update();
+    m_isEditable = editable;
+    
+    if (editable) {
+        m_flags = flags(); // save flags
+        setTextInteractionFlags(Qt::TextEditorInteraction);
+        setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
+        setFocus(Qt::MouseFocusReason);
+    } else {
+        setTextInteractionFlags(Qt::TextBrowserInteraction);
+        setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable); // restore flags
+    }
+    update();
 }
 
 void KTTextItem::toggleEditable()
 {
-	setEditable( !m_isEditable );
+    setEditable(!m_isEditable);
 }
 
-void KTTextItem::focusOutEvent(QFocusEvent * event )
+void KTTextItem::focusOutEvent(QFocusEvent * event)
 {
-	QGraphicsTextItem::focusOutEvent(event);
-	if ( textInteractionFlags() & Qt::TextEditorInteraction && m_isEditable )
-	{
-		QTimer::singleShot( 0, this, SLOT(toggleEditable()));
-		emit edited();
-	}
+    QGraphicsTextItem::focusOutEvent(event);
+
+    if (textInteractionFlags() & Qt::TextEditorInteraction && m_isEditable) {
+        QTimer::singleShot(0, this, SLOT(toggleEditable()));
+        emit edited();
+    }
 }
 
-void KTTextItem::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event )
+void KTTextItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 {
-	setEditable( true );
+    setEditable(true);
 }
-

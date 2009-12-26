@@ -33,23 +33,22 @@
 */
 class STORE_EXPORT KTRectItem : public QGraphicsRectItem, public KTAbstractSerializable
 {
-	public:
-		KTRectItem( QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		KTRectItem( const QRectF& rect, QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		~KTRectItem();
-		bool contains ( const QPointF & point ) const;
-		
-		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc) const;
-		
-	protected:
-		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dropEvent ( QGraphicsSceneDragDropEvent *event );
-		
-	private:
-		bool m_dragOver;
+    public:
+        KTRectItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+        KTRectItem(const QRectF& rect, QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+        ~KTRectItem();
+        bool contains(const QPointF & point) const;
+        
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc) const;
+        
+    protected:
+        virtual void dragEnterEvent(QGraphicsSceneDragDropEvent * event);
+        virtual void dragLeaveEvent(QGraphicsSceneDragDropEvent * event);
+        virtual void dropEvent(QGraphicsSceneDragDropEvent *event);
+        
+    private:
+        bool m_dragOver;
 };
 
 #endif
-

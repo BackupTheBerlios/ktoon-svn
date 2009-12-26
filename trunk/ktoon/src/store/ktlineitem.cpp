@@ -26,31 +26,27 @@ KTLineItem::KTLineItem(QGraphicsItem * parent, QGraphicsScene * scene) : QGraphi
 {
 }
 
-
 KTLineItem::~KTLineItem()
 {
 }
-
 
 void KTLineItem::fromXml(const QString &xml)
 {
 }
 
-
 QDomElement KTLineItem::toXml(QDomDocument &doc) const
 {
-	QDomElement root = doc.createElement("line");
-	
-	root.setAttribute("x1", line().x1());
-	root.setAttribute("y1", line().y1());
-	root.setAttribute("x2", line().x2());
-	root.setAttribute("y2", line().y2());
-	
-	root.appendChild( KTSerializer::properties( this, doc));
-	
-	QPen pen = this->pen();
-	root.appendChild(KTSerializer::pen(&pen, doc));
+    QDomElement root = doc.createElement("line");
+    
+    root.setAttribute("x1", line().x1());
+    root.setAttribute("y1", line().y1());
+    root.setAttribute("x2", line().x2());
+    root.setAttribute("y2", line().y2());
+    
+    root.appendChild( KTSerializer::properties( this, doc));
+    
+    QPen pen = this->pen();
+    root.appendChild(KTSerializer::pen(&pen, doc));
 
-	return root;
+    return root;
 }
-

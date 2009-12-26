@@ -31,13 +31,13 @@
 
 KTRectItem::KTRectItem(QGraphicsItem * parent, QGraphicsScene * scene ) : QGraphicsRectItem(parent, scene)
 {
-	setAcceptDrops(true);
+    setAcceptDrops(true);
 }
 
-KTRectItem::KTRectItem( const QRectF& rect, QGraphicsItem * parent , QGraphicsScene * scene )
+KTRectItem::KTRectItem(const QRectF& rect, QGraphicsItem * parent , QGraphicsScene * scene)
 : QGraphicsRectItem(rect, parent, scene)
 {
-	
+    
 }
 
 KTRectItem::~KTRectItem()
@@ -48,101 +48,85 @@ void KTRectItem::fromXml(const QString &xml)
 {
 }
 
-
 QDomElement KTRectItem::toXml(QDomDocument &doc) const
 {
-	QDomElement root = doc.createElement("rect");
-	
-	root.setAttribute("x", rect().x());
-	root.setAttribute("y", rect().y());
-	root.setAttribute("width", rect().width());
-	root.setAttribute("height", rect().height());
-	
-	root.appendChild( KTSerializer::properties( this, doc));
-	
-	QBrush brush = this->brush();
-	root.appendChild(KTSerializer::brush(&brush, doc));
-	
-	QPen pen = this->pen();
-	root.appendChild(KTSerializer::pen(&pen, doc));
+    QDomElement root = doc.createElement("rect");
+    
+    root.setAttribute("x", rect().x());
+    root.setAttribute("y", rect().y());
+    root.setAttribute("width", rect().width());
+    root.setAttribute("height", rect().height());
+    
+    root.appendChild(KTSerializer::properties(this, doc));
+    
+    QBrush brush = this->brush();
+    root.appendChild(KTSerializer::brush(&brush, doc));
+    
+    QPen pen = this->pen();
+    root.appendChild(KTSerializer::pen(&pen, doc));
 
-	return root;
+    return root;
 }
-
-
 
 void KTRectItem::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
-	if (event->mimeData()->hasColor() )
-	{
-		event->setAccepted(true);
-		m_dragOver = true;
-		update();
-	} 
-	else
-	{
-		event->setAccepted(false);
-	}
+    if (event->mimeData()->hasColor()) {
+        event->setAccepted(true);
+        m_dragOver = true;
+        update();
+    } else {
+        event->setAccepted(false);
+    }
 }
-
 
 void KTRectItem::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
-	Q_UNUSED(event);
-	m_dragOver = false;
-	update();
+    Q_UNUSED(event);
+    m_dragOver = false;
+    update();
 }
-
 
 void KTRectItem::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-	m_dragOver = false;
-	if (event->mimeData()->hasColor())
-	{
-		setBrush(QBrush(qVariantValue<QColor>(event->mimeData()->colorData())));
-	}
-	else if (event->mimeData()->hasImage())
-	{
-		setBrush(QBrush(qVariantValue<QPixmap>(event->mimeData()->imageData())));
-	}
-	update();
+    m_dragOver = false;
+    if (event->mimeData()->hasColor()) {
+        setBrush(QBrush(qVariantValue<QColor>(event->mimeData()->colorData())));
+    } else if (event->mimeData()->hasImage()) {
+        setBrush(QBrush(qVariantValue<QPixmap>(event->mimeData()->imageData())));
+    }
+    update();
 }
 
-bool KTRectItem::contains( const QPointF & point ) const
+bool KTRectItem::contains(const QPointF & point) const
 {
-#if 0
-	double thickness = pen().widthF()+2;
-	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
-	
-	QPolygonF pol = shape().toFillPolygon ();
-	foreach(QPointF point, pol)
-	{
-		if(rectS.contains( point))
-		{
-			return true;
-		}
-	}
-	
-	QPolygonF::iterator it1 = pol.begin();
-	QPolygonF::iterator it2 = pol.begin()+1;
-	
-	while(it2 != pol.end())
-	{
-		QRectF rect( (*it1).x(), (*it1).y(), (*it2).x()-(*it1).x(), (*it2).y()-(*it1).y() );
-		
-// 		if(KTGraphicalAlgorithm::intersectLine( (*it1), (*it2), rectS  ))
-		if ( rect.intersects(rectS))
-		{
-			return true;
-		}
-		++it1;
-		++it2;
-	}
-	
-	return false;
-	
-#else
-	return QGraphicsRectItem::contains(point);
-#endif
-}
+/*
+    double thickness = pen().widthF()+2;
+    QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
+    
+    QPolygonF pol = shape().toFillPolygon();
 
+    foreach (QPointF point, pol) {
+        if (rectS.contains( point))
+            return true;
+    }
+    
+    QPolygonF::iterator it1 = pol.begin();
+    QPolygonF::iterator it2 = pol.begin()+1;
+    
+    while(it2 != pol.end())
+    {
+        QRectF rect( (*it1).x(), (*it1).y(), (*it2).x()-(*it1).x(), (*it2).y()-(*it1).y() );
+        
+        if ( rect.intersects(rectS))
+        {
+            return true;
+        }
+        ++it1;
+        ++it2;
+    }
+    
+    return false;
+*/
+    
+    return QGraphicsRectItem::contains(point);
+}

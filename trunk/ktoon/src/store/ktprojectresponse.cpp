@@ -333,6 +333,6 @@ KTProjectResponse *KTProjectResponseFactory::create(int part, int action)
              }
             break;
     }
-	
+    
     return new KTProjectResponse(part, action);
 }

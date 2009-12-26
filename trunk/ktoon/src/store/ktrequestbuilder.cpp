@@ -29,7 +29,6 @@
 #include "ktprojectrequest.h"
 #include "ktprojectresponse.h"
 
-
 KTRequestBuilder::KTRequestBuilder()
 {
 }
@@ -59,7 +58,7 @@ KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIn
     QDomElement action = doc.createElement("action");
     action.setAttribute("id", actionId);
     action.setAttribute("arg", arg.toString());
-    action.setAttribute("part", KTProjectRequest::Item );
+    action.setAttribute("part", KTProjectRequest::Item);
 
     KTRequestBuilder::appendData(doc, action, data);
     root.appendChild(action);
@@ -92,7 +91,7 @@ KTProjectRequest KTRequestBuilder::createFrameRequest(int sceneIndex, int layerI
     QDomElement action = doc.createElement("action");
     action.setAttribute("id", actionId);
     action.setAttribute("arg", arg.toString());
-    action.setAttribute("part", KTProjectRequest::Frame );
+    action.setAttribute("part", KTProjectRequest::Frame);
 
     KTRequestBuilder::appendData(doc, action, data);
 
@@ -145,7 +144,7 @@ KTProjectRequest KTRequestBuilder::createSceneRequest(int sceneIndex, int action
     QDomElement action = doc.createElement("action");
     action.setAttribute("id", actionId);
     action.setAttribute("arg", arg.toString());
-    action.setAttribute("part", KTProjectRequest::Scene );
+    action.setAttribute("part", KTProjectRequest::Scene);
 
     KTRequestBuilder::appendData(doc, action, data);
 
@@ -179,7 +178,7 @@ KTProjectRequest KTRequestBuilder::createLibraryRequest(int actionId, const QVar
     QDomElement action = doc.createElement("action");
     action.setAttribute("id", actionId);
     action.setAttribute("arg", arg.toString());
-    action.setAttribute("part", KTProjectRequest::Library );
+    action.setAttribute("part", KTProjectRequest::Library);
 
     KTRequestBuilder::appendData(doc, action, data);
 
@@ -203,8 +202,7 @@ void KTRequestBuilder::appendData(QDomDocument &doc, QDomElement &element, const
     if (!data.isNull() && !data.isEmpty()) {
         QDomElement edata = doc.createElement("data");
 
-        QDomCDATASection cdata = doc.createCDATASection( QString(data.toBase64()) );
-        // cdata.setData( QString(data.toBase64()) );
+        QDomCDATASection cdata = doc.createCDATASection(QString(data.toBase64()));
 
         edata.appendChild(cdata);
         element.appendChild(edata);
@@ -251,4 +249,3 @@ KTProjectRequest KTRequestBuilder::fromResponse(KTProjectResponse *response)
 
     return request;
 }
-

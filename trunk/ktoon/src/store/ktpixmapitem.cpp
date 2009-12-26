@@ -23,9 +23,9 @@
 #include "ktpixmapitem.h"
 
 KTPixmapItem::KTPixmapItem(QGraphicsItem * parent, QGraphicsScene * scene)
-	: QGraphicsPixmapItem(parent, scene)
+    : QGraphicsPixmapItem(parent, scene)
 {
-	setTransformationMode(Qt::SmoothTransformation);
+    setTransformationMode(Qt::SmoothTransformation);
 }
 
 KTPixmapItem::~KTPixmapItem()
@@ -38,8 +38,7 @@ void KTPixmapItem::fromXml(const QString &xml)
 
 QDomElement KTPixmapItem::toXml(QDomDocument &doc) const
 {
-	QDomElement root = doc.createElement("pixmap");
-	
-	return root;
+    QDomElement root = doc.createElement("pixmap");
+    
+    return root;
 }
-

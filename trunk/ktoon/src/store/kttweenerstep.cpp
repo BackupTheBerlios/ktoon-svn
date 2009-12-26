@@ -25,226 +25,204 @@
 
 struct KTTweenerStep::Private
 {
-	QPointF position;
-	double rotation;
-	
-	struct PairF {
-		double x;
-		double y;
-	} translation, shear, scale;
-	
-	int flags;
-	int n;
+    QPointF position;
+    double rotation;
+    
+    struct PairF {
+        double x;
+        double y;
+    } translation, shear, scale;
+    
+    int flags;
+    int n;
 };
 
 KTTweenerStep::KTTweenerStep(int n)
  : KTAbstractSerializable(), k(new Private)
 {
-	k->n = n;
-	k->flags = None;
+    k->n = n;
+    k->flags = None;
 }
 
 KTTweenerStep::~KTTweenerStep()
 {
-	delete k;
+    delete k;
 }
 
 void KTTweenerStep::setPosition(const QPointF &pos)
 {
-	k->position = pos;
-	k->flags |= Position;
+    k->position = pos;
+    k->flags |= Position;
 }
 
 void KTTweenerStep::setTranslation(double dx, double dy)
 {
-	k->translation.x = dx;
-	k->translation.y = dy;
-	k->flags |= Translation;
+    k->translation.x = dx;
+    k->translation.y = dy;
+    k->flags |= Translation;
 }
 
 void KTTweenerStep::setRotation(double angle)
 {
-	k->rotation = angle;
-	k->flags |= Rotation;
+    k->rotation = angle;
+    k->flags |= Rotation;
 }
 
 void KTTweenerStep::setShear(double sh, double sv)
 {
-	k->shear.x = sh;
-	k->shear.y = sv;
-	k->flags |= Shear;
+    k->shear.x = sh;
+    k->shear.y = sv;
+    k->flags |= Shear;
 }
 
 void KTTweenerStep::setScale(double sx, double sy)
 {
-	k->scale.x = sx;
-	k->scale.y = sy;
-	k->flags |= Scale;
+    k->scale.x = sx;
+    k->scale.y = sy;
+    k->flags |= Scale;
 }
 
 
 bool KTTweenerStep::has(Type type) const
 {
-	return k->flags & type;
+    return k->flags & type;
 }
 
 int KTTweenerStep::n() const
 {
-	return k->n;
+    return k->n;
 }
 
 QPointF KTTweenerStep::position() const
 {
-	return k->position;
+    return k->position;
 }
 
 double KTTweenerStep::horizontalScale() const
 {
-	return k->scale.x;
+    return k->scale.x;
 }
 
 double KTTweenerStep::verticalScale() const
 {
-	return k->scale.y;
+    return k->scale.y;
 }
 
 double KTTweenerStep::horizontalShear() const
 {
-	return k->shear.x;
+    return k->shear.x;
 }
 
 double KTTweenerStep::verticalShear() const
 {
-	return k->shear.y;
+    return k->shear.y;
 }
 
 double KTTweenerStep::rotation() const
 {
-	return k->rotation;
+    return k->rotation;
 }
 
 double KTTweenerStep::xTranslation() const
 {
-	return k->translation.x;
+    return k->translation.x;
 }
 
 double KTTweenerStep::yTranslation() const
 {
-	return k->translation.y;
+    return k->translation.y;
 }
-
 
 QDomElement KTTweenerStep::toXml(QDomDocument& doc) const
 {
-	QDomElement step = doc.createElement("step");
-	step.setAttribute("value", k->n);
-	
-	if(this->has(KTTweenerStep::Position) )
-	{
-		QDomElement e = doc.createElement("position");
-		e.setAttribute("x", k->position.x());
-		e.setAttribute("y", k->position.y());
-		
-		step.appendChild(e);
-	}
-	
-	if(this->has(KTTweenerStep::Scale) )
-	{
-		QDomElement e = doc.createElement("scale");
-		e.setAttribute("sx", k->scale.x);
-		e.setAttribute("sy", k->scale.y);
-		
-		step.appendChild(e);
-	}
-	
-	if(this->has(KTTweenerStep::Translation) )
-	{
-		QDomElement e = doc.createElement("translation");
-		e.setAttribute("dx", k->translation.x);
-		e.setAttribute("dy", k->translation.y);
-		
-		step.appendChild(e);
-	}
-	
-	if(this->has(KTTweenerStep::Shear) )
-	{
-		QDomElement e = doc.createElement("shear");
-		e.setAttribute("sh", k->shear.x);
-		e.setAttribute("sv", k->shear.y);
-		
-		step.appendChild(e);
-	}
-	
-	if(this->has(KTTweenerStep::Rotation) )
-	{
-		QDomElement e = doc.createElement("rotation");
-		e.setAttribute("angle", k->rotation);
-		
-		step.appendChild(e);
-	}
-	
-	return step;
+    QDomElement step = doc.createElement("step");
+    step.setAttribute("value", k->n);
+    
+    if (this->has(KTTweenerStep::Position)) {
+        QDomElement e = doc.createElement("position");
+        e.setAttribute("x", k->position.x());
+        e.setAttribute("y", k->position.y());
+        
+        step.appendChild(e);
+    }
+    
+    if (this->has(KTTweenerStep::Scale)) {
+        QDomElement e = doc.createElement("scale");
+        e.setAttribute("sx", k->scale.x);
+        e.setAttribute("sy", k->scale.y);
+        
+        step.appendChild(e);
+    }
+    
+    if (this->has(KTTweenerStep::Translation)) {
+        QDomElement e = doc.createElement("translation");
+        e.setAttribute("dx", k->translation.x);
+        e.setAttribute("dy", k->translation.y);
+        
+        step.appendChild(e);
+    }
+    
+    if (this->has(KTTweenerStep::Shear)) {
+        QDomElement e = doc.createElement("shear");
+        e.setAttribute("sh", k->shear.x);
+        e.setAttribute("sv", k->shear.y);
+        
+        step.appendChild(e);
+    }
+    
+    if (this->has(KTTweenerStep::Rotation)) {
+        QDomElement e = doc.createElement("rotation");
+        e.setAttribute("angle", k->rotation);
+        
+        step.appendChild(e);
+    }
+    
+    return step;
 }
 
 
 void KTTweenerStep::fromXml(const QString& xml)
 {
-	QDomDocument doc;
-	
-	if( doc.setContent(xml ) )
-	{
-		QDomElement root = doc.documentElement();
-		
-		QDomNode n = root.firstChild();
-		
-		k->n = root.attribute("value").toInt();
-		
-		while(!n.isNull())
-		{
-			QDomElement e = n.toElement();
-			if(!e.isNull())
-			{
-				if( e.tagName() == "rotation" )
-				{
-					setRotation(e.attribute("angle").toDouble());
-				}
-				else if( e.tagName() == "shear" )
-				{
-					setShear(e.attribute("sh").toDouble(), e.attribute("sv").toDouble());
-				}
-				else if( e.tagName() == "position" )
-				{
-					setPosition(QPointF(e.attribute("x").toDouble(), e.attribute("y").toDouble()));
-				}
-				else if( e.tagName() == "scale" )
-				{
-					setScale(e.attribute("sx").toDouble(), e.attribute("sy").toDouble());
-				}
-				else if( e.tagName() == "translation" )
-				{
-					setTranslation(e.attribute("dx").toDouble(), e.attribute("dy").toDouble());
-				}
-				
-			}
-			n = n.nextSibling();
-		}
-	}
+    QDomDocument doc;
+    
+    if (doc.setContent(xml)) {
+        QDomElement root = doc.documentElement();
+        
+        QDomNode n = root.firstChild();
+        
+        k->n = root.attribute("value").toInt();
+        
+        while (!n.isNull()) {
+               QDomElement e = n.toElement();
+               if (!e.isNull()) {
+                   if (e.tagName() == "rotation") {
+                       setRotation(e.attribute("angle").toDouble());
+                   } else if (e.tagName() == "shear") {
+                              setShear(e.attribute("sh").toDouble(), e.attribute("sv").toDouble());
+                   } else if (e.tagName() == "position") {
+                              setPosition(QPointF(e.attribute("x").toDouble(), e.attribute("y").toDouble()));
+                   } else if (e.tagName() == "scale") {
+                              setScale(e.attribute("sx").toDouble(), e.attribute("sy").toDouble());
+                   } else if (e.tagName() == "translation") {
+                              setTranslation(e.attribute("dx").toDouble(), e.attribute("dy").toDouble());
+                   }
+               }
+               n = n.nextSibling();
+        }
+    }
 }
 
 QDomDocument KTTweenerStep::createXml(int frames, const QVector<KTTweenerStep *> &steps)
 {
-	QDomDocument doc;
-	
-	QDomElement root = doc.createElement("tweening");
-	root.setAttribute("frames", frames);
-	
-	foreach(KTTweenerStep *step, steps)
-	{
-		root.appendChild(step->toXml(doc));
-	}
-	
-	doc.appendChild(root);
-	
-	return doc;
+    QDomDocument doc;
+    
+    QDomElement root = doc.createElement("tweening");
+    root.setAttribute("frames", frames);
+    
+    foreach (KTTweenerStep *step, steps)
+             root.appendChild(step->toXml(doc));
+    
+    doc.appendChild(root);
+    
+    return doc;
 }
-

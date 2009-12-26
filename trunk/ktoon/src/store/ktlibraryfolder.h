@@ -43,42 +43,41 @@ typedef QHash<QString, KTLibraryObject *> LibraryObjects;
 */
 class STORE_EXPORT KTLibraryFolder : public QObject, public KTAbstractSerializable
 {
-	Q_OBJECT;
-	
-	public:
-		KTLibraryFolder(const QString &id, KTProject *project, QObject *parent = 0);
-		~KTLibraryFolder();
-		
-		void setId(const QString &id);
-		QString id() const;
-		
-		KTLibraryObject *createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, bool loaded = false);
-		
-		virtual bool addObject(KTLibraryObject *object, const QString &id);
-		virtual bool removeObject(const QString &id);
-		
-		virtual void addFolder(KTLibraryFolder *folder);
-		
-		bool moveObject(const QString &id, KTLibraryFolder *folder);
-		
-		KTLibraryObject *findObject(const QString &id) const;
-		
-		Folders folders() const;
-		LibraryObjects objects() const;
-		
-		int objectsCount() const;
-		int foldersCount() const;
-		
-		KTProject *project() const;
-		
-	public:
-		virtual void fromXml(const QString &xml );
-		virtual QDomElement toXml(QDomDocument &doc) const;
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    
+    public:
+        KTLibraryFolder(const QString &id, KTProject *project, QObject *parent = 0);
+        ~KTLibraryFolder();
+        
+        void setId(const QString &id);
+        QString id() const;
+        
+        KTLibraryObject *createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, bool loaded = false);
+        
+        virtual bool addObject(KTLibraryObject *object, const QString &id);
+        virtual bool removeObject(const QString &id);
+        
+        virtual void addFolder(KTLibraryFolder *folder);
+        
+        bool moveObject(const QString &id, KTLibraryFolder *folder);
+        
+        KTLibraryObject *findObject(const QString &id) const;
+        
+        Folders folders() const;
+        LibraryObjects objects() const;
+        
+        int objectsCount() const;
+        int foldersCount() const;
+        
+        KTProject *project() const;
+        
+    public:
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc) const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
-
 
 #endif

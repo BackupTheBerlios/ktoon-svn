@@ -35,21 +35,21 @@ class KTProjectResponse;
 */
 class STORE_EXPORT KTRequestParser : public KTXmlParserBase
 {
-	public:
-		KTRequestParser();
-		~KTRequestParser();
-		
-		void initialize();
-		
-		bool startTag(const QString& qname, const QXmlAttributes& atts);
-		bool endTag( const QString& qname);
-		void text( const QString & ch );
-		KTProjectResponse *response() const;
-		QString sign() const;
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+        KTRequestParser();
+        ~KTRequestParser();
+        
+        void initialize();
+        
+        bool startTag(const QString& qname, const QXmlAttributes& atts);
+        bool endTag(const QString& qname);
+        void text(const QString & ch);
+        KTProjectResponse *response() const;
+        QString sign() const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

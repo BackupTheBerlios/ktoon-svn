@@ -122,6 +122,9 @@ bool KTLayer::removeFrame(int position)
 
         if (toRemove->repeat() < 1)
             delete toRemove;
+
+        k->framesCount--;
+
         return true;
     }
 

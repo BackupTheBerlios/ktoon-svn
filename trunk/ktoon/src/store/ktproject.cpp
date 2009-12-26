@@ -209,7 +209,7 @@ KTScene *KTProject::createScene(int position, bool loaded )
     k->sceneCounter++;
 
     scene->setSceneName(tr("Scene %1").arg(k->sceneCounter));
-	
+    
     if (loaded)
         KTProjectLoader::createScene(position, scene->sceneName(), this);
 
@@ -370,7 +370,7 @@ QDomElement KTProject::toXml(QDomDocument &doc) const
 
     project.appendChild(meta);
     ktoon.appendChild(project);
-	
+    
     return ktoon;
 }
 
@@ -383,7 +383,7 @@ bool KTProject::createSymbol(int type, const QString &name, const QByteArray &da
 {
     if (!k->isOpen) 
         return false;
-	
+    
     return k->library->createSymbol(KTLibraryObject::Type(type), name, data) != 0;
 }
 
@@ -516,4 +516,3 @@ QString KTProject::dataDir() const
 {
     return CACHE_DIR + "/" + k->name;
 }
-

@@ -32,52 +32,41 @@ KTLibrary::~KTLibrary()
 {
 }
 
-void KTLibrary::fromXml(const QString &xml )
+void KTLibrary::fromXml(const QString &xml)
 {
-	QDomDocument document;
-	
-	if(! document.setContent(xml) )
-	{
-		return;
-	}
-	
-	QDomElement root = document.documentElement();
-	QDomNode n = root.firstChild();
-	
-	while( !n.isNull() )
-	{
-		QDomElement e = n.toElement();
-		
-		if(!e.isNull())
-		{
-			if( e.tagName() == "library" )
-			{
-				
-			}
-			else if( e.tagName() == "folder" )
-			{
-				QString doc;
-				{
-					QTextStream ts(&doc);
-					ts << n;
-				}
-				
-				KTLibraryFolder::fromXml(doc);
-			}
-		}
-		
-		n = n.nextSibling();
-	}
+    QDomDocument document;
+    
+    if (! document.setContent(xml))
+        return;
+    
+    QDomElement root = document.documentElement();
+    QDomNode n = root.firstChild();
+    
+    while (!n.isNull()) {
+           QDomElement e = n.toElement();
+        
+           if (!e.isNull()) {
+               if (e.tagName() == "library") {
+                
+               } else if (e.tagName() == "folder") {
+                          QString doc;
+                          {
+                             QTextStream ts(&doc);
+                             ts << n;
+                          }
+                
+                          KTLibraryFolder::fromXml(doc);
+              }
+           }
+           n = n.nextSibling();
+    }
 }
-
 
 QDomElement KTLibrary::toXml(QDomDocument &doc) const
 {
-	QDomElement root = doc.createElement("library");
-	
-	root.appendChild(KTLibraryFolder::toXml(doc));
-	
-	return root;
+    QDomElement root = doc.createElement("library");
+    
+    root.appendChild(KTLibraryFolder::toXml(doc));
+    
+    return root;
 }
-
-

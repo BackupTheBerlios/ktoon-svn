@@ -33,20 +33,20 @@ class KTProject;
 */
 class STORE_EXPORT KTLibrary : public KTLibraryFolder
 {
-	Q_OBJECT;
-	
-	public:
-		enum Class
-		{
-			Symbol = 0x01,
-			Folder
-		};
-		KTLibrary(const QString &id, KTProject *parent = 0);
-		~KTLibrary();
-		
-	public:
-		virtual void fromXml(const QString &xml );
-		virtual QDomElement toXml(QDomDocument &doc) const;
+    Q_OBJECT;
+    
+    public:
+        enum Class
+        {
+            Symbol = 0x01,
+            Folder
+        };
+        KTLibrary(const QString &id, KTProject *parent = 0);
+        ~KTLibrary();
+        
+    public:
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc) const;
 };
 
 #endif

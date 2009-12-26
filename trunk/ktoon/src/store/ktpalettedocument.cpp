@@ -24,22 +24,18 @@
 
 KTPaletteDocument::KTPaletteDocument(const QString &name, bool isEditable) : QDomDocument()
 {
-	QDomProcessingInstruction header = this->createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
-	this->appendChild(header);
-	
-	QDomElement root = createElement( "Palette" );
-	root.setAttribute("name", name);
-	
-	if ( isEditable )
-	{
-		root.setAttribute("editable", "true" );
-	}
-	else
-	{
-		root.setAttribute("editable", "false" );
-	}
-	
-	appendChild( root );	
+    QDomProcessingInstruction header = this->createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
+    this->appendChild(header);
+    
+    QDomElement root = createElement("Palette");
+    root.setAttribute("name", name);
+    
+    if (isEditable)
+        root.setAttribute("editable", "true");
+    else
+        root.setAttribute("editable", "false");
+    
+    appendChild(root);
 }
 
 KTPaletteDocument::~KTPaletteDocument()
@@ -48,85 +44,76 @@ KTPaletteDocument::~KTPaletteDocument()
 
 void KTPaletteDocument::addColor(const QColor &color)
 {
-	QDomElement element = createElement("Color");
-	
-	element.setAttribute("colorName", color.name());
-	element.setAttribute("alpha", QString::number(color.alpha()) );
-	
-	documentElement().appendChild(element);
-	
+    QDomElement element = createElement("Color");
+    
+    element.setAttribute("colorName", color.name());
+    element.setAttribute("alpha", QString::number(color.alpha()));
+    
+    documentElement().appendChild(element);
 }
 
 void KTPaletteDocument::addGradient(const QGradient &gradient)
 {
-	QDomElement element = createElement("Gradient");
-	
-	element.setAttribute("type", gradient.type() );
-	element.setAttribute("spread", gradient.spread() );
-	const QGradient *gr = &gradient;
-	switch( gradient.type() )
-	{
-		case QGradient::LinearGradient:
-		{
-			element.setAttribute("startX", static_cast<const QLinearGradient *>(gr)->start().x() );
-			element.setAttribute("startY", static_cast<const QLinearGradient *>(gr)->start().y() );
-				
-			element.setAttribute("finalX", static_cast<const QLinearGradient *>(gr)->finalStop().x() );
-			element.setAttribute("finalY", static_cast<const QLinearGradient *>(gr)->finalStop().y() );
-		}
-		break;
-		case QGradient::RadialGradient:
-		{
-			element.setAttribute("centerX", static_cast<const QRadialGradient *>(gr)->center().x() );
-			element.setAttribute("centerY", static_cast<const QRadialGradient *>(gr)->center().y() );
-				
-			element.setAttribute("focalX", static_cast<const QRadialGradient *>(gr)->focalPoint().x() );
-			element.setAttribute("focalY", static_cast<const QRadialGradient *>(gr)->focalPoint().y() );
-				
-			element.setAttribute("radius", static_cast<const QRadialGradient *>(gr)->radius() );
-		}
-		break;
-		case QGradient::ConicalGradient:
-		{
-			element.setAttribute("centerX", static_cast<const QRadialGradient *>(gr)->center().x() );
-			element.setAttribute("centerY", static_cast<const QRadialGradient *>(gr)->center().y() );
-				
-			element.setAttribute("angle", static_cast<const QConicalGradient *>(gr)->angle() );
-		}
-		break;
-		case QGradient::NoGradient:
-		{
-		}
-		break;
-	}
-	
-	
-	QGradientStops stops = gradient.stops();
-	
-	foreach(QGradientStop stop, stops)
-	{
-		QDomElement stopElement = createElement("Stop");
-		stopElement.setAttribute("value", stop.first );
-		stopElement.setAttribute("colorName", stop.second.name());
-		stopElement.setAttribute("alpha", stop.second.alpha());
-		
-		element.appendChild(stopElement);
-	}
-	
-	documentElement().appendChild(element);
+    QDomElement element = createElement("Gradient");
+    
+    element.setAttribute("type", gradient.type());
+    element.setAttribute("spread", gradient.spread());
+    const QGradient *gr = &gradient;
+    switch (gradient.type()) {
+            case QGradient::LinearGradient:
+            {
+                 element.setAttribute("startX", static_cast<const QLinearGradient *>(gr)->start().x());
+                 element.setAttribute("startY", static_cast<const QLinearGradient *>(gr)->start().y());
+                
+                 element.setAttribute("finalX", static_cast<const QLinearGradient *>(gr)->finalStop().x());
+                 element.setAttribute("finalY", static_cast<const QLinearGradient *>(gr)->finalStop().y());
+            }
+            break;
+            case QGradient::RadialGradient:
+            {
+                 element.setAttribute("centerX", static_cast<const QRadialGradient *>(gr)->center().x());
+                 element.setAttribute("centerY", static_cast<const QRadialGradient *>(gr)->center().y());
+                
+                 element.setAttribute("focalX", static_cast<const QRadialGradient *>(gr)->focalPoint().x());
+                 element.setAttribute("focalY", static_cast<const QRadialGradient *>(gr)->focalPoint().y());
+                
+                 element.setAttribute("radius", static_cast<const QRadialGradient *>(gr)->radius());
+            }
+            break;
+            case QGradient::ConicalGradient:
+            {
+                 element.setAttribute("centerX", static_cast<const QRadialGradient *>(gr)->center().x());
+                 element.setAttribute("centerY", static_cast<const QRadialGradient *>(gr)->center().y());
+                
+                 element.setAttribute("angle", static_cast<const QConicalGradient *>(gr)->angle());
+            }
+            break;
+            case QGradient::NoGradient:
+            {
+            }
+            break;
+    }
+    
+    QGradientStops stops = gradient.stops();
+    
+    foreach (QGradientStop stop, stops) {
+             QDomElement stopElement = createElement("Stop");
+             stopElement.setAttribute("value", stop.first);
+             stopElement.setAttribute("colorName", stop.second.name());
+             stopElement.setAttribute("alpha", stop.second.alpha());
+        
+             element.appendChild(stopElement);
+    }
+    
+    documentElement().appendChild(element);
 }
 
 void KTPaletteDocument::setElements(const QList<QBrush > &brushes)
 {
-	foreach( QBrush brush, brushes)
-	{
-		if ( brush.gradient() )
-		{
-			addGradient( *brush.gradient() );
-		}
-		else
-		{
-			addColor(brush.color());
-		}
-	}
+    foreach (QBrush brush, brushes) {
+             if (brush.gradient())
+                 addGradient(*brush.gradient());
+             else
+                 addColor(brush.color());
+    }
 }

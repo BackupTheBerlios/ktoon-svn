@@ -32,23 +32,22 @@
 */
 class STORE_EXPORT KTPathItem : public KTAbstractSerializable, public QGraphicsPathItem
 {
-	public:
-		KTPathItem( QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		~KTPathItem();
-		
-		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc) const;
-		virtual void paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
-		bool contains ( const QPointF & point ) const;
-		
-	protected:
-		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dropEvent ( QGraphicsSceneDragDropEvent *event );
-		
-	private:
-		bool m_dragOver;
+    public:
+        KTPathItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+        ~KTPathItem();
+        
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc) const;
+        virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+        bool contains(const QPointF & point) const;
+        
+    protected:
+        virtual void dragEnterEvent(QGraphicsSceneDragDropEvent * event);
+        virtual void dragLeaveEvent(QGraphicsSceneDragDropEvent * event);
+        virtual void dropEvent(QGraphicsSceneDragDropEvent *event);
+        
+    private:
+        bool m_dragOver;
 };
 
 #endif
-

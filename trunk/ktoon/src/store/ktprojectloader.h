@@ -34,18 +34,20 @@ class KTProject;
 */
 class KTProjectLoader
 {
-	public:
-		KTProjectLoader();
-		~KTProjectLoader();
-		
-		static void createItem(int scenePosition, int layerPosition, int framePosition, int itemPosition, const QString &xml, KTProject *project);
-		static void createFrame(int scenePosition, int layerPosition, int framePosition, const QString &name, KTProject *project);
-		static void createLayer(int scenePosition, int layerPosition, const QString &name, KTProject *project);
-		static void createSoundLayer(int scenePosition, int layerPosition, const QString &name, KTProject *project);
-		
-		static void createScene(int scenePosition, const QString &name, KTProject *project);
-		
-		static void createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, KTProject *project);
+    public:
+    	KTProjectLoader();
+    	~KTProjectLoader();
+    	
+    	static void createItem(int scenePosition, int layerPosition, int framePosition, int itemPosition, const QString &xml, KTProject *project);
+
+    	static void createFrame(int scenePosition, int layerPosition, int framePosition, const QString &name, KTProject *project);
+    	static void createLayer(int scenePosition, int layerPosition, const QString &name, KTProject *project);
+
+    	static void createSoundLayer(int scenePosition, int layerPosition, const QString &name, KTProject *project);
+    	
+    	static void createScene(int scenePosition, const QString &name, KTProject *project);
+    	
+    	static void createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, KTProject *project);
 };
 
 #endif

@@ -36,31 +36,31 @@
 
 class STORE_EXPORT KTPaletteDocument : public QDomDocument
 {
-	public:
-		/**
-		 * Construye un documento de paleta con un nombre
-		 */
-		KTPaletteDocument(const QString &name, bool isEditable);
-		
-		/**
-		 * Destructor
-		 */
-		~KTPaletteDocument();
-		
-		/**
-		 * Añade un gradiente al documento
-		 */
-		void addGradient(const QGradient &gradient);
-		
-		/**
-		 * Añade un color al documento
-		 */
-		void addColor(const QColor &color);
-		
-		/**
-		 * Pone una lista de colores o gradientes en el documento
-		 */
-		void setElements(const QList<QBrush > &colors);
+    public:
+        /**
+         * Construye un documento de paleta con un nombre
+         */
+        KTPaletteDocument(const QString &name, bool isEditable);
+        
+        /**
+         * Destructor
+         */
+        ~KTPaletteDocument();
+        
+        /**
+         * Añade un gradiente al documento
+         */
+        void addGradient(const QGradient &gradient);
+        
+        /**
+         * Añade un color al documento
+         */
+        void addColor(const QColor &color);
+        
+        /**
+         * Pone una lista de colores o gradientes en el documento
+         */
+        void setElements(const QList<QBrush > &colors);
 };
 
 #endif

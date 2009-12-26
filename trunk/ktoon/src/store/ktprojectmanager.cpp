@@ -270,7 +270,7 @@ void KTProjectManager::handleProjectRequest(const KTProjectRequest *request)
     #endif
 
     // TODO: the handler must advise when to build the command
-	
+    
     if (k->handler)
         k->handler->handleProjectRequest(request);
     else
@@ -313,10 +313,10 @@ void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
             }
         }
         parser.response()->setExternal(request->isExternal());
-	emit responsed(parser.response());
+
+        emit responsed(parser.response());
     }
 }
-
 
 /**
  * This function creates a command to execute an action, i.e. add a frame. 

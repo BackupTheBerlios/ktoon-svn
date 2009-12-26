@@ -25,27 +25,26 @@
 #include <ktlayer.h>
 
 /**
-	@author David Cuadrado <krawek@gmail.com>
+    @author David Cuadrado <krawek@gmail.com>
 */
 class KTSoundLayer : public KTLayer
 {
-	public:
-		KTSoundLayer(KTScene *parent);
-		~KTSoundLayer();
-		
-		void fromSymbol(const QString &symbolName);
-		QString filePath() const;
-		
-		void play();
-		void stop();
-		
-		void fromXml(const QString &xml );
-		QDomElement toXml(QDomDocument &doc) const;
-		
-	private:
-		struct Private;
-		Private *const k;
-
+    public:
+        KTSoundLayer(KTScene *parent);
+        ~KTSoundLayer();
+        
+        void fromSymbol(const QString &symbolName);
+        QString filePath() const;
+        
+        void play();
+        void stop();
+        
+        void fromXml(const QString &xml);
+        QDomElement toXml(QDomDocument &doc) const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

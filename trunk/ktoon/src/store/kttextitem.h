@@ -33,29 +33,29 @@
 
 class STORE_EXPORT KTTextItem : public QGraphicsTextItem, public KTAbstractSerializable
 {
-	Q_OBJECT;
-	public:
-		KTTextItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		~KTTextItem();
-		
-		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc) const;
-		
-		void setEditable(bool editable);
-		
-	public slots:
-		void toggleEditable();
-		
-	signals:
-		void edited();
-		
-	protected:
-		virtual void focusOutEvent(QFocusEvent * event );
-		virtual void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event );
-		
-	private:
-		GraphicsItemFlags m_flags;
-		bool m_isEditable;
+    Q_OBJECT;
+    public:
+        KTTextItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+        ~KTTextItem();
+        
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc) const;
+        
+        void setEditable(bool editable);
+        
+    public slots:
+        void toggleEditable();
+        
+    signals:
+        void edited();
+        
+    protected:
+        virtual void focusOutEvent(QFocusEvent * event);
+        virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event);
+        
+    private:
+        GraphicsItemFlags m_flags;
+        bool m_isEditable;
 };
 
 #endif

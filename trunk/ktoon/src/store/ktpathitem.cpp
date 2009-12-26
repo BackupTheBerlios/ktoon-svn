@@ -35,173 +35,143 @@
 
 KTPathItem::KTPathItem( QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsPathItem(parent, scene), m_dragOver(false)
 {
-	setAcceptDrops(true);
-// 	setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
+    setAcceptDrops(true);
 }
-
 
 KTPathItem::~KTPathItem()
 {
 }
 
-
 void KTPathItem::fromXml(const QString &xml)
 {
 }
 
-
 QDomElement KTPathItem::toXml(QDomDocument &doc) const
 {
-	QDomElement root = doc.createElement("path");
-	
-	QString strPath = "";
-	QChar t;
-	
-	for(int i = 0; i <  path().elementCount () ; i++)
-	{
-		QPainterPath::Element e = path().elementAt (i);
-		switch(e.type )
-		{
-			case QPainterPath::MoveToElement:
-			{
-				if(t != 'M')
-				{
-					t = 'M';
-					strPath += "M " + QString::number(e.x) + " " + QString::number(e.y) + " ";
-				}
-				else
-				{
-					strPath += QString::number(e.x) + " " + QString::number(e.y) + " ";
-				}
-				
-			}
-			break;
-			case QPainterPath::LineToElement:
-			{
-				if(t != 'L')
-				{
-					t = 'L';
-					strPath += " L " + QString::number(e.x) + " " + QString::number(e.y) + " ";
-				}
-				else
-				{
-					strPath += QString::number(e.x) + " " + QString::number(e.y) + " ";
-				}
-			}
-			break;
-			case QPainterPath::CurveToElement:
-			{
-				
-				if(t != 'C')
-				{
-					t = 'C';
-					strPath += " C " + QString::number(e.x) + " " + QString::number(e.y) + " ";
-				}
-				else
-				{
-					strPath += "  "+ QString::number(e.x) + " " + QString::number(e.y) + " ";
-				}
-			}
-			break;
-			case QPainterPath::CurveToDataElement:
-			{
-				if ( t == 'C' )
-					strPath +=  " " +QString::number(e.x) + "  " + QString::number(e.y) + " ";
-			}
-			break;
-		}
-	}
-	
-	root.setAttribute( "d", strPath);
-	
-	root.appendChild(KTSerializer::properties( this, doc));
-	
-	QBrush brush = this->brush();
-	root.appendChild(KTSerializer::brush(&brush, doc));
-	
-	QPen pen = this->pen();
-	root.appendChild(KTSerializer::pen(&pen, doc));
-	
-	
-	return root;
+    QDomElement root = doc.createElement("path");
+    
+    QString strPath = "";
+    QChar t;
+    
+    for(int i = 0; i <  path().elementCount () ; i++) {
+        QPainterPath::Element e = path().elementAt (i);
+        switch(e.type ) {
+            case QPainterPath::MoveToElement:
+            {
+                if(t != 'M') {
+                    t = 'M';
+                    strPath += "M " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+                } else {
+                    strPath += QString::number(e.x) + " " + QString::number(e.y) + " ";
+                }
+                
+            }
+            break;
+            case QPainterPath::LineToElement:
+            {
+                if(t != 'L') {
+                    t = 'L';
+                    strPath += " L " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+                } else {
+                    strPath += QString::number(e.x) + " " + QString::number(e.y) + " ";
+                }
+            }
+            break;
+            case QPainterPath::CurveToElement:
+            {
+                
+                if(t != 'C') {
+                    t = 'C';
+                    strPath += " C " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+                } else {
+                    strPath += "  "+ QString::number(e.x) + " " + QString::number(e.y) + " ";
+                }
+            }
+            break;
+            case QPainterPath::CurveToDataElement:
+            {
+                if (t == 'C')
+                    strPath +=  " " +QString::number(e.x) + "  " + QString::number(e.y) + " ";
+            }
+            break;
+        }
+    }
+    
+    root.setAttribute("d", strPath);
+    
+    root.appendChild(KTSerializer::properties(this, doc));
+    
+    QBrush brush = this->brush();
+    root.appendChild(KTSerializer::brush(&brush, doc));
+    
+    QPen pen = this->pen();
+    root.appendChild(KTSerializer::pen(&pen, doc));
+    
+    return root;
 }
 
-void KTPathItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
+void KTPathItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-	QGraphicsPathItem::paint(painter, option,widget );
+    QGraphicsPathItem::paint(painter, option,widget);
 }
 
-bool KTPathItem::contains ( const QPointF & point ) const
+bool KTPathItem::contains(const QPointF & point) const
 {
-#if 0
-	double thickness = 4;
-	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
-	
-	QPolygonF pol = shape().toFillPolygon();
-	pol.pop_back();
-	pol.pop_front();
-	
-	foreach(QPointF point, pol)
-	{
-		if(rectS.contains( point))
-		{
-			return true;
-		}
-	}
-	
-	QPolygonF::iterator it1 = pol.begin();
-	QPolygonF::iterator it2 = pol.begin()+1;
-	
-	while(it2 != pol.end())
-	{
-		if(KTGraphicalAlgorithm::intersectLine( (*it1), (*it2), rectS ))
-		{
-			return true;
-		}
-		++it1;
-		++it2;
-	}
-	
-	return false;
-#else
-	return QGraphicsPathItem::contains (point );
-#endif
+    /*
+    double thickness = 4;
+    QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
+    
+    QPolygonF pol = shape().toFillPolygon();
+    pol.pop_back();
+    pol.pop_front();
+    
+    foreach (QPointF point, pol) {
+             if (rectS.contains( point))
+                 return true;
+    }
+    
+    QPolygonF::iterator it1 = pol.begin();
+    QPolygonF::iterator it2 = pol.begin()+1;
+    
+    while (it2 != pol.end()) {
+           if (KTGraphicalAlgorithm::intersectLine((*it1), (*it2), rectS))
+               return true;
+           ++it1;
+           ++it2;
+    }
+    
+    return false;
+    */
+
+    return QGraphicsPathItem::contains(point);
 }
 
 void KTPathItem::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
-	if (event->mimeData()->hasColor() )
-	{
-		event->setAccepted(true);
-		m_dragOver = true;
-		update();
-	} 
-	else
-	{
-		event->setAccepted(false);
-	}
+    if (event->mimeData()->hasColor()) {
+        event->setAccepted(true);
+        m_dragOver = true;
+        update();
+    } else {
+        event->setAccepted(false);
+    }
 }
-
 
 void KTPathItem::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
-	Q_UNUSED(event);
-	m_dragOver = false;
-	update();
+    Q_UNUSED(event);
+    m_dragOver = false;
+    update();
 }
-
 
 void KTPathItem::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-	m_dragOver = false;
-	if (event->mimeData()->hasColor())
-	{
-		setBrush(QBrush(qVariantValue<QColor>(event->mimeData()->colorData())));
-	}
-	else if (event->mimeData()->hasImage())
-	{
-		setBrush(QBrush(qVariantValue<QPixmap>(event->mimeData()->imageData())));
-	}
-	update();
-}
+    m_dragOver = false;
 
+    if (event->mimeData()->hasColor())
+        setBrush(QBrush(qVariantValue<QColor>(event->mimeData()->colorData())));
+    else if (event->mimeData()->hasImage())
+             setBrush(QBrush(qVariantValue<QPixmap>(event->mimeData()->imageData())));
+
+    update();
+}

@@ -33,14 +33,11 @@
 
 class STORE_EXPORT KTPixmapItem : public QGraphicsPixmapItem, public KTAbstractSerializable
 {
-	public:
-		KTPixmapItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		~KTPixmapItem();
-		
-		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc) const;
+    public:
+        KTPixmapItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+        ~KTPixmapItem();
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc) const;
 };
 
 #endif
-
-

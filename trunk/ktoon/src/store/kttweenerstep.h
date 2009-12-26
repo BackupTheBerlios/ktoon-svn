@@ -33,47 +33,47 @@
 */
 class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
 {
-	public:
-		enum Type {
-			None = 0x0,
-			Position = 0x01,
-			Translation = 0x02,
-			Rotation = 0x04,
-			Shear = 0x8,
-			Scale = 0x10
-		};
-		
-		KTTweenerStep(int n);
-		
-		~KTTweenerStep();
-		
-		void setPosition(const QPointF &pos);
-		void setTranslation(double dx, double dy);
-		void setRotation(double angle);
-		void setShear(double sh, double sv);
-		void setScale(double sx, double sy);
-		
-		QPointF position() const;
-		double horizontalScale() const;
-		double verticalScale() const;
-		double horizontalShear() const;
-		double verticalShear() const;
-		double rotation() const;
-		double xTranslation() const;
-		double yTranslation() const;
-		
-		
-		bool has(Type type) const;
-		int n() const;
-	
-		virtual QDomElement toXml(QDomDocument& doc) const;
-		virtual void fromXml(const QString& xml);
-		
-		static QDomDocument createXml(int frames, const QVector<KTTweenerStep *> &steps);
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+        enum Type {
+            None = 0x0,
+            Position = 0x01,
+            Translation = 0x02,
+            Rotation = 0x04,
+            Shear = 0x8,
+            Scale = 0x10
+        };
+        
+        KTTweenerStep(int n);
+        
+        ~KTTweenerStep();
+        
+        void setPosition(const QPointF &pos);
+        void setTranslation(double dx, double dy);
+        void setRotation(double angle);
+        void setShear(double sh, double sv);
+        void setScale(double sx, double sy);
+        
+        QPointF position() const;
+        double horizontalScale() const;
+        double verticalScale() const;
+        double horizontalShear() const;
+        double verticalShear() const;
+        double rotation() const;
+        double xTranslation() const;
+        double yTranslation() const;
+        
+        
+        bool has(Type type) const;
+        int n() const;
+    
+        virtual QDomElement toXml(QDomDocument& doc) const;
+        virtual void fromXml(const QString& xml);
+        
+        static QDomDocument createXml(int frames, const QVector<KTTweenerStep *> &steps);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

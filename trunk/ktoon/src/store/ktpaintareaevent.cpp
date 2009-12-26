@@ -40,7 +40,7 @@ QVariant KTPaintAreaEvent::data() const
 
 KTPaintAreaEvent *KTPaintAreaEvent::clone() const
 {
-    KTPaintAreaEvent *event = new KTPaintAreaEvent( action(), data() );	
+    KTPaintAreaEvent *event = new KTPaintAreaEvent(action(), data());	
 
     return event;
 }

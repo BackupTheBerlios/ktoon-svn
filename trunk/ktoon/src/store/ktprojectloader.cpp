@@ -36,71 +36,71 @@ KTProjectLoader::~KTProjectLoader()
 
 void KTProjectLoader::createItem(int scenePosition, int layerPosition, int framePosition, int itemPosition, const QString &xml, KTProject *project)
 {
-	KTItemResponse response(KTProjectRequest::Item, KTProjectRequest::Add);
-	
-	response.setSceneIndex(scenePosition);
-	response.setLayerIndex(layerPosition);
-	response.setFrameIndex(framePosition);
-	response.setItemIndex(itemPosition);
-	
-	response.setArg(xml);
-	
-	project->emitResponse(&response);
-}
+    KTItemResponse response(KTProjectRequest::Item, KTProjectRequest::Add);
 
+    response.setSceneIndex(scenePosition);
+    response.setLayerIndex(layerPosition);
+    response.setFrameIndex(framePosition);
+    response.setItemIndex(itemPosition);
+    
+    response.setArg(xml);
+    
+    project->emitResponse(&response);
+}
 
 void KTProjectLoader::createFrame(int scenePosition, int layerPosition, int framePosition, const QString &name, KTProject *project)
 {
-	KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Add);
-	
-	response.setSceneIndex(scenePosition);
-	response.setLayerIndex(layerPosition);
-	response.setFrameIndex(framePosition);
-	response.setArg(name);
-	
-	project->emitResponse(&response);
+    KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Add);
+    
+    response.setSceneIndex(scenePosition);
+    response.setLayerIndex(layerPosition);
+    response.setFrameIndex(framePosition);
+    response.setArg(name);
+    
+    project->emitResponse(&response);
 }
 
 
 void KTProjectLoader::createLayer(int scenePosition, int layerPosition, const QString &name, KTProject *project)
 {
-	KTLayerResponse response(KTProjectRequest::Layer, KTProjectRequest::Add);
-	
-	response.setSceneIndex(scenePosition);
-	response.setLayerIndex(layerPosition);
-	response.setArg(name);
-	
-	project->emitResponse(&response);
+    KTLayerResponse response(KTProjectRequest::Layer, KTProjectRequest::Add);
+    
+    response.setSceneIndex(scenePosition);
+    response.setLayerIndex(layerPosition);
+    response.setArg(name);
+    
+    project->emitResponse(&response);
 }
 
 void KTProjectLoader::createSoundLayer(int scenePosition, int layerPosition, const QString &name, KTProject *project)
 {
-	KTLibraryResponse response(KTProjectRequest::Library, KTProjectRequest::AddSymbolToProject);
-	
-	response.setSceneIndex(scenePosition);
-	response.setLayerIndex(layerPosition);
-	response.setArg(name);
-	response.setSymbolType(KTLibraryObject::Sound);
-	
-	project->emitResponse(&response);
+    KTLibraryResponse response(KTProjectRequest::Library, KTProjectRequest::AddSymbolToProject);
+    
+    response.setSceneIndex(scenePosition);
+    response.setLayerIndex(layerPosition);
+    response.setArg(name);
+    response.setSymbolType(KTLibraryObject::Sound);
+    
+    project->emitResponse(&response);
 }
 
 void KTProjectLoader::createScene(int scenePosition, const QString &name, KTProject *project)
 {
-	KTSceneResponse response(KTProjectRequest::Scene, KTProjectRequest::Add);
-	response.setSceneIndex(scenePosition);
-	response.setArg( name );
-	
-	project->emitResponse(&response);
+    KTSceneResponse response(KTProjectRequest::Scene, KTProjectRequest::Add);
+
+    response.setSceneIndex(scenePosition);
+    response.setArg(name);
+    
+    project->emitResponse(&response);
 }
 
 void KTProjectLoader::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, KTProject *project)
 {
-	KTLibraryResponse response(KTProjectRequest::Library, KTProjectRequest::Add);
-	
-	response.setArg(name);
-	response.setData(data);
-	response.setSymbolType(type);
-	
-	project->emitResponse(&response);
+    KTLibraryResponse response(KTProjectRequest::Library, KTProjectRequest::Add);
+    
+    response.setArg(name);
+    response.setData(data);
+    response.setSymbolType(type);
+    
+    project->emitResponse(&response);
 }

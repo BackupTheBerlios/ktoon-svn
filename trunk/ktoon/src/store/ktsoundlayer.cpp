@@ -32,8 +32,8 @@
 
 struct KTSoundLayer::Private
 {
-	QString filePath, symbolName;
-	int playerId;
+    QString filePath, symbolName;
+    int playerId;
 };
 
 KTSoundLayer::KTSoundLayer(KTScene *parent)
@@ -43,62 +43,57 @@ KTSoundLayer::KTSoundLayer(KTScene *parent)
 
 KTSoundLayer::~KTSoundLayer()
 {
-	delete k;
+    delete k;
 }
 
 void KTSoundLayer::fromSymbol(const QString &symbolName)
 {
-	KTLibrary *library = project()->library();
-	
-	if( KTLibraryObject *object = library->findObject(symbolName) )
-	{
-		if( object->type() == KTLibraryObject::Sound)
-		{
-			k->symbolName = symbolName;
-			k->filePath = object->dataPath();
-			k->playerId = KAudioPlayer::instance()->load(k->filePath);
-		}
-	}
+    KTLibrary *library = project()->library();
+    
+    if (KTLibraryObject *object = library->findObject(symbolName)) {
+        if (object->type() == KTLibraryObject::Sound) {
+            k->symbolName = symbolName;
+            k->filePath = object->dataPath();
+            k->playerId = KAudioPlayer::instance()->load(k->filePath);
+        }
+    }
 }
 
 QString KTSoundLayer::filePath() const
 {
-	return k->filePath;
+    return k->filePath;
 }
 
 void KTSoundLayer::play()
 {
-	KAudioPlayer::instance()->setCurrentPlayer(k->playerId);
-	KAudioPlayer::instance()->play();
+    KAudioPlayer::instance()->setCurrentPlayer(k->playerId);
+    KAudioPlayer::instance()->play();
 }
 
 void KTSoundLayer::stop()
 {
-	KAudioPlayer::instance()->setCurrentPlayer(k->playerId);
-	KAudioPlayer::instance()->stop();
+    KAudioPlayer::instance()->setCurrentPlayer(k->playerId);
+    KAudioPlayer::instance()->stop();
 }
 
-
-void KTSoundLayer::fromXml(const QString &xml )
+void KTSoundLayer::fromXml(const QString &xml)
 {
-	QDomDocument document;
-	
-	if (! document.setContent(xml) )
-	{
-		return;
-	}
-	
-	QDomElement root = document.documentElement();
-	setLayerName( root.attribute( "name", layerName() ) );
-	
-	fromSymbol(root.attribute("symbol"));
+    QDomDocument document;
+    
+    if (! document.setContent(xml))
+        return;
+    
+    QDomElement root = document.documentElement();
+    setLayerName(root.attribute("name", layerName()));
+    
+    fromSymbol(root.attribute("symbol"));
 }
 
 QDomElement KTSoundLayer::toXml(QDomDocument &doc) const
 {
-	QDomElement root = doc.createElement("soundlayer");
-	root.setAttribute("name", layerName() );
-	root.setAttribute("symbol", k->symbolName);
-	
-	return root;
+    QDomElement root = doc.createElement("soundlayer");
+    root.setAttribute("name", layerName());
+    root.setAttribute("symbol", k->symbolName);
+    
+    return root;
 }

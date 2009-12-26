@@ -43,29 +43,29 @@ class KTProjectResponse;
 */
 class STORE_EXPORT KTProjectCommand : public QUndoCommand
 {
-	public:
-		KTProjectCommand(KTCommandExecutor *executor, const KTProjectRequest *event);
-		KTProjectCommand(KTCommandExecutor *executor, KTProjectResponse *response);
-		~KTProjectCommand();
-		
-		virtual void redo();
-		virtual void undo();
-		
-		void frameCommand();
-		void layerCommand();
-		void sceneCommand();
-		void itemCommand();
-		
-		void libraryCommand();
-		void paintAreaCommand();
-		
-	private:
-		QString actionString(int action);
-		void initText();
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+        KTProjectCommand(KTCommandExecutor *executor, const KTProjectRequest *event);
+        KTProjectCommand(KTCommandExecutor *executor, KTProjectResponse *response);
+        ~KTProjectCommand();
+        
+        virtual void redo();
+        virtual void undo();
+        
+        void frameCommand();
+        void layerCommand();
+        void sceneCommand();
+        void itemCommand();
+        
+        void libraryCommand();
+        void paintAreaCommand();
+        
+    private:
+        QString actionString(int action);
+        void initText();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

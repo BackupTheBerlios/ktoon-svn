@@ -38,26 +38,26 @@ class KTProjectResponse;
 */
 class STORE_EXPORT KTRequestBuilder
 {
-	protected:
-		KTRequestBuilder();
-		
-	public:
-		~KTRequestBuilder();
-		
-		static KTProjectRequest createItemRequest(int sceneIndex, int layerIndex, int frameIndex, int itemIndex, int action, const QVariant &arg = QString(), const QByteArray &data = QByteArray());
-		
-		static KTProjectRequest createFrameRequest(int sceneIndex, int layerIndex, int frameIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
-		
-		static KTProjectRequest createLayerRequest(int sceneIndex, int layerIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
-		
-		static KTProjectRequest createSceneRequest(int sceneIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
-		
-		static KTProjectRequest createLibraryRequest(int actionId, const QVariant &arg, KTLibraryObject::Type type, const QByteArray &data, int scene = -1, int layer = -1, int frame = -1  );
-		
-		static KTProjectRequest fromResponse(KTProjectResponse *response);
-		
-	private:
-		static void appendData(QDomDocument &doc, QDomElement &element, const QByteArray &data);
+    protected:
+        KTRequestBuilder();
+        
+    public:
+        ~KTRequestBuilder();
+        
+        static KTProjectRequest createItemRequest(int sceneIndex, int layerIndex, int frameIndex, int itemIndex, int action, const QVariant &arg = QString(), const QByteArray &data = QByteArray());
+        
+        static KTProjectRequest createFrameRequest(int sceneIndex, int layerIndex, int frameIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
+        
+        static KTProjectRequest createLayerRequest(int sceneIndex, int layerIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
+        
+        static KTProjectRequest createSceneRequest(int sceneIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
+        
+        static KTProjectRequest createLibraryRequest(int actionId, const QVariant &arg, KTLibraryObject::Type type, const QByteArray &data, int scene = -1, int layer = -1, int frame = -1);
+        
+        static KTProjectRequest fromResponse(KTProjectResponse *response);
+        
+    private:
+        static void appendData(QDomDocument &doc, QDomElement &element, const QByteArray &data);
 };
 
 #endif

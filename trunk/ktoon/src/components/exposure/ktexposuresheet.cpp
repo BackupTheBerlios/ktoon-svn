@@ -175,6 +175,7 @@ void KTExposureSheet::applyAction(int action)
                break;
             case KTProjectActionBar::RemoveFrame:
                {
+                 kFatal() << "*** Removing Layer from PopMenu";
                  KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
                                           k->currentTable->currentLayer(), k->currentTable->currentFrame(),
                                           KTProjectRequest::Remove);

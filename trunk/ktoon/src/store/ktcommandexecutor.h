@@ -40,70 +40,67 @@ class KTLibraryResponse;
 */
 class KTCommandExecutor : public QObject
 {
-	Q_OBJECT;
-	public:
-		KTCommandExecutor(KTProject *project);
-		~KTCommandExecutor();
+    Q_OBJECT;
+    public:
+        KTCommandExecutor(KTProject *project);
+        ~KTCommandExecutor();
 
-		void getScenes(KTSceneResponse *response);
-		bool createScene(KTSceneResponse *response);
-		bool createLayer(KTLayerResponse *response);
-		bool createFrame(KTFrameResponse *response );
-		
-		bool createItem(KTItemResponse *response);
-		
-		
-		bool convertItem(KTItemResponse *response);
-		bool transformItem(KTItemResponse *response);
-		bool setPathItem(KTItemResponse *response);
-		
-		bool removeScene(KTSceneResponse *response);
-		bool removeLayer(KTLayerResponse *response);
-		bool removeFrame(KTFrameResponse *response);
-		
-		bool removeItem(KTItemResponse *response);
-		bool moveItem(KTItemResponse *response);
-		
-		bool groupItems(KTItemResponse *response);
-		bool ungroupItems(KTItemResponse *response);
-		
-		bool moveScene(KTSceneResponse *response);
-		bool moveLayer(KTLayerResponse *response);
-		bool moveFrame(KTFrameResponse *response);
-		
-		
-		bool lockScene(KTSceneResponse *response);
-		bool lockLayer(KTLayerResponse *response);
-		bool lockFrame(KTFrameResponse *response);
-		
-		bool renameScene(KTSceneResponse *response);
-		bool renameLayer(KTLayerResponse *response);
-		bool renameFrame(KTFrameResponse *response);
-		
-		void selectScene(KTSceneResponse *response);
-		bool selectLayer(KTLayerResponse *response);
-		bool selectFrame(KTFrameResponse *response);
-		
-		bool setFrameVisibility(KTFrameResponse *response);
-		bool setLayerVisibility(KTLayerResponse *response);
-		bool setSceneVisibility(KTSceneResponse *response);
-		
-		bool createSymbol(KTLibraryResponse *response);
-		bool removeSymbol(KTLibraryResponse *response);
-		bool addSymbolToProject(KTLibraryResponse *response);
-		bool removeSymbolFromProject(KTLibraryResponse *response);
-		
-		bool createTweening(KTItemResponse *response);
-		
-		bool expandFrame(KTFrameResponse *response);
-		bool pasteFrame( KTFrameResponse *response);
-		
-	signals:
-		void responsed(KTProjectResponse *response);
-		
-	private:
-		KTProject *m_project;
-
+        void getScenes(KTSceneResponse *response);
+        bool createScene(KTSceneResponse *response);
+        bool createLayer(KTLayerResponse *response);
+        bool createFrame(KTFrameResponse *response );
+        
+        bool createItem(KTItemResponse *response);
+        
+        bool convertItem(KTItemResponse *response);
+        bool transformItem(KTItemResponse *response);
+        bool setPathItem(KTItemResponse *response);
+        
+        bool removeScene(KTSceneResponse *response);
+        bool removeLayer(KTLayerResponse *response);
+        bool removeFrame(KTFrameResponse *response);
+        
+        bool removeItem(KTItemResponse *response);
+        bool moveItem(KTItemResponse *response);
+        
+        bool groupItems(KTItemResponse *response);
+        bool ungroupItems(KTItemResponse *response);
+        
+        bool moveScene(KTSceneResponse *response);
+        bool moveLayer(KTLayerResponse *response);
+        bool moveFrame(KTFrameResponse *response);
+        
+        bool lockScene(KTSceneResponse *response);
+        bool lockLayer(KTLayerResponse *response);
+        bool lockFrame(KTFrameResponse *response);
+        
+        bool renameScene(KTSceneResponse *response);
+        bool renameLayer(KTLayerResponse *response);
+        bool renameFrame(KTFrameResponse *response);
+        
+        void selectScene(KTSceneResponse *response);
+        bool selectLayer(KTLayerResponse *response);
+        bool selectFrame(KTFrameResponse *response);
+        
+        bool setFrameVisibility(KTFrameResponse *response);
+        bool setLayerVisibility(KTLayerResponse *response);
+        bool setSceneVisibility(KTSceneResponse *response);
+        
+        bool createSymbol(KTLibraryResponse *response);
+        bool removeSymbol(KTLibraryResponse *response);
+        bool addSymbolToProject(KTLibraryResponse *response);
+        bool removeSymbolFromProject(KTLibraryResponse *response);
+        
+        bool createTweening(KTItemResponse *response);
+        
+        bool expandFrame(KTFrameResponse *response);
+        bool pasteFrame( KTFrameResponse *response);
+        
+    signals:
+        void responsed(KTProjectResponse *response);
+        
+    private:
+        KTProject *m_project;
 };
 
 #endif
