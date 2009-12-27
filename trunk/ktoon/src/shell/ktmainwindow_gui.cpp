@@ -108,8 +108,6 @@ void KTMainWindow::createGUI()
 
     // Adding the help widget to the right side of the interface
 
-    kDebug() << "SHARE_DIR: " << SHARE_DIR;
-
     m_helper = new KTHelpWidget(SHARE_DIR + "data/help/");
     helpView = addToolView(m_helper, Qt::RightDockWidgetArea, All);
     m_actionManager->insert(helpView->toggleViewAction(), "show help");
@@ -205,8 +203,7 @@ void KTMainWindow::setupMenu()
 
     // Adding Option Open Recent	
     m_recentProjectsMenu = new QMenu(tr("Recents"), this);
-    connect(m_recentProjectsMenu, SIGNAL(activated(int)), this, SLOT(openRecent(int)));
-	
+
     KCONFIG->beginGroup("General");
     QStringList recents = KCONFIG->value("recents").toString().split(';');
     updateOpenRecentMenu(m_recentProjectsMenu, recents);	
@@ -506,15 +503,27 @@ void KTMainWindow::setupToolBar()
 
 void KTMainWindow::updateOpenRecentMenu(QMenu *menu, QStringList recents)
 {	
+    int i = 0;
+    QAction *action[recents.length()];
+
     menu->clear();
     m_recentProjects.clear();
 
     foreach (QString recent, recents) {
              if (!recent.isEmpty() && m_recentProjects.indexOf(recent) == -1) {
                  m_recentProjects << recent;
-                 connect(menu->addAction(recent), SIGNAL(triggered()), this, SLOT(openRecentProject()));
+                 action[i] = new QAction(recent, this); 
+                 menu->addAction(action[i]);
+                 connect(action[i], SIGNAL(triggered()), this, SLOT(openRecentProject()));
+                 i++;
+             } else {
+                 m_recentProjectsMenu->setEnabled(false);
+                 return; 
              }
     }
+
+    if (i>0 && !m_recentProjectsMenu->isEnabled())
+        m_recentProjectsMenu->setEnabled(true);
 }
 
 void KTMainWindow::showWidgetPage()

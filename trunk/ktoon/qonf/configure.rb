@@ -152,6 +152,24 @@ class Configure
         launcher = File.open("launcher/ktoon", "w") { |f|
                    f << newfile
         }
+
+        newfile = "[Desktop Entry]\n"
+        newfile += "Encoding=UTF-8\n"
+        newfile += "Name=KToon: 2D Animation Toolkit\n"
+        newfile += "Name[es]=KToon: Herramienta de Animacion 2D\n"
+        newfile += "Exec=" + @options['bindir'] + "/ktoon\n"
+        newfile += "Icon=ktoon.png\n"
+        newfile += "Type=Application\n"
+        newfile += "MimeType=application/ktn;application/ktnet;\n"
+        newfile += "Categories=Application;Graphics;2DGraphics;RasterGraphics;\n"
+        newfile += "Comment=2D Animation Toolkit\n"
+        newfile += "Comment[es]=Herramienta para Animacion 2D\n"
+        newfile += "Terminal=false\n"
+
+        launcher = File.open("launcher/ktoon.desktop", "w") { |f|
+                   f << newfile
+        }
+
     end
 end
 end # module

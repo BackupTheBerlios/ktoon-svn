@@ -406,36 +406,23 @@ void KTViewDocument::loadPlugins()
                               case KTToolInterface::Selection:
                                  {
                                    k->selectionMenu->addAction(act);
-                                   // if (!k->selectionMenu->activeAction())
-                                   //    act->trigger();
                                  }
                                  break;
                               case KTToolInterface::Fill:
                                  {
                                    k->fillMenu->addAction(act);
-                                   // if (!k->fillMenu->activeAction())
-                                   //    act->trigger();
                                  }
                                  break;
                                case KTToolInterface::View:
                                  {
                                    k->viewToolMenu->addAction(act);
-                                   // if (!k->viewToolMenu->activeAction()) {
-                                   //    act->trigger();
-                                   //}
                                  }
                                  break;
                                default:
                                  break;
                       }
-                      // k->paintArea->setTool(tool, *it);
                   }
              }
-             /*
-               connect(plugin, SIGNAL(toDrawGhostGraphic(const QPainterPath &)), k->paintArea, 
-                       SLOT(drawGhostGraphic(const QPainterPath &)));
-               connect(plugin, SIGNAL(requestRedraw()), k->paintArea, SLOT(redrawAll()));
-             */
     }
 
     foreach (QObject *plugin, KTPluginManager::instance()->filters()) {

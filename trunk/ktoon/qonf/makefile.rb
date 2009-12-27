@@ -45,6 +45,8 @@ module RQonf
                                      newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/bin/, @options['bindir'])}"
                                elsif line.include? "\$\(INSTALL_ROOT\)\/themes" then
                                      newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/themes/, @options['sharedir']+"/themes")}"
+                               elsif line.include? "\$\(INSTALL_ROOT\)\/applications" then
+                                     newmakefile += "#{line.gsub(/\$\(INSTALL_ROOT\)\/applications/, "/usr/share/applications")}"
                                end
                             else
                                newmakefile += line

@@ -5,10 +5,13 @@
 
 INSTALLS += ktdata \
             launcher \
+            desktop \
             target 
 target.path = /bin/ 
 launcher.files += ../../launcher/ktoon
 launcher.path = /bin/
+desktop.files += ../../launcher/ktoon.desktop
+desktop.path = /applications/
 ktdata.files += data/* 
 ktdata.path = /data 
 TRANSLATIONS += data/translations/ktoon_es.ts \

@@ -36,32 +36,31 @@ class KTGraphicsScene;
 */
 class ViewTool: public KTToolPlugin
 {
-	public:
-		ViewTool();
-		~ViewTool();
-		
-		virtual QStringList keys() const;
-		
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+    public:
+        ViewTool();
+        ~ViewTool();
+        
+        virtual QStringList keys() const;
+        
+        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
 
-		virtual QMap<QString, KAction *> actions() const;
-		
-		int toolType() const;
-		
-		virtual QWidget *configurator();
-		void aboutToChangeScene(KTGraphicsScene *scene);
-		virtual void aboutToChangeTool();
-		
-	private:
-		void setupActions();
-		
-	private:
-		QMap<QString, KAction *> m_actions;
-		
-		QGraphicsRectItem *m_rect;
-		KTGraphicsScene *m_scene;
+        virtual QMap<QString, KAction *> actions() const;
+        int toolType() const;
+        
+        virtual QWidget *configurator();
+        void aboutToChangeScene(KTGraphicsScene *scene);
+        virtual void aboutToChangeTool();
+        
+    private:
+        void setupActions();
+        
+    private:
+        QMap<QString, KAction *> m_actions;
+        QGraphicsRectItem *m_rect;
+        KTGraphicsScene *m_scene;
+        bool stop;
 };
 
 #endif

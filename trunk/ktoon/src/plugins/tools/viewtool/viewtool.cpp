@@ -41,6 +41,7 @@
 
 ViewTool::ViewTool() : m_rect(0), m_scene(0)
 {
+    stop = false;
     setupActions();
 }
 
@@ -55,11 +56,10 @@ QStringList ViewTool::keys() const
 
 void ViewTool::setupActions()
 {
-    KAction *action1 = new KAction( QIcon(THEME_DIR + "icons/magnifying.png"), tr("Zoom"), this);
-    action1->setShortcut( QKeySequence(tr("")) );
-    // action1->setCursor(QCursor(THEME_DIR + "cursors/square.png"));
+    KAction *action1 = new KAction(QIcon(THEME_DIR + "icons/magnifying.png"), tr("Zoom"), this);
+    action1->setShortcut( QKeySequence(tr("")));
     
-    m_actions.insert( tr("Zoom"), action1 );
+    m_actions.insert(tr("Zoom"), action1);
     
     KAction *action2 = new KAction(QIcon(THEME_DIR + "icons/hand.png"), tr("Hand"), this);
     m_actions.insert(tr("Hand"), action2);
@@ -68,12 +68,9 @@ void ViewTool::setupActions()
 void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
-    // if(input->buttons() == Qt::LeftButton)
-    {
-        m_rect = new QGraphicsRectItem(QRectF(input->pos(), QSize(0,0)));
-        m_rect->setPen(QPen(Qt::red, 2, Qt::DashLine));
-        scene->addItem(m_rect);
-    }
+    m_rect = new QGraphicsRectItem(QRectF(input->pos(), QSize(0,0)));
+    m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
+    scene->addItem(m_rect);
 }
 
 void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -87,16 +84,17 @@ void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
              }
     }
     
-    if (currentTool() == tr("Zoom")) {
+    if ((currentTool() == tr("Zoom")) && !stop) {
         QRectF rect = m_rect->rect();
         rect.setBottomLeft(input->pos());
         m_rect->setRect(rect);
-        rect = rect.normalized (); 
+        rect = rect.normalized(); 
 
         if (rect.height() > 10 && rect.width() > 10)
-            m_rect->setPen(QPen(Qt::black, 2, Qt::DashLine));
+            m_rect->setPen(QPen(Qt::gray, 0.5, Qt::SolidLine));
         else
-            m_rect->setPen(QPen(Qt::red, 2, Qt::DashLine));
+            m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
+
     } else if (currentTool() == tr("Hand")) {
         m_scene = scene;
     }
@@ -107,15 +105,18 @@ void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
     Q_UNUSED(brushManager);
     
     foreach (QGraphicsView * view, scene->views()) {
-             if (currentTool() == tr("Zoom")) {
+             if ((currentTool() == tr("Zoom")) && !stop) {
                  QRectF rect = m_rect->rect();
                  if (input->button() == Qt::LeftButton) {
-                     if (rect.normalized().height() > 10 && rect.normalized().width() > 10)
-                         view->fitInView( rect, Qt::KeepAspectRatio);
-                 } else {
-                     QRectF visibleRect = view->visibleRegion().boundingRect();
-                     view->fitInView( visibleRect.adjusted((rect.width()+50), 0, 0, (rect.height()+50)), Qt::KeepAspectRatio);
-                 }
+                     if (rect.normalized().height() > 10 && rect.normalized().width() > 10) {
+                         view->fitInView(rect, Qt::KeepAspectRatio);
+                         QPointF point1(view->mapToScene(QPoint(0,0)));
+                         QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
+                         int width = point2.x() - point1.x(); 
+                         if (width < 40)
+                             stop = true;
+                     }
+                 } 
              }
              delete m_rect;
              m_rect = 0;
