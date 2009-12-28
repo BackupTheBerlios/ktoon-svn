@@ -34,24 +34,23 @@ class QTableWidgetItem;
 */
 class ExactnessConfigurator : public QWidget
 {
-	Q_OBJECT;
-	public:
-		ExactnessConfigurator(QWidget *parent = 0);
-		~ExactnessConfigurator();
-		double exactness() const;
-		
-	protected:
-		void resizeEvent(QResizeEvent *e);
-		
-	private slots:
-		void addCurrentValue();
-		void removeCurrentValue();
-		
-		void updateValueFromItem(QTableWidgetItem *item);
-		
-	private:
-		QDoubleSpinBox *m_exactness;
-		QTableWidget *m_table;
+    Q_OBJECT;
+    public:
+        ExactnessConfigurator(QWidget *parent = 0);
+        ~ExactnessConfigurator();
+        double exactness() const;
+        
+    protected:
+        void resizeEvent(QResizeEvent *e);
+        
+    private slots:
+        void addCurrentValue();
+        void removeCurrentValue();
+        void updateValueFromItem(QTableWidgetItem *item);
+        
+    private:
+        QDoubleSpinBox *m_exactness;
+        QTableWidget *m_table;
 
 };
 

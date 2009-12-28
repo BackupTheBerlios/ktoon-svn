@@ -10,8 +10,9 @@ CONFIG += plugin
 include(../../../../ktconfig.pri)
 
 TEMPLATE = lib 
-HEADERS += viewtool.h 
-SOURCES += viewtool.cpp 
+HEADERS += viewtool.h \
+zoomconfigurator.h
+SOURCES += viewtool.cpp \ 
+zoomconfigurator.cpp
 
 include(../tools_config.pri)
-

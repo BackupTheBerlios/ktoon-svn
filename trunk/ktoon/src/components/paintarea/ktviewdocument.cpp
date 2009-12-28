@@ -465,7 +465,8 @@ void KTViewDocument::selectTool()
                                 maxWidth = 350;
                      } else if (toolStr.compare("Tweener Translator")==0) {
                                 maxWidth = 300;
-                     }
+                     } 
+
                      k->brushesMenu->setDefaultAction(action);
                      k->brushesMenu->setActiveAction(action);
                      if (!action->icon().isNull())
@@ -490,17 +491,23 @@ void KTViewDocument::selectTool()
                      k->viewToolMenu->setActiveAction(action);
                      if (!action->icon().isNull())
                          k->viewToolMenu->menuAction()->setIcon(action->icon());
+                     if (toolStr.compare("Zoom")==0) {
+                                kFatal() << "*** Following Zoom plugin";
+                                maxWidth = 120;
+                     }
                      break;
         }
 
         QWidget *toolConfigurator = tool->configurator();
 
         if (toolConfigurator) {
+            kFatal() << "*** Configurator loaded!";
             k->configurationArea->setConfigurator(toolConfigurator, maxWidth);
             toolConfigurator->show();
             if (!k->configurationArea->isVisible())
                 k->configurationArea->show();
         } else {
+            kFatal() << "*** No Configurator!";
             if (k->configurationArea->isVisible())
                 k->configurationArea->close();
         }

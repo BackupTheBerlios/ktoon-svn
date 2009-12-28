@@ -29,6 +29,8 @@
 #include <kttoolplugin.h>
 #include <QGraphicsRectItem>
 
+#include "zoomconfigurator.h"
+
 class KTGraphicsScene;
 
 /**
@@ -60,6 +62,7 @@ class ViewTool: public KTToolPlugin
         QMap<QString, KAction *> m_actions;
         QGraphicsRectItem *m_rect;
         KTGraphicsScene *m_scene;
+        ZoomConfigurator *m_configurator;
         bool stop;
 };
 

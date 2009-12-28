@@ -39,7 +39,7 @@
 #include "ktinputdeviceinformation.h"
 #include "ktgraphicsscene.h"
 
-ViewTool::ViewTool() : m_rect(0), m_scene(0)
+ViewTool::ViewTool() : m_rect(0), m_scene(0), m_configurator(0)
 {
     stop = false;
     setupActions();
@@ -58,6 +58,7 @@ void ViewTool::setupActions()
 {
     KAction *action1 = new KAction(QIcon(THEME_DIR + "icons/magnifying.png"), tr("Zoom"), this);
     action1->setShortcut( QKeySequence(tr("")));
+    action1->setCursor(QCursor(THEME_DIR + "cursors/magnifying.png"));
     
     m_actions.insert(tr("Zoom"), action1);
     
@@ -135,7 +136,14 @@ int ViewTool::toolType() const
 
 QWidget *ViewTool::configurator()
 {
-    return  0;
+    if (! m_configurator) {
+        kFatal() << "*** Setting configurator!";
+        m_configurator = new ZoomConfigurator;
+    } else {
+        kFatal() << "*** Sending null!";
+    }
+
+    return m_configurator;
 }
 
 void ViewTool::aboutToChangeScene(KTGraphicsScene *)

@@ -75,7 +75,7 @@ QStringList FillTool::keys() const
 
 void FillTool::setupActions()
 {
-    KAction *action1 = new KAction( QIcon(THEME_DIR + "icons/fill.png"), tr("Fill"), this);
+    KAction *action1 = new KAction(QIcon(THEME_DIR + "icons/fill.png"), tr("Fill"), this);
     action1->setShortcut(QKeySequence(tr("Ctrl+F")));
     action1->setCursor(QCursor(THEME_DIR + "cursors/paint.png"));
     
@@ -85,13 +85,13 @@ void FillTool::setupActions()
     // action2->setShortcut(QKeySequence(tr("Ctrl+F")));
     action2->setCursor(QCursor(THEME_DIR + "cursors/paint.png"));
     
-    m_actions.insert( tr("Shape fill"), action2 );
+    m_actions.insert(tr("Shape fill"), action2);
     
     KAction *action3 = new KAction(QIcon(THEME_DIR + "icons/fill.png"), tr("Contour fill"), this);
     // action3->setShortcut( QKeySequence(tr("Ctrl+F")) );
     action3->setCursor(QCursor(THEME_DIR + "cursors/contour_fill.png"));
     
-    m_actions.insert( tr("Contour fill"), action3 );
+    m_actions.insert(tr("Contour fill"), action3);
 }
 
 void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -216,9 +216,9 @@ int FillTool::toolType() const
     return Fill;
 }
         
-QWidget  *FillTool::configurator()
+QWidget *FillTool::configurator()
 {
-    return  0;
+    return 0;
 }
 
 void FillTool::aboutToChangeScene(KTGraphicsScene *)
