@@ -33,117 +33,110 @@
 
 struct KTInputDeviceInformation::Private
 {
-	struct TabletInfo
-	{
-		double pressure;
-		double rotation;
-		double tangentialPressure;
-	} tabletInfo;
-	
-	struct MouseInfo
-	{
-		Qt::MouseButton button;
-		Qt::MouseButtons buttons;
-	} mouseInfo;
-	
-	QPointF position;
-	Qt::KeyboardModifiers keyModifiers;
+    struct TabletInfo
+    {
+        double pressure;
+        double rotation;
+        double tangentialPressure;
+    } tabletInfo;
+    
+    struct MouseInfo
+    {
+        Qt::MouseButton button;
+        Qt::MouseButtons buttons;
+    } mouseInfo;
+    
+    QPointF position;
+    Qt::KeyboardModifiers keyModifiers;
 };
 
 KTInputDeviceInformation::KTInputDeviceInformation(QObject *parent) : QObject(parent), k(new Private)
 {
-	k->mouseInfo.button = Qt::NoButton;
-	k->mouseInfo.buttons = Qt::NoButton;
-	
-	k->tabletInfo.pressure = -1;
-	k->tabletInfo.rotation = 0;
-	k->tabletInfo.tangentialPressure = -1;
-	
-	k->keyModifiers = Qt::NoModifier;
+    k->mouseInfo.button = Qt::NoButton;
+    k->mouseInfo.buttons = Qt::NoButton;
+    
+    k->tabletInfo.pressure = -1;
+    k->tabletInfo.rotation = 0;
+    k->tabletInfo.tangentialPressure = -1;
+    
+    k->keyModifiers = Qt::NoModifier;
 }
-
 
 KTInputDeviceInformation::~KTInputDeviceInformation()
 {
-	delete k;
+    delete k;
 }
 
 void KTInputDeviceInformation::updateFromMouseEvent(QGraphicsSceneMouseEvent *event)
 {
-	k->mouseInfo.button = event->button();
-	k->mouseInfo.buttons = event->buttons();
-	
-	k->position = event->scenePos();
-	
-	k->keyModifiers = event->modifiers();
-	
-	k->tabletInfo.pressure = -1;
-	k->tabletInfo.rotation = 0;
-	k->tabletInfo.tangentialPressure = -1;
+    k->mouseInfo.button = event->button();
+    k->mouseInfo.buttons = event->buttons();
+    
+    k->position = event->scenePos();
+    
+    k->keyModifiers = event->modifiers();
+    
+    k->tabletInfo.pressure = -1;
+    k->tabletInfo.rotation = 0;
+    k->tabletInfo.tangentialPressure = -1;
 }
 
 void KTInputDeviceInformation::updateFromMouseEvent(QMouseEvent *event)
 {
-	k->mouseInfo.button = event->button();
-	k->mouseInfo.buttons = event->buttons();
-	
-	k->position = event->pos();
-	
-	k->keyModifiers = event->modifiers();
-	
-	k->tabletInfo.pressure = -1;
-	k->tabletInfo.rotation = 0;
-	k->tabletInfo.tangentialPressure = -1;
+    k->mouseInfo.button = event->button();
+    k->mouseInfo.buttons = event->buttons();
+    
+    k->position = event->pos();
+    
+    k->keyModifiers = event->modifiers();
+    
+    k->tabletInfo.pressure = -1;
+    k->tabletInfo.rotation = 0;
+    k->tabletInfo.tangentialPressure = -1;
 }
 
 void KTInputDeviceInformation::updateFromTabletEvent(QTabletEvent *event)
 {
-	k->tabletInfo.pressure = event->pressure();
-	k->tabletInfo.rotation = event->rotation();
-	k->tabletInfo.tangentialPressure = event->tangentialPressure();
-	
-	k->position = event->pos();
-	
-	k->keyModifiers = event->modifiers();
+    k->tabletInfo.pressure = event->pressure();
+    k->tabletInfo.rotation = event->rotation();
+    k->tabletInfo.tangentialPressure = event->tangentialPressure();
+    
+    k->position = event->pos();
+    
+    k->keyModifiers = event->modifiers();
 }
-
 
 double KTInputDeviceInformation::pressure() const
 {
-	return k->tabletInfo.pressure;
+    return k->tabletInfo.pressure;
 }
 
 double KTInputDeviceInformation::rotation() const
 {
-	return k->tabletInfo.rotation;
+    return k->tabletInfo.rotation;
 }
 
 double KTInputDeviceInformation::tangentialPressure() const
 {
-	return k->tabletInfo.tangentialPressure;
+    return k->tabletInfo.tangentialPressure;
 }
 
 Qt::MouseButton KTInputDeviceInformation::button() const
 {
-	return k->mouseInfo.button;
+    return k->mouseInfo.button;
 }
 
 Qt::MouseButtons KTInputDeviceInformation::buttons() const
 {
-	return k->mouseInfo.buttons;
+    return k->mouseInfo.buttons;
 }
-
 
 QPointF KTInputDeviceInformation::pos() const
 {
-	return k->position;
+    return k->position;
 }
 
 Qt::KeyboardModifiers KTInputDeviceInformation::keyModifiers() const
 {
-	return k->keyModifiers;
+    return k->keyModifiers;
 }
-
-
-
-

@@ -33,32 +33,32 @@
 */
 class KTOON_EXPORT KTBrushManager : public QObject
 {
-	Q_OBJECT;
-	public:
-		KTBrushManager(QObject * parent = 0);
-		KTBrushManager(const QPen &pen, const QBrush &brush, QObject * parent = 0);
-		~KTBrushManager();
-		
-		void setPen(const QPen &pen);
-		void setPenBrush(const QBrush &brush);
-		QPen pen() const;
-		
-		void setBrush(const QBrush &brush);
-		QBrush brush() const;
-		
-		int penWidth() const;
-		QColor penColor() const;
-		QBrush penBrush() const;
-		
-		QBrush brushColor() const;
-		
-	signals:
-		void penChanged(const QPen &pen);
-		void brushChanged(const QBrush &brush);
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    public:
+        KTBrushManager(QObject * parent = 0);
+        KTBrushManager(const QPen &pen, const QBrush &brush, QObject * parent = 0);
+        ~KTBrushManager();
+        
+        void setPen(const QPen &pen);
+        void setPenBrush(const QBrush &brush);
+        QPen pen() const;
+        
+        void setBrush(const QBrush &brush);
+        QBrush brush() const;
+        
+        int penWidth() const;
+        QColor penColor() const;
+        QBrush penBrush() const;
+        
+        QBrush brushColor() const;
+        
+    signals:
+        void penChanged(const QPen &pen);
+        void brushChanged(const QBrush &brush);
+        
+    private:
+        struct Private;
+        Private *const k;
 
 };
 

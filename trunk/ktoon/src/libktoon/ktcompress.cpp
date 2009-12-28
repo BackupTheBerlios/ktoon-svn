@@ -33,11 +33,11 @@ KTCompress::~KTCompress()
 
 QString KTCompress::compressAndEncode64(const QString &str, int level)
 {
-	return QString::fromLocal8Bit(qCompress(str.toLocal8Bit(), level).toBase64() );
+    return QString::fromLocal8Bit(qCompress(str.toLocal8Bit(), level).toBase64());
 }
 
 QString KTCompress::uncompressAndDecode64(const QString &str)
 {
-	return QString::fromLocal8Bit( qUncompress(QByteArray::fromBase64(str.toLocal8Bit())) );
+    return QString::fromLocal8Bit(qUncompress(QByteArray::fromBase64(str.toLocal8Bit())));
 }
 

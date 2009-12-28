@@ -31,32 +31,31 @@ class QGraphicsSceneMouseEvent;
 class QMouseEvent;
 class QTabletEvent;
 
-
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
 class KTOON_EXPORT KTInputDeviceInformation : public QObject
 {
-	public:
-		KTInputDeviceInformation(QObject *parent = 0);
-		~KTInputDeviceInformation();
-		
-		void updateFromMouseEvent(QGraphicsSceneMouseEvent *event);
-		void updateFromMouseEvent(QMouseEvent *event);
-		void updateFromTabletEvent(QTabletEvent *event);
-		
-		double pressure() const;
-		double rotation() const;
-		double tangentialPressure() const;
-		Qt::MouseButton button() const;
-		Qt::MouseButtons buttons() const;
-		
-		QPointF pos() const;
-		Qt::KeyboardModifiers keyModifiers() const;
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+        KTInputDeviceInformation(QObject *parent = 0);
+        ~KTInputDeviceInformation();
+        
+        void updateFromMouseEvent(QGraphicsSceneMouseEvent *event);
+        void updateFromMouseEvent(QMouseEvent *event);
+        void updateFromTabletEvent(QTabletEvent *event);
+        
+        double pressure() const;
+        double rotation() const;
+        double tangentialPressure() const;
+        Qt::MouseButton button() const;
+        Qt::MouseButtons buttons() const;
+        
+        QPointF pos() const;
+        Qt::KeyboardModifiers keyModifiers() const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

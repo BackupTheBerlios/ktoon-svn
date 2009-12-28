@@ -26,7 +26,6 @@
 #include <QWidget>
 #include <QSpinBox>
 
-
 class KColorButton;
 
 /**
@@ -34,23 +33,23 @@ class KColorButton;
 */
 class KTPaintAreaConfig : public QWidget
 {
-	Q_OBJECT;
-	public:
-		KTPaintAreaConfig(QWidget *parent = 0);
-		~KTPaintAreaConfig();
-		
-		QColor gridColor() const;
-		QColor backgroundColor() const;
-		QColor onionSkinColor() const;
-		QColor onionSkinBackground() const;
-		int gridSeparation() const;
-		
-	private:
-		void setupPage();
-		
-	private:
-		KColorButton *m_gridColor,*m_backgroundColor,*m_onionSkinColor,*m_onionSkinBackground;
-		QSpinBox *m_gridSeparation;
+    Q_OBJECT;
+    public:
+        KTPaintAreaConfig(QWidget *parent = 0);
+        ~KTPaintAreaConfig();
+        
+        QColor gridColor() const;
+        QColor backgroundColor() const;
+        QColor onionSkinColor() const;
+        QColor onionSkinBackground() const;
+        int gridSeparation() const;
+        
+    private:
+        void setupPage();
+        
+    private:
+        KColorButton *m_gridColor,*m_backgroundColor,*m_onionSkinColor,*m_onionSkinBackground;
+        QSpinBox *m_gridSeparation;
 };
 
 #endif

@@ -21,96 +21,74 @@
  ***************************************************************************/
 
 #include "ktitempreview.h"
+#include "ktproxyitem.h"
 
 #include <QGraphicsItem>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
-#include "ktproxyitem.h"
-
 #include <kcore/kdebug.h>
 
 struct KTItemPreview::Private
 {
-	KTProxyItem *proxy;
+    KTProxyItem *proxy;
 };
 
 KTItemPreview::KTItemPreview(QWidget *parent) : QWidget(parent), k(new Private)
 {
-	k->proxy = 0;
+    k->proxy = 0;
 }
-
 
 KTItemPreview::~KTItemPreview()
 {
-	delete k;
+    delete k;
 }
 
 QSize KTItemPreview::sizeHint() const
 {
-	if ( k->proxy )
-	{
-		return k->proxy->boundingRect().size().toSize() + QSize(10,10);
-	}
-	
-	return QWidget::sizeHint().expandedTo(QSize(100,100));
+    if (k->proxy)
+        return k->proxy->boundingRect().size().toSize() + QSize(10,10);
+    
+    return QWidget::sizeHint().expandedTo(QSize(100,100));
 }
-
 
 void KTItemPreview::render(QGraphicsItem *item)
 {
-	if ( !k->proxy )
-	{	
-		k->proxy = new KTProxyItem(item);
-	}
-	else
-	{
-		k->proxy->setItem(item);
-	}
-	
-	update();
+    if (!k->proxy)
+        k->proxy = new KTProxyItem(item);
+    else
+        k->proxy->setItem(item);
+    
+    update();
 }
 
 void KTItemPreview::paintEvent(QPaintEvent *)
 {
-	QPainter p(this);
-	p.setRenderHint(QPainter::Antialiasing, true);
-	
-	if ( k->proxy )
-	{
-		QStyleOptionGraphicsItem opt;
-		opt.state = QStyle::State_None;
-		
-		if (k->proxy->isEnabled())
-		{
-			opt.state |= QStyle::State_Enabled;
-		}
-		
-		opt.exposedRect = QRectF(QPointF(0,0), k->proxy->boundingRect().size());
-		opt.levelOfDetail = 1;
-		
-		QMatrix matrix = k->proxy->sceneMatrix();
-		
-		QRect r(15,15, rect().width()-15 , rect().height()-15);
-		// p.drawRect(r);
-		// QRectF br = d->proxy->boundingRect();
-		// double offset = qMin(br.width(), br.height());
-		
-		// matrix.translate((-d->proxy->pos().x()-br.center().x())+r.center().x(), 
-		// (-d->proxy->pos().y()-br.center().y())+r.center().y());
-		// scale(r.width()/offset, r.height()/offset);
-		// opt.matrix = matrix;
-		
-		opt.palette = palette();
-		p.setMatrix(matrix);
-		
-		p.translate( (rect().width() - opt.exposedRect.width())/2, (rect().height() - opt.exposedRect.height())/2 );
-		
-		if( QGraphicsPathItem *path = qgraphicsitem_cast<QGraphicsPathItem *>(k->proxy->item()) )
-		{
-			p.translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
-		}
-		
-		k->proxy->paint ( &p, &opt, this ); // paint isn't const...
-	}
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing, true);
+    
+    if (k->proxy) {
+        QStyleOptionGraphicsItem opt;
+        opt.state = QStyle::State_None;
+        
+        if (k->proxy->isEnabled())
+            opt.state |= QStyle::State_Enabled;
+        
+        opt.exposedRect = QRectF(QPointF(0,0), k->proxy->boundingRect().size());
+        opt.levelOfDetail = 1;
+        
+        QMatrix matrix = k->proxy->sceneMatrix();
+        
+        QRect r(15,15, rect().width()-15 , rect().height()-15);
+        
+        opt.palette = palette();
+        p.setMatrix(matrix);
+        
+        p.translate((rect().width() - opt.exposedRect.width())/2, (rect().height() - opt.exposedRect.height())/2);
+        
+        if (QGraphicsPathItem *path = qgraphicsitem_cast<QGraphicsPathItem *>(k->proxy->item()))
+            p.translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
+        
+        k->proxy->paint(&p, &opt, this); // paint isn't const...
+    }
 }

@@ -33,21 +33,21 @@ class QGraphicsItem;
 */
 class KTItemPreview : public QWidget
 {
-	Q_OBJECT;
-	
-	public:
-		KTItemPreview(QWidget *parent = 0);
-		~KTItemPreview();
-		
-		void render(QGraphicsItem *item);
-		QSize sizeHint() const;
-		
-	protected:
-		void paintEvent(QPaintEvent *e);
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    
+    public:
+        KTItemPreview(QWidget *parent = 0);
+        ~KTItemPreview();
+        
+        void render(QGraphicsItem *item);
+        QSize sizeHint() const;
+        
+    protected:
+        void paintEvent(QPaintEvent *e);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

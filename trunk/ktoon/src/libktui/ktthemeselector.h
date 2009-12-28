@@ -45,50 +45,49 @@ class QCheckBox;
 */
 class KTThemeSelector : public KVHBox
 {
-	Q_OBJECT
-	public:
-		KTThemeSelector(QWidget *parent = 0);
-		~KTThemeSelector();
-		
-		KThemeDocument document() const;
-		QString lastFile() const;
-		bool applyColors() const;
-		void setPalette(const QPalette &/*pal*/) {};
-		
-		
-	private slots:
-		void chooseGeneralColor(QAbstractButton *  );
-		void chooseEffectsColor(QAbstractButton *  );
-		void chooseSelectionsColor(QAbstractButton *  );
-		void chooseTextEffectsColor(QAbstractButton *  );
-		void saveSchema();
-		void loadSchemaFromListView(QTreeWidgetItem *, int column );
-		
-	private:
-		void setupChooseColor();
-		void loadSchemes();
-		
-	private:
-		QGroupBox *m_general;
-		ThemeKey m_generalSection;
-		QButtonGroup m_generalButtonGroup;
-		
-		QGroupBox *m_effects;
-		ThemeKey m_effectsSection;
-		QButtonGroup m_effectsButtonGroup;
-		
-		QGroupBox *m_selections;
-		ThemeKey m_selectionsSection;
-		QButtonGroup m_selectionsButtonGroup;
-		
-		QGroupBox *m_textEffects;
-		ThemeKey m_textEffectsSection;
-		QButtonGroup m_textEffectsButtonGroup;
-		
-		QTreeWidget *m_allSchemes;
-		QCheckBox *m_useColors;
-		
-		QString m_lastFile;
+    Q_OBJECT
+    public:
+        KTThemeSelector(QWidget *parent = 0);
+        ~KTThemeSelector();
+        
+        KThemeDocument document() const;
+        QString lastFile() const;
+        bool applyColors() const;
+        void setPalette(const QPalette &) {};
+        
+    private slots:
+        void chooseGeneralColor(QAbstractButton *);
+        void chooseEffectsColor(QAbstractButton *);
+        void chooseSelectionsColor(QAbstractButton *);
+        void chooseTextEffectsColor(QAbstractButton *);
+        void saveSchema();
+        void loadSchemaFromListView(QTreeWidgetItem *, int column);
+        
+    private:
+        void setupChooseColor();
+        void loadSchemes();
+        
+    private:
+        QGroupBox *m_general;
+        ThemeKey m_generalSection;
+        QButtonGroup m_generalButtonGroup;
+        
+        QGroupBox *m_effects;
+        ThemeKey m_effectsSection;
+        QButtonGroup m_effectsButtonGroup;
+        
+        QGroupBox *m_selections;
+        ThemeKey m_selectionsSection;
+        QButtonGroup m_selectionsButtonGroup;
+        
+        QGroupBox *m_textEffects;
+        ThemeKey m_textEffectsSection;
+        QButtonGroup m_textEffectsButtonGroup;
+        
+        QTreeWidget *m_allSchemes;
+        QCheckBox *m_useColors;
+        
+        QString m_lastFile;
 };
 
 #endif

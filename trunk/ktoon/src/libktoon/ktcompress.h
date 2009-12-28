@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2006 by David Cuadrado <krawek@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,6 +19,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef KTCOMPRESS_H
 #define KTCOMPRESS_H
 
@@ -28,12 +31,12 @@
 */
 class KTCompress
 {
-	public:
-		KTCompress();
-		~KTCompress();
-		
-		static QString compressAndEncode64(const QString &str, int level = 7);
-		static QString uncompressAndDecode64(const QString &str);
+    public:
+        KTCompress();
+        ~KTCompress();
+        
+        static QString compressAndEncode64(const QString &str, int level = 7);
+        static QString uncompressAndDecode64(const QString &str);
 };
 
 #endif
