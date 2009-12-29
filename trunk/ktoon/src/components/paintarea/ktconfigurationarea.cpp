@@ -47,6 +47,8 @@ struct KTConfigurationArea::Private
 
 KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent), k(new Private)
 {
+    kFatal() << "*** Creating KTConfigurationArea object";
+
     k->toolTipShowed = false;
     setAllowedAreas(Qt::RightDockWidgetArea);
 
@@ -74,18 +76,31 @@ QSize  KTConfigurationArea::sizeHint() const
 void KTConfigurationArea::setConfigurator(QWidget *w, int maxWidth)
 {
     Q_CHECK_PTR(w);
+   
+    kFatal() << "*** Testing 1:" << maxWidth;
+
     QWidget *old = widget();
+
+    kFatal() << "*** Testing 2";
 
     if (!w || old == w) 
         return;
 
+    kFatal() << "*** Testing 3";
+
     if (old)
         old->hide();
 
+    kFatal() << "*** Testing 4";
+
     setWidget(w);
+
+    kFatal() << "*** Testing 5";
 
     if (maxWidth > 0)
         setMaximumWidth(maxWidth);
+
+    kFatal() << "*** Testing 6";
 
     showConfigurator();
 }
@@ -219,6 +234,8 @@ void KTConfigurationArea::leaveEvent(QEvent *)
 
 void KTConfigurationArea::showConfigurator()
 {
+    kFatal() << "*** Following traces here!";
+
     QWidget *widget = this->widget();
 
     if (widget && !isFloating ()) {

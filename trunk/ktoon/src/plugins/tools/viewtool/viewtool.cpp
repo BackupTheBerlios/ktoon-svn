@@ -41,12 +41,15 @@
 
 ViewTool::ViewTool() : m_rect(0), m_scene(0), m_configurator(0)
 {
+    KINIT;
+
     stop = false;
     setupActions();
 }
 
 ViewTool::~ViewTool()
 {
+    KEND;
 }
 
 QStringList ViewTool::keys() const
@@ -114,7 +117,7 @@ void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
                          QPointF point1(view->mapToScene(QPoint(0,0)));
                          QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
                          int width = point2.x() - point1.x(); 
-                         if (width < 40)
+                         if (width < 50)
                              stop = true;
                      }
                  } 

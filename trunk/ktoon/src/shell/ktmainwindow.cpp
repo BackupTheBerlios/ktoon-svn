@@ -180,6 +180,8 @@ void KTMainWindow::createNewProject()
     if (!closeProject())
         return;
 
+    kFatal() << "*** Setting up a new project";
+
     m_projectManager->setupNewProject();
     enableToolViews(true);
     setMenuItemsContext(true);
@@ -280,6 +282,8 @@ void KTMainWindow::newProject()
 
 bool KTMainWindow::closeProject()
 {
+    kFatal() << "*** Closing current project";
+
     if (!m_projectManager->isOpen())
         return true;
 	
@@ -335,8 +339,6 @@ bool KTMainWindow::closeProject()
 
     if (m_viewDoc)
         m_viewDoc->closeArea();
-
-    //m_animationSpace->closeAllWindows();
 
     removeWidget(m_animationSpace, true);
     removeWidget(m_viewDoc, true);

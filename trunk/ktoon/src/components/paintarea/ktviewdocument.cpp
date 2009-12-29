@@ -54,9 +54,7 @@
 #include "ktpaintareacommand.h"
 
 #include "ktbrushmanager.h"
-
 #include "ktproject.h"
-
 #include "ktpaintareastatus.h"
 
 /**
@@ -192,8 +190,8 @@ void KTViewDocument::setRotationAngle(int angle)
 
 void KTViewDocument::showPos(const QPointF &p)
 {
-    QString message =  "X: " +  QString::number(p.x()) + " Y: " + QString::number(p.y() );
-    emit sendToStatus ( message ) ;
+    QString message =  "X: " +  QString::number(p.x()) + " Y: " + QString::number(p.y());
+    emit sendToStatus(message) ;
 }
 
 void KTViewDocument::setupDrawActions()
@@ -308,16 +306,16 @@ void KTViewDocument::setupDrawActions()
     noNext->setStatusTip(tr("Disables next onion skin visualization"));
     
     KAction *oneNext = new KAction(QPixmap(THEME_DIR + "icons/next.png"), tr("Next One"), 
-                                   QKeySequence(Qt::CTRL+Qt::Key_2), this, SLOT(oneNextOnionSkin()), k->actionManager,
-                                   "next_one");
+                                   QKeySequence(Qt::CTRL+Qt::Key_2), this, SLOT(oneNextOnionSkin()), 
+                                   k->actionManager, "next_one");
     k->viewNextGroup->addAction(oneNext);
 
     oneNext->setCheckable(true);
     oneNext->setStatusTip(tr("Shows the next onion skin"));
     
     KAction *twoNext = new KAction(QPixmap(THEME_DIR + "icons/next2.png"), tr("Next Two"), 
-                                   QKeySequence(Qt::CTRL+Qt::Key_3), this, SLOT(twoNextOnionSkin()), k->actionManager,
-                                   "next_two");
+                                   QKeySequence(Qt::CTRL+Qt::Key_3), this, SLOT(twoNextOnionSkin()), 
+                                   k->actionManager, "next_two");
     k->viewNextGroup->addAction(twoNext);
 
     twoNext->setCheckable(true);
@@ -397,8 +395,8 @@ void KTViewDocument::loadPlugins()
                                        act->setDisabled(true); 
                                    }
 
-                                   if (toolStr.compare(tr("Pencil")) == 0)
-                                       act->trigger();
+                                   //if (toolStr.compare(tr("Pencil")) == 0)
+                                   //    act->trigger();
 
                                    k->brushesMenu->addAction(act);
                                  }
@@ -458,6 +456,7 @@ void KTViewDocument::selectTool()
         int maxWidth = 0;
 
         switch (tool->toolType()) {
+
                 case KTToolInterface::Brush: 
                      if (toolStr.compare("Pencil")==0) {
                          maxWidth = 130;
@@ -472,11 +471,12 @@ void KTViewDocument::selectTool()
                      if (!action->icon().isNull())
                          k->brushesMenu->menuAction()->setIcon(action->icon());
                      break;
+
                 case KTToolInterface::Fill:
                      k->fillMenu->setDefaultAction(action);
                      k->fillMenu->setActiveAction(action);
                      if (!action->icon().isNull())
-                     k->fillMenu->menuAction()->setIcon(action->icon());
+                         k->fillMenu->menuAction()->setIcon(action->icon());
                      break;
 
                 case KTToolInterface::Selection:
@@ -498,12 +498,17 @@ void KTViewDocument::selectTool()
                      break;
         }
 
+        if (!tool)
+            kFatal() << "*** Ouch! No tool!";
+
         QWidget *toolConfigurator = tool->configurator();
 
         if (toolConfigurator) {
             kFatal() << "*** Configurator loaded!";
             k->configurationArea->setConfigurator(toolConfigurator, maxWidth);
+            kFatal() << "*** Configurator setted!";
             toolConfigurator->show();
+            kFatal() << "*** Configurator showed!";
             if (!k->configurationArea->isVisible())
                 k->configurationArea->show();
         } else {
