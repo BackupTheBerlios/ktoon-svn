@@ -77,6 +77,7 @@ struct KTViewDocument::Private
     KTDocumentRuler *verticalRuler, *horizontalRuler;
     KActionManager *actionManager;
     KTConfigurationArea *configurationArea;
+    //KAction *firstAction;
 };
 
 KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindow(parent), k(new Private)
@@ -151,14 +152,18 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
     connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), status, 
             SLOT(setBrush(const QBrush &)));
 
-    connect(k->paintArea->brushManager(), SIGNAL(penChanged(const QPen&)), status, SLOT(setPen(const QPen &)));
+    connect(k->paintArea->brushManager(), SIGNAL(penChanged(const QPen&)), status, 
+            SLOT(setPen(const QPen &)));
 
     QTimer::singleShot(1000, this, SLOT(loadPlugins()));
 
+    //if (k->firstAction)
+    //    k->firstAction->trigger();
 }
 
 KTViewDocument::~KTViewDocument()
 {
+    kFatal() << "*** Destroying KTViewDocument object... kaboom!";
     delete k->configurationArea;
     delete k;
 }
@@ -371,6 +376,7 @@ void KTViewDocument::createTools()
 void KTViewDocument::loadPlugins()
 {
     foreach (QObject *plugin, KTPluginManager::instance()->tools()) {
+
              KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
 
              QStringList::iterator it;
@@ -395,8 +401,9 @@ void KTViewDocument::loadPlugins()
                                        act->setDisabled(true); 
                                    }
 
-                                   //if (toolStr.compare(tr("Pencil")) == 0)
+                                   // if (toolStr.compare(tr("Pencil")) == 0)
                                    //    act->trigger();
+                                   //    k->firstAction = act;
 
                                    k->brushesMenu->addAction(act);
                                  }
@@ -498,17 +505,12 @@ void KTViewDocument::selectTool()
                      break;
         }
 
-        if (!tool)
-            kFatal() << "*** Ouch! No tool!";
-
         QWidget *toolConfigurator = tool->configurator();
 
         if (toolConfigurator) {
             kFatal() << "*** Configurator loaded!";
             k->configurationArea->setConfigurator(toolConfigurator, maxWidth);
-            kFatal() << "*** Configurator setted!";
             toolConfigurator->show();
-            kFatal() << "*** Configurator showed!";
             if (!k->configurationArea->isVisible())
                 k->configurationArea->show();
         } else {
@@ -556,7 +558,7 @@ void KTViewDocument::applyFilter()
         /*
         KTFrame *frame = k->paintArea->currentFrame();
         if (frame) {
-            aFilter->filter(action->text(), frame->components() );
+            aFilter->filter(action->text(), frame->components());
             k->paintArea->redrawAll();
         }
         */
@@ -618,7 +620,7 @@ void KTViewDocument::createToolBar()
     k->barGrid->addActions(k->viewNextGroup->actions());
 
     QSpinBox *nextOnionSkinSpin = new QSpinBox(this);
-    connect(nextOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setNextOnionSkin(int)));
+    connect(nextOnionSkinSpin, SIGNAL(valueChanged (int)), this, SLOT(setNextOnionSkin(int)));
 
     k->barGrid->addWidget(nextOnionSkinSpin);
 }
@@ -626,25 +628,25 @@ void KTViewDocument::createToolBar()
 void KTViewDocument::createMenu()
 {
      //tools menu
-     k->toolsMenu = new QMenu(tr( "&Tools" ), this);
+     k->toolsMenu = new QMenu(tr("&Tools"), this);
      menuBar()->addMenu( k->toolsMenu );
-     k->toolsMenu->addAction(k->brushesMenu->menuAction ());
-     k->toolsMenu->addAction(k->selectionMenu->menuAction ());
-     k->toolsMenu->addAction(k->fillMenu->menuAction ());
+     k->toolsMenu->addAction(k->brushesMenu->menuAction());
+     k->toolsMenu->addAction(k->selectionMenu->menuAction());
+     k->toolsMenu->addAction(k->fillMenu->menuAction());
      k->toolsMenu->addSeparator();
      k->toolsMenu->addAction(k->actionManager->find("group"));
      k->toolsMenu->addAction(k->actionManager->find("ungroup"));
      k->toolsMenu->addSeparator();
     
-     k->orderMenu = new QMenu(tr( "&Order" ), this);
+     k->orderMenu = new QMenu(tr("&Order"), this);
      k->orderMenu->addAction(k->actionManager->find("bringToFront"));
      k->orderMenu->addAction(k->actionManager->find("sendToBack"));
      k->orderMenu->addAction(k->actionManager->find("oneStepForward"));
      k->orderMenu->addAction(k->actionManager->find("oneStepBackward"));
-     k->toolsMenu->addAction(k->orderMenu->menuAction ());
+     k->toolsMenu->addAction(k->orderMenu->menuAction());
 
-     k->editMenu = new QMenu(tr( "&Edit" ), this);
-     menuBar()->addMenu( k->editMenu );
+     k->editMenu = new QMenu(tr("&Edit"), this);
+     menuBar()->addMenu(k->editMenu);
 
      k->editMenu->addAction(k->actionManager->find("undo"));
      k->editMenu->addAction(k->actionManager->find("redo"));
@@ -663,11 +665,11 @@ void KTViewDocument::createMenu()
      // k->editMenu->addSeparator();
      k->editMenu->addAction(k->actionManager->find("properties"));
 
-     k->viewMenu = new QMenu(tr( "&View" ), this);
+     k->viewMenu = new QMenu(tr("&View"), this);
      k->viewMenu->addActions(k->viewPreviousGroup->actions());
      k->viewMenu->addSeparator();
      k->viewMenu->addActions(k->viewNextGroup->actions());
-     menuBar()->addMenu( k->viewMenu );
+     menuBar()->addMenu(k->viewMenu);
 
      //Filters
 
@@ -700,22 +702,22 @@ void KTViewDocument::setCursor(const QCursor &)
 
 void KTViewDocument::disablePreviousOnionSkin()
 {
-    k->paintArea->setPreviousFramesOnionSkinCount( 0 );
+    k->paintArea->setPreviousFramesOnionSkinCount(0);
 }
 
 void KTViewDocument::onePreviousOnionSkin()
 {
-    k->paintArea->setPreviousFramesOnionSkinCount( 1 );
+    k->paintArea->setPreviousFramesOnionSkinCount(1);
 }
 
 void KTViewDocument::twoPreviousOnionSkin()
 {
-    k->paintArea->setPreviousFramesOnionSkinCount( 2 );
+    k->paintArea->setPreviousFramesOnionSkinCount(2);
 }
 
 void KTViewDocument::threePreviousOnionSkin()
 {
-    k->paintArea->setPreviousFramesOnionSkinCount( 3 );
+    k->paintArea->setPreviousFramesOnionSkinCount(3);
 }
 
 void KTViewDocument::setPreviousOnionSkin(int n)
@@ -752,7 +754,7 @@ void KTViewDocument::setNextOnionSkin(int n)
 
 void KTViewDocument::toggleShowGrid()
 {
-    k->paintArea->setDrawGrid( !k->paintArea->drawGrid() );
+    k->paintArea->setDrawGrid(!k->paintArea->drawGrid());
 }
 
 void KTViewDocument::setZoomFactor(int /*percent*/)
@@ -802,6 +804,7 @@ void KTViewDocument::changeRulerOrigin(const QPointF &zero)
 QSize KTViewDocument::sizeHint() const
 {
     QSize size(parentWidget()->size());
+
     return size.expandedTo(QApplication::globalStrut());
 }
 
@@ -813,6 +816,7 @@ KTBrushManager *KTViewDocument::brushManager() const
 KTPaintAreaCommand *KTViewDocument::createCommand(const KTPaintAreaEvent *event)
 {
     KTPaintAreaCommand *command = new KTPaintAreaCommand(k->paintArea, event);
+
     return command;
 }
 

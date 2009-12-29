@@ -34,6 +34,7 @@
 #include <QStyle>
 #include <QStyleOptionButton>
 #include <QTimer>
+//#include <QVBoxLayout>
 
 #include <kcore/kdebug.h>
 
@@ -58,17 +59,21 @@ KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent),
 
 KTConfigurationArea::~KTConfigurationArea()
 {
+    kFatal() << "*** Destroying KTConfigurationArea...";
+
     if (widget()) {
         widget()->hide();
         widget()->setParent(0);
     }
+
     delete k;
 }
 
 QSize  KTConfigurationArea::sizeHint() const
 {
-    if (widget())
+    if (widget()) {
         return widget()->minimumSizeHint();
+    }
 
     return QDockWidget::sizeHint();
 }
@@ -76,31 +81,23 @@ QSize  KTConfigurationArea::sizeHint() const
 void KTConfigurationArea::setConfigurator(QWidget *w, int maxWidth)
 {
     Q_CHECK_PTR(w);
-   
-    kFatal() << "*** Testing 1:" << maxWidth;
 
     QWidget *old = widget();
-
-    kFatal() << "*** Testing 2";
 
     if (!w || old == w) 
         return;
 
-    kFatal() << "*** Testing 3";
-
     if (old)
         old->hide();
 
-    kFatal() << "*** Testing 4";
+    kFatal() << "*** First: Setting Widget...";
 
     setWidget(w);
 
-    kFatal() << "*** Testing 5";
+    kFatal() << "*** Second: Done!";
 
     if (maxWidth > 0)
         setMaximumWidth(maxWidth);
-
-    kFatal() << "*** Testing 6";
 
     showConfigurator();
 }
