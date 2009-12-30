@@ -139,7 +139,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
     setupDrawActions();
 
-    k->configurationArea = new KTConfigurationArea;
+    k->configurationArea = new KTConfigurationArea(this);
     addDockWidget(Qt::RightDockWidgetArea, k->configurationArea);
     k->configurationArea->close();
     
@@ -164,7 +164,9 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 KTViewDocument::~KTViewDocument()
 {
     kFatal() << "*** Destroying KTViewDocument object... kaboom!";
+    //k->configurationArea->close();
     delete k->configurationArea;
+    //k->configurationArea = 0;
     delete k;
 }
 
@@ -401,8 +403,8 @@ void KTViewDocument::loadPlugins()
                                        act->setDisabled(true); 
                                    }
 
-                                   // if (toolStr.compare(tr("Pencil")) == 0)
-                                   //    act->trigger();
+                                   if (toolStr.compare(tr("Pencil")) == 0)
+                                       act->trigger();
                                    //    k->firstAction = act;
 
                                    k->brushesMenu->addAction(act);
@@ -679,6 +681,9 @@ void KTViewDocument::createMenu()
 
 void KTViewDocument::closeArea()
 {
+    if (k->configurationArea->isVisible())
+        k->configurationArea->close();
+
     k->paintArea->setScene(0);
     close();
 }

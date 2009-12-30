@@ -53,7 +53,6 @@ KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent),
     k->toolTipShowed = false;
     setAllowedAreas(Qt::RightDockWidgetArea);
 
-    // connect(&d->locker, SIGNAL(timeout()), this, SLOT(toggleLock()));
     connect(&k->shower, SIGNAL(timeout()), this, SLOT(showConfigurator()));
 }
 
@@ -69,11 +68,10 @@ KTConfigurationArea::~KTConfigurationArea()
     delete k;
 }
 
-QSize  KTConfigurationArea::sizeHint() const
+QSize KTConfigurationArea::sizeHint() const
 {
-    if (widget()) {
+    if (widget())
         return widget()->minimumSizeHint();
-    }
 
     return QDockWidget::sizeHint();
 }
@@ -82,7 +80,7 @@ void KTConfigurationArea::setConfigurator(QWidget *w, int maxWidth)
 {
     Q_CHECK_PTR(w);
 
-    QWidget *old = widget();
+    QWidget *old = this->widget();
 
     if (!w || old == w) 
         return;
@@ -235,7 +233,7 @@ void KTConfigurationArea::showConfigurator()
 
     QWidget *widget = this->widget();
 
-    if (widget && !isFloating ()) {
+    if (widget && !isFloating()) {
         // widget->setMinimumWidth(0);
         widget->setVisible(true);
 

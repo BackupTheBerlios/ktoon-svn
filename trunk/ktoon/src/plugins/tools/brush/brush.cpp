@@ -163,7 +163,7 @@ void Brush::setupActions()
     KAction *pencil = new KAction(QIcon(brush_xpm), tr("Pencil"), this);
     pencil->setShortcut(QKeySequence(tr("Ctrl+B")) );
 
-    QPixmap pix(THEME_DIR + "/cursors/pencil.png");
+    QPixmap pix(THEME_DIR + "cursors/pencil.png");
     pencil->setCursor(QCursor(pix, 0, pix.height()));
 
     m_actions.insert(tr("Pencil"), pencil);

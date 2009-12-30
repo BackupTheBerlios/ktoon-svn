@@ -177,8 +177,8 @@ KTMainWindow::~KTMainWindow()
 void KTMainWindow::createNewProject()
 {
     // Modal
-    if (!closeProject())
-        return;
+    //if (!closeProject())
+    //    return;
 
     kFatal() << "*** Setting up a new project";
 
@@ -282,7 +282,7 @@ void KTMainWindow::newProject()
 
 bool KTMainWindow::closeProject()
 {
-    kFatal() << "*** Closing current project";
+    kFatal() << "*** Closing current project - RED CODE";
 
     if (!m_projectManager->isOpen())
         return true;
