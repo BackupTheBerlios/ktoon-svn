@@ -164,9 +164,8 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 KTViewDocument::~KTViewDocument()
 {
     kFatal() << "*** Destroying KTViewDocument object... kaboom!";
-    //k->configurationArea->close();
+
     delete k->configurationArea;
-    //k->configurationArea = 0;
     delete k;
 }
 
@@ -501,8 +500,8 @@ void KTViewDocument::selectTool()
                      if (!action->icon().isNull())
                          k->viewToolMenu->menuAction()->setIcon(action->icon());
                      if (toolStr.compare("Zoom")==0) {
-                                kFatal() << "*** Following Zoom plugin";
-                                maxWidth = 120;
+                         kFatal() << "*** Following Zoom plugin";
+                         maxWidth = 120;
                      }
                      break;
         }
@@ -510,8 +509,9 @@ void KTViewDocument::selectTool()
         QWidget *toolConfigurator = tool->configurator();
 
         if (toolConfigurator) {
-            kFatal() << "*** Configurator loaded!";
+            kFatal() << "*** Adding Configurator!";
             k->configurationArea->setConfigurator(toolConfigurator, maxWidth);
+            kFatal() << "*** Configurator loaded!";
             toolConfigurator->show();
             if (!k->configurationArea->isVisible())
                 k->configurationArea->show();

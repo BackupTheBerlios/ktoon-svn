@@ -192,4 +192,3 @@ void Brush::aboutToChangeTool()
 }
 
 Q_EXPORT_PLUGIN2(kt_brush, Brush);
-

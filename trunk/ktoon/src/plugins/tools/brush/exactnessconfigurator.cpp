@@ -116,13 +116,12 @@ double ExactnessConfigurator::exactness() const
     return m_exactness->value();
 }
 
-
 void ExactnessConfigurator::resizeEvent(QResizeEvent *)
 {
     int cellWidth = m_table->viewport()->width() / m_table->columnCount();
 	
     for (int colIndex = 0; colIndex < m_table->columnCount(); colIndex++)
-         m_table->horizontalHeader()->resizeSection (colIndex, cellWidth );
+         m_table->horizontalHeader()->resizeSection(colIndex, cellWidth);
 }
 
 void ExactnessConfigurator::addCurrentValue()

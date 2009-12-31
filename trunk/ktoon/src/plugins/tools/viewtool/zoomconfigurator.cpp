@@ -63,5 +63,5 @@ ZoomConfigurator::~ZoomConfigurator()
 
 void ZoomConfigurator::resizeEvent(QResizeEvent *)
 {
-
+    resize(minimumSizeHint());
 }
