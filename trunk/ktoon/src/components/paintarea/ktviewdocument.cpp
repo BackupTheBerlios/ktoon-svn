@@ -156,9 +156,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
             SLOT(setPen(const QPen &)));
 
     QTimer::singleShot(1000, this, SLOT(loadPlugins()));
-
-    //if (k->firstAction)
-    //    k->firstAction->trigger();
+    //QTimer::singleShot(2000, this, SLOT(firstCommand()));
 }
 
 KTViewDocument::~KTViewDocument()
@@ -353,7 +351,7 @@ void KTViewDocument::createTools()
 
     // Selection menu
 
-    k->selectionMenu = new QMenu( tr("Selection"), k->toolbar );
+    k->selectionMenu = new QMenu(tr("Selection"), k->toolbar );
     k->selectionMenu->setIcon(QPixmap(THEME_DIR + "icons/selection.png"));
     connect(k->selectionMenu, SIGNAL(triggered (QAction*)), this, SLOT(selectToolFromMenu(QAction*)));
 
@@ -402,9 +400,9 @@ void KTViewDocument::loadPlugins()
                                        act->setDisabled(true); 
                                    }
 
-                                   if (toolStr.compare(tr("Pencil")) == 0)
-                                       act->trigger();
+                                   //if (toolStr.compare(tr("Pencil")) == 0)
                                    //    k->firstAction = act;
+                                   //act->trigger();
 
                                    k->brushesMenu->addAction(act);
                                  }
@@ -438,7 +436,7 @@ void KTViewDocument::loadPlugins()
 
              for (it = keys.begin(); it != keys.end(); ++it) {
                   #ifdef K_DEBUG
-                         kDebug("plugins") << "*******Filter Loaded: " << *it;
+                         kDebug("plugins") << "******* Filter Loaded: " << *it;
                   #endif
 
                   KAction *act = filter->actions()[*it];
@@ -829,3 +827,10 @@ void KTViewDocument::updatePaintArea()
 {
     k->paintArea->updatePaintArea(); 
 }
+
+/*
+void KTViewDocument::firstCommand()
+{
+    k->firstAction->trigger();
+}
+*/

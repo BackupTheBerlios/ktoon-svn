@@ -113,7 +113,6 @@ class KTMainWindow : public KTabbedMainWindow
          void ui4localRequest(QWidget *widget);
          void flipTabs(int index);
 
-    private:
          bool setupNetworkProject(const QString& projectName = QString(), const QString &server = QString(), int port = -1);
          bool setupNetworkProject(KTProjectManagerParams *params);
          bool setupLocalProject(KTProjectManagerParams *params);

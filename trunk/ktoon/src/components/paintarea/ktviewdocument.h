@@ -105,6 +105,7 @@ class KTViewDocument : public QMainWindow
         void updateZoomFactor( double f);
         // void configure();
         void selectToolFromMenu(QAction *act);
+        //void firstCommand();
 
     public slots:
         void undo();
