@@ -44,7 +44,7 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
     layout->addWidget(label);
     m_exactness = new QDoubleSpinBox();
 
-    m_exactness->setValue(4.0);
+    //m_exactness->setValue(4.0);
     m_exactness->setDecimals(2);
     m_exactness->setSingleStep(0.1);
     m_exactness->setMaximum(100);
@@ -56,7 +56,7 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
     previews->setAlignment(Qt::AlignHCenter);
     mainLayout->addWidget(previews);
 
-    m_table = new QTableWidget(3,3);
+    m_table = new QTableWidget(3, 3);
     connect(m_table, SIGNAL(itemClicked(QTableWidgetItem *)), this, SLOT(updateValueFromItem(QTableWidgetItem *)));
 
     m_table->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -103,6 +103,8 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 
     if (smoothness > 0)
         m_exactness->setValue(smoothness);
+    else
+        m_exactness->setValue(4.0);
 }
 
 ExactnessConfigurator::~ExactnessConfigurator()

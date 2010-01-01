@@ -24,6 +24,7 @@
 #include <QBoxLayout>
 #include <QRadioButton>
 #include <QButtonGroup>
+#include <QLabel>
 
 #include <kgui/kimagebutton.h>
 #include <kgui/kseparator.h>
@@ -46,11 +47,26 @@ ZoomConfigurator::ZoomConfigurator(QWidget *parent) :QWidget(parent)
     in->setChecked(true); 
     out = new QRadioButton(tr("Zoom Out"), this);
 
-    connect(in, SIGNAL(clicked(bool)), SLOT(zoomIn(bool)));
-    connect(out, SIGNAL(clicked(bool)), SLOT(zoomOut(bool)));
+    connect(in, SIGNAL(clicked()), SLOT(setZoomIn()));
+    connect(out, SIGNAL(clicked()), SLOT(setZoomOut()));
 
     layout->addWidget(in);
     layout->addWidget(out);
+
+    scale = new QLabel(tr("Scale Factor"));
+    scale->setAlignment(Qt::AlignHCenter);
+    layout->addWidget(scale);
+
+    factor = new QDoubleSpinBox();
+
+    factor->setValue(0.5);
+    factor->setDecimals(1);
+    factor->setSingleStep(0.1);
+    factor->setMinimum(0.1);
+    factor->setMaximum(1);
+    layout->addWidget(factor);
+
+    factor->setEnabled(false);
 
     mainLayout->addLayout(layout);
     mainLayout->addStretch(2);
@@ -66,20 +82,31 @@ void ZoomConfigurator::resizeEvent(QResizeEvent *)
     resize(minimumSizeHint());
 }
 
-void ZoomConfigurator::zoomIn(bool flag)
+void ZoomConfigurator::setZoomIn()
 {
     if (out->isChecked())
         out->setChecked(false);
+
+    if (factor->isEnabled())
+        factor->setEnabled(false);
 }
 
-void ZoomConfigurator::zoomOut(bool flag)
+void ZoomConfigurator::setZoomOut()
 {
     if (in->isChecked())
         in->setChecked(false);
+
+    if (!factor->isEnabled()) 
+        factor->setEnabled(true);
 }
 
 bool ZoomConfigurator::zoomIn()
 {
     return in->isChecked();
+}
+
+double ZoomConfigurator::getFactor() const
+{
+    return factor->value();
 }
 

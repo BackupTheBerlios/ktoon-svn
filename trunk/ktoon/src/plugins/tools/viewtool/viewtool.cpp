@@ -75,6 +75,23 @@ void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
     m_rect = new QGraphicsRectItem(QRectF(input->pos(), QSize(0,0)));
     m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
     scene->addItem(m_rect);
+
+    foreach (QGraphicsView * view, scene->views()) {
+             if (currentTool() == tr("Zoom")) {
+                 if (!m_configurator->zoomIn()) {
+                     QPointF point1(view->mapToScene(QPoint(0,0)));
+                     QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
+                     int width = point2.x() - point1.x();
+                     kFatal() << "*** Coords: " << view->width() << " : " << view->height();
+                     kFatal() << "*** Doing Zoom Out! " << width;
+                     if (width < 888)
+                         //view->scale(1/1.5, 1/1.5);
+                         view->scale(m_configurator->getFactor(), m_configurator->getFactor());
+                     if (width > 50)
+                         stop = false;
+                 }
+             }
+    }
 }
 
 void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -129,14 +146,7 @@ void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
                              }
                          } 
                      }
-                 } else {
-                     QPointF point1(view->mapToScene(QPoint(0,0)));
-                     QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
-                     int width = point2.x() - point1.x();
-                     kFatal() << "*** Coords: " << view->width() << " : " << view->height();
-                     kFatal() << "*** Doing Zoom Out! " << width;
-                     view->scale(1/1.2, 1/1.2);
-                 }
+                 } 
              }
              delete m_rect;
              m_rect = 0;

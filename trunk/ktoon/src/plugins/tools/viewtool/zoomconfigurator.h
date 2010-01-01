@@ -26,6 +26,7 @@
 #include <QResizeEvent>
 #include <QLabel>
 #include <QRadioButton>
+#include <QDoubleSpinBox>
 
 class QTableWidget;
 class QTableWidgetItem;
@@ -40,17 +41,20 @@ class ZoomConfigurator : public QWidget
         ZoomConfigurator(QWidget *parent = 0);
         ~ZoomConfigurator();
         bool zoomIn();
+        double getFactor() const;
 
     protected:
         void resizeEvent(QResizeEvent *);
 
     private slots:
-        void zoomIn(bool flag);
-        void zoomOut(bool flag);
+        void setZoomIn();
+        void setZoomOut();
 
     private:
         QRadioButton *in;
         QRadioButton *out;
+        QDoubleSpinBox *factor;
+        QLabel *scale;
 };
 
 #endif
