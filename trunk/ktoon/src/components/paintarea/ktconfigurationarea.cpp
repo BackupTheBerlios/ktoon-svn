@@ -48,8 +48,6 @@ struct KTConfigurationArea::Private
 
 KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent), k(new Private)
 {
-    kFatal() << "*** Creating KTConfigurationArea object";
-
     k->toolTipShowed = false;
     setAllowedAreas(Qt::RightDockWidgetArea);
 
@@ -58,8 +56,6 @@ KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent),
 
 KTConfigurationArea::~KTConfigurationArea()
 {
-    kFatal() << "*** Destroying KTConfigurationArea...";
-
     if (widget()) {
         widget()->hide();
         widget()->setParent(0);
@@ -88,11 +84,9 @@ void KTConfigurationArea::setConfigurator(QWidget *w, int maxWidth)
     if (old)
         old->hide();
 
-    kFatal() << "*** First: Setting Widget...";
-
+    // FIXME: When you close a project and open a new one, the tools configuration area
+    //        crash the whole application in this point
     setWidget(w);
-
-    kFatal() << "*** Second: Done!";
 
     if (maxWidth > 0)
         setMaximumWidth(maxWidth);
@@ -229,8 +223,6 @@ void KTConfigurationArea::leaveEvent(QEvent *)
 
 void KTConfigurationArea::showConfigurator()
 {
-    kFatal() << "*** Following traces here!";
-
     QWidget *widget = this->widget();
 
     if (widget && !isFloating()) {
@@ -241,7 +233,7 @@ void KTConfigurationArea::showConfigurator()
         setPalette(pal);
         setAutoFillBackground(false);
 
-        setFeatures(QDockWidget::AllDockWidgetFeatures );
+        setFeatures(QDockWidget::AllDockWidgetFeatures);
     }
 
     k->shower.stop();

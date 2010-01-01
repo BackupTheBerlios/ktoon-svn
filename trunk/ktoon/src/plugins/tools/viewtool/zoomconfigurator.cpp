@@ -23,11 +23,7 @@
 #include "zoomconfigurator.h"
 #include <QBoxLayout>
 #include <QRadioButton>
-
-//#include <QTableWidget>
-//#include <QTableWidgetItem>
-//#include <QHeaderView>
-//#include <QPushButton>
+#include <QButtonGroup>
 
 #include <kgui/kimagebutton.h>
 #include <kgui/kseparator.h>
@@ -46,8 +42,12 @@ ZoomConfigurator::ZoomConfigurator(QWidget *parent) :QWidget(parent)
     layout->addWidget(label);
     layout->addWidget(new KSeparator(Qt::Horizontal));
 
-    QRadioButton *in = new QRadioButton(tr("Zoom In"), this);
-    QRadioButton *out = new QRadioButton(tr("Zoom Out"), this);
+    in = new QRadioButton(tr("Zoom In"), this);
+    in->setChecked(true); 
+    out = new QRadioButton(tr("Zoom Out"), this);
+
+    connect(in, SIGNAL(clicked(bool)), SLOT(zoomIn(bool)));
+    connect(out, SIGNAL(clicked(bool)), SLOT(zoomOut(bool)));
 
     layout->addWidget(in);
     layout->addWidget(out);
@@ -65,3 +65,21 @@ void ZoomConfigurator::resizeEvent(QResizeEvent *)
 {
     resize(minimumSizeHint());
 }
+
+void ZoomConfigurator::zoomIn(bool flag)
+{
+    if (out->isChecked())
+        out->setChecked(false);
+}
+
+void ZoomConfigurator::zoomOut(bool flag)
+{
+    if (in->isChecked())
+        in->setChecked(false);
+}
+
+bool ZoomConfigurator::zoomIn()
+{
+    return in->isChecked();
+}
+

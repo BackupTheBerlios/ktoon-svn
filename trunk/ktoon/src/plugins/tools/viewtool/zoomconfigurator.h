@@ -23,9 +23,9 @@
 #ifndef ZOOMCONFIGURATOR_H
 #define ZOOMCONFIGURATOR_H
 
-//#include <QDoubleSpinBox>
 #include <QResizeEvent>
 #include <QLabel>
+#include <QRadioButton>
 
 class QTableWidget;
 class QTableWidgetItem;
@@ -39,9 +39,18 @@ class ZoomConfigurator : public QWidget
     public:
         ZoomConfigurator(QWidget *parent = 0);
         ~ZoomConfigurator();
+        bool zoomIn();
 
     protected:
         void resizeEvent(QResizeEvent *);
+
+    private slots:
+        void zoomIn(bool flag);
+        void zoomOut(bool flag);
+
+    private:
+        QRadioButton *in;
+        QRadioButton *out;
 };
 
 #endif

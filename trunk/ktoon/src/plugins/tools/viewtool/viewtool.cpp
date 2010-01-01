@@ -88,16 +88,21 @@ void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
              }
     }
     
-    if ((currentTool() == tr("Zoom")) && !stop) {
-        QRectF rect = m_rect->rect();
-        rect.setBottomLeft(input->pos());
-        m_rect->setRect(rect);
-        rect = rect.normalized(); 
+    if (currentTool() == tr("Zoom")) {
 
-        if (rect.height() > 10 && rect.width() > 10)
-            m_rect->setPen(QPen(Qt::gray, 0.5, Qt::SolidLine));
-        else
-            m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
+        if (m_configurator->zoomIn()) {
+            if (!stop) {
+                QRectF rect = m_rect->rect();
+                rect.setBottomLeft(input->pos());
+                m_rect->setRect(rect);
+                rect = rect.normalized(); 
+
+                if (rect.height() > 10 && rect.width() > 10)
+                    m_rect->setPen(QPen(Qt::gray, 0.5, Qt::SolidLine));
+                else
+                    m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
+            }
+        } 
 
     } else if (currentTool() == tr("Hand")) {
         m_scene = scene;
@@ -109,18 +114,29 @@ void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
     Q_UNUSED(brushManager);
     
     foreach (QGraphicsView * view, scene->views()) {
-             if ((currentTool() == tr("Zoom")) && !stop) {
-                 QRectF rect = m_rect->rect();
-                 if (input->button() == Qt::LeftButton) {
-                     if (rect.normalized().height() > 10 && rect.normalized().width() > 10) {
-                         view->fitInView(rect, Qt::KeepAspectRatio);
-                         QPointF point1(view->mapToScene(QPoint(0,0)));
-                         QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
-                         int width = point2.x() - point1.x(); 
-                         if (width < 50)
-                             stop = true;
+             if (currentTool() == tr("Zoom")) {
+                 if (m_configurator->zoomIn()) {
+                     if (!stop) {
+                         QRectF rect = m_rect->rect();
+                         if (input->button() == Qt::LeftButton) {
+                             if (rect.normalized().height() > 10 && rect.normalized().width() > 10) {
+                                 view->fitInView(rect, Qt::KeepAspectRatio);
+                                 QPointF point1(view->mapToScene(QPoint(0,0)));
+                                 QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
+                                 int width = point2.x() - point1.x(); 
+                                 if (width < 50)
+                                     stop = true;
+                             }
+                         } 
                      }
-                 } 
+                 } else {
+                     QPointF point1(view->mapToScene(QPoint(0,0)));
+                     QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
+                     int width = point2.x() - point1.x();
+                     kFatal() << "*** Coords: " << view->width() << " : " << view->height();
+                     kFatal() << "*** Doing Zoom Out! " << width;
+                     view->scale(1/1.2, 1/1.2);
+                 }
              }
              delete m_rect;
              m_rect = 0;
@@ -139,12 +155,8 @@ int ViewTool::toolType() const
 
 QWidget *ViewTool::configurator()
 {
-    if (! m_configurator) {
-        kFatal() << "*** Setting configurator!";
+    if (! m_configurator)
         m_configurator = new ZoomConfigurator;
-    } else {
-        kFatal() << "*** Sending null!";
-    }
 
     return m_configurator;
 }

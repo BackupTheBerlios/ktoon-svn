@@ -161,8 +161,6 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
 KTViewDocument::~KTViewDocument()
 {
-    kFatal() << "*** Destroying KTViewDocument object... kaboom!";
-
     delete k->configurationArea;
     delete k;
 }
@@ -383,7 +381,7 @@ void KTViewDocument::loadPlugins()
 
              for (it = keys.begin(); it != keys.end(); ++it) {
                   #ifdef K_DEBUG
-                         kDebug("plugins") << "*******Tool Loaded: " << *it;
+                         kDebug("plugins") << "*** Tool Loaded: " << *it;
                   #endif
 
                   KAction *act = tool->actions()[*it];
@@ -400,9 +398,9 @@ void KTViewDocument::loadPlugins()
                                        act->setDisabled(true); 
                                    }
 
-                                   //if (toolStr.compare(tr("Pencil")) == 0)
-                                   //    k->firstAction = act;
-                                   //act->trigger();
+                                   if (toolStr.compare(tr("Pencil")) == 0)
+                                       //k->firstAction = act;
+                                       act->trigger();
 
                                    k->brushesMenu->addAction(act);
                                  }
@@ -436,7 +434,7 @@ void KTViewDocument::loadPlugins()
 
              for (it = keys.begin(); it != keys.end(); ++it) {
                   #ifdef K_DEBUG
-                         kDebug("plugins") << "******* Filter Loaded: " << *it;
+                         kDebug("plugins") << "*** Filter Loaded: " << *it;
                   #endif
 
                   KAction *act = filter->actions()[*it];
@@ -498,7 +496,6 @@ void KTViewDocument::selectTool()
                      if (!action->icon().isNull())
                          k->viewToolMenu->menuAction()->setIcon(action->icon());
                      if (toolStr.compare("Zoom")==0) {
-                         kFatal() << "*** Following Zoom plugin";
                          maxWidth = 120;
                      }
                      break;
@@ -507,14 +504,11 @@ void KTViewDocument::selectTool()
         QWidget *toolConfigurator = tool->configurator();
 
         if (toolConfigurator) {
-            kFatal() << "*** Adding Configurator!";
             k->configurationArea->setConfigurator(toolConfigurator, maxWidth);
-            kFatal() << "*** Configurator loaded!";
             toolConfigurator->show();
             if (!k->configurationArea->isVisible())
                 k->configurationArea->show();
         } else {
-            kFatal() << "*** No Configurator!";
             if (k->configurationArea->isVisible())
                 k->configurationArea->close();
         }
