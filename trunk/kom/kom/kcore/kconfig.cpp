@@ -52,11 +52,11 @@ KConfig::KConfig() : QObject(), k(new Private)
     KINIT;
 	
 #ifdef Q_WS_X11
-    k->configDirectory.setPath(QDir::homePath()+"/."+QCoreApplication::applicationName ());
+    k->configDirectory.setPath(QDir::homePath() + "/." + QCoreApplication::applicationName());
 #elif defined(Q_WS_WIN)
-    k->configDirectory.setPath(QDir::homePath()+"/"+QCoreApplication::applicationName ());
+    k->configDirectory.setPath(QDir::homePath() + "/" + QCoreApplication::applicationName());
 #elif defined(Q_WS_MAC)
-    k->configDirectory.setPath(QDir::homePath()+"/."+QCoreApplication::applicationName ());
+    k->configDirectory.setPath(QDir::homePath() + "/." + QCoreApplication::applicationName());
 #endif
 
     if (!k->configDirectory.exists()) {
@@ -66,7 +66,7 @@ KConfig::KConfig() : QObject(), k(new Private)
             kError() << tr("I can't create %1").arg(k->configDirectory.path()) << endl;
     }
 
-    k->path = k->configDirectory.path() + "/"+QCoreApplication::applicationName().toLower()+".cfg";
+    k->path = k->configDirectory.path() + "/" + QCoreApplication::applicationName().toLower() + ".cfg";
 
     init();
 }
@@ -109,8 +109,8 @@ void KConfig::init()
        QDomProcessingInstruction header = k->document.createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
        k->document.appendChild(header);
 
-       QDomElement root = k->document.createElement( "Config" );
-       k->document.appendChild( root );
+       QDomElement root = k->document.createElement("Config");
+       k->document.appendChild(root);
    }
 }
 
@@ -129,13 +129,13 @@ void KConfig::sync()
     QFile f(k->path);
 
     if (f.open(QIODevice::WriteOnly)) {
-        QTextStream st( &f );
+        kFatal() << "*** Saving config file...";
+        QTextStream st(&f);
         st << k->document.toString() << endl;
-
         k->isOk = true;
-
         f.close();
     } else {
+        kFatal() << "*** NO Saving config file...";
         k->isOk = false;
     }
 

@@ -64,7 +64,7 @@
 #endif
 
 #ifdef QT_GUI_LIB
-	static QTextBrowser *debugBrowser = 0;
+       static QTextBrowser *debugBrowser = 0;
 #endif
 
 
@@ -79,12 +79,14 @@ static class Colors
 
              qsrand(::time(0));
           }
+
         ~Colors() {}
 
         QString colorize(const QString &area)
           {
                 if (! m_colors.contains(area))
                     m_colors[area] = m_psb[qrand() % m_psb.size()];
+
                 return QString("%1%2\033[0m").arg(m_colors[area]).arg(area);
           }
 
@@ -122,7 +124,7 @@ ConfigReader::ConfigReader()
     defaultOutput= DebugOutput(settings.value("default", KShellOutput).toInt());
     forceDisableGUI = false;
     colorize = false;
-	
+    
 #ifdef Q_OS_UNIX
     QString terminal = QString::fromLocal8Bit(::getenv("TERM"));
     if (terminal == "linux" || terminal == "xterm")
@@ -160,7 +162,7 @@ class DebugBrowserHighlighter : public QSyntaxHighlighter
         ~DebugBrowserHighlighter() {};
 
     protected:
-        virtual void highlightBlock ( const QString & text );
+        virtual void highlightBlock(const QString & text);
 
     private:
         QMap<QString, QColor> m_colors;
@@ -184,7 +186,7 @@ DebugBrowserHighlighter::DebugBrowserHighlighter(QTextDocument *doc) : QSyntaxHi
             m_colors.insert(area, QColor(Qt::GlobalColor(colorIndexes[count++ % colorIndexes.count()])) );
 }
 
-void DebugBrowserHighlighter::highlightBlock ( const QString &text )
+void DebugBrowserHighlighter::highlightBlock(const QString &text)
 {
     int sepIndex = text.indexOf(":");
 
@@ -198,7 +200,7 @@ void DebugBrowserHighlighter::highlightBlock ( const QString &text )
 
     QTextCharFormat format;
     format.setFontWeight(QFont::Bold);
-    format.setForeground( m_colors[area] );
+    format.setForeground(m_colors[area]);
 
     setFormat(0, sepIndex, format);
 }
@@ -261,7 +263,7 @@ static void kDebugOutput(DebugType t, DebugOutput o, const char *data)
                     switch (t) {
                             case KDebugMsg:
                                {
-                                   QMessageBox::information(0, QObject::tr("Information"), data,  QMessageBox::Ok );
+                                   QMessageBox::information(0, QObject::tr("Information"), data,  QMessageBox::Ok);
                                }
                             break;
                             case KWarningMsg:
