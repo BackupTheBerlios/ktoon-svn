@@ -40,41 +40,35 @@ class QKeySequence;
 
 class Brush : public KTToolPlugin
 {
-	Q_OBJECT;
-	
-	public:
-		Brush();
-		virtual ~Brush();
-		
-		virtual void init(KTGraphicsScene *scene);
-		
-		virtual QStringList keys() const;
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		
-		virtual QMap<QString, KAction *>actions() const;
-		
-		int toolType() const;
-		
-		virtual QWidget *configurator();
-		
-		virtual void aboutToChangeTool();
-		
-	private:
-		void setupActions();
-		void smoothPath(QPainterPath &path, double smoothness, int from = 0, int to = -1);
-		
-		
-	private:
-		QPointF m_firstPoint;
-		QPointF m_oldPos;
-		QPainterPath m_path;
-		ExactnessConfigurator * m_configurator;
-		
-		QMap<QString, KAction *> m_actions;
-		
-		KTPathItem *m_item;
+    Q_OBJECT;
+    
+    public:
+        Brush();
+        virtual ~Brush();
+        
+        virtual void init(KTGraphicsScene *scene);
+        virtual QStringList keys() const;
+        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual QMap<QString, KAction *>actions() const;
+        int toolType() const;
+        virtual QWidget *configurator();
+        virtual void aboutToChangeTool();
+        virtual void saveConfig();
+        
+    private:
+        void setupActions();
+        void smoothPath(QPainterPath &path, double smoothness, int from = 0, int to = -1);
+        
+    private:
+        QPointF m_firstPoint;
+        QPointF m_oldPos;
+        QPainterPath m_path;
+        ExactnessConfigurator * m_configurator;
+        QMap<QString, KAction *> m_actions;
+        
+        KTPathItem *m_item;
 };
 
 #endif

@@ -34,36 +34,35 @@
 
 class GeometricTool : public KTToolPlugin
 {
-	Q_OBJECT;
-	
-	public:
-		GeometricTool();
-		~GeometricTool();
-		
-		virtual QStringList keys() const;
-		
-		virtual void init(KTGraphicsScene *scene);
-		
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+    Q_OBJECT;
+    
+    public:
+        GeometricTool();
+        ~GeometricTool();
+        
+        virtual QStringList keys() const;
+        virtual void init(KTGraphicsScene *scene);
+        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
 
-		virtual QMap<QString, KAction *> actions() const;
-		
-		int toolType() const;
-		
-		virtual QWidget *configurator();
-		void aboutToChangeScene(KTGraphicsScene *scene);
-		virtual void aboutToChangeTool();
-		
-	private:
-		void setupActions();
-		
-	private:
-		QRectF m_rect;
-		QMap<QString, KAction *> m_actions;
-		
-		QGraphicsItem *m_item;
+        virtual QMap<QString, KAction *> actions() const;
+        
+        int toolType() const;
+        
+        virtual QWidget *configurator();
+        void aboutToChangeScene(KTGraphicsScene *scene);
+        virtual void aboutToChangeTool();
+        virtual void saveConfig();
+        
+    private:
+        void setupActions();
+        
+    private:
+        QRectF m_rect;
+        QMap<QString, KAction *> m_actions;
+        
+        QGraphicsItem *m_item;
 };
 
 #endif

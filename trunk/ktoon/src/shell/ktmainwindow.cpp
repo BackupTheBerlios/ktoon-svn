@@ -282,8 +282,6 @@ void KTMainWindow::newProject()
 
 bool KTMainWindow::closeProject()
 {
-    kFatal() << "*** Closing current project - RED CODE";
-
     if (!m_projectManager->isOpen())
         return true;
 	

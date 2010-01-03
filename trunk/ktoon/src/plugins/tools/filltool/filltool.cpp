@@ -245,4 +245,8 @@ QPainterPath FillTool::mapPath(const QGraphicsPathItem *item)
     return mapPath(item->path(), item->pos());
 }
 
+void FillTool::saveConfig()
+{
+}
+
 Q_EXPORT_PLUGIN2(kt_fill, FillTool)

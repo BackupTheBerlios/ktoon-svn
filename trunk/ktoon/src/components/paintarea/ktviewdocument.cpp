@@ -77,7 +77,7 @@ struct KTViewDocument::Private
     KTDocumentRuler *verticalRuler, *horizontalRuler;
     KActionManager *actionManager;
     KTConfigurationArea *configurationArea;
-    //KAction *firstAction;
+    KTToolPlugin *currentTool;
 };
 
 KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindow(parent), k(new Private)
@@ -87,7 +87,8 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
     #endif
 
     setWindowIcon(QPixmap(THEME_DIR + "icons/layer_pic.png")); // FIXME: new image for documents
-
+   
+    k->currentTool = 0;
     k->actionManager = new KActionManager(this);
 
     QFrame *frame = new QFrame(this, Qt::FramelessWindowHint);
@@ -98,7 +99,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
     setCentralWidget(frame);
 
-    layout->addWidget(k->paintArea, 1,1);
+    layout->addWidget(k->paintArea, 1, 1);
     k->horizontalRuler = new KTDocumentRuler(Qt::Horizontal);
     k->verticalRuler = new KTDocumentRuler(Qt::Vertical);
 
@@ -156,11 +157,11 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
             SLOT(setPen(const QPen &)));
 
     QTimer::singleShot(1000, this, SLOT(loadPlugins()));
-    //QTimer::singleShot(2000, this, SLOT(firstCommand()));
 }
 
 KTViewDocument::~KTViewDocument()
 {
+    k->currentTool->saveConfig();
     delete k->configurationArea;
     delete k;
 }
@@ -451,10 +452,17 @@ void KTViewDocument::selectTool()
     #ifdef K_DEBUG
            K_FUNCINFO;
     #endif
+
+    if (k->currentTool) {
+        kFatal() << "*** Saving config...";
+        k->currentTool->saveConfig();
+    }
+
     KAction *action = qobject_cast<KAction *>(sender());
 
     if (action) {
         KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
+        k->currentTool = tool; 
         QString toolStr = action->text();
         kDebug() << "*** Brush: " << toolStr;
         int maxWidth = 0;

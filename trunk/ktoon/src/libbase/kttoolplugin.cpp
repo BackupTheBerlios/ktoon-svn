@@ -97,3 +97,7 @@ QMenu *KTToolPlugin::menu() const
 {
     return 0;
 }
+
+void KTToolPlugin::saveConfig() 
+{
+}

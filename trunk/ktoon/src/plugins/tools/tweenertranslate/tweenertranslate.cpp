@@ -242,5 +242,9 @@ void TweenerTranslate::updatePath()
     k->configurator->updateSteps(k->path);
 }
 
+void TweenerTranslate::saveConfig()
+{
+}
+
 Q_EXPORT_PLUGIN2(kt_tweenertranslate, TweenerTranslate);
 

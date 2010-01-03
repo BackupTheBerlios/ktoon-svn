@@ -31,6 +31,7 @@
 
 #include <kcore/kglobal.h>
 #include <kcore/kdebug.h>
+#include <kcore/kconfig.h>
 
 ZoomConfigurator::ZoomConfigurator(QWidget *parent) :QWidget(parent)
 {
@@ -59,17 +60,25 @@ ZoomConfigurator::ZoomConfigurator(QWidget *parent) :QWidget(parent)
 
     factor = new QDoubleSpinBox();
 
-    factor->setValue(0.5);
+    //factor->setValue(0.5);
     factor->setDecimals(1);
     factor->setSingleStep(0.1);
     factor->setMinimum(0.1);
-    factor->setMaximum(1);
+    factor->setMaximum(0.9);
     layout->addWidget(factor);
 
     factor->setEnabled(false);
 
     mainLayout->addLayout(layout);
     mainLayout->addStretch(2);
+
+    KCONFIG->beginGroup("Zoom tool");
+    double value = KCONFIG->value("zoomoutfactor", -1).toDouble();
+
+    if (value > 0) 
+        factor->setValue(value);
+    else 
+        factor->setValue(0.5);
 }
 
 ZoomConfigurator::~ZoomConfigurator()

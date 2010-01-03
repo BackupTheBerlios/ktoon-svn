@@ -36,34 +36,35 @@ class KTPathItem;
 
 class EraserTool : public KTToolPlugin
 {
-	Q_OBJECT;
-	
-	public:
-		EraserTool();
-		~EraserTool();
-		
-		virtual QStringList keys() const;
-		
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		
-		void itemPressed(QGraphicsItem *item, const KTBrushManager *brush, const QPointF &pos);
-		
-		virtual QMap<QString, KAction *> actions() const;
-		
-		int toolType() const;
-		
-		virtual QWidget *configurator();
-		
-		void aboutToChangeScene(KTGraphicsScene *scene);
-		virtual void aboutToChangeTool();
-		
-	private:
-		void setupActions();
-		
-	private:
-		QMap<QString, KAction *> m_actions;
+    Q_OBJECT;
+    
+    public:
+        EraserTool();
+        ~EraserTool();
+        
+        virtual QStringList keys() const;
+        
+        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        
+        void itemPressed(QGraphicsItem *item, const KTBrushManager *brush, const QPointF &pos);
+        
+        virtual QMap<QString, KAction *> actions() const;
+        
+        int toolType() const;
+        
+        virtual QWidget *configurator();
+        
+        void aboutToChangeScene(KTGraphicsScene *scene);
+        virtual void aboutToChangeTool();
+        virtual void saveConfig();
+        
+    private:
+        void setupActions();
+        
+    private:
+        QMap<QString, KAction *> m_actions;
 };
 
 #endif

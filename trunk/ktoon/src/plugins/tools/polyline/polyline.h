@@ -32,41 +32,39 @@
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 class PolyLine : public KTToolPlugin
-{	Q_OBJECT;
-	
-	public:
-		PolyLine();
-		virtual ~PolyLine();
-		
-		virtual void init(KTGraphicsScene *scene);
-		
-		virtual QStringList keys() const;
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		
-		virtual void keyPressEvent(QKeyEvent *event);
-		
-		virtual QMap<QString, KAction *>actions() const;
-		
-		int toolType() const;
-		
-		virtual QWidget *configurator();
-		
-		void aboutToChangeScene(KTGraphicsScene *scene);
-		virtual void aboutToChangeTool();
-		void itemResponse(const KTItemResponse *response);
-		
-	private:
-		void setupActions();
-		void endItem();
-		
-	private slots:
-		void nodeChanged();
-		
-	private:
-		struct Private;
-		Private * const k;
+{    Q_OBJECT;
+    
+    public:
+        PolyLine();
+        virtual ~PolyLine();
+        
+        virtual void init(KTGraphicsScene *scene);
+        virtual QStringList keys() const;
+        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        
+        virtual void keyPressEvent(QKeyEvent *event);
+        virtual QMap<QString, KAction *>actions() const;
+        
+        int toolType() const;
+        
+        virtual QWidget *configurator();
+        void aboutToChangeScene(KTGraphicsScene *scene);
+        virtual void aboutToChangeTool();
+        void itemResponse(const KTItemResponse *response);
+        virtual void saveConfig();
+        
+    private:
+        void setupActions();
+        void endItem();
+        
+    private slots:
+        void nodeChanged();
+        
+    private:
+        struct Private;
+        Private * const k;
 };
 
 #endif

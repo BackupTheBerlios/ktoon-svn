@@ -33,41 +33,38 @@
 */
 class TextTool : public KTToolPlugin
 {
-	Q_OBJECT;
-	
-	public:
-		TextTool();
-		virtual ~TextTool();
-		
-		virtual QStringList keys() const;
-		
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene);
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual bool itemPressed(QGraphicsItem *item);
-		
-		virtual QMap<QString, KAction *>actions() const;
-		
-		int toolType() const;
-		
-		virtual QWidget *configurator();
-		
-		void aboutToChangeScene(KTGraphicsScene *scene);
-		void aboutToChangeTool();
-		
-	private:
-		void setupActions();
-		
-	private:
-		KTTextItem *m_item;
-		
-		TextConfigurator *m_configurator;
-		
-		QPoint m_position;
-		
-		QMap<QString, KAction *> m_actions;
-
+    Q_OBJECT;
+    
+    public:
+        TextTool();
+        virtual ~TextTool();
+        
+        virtual QStringList keys() const;
+        
+        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene);
+        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual bool itemPressed(QGraphicsItem *item);
+        
+        virtual QMap<QString, KAction *>actions() const;
+        
+        int toolType() const;
+        
+        virtual QWidget *configurator();
+        
+        void aboutToChangeScene(KTGraphicsScene *scene);
+        void aboutToChangeTool();
+        virtual void saveConfig();
+        
+    private:
+        void setupActions();
+        
+    private:
+        KTTextItem *m_item;
+        TextConfigurator *m_configurator;
+        QPoint m_position;
+        QMap<QString, KAction *> m_actions;
 };
 
 #endif

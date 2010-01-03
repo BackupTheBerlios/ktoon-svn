@@ -152,5 +152,9 @@ void EraserTool::itemPressed(QGraphicsItem *item, const KTBrushManager *brush, c
     }
 }
 
+void EraserTool::saveConfig()
+{
+}
+
 Q_EXPORT_PLUGIN2(kt_eraser, EraserTool)
 

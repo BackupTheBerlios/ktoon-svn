@@ -31,8 +31,7 @@
 #include <kgui/kcontrolnode.h>
 #include <kgui/knodegroup.h>
 
-
-class KDControlNode;
+class KControlNode;
 class KTItemResponse;
 class KTGraphicsScene;
 
@@ -42,38 +41,37 @@ class KTGraphicsScene;
 
 class ContourSelection : public KTToolPlugin
 {
-	Q_OBJECT;
-	
-	public:
-		ContourSelection();
-		
-		virtual ~ContourSelection();
-		
-		virtual void init(KTGraphicsScene *scene);
-		virtual QStringList keys() const;
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		
-		virtual QMap<QString, KAction *>actions() const;
-		
-		int toolType() const;
-		
-		virtual QWidget *configurator();
-		
-		void aboutToChangeScene(KTGraphicsScene *scene);
-		virtual void aboutToChangeTool();
-		
-		
-		virtual void itemResponse(const KTItemResponse *event);
-		virtual void keyPressEvent(QKeyEvent *event);
-		
-	private:
-		void setupActions();
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    
+    public:
+        ContourSelection();
+        virtual ~ContourSelection();
+        
+        virtual void init(KTGraphicsScene *scene);
+        virtual QStringList keys() const;
+        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        
+        virtual QMap<QString, KAction *>actions() const;
+        
+        int toolType() const;
+        
+        virtual QWidget *configurator();
+        
+        void aboutToChangeScene(KTGraphicsScene *scene);
+        virtual void aboutToChangeTool();
+        
+        virtual void itemResponse(const KTItemResponse *event);
+        virtual void keyPressEvent(QKeyEvent *event);
+        virtual void saveConfig();
+        
+    private:
+        void setupActions();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

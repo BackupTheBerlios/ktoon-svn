@@ -101,16 +101,18 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
     KCONFIG->beginGroup("Brush tool");
     double smoothness = KCONFIG->value("smoothness", -1).toDouble();
 
-    if (smoothness > 0)
+    if (smoothness > 0) { 
         m_exactness->setValue(smoothness);
-    else
+        kFatal() << "*** Setting smoothness value";
+    } else {
         m_exactness->setValue(4.0);
+        kFatal() << "*** Setting smoothness default value";
+    }
 }
 
 ExactnessConfigurator::~ExactnessConfigurator()
 {
-    KCONFIG->beginGroup("Brush tool");
-    KCONFIG->setValue("smoothness", m_exactness->value());
+    KEND;
 }
 
 double ExactnessConfigurator::exactness() const

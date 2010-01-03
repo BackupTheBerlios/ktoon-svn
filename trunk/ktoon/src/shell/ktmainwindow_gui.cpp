@@ -338,17 +338,17 @@ void KTMainWindow::setupActions()
 
 void KTMainWindow::setupFileActions()
 {
-    KAction *newProject = new KAction(QPixmap(THEME_DIR + "/icons/project.png"), tr("New project"), QKeySequence(),
+    KAction *newProject = new KAction(QPixmap(THEME_DIR + "icons/project.png"), tr("New project"), QKeySequence(),
                                       this, SLOT(newProject()), m_actionManager);
     newProject->setStatusTip(tr("Open new project"));
     m_actionManager->insert(newProject, "newproject", "file");
 
-    KAction *openFile = new KAction(QPixmap(THEME_DIR + "/icons/open.png"), tr( "Open project" ), tr("Ctrl+O"), 
+    KAction *openFile = new KAction(QPixmap(THEME_DIR + "icons/open.png"), tr( "Open project" ), tr("Ctrl+O"), 
                                     this, SLOT(openProject()), m_actionManager);
     m_actionManager->insert( openFile, "openproject", "file" );
     openFile->setStatusTip(tr("Load existent project"));
 
-    KAction *openNetFile = new KAction(QPixmap(THEME_DIR + "/icons/open.png"), tr("Open project from server..."), 
+    KAction *openNetFile = new KAction(QPixmap(THEME_DIR + "icons/open.png"), tr("Open project from server..."), 
                                        tr(""), this, SLOT(openProjectFromServer()), m_actionManager);
     m_actionManager->insert(openNetFile, "opennetproject", "file");
 
@@ -356,7 +356,7 @@ void KTMainWindow::setupFileActions()
                                          SLOT(importProjectToServer()), m_actionManager);
     m_actionManager->insert(importNetFile, "importprojectserver", "file");
 
-    KAction *save = new KAction(QPixmap(THEME_DIR + "/icons/save.png"), tr( "Save project" ),
+    KAction *save = new KAction(QPixmap(THEME_DIR + "icons/save.png"), tr( "Save project" ),
                                 QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager);
     m_actionManager->insert(save, "saveproject", "file");
     save->setStatusTip(tr("Save current project in current location"));
@@ -366,7 +366,7 @@ void KTMainWindow::setupFileActions()
     saveAs->setStatusTip(tr("Open dialog box to save current project in any location"));
     m_actionManager->insert(saveAs, "saveprojectas", "file");
 
-    KAction *close = new KAction(QPixmap(THEME_DIR + "/icons/close.png"), tr( "Cl&ose project" ), 
+    KAction *close = new KAction(QPixmap(THEME_DIR + "icons/close.png"), tr("Cl&ose project"), 
                                  QKeySequence(tr("Ctrl+W")), m_actionManager);
     connect(close, SIGNAL(triggered()), this, SLOT(closeProject()));
     close->setStatusTip(tr("Close active project"));
@@ -374,7 +374,7 @@ void KTMainWindow::setupFileActions()
 
     // Import Palette action
 
-    KAction *importPalette = new KAction(QPixmap(THEME_DIR+"/icons/import.png"), tr("&Import GIMP palettes..."),
+    KAction *importPalette = new KAction(QPixmap(THEME_DIR + "/icons/import.png"), tr("&Import GIMP palettes..."),
                                          QKeySequence(), this, SLOT(importPalettes()), m_actionManager);
     importPalette->setStatusTip(tr("Import palettes"));
     m_actionManager->insert(importPalette, "importpalettes", "file");
@@ -601,8 +601,8 @@ void KTMainWindow::setUndoRedoActions()
     QAction *redo =  m_projectManager->undoHistory()->createRedoAction(this);
     redo->setShortcut(QKeySequence(QKeySequence::Redo));
 
-    undo->setIcon(QPixmap(THEME_DIR + "/icons/undo.png"));
-    redo->setIcon(QPixmap(THEME_DIR + "/icons/redo.png"));
+    undo->setIcon(QPixmap(THEME_DIR + "icons/undo.png"));
+    redo->setIcon(QPixmap(THEME_DIR + "icons/redo.png"));
 
     kApp->insertGlobalAction(undo, "undo");
     kApp->insertGlobalAction(redo, "redo");

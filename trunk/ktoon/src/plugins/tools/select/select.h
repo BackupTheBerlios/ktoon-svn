@@ -38,40 +38,39 @@ class KTItemResponse;
 class NodeManager;
 class Select : public KTToolPlugin
 {
-	Q_OBJECT;
-	
-	public:
-		Select();
-		
-		virtual ~Select();
-		
-		virtual void init(KTGraphicsScene *scene);
-		virtual QStringList keys() const;
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-		
-		virtual QMap<QString, KAction *>actions() const;
-		
-		int toolType() const;
-		
-		virtual QWidget *configurator();
-		
-		virtual void aboutToChangeTool();
-		void aboutToChangeScene(KTGraphicsScene *scene);
-		
-		virtual void itemResponse(const KTItemResponse *event);
-		
-	private:
-		void setupActions();
-		
-		
-	private:
-		struct Private;
-		Private *const k;
-		
-	private slots:
-		void syncNodes();
+    Q_OBJECT;
+    
+    public:
+        Select();
+        virtual ~Select();
+        
+        virtual void init(KTGraphicsScene *scene);
+        virtual QStringList keys() const;
+        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        
+        virtual QMap<QString, KAction *>actions() const;
+        
+        int toolType() const;
+        
+        virtual QWidget *configurator();
+        
+        virtual void aboutToChangeTool();
+        void aboutToChangeScene(KTGraphicsScene *scene);
+        
+        virtual void itemResponse(const KTItemResponse *event);
+        virtual void saveConfig();
+        
+    private:
+        void setupActions();
+        
+    private:
+        struct Private;
+        Private *const k;
+        
+    private slots:
+        void syncNodes();
 };
 
 #endif

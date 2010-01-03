@@ -29,6 +29,7 @@
 
 #include <kcore/kglobal.h>
 #include <kcore/kdebug.h>
+#include <kcore/kconfig.h>
 
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
@@ -182,6 +183,14 @@ void ViewTool::aboutToChangeTool()
            foreach (QGraphicsView * view, m_scene->views())
                     view->setDragMode(QGraphicsView::NoDrag);
        }
+    }
+}
+
+void ViewTool::saveConfig()
+{
+    if (m_configurator) {
+        KCONFIG->beginGroup("Zoom tool");
+        KCONFIG->setValue("zoomoutfactor", m_configurator->getFactor());
     }
 }
 

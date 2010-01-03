@@ -36,43 +36,45 @@ class KTPathItem;
 
 class FillTool : public KTToolPlugin
 {
-	Q_OBJECT;
-	
-	public:
-		FillTool();
-		~FillTool();
-		
-		virtual QStringList keys() const;
+    Q_OBJECT;
+    
+    public:
+        FillTool();
+        ~FillTool();
+        
+        virtual QStringList keys() const;
 
-		void init(KTGraphicsScene *scene);
-		
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, 
-					KTGraphicsScene *scene);
+        void init(KTGraphicsScene *scene);
+        
+        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, 
+                    KTGraphicsScene *scene);
 
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, 
-					KTGraphicsScene *scene);
+        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, 
+                    KTGraphicsScene *scene);
 
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, 
-					KTGraphicsScene *scene);
-		
-		KTPathItem *itemPressed(QGraphicsItem *item, const KTBrushManager *brush);
-		
-		virtual QMap<QString, KAction *> actions() const;
-		
-		int toolType() const;
-		
-		virtual QWidget *configurator();
-		void aboutToChangeScene(KTGraphicsScene *scene);
-		virtual void aboutToChangeTool();
-		
-		QPainterPath mapPath(const QPainterPath &path, const QPointF &pos);
-		QPainterPath mapPath(const QGraphicsPathItem *item);
-		
-	private:
-		void setupActions();
-		
-	private:
-		QMap<QString, KAction *> m_actions;
+        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, 
+                    KTGraphicsScene *scene);
+        
+        KTPathItem *itemPressed(QGraphicsItem *item, const KTBrushManager *brush);
+        
+        virtual QMap<QString, KAction *> actions() const;
+        
+        int toolType() const;
+        
+        virtual QWidget *configurator();
+        void aboutToChangeScene(KTGraphicsScene *scene);
+        virtual void aboutToChangeTool();
+        
+        QPainterPath mapPath(const QPainterPath &path, const QPointF &pos);
+        QPainterPath mapPath(const QGraphicsPathItem *item);
+
+        virtual void saveConfig();
+ 
+    private:
+        void setupActions();
+        
+    private:
+        QMap<QString, KAction *> m_actions;
 };
 
 #endif

@@ -54,6 +54,7 @@ class ViewTool: public KTToolPlugin
         virtual QWidget *configurator();
         void aboutToChangeScene(KTGraphicsScene *scene);
         virtual void aboutToChangeTool();
+        virtual void saveConfig();
         
     private:
         void setupActions();

@@ -42,14 +42,17 @@
 #include <kcore/kalgorithm.h>
 #include <kcore/kglobal.h>
 #include <kcore/kdebug.h>
+#include <kcore/kconfig.h>
 
 Brush::Brush() : m_configurator(0), m_item(0)
 {
+    KINIT;
     setupActions();
 }
 
 Brush::~Brush()
 {
+    KEND;
 }
 
 void Brush::init(KTGraphicsScene *scene)
@@ -81,7 +84,6 @@ void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushMa
     m_oldPos = input->pos();
 
     m_item = new KTPathItem();
-
     m_item->setPen(brushManager->pen());
 
     scene->addItem(m_item);
@@ -189,6 +191,14 @@ QWidget *Brush::configurator()
 
 void Brush::aboutToChangeTool() 
 {
+}
+
+void Brush::saveConfig()
+{
+    if (m_configurator) {
+        KCONFIG->beginGroup("Brush tool");
+        KCONFIG->setValue("smoothness", m_configurator->exactness());
+    }
 }
 
 Q_EXPORT_PLUGIN2(kt_brush, Brush);

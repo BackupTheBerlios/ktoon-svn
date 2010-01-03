@@ -205,5 +205,9 @@ void GeometricTool::aboutToChangeTool()
 {
 }
 
+void GeometricTool::saveConfig()
+{
+}
+
 Q_EXPORT_PLUGIN2( kt_geometric, GeometricTool )
 

@@ -55,6 +55,7 @@ class TweenerTranslate : public KTToolPlugin
         virtual void aboutToChangeTool();
 
         bool isComplete() const;
+        virtual void saveConfig();
 
     private:
         void setupActions();
