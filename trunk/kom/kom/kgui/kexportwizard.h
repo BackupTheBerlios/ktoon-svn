@@ -57,11 +57,13 @@ class K_GUI_EXPORT KExportWizard : public QDialog
         void pageCompleted();
         void disableButton();
         void closeDialog();
+        void setFormat(int code, const QString &extension);
 
     signals:
         void cancelled();
         void updateScenes();
         void saveFile();
+        void exportArray();
         void setFileName();
         void isDone();
 
@@ -72,6 +74,7 @@ class K_GUI_EXPORT KExportWizard : public QDialog
         QPushButton *m_nextButton;
         QHBoxLayout *m_buttonLayout;
         QVBoxLayout *m_mainLayout;
+        QString format;
 };
 
 #include <QFrame>
@@ -99,6 +102,7 @@ class KExportWizardPage : public KVHBox
     signals:
         void completed();
         void emptyField();
+        void formatSelected(int format, const QString &extension);
 
     private:
         QFrame *m_container;

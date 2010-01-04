@@ -55,7 +55,6 @@ KExportWizard::KExportWizard(QWidget *parent) : QDialog(parent)
     setLayout(m_mainLayout);
 }
 
-
 KExportWizard::~KExportWizard()
 {
 }
@@ -74,9 +73,12 @@ KExportWizardPage *KExportWizard::addPage(KExportWizardPage *newPage)
         m_nextButton->setDefault(true);
     } 
 
-    m_nextButton->setEnabled( newPage->isComplete() );
+    m_nextButton->setEnabled(newPage->isComplete());
     connect(newPage, SIGNAL(completed()), this, SLOT(pageCompleted()));
     connect(newPage, SIGNAL(emptyField()), this, SLOT(disableButton()));
+
+    if (tag.compare("PLUGIN")==0)
+        connect(newPage, SIGNAL(formatSelected(int, const QString &)), this, SLOT(setFormat(int, const QString &)));
 
     if (tag.compare("EXPORT")==0) 
         connect(newPage, SIGNAL(isDone()), this, SLOT(closeDialog()));
@@ -109,25 +111,11 @@ void KExportWizard::back()
 
     m_history.setCurrentIndex(m_history.currentIndex()-1);
     
-    // if (m_history.currentIndex() == 0) {
-
     if (tag.compare("SCENE")==0)
         m_backButton->setEnabled(false);
 
-/*
-    if (tag.compare("PLUGIN")==0) {
-        m_nextButton->setEnabled(true);
-        m_backButton->setEnabled(false);
-        m_nextButton->setDefault(true);
-    } else {
-        m_nextButton->setText("Next >");
-        m_nextButton->setEnabled(true);
-    }
-*/
-
     m_nextButton->setText("Next >");
     m_nextButton->setEnabled(true);
-
 
     if ((tag.compare("EXPORT")==0) && (!m_nextButton->isEnabled())) 
         m_nextButton->setEnabled(true);
@@ -141,18 +129,29 @@ void KExportWizard::next()
     if (current)
         current->aboutToNextPage();
 
-    m_history.setCurrentIndex(m_history.currentIndex()+1);
-
-    //if (m_history.currentIndex() > 0)
+    //m_history.setCurrentIndex(m_history.currentIndex()+1);
 
     if (tag.compare("PLUGIN")==0)
         m_backButton->setEnabled(true);
 
-    if (tag.compare("EXPORT")==0)
+    if (tag.compare("EXPORT")==0) 
         emit saveFile();
 
-    if (tag.compare("SCENE")==0) 
+    if (tag.compare("IMAGES")==0)
+        emit exportArray();
+
+    if (tag.compare("SCENE")==0)  {
+        kFatal() << "Export dialog openned!";
         emit setFileName();
+        if (format.compare(".jpg") == 0 || format.compare(".png") == 0)
+            //kFatal() << "Setting up the images array interface!";
+            m_history.setCurrentIndex(m_history.currentIndex()+2);
+        else
+            m_history.setCurrentIndex(m_history.currentIndex()+1);
+      
+    } else {
+        m_history.setCurrentIndex(m_history.currentIndex()+1);
+    }
 
     pageCompleted();
 }
@@ -160,8 +159,10 @@ void KExportWizard::next()
 void KExportWizard::pageCompleted()
 {
     KExportWizardPage *current = qobject_cast<KExportWizardPage *>(m_history.currentWidget());
+    QString tag = current->getTag();
 
-    if (m_history.currentIndex() < m_history.count()-1) {
+    //if (m_history.currentIndex() < m_history.count()-1) {
+    if (tag.compare("EXPORT")!=0) {
         m_nextButton->setEnabled(current->isComplete());
     } else {
         m_nextButton->setText(tr("Save"));
@@ -180,6 +181,12 @@ void KExportWizard::disableButton()
 void KExportWizard::closeDialog()
 {
     close();
+}
+
+void KExportWizard::setFormat(int code, const QString &extension)
+{
+    kFatal() << "Printing: " << extension;
+    format = extension;
 }
 
 KExportWizardPage::KExportWizardPage(const QString &title, QWidget *parent) : KVHBox(parent)
