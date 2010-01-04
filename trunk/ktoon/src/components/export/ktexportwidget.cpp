@@ -334,7 +334,7 @@ class ExportTo : public KExportWizardPage
 {
     Q_OBJECT;
     public:
-        ExportTo(const KTProject *project, bool exportImages, const KTExportWidget *kt);
+        ExportTo(const KTProject *project, bool exportImages, QString title, const KTExportWidget *kt);
         ~ExportTo();
 
         bool isComplete() const;
@@ -379,12 +379,12 @@ class ExportTo : public KExportWizardPage
         QString extension;
 };
 
-ExportTo::ExportTo(const KTProject *project, bool exportImages, const KTExportWidget *kt) : KExportWizardPage(tr("Export to File")), m_currentExporter(0), 
+ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, const KTExportWidget *kt) : KExportWizardPage(title), m_currentExporter(0), 
                    m_currentFormat(KTExportInterface::NONE), m_project(project)
 {
-    if (exportImages)
+    if (exportImages) 
         setTag("IMAGES");
-    else
+    else 
         setTag("EXPORT");
 
     QWidget *container = new QWidget;
@@ -656,10 +656,10 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KExp
     m_scenesSelectionPage->setScenes(project->scenes().values());
     addPage(m_scenesSelectionPage);
 
-    m_exportToPage = new ExportTo(project, false, this);
+    m_exportToPage = new ExportTo(project, false, tr("Export to File"), this);
     addPage(m_exportToPage);
 
-    m_exportImages = new ExportTo(project, true, this);
+    m_exportImages = new ExportTo(project, true, tr("Export to Images Array"), this);
     addPage(m_exportImages);
 
     connect(m_pluginSelectionPage, SIGNAL(selectedPlugin(const QString &)), this, SLOT(setExporter(const QString &)));
