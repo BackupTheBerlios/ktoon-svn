@@ -215,10 +215,9 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 void Select::setupActions()
 {
     KAction *select = new KAction(QIcon(), tr("Select"), this);
-    // pencil->setShortcut(QKeySequence(tr("")));
-    // QPixmap pix(THEME_DIR + "cursors/pencil.png");
-    // select->setCursor(QCursor(pix, 0, pix.height()));
-    
+    //select->setShortcut(QKeySequence(tr("")));
+    //select->setCursor(QCursor(THEME_DIR + "cursors/contour.png"));
+
     k->actions.insert(tr("Select"), select);
 }
 

@@ -59,6 +59,7 @@ class KTExportWidget : public KExportWizard
         SelectPlugin *m_pluginSelectionPage;
         SelectScenes *m_scenesSelectionPage;
         ExportTo *m_exportToPage;
+        ExportTo *m_exportImages;
         const KTProject *m_project;
         QHash<QString, KTExportInterface *> m_plugins;
         const QString tag;

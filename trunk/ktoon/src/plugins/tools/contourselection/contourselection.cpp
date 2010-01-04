@@ -146,7 +146,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
                          QDomDocument doc;
                          doc.appendChild(qgraphicsitem_cast<KTPathItem *>(group->parentItem())->toXml(doc));
                     
-                         KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::EditNodes, doc.toString() );
+                         KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::EditNodes, doc.toString());
                     
                          foreach (QGraphicsView * view, scene->views())
                                   view->setUpdatesEnabled(false);
@@ -254,8 +254,10 @@ void ContourSelection::keyPressEvent(QKeyEvent *event)
 
 void ContourSelection::setupActions()
 {
-    KAction *select = new KAction( QIcon(), tr("Contour selection"), this);
+    KAction *select = new KAction(QIcon(), tr("Nodes selection"), this);
+    select->setShortcut(QKeySequence(tr("")));
 
+    //select->setCursor(QCursor(THEME_DIR + "cursors/contour.png"));
     k->actions.insert(tr("ContourSelection"), select);
 }
 

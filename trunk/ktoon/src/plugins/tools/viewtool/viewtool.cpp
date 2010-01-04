@@ -61,7 +61,7 @@ QStringList ViewTool::keys() const
 void ViewTool::setupActions()
 {
     KAction *action1 = new KAction(QIcon(THEME_DIR + "icons/magnifying.png"), tr("Zoom"), this);
-    action1->setShortcut( QKeySequence(tr("")));
+    action1->setShortcut(QKeySequence(tr("")));
     action1->setCursor(QCursor(THEME_DIR + "cursors/magnifying.png"));
     
     m_actions.insert(tr("Zoom"), action1);
@@ -83,8 +83,6 @@ void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
                      QPointF point1(view->mapToScene(QPoint(0,0)));
                      QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
                      int width = point2.x() - point1.x();
-                     kFatal() << "*** Coords: " << view->width() << " : " << view->height();
-                     kFatal() << "*** Doing Zoom Out! " << width;
                      if (width < 888)
                          //view->scale(1/1.5, 1/1.5);
                          view->scale(m_configurator->getFactor(), m_configurator->getFactor());

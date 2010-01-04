@@ -453,10 +453,8 @@ void KTViewDocument::selectTool()
            K_FUNCINFO;
     #endif
 
-    if (k->currentTool) {
-        kFatal() << "*** Saving config...";
+    if (k->currentTool)
         k->currentTool->saveConfig();
-    }
 
     KAction *action = qobject_cast<KAction *>(sender());
 
