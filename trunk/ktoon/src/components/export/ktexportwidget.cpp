@@ -372,6 +372,7 @@ class ExportTo : public KExportWizardPage
 
         const KTProject *m_project;
         QLineEdit *m_filePath;
+        QLineEdit *m_prefix;
         QSpinBox *m_fps;
         KXYSpinBox *m_size;
         QString filename;
@@ -393,6 +394,9 @@ ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, c
 
     ////////////////
 
+    QHBoxLayout *prefixLayout = new QHBoxLayout;
+    prefixLayout->addWidget(new QLabel(tr("Image name prefix: ")));
+
     QHBoxLayout *filePathLayout = new QHBoxLayout;
 
     if (!exportImages)
@@ -400,6 +404,7 @@ ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, c
     else
         filePathLayout->addWidget(new QLabel(tr("Directory: ")));
 
+    m_prefix = new QLineEdit(m_project->projectName());
     m_filePath = new QLineEdit;
 
     connect(m_filePath, SIGNAL(textChanged (const QString &)), this, SLOT(updateState(const QString &)));
@@ -422,6 +427,14 @@ ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, c
         connect(button, SIGNAL(clicked()), this, SLOT(chooseDirectory()));
 
     filePathLayout->addWidget(button);
+
+    if (exportImages) {
+        prefixLayout->addWidget(m_prefix);
+        QString tail = "NN" + extension;
+        prefixLayout->addWidget(new QLabel(tr("NN")));
+        prefixLayout->addSpacing(150);
+        layout->addLayout(prefixLayout);
+    }
 
     layout->addLayout(filePathLayout);
 
@@ -656,7 +669,7 @@ KTExportWidget::KTExportWidget(const KTProject *project, QWidget *parent) : KExp
     m_scenesSelectionPage->setScenes(project->scenes().values());
     addPage(m_scenesSelectionPage);
 
-    m_exportToPage = new ExportTo(project, false, tr("Export to File"), this);
+    m_exportToPage = new ExportTo(project, false, tr("Export to Video File"), this);
     addPage(m_exportToPage);
 
     m_exportImages = new ExportTo(project, true, tr("Export to Images Array"), this);
