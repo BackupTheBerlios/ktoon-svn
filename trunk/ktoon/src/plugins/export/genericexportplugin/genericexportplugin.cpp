@@ -84,7 +84,13 @@ bool GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KT
                      painter.setRenderHint(QPainter::Antialiasing, true);
                      renderer.render(&painter);
                     }
-                    img.save(fileInfo.absolutePath() + "/" + QString(m_baseName+"%1.%2").arg(photogram).arg(QString(fmt).toLower() ), fmt);
+                    QString index = "";
+                    if (photogram < 10)
+                        index = "0";
+
+                    index += QString("%1").arg(photogram);
+
+                    img.save(fileInfo.absolutePath() + "/" + QString(m_baseName+"%1.%2").arg(index).arg(QString(fmt).toLower()), fmt);
 
                     photogram++;
              }

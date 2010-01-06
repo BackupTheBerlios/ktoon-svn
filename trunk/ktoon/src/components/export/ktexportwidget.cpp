@@ -404,7 +404,8 @@ ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, c
     else
         filePathLayout->addWidget(new QLabel(tr("Directory: ")));
 
-    m_prefix = new QLineEdit(m_project->projectName());
+    QString prefix = m_project->projectName() + "_img";
+    m_prefix = new QLineEdit(prefix);
     m_filePath = new QLineEdit;
 
     connect(m_filePath, SIGNAL(textChanged (const QString &)), this, SLOT(updateState(const QString &)));
@@ -430,9 +431,8 @@ ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, c
 
     if (exportImages) {
         prefixLayout->addWidget(m_prefix);
-        QString tail = "NN" + extension;
-        prefixLayout->addWidget(new QLabel(tr("NN")));
-        prefixLayout->addSpacing(150);
+        prefixLayout->addWidget(new QLabel(tr("i.e. <B>%1</B>01.png / <B>%1</B>01.jpg").arg(prefix)));
+        prefixLayout->addSpacing(200);
         layout->addLayout(prefixLayout);
     }
 
@@ -506,6 +506,7 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
 {
     m_currentFormat = KTExportInterface::Format(currentFormat);
     extension = value;
+    kFatal() << "Extension: " << extension;
     filename = path;
 
 #if defined(Q_OS_UNIX)
@@ -514,7 +515,7 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
         filename += "/";
         filename += m_project->projectName();
         filename += extension;
-    }
+    } 
 
     m_filePath->setText(filename);
 
