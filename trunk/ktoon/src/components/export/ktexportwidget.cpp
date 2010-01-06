@@ -132,6 +132,7 @@ void SelectPlugin::selectedPluginItem(QListWidgetItem *item)
 void SelectPlugin::selectedFirstItem()
 {
     m_exporterList->item(0)->setSelected(true);
+
     if (m_exporterList->item(0)) {
         emit selectedPlugin(m_exporterList->item(0)->text());
         emit completed();
@@ -141,17 +142,22 @@ void SelectPlugin::selectedFirstItem()
 void SelectPlugin::setFormats(KTExportInterface::Formats formats)
 {
     m_formatList->clear();
-	
-    if (formats & KTExportInterface::SWF) {
-        QListWidgetItem *format = new QListWidgetItem(tr("Macromedia flash"), m_formatList);
-        format->setData(3124,KTExportInterface::SWF);
+
+    if (formats & KTExportInterface::OGG) {
+        QListWidgetItem *format = new QListWidgetItem(tr("OGG Video"), m_formatList);
+        format->setData(3124, KTExportInterface::OGG);
     }
-	
+
     if (formats & KTExportInterface::MPEG) {
         QListWidgetItem *format = new QListWidgetItem(tr("MPEG Video"), m_formatList);
         format->setData(3124, KTExportInterface::MPEG);
     }
-
+	
+    if (formats & KTExportInterface::SWF) {
+        QListWidgetItem *format = new QListWidgetItem(tr("Macromedia flash"), m_formatList);
+        format->setData(3124, KTExportInterface::SWF);
+    }
+	
     if (formats & KTExportInterface::AVI) {
         QListWidgetItem *format = new QListWidgetItem(tr("AVI Video"), m_formatList);
         format->setData(3124, KTExportInterface::AVI);
@@ -195,11 +201,14 @@ void SelectPlugin::setFormats(KTExportInterface::Formats formats)
 
 char const* SelectPlugin::getFormatExtension(const QString format) 
 { 
-    if (format.compare(tr("Macromedia flash")) == 0)
-        return ".swf";
+    if (format.compare(tr("OGG Video")) == 0)
+        return ".ogg";
 
     if (format.compare(tr("MPEG Video")) == 0)
         return ".mpg";
+
+    if (format.compare(tr("Macromedia flash")) == 0)
+        return ".swf";
 
     if (format.compare(tr("AVI Video")) == 0)
         return ".avi";
@@ -390,7 +399,7 @@ ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, c
 
     QWidget *container = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout(container);
-    path = getenv ("HOME");
+    path = getenv("HOME");
 
     ////////////////
 
@@ -410,10 +419,12 @@ ExportTo::ExportTo(const KTProject *project, bool exportImages, QString title, c
 
     connect(m_filePath, SIGNAL(textChanged (const QString &)), this, SLOT(updateState(const QString &)));
 
-    if (exportImages)
+    if (exportImages) {
+        connect(m_prefix, SIGNAL(textChanged(const QString &)), this, SLOT(updateState(const QString &)));
         connect(kt, SIGNAL(exportArray()), this, SLOT(exportIt()));
-    else
+    } else {
         connect(kt, SIGNAL(saveFile()), this, SLOT(exportIt()));
+    }
 
     connect(kt, SIGNAL(setFileName()), this, SLOT(updateNameField()));
 
@@ -506,7 +517,6 @@ void ExportTo::setCurrentFormat(int currentFormat, const QString &value)
 {
     m_currentFormat = KTExportInterface::Format(currentFormat);
     extension = value;
-    kFatal() << "Extension: " << extension;
     filename = path;
 
 #if defined(Q_OS_UNIX)
@@ -544,10 +554,7 @@ void ExportTo::chooseFile()
 
 void ExportTo::chooseDirectory()
 {
-    //QFileDialog dialog(this);
-    QString dir = getenv ("HOME");
-    //dialog.setDirectory(dir);
-
+    QString dir = getenv("HOME");
     filename = QFileDialog::getExistingDirectory(this, tr("Choose a directory..."), dir,
                                                  QFileDialog::ShowDirsOnly
                                                  | QFileDialog::DontResolveSymlinks);
@@ -557,10 +564,8 @@ void ExportTo::chooseDirectory()
     }
 }
 
-void ExportTo::updateState(const QString &)
+void ExportTo::updateState(const QString &name)
 {
-    QString name = m_filePath->text();
-
     if (name.length() > 0) 
         emit completed();
     else
@@ -574,11 +579,14 @@ void ExportTo::exportIt()
     #endif
 
     bool done = false; 
+    QString name = "";
+
+    if ((extension.compare(".jpg") != 0) && (extension.compare(".png") != 0)) {
     filename = m_filePath->text();
 
     int indexPath = filename.lastIndexOf("/");
     int indexFile = filename.length() - indexPath;
-    QString name = filename.right(indexFile - 1);
+    name = filename.right(indexFile - 1);
     path = filename.left(indexPath + 1);
 
     if (!name.toLower().endsWith(extension))    
@@ -598,6 +606,21 @@ void ExportTo::exportIt()
         if (reply == QMessageBox::No)
             return;
     } 
+
+    } else {
+        name = m_prefix->text();
+        path = m_filePath->text();
+
+        if (name.length() == 0) {
+            KOsd::self()->display(tr("Images name prefix can't be empty! Please, type a prefix."), KOsd::Error);
+            return;
+        }
+    
+        if (path.length() == 0)
+            path = getenv("HOME");
+
+        filename = path + "/" + name;
+    }
 
     QDir directory(path);
     if (!directory.exists()) {

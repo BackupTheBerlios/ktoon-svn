@@ -90,7 +90,7 @@ bool GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KT
 
                     index += QString("%1").arg(photogram);
 
-                    img.save(fileInfo.absolutePath() + "/" + QString(m_baseName+"%1.%2").arg(index).arg(QString(fmt).toLower()), fmt);
+                    img.save(fileInfo.absolutePath() + "/" + QString(m_baseName + "%1.%2").arg(index).arg(QString(fmt).toLower()), fmt);
 
                     photogram++;
              }
@@ -103,5 +103,5 @@ const char* GenericExportPlugin::getExceptionMsg() {
     return errorMsg;
 }
 
-Q_EXPORT_PLUGIN( GenericExportPlugin );
+Q_EXPORT_PLUGIN(GenericExportPlugin);
 

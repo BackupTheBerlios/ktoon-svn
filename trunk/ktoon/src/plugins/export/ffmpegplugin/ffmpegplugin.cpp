@@ -48,7 +48,7 @@ QString FFMpegPlugin::key() const
 
 KTExportInterface::Formats FFMpegPlugin::availableFormats()
 {
-    return KTExportInterface::SWF | KTExportInterface::MPEG | KTExportInterface::AVI | KTExportInterface::RM | KTExportInterface::ASF | KTExportInterface::MOV | KTExportInterface::GIF;
+    return KTExportInterface::OGG | KTExportInterface::MPEG | KTExportInterface::SWF | KTExportInterface::AVI | KTExportInterface::RM | KTExportInterface::ASF | KTExportInterface::MOV | KTExportInterface::GIF;
 }
 
 bool FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, KTExportInterface::Format format, const QSize &size, int fps)
@@ -56,6 +56,11 @@ bool FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
     KFFMpegMovieGenerator *generator = 0;
 
     switch (format) {
+            case KTExportInterface::OGG:
+                 {
+                   generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::OGG, size, fps);
+                 }
+                 break;
             case KTExportInterface::SWF:
                  {
                    generator = new KFFMpegMovieGenerator(KFFMpegMovieGenerator::SWF, size, fps);
