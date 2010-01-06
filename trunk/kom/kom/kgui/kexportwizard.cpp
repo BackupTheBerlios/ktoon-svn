@@ -80,7 +80,7 @@ KExportWizardPage *KExportWizard::addPage(KExportWizardPage *newPage)
     if (tag.compare("PLUGIN")==0)
         connect(newPage, SIGNAL(formatSelected(int, const QString &)), this, SLOT(setFormat(int, const QString &)));
 
-    if (tag.compare("EXPORT")==0) 
+    if (tag.compare("EXPORT")==0 || tag.compare("IMAGES")==0) 
         connect(newPage, SIGNAL(isDone()), this, SLOT(closeDialog()));
 
     return newPage;
@@ -148,7 +148,6 @@ void KExportWizard::next()
     }
 
     if (tag.compare("SCENE")==0)  {
-        kFatal() << "Export dialog openned!";
         emit setFileName();
         if (format.compare(".jpg") == 0 || format.compare(".png") == 0)
             m_history.setCurrentIndex(m_history.currentIndex()+2);
@@ -177,7 +176,8 @@ void KExportWizard::pageCompleted()
 
 void KExportWizard::disableButton() 
 {
-    m_nextButton->setEnabled(false);
+    if (m_nextButton->isEnabled())
+        m_nextButton->setEnabled(false);
 }
 
 void KExportWizard::closeDialog()
@@ -187,7 +187,6 @@ void KExportWizard::closeDialog()
 
 void KExportWizard::setFormat(int code, const QString &extension)
 {
-    kFatal() << "Printing: " << extension;
     format = extension;
 }
 

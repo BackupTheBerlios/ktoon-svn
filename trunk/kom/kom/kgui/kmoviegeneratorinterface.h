@@ -32,10 +32,11 @@ class KMovieGeneratorInterface
         enum Format
              {
                NONE = 0,
-               SWF  = 1 << 0,
-               MPEG = 1 << 1,
-               AVI  = 1 << 2,
-               RM   = 1 << 3,
+               OGG  = 1 << 0,
+               SWF  = 1 << 1,
+               MPEG = 1 << 2,
+               AVI  = 1 << 3,
+               RM   = 1 << 4,
                ASF  = 1 << 5,
                MOV  = 1 << 6,
                GIF  = 1 << 7

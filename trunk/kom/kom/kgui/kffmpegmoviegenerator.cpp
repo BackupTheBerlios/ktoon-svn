@@ -158,6 +158,9 @@ void KFFMpegMovieGenerator::Private::chooseFileExtension(int format)
             case MOV:
                  movieFile += ".mov";
                  break;
+            case OGG:
+                 movieFile += ".ogg";
+                 break;
             case RM:
                  movieFile += ".rm";
                  break;
@@ -306,11 +309,10 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
         av_init_packet(&pkt);
 
         pkt.flags |= PKT_FLAG_KEY;
-        pkt.stream_index= video_st->index;
-        pkt.data= (uint8_t *)picturePtr;
-        pkt.size= sizeof(AVPicture);
+        pkt.stream_index = video_st->index;
+        pkt.data = (uint8_t *)picturePtr;
+        pkt.size = sizeof(AVPicture);
         
-        //ret = av_write_frame(oc, &pkt);
         ret = av_interleaved_write_frame(oc, &pkt);
 
     } else { // Exporting movies
@@ -331,7 +333,6 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
 
             /* write the compressed frame in the media file */
             ret = av_interleaved_write_frame(oc, &pkt);
-            //ret = av_write_frame(oc, &pkt);
         } else {
             ret = 0;
         }
