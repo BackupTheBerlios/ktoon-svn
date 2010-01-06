@@ -109,7 +109,10 @@ void KExportWizard::back()
     if (current)
         current->aboutToBackPage();
 
-    m_history.setCurrentIndex(m_history.currentIndex()-1);
+    if (tag.compare("IMAGES")==0)
+        m_history.setCurrentIndex(m_history.currentIndex()-2);
+    else
+        m_history.setCurrentIndex(m_history.currentIndex()-1);
     
     if (tag.compare("SCENE")==0)
         m_backButton->setEnabled(false);
@@ -131,27 +134,27 @@ void KExportWizard::next()
 
     //m_history.setCurrentIndex(m_history.currentIndex()+1);
 
-    if (tag.compare("PLUGIN")==0)
+    if (tag.compare("PLUGIN")==0) {
         m_backButton->setEnabled(true);
+        m_history.setCurrentIndex(m_history.currentIndex()+1);
+    }
 
-    if (tag.compare("EXPORT")==0) 
+    if (tag.compare("EXPORT")==0) {
         emit saveFile();
+    }
 
-    if (tag.compare("IMAGES")==0)
+    if (tag.compare("IMAGES")==0) {
         emit exportArray();
+    }
 
     if (tag.compare("SCENE")==0)  {
         kFatal() << "Export dialog openned!";
         emit setFileName();
         if (format.compare(".jpg") == 0 || format.compare(".png") == 0)
-            //kFatal() << "Setting up the images array interface!";
             m_history.setCurrentIndex(m_history.currentIndex()+2);
         else
             m_history.setCurrentIndex(m_history.currentIndex()+1);
-      
-    } else {
-        m_history.setCurrentIndex(m_history.currentIndex()+1);
-    }
+    } 
 
     pageCompleted();
 }
@@ -161,8 +164,7 @@ void KExportWizard::pageCompleted()
     KExportWizardPage *current = qobject_cast<KExportWizardPage *>(m_history.currentWidget());
     QString tag = current->getTag();
 
-    //if (m_history.currentIndex() < m_history.count()-1) {
-    if (tag.compare("EXPORT")!=0) {
+    if (tag.compare("EXPORT")!=0 && tag.compare("IMAGES")!=0) {
         m_nextButton->setEnabled(current->isComplete());
     } else {
         m_nextButton->setText(tr("Save"));
