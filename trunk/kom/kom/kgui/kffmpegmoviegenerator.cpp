@@ -299,7 +299,7 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
         picturePtr->quality = 0;
 
         avpicture_fill((AVPicture *)picturePtr, pic_dat,
-                   PIX_FMT_YUV420P, w, h);
+                       PIX_FMT_YUV420P, w, h);
     }
 
     int out_size = -1, ret = -1;
@@ -316,6 +316,12 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
         ret = av_interleaved_write_frame(oc, &pkt);
 
     } else { // Exporting movies
+
+        kFatal() << "C: " << c->pix_fmt;
+        kFatal() << "videOutbuf: " <<  videOutbuf;
+        kFatal() << "videOutbufSize: " << videOutbufSize; 
+        kFatal() << "picturePtr: " << picturePtr;
+
         out_size = avcodec_encode_video(c, videOutbuf, videOutbufSize, picturePtr);
 
         if (out_size > 0) {
@@ -375,6 +381,8 @@ KFFMpegMovieGenerator::KFFMpegMovieGenerator(KMovieGeneratorInterface::Format fo
     k->fps = fps;
     k->exception = begin();
 }
+
+// Constructor called from Export dialog
 
 KFFMpegMovieGenerator::KFFMpegMovieGenerator(KMovieGeneratorInterface::Format format, const QSize &size, int fps) : KMovieGenerator(size.width(), size.height()), k(new Private)
 {
