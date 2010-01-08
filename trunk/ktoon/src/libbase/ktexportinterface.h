@@ -40,7 +40,7 @@ class KTOON_EXPORT KTExportInterface
         enum Format 
              {
                NONE = 0,
-               OGG  = 1 << 0,
+               OGV  = 1 << 0,
                SWF  = 1 << 1,
                MPEG = 1 << 2,
                AVI  = 1 << 3,
