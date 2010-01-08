@@ -60,6 +60,8 @@ struct KFFMpegMovieGenerator::Private
     void chooseFileExtension(int format);
     bool openVideo(AVFormatContext *oc, AVStream *st);
     void RGBtoYUV420P(const uint8_t *bufferRGB, uint8_t *bufferYUV, uint iRGBIncrement, bool bSwapRGB, int width, int height);
+
+    void fill_yuv_image(AVFrame *pict, int frame_index, int width, int height);
     bool writeVideoFrame(const QImage &image);
     void closeVideo(AVStream *st);
 };
@@ -111,16 +113,11 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
 
     // some formats want stream headers to be seperate
 
-    // if (!strcmp(oc->oformat->name, "mp4") || !strcmp(oc->oformat->name, "mov") 
-    //    || !strcmp(oc->oformat->name, "3gp")) 
-
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
         c->flags |= CODEC_FLAG_GLOBAL_HEADER;
 	
     return st;
 }
-
-//static AVFrame *allocPicture(int pix_fmt, int width, int height)
 
 static AVFrame *allocPicture(enum PixelFormat pix_fmt, int width, int height)
 {
@@ -254,6 +251,7 @@ void KFFMpegMovieGenerator::Private::RGBtoYUV420P(const uint8_t *bufferRGB, uint
     iRGBIdx[0] = 0;
     iRGBIdx[1] = 1;
     iRGBIdx[2] = 2;
+
     if (bSwapRGB)  {
         iRGBIdx[0] = 2;
         iRGBIdx[2] = 0;
@@ -277,6 +275,29 @@ void KFFMpegMovieGenerator::Private::RGBtoYUV420P(const uint8_t *bufferRGB, uint
     }
 }
 
+/* prepare a dummy image */
+void KFFMpegMovieGenerator::Private::fill_yuv_image(AVFrame *pict, int frame_index, int width, int height)
+{
+    int x, y, i;
+
+    i = frame_index;
+
+    /* Y */
+    for(y=0;y<height;y++) {
+        for(x=0;x<width;x++) {
+            pict->data[0][y * pict->linesize[0] + x] = x + y + i * 3;
+        }
+    }
+
+    /* Cb and Cr */
+    for(y=0;y<height/2;y++) {
+        for(x=0;x<width/2;x++) {
+            pict->data[1][y * pict->linesize[1] + x] = 128 + y + i * 2;
+            pict->data[2][y * pict->linesize[2] + x] = 64 + x + i * 5;
+        }
+    }
+}
+
 bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
 {
     #ifdef K_DEBUG
@@ -284,7 +305,6 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
     #endif
 
     AVCodecContext *c = video_st->codec;
-    AVFrame *picturePtr = 0;
     double nbFrames = ((int)(streamDuration * fps));
 
     if (frameCount < nbFrames) {
@@ -295,11 +315,9 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
         uint8_t *pic_dat = (uint8_t *) av_malloc(size);
         RGBtoYUV420P(image.bits(), pic_dat, image.depth()/8, true, w, h);
 
-        picturePtr = avcodec_alloc_frame();
-        picturePtr->quality = 0;
-
-        avpicture_fill((AVPicture *)picturePtr, pic_dat,
-                       PIX_FMT_YUV420P, w, h);
+        picture->quality = 0;
+        avpicture_fill((AVPicture *)picture, pic_dat,
+                        PIX_FMT_YUV420P, w, h);
     }
 
     int out_size = -1, ret = -1;
@@ -310,19 +328,14 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
 
         pkt.flags |= PKT_FLAG_KEY;
         pkt.stream_index = video_st->index;
-        pkt.data = (uint8_t *)picturePtr;
+        pkt.data = (uint8_t *)picture;
         pkt.size = sizeof(AVPicture);
         
         ret = av_interleaved_write_frame(oc, &pkt);
 
     } else { // Exporting movies
 
-        kFatal() << "C: " << c->pix_fmt;
-        kFatal() << "videOutbuf: " <<  videOutbuf;
-        kFatal() << "videOutbufSize: " << videOutbufSize; 
-        kFatal() << "picturePtr: " << picturePtr;
-
-        out_size = avcodec_encode_video(c, videOutbuf, videOutbufSize, picturePtr);
+        out_size = avcodec_encode_video(c, videOutbuf, videOutbufSize, picture);
 
         if (out_size > 0) {
             AVPacket pkt;
@@ -333,6 +346,7 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
 
             if (c->coded_frame->key_frame)
                 pkt.flags |= PKT_FLAG_KEY;
+
             pkt.stream_index = video_st->index;
             pkt.data= videOutbuf;
             pkt.size= out_size;
