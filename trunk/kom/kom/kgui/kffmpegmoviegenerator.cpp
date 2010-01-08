@@ -62,11 +62,11 @@ struct KFFMpegMovieGenerator::Private
     void RGBtoYUV420P(const uint8_t *bufferRGB, uint8_t *bufferYUV, uint iRGBIncrement, bool bSwapRGB, int width, int height);
 
     void fill_yuv_image(AVFrame *pict, int frame_index, int width, int height);
-    bool writeVideoFrame(const QImage &image);
-    void closeVideo(AVStream *st);
+    bool writeVideoFrame(const QImage &image, AVFormatContext *oc, AVStream *st);
+    void closeVideo(AVFormatContext *oc, AVStream *st);
 };
 
-static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, int height, int fps, const char *errorMsg)
+static AVStream *addVideoStream(AVFormatContext *oc, enum CodecID codec_id, int width, int height, int fps, const char *errorMsg)
 {
     AVCodecContext *c;
     AVStream *st;
@@ -84,7 +84,8 @@ static AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, in
     }
 
     c = st->codec;
-    c->codec_id = CodecID(codec_id);
+    //c->codec_id = CodecID(codec_id);
+    c->codec_id = codec_id;
     c->codec_type = CODEC_TYPE_VIDEO;
 
     /* put sample parameters */
@@ -298,13 +299,15 @@ void KFFMpegMovieGenerator::Private::fill_yuv_image(AVFrame *pict, int frame_ind
     }
 }
 
-bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
+bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image, AVFormatContext *oc, AVStream *st)
 {
     #ifdef K_DEBUG
            kDebug() << "* Generating frame #" << frameCount;
     #endif
 
-    AVCodecContext *c = video_st->codec;
+    AVCodecContext *c;
+    c = st->codec;
+
     double nbFrames = ((int)(streamDuration * fps));
 
     if (frameCount < nbFrames) {
@@ -316,8 +319,10 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
         RGBtoYUV420P(image.bits(), pic_dat, image.depth()/8, true, w, h);
 
         picture->quality = 0;
-        avpicture_fill((AVPicture *)picture, pic_dat,
-                        PIX_FMT_YUV420P, w, h);
+        //avpicture_fill((AVPicture *)picture, pic_dat,
+        //                PIX_FMT_YUV420P, w, h);
+
+        fill_yuv_image(picture, frameCount, w, h);
     }
 
     int out_size = -1, ret = -1;
@@ -327,7 +332,8 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
         av_init_packet(&pkt);
 
         pkt.flags |= PKT_FLAG_KEY;
-        pkt.stream_index = video_st->index;
+        //pkt.stream_index = video_st->index;
+        pkt.stream_index= st->index;
         pkt.data = (uint8_t *)picture;
         pkt.size = sizeof(AVPicture);
         
@@ -342,14 +348,16 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
             av_init_packet(&pkt);
 
             if (c->coded_frame->pts != (int64_t) AV_NOPTS_VALUE) 
-                pkt.pts= av_rescale_q(c->coded_frame->pts, c->time_base, video_st->time_base);
+                //pkt.pts= av_rescale_q(c->coded_frame->pts, c->time_base, video_st->time_base);
+                pkt.pts= av_rescale_q(c->coded_frame->pts, c->time_base, st->time_base);
 
             if (c->coded_frame->key_frame)
                 pkt.flags |= PKT_FLAG_KEY;
 
-            pkt.stream_index = video_st->index;
-            pkt.data= videOutbuf;
-            pkt.size= out_size;
+            //pkt.stream_index = video_st->index;
+            pkt.stream_index = st->index;
+            pkt.data = videOutbuf;
+            pkt.size = out_size;
 
             /* write the compressed frame in the media file */
             ret = av_interleaved_write_frame(oc, &pkt);
@@ -372,11 +380,9 @@ bool KFFMpegMovieGenerator::Private::writeVideoFrame(const QImage &image)
    return true;
 }
 
-void KFFMpegMovieGenerator::Private::closeVideo(AVStream *st)
+void KFFMpegMovieGenerator::Private::closeVideo(AVFormatContext *oc, AVStream *st)
 {
-    AVCodecContext *c;
-    c = st->codec;
-    avcodec_close(c);
+    avcodec_close(st->codec);
     av_free(picture->data[0]);
     av_free(picture);
 
@@ -417,6 +423,7 @@ KFFMpegMovieGenerator::~KFFMpegMovieGenerator()
 bool KFFMpegMovieGenerator::begin()
 {
     av_register_all();
+
     k->fmt = guess_format(0, k->movieFile.toLocal8Bit().data(), 0);
 
     if (!k->fmt) 
@@ -442,7 +449,12 @@ bool KFFMpegMovieGenerator::begin()
 	
     k->oc->oformat = k->fmt;
     snprintf(k->oc->filename, sizeof(k->oc->filename), "%s", k->movieFile.toLocal8Bit().data());
-    k->video_st = addVideoStream(k->oc, k->fmt->video_codec, width(), height(), k->fps, k->errorMsg);
+
+    k->video_st = 0;
+
+    if (k->fmt->video_codec != CODEC_ID_NONE)
+        k->video_st = addVideoStream(k->oc, k->fmt->video_codec, width(), height(), 
+                                     k->fps, k->errorMsg);
 	
     if (!k->video_st) {
         k->errorMsg = "ffmpeg error: Can't add video stream. This is not a KToon problem directly. Please, check your ffmpeg installation and codec support. More info: http://ffmpeg.org/";
@@ -462,12 +474,17 @@ bool KFFMpegMovieGenerator::begin()
 
     dump_format(k->oc, 0, k->movieFile.toLocal8Bit().data(), 1);
 
+    /*
     if (!k->openVideo(k->oc, k->video_st)) {
         #ifdef K_DEBUG
                kError() << "Can't open video";
         #endif
         return false;
     }
+    */
+
+   if (k->video_st)
+       k->openVideo(k->oc, k->video_st);
 
     if (!(k->fmt->flags & AVFMT_NOFILE)) {
         if (url_fopen(&k->oc->pb, k->movieFile.toLocal8Bit().data(), URL_WRONLY) < 0) {
@@ -480,10 +497,6 @@ bool KFFMpegMovieGenerator::begin()
     }
 
     av_write_header(k->oc);
-
-    k->video_pts = 0.0;
-    k->frameCount = 0;
-    k->streamDuration = 10;
 
     return true;
 }
@@ -505,16 +518,21 @@ void KFFMpegMovieGenerator::handle(const QImage& image)
     else 
         k->video_pts = 0.0;
 
+    k->frameCount = 0;
+    k->streamDuration = 10;
+
     if (!k->video_st || k->video_pts >= k->streamDuration)
         return;
 
-    k->writeVideoFrame(image);
+    k->writeVideoFrame(image, k->oc, k->video_st);
 }
 
 void KFFMpegMovieGenerator::end()
 {
-    k->closeVideo(k->video_st);
     av_write_trailer(k->oc);
+
+    if (k->video_st)
+        k->closeVideo(k->oc, k->video_st);
 
     int streams_total = k->oc->nb_streams;
     for (int i = 0; i < streams_total; i++) {
