@@ -256,7 +256,8 @@ void KTViewCamera::updatePhotograms(KTProject *project)
 {
     m_animationArea->refreshAnimation(project);
     KTScene *scene = project->scene(0);
-    QString total = total.setNum(scene->framesTotal()); 
+    QString total = "";
+    total = total.setNum(scene->framesTotal()); 
     m_status->setFramesTotal(total); 
 }
 
