@@ -49,6 +49,7 @@ class Select : public KTToolPlugin
         virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
         virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void keyPressEvent(QKeyEvent *event);
         
         virtual QMap<QString, KAction *>actions() const;
         

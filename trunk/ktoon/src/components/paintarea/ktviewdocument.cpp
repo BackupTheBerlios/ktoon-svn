@@ -238,25 +238,6 @@ void KTViewDocument::setupDrawActions()
     ungroup->setStatusTip(tr("Ungroups the selected object"));
 
     /*
-    KAction *zoomIn = new KAction(QPixmap(THEME_DIR + "icons/zood->in.png"), tr("Zoom In"), 
-                                  QKeySequence(Qt::CTRL+Qt::Key_Plus), k->paintArea, SLOT(zoomIn()), 
-                                  k->actionManager, "zood->in");
-
-    k->zoomFactorSpin = new QSpinBox();
-    k->zoomFactorSpin->setMaximum(200);
-    k->zoomFactorSpin->setMinimum(26);
-    k->zoomFactorSpin->setValue(100);
-    k->zoomFactorSpin->setSingleStep(5);
-
-    k->zoomFactorSpin->setSuffix("%");
-    connect(k->zoomFactorSpin, SIGNAL(valueChanged(int)), this, SLOT(setZoomFactor(int)));
-
-    KAction *zoomOut = new KAction(QPixmap(THEME_DIR + "icons/zood->out.png"), tr("Zoom Out"), 
-                                   QKeySequence(Qt::CTRL+Qt::Key_Minus), k->paintArea, SLOT(zoomOut()), 
-                                   k->actionManager, "zood->out");
-    // k->viewPreviousGroup->addAction(zoomOut);
-    */
-
     k->viewPreviousGroup = new QActionGroup(this);
     k->viewPreviousGroup->setExclusive(true);
     KAction *noPrevious = new KAction(QPixmap(THEME_DIR + "icons/no_previous.png"), tr("No Previous"), 
@@ -331,6 +312,7 @@ void KTViewDocument::setupDrawActions()
     
     threeNext->setCheckable(true);
     threeNext->setStatusTip(tr("Shows the next 3 onion skins"));
+    */
 }
 
 void KTViewDocument::createTools()
@@ -395,7 +377,7 @@ void KTViewDocument::loadPlugins()
                                  {
                                    // Temporary code - SQA Issue
                                    QString toolStr = act->text();
-                                   if (toolStr.compare(tr("Tweener Translator")) == 0) {
+                                   if (toolStr.compare(tr("Tweener Translator")) == 0 || toolStr.compare(tr("Poly line")) == 0) {
                                        act->setDisabled(true); 
                                    }
 
@@ -596,28 +578,16 @@ void KTViewDocument::createToolBar()
     k->barGrid->addAction(k->actionManager->find("group"));
     k->barGrid->addAction(k->actionManager->find("ungroup"));
 
-    /*    
-     k->barGrid->addSeparator();
-     k->barGrid->addAction(d->actionManager->find("undo"));
-     k->barGrid->addAction(d->actionManager->find("redo"));
-     k->barGrid->addSeparator();
-     k->barGrid->addAction(d->actionManager->find("zood->in"));
-     k->barGrid->addWidget(d->zoomFactorSpin);
-     k->barGrid->addAction(d->actionManager->find("zood->out"));
-     k->barGrid->addSeparator();
-     k->barGrid->addActions(d->editGroup->actions());
-     k->barGrid->addSeparator();
-    */
-
     k->barGrid->addSeparator();
-    k->barGrid->addActions(k->viewPreviousGroup->actions());
 
     QSpinBox *prevOnionSkinSpin = new QSpinBox(this);
     connect(prevOnionSkinSpin, SIGNAL(valueChanged(int)), this, SLOT(setPreviousOnionSkin(int)));
 
     k->barGrid->addWidget(prevOnionSkinSpin);
-    k->barGrid->addSeparator();
-    k->barGrid->addActions(k->viewNextGroup->actions());
+
+    QLabel *layers = new QLabel("");
+    layers->setPixmap(QPixmap(THEME_DIR + "icons/onion.png"));
+    k->barGrid->addWidget(layers);
 
     QSpinBox *nextOnionSkinSpin = new QSpinBox(this);
     connect(nextOnionSkinSpin, SIGNAL(valueChanged (int)), this, SLOT(setNextOnionSkin(int)));

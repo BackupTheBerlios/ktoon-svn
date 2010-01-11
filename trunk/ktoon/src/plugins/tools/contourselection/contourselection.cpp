@@ -41,14 +41,11 @@
 #include "ktgraphicsscene.h"
 #include "ktprojectrequest.h"
 #include "ktprojectresponse.h"
+#include "ktrequestbuilder.h"
+#include "ktproxyitem.h"
 
 #include <QDebug>
 #include <QTimer>
-
-#include "ktrequestbuilder.h"
-
-#include "ktproxyitem.h"
-
 
 struct ContourSelection::Private
 {
@@ -58,7 +55,7 @@ struct ContourSelection::Private
 
 };
 
-ContourSelection::ContourSelection(): k( new Private)
+ContourSelection::ContourSelection(): k(new Private)
 {
     setupActions();
 }
@@ -118,7 +115,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
         QList<KNodeGroup *>::iterator itEnd = k->nodeGroups.end();
 
         while (it != itEnd) {
-               int parentIndex = scene->selectedItems().indexOf((*it)->parentItem() );
+               int parentIndex = scene->selectedItems().indexOf((*it)->parentItem());
                if (parentIndex != -1)
                    selecteds.removeAt(parentIndex);
                else
@@ -254,8 +251,8 @@ void ContourSelection::keyPressEvent(QKeyEvent *event)
 
 void ContourSelection::setupActions()
 {
-    KAction *select = new KAction(QIcon(), tr("Nodes selection"), this);
-    select->setShortcut(QKeySequence(tr(" ")));
+    KAction *select = new KAction(QIcon(), tr("Nodes selection "), this);
+    select->setShortcut(QKeySequence(tr("Ctrl+M")));
 
     //select->setCursor(QCursor(THEME_DIR + "cursors/contour.png"));
     k->actions.insert(tr("ContourSelection"), select);

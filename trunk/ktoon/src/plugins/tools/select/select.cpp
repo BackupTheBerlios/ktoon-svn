@@ -110,12 +110,12 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
         }
     }
     
-    QList<QGraphicsItem *> selecteds = scene->selectedItems();
+    QList<QGraphicsItem *> selectedObjects = scene->selectedItems();
     
     if (scene->currentFrame()->visualIndexOf(scene->mouseGrabberItem()) != -1)
-        selecteds << scene->mouseGrabberItem();
+        selectedObjects << scene->mouseGrabberItem();
 
-    foreach (QGraphicsItem *item, selecteds) {
+    foreach (QGraphicsItem *item, selectedObjects) {
              if (item && dynamic_cast<KTAbstractSerializable* > (item)) {
                  bool finded = false;
                  foreach (NodeManager *nodeManager, k->nodeManagers) {
@@ -125,7 +125,7 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
                           }
                  }
             
-                 if (!finded ) {
+                 if (!finded) {
                      NodeManager *manager = new NodeManager(item, scene);
                      k->nodeManagers << manager;
                  }
@@ -160,7 +160,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
     
     if (scene->selectedItems().count() > 0) {
 
-        QList<QGraphicsItem *> selecteds = scene->selectedItems();
+        QList<QGraphicsItem *> selectedObjects = scene->selectedItems();
         QList<NodeManager *>::iterator it = k->nodeManagers.begin();
         QList<NodeManager *>::iterator itEnd = k->nodeManagers.end();
 
@@ -168,13 +168,14 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                int parentIndex = scene->selectedItems().indexOf((*it)->parentItem());
             
                if (parentIndex != -1 )
-                   selecteds.removeAt(parentIndex);
+                   selectedObjects.removeAt(parentIndex);
                else
                    delete k->nodeManagers.takeAt(k->nodeManagers.indexOf((*it)));
+
                ++it;
         }
         
-        foreach (QGraphicsItem *item, selecteds) {
+        foreach (QGraphicsItem *item, selectedObjects) {
                  if (item && dynamic_cast<KTAbstractSerializable* > (item)) {
                      NodeManager *manager = new NodeManager(item, scene);
                      k->nodeManagers << manager;
@@ -214,8 +215,9 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 
 void Select::setupActions()
 {
-    KAction *select = new KAction(QIcon(), tr("Select"), this);
-    //select->setShortcut(QKeySequence(tr("")));
+    KAction *select = new KAction(QIcon(), tr("Object Selection "), this);
+    select->setShortcut(QKeySequence(tr("Ctrl+N")));
+
     //select->setCursor(QCursor(THEME_DIR + "cursors/contour.png"));
 
     k->actions.insert(tr("Select"), select);
@@ -261,11 +263,9 @@ void Select::itemResponse(const KTItemResponse *event)
     KTProject *project = k->scene->scene()->project();
     
     if (project) {
-
         scene = project->scene(event->sceneIndex());
 
         if (scene) {
-
             layer = scene->layer(event->layerIndex());
 
             if (layer) {
@@ -273,9 +273,7 @@ void Select::itemResponse(const KTItemResponse *event)
                 if (frame)
                     item = frame->item(event->itemIndex());
             }
-
         }
-
     } else {
         kFatal() << "Project not exist";
     }
@@ -318,6 +316,31 @@ void Select::syncNodes()
 
 void Select::saveConfig()
 {
+}
+
+void Select::keyPressEvent(QKeyEvent *event)
+{
+    if (k->scene->selectedItems().count() > 0 && ((event->key() == Qt::Key_Left) 
+        || (event->key() == Qt::Key_Up) || (event->key() == Qt::Key_Right) || (event->key() == Qt::Key_Down))) {
+
+        QList<QGraphicsItem *> selectedObjects = k->scene->selectedItems();
+
+        foreach (QGraphicsItem *item, selectedObjects) {
+                 if (event->key() == Qt::Key_Left)
+                     item->moveBy(-1, 0);
+
+                 if (event->key() == Qt::Key_Up)
+                     item->moveBy(0, -1);
+
+                 if (event->key() == Qt::Key_Right)
+                     item->moveBy(1, 0);
+
+                 if (event->key() == Qt::Key_Down)
+                     item->moveBy(0, 1);
+
+                 QTimer::singleShot(0, this, SLOT(syncNodes()));
+       }
+    }
 }
 
 Q_EXPORT_PLUGIN2(kt_select, Select);

@@ -98,8 +98,8 @@ void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushMan
     foreach (QGraphicsView * view, scene->views())
              view->setDragMode(QGraphicsView::NoDrag);
 
-    m_path.moveTo( m_oldPos);
-    m_path.lineTo( lastPoint );
+    m_path.moveTo(m_oldPos);
+    m_path.lineTo(lastPoint);
 
     m_item->setPath(m_path);
     m_oldPos = lastPoint;
