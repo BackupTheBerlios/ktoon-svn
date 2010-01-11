@@ -47,6 +47,7 @@ struct KTAnimationArea::Private
     int fps;
 
     QTimer *timer;
+    QTimer *playBackTimer;
 
     QList<QImage> photograms;
     QList<KTSoundLayer *> sounds;
@@ -73,8 +74,11 @@ KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QF
     k->renderCamera.fill(qRgb(255, 255, 255));
 
     k->timer = new QTimer(this);
+    k->playBackTimer = new QTimer(this);
 
     connect(k->timer, SIGNAL(timeout()), this, SLOT(advance()));
+    connect(k->playBackTimer, SIGNAL(timeout()), this, SLOT(back()));
+
     setCurrentScene(0);
 
     KTScene *scene = project->scene(0);
@@ -98,6 +102,11 @@ void KTAnimationArea::setFPS(int fps)
        k->timer->stop();
        play();
    }
+
+   if (k->playBackTimer->isActive()) {
+       k->playBackTimer->stop();
+       playBack();
+   }
 }
 
 void KTAnimationArea::paintEvent(QPaintEvent *)
@@ -116,15 +125,36 @@ void KTAnimationArea::play()
           kDebug("camera") << "Playing!";
    #endif
 
+   if (k->playBackTimer->isActive()) 
+       stop();
+
    k->draw = true;
+   k->currentFramePosition = 0;
 
    if (k->project && !k->timer->isActive()) {
-       if(!k->isRendered) 
-          render();
+       if (!k->isRendered) 
+           render();
        k->timer->start(1000 / k->fps);
    }
+}
 
-   // emit toStatusBar( tr("Playing... "), 2000 );
+void KTAnimationArea::playBack()
+{
+   #ifdef K_DEBUG
+          kDebug("camera") << "Playing back!";
+   #endif
+
+   if (k->timer->isActive())
+       stop();
+
+   k->draw = true;
+   k->currentFramePosition = k->photograms.count() - 1;
+
+   if (k->project && !k->playBackTimer->isActive()) {
+       if (!k->isRendered)
+           render();
+       k->playBackTimer->start(1000 / k->fps);
+   }
 }
 
 void KTAnimationArea::stop()
@@ -132,8 +162,12 @@ void KTAnimationArea::stop()
     #ifdef K_DEBUG
            kDebug("camera") << "Stopping";
     #endif
+   
+    if (k->timer->isActive())
+        k->timer->stop();
 
-    k->timer->stop();
+    if (k->playBackTimer->isActive())
+        k->playBackTimer->stop();
 
     foreach (KTSoundLayer *sound, k->sounds)
              sound->stop();
@@ -172,17 +206,32 @@ void KTAnimationArea::advance()
         if (k->cyclicAnimation && k->currentFramePosition >= k->photograms.count())
             k->currentFramePosition = 0;
 
-            if (k->currentFramePosition == 0) {
-                foreach (KTSoundLayer *sound, k->sounds)
-                         sound->play();
-                }
+        if (k->currentFramePosition == 0) {
+            foreach (KTSoundLayer *sound, k->sounds)
+                     sound->play();
+        }
 
-            if (k->currentFramePosition < k->photograms.count()) {
-                repaint();
-                k->currentFramePosition++;
-            } else if (!k->cyclicAnimation) {
-                stop();
-            }
+        if (k->currentFramePosition < k->photograms.count()) {
+            repaint();
+            k->currentFramePosition++;
+        } else if (!k->cyclicAnimation) {
+                   stop();
+        }
+    }
+}
+
+void KTAnimationArea::back()
+{
+    if (k->project) {
+        if (k->cyclicAnimation && k->currentFramePosition < 0)
+            k->currentFramePosition = k->photograms.count() - 1;
+
+        if (k->currentFramePosition >= 0) {
+            repaint();
+            k->currentFramePosition--;
+        } else if (!k->cyclicAnimation) {
+                   stop();
+        }
     }
 }
 
@@ -269,16 +318,10 @@ void KTAnimationArea::renderFrame(int index)
     if (!scene)
         return;
 
-    kFatal() << "Follow me 1: " << index;
-
     KTAnimationRenderer renderer;
     renderer.setScene(scene);
 
-    kFatal() << "Follow me 1: " << index;
-
     renderer.renderPhotogram(index);
-
-    kFatal() << "Follow me 1: " << index;
 
     QImage renderized = QImage(size(), QImage::Format_RGB32);
     renderized.fill(qRgb(255, 255, 255));

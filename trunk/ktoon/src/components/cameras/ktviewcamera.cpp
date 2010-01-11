@@ -187,6 +187,7 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
     m_bar->show();
 
     connect(m_bar, SIGNAL(play()), this, SLOT(doPlay()));
+    connect(m_bar, SIGNAL(playBack()), this, SLOT(doPlayBack()));
     connect(m_bar, SIGNAL(stop()), m_animationArea, SLOT(stop()));
     connect(m_bar, SIGNAL(ff()), m_animationArea, SLOT(nextFrame()));
     connect(m_bar, SIGNAL(rew()), m_animationArea, SLOT(previousFrame()));
@@ -230,6 +231,12 @@ QSize KTViewCamera::sizeHint() const
 void KTViewCamera::doPlay()
 {
     m_animationArea->play();
+    updateSceneInfo();
+}
+
+void KTViewCamera::doPlayBack()
+{
+    m_animationArea->playBack();
     updateSceneInfo();
 }
 

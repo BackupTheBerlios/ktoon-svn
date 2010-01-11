@@ -43,10 +43,12 @@ class KTCameraBar : public QFrame
     private:
         KImageButton *m_rew;
         KImageButton *m_play;
+        KImageButton *m_play_back;
         KImageButton *m_stop;
         KImageButton *m_ff;
 
     signals:
+        void playBack();
         void play();
         void stop();
         void ff();

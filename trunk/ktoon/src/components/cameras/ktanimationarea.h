@@ -54,12 +54,14 @@ class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectResp
     public slots:
         virtual void render();
         virtual void play();
+        virtual void playBack();
         virtual void stop();
         virtual void nextFrame();
         virtual void previousFrame();
 
     private slots:
         void advance();
+        void back();
 
     protected:
         void frameResponse(KTFrameResponse *event);

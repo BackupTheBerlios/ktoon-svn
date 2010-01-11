@@ -51,6 +51,7 @@ class KTViewCamera : public QFrame
         void showSceneInfo(const KTScene *scene);
         void setLoop();
         void doPlay();
+        void doPlayBack();
 
     public slots:
         bool handleProjectResponse(KTProjectResponse *event);

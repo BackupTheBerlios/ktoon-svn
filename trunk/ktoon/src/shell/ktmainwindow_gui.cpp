@@ -188,7 +188,7 @@ void KTMainWindow::setupMenu()
     menuBar()->addMenu(m_fileMenu);
 
     // Adding Option New	
-    QMenu *newMenu = new QMenu(tr("&New..."), this );
+    QMenu *newMenu = new QMenu(tr("&New"), this );
     m_fileMenu->addMenu(newMenu);
     newMenu->addAction(m_actionManager->find("newproject"));
 
@@ -374,13 +374,13 @@ void KTMainWindow::setupFileActions()
 
     // Import Palette action
 
-    KAction *importPalette = new KAction(QPixmap(THEME_DIR + "/icons/import.png"), tr("&Import GIMP palettes..."),
+    KAction *importPalette = new KAction(QPixmap(THEME_DIR + "/icons/import.png"), tr("&Import GIMP palettes"),
                                          QKeySequence(), this, SLOT(importPalettes()), m_actionManager);
     importPalette->setStatusTip(tr("Import palettes"));
     m_actionManager->insert(importPalette, "importpalettes", "file");
 
     // Export Project action
-    KAction *exportProject = new KAction(QPixmap(THEME_DIR+"/icons/export.png"), tr("&Export..."), QKeySequence(),
+    KAction *exportProject = new KAction(QPixmap(THEME_DIR+"/icons/export.png"), tr("&Export Project"), QKeySequence(),
                                          this, SLOT(exportProject()), m_actionManager);
     exportProject->setStatusTip(tr("Export project to several video formats"));
     m_actionManager->insert(exportProject, "export", "file");
@@ -441,10 +441,13 @@ void KTMainWindow::setupHelpActions()
 
 void KTMainWindow::setupWindowActions()
 {
+// Temporary commented code - SQA required 
+/*
 #if defined(QT_GUI_LIB) && defined(K_DEBUG)
     new KAction(QPixmap(), tr("Show debug dialog"), QKeySequence(), KDebug::browser(), SLOT(show()), m_actionManager,
                 "show debug");
 #endif
+*/
 }
 
 /**

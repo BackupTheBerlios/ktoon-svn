@@ -255,7 +255,7 @@ void ContourSelection::keyPressEvent(QKeyEvent *event)
 void ContourSelection::setupActions()
 {
     KAction *select = new KAction(QIcon(), tr("Nodes selection"), this);
-    select->setShortcut(QKeySequence(tr("")));
+    select->setShortcut(QKeySequence(tr(" ")));
 
     //select->setCursor(QCursor(THEME_DIR + "cursors/contour.png"));
     k->actions.insert(tr("ContourSelection"), select);
