@@ -173,6 +173,7 @@ class KTMainWindow : public KTabbedMainWindow
           void saveProject();
           void openRecentProject();
           void createCommand(const KTPaintAreaEvent *event);
+          void callSave();
 
     private:
           KTProjectManager *m_projectManager;

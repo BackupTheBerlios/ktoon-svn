@@ -235,21 +235,19 @@ void KTMainWindow::setupMenu()
     m_actionManager->enable("preferences", false);
 
 // Temporary out while SQA is done
-/*
     // Setting up the insert menu
     setupInsertActions();
     // Menu Insert
     m_insertMenu = new QMenu(tr("&Insert"), this);
     menuBar()->addMenu(m_insertMenu);
     // Adding Options insert scene, insert layer and insert frame
-    m_insertMenu->addAction(m_actionManager->find("InsertScene"));
-    m_insertMenu->addAction(m_actionManager->find("InsertLayer"));
-    m_insertMenu->addAction(m_actionManager->find("InsertFrame"));
-    m_insertMenu->addSeparator();
+    //m_insertMenu->addAction(m_actionManager->find("InsertScene"));
+    //m_insertMenu->addAction(m_actionManager->find("InsertLayer"));
+    //m_insertMenu->addAction(m_actionManager->find("InsertFrame"));
+    //m_insertMenu->addSeparator();
     // Adding Options import bitmap and import audio file
     m_insertMenu->addAction(m_actionManager->find("importbitmap"));
     m_insertMenu->addAction(m_actionManager->find("importaudiofile"));
-*/
 
     // Setting up the window menu
     setupWindowActions();
@@ -257,7 +255,7 @@ void KTMainWindow::setupMenu()
     menuBar()->addMenu(m_windowMenu);
 
     // Adding Options show debug, palette, pen, library, timeline, scenes, exposure, help
-    m_windowMenu->addAction(m_actionManager->find("show debug"));
+    //m_windowMenu->addAction(m_actionManager->find("show debug"));
     m_windowMenu->addAction(m_actionManager->find("show palette"));
     m_windowMenu->addAction(m_actionManager->find("show pen"));
     m_windowMenu->addAction(m_actionManager->find("show library"));

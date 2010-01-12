@@ -238,7 +238,7 @@ void KTMainWindow::viewNewDocument(const QString &title)
         addWidget(m_animationSpace, true, All);
 
         exposureView->expandDock(true);
-        connect(m_viewDoc, SIGNAL(autoSave()), this, SLOT(save()));
+        connect(m_viewDoc, SIGNAL(autoSave()), this, SLOT(callSave()));
     }
 }
 
@@ -961,4 +961,10 @@ void KTMainWindow::exportProject()
 {
     KTExportWidget exportWidget(m_projectManager->project(), this);
     exportWidget.exec();
+}
+
+void KTMainWindow::callSave()
+{
+    if (m_projectManager->isModified())
+        save();
 }
