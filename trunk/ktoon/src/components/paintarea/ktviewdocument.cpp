@@ -78,6 +78,8 @@ struct KTViewDocument::Private
     KActionManager *actionManager;
     KTConfigurationArea *configurationArea;
     KTToolPlugin *currentTool;
+
+    QTimer *timer;
 };
 
 KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindow(parent), k(new Private)
@@ -157,12 +159,17 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
             SLOT(setPen(const QPen &)));
 
     QTimer::singleShot(1000, this, SLOT(loadPlugins()));
+  
+    k->timer = new QTimer(this);
+    connect(k->timer, SIGNAL(timeout()), this, SLOT(callAutoSave()));
+    k->timer->start(40000);
 }
 
 KTViewDocument::~KTViewDocument()
 {
     k->currentTool->saveConfig();
     delete k->configurationArea;
+    delete k->timer;
     delete k;
 }
 
@@ -798,9 +805,7 @@ void KTViewDocument::updatePaintArea()
     k->paintArea->updatePaintArea(); 
 }
 
-/*
-void KTViewDocument::firstCommand()
+void KTViewDocument::callAutoSave()
 {
-    k->firstAction->trigger();
+    emit autoSave();
 }
-*/

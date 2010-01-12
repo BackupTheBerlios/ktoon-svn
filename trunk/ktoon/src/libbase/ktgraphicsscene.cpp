@@ -141,7 +141,7 @@ void KTGraphicsScene::drawItems(QPainter *painter, int numItems, QGraphicsItem *
          painter->setMatrix(item->sceneMatrix(), true);
 
          if (k->onionSkin.opacityMap.contains(item))
-             painter->setOpacity( k->onionSkin.opacityMap[item]);
+             painter->setOpacity(k->onionSkin.opacityMap[item]);
 
          item->paint(painter, &options[i], widget);
          painter->restore();
@@ -164,8 +164,8 @@ void KTGraphicsScene::drawPhotogram(int photogram)
              if (layer->isVisible()) {
 
                  if (k->onionSkin.previous > 0) {
-                     double opacityFactor = 0.5 / (double)qMin(layer->frames().count(),k->onionSkin.previous);
-                     double opacity = 0.6;
+                     double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.previous);
+                     double opacity = 0.2;
 
                      for (int frameIndex = photogram-1; frameIndex > photogram-k->onionSkin.previous-1; frameIndex--) {
                           KTFrame * frame = layer->frame(frameIndex);
@@ -177,7 +177,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                  if (k->onionSkin.next > 0) {
                      double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.next);
-                     double opacity = 0.6;
+                     double opacity = 0.2;
 
                      for (int frameIndex = photogram+1; frameIndex < photogram+k->onionSkin.next+1; frameIndex++) {
                           KTFrame * frame = layer->frame(frameIndex);

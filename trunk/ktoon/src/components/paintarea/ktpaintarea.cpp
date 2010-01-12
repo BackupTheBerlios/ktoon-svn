@@ -464,7 +464,7 @@ void KTPaintArea::setNextFramesOnionSkinCount(int n)
 void KTPaintArea::setPreviousFramesOnionSkinCount(int n)
 {
     if (KTGraphicsScene* currentScene = graphicsScene())
-        currentScene->setPreviousOnionSkinCount( n );
+        currentScene->setPreviousOnionSkinCount(n);
 }
 
 void KTPaintArea::addSelectedItemsToLibrary()

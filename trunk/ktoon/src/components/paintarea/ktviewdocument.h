@@ -106,6 +106,7 @@ class KTViewDocument : public QMainWindow
         // void configure();
         void selectToolFromMenu(QAction *act);
         //void firstCommand();
+        void callAutoSave();
 
     public slots:
         void undo();
@@ -119,6 +120,7 @@ class KTViewDocument : public QMainWindow
         void sendToStatus(const QString& msg);
         void requestTriggered(const KTProjectRequest *event);
         void localRequestTriggered(const KTProjectRequest *event);
+        void autoSave();
 
     protected:
         // void closeEvent(QCloseEvent *e);
