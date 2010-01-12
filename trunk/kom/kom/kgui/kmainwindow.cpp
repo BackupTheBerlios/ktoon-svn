@@ -273,8 +273,10 @@ void KMainWindow::enableToolViews(bool flag)
                     KToolView *v = *it;
 
                     // Temporary code while Library, Help and Time Line are fixed
-                    if (v->getObjectID().compare("KToolView-Library")==0 
-                        || v->getObjectID().compare("KToolView-Scenes Manager")==0
+                    //if (v->getObjectID().compare("KToolView-Library")==0 
+                    //    || v->getObjectID().compare("KToolView-Scenes Manager")==0
+
+                      if (v->getObjectID().compare("KToolView-Scenes Manager")==0
                         || v->getObjectID().compare("KToolView-Time Line")==0  
                         || v->getObjectID().compare("KToolView-Help")==0 
                         || v->getObjectID().compare("KToolView-Camera")==0)
