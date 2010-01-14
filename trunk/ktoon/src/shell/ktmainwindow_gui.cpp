@@ -80,8 +80,9 @@ void KTMainWindow::createGUI()
 
     new KAction(QPixmap(), tr("Import bitmap..."), QKeySequence(), m_libraryWidget, SLOT(importBitmap()),
                 m_actionManager, "importbitmap");
-    new KAction(QPixmap(), tr("Import audio file..."), QKeySequence(), m_libraryWidget, SLOT(importSound()),
-                m_actionManager, "importaudiofile");
+
+    //new KAction(QPixmap(), tr("Import audio file..."), QKeySequence(), m_libraryWidget, SLOT(importSound()),
+    //            m_actionManager, "importaudiofile");
 
     ui4project(m_libraryWidget);
     ui4localRequest(m_libraryWidget);
@@ -247,7 +248,7 @@ void KTMainWindow::setupMenu()
     //m_insertMenu->addSeparator();
     // Adding Options import bitmap and import audio file
     m_insertMenu->addAction(m_actionManager->find("importbitmap"));
-    m_insertMenu->addAction(m_actionManager->find("importaudiofile"));
+    //m_insertMenu->addAction(m_actionManager->find("importaudiofile"));
 
     // Setting up the window menu
     setupWindowActions();
@@ -306,7 +307,9 @@ void KTMainWindow::setMenuItemsContext(bool flag)
     m_actionManager->enable("saveprojectas", flag);
     m_actionManager->enable("closeproject", flag);
     m_actionManager->enable("export", flag);
+    m_actionManager->enable("importbitmap", flag);
 
+    m_insertMenu->setEnabled(flag);
     m_windowMenu->setEnabled(flag);
     m_viewMenu->setEnabled(flag);
 }
