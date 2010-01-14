@@ -85,10 +85,10 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
     #endif
     k->childCount = 0;
 
-    setWindowIcon(QPixmap(THEME_DIR + "/icons/library.png"));
+    setWindowIcon(QPixmap(THEME_DIR + "icons/library.png"));
     setWindowTitle(tr("Library"));
 
-    k->libraryDir = QDir(CONFIG_DIR + "/libraries");
+    k->libraryDir = QDir(CONFIG_DIR + "libraries");
     k->display = new KTItemPreview(this);
     k->libraryTree = new KTGCTable(this);
 
@@ -101,26 +101,26 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
     buttonLayout->setMargin(0);
     buttonLayout->setSpacing(0);
 
-    KImageButton *addGC = new KImageButton(QPixmap(THEME_DIR + "/icons/plussign.png"), 22, buttons);
+    KImageButton *addGC = new KImageButton(QPixmap(THEME_DIR + "icons/plussign.png"), 22, buttons);
     connect(addGC, SIGNAL(clicked()), this, SIGNAL(requestCurrentGraphic()));
 
     buttonLayout->addWidget(addGC);
     addGC->setToolTip(tr("Add the current graphic to library"));
 
-    KImageButton *delGC = new KImageButton(QPixmap(THEME_DIR+"/icons/minussign.png" ), 22, buttons);
+    KImageButton *delGC = new KImageButton(QPixmap(THEME_DIR + "icons/minussign.png"), 22, buttons);
     connect(delGC, SIGNAL(clicked()), this, SLOT(removeCurrentGraphic()));
 
     delGC->setToolTip(tr("Remove the selected symbol from library"));
     buttonLayout->addWidget(delGC);
 
-    KImageButton *gctoDrawingArea = new KImageButton(QPixmap(THEME_DIR+"/icons/insert_cg.png" ), 22, buttons);
+    KImageButton *gctoDrawingArea = new KImageButton(QPixmap(THEME_DIR + "icons/insert_cg.png"), 22, buttons);
     connect(gctoDrawingArea, SIGNAL(clicked()), this, SLOT(emitSelectedComponent()));
-    gctoDrawingArea->setToolTip(tr( "Inserts the selected symbol into the drawing area" ) );
+    gctoDrawingArea->setToolTip(tr("Inserts the selected symbol into the drawing area"));
     buttonLayout->addWidget(gctoDrawingArea);
 
-    KImageButton *addFolderGC = new KImageButton(QPixmap(THEME_DIR+"/icons/addfolder.png" ), 22, buttons);
+    KImageButton *addFolderGC = new KImageButton(QPixmap(THEME_DIR + "icons/addfolder.png"), 22, buttons);
     connect(addFolderGC, SIGNAL(clicked()), k->libraryTree, SLOT(createFolder()));
-    addFolderGC->setToolTip(tr( "Adds a folder to the symbol list" ));
+    addFolderGC->setToolTip(tr("Adds a folder to the symbol list"));
     buttonLayout->addWidget(addFolderGC);
 
     buttons->setLayout(buttonLayout);
@@ -179,7 +179,7 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
                          KTSymbolEditor *editor = new KTSymbolEditor;
                          editor->setSymbol(object);
                          emit postPage(editor);
-                         */	
+                         */    
                      }
                    }
                    break;
@@ -214,7 +214,7 @@ void KTLibraryWidget::emitSelectedComponent()
                                KTLibraryObject::Type(k->libraryTree->currentItem()->data(0, 3216).toInt()), 0, 
                                k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
 
-    emit requestTriggered( &request);
+    emit requestTriggered(&request);
 }
 
 void KTLibraryWidget::removeCurrentGraphic()
@@ -226,11 +226,11 @@ void KTLibraryWidget::removeCurrentGraphic()
 
     KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Remove, symKey,
                                KTLibraryObject::Type(k->libraryTree->currentItem()->data(0, 3216).toInt()), 0);
-	
-	emit requestTriggered( &request );
+    
+    emit requestTriggered(&request);
 }
 
-void KTLibraryWidget::renameObject( QTreeWidgetItem* item)
+void KTLibraryWidget::renameObject(QTreeWidgetItem* item)
 {
 /*
     if ( item ) {
