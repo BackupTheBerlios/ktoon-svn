@@ -85,7 +85,7 @@
 
 KTMainWindow::KTMainWindow(KTSplash *splash) : 
               KTabbedMainWindow(), m_projectManager(0), m_viewDoc(0), m_animationSpace(0), 
-              m_viewChat(0), m_exposureSheet(0), m_scenes(0)
+              m_viewChat(0), m_exposureSheet(0), m_scenes(0), isSaveDialogOpen(false)
 {
     #ifdef K_DEBUG
        KINIT;
@@ -239,6 +239,8 @@ void KTMainWindow::viewNewDocument(const QString &title)
 
         exposureView->expandDock(true);
         connect(m_viewDoc, SIGNAL(autoSave()), this, SLOT(callSave()));
+
+        m_projectManager->undoModified();
     }
 }
 
@@ -791,11 +793,15 @@ void KTMainWindow::saveAs()
 {
     const char *home = getenv("HOME");
 
+    isSaveDialogOpen = true;
+
     QString fileName = QFileDialog::getSaveFileName(this, tr("Build project package"), home, 
                        "KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)");
 
-    if (fileName.isEmpty())
+    if (fileName.isEmpty()) {
+        isSaveDialogOpen = false;
         return;
+    }
 
     int indexPath = fileName.lastIndexOf("/");
     int indexFile = fileName.length() - indexPath;
@@ -819,6 +825,8 @@ void KTMainWindow::saveAs()
     }
 
     m_fileName = fileName;
+    isSaveDialogOpen = false;
+
     save();
 }
 
@@ -833,6 +841,9 @@ void KTMainWindow::saveAs()
 
 void KTMainWindow::saveProject()
 {
+    if (isSaveDialogOpen)
+        return;
+
     if (m_fileName.isEmpty()) {
         saveAs();
         return;
@@ -842,6 +853,9 @@ void KTMainWindow::saveProject()
         KOsd::self()->display(tr("Project %1 saved").arg(m_projectManager->project()->projectName()), KOsd::Info);
     else
         KOsd::self()->display(tr("Cannot save the project!"), KOsd::Error );
+
+    if (isSaveDialogOpen)
+        isSaveDialogOpen = false;
 }
 
 /**
@@ -939,13 +953,10 @@ void KTMainWindow::addPage(QWidget *widget)
 
 void KTMainWindow::updateAnimation(int index)
 {
-    if (index == 1) {
-        kFatal() << "Updating video module! :)";
+    if (index == 1) 
         viewCamera->updatePhotograms(m_projectManager->project());
-    } else {
-        kFatal() << "Updating illustration module! :)";
+    else 
         m_viewDoc->updatePaintArea();
-    }
 }
 
 /**
@@ -966,5 +977,5 @@ void KTMainWindow::exportProject()
 void KTMainWindow::callSave()
 {
     if (m_projectManager->isModified())
-        save();
+        saveProject();
 }

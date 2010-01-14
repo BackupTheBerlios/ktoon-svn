@@ -35,7 +35,7 @@
 
 //------------------ CONSTRUCTOR -----------------
 
-KTSplash::KTSplash() : QSplashScreen(0), m_size(3), m_state(60), m_counter(0)
+KTSplash::KTSplash() : QSplashScreen(0), m_size(3), m_state(70), m_counter(0)
 {
     QImage image(THEME_DIR + "images/splash.png");
     setPixmap(QPixmap::fromImage(image));
@@ -54,7 +54,6 @@ KTSplash::~KTSplash()
 void KTSplash::animate()
 {
     m_state -= 10;
-
     repaint();
 }
 

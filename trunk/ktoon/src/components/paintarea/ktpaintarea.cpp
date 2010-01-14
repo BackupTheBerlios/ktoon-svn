@@ -113,6 +113,7 @@ void KTPaintArea::setCurrentScene(int index)
 void KTPaintArea::mousePressEvent(QMouseEvent *event)
 {
     if (event->buttons() == Qt::RightButton) {
+
         if (QGraphicsItem *item = scene()->itemAt(mapToScene(event->pos()))) {
             item->setFlag(QGraphicsItem::ItemIsSelectable, true);
             item->setSelected(true);
@@ -141,13 +142,14 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
         menu->addSeparator();
 
         // Code commented temporary while SQA is done
-        //menu->addAction(tr("Add to library..."), this, SLOT(addSelectedItemsToLibrary()));
-        //menu->addSeparator();
+        QAction *addItem = menu->addAction(tr("Add to library..."), this, SLOT(addSelectedItemsToLibrary()));
+        menu->addSeparator();
 
         if (scene()->selectedItems().isEmpty()) {
             del->setEnabled(false);
             cut->setEnabled(false);
             copy->setEnabled(false);
+            addItem->setEnabled(false);
         }
 
         if (k->copiesXml.isEmpty())

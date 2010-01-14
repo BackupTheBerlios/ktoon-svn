@@ -219,6 +219,7 @@ class KTMainWindow : public KTabbedMainWindow
           KToolView *timeView;
           KToolView *exportView;
           KTViewCamera *viewCamera;
+          bool isSaveDialogOpen; 
 
     signals:
           void responsed(KTProjectResponse *);

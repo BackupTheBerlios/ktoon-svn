@@ -162,7 +162,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
   
     k->timer = new QTimer(this);
     connect(k->timer, SIGNAL(timeout()), this, SLOT(callAutoSave()));
-    k->timer->start(40000);
+    k->timer->start(60000);
 }
 
 KTViewDocument::~KTViewDocument()

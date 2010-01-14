@@ -65,6 +65,7 @@ class STORE_EXPORT KTProjectManager : public QObject
         virtual bool loadProject(const QString &fileName);
 
         bool isValid() const;
+        void undoModified();
     
     private:
         void setupProjectDir();

@@ -232,6 +232,11 @@ bool KTProjectManager::isModified() const
     return k->isModified;
 }
 
+void KTProjectManager::undoModified()
+{
+    k->isModified = false;
+}
+
 bool KTProjectManager::isValid() const
 {
     if (!k->handler) 
@@ -362,9 +367,8 @@ void KTProjectManager::emitResponse(KTProjectResponse *response)
            K_FUNCINFO << response->action();
     #endif
 
-    if (response->action() != KTProjectRequest::Select) {
+    if (response->action() != KTProjectRequest::Select)
         k->isModified = true;
-    }
 
     if (!k->handler) {
         emit responsed(response);
