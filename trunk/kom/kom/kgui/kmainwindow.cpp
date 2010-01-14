@@ -537,8 +537,10 @@ void KMainWindow::setCurrentPerspective(int workspace)
                       if (view->perspective() & workspace) {
 
                           // Temporary code while Library, Help and Time Line are fixed
-                          if (view->getObjectID().compare("KToolView-Library")==0
-                              || view->getObjectID().compare("KToolView-Time Line")==0
+                          //if (view->getObjectID().compare("KToolView-Library")==0
+                          //    || view->getObjectID().compare("KToolView-Time Line")==0
+
+                          if (view->getObjectID().compare("KToolView-Time Line")==0
                               || view->getObjectID().compare("KToolView-Help")==0
                               || view->getObjectID().compare("KToolView-Camera")==0) {
                               bar->enable(view->button());
