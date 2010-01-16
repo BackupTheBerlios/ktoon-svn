@@ -165,7 +165,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                  if (k->onionSkin.previous > 0) {
                      double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.previous);
-                     double opacity = 0.2;
+                     double opacity = 0.5;
 
                      for (int frameIndex = photogram-1; frameIndex > photogram-k->onionSkin.previous-1; frameIndex--) {
                           KTFrame * frame = layer->frame(frameIndex);
@@ -177,7 +177,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                  if (k->onionSkin.next > 0) {
                      double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.next);
-                     double opacity = 0.2;
+                     double opacity = 0.5;
 
                      for (int frameIndex = photogram+1; frameIndex < photogram+k->onionSkin.next+1; frameIndex++) {
                           KTFrame * frame = layer->frame(frameIndex);
