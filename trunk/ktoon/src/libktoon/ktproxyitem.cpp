@@ -22,6 +22,7 @@
 
 #include "ktproxyitem.h"
 #include <QPainter>
+#include <kcore/kdebug.h>
 
 /**
  * This class defines a copy of a graphic object.
@@ -31,14 +32,14 @@
 
 struct KTProxyItem::Private 
 {
-	Private() : realItem(0) {}
-	QGraphicsItem *realItem;
+    Private() : realItem(0) {}
+    QGraphicsItem *realItem;
 };
 
 KTProxyItem::KTProxyItem(QGraphicsItem *item) : QGraphicsItem(), k(new Private)
 {
-	setItem(item);
-	setPos(0,0);
+    setItem(item);
+    setPos(0,0);
 }
 
 KTProxyItem::~KTProxyItem()
@@ -47,90 +48,84 @@ KTProxyItem::~KTProxyItem()
 
 void KTProxyItem::setItem(QGraphicsItem *item)
 {
-	if( k->realItem )
-	{
-		this->removeSceneEventFilter(k->realItem);
-	}
-	
-	k->realItem = item;
-	
-	if( k->realItem )
-	{
-		k->realItem->installSceneEventFilter(this);
-		this->setFlags(k->realItem->flags());
-	}
+    if (k->realItem)
+        this->removeSceneEventFilter(k->realItem);
+    
+    k->realItem = item;
+    
+    if (k->realItem) {
+        k->realItem->installSceneEventFilter(this);
+        this->setFlags(k->realItem->flags());
+    }
 }
 
 QGraphicsItem *KTProxyItem::item() const
 {
-	return k->realItem;
+    return k->realItem;
 }
 
 QRectF KTProxyItem::boundingRect() const
 {
-	if ( k->realItem )
-		return k->realItem->boundingRect();
-	
-	return QRectF(0,0, 0,0);
+    if (k->realItem) {
+        QRectF tmp = k->realItem->boundingRect();
+        kFatal() << "Width: " << tmp.width();
+        kFatal() << "Height: " << tmp.height();
+        return k->realItem->boundingRect();
+    }
+    
+    return QRectF(0, 0, 0, 0);
 }
 
 void KTProxyItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-	if( k->realItem )
-	{
-		k->realItem->paint(painter, option, widget);
-		
-	}
+    if (k->realItem)
+        k->realItem->paint(painter, option, widget);
 }
 
 QPainterPath KTProxyItem::shape() const
 {
-	if( k->realItem)
-		return k->realItem->shape();
-	
-	return QGraphicsItem::shape();
+    if (k->realItem)
+        return k->realItem->shape();
+    
+    return QGraphicsItem::shape();
 }
 
-bool KTProxyItem::collidesWithItem( const QGraphicsItem * other, Qt::ItemSelectionMode mode) const
+bool KTProxyItem::collidesWithItem(const QGraphicsItem * other, Qt::ItemSelectionMode mode) const
 {
-	if( k->realItem)
-		return k->realItem->collidesWithItem(other, mode);
-	
-	return QGraphicsItem::collidesWithItem(other, mode);
+    if (k->realItem)
+        return k->realItem->collidesWithItem(other, mode);
+    
+    return QGraphicsItem::collidesWithItem(other, mode);
 }
 
-
-bool KTProxyItem::collidesWithPath ( const QPainterPath & path, Qt::ItemSelectionMode mode) const
+bool KTProxyItem::collidesWithPath(const QPainterPath & path, Qt::ItemSelectionMode mode) const
 {
-	if( k->realItem)
-		return k->realItem->collidesWithPath(path, mode);
-	
-	return QGraphicsItem::collidesWithPath(path, mode);
+    if (k->realItem)
+        return k->realItem->collidesWithPath(path, mode);
+    
+    return QGraphicsItem::collidesWithPath(path, mode);
 }
 
-
-bool KTProxyItem::contains ( const QPointF & point ) const
+bool KTProxyItem::contains(const QPointF & point) const
 {
-	if( k->realItem)
-		return k->realItem->contains(point);
-	
-	return QGraphicsItem::contains(point);
+    if (k->realItem)
+        return k->realItem->contains(point);
+    
+    return QGraphicsItem::contains(point);
 }
 
-
-bool KTProxyItem::isObscuredBy ( const QGraphicsItem * item ) const
+bool KTProxyItem::isObscuredBy(const QGraphicsItem * item) const
 {
-	if( k->realItem)
-		return k->realItem->isObscuredBy(item);
-	
-	return QGraphicsItem::isObscuredBy(item);
+    if (k->realItem)
+        return k->realItem->isObscuredBy(item);
+    
+    return QGraphicsItem::isObscuredBy(item);
 }
 
-
-QPainterPath KTProxyItem::opaqueArea () const
+QPainterPath KTProxyItem::opaqueArea() const
 {
-	if( k->realItem)
-		return k->realItem->opaqueArea();
-	
-	return QGraphicsItem::opaqueArea();
+    if (k->realItem)
+        return k->realItem->opaqueArea();
+    
+    return QGraphicsItem::opaqueArea();
 }

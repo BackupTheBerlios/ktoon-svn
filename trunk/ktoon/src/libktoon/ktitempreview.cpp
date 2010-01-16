@@ -79,7 +79,7 @@ void KTItemPreview::paintEvent(QPaintEvent *)
         
         QMatrix matrix = k->proxy->sceneMatrix();
         
-        QRect r(15,15, rect().width()-15 , rect().height()-15);
+        //QRect r(15,15, rect().width()-15 , rect().height()-15);
         
         opt.palette = palette();
         p.setMatrix(matrix);

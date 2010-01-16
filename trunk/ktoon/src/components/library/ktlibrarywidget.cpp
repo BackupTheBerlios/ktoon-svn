@@ -173,7 +173,7 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
                 case KTLibraryObject::Item:
                    {
                      if (object->data().canConvert<QGraphicsItem *>()) {
-                         k->display->render( qvariant_cast<QGraphicsItem *>(object->data()));
+                         k->display->render(qvariant_cast<QGraphicsItem *>(object->data()));
 
                          /* test
                          KTSymbolEditor *editor = new KTSymbolEditor;
