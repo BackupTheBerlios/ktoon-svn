@@ -267,7 +267,7 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
                default:
                     kFatal() << "Calling out drawPhotogram() from KTPaintArea / itemResponse";
                     graphicsScene()->drawCurrentPhotogram();
-                    viewport()->update(scene()->sceneRect().toRect() );
+                    viewport()->update(scene()->sceneRect().toRect());
                     break;
         }
      }
@@ -287,8 +287,9 @@ void KTPaintArea::libraryResponse(KTLibraryResponse *request)
 
     switch (request->action()) {
             case KTProjectRequest::AddSymbolToProject:
+                 kFatal() << "Adding symbol to frame!";
                  graphicsScene()->drawCurrentPhotogram();
-                 viewport()->update(scene()->sceneRect().toRect() );
+                 viewport()->update(scene()->sceneRect().toRect());
                  break;
     }
 }
@@ -484,7 +485,7 @@ void KTPaintArea::addSelectedItemsToLibrary()
 
     LibraryDialog dialog;
     foreach (QGraphicsItem *item, selecteds)
-             dialog.addItem( item );
+             dialog.addItem(item);
 	
     if (dialog.exec() != QDialog::Accepted)
         return;

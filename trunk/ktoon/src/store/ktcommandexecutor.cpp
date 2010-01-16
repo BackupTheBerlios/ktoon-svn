@@ -147,7 +147,7 @@ bool KTCommandExecutor::renameScene(KTSceneResponse *response)
     if (!scene)
         return false;
     
-    KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::Rename, newName);
+    KTProjectRequest request = KTRequestBuilder::createSceneRequest(position, KTProjectRequest::Rename, newName);
     
     scene->setSceneName(newName);
     

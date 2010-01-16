@@ -261,9 +261,9 @@ void KTLibraryWidget::importBitmap()
         return;
 
     QFile f(image);
-    QFileInfo finfo(f);
+    QFileInfo fileInfo(f);
 
-    QString symName = finfo.baseName();
+    QString symName = fileInfo.baseName();
 
     if (f.open(QIODevice::ReadOnly)) {
         QByteArray data = f.readAll();
@@ -286,8 +286,8 @@ void KTLibraryWidget::importSound()
         return;
 
     QFile f(sound);
-    QFileInfo finfo(f);
-    QString symName = finfo.baseName();
+    QFileInfo fileInfo(f);
+    QString symName = fileInfo.baseName();
 
     if (f.open(QIODevice::ReadOnly)) {
         QByteArray data = f.readAll();
@@ -320,12 +320,12 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                      switch (obj->type()) {
                             case KTLibraryObject::Item:
                                {
-                                 item->setIcon(1, QIcon(THEME_DIR+"/icons/shape_brush.png"));
+                                 item->setIcon(1, QIcon(THEME_DIR + "icons/shape_brush.png"));
                                }
                             break;
                             case KTLibraryObject::Sound:
                                {
-                                 item->setIcon(1, QIcon(THEME_DIR+"/icons/sound_widget.png"));
+                                 item->setIcon(1, QIcon(THEME_DIR + "icons/sound_widget.png"));
                                }
                             break;
                      }

@@ -43,9 +43,9 @@
 
 class View : public QGraphicsView
 {
-	public:
-		View();
-		~View();
+    public:
+        View();
+        ~View();
 };
 
 View::View()
@@ -58,121 +58,121 @@ View::~View()
 
 struct KTSymbolEditor::Private
 {
-	View *view;
-	QGraphicsScene *scene;
-	
-	KTLibraryObject *symbol;
-	
-	QToolBar *selectionTools;
-	QToolBar *fillTools;
-	QToolBar *viewTools;
-	QToolBar *brushTools;
+    View *view;
+    QGraphicsScene *scene;
+    
+    KTLibraryObject *symbol;
+    
+    QToolBar *selectionTools;
+    QToolBar *fillTools;
+    QToolBar *viewTools;
+    QToolBar *brushTools;
 };
 
 KTSymbolEditor::KTSymbolEditor(QWidget *parent) : QMainWindow(parent), k(new Private)
 {
-	setWindowTitle(tr("Symbol editor"));
-	
-	k->view = new View;
-	k->view->setRenderHints(QPainter::Antialiasing);
-	
-	k->scene = new QGraphicsScene;
-	k->view->setScene(k->scene);
-	
-	setCentralWidget(k->view);
-	
-	k->brushTools = new QToolBar(tr("Brushes"));
-	addToolBar(Qt::BottomToolBarArea, k->brushTools);
-	
-	k->selectionTools = new QToolBar(tr("Selection"));
-	addToolBar(Qt::BottomToolBarArea, k->selectionTools);
-	
-	k->fillTools = new QToolBar(tr("Fill"));
-	addToolBar(Qt::BottomToolBarArea, k->fillTools);
-	
-	k->viewTools = new QToolBar(tr("View"));
-	addToolBar(Qt::BottomToolBarArea, k->viewTools);
-	
-	QTimer::singleShot(0, this, SLOT(loadTools()));
+    setWindowTitle(tr("Symbol editor"));
+    
+    k->view = new View;
+    k->view->setRenderHints(QPainter::Antialiasing);
+    
+    k->scene = new QGraphicsScene;
+    k->view->setScene(k->scene);
+    
+    setCentralWidget(k->view);
+    
+    k->brushTools = new QToolBar(tr("Brushes"));
+    addToolBar(Qt::BottomToolBarArea, k->brushTools);
+    
+    k->selectionTools = new QToolBar(tr("Selection"));
+    addToolBar(Qt::BottomToolBarArea, k->selectionTools);
+    
+    k->fillTools = new QToolBar(tr("Fill"));
+    addToolBar(Qt::BottomToolBarArea, k->fillTools);
+    
+    k->viewTools = new QToolBar(tr("View"));
+    addToolBar(Qt::BottomToolBarArea, k->viewTools);
+    
+    QTimer::singleShot(0, this, SLOT(loadTools()));
 }
 
 
 KTSymbolEditor::~KTSymbolEditor()
 {
-	delete k;
+    delete k;
 }
 
 
 void KTSymbolEditor::setSymbol(KTLibraryObject *object)
 {
-	if(  QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(object->data()) )
-	{
-		k->symbol = object;
-		k->scene->addItem(item);
-	}
+    if(  QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(object->data()) )
+    {
+        k->symbol = object;
+        k->scene->addItem(item);
+    }
 }
 
 void KTSymbolEditor::loadTools()
 {
-	QActionGroup *group = new QActionGroup(this);
-	group->setExclusive(true);
-	
-	foreach(QObject *plugin, KTPluginManager::instance()->tools() )
-	{
-		KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
-		
-		QStringList::iterator it;
-		QStringList keys = tool->keys();
-			
-		for (it = keys.begin(); it != keys.end(); ++it)
-		{
-			kDebug("plugins") << "*******Tool Loaded: " << *it;
-			
-			KAction *act = tool->actions()[*it];
-			if ( act )
-			{
-				connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
-				
-				switch( tool->toolType() )
-				{
-					case KTToolInterface::Selection:
-					{
-						k->selectionTools->addAction(act);
-					}
-					break;
-					case KTToolInterface::Fill:
-					{
-						k->fillTools->addAction(act);
-					}
-					break;
-					case KTToolInterface::View:
-					{
-						k->viewTools->addAction(act);
-					}
-					break;
-					case KTToolInterface::Brush:
-					{
-						k->brushTools->addAction(act);
-					}
-					break;
-				}
-				
-				group->addAction(act);
-				act->setCheckable(true);
-				act->setParent(plugin);
-			}
-		}
-	}
+    QActionGroup *group = new QActionGroup(this);
+    group->setExclusive(true);
+    
+    foreach(QObject *plugin, KTPluginManager::instance()->tools() )
+    {
+        KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
+        
+        QStringList::iterator it;
+        QStringList keys = tool->keys();
+            
+        for (it = keys.begin(); it != keys.end(); ++it)
+        {
+            kDebug("plugins") << "*******Tool Loaded: " << *it;
+            
+            KAction *act = tool->actions()[*it];
+            if ( act )
+            {
+                connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
+                
+                switch( tool->toolType() )
+                {
+                    case KTToolInterface::Selection:
+                    {
+                        k->selectionTools->addAction(act);
+                    }
+                    break;
+                    case KTToolInterface::Fill:
+                    {
+                        k->fillTools->addAction(act);
+                    }
+                    break;
+                    case KTToolInterface::View:
+                    {
+                        k->viewTools->addAction(act);
+                    }
+                    break;
+                    case KTToolInterface::Brush:
+                    {
+                        k->brushTools->addAction(act);
+                    }
+                    break;
+                }
+                
+                group->addAction(act);
+                act->setCheckable(true);
+                act->setParent(plugin);
+            }
+        }
+    }
 }
 
 void KTSymbolEditor::selectTool()
 {
-	K_FUNCINFO;
-	KAction *action = qobject_cast<KAction *>(sender());
-	
-	if ( action )
-	{
-		KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
-		tool->setCurrentTool( action->text() );
-	}
+    K_FUNCINFO;
+    KAction *action = qobject_cast<KAction *>(sender());
+    
+    if ( action )
+    {
+        KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
+        tool->setCurrentTool( action->text() );
+    }
 }

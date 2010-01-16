@@ -27,52 +27,48 @@
 
 bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 {
-	if ( m_project->createSymbol( response->symbolType(), response->arg().toString(), response->data() ) )
-	{
-		emit responsed(response);
-		
-		return true;
-	}
-	else
-	{
-	}
-	
-	return false;
+    if (m_project->createSymbol(response->symbolType(), response->arg().toString(), response->data())) {
+        emit responsed(response);
+
+        return true;
+    } else {
+
+    }
+    
+    return false;
 }
 
 
 bool KTCommandExecutor::removeSymbol(KTLibraryResponse *response)
 {
-// 	QString xml = QString::fromLocal8Bit(response->data());
-	
-	qDebug() << "KTCommandExecutor::removeSymbol(KTLibraryResponse *response)";
-	
-	if ( m_project->removeSymbol( response->arg().toString() ) )
-	{
-		emit responsed(response);
-		
-		return true;
-	}
-	else
-	{
-	}
-	
-	return false;
+    qDebug() << "KTCommandExecutor::removeSymbol(KTLibraryResponse *response)";
+    
+    if (m_project->removeSymbol(response->arg().toString())) {
+        emit responsed(response);
+        
+        return true;
+    }
+    else
+    {
+
+    }
+    
+    return false;
 }
 
 bool KTCommandExecutor::addSymbolToProject(KTLibraryResponse *response)
 {
-	if ( m_project->addSymbolToProject(response->arg().toString(), response->sceneIndex(), response->layerIndex(), response->frameIndex()) )
-	{
-		emit responsed(response);
-		return true;
-	}
-	
-	return false;
+    if (m_project->addSymbolToProject(response->arg().toString(), response->sceneIndex(), response->layerIndex(), response->frameIndex())) {
+        emit responsed(response);
+
+        return true;
+    }
+    
+    return false;
 }
 
 
 bool KTCommandExecutor::removeSymbolFromProject(KTLibraryResponse *response)
 {
-	return false;
+    return false;
 }
