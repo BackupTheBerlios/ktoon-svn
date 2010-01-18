@@ -138,7 +138,9 @@ void KTGraphicsScene::drawItems(QPainter *painter, int numItems, QGraphicsItem *
     for (int i = 0; i < numItems; ++i) {
          QGraphicsItem *item = items[i];
          painter->save();
-         painter->setMatrix(item->sceneMatrix(), true);
+
+         //painter->setMatrix(item->sceneMatrix(), true);
+         painter->setTransform(item->sceneTransform(), true);
 
          if (k->onionSkin.opacityMap.contains(item))
              painter->setOpacity(k->onionSkin.opacityMap[item]);

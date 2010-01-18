@@ -77,18 +77,92 @@ void KTItemPreview::paintEvent(QPaintEvent *)
         opt.exposedRect = QRectF(QPointF(0,0), k->proxy->boundingRect().size());
         opt.levelOfDetail = 1;
         
-        QMatrix matrix = k->proxy->sceneMatrix();
+        //QMatrix matrix = k->proxy->sceneMatrix();
+        QTransform matrix = k->proxy->sceneTransform();
         
         //QRect r(15,15, rect().width()-15 , rect().height()-15);
         
         opt.palette = palette();
-        p.setMatrix(matrix);
+        //p.setMatrix(matrix);
+        p.setTransform(matrix);
+
+        kFatal() << "Item Width: " << rect().width();
+        kFatal() << "Item Height: " << rect().height();
         
-        p.translate((rect().width() - opt.exposedRect.width())/2, (rect().height() - opt.exposedRect.height())/2);
-        
-        if (QGraphicsPathItem *path = qgraphicsitem_cast<QGraphicsPathItem *>(k->proxy->item()))
-            p.translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
-        
+        //p.translate((rect().width() - opt.exposedRect.width())/2, (rect().height() - opt.exposedRect.height())/2);
+
+        if (QGraphicsPathItem *path = qgraphicsitem_cast<QGraphicsPathItem *>(k->proxy->item())) {
+
+            if (opt.exposedRect.width() > rect().width() || opt.exposedRect.height() > rect().height()) {
+                float distance = 0;
+                float base = 0;
+
+                if (path->path().boundingRect().width() > path->path().boundingRect().height()) {
+                    distance = path->path().boundingRect().width();
+                    base = rect().width();
+                } else {
+                    distance = path->path().boundingRect().height(); 
+                    base = rect().height();
+                }
+
+                float calculation = (base*100)/distance;
+                float factor = calculation / 100;
+                float newWidth = path->path().boundingRect().width() * factor;
+                float newPos = (path->path().boundingRect().width()-newWidth)/2;
+                p.scale(factor, factor);
+                //p.translate(newPos, 0);
+                p.translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
+                
+                kFatal() << "Scale Factor: " << factor;
+                kFatal() << "Calculation: " << calculation;
+                kFatal() << "Width: " << rect().width() << " - " <<  path->path().boundingRect().width();
+                kFatal() << "Height: " << rect().height() << " - " << path->path().boundingRect().height();
+
+            } else {
+                p.translate((rect().width() - opt.exposedRect.width())/2, (rect().height() - opt.exposedRect.height())/2);
+                p.translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
+            }
+
+        } else {
+
+          if (opt.exposedRect.width() > rect().width() || opt.exposedRect.height() > rect().height()) {
+              float distance = 0;
+              float base = 0;
+              bool horizontal = false;
+
+              if (opt.exposedRect.width() < opt.exposedRect.height()) {
+                  distance = opt.exposedRect.width();  
+                  base = rect().width();
+                  horizontal = true;
+              } else {
+                  distance = opt.exposedRect.height();
+                  base = rect().height();
+              }
+ 
+              //float calculation = (base*100)/distance;
+              float factor = base/distance;
+
+              if (horizontal) {
+              kFatal() << "Doing horizontal calc!";
+              kFatal() << "Factor: " << factor;
+              float newWidth = opt.exposedRect.height() * factor;
+              float newPos = (opt.exposedRect.height()-newWidth)/2;
+              p.scale(factor, factor);
+              p.translate(0, -newPos);
+              } else {
+              kFatal() << "Doing vertical calc!";
+              float newWidth = opt.exposedRect.width() * factor;
+              float newPos = (opt.exposedRect.width()-newWidth)/2;
+              p.scale(factor, factor);
+              p.translate(newPos, 0);
+              }
+
+          } else {
+              p.translate((rect().width() - opt.exposedRect.width())/2, (rect().height() - opt.exposedRect.height())/2);
+          }
+
+        }
+
         k->proxy->paint(&p, &opt, this); // paint isn't const...
     }
 }
