@@ -130,7 +130,9 @@ void KTItemPreview::paintEvent(QPaintEvent *)
               float base = 0;
               bool horizontal = false;
 
-              if (opt.exposedRect.width() < opt.exposedRect.height()) {
+              float proportion = opt.exposedRect.width() / opt.exposedRect.height();
+
+              if (proportion > 2.58) {
                   distance = opt.exposedRect.width();  
                   base = rect().width();
                   horizontal = true;
@@ -143,18 +145,18 @@ void KTItemPreview::paintEvent(QPaintEvent *)
               float factor = base/distance;
 
               if (horizontal) {
-              kFatal() << "Doing horizontal calc!";
-              kFatal() << "Factor: " << factor;
-              float newWidth = opt.exposedRect.height() * factor;
-              float newPos = (opt.exposedRect.height()-newWidth)/2;
-              p.scale(factor, factor);
-              p.translate(0, -newPos);
+                  kFatal() << "Doing horizontal calc!";
+                  kFatal() << "Factor: " << factor;
+                  float newWidth = opt.exposedRect.width() * factor;
+                  float newPos = (opt.exposedRect.width()-newWidth)/2;
+                  p.scale(factor, factor);
+                  p.translate(600, 0);
               } else {
-              kFatal() << "Doing vertical calc!";
-              float newWidth = opt.exposedRect.width() * factor;
-              float newPos = (opt.exposedRect.width()-newWidth)/2;
-              p.scale(factor, factor);
-              p.translate(newPos, 0);
+                  kFatal() << "Doing vertical calc!";
+                  float newWidth = opt.exposedRect.width() * factor;
+                  float newPos = (opt.exposedRect.width()-newWidth)/2;
+                  p.scale(factor, factor);
+                  p.translate(newPos, 0);
               }
 
           } else {
