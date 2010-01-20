@@ -116,19 +116,28 @@ void KTItemPreview::paintEvent(QPaintEvent *)
                 int heightRealLength = rect().height()*alterFactor;
 
                 if (widthRealLength > pathWidth)
-                    newPosX = (widthRealLength - pathHeight)/2;
+                    newPosX = (widthRealLength - pathWidth)/2;
 
                 if (heightRealLength > pathHeight)
                     newPosY = (heightRealLength - pathHeight)/2;
 
-                p.scale(factor, factor);
                 //p.translate(newPosX, newPosY);
 
-                kFatal() << "Width: " << rect().width() << " - Path Width: " <<  path->path().boundingRect().width() << " - opt.width: " << opt.exposedRect.width();
-                kFatal() << "Height: " << rect().height() << " - Path Height: " << path->path().boundingRect().height() << " - opt.height: " << opt.exposedRect.height();;
+                kFatal() << "Factor: " << factor;
+                kFatal() << "Alter: " << alterFactor;
+                kFatal() << "Width: " << rect().width() << " - Path Width: " << pathWidth << " - opt.width: " << opt.exposedRect.width();
+                kFatal() << "Height: " << rect().height() << " - Path Height: " << pathHeight << " - opt.height: " << opt.exposedRect.height();;
+                kFatal() << "Total width: " << widthRealLength;
+                kFatal() << "Total height: " << heightRealLength;
+                kFatal() << "newPosX: " << newPosX;
+                kFatal() << "newPosY: " << newPosY;
+               
+                p.scale(factor, factor);
+                p.translate((rect().width() - pathWidth)/2, (rect().height() - pathHeight)/2);
+                p.translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
 
             } else {
-                p.translate((rect().width() - opt.exposedRect.width())/2, (rect().height() - opt.exposedRect.height())/2);
+                p.translate((rect().width() - pathWidth)/2, (rect().height() - pathHeight)/2);
                 p.translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
             }
 
