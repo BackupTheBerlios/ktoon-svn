@@ -86,37 +86,46 @@ void KTItemPreview::paintEvent(QPaintEvent *)
         //p.setMatrix(matrix);
         p.setTransform(matrix);
 
-        kFatal() << "Item Width: " << rect().width();
-        kFatal() << "Item Height: " << rect().height();
-        
         //p.translate((rect().width() - opt.exposedRect.width())/2, (rect().height() - opt.exposedRect.height())/2);
 
         if (QGraphicsPathItem *path = qgraphicsitem_cast<QGraphicsPathItem *>(k->proxy->item())) {
 
-            if (opt.exposedRect.width() > rect().width() || opt.exposedRect.height() > rect().height()) {
+            int pathWidth = path->path().boundingRect().width();
+            int pathHeight = path->path().boundingRect().height();
+
+            if (pathWidth > rect().width() || pathHeight > rect().height()) {
                 float distance = 0;
                 float base = 0;
+                int newPosX = 0;
+                int newPosY = 0;
 
-                if (path->path().boundingRect().width() > path->path().boundingRect().height()) {
-                    distance = path->path().boundingRect().width();
-                    base = rect().width();
-                } else {
-                    distance = path->path().boundingRect().height(); 
+                float limit = (float) rect().width() / (float) rect().height();
+                float proportion = pathWidth / pathHeight;
+
+                if (proportion <= limit) {
+                    distance = pathHeight;
                     base = rect().height();
+                } else {
+                    distance = pathWidth;
+                    base = rect().width();
                 }
 
-                float calculation = (base*100)/distance;
-                float factor = calculation / 100;
-                float newWidth = path->path().boundingRect().width() * factor;
-                float newPos = (path->path().boundingRect().width()-newWidth)/2;
+                float factor = base/distance;
+                float alterFactor = 1/factor;
+                int widthRealLength = rect().width()*alterFactor;
+                int heightRealLength = rect().height()*alterFactor;
+
+                if (widthRealLength > pathWidth)
+                    newPosX = (widthRealLength - pathHeight)/2;
+
+                if (heightRealLength > pathHeight)
+                    newPosY = (heightRealLength - pathHeight)/2;
+
                 p.scale(factor, factor);
-                //p.translate(newPos, 0);
-                p.translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
-                
-                kFatal() << "Scale Factor: " << factor;
-                kFatal() << "Calculation: " << calculation;
-                kFatal() << "Width: " << rect().width() << " - " <<  path->path().boundingRect().width();
-                kFatal() << "Height: " << rect().height() << " - " << path->path().boundingRect().height();
+                //p.translate(newPosX, newPosY);
+
+                kFatal() << "Width: " << rect().width() << " - Path Width: " <<  path->path().boundingRect().width() << " - opt.width: " << opt.exposedRect.width();
+                kFatal() << "Height: " << rect().height() << " - Path Height: " << path->path().boundingRect().height() << " - opt.height: " << opt.exposedRect.height();;
 
             } else {
                 p.translate((rect().width() - opt.exposedRect.width())/2, (rect().height() - opt.exposedRect.height())/2);
@@ -128,36 +137,33 @@ void KTItemPreview::paintEvent(QPaintEvent *)
           if (opt.exposedRect.width() > rect().width() || opt.exposedRect.height() > rect().height()) {
               float distance = 0;
               float base = 0;
-              bool horizontal = false;
+              int newPosX = 0;
+              int newPosY = 0;
 
+              float limit = (float) rect().width() / (float) rect().height();
               float proportion = opt.exposedRect.width() / opt.exposedRect.height();
 
-              if (proportion > 2.58) {
-                  distance = opt.exposedRect.width();  
-                  base = rect().width();
-                  horizontal = true;
-              } else {
-                  distance = opt.exposedRect.height();
+              if (proportion <= limit) {
+                  distance = opt.exposedRect.height();  
                   base = rect().height();
+              } else {
+                  distance = opt.exposedRect.width();
+                  base = rect().width();
               }
  
-              //float calculation = (base*100)/distance;
               float factor = base/distance;
+              float alterFactor = 1/factor;
+              int widthRealLength = rect().width()*alterFactor;
+              int heightRealLength = rect().height()*alterFactor;
 
-              if (horizontal) {
-                  kFatal() << "Doing horizontal calc!";
-                  kFatal() << "Factor: " << factor;
-                  float newWidth = opt.exposedRect.width() * factor;
-                  float newPos = (opt.exposedRect.width()-newWidth)/2;
-                  p.scale(factor, factor);
-                  p.translate(600, 0);
-              } else {
-                  kFatal() << "Doing vertical calc!";
-                  float newWidth = opt.exposedRect.width() * factor;
-                  float newPos = (opt.exposedRect.width()-newWidth)/2;
-                  p.scale(factor, factor);
-                  p.translate(newPos, 0);
-              }
+              if (widthRealLength > opt.exposedRect.width())
+                  newPosX = (widthRealLength - opt.exposedRect.width())/2;
+
+              if (heightRealLength > opt.exposedRect.height()) 
+                  newPosY = (heightRealLength - opt.exposedRect.height())/2;
+
+              p.scale(factor, factor);
+              p.translate(newPosX, newPosY);
 
           } else {
               p.translate((rect().width() - opt.exposedRect.width())/2, (rect().height() - opt.exposedRect.height())/2);
