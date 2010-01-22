@@ -77,16 +77,10 @@ void KTItemPreview::paintEvent(QPaintEvent *)
         opt.exposedRect = QRectF(QPointF(0,0), k->proxy->boundingRect().size());
         opt.levelOfDetail = 1;
         
-        //QMatrix matrix = k->proxy->sceneMatrix();
         QTransform matrix = k->proxy->sceneTransform();
         
-        //QRect r(15,15, rect().width()-15 , rect().height()-15);
-        
         opt.palette = palette();
-        //p.setMatrix(matrix);
         p.setTransform(matrix);
-
-        //p.translate((rect().width() - opt.exposedRect.width())/2, (rect().height() - opt.exposedRect.height())/2);
 
         if (QGraphicsPathItem *path = qgraphicsitem_cast<QGraphicsPathItem *>(k->proxy->item())) {
 
@@ -133,10 +127,18 @@ void KTItemPreview::paintEvent(QPaintEvent *)
                 kFatal() << "newPosY: " << newPosY;
                
                 p.scale(factor, factor);
-                p.translate((rect().width() - pathWidth)/2, (rect().height() - pathHeight)/2);
-                p.translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
+                float test1 = (rect().width() - pathWidth)/2;  
+                float test2 = (rect().height() - pathHeight)/2;
+                p.translate(test1*factor, test2*factor);
+
+                test1 = -path->path().boundingRect().topLeft().x();
+                test2 = -path->path().boundingRect().topLeft().y(); 
+                p.translate(test1*factor, test2*factor);
 
             } else {
+                kFatal() << "Width: " << rect().width() << " - Path Width: " << pathWidth << " - opt.width: " << -path->path().boundingRect().topLeft().x();
+                kFatal() << "Height: " << rect().height() << " - Path Height: " << pathHeight << " - opt.height: " << -path->path().boundingRect().topLeft().y();
+
                 p.translate((rect().width() - pathWidth)/2, (rect().height() - pathHeight)/2);
                 p.translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
             }
