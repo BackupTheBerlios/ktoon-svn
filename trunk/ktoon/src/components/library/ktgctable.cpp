@@ -47,11 +47,11 @@ void KTGCTable::createFolder(const QString &name)
     QTreeWidgetItem *newFolder = new QTreeWidgetItem(this);
 
     if (name.isNull())
-        newFolder->setText(0, tr("New folder %1").arg( topLevelItemCount ()) );
+        newFolder->setText(0, tr("New folder %1").arg(topLevelItemCount ()));
     else
-        newFolder->setText(0, name );
+        newFolder->setText(0, name);
 
-    newFolder->setIcon(0, QPixmap(THEME_DIR+"/icons/folder_icon.png" ));
+    newFolder->setIcon(0, QPixmap(THEME_DIR + "icons/folder_icon.png"));
     m_currentFolder = newFolder;
 
     setCurrentItem(m_currentFolder);

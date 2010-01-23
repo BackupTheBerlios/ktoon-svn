@@ -39,19 +39,19 @@ class KTLibraryResponse;
 */
 class STORE_EXPORT KTAbstractProjectResponseHandler
 {
-	public:
-		KTAbstractProjectResponseHandler();
-		virtual ~KTAbstractProjectResponseHandler();
-		
-		virtual bool handleResponse(KTProjectResponse *response);
-		
-	protected:
-		virtual void itemResponse(KTItemResponse *itemResponse) = 0;
-		virtual void frameResponse(KTFrameResponse *frameResponse) = 0;
-		virtual void layerResponse(KTLayerResponse *layerResponse) = 0;
-		virtual void sceneResponse(KTSceneResponse *sceneResponse) = 0;
-		virtual void projectResponse(KTProjectResponse *projectResponse) = 0;
-		virtual void libraryResponse(KTLibraryResponse *libraryResponse) = 0;
+    public:
+        KTAbstractProjectResponseHandler();
+        virtual ~KTAbstractProjectResponseHandler();
+        
+        virtual bool handleResponse(KTProjectResponse *response);
+        
+    protected:
+        virtual void itemResponse(KTItemResponse *itemResponse) = 0;
+        virtual void frameResponse(KTFrameResponse *frameResponse) = 0;
+        virtual void layerResponse(KTLayerResponse *layerResponse) = 0;
+        virtual void sceneResponse(KTSceneResponse *sceneResponse) = 0;
+        virtual void projectResponse(KTProjectResponse *projectResponse) = 0;
+        virtual void libraryResponse(KTLibraryResponse *libraryResponse) = 0;
 };
 
 #endif

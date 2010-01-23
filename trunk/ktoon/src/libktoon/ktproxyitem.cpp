@@ -68,8 +68,6 @@ QRectF KTProxyItem::boundingRect() const
 {
     if (k->realItem) {
         QRectF tmp = k->realItem->boundingRect();
-        kFatal() << "Width: " << tmp.width();
-        kFatal() << "Height: " << tmp.height();
         return k->realItem->boundingRect();
     }
     

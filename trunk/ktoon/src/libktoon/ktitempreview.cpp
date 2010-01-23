@@ -82,12 +82,17 @@ void KTItemPreview::paintEvent(QPaintEvent *)
         opt.palette = palette();
         p.setTransform(matrix);
 
+        QRectF rectangle(QPointF(0,0), size()); 
+        p.setPen(QPen(Qt::gray, 0.5, Qt::SolidLine));
+        p.drawRect(rectangle);
+
         if (QGraphicsPathItem *path = qgraphicsitem_cast<QGraphicsPathItem *>(k->proxy->item())) {
 
             int pathWidth = path->path().boundingRect().width();
             int pathHeight = path->path().boundingRect().height();
 
             if (pathWidth > rect().width() || pathHeight > rect().height()) {
+
                 float distance = 0;
                 float base = 0;
                 int newPosX = 0;
@@ -105,42 +110,26 @@ void KTItemPreview::paintEvent(QPaintEvent *)
                 }
 
                 float factor = base/distance;
+                factor = factor - 0.05;
                 float alterFactor = 1/factor;
-                int widthRealLength = rect().width()*alterFactor;
-                int heightRealLength = rect().height()*alterFactor;
+                int widthRealLength = size().width()*alterFactor;
+                int heightRealLength = size().height()*alterFactor;
 
-                if (widthRealLength > pathWidth)
-                    newPosX = (widthRealLength - pathWidth)/2;
-
-                if (heightRealLength > pathHeight)
-                    newPosY = (heightRealLength - pathHeight)/2;
-
-                //p.translate(newPosX, newPosY);
-
-                kFatal() << "Factor: " << factor;
-                kFatal() << "Alter: " << alterFactor;
-                kFatal() << "Width: " << rect().width() << " - Path Width: " << pathWidth << " - opt.width: " << opt.exposedRect.width();
-                kFatal() << "Height: " << rect().height() << " - Path Height: " << pathHeight << " - opt.height: " << opt.exposedRect.height();;
-                kFatal() << "Total width: " << widthRealLength;
-                kFatal() << "Total height: " << heightRealLength;
-                kFatal() << "newPosX: " << newPosX;
-                kFatal() << "newPosY: " << newPosY;
-               
                 p.scale(factor, factor);
-                float test1 = (rect().width() - pathWidth)/2;  
-                float test2 = (rect().height() - pathHeight)/2;
-                p.translate(test1*factor, test2*factor);
 
-                test1 = -path->path().boundingRect().topLeft().x();
-                test2 = -path->path().boundingRect().topLeft().y(); 
-                p.translate(test1*factor, test2*factor);
+                newPosX = (widthRealLength - pathWidth)/2;  
+                newPosY = (heightRealLength - pathHeight)/2;
+                p.translate(newPosX, newPosY);
+
+                newPosX = -path->path().boundingRect().topLeft().x();
+                newPosY = -path->path().boundingRect().topLeft().y(); 
+                p.translate(newPosX, newPosY);
 
             } else {
-                kFatal() << "Width: " << rect().width() << " - Path Width: " << pathWidth << " - opt.width: " << -path->path().boundingRect().topLeft().x();
-                kFatal() << "Height: " << rect().height() << " - Path Height: " << pathHeight << " - opt.height: " << -path->path().boundingRect().topLeft().y();
 
                 p.translate((rect().width() - pathWidth)/2, (rect().height() - pathHeight)/2);
                 p.translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
+
             }
 
         } else {

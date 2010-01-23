@@ -20,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef LIBRARYDIALOG_H
-#define LIBRARYDIALOG_H
+#ifndef KTLIBRARYDIALOG_H
+#define KTLIBRARYDIALOG_H
 
 #include <QDialog>
 class QGraphicsItem;
@@ -29,12 +29,12 @@ class QGraphicsItem;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class LibraryDialog : public QDialog
+class KTLibraryDialog : public QDialog
 {
     Q_OBJECT;
     public:
-        LibraryDialog();
-        ~LibraryDialog();
+        KTLibraryDialog();
+        ~KTLibraryDialog();
 
         void addItem(QGraphicsItem *item);
         QString symbolName(QGraphicsItem *item) const;

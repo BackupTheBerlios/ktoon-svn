@@ -40,7 +40,7 @@ class KTGCTable : public KTreeListWidget
         void removeCurrentFolder();
 
     public slots:
-        void createFolder(const QString &name = QString() );
+        void createFolder(const QString &name = QString());
 
     private:
         QTreeWidgetItem *m_currentFolder;

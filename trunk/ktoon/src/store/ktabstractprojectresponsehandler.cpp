@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 #include "ktabstractprojectresponsehandler.h"
-
-
 #include "ktprojectresponse.h"
 #include "ktpaintareaevent.h"
 
@@ -36,46 +34,45 @@ KTAbstractProjectResponseHandler::~KTAbstractProjectResponseHandler()
 
 bool KTAbstractProjectResponseHandler::handleResponse(KTProjectResponse *response)
 {
-	switch ( response->part())
-	{
-		case KTProjectRequest::Item:
-		{
-			itemResponse( static_cast<KTItemResponse *>(response) );
-		}
-		break;
-		case KTProjectRequest::Project:
-		{
-			projectResponse( response );
-		}
-		break;
-		case KTProjectRequest::Frame:
-		{
-			frameResponse( static_cast<KTFrameResponse *>(response) );
-		}
-		break;
-		case KTProjectRequest::Layer:
-		{
-			layerResponse(static_cast<KTLayerResponse *>(response));
-		}
-		break;
-		case KTProjectRequest::Scene:
-		{
-			sceneResponse( static_cast<KTSceneResponse *>(response) );
-		}
-		break;
-		case KTProjectRequest::Library:
-		{
-			libraryResponse(static_cast<KTLibraryResponse *>(response) );
-		}
-		break;
-		default:
-		{
-			qWarning("Unknown project response!");
-			return false;
-		}
-		break;
-	}
-	
-	return true;
+    switch (response->part()) {
+            case KTProjectRequest::Item:
+            {
+                 itemResponse(static_cast<KTItemResponse *>(response));
+            }
+            break;
+            case KTProjectRequest::Project:
+            {
+                 projectResponse(response);
+            }
+            break;
+            case KTProjectRequest::Frame:
+            {
+                 frameResponse(static_cast<KTFrameResponse *>(response));
+            }
+            break;
+            case KTProjectRequest::Layer:
+            {
+                 layerResponse(static_cast<KTLayerResponse *>(response));
+            }
+            break;
+            case KTProjectRequest::Scene:
+            {
+                 sceneResponse(static_cast<KTSceneResponse *>(response));
+            }
+            break;
+            case KTProjectRequest::Library:
+            {
+                 libraryResponse(static_cast<KTLibraryResponse *>(response));
+            }
+            break;
+            default:
+            {
+                 qWarning("Unknown project response!");
+                 return false;
+            }
+            break;
+    }
+    
+    return true;
 }
 

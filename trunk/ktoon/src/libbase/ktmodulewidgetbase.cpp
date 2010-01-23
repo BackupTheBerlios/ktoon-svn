@@ -38,7 +38,7 @@ struct KTModuleWidgetBase::Private
 };
 
 KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent),
-                                                                            KTAbstractProjectResponseHandler(), k( new Private )
+                                                                            KTAbstractProjectResponseHandler(), k(new Private)
 {
     setObjectName(name);
 
@@ -68,7 +68,7 @@ void KTModuleWidgetBase::setFont( const QFont &f)
     adjustSize();
 }
 
-bool KTModuleWidgetBase::event( QEvent * e )
+bool KTModuleWidgetBase::event(QEvent * e)
 {
     if (e->type() == QEvent::Hide) {
         emit activate(false);

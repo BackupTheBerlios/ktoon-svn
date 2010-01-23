@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include "ktlibrary.h"
-
 #include "ktproject.h"
 
 #include <kcore/kdebug.h>

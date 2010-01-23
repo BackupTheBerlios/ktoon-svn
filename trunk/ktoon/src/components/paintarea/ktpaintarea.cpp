@@ -52,7 +52,7 @@
 
 #include "kttextitem.h"
 
-#include "librarydialog.h"
+#include "ktlibrarydialog.h"
 #include "ktlibraryobject.h"
 #include "ktrequestbuilder.h"
 
@@ -309,14 +309,14 @@ bool KTPaintArea::canPaint() const
 void KTPaintArea::deleteItems()
 {
     // K_FUNCINFO;
-    QList<QGraphicsItem *> selecteds = scene()->selectedItems ();
+    QList<QGraphicsItem *> selected = scene()->selectedItems ();
 
-    if (!selecteds.empty()) {
+    if (!selected.empty()) {
         QString strItems= "";
         KTGraphicsScene* currentScene = graphicsScene();
 
         if (currentScene) {
-            foreach (QGraphicsItem *item, selecteds) {
+            foreach (QGraphicsItem *item, selected) {
                      KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                               currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
                                               currentScene->currentFrameIndex(), 
@@ -331,15 +331,15 @@ void KTPaintArea::deleteItems()
 void KTPaintArea::groupItems()
 {
     // K_FUNCINFO;
-    QList<QGraphicsItem *> selecteds = scene()->selectedItems();
+    QList<QGraphicsItem *> selected = scene()->selectedItems();
 
-    if (!selecteds.isEmpty()) {
+    if (!selected.isEmpty()) {
         QString strItems= "";
         KTGraphicsScene* currentScene = graphicsScene();
         int firstItem = -1;
 
         if (currentScene) {
-            foreach (QGraphicsItem *item, selecteds) {
+            foreach (QGraphicsItem *item, selected) {
                      if (currentScene->currentFrame()->visualIndexOf(item) != -1) {
                          if (strItems.isEmpty()) {
                              strItems +="("+ QString::number(currentScene->currentFrame()->visualIndexOf(item));
@@ -365,11 +365,11 @@ void KTPaintArea::groupItems()
 
 void KTPaintArea::ungroupItems()
 {
-    QList<QGraphicsItem *> selecteds = scene()->selectedItems();
-    if (!selecteds.isEmpty()) {
+    QList<QGraphicsItem *> selected = scene()->selectedItems();
+    if (!selected.isEmpty()) {
         KTGraphicsScene* currentScene = graphicsScene();
         if (currentScene) {
-            foreach (QGraphicsItem *item, selecteds) {
+            foreach (QGraphicsItem *item, selected) {
                      KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                               currentScene->currentSceneIndex(), 
                                               currentScene->currentLayerIndex(), 
@@ -389,13 +389,13 @@ void KTPaintArea::copyItems()
     #endif
 
     k->copiesXml.clear();
-    QList<QGraphicsItem *> selecteds = scene()->selectedItems();
+    QList<QGraphicsItem *> selected = scene()->selectedItems();
 
-    if (!selecteds.isEmpty()) {
+    if (!selected.isEmpty()) {
         KTGraphicsScene* currentScene = graphicsScene();
 
         if (currentScene) {
-            foreach (QGraphicsItem *item, selecteds) {
+            foreach (QGraphicsItem *item, selected) {
                      QDomDocument orig;
                      orig.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(orig));
                      k->copiesXml << orig.toString();
@@ -476,21 +476,21 @@ void KTPaintArea::addSelectedItemsToLibrary()
            kDebug("paintarea") << "Adding to library";
     #endif
 
-    QList<QGraphicsItem *> selecteds = scene()->selectedItems();
+    QList<QGraphicsItem *> selected = scene()->selectedItems();
 
-    if (selecteds.isEmpty()) {
+    if (selected.isEmpty()) {
         KOsd::self()->display(tr("No items selected"), KOsd::Error);
         return;
     }
 
-    LibraryDialog dialog;
-    foreach (QGraphicsItem *item, selecteds)
+    KTLibraryDialog dialog;
+    foreach (QGraphicsItem *item, selected)
              dialog.addItem(item);
 	
     if (dialog.exec() != QDialog::Accepted)
         return;
 
-    foreach (QGraphicsItem *item, selecteds) {
+    foreach (QGraphicsItem *item, selected) {
              if (KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item)) {
                  QString symName = dialog.symbolName(item);
 
@@ -510,9 +510,9 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
            K_FUNCINFOX("paintarea");
     #endif
 
-    QList<QGraphicsItem *> selecteds = scene()->selectedItems();
+    QList<QGraphicsItem *> selected = scene()->selectedItems();
 
-    if (selecteds.isEmpty()) {
+    if (selected.isEmpty()) {
         KOsd::self()->display(tr("No items selected"), KOsd::Error);
         return;
     }
@@ -521,7 +521,7 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
     KTFrame *currentFrame = currentScene->currentFrame();
 
     QList<int> positions;
-    foreach (QGraphicsItem *item, selecteds) {
+    foreach (QGraphicsItem *item, selected) {
              int newPos = 0;
              int  value = currentFrame->visualIndexOf(item);
              bool ok;

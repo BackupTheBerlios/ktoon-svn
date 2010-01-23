@@ -20,7 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "librarydialog.h"
+#include "ktlibrarydialog.h"
 
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
@@ -34,37 +34,39 @@
 #include <QMap>
 
 
-struct LibraryDialog::Private
+struct KTLibraryDialog::Private
 {
     QToolBox *toolBox;
     QMap<QGraphicsItem *, QLineEdit *> symbolNames;
     QMap<int, QLineEdit *> tabs;
 };
 
-LibraryDialog::LibraryDialog() : QDialog(), k(new Private)
+KTLibraryDialog::KTLibraryDialog() : QDialog(), k(new Private)
 {
+    setWindowTitle(tr("Library Object"));
+
     QVBoxLayout *layout = new QVBoxLayout(this);
 
     k->toolBox = new QToolBox;
     layout->addWidget(k->toolBox);
 
-    QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Help | QDialogButtonBox::Ok 
-                                | QDialogButtonBox::Cancel, Qt::Horizontal );	
+    QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Ok 
+                                | QDialogButtonBox::Cancel, Qt::Horizontal);
     connect(buttons, SIGNAL(accepted ()), this, SLOT(checkNames()));
     connect(buttons, SIGNAL(rejected ()), this, SLOT(reject()));
 
-    layout->addWidget(buttons);
+    layout->addWidget(buttons, 0, Qt::AlignCenter);
 }
 
-LibraryDialog::~LibraryDialog()
+KTLibraryDialog::~KTLibraryDialog()
 {
     delete k;
 }
 
-void LibraryDialog::addItem(QGraphicsItem *item)
+void KTLibraryDialog::addItem(QGraphicsItem *item)
 {
-    KTItemPreview *preview = new KTItemPreview;	
-    preview->render( item );
+    KTItemPreview *preview = new KTItemPreview;    
+    preview->render(item);
 
     QWidget *container = new QWidget;
 
@@ -74,7 +76,7 @@ void LibraryDialog::addItem(QGraphicsItem *item)
     QLineEdit *name = new QLineEdit;
     connect(name, SIGNAL(returnPressed()), this, SLOT(checkNames()));
 
-    QLayout *grid = KFormFactory::makeGrid( QStringList() << tr("Name"), QWidgetList() << name );	
+    QLayout *grid = KFormFactory::makeGrid( QStringList() << tr("Name"), QWidgetList() << name);
     layout->addLayout(grid);
 
     int index = k->toolBox->addItem(container, tr("Item %1").arg(k->toolBox->count()+1));
@@ -82,12 +84,12 @@ void LibraryDialog::addItem(QGraphicsItem *item)
     k->tabs.insert(index, name);
 }
 
-QString LibraryDialog::symbolName(QGraphicsItem *item) const
+QString KTLibraryDialog::symbolName(QGraphicsItem *item) const
 {
     return k->symbolNames[item]->text();
 }
 
-void LibraryDialog::checkNames()
+void KTLibraryDialog::checkNames()
 {
     for (int i = 0; i < k->toolBox->count(); i++) {
          if (k->tabs[i]->text().isEmpty()) {

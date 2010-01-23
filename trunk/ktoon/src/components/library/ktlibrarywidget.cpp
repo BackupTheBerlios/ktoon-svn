@@ -158,7 +158,7 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
     RETURN_IF_NOT_LIBRARY;
 
     if (item) {
-        KTLibraryObject *object = k->library->findObject(item->text(0));
+        KTLibraryObject *object = k->library->findObject(item->text(1));
 
         if (!object) {
             #ifdef K_DEBUG
@@ -205,13 +205,15 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 
 void KTLibraryWidget::emitSelectedComponent()
 {
-    if (!k->libraryTree->currentItem()) 
+    if (!k->libraryTree->currentItem()) {
+        kFatal() << "No item selected!!!";
         return;
+    }
 
-    QString symKey = k->libraryTree->currentItem()->text(0);
+    QString symKey = k->libraryTree->currentItem()->text(1);
 
     KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::AddSymbolToProject, symKey,
-                               KTLibraryObject::Type(k->libraryTree->currentItem()->data(0, 3216).toInt()), 0, 
+                               KTLibraryObject::Type(k->libraryTree->currentItem()->data(1, 3216).toInt()), 0, 
                                k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame);
 
     emit requestTriggered(&request);
@@ -232,6 +234,8 @@ void KTLibraryWidget::removeCurrentGraphic()
 
 void KTLibraryWidget::renameObject(QTreeWidgetItem* item)
 {
+    Q_UNUSED(item);
+
 /*
     if ( item ) {
          KTGraphicComponent *graphic = k->graphics[item];
@@ -313,19 +317,26 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                  KTLibraryObject *obj = k->library->findObject(key);
 
                  QTreeWidgetItem *item = new QTreeWidgetItem(k->libraryTree);
-                 item->setText(0, key);
-                 item->setData(0, 3216, obj->type());
+                 item->setText(1, key);
+                 item->setData(1, 3216, obj->type());
 
                  if (obj) {
                      switch (obj->type()) {
                             case KTLibraryObject::Item:
                                {
-                                 item->setIcon(1, QIcon(THEME_DIR + "icons/shape_brush.png"));
+                                 item->setIcon(0, QIcon(THEME_DIR + "icons/shape_brush.png"));
                                }
                             break;
                             case KTLibraryObject::Sound:
                                {
-                                 item->setIcon(1, QIcon(THEME_DIR + "icons/sound_widget.png"));
+                                 item->setIcon(0, QIcon(THEME_DIR + "icons/sound_widget.png"));
+                               }
+                            break;
+                            case KTLibraryObject::Image:
+                               {
+                                 item->setIcon(0, QIcon(THEME_DIR + "icons/gceditor.png"));
+                                 k->libraryTree->setCurrentItem(item);
+                                 emitSelectedComponent();
                                }
                             break;
                      }
