@@ -29,6 +29,7 @@
 
 #include "ktpaintareabase.h"
 #include "ktabstractprojectresponsehandler.h"
+#include "ktgraphicsscene.h"
 
 class QGraphicsRectItem;
 class KTBrushManager;
@@ -52,6 +53,7 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
 
         void setCurrentScene(int index);
         void updatePaintArea();
+        void setCurrentTool(QString tool);
 
     public slots:
         void setNextFramesOnionSkinCount(int n);
@@ -59,6 +61,7 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
 
     signals:
         void requestTriggered(const KTProjectRequest *event);
+        void itemAddedOnSelection(KTGraphicsScene *);
 
     public slots:
         void deleteItems();

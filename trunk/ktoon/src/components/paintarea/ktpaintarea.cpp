@@ -72,6 +72,7 @@ struct KTPaintArea::Private
     const KTProject *project;
     int currentSceneIndex;
     QStringList copiesXml;
+    QString currentTool; 
 };
 
 KTPaintArea::KTPaintArea(const KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
@@ -83,9 +84,8 @@ KTPaintArea::KTPaintArea(const KTProject *project, QWidget * parent) : KTPaintAr
 
     setCurrentScene(0);
 
-    if (graphicsScene()->scene()) {
+    if (graphicsScene()->scene())
         graphicsScene()->setCurrentFrame(0, 0);
-    }
 }
 
 KTPaintArea::~KTPaintArea()
@@ -132,7 +132,7 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
         menu->addSeparator();
         QMenu *order = new QMenu(tr("Order"));
 
-        connect(order, SIGNAL(triggered(QAction*)), this, SLOT(requestMoveSelectedItems(QAction *)));
+        connect(order, SIGNAL(triggered(QAction*)), this, SLOT(requestMoveSelectedItems(QAction*)));
         order->addAction(tr("Send to back"))->setData(MoveBack);
         order->addAction(tr("Bring to front"))->setData(MoveFront);
         order->addAction(tr("Send backwards"))->setData(MoveBackwards);
@@ -215,7 +215,6 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 void KTPaintArea::layerResponse(KTLayerResponse *event)
 {
     if (graphicsScene()->isDrawing()) { 
-        kFatal() << "*** I'm drawing!!!";
         return;
     }
 
@@ -225,7 +224,6 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
         return;
 
     if (event->action() == KTProjectRequest::View) {
-        kFatal() << "*** Handling KTProjectRequest::View";
         sscene->setLayerVisible(event->layerIndex(), event->arg().toBool());
     }
 
@@ -286,10 +284,14 @@ void KTPaintArea::libraryResponse(KTLibraryResponse *request)
         return;
 
     switch (request->action()) {
+
             case KTProjectRequest::AddSymbolToProject:
-                 kFatal() << "Adding symbol to frame!";
                  graphicsScene()->drawCurrentPhotogram();
                  viewport()->update(scene()->sceneRect().toRect());
+
+                 if (k->currentTool.compare(tr("Object Selection")) == 0)
+                     emit itemAddedOnSelection(graphicsScene());
+
                  break;
     }
 }
@@ -309,7 +311,7 @@ bool KTPaintArea::canPaint() const
 void KTPaintArea::deleteItems()
 {
     // K_FUNCINFO;
-    QList<QGraphicsItem *> selected = scene()->selectedItems ();
+    QList<QGraphicsItem *> selected = scene()->selectedItems();
 
     if (!selected.empty()) {
         QString strItems= "";
@@ -321,7 +323,7 @@ void KTPaintArea::deleteItems()
                                               currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
                                               currentScene->currentFrameIndex(), 
                                               currentScene->currentFrame()->visualIndexOf(item),
-                                              KTProjectRequest::Remove );
+                                              KTProjectRequest::Remove);
                      emit requestTriggered(&event);
             }
         }
@@ -552,8 +554,14 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
     }
 }
 
-void KTPaintArea::updatePaintArea() {
+void KTPaintArea::updatePaintArea() 
+{
     KTGraphicsScene* currentScene = graphicsScene();
     currentScene->drawCurrentPhotogram();
     //currentScene->update(currentScene->sceneRect());
+}
+
+void KTPaintArea::setCurrentTool(QString tool) 
+{
+    k->currentTool = tool;
 }

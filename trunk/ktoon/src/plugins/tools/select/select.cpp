@@ -69,15 +69,16 @@ Select::~Select()
 void Select::init(KTGraphicsScene *scene)
 {
     K_FUNCINFOX("tools");
+
     qDeleteAll(k->nodeManagers);
     k->nodeManagers.clear();
     k->changedManager = 0;
     
-    foreach (QGraphicsView * view, scene->views()) {
-             view->setDragMode (QGraphicsView::RubberBandDrag);
+    foreach (QGraphicsView *view, scene->views()) {
+             view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, scene->items()) {
                       if (!qgraphicsitem_cast<Node *>(item))
-                          item->setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                          item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
              }
     }
 }
@@ -215,7 +216,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 
 void Select::setupActions()
 {
-    KAction *select = new KAction(QIcon(), tr("Object Selection "), this);
+    KAction *select = new KAction(QIcon(), tr("Object Selection"), this);
     select->setShortcut(QKeySequence(tr("Ctrl+N")));
 
     //select->setCursor(QCursor(THEME_DIR + "cursors/contour.png"));
@@ -275,26 +276,35 @@ void Select::itemResponse(const KTItemResponse *event)
             }
         }
     } else {
-        kFatal() << "Project not exist";
+        kFatal() << "Project does not exist";
     }
     
     switch (event->action()) {
             case KTProjectRequest::Transform:
             {
                  if (item) {
+
                      foreach (QGraphicsView * view, k->scene->views())
                               view->setUpdatesEnabled(true);
+
                      foreach (NodeManager* node, k->nodeManagers) {
                               node->show();
                               node->syncNodesFromParent();
                               node->beginToEdit();
                               break;
                      }
+
                  }
+            }
+            break;
+            case KTProjectRequest::Remove:
+            {
+                 // Do nothing
             }
             break;
             default:
             {
+                 kFatal() << "SELECT ID: " << event->action();
                  syncNodes();
             }
             break;
@@ -321,7 +331,8 @@ void Select::saveConfig()
 void Select::keyPressEvent(QKeyEvent *event)
 {
     if (k->scene->selectedItems().count() > 0 && ((event->key() == Qt::Key_Left) 
-        || (event->key() == Qt::Key_Up) || (event->key() == Qt::Key_Right) || (event->key() == Qt::Key_Down))) {
+        || (event->key() == Qt::Key_Up) || (event->key() == Qt::Key_Right) 
+        || (event->key() == Qt::Key_Down))) {
 
         QList<QGraphicsItem *> selectedObjects = k->scene->selectedItems();
 
@@ -340,6 +351,17 @@ void Select::keyPressEvent(QKeyEvent *event)
 
                  QTimer::singleShot(0, this, SLOT(syncNodes()));
        }
+    }
+}
+
+void Select::updateItems(KTGraphicsScene *scene)
+{
+    foreach (QGraphicsView *view, scene->views()) {
+             view->setDragMode(QGraphicsView::RubberBandDrag);
+             foreach (QGraphicsItem *item, scene->items()) {
+                      if (!qgraphicsitem_cast<Node *>(item))
+                          item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+             }
     }
 }
 

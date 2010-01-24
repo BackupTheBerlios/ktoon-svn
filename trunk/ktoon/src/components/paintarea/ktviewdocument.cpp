@@ -52,6 +52,7 @@
 #include "ktprojectresponse.h"
 #include "ktpaintareaevent.h"
 #include "ktpaintareacommand.h"
+#include "ktgraphicsscene.h"
 
 #include "ktbrushmanager.h"
 #include "ktproject.h"
@@ -451,6 +452,7 @@ void KTViewDocument::selectTool()
         KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
         k->currentTool = tool; 
         QString toolStr = action->text();
+        k->paintArea->setCurrentTool(toolStr);
         kDebug() << "*** Brush: " << toolStr;
         int maxWidth = 0;
 
@@ -483,6 +485,10 @@ void KTViewDocument::selectTool()
                      k->selectionMenu->setActiveAction(action);
                      if (!action->icon().isNull())
                          k->selectionMenu->menuAction()->setIcon(action->icon());
+                     if (toolStr.compare("Object Selection")==0) {
+                         connect(k->paintArea, SIGNAL(itemAddedOnSelection(KTGraphicsScene *)), 
+                                 tool, SLOT(updateItems(KTGraphicsScene *)));
+                     }
                      break;
 
                 case KTToolInterface::View:

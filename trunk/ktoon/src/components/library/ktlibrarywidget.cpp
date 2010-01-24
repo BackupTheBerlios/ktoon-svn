@@ -103,12 +103,14 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 
     KImageButton *addGC = new KImageButton(QPixmap(THEME_DIR + "icons/plussign.png"), 22, buttons);
     connect(addGC, SIGNAL(clicked()), this, SIGNAL(requestCurrentGraphic()));
+    addGC->setEnabled(false);
 
     buttonLayout->addWidget(addGC);
     addGC->setToolTip(tr("Add the current graphic to library"));
 
     KImageButton *delGC = new KImageButton(QPixmap(THEME_DIR + "icons/minussign.png"), 22, buttons);
     connect(delGC, SIGNAL(clicked()), this, SLOT(removeCurrentGraphic()));
+    delGC->setEnabled(false);
 
     delGC->setToolTip(tr("Remove the selected symbol from library"));
     buttonLayout->addWidget(delGC);
@@ -119,6 +121,7 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
     buttonLayout->addWidget(gctoDrawingArea);
 
     KImageButton *addFolderGC = new KImageButton(QPixmap(THEME_DIR + "icons/addfolder.png"), 22, buttons);
+    addFolderGC->setEnabled(false);
     connect(addFolderGC, SIGNAL(clicked()), k->libraryTree, SLOT(createFolder()));
     addFolderGC->setToolTip(tr("Adds a folder to the symbol list"));
     buttonLayout->addWidget(addFolderGC);
@@ -205,10 +208,8 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 
 void KTLibraryWidget::emitSelectedComponent()
 {
-    if (!k->libraryTree->currentItem()) {
-        kFatal() << "No item selected!!!";
+    if (!k->libraryTree->currentItem())
         return;
-    }
 
     QString symKey = k->libraryTree->currentItem()->text(1);
 
@@ -325,6 +326,8 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                             case KTLibraryObject::Item:
                                {
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/shape_brush.png"));
+                                 k->libraryTree->setCurrentItem(item);
+                                 previewItem(item, 1);
                                }
                             break;
                             case KTLibraryObject::Sound:
@@ -336,6 +339,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                                {
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/gceditor.png"));
                                  k->libraryTree->setCurrentItem(item);
+                                 previewItem(item, 1);
                                  emitSelectedComponent();
                                }
                             break;
@@ -365,6 +369,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
             break;
             default:
               {
+                 kFatal() << "*** Project Code: " << response->action();
                  qWarning("ktlibrarywidget.cpp IMPLEMENT ME");
               }
             break;

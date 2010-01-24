@@ -28,6 +28,7 @@
 
 #include "ktpathitem.h"
 #include "ktproject.h"
+#include "ktgraphicsscene.h"
 
 class KTItemResponse;
 
@@ -62,7 +63,10 @@ class Select : public KTToolPlugin
         
         virtual void itemResponse(const KTItemResponse *event);
         virtual void saveConfig();
-        
+
+    signals:
+        void itemAddedOnSelection();
+
     private:
         void setupActions();
         
@@ -72,6 +76,7 @@ class Select : public KTToolPlugin
         
     private slots:
         void syncNodes();
+        void updateItems(KTGraphicsScene *);
 };
 
 #endif
