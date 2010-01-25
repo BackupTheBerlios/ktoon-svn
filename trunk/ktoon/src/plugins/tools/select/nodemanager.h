@@ -33,53 +33,51 @@
 */
 class NodeManager
 {
-	public:
-		NodeManager(QGraphicsItem * parent, QGraphicsScene *scene);
-		~NodeManager();
-		void syncNodes(const QRectF &sbr);
-		void syncNodesFromParent();
-		QGraphicsItem *parentItem() const;
-		bool isModified() const;
-// 		void setModify(bool modify);
-		
-		void beginToEdit();
-		void restoreItem();
-		
-		void show();
-		
-		void setAnchor(const QPointF& point);
-		QPointF anchor() const;
-		
-		void scale(float sx, float sy);
-		void rotate(double a);
-		
-		void setPress(bool press);
-		bool isPress();
-		
-		void toggleAction();
-		
-		void setActionNode(Node::ActionNode action);
-		
-		
-		void setVisible(bool visible);
-		
-		double rotation();
-		
-	private:
-		QHash<Node::TypeNode, Node *> m_nodes;
-		QGraphicsItem * m_parent;
-		
-		QGraphicsScene *m_scene;
-		
-		
-// 		bool m_modify;
-		
-		QMatrix m_origMatrix;
-		QPointF m_origPos;
-		QPointF m_anchor;
-		
-		bool m_press;
-		double m_rotation;
+    public:
+        NodeManager(QGraphicsItem * parent, QGraphicsScene *scene);
+        ~NodeManager();
+        void syncNodes(const QRectF &sbr);
+        void syncNodesFromParent();
+        QGraphicsItem *parentItem() const;
+        bool isModified() const;
+        //  void setModify(bool modify);
+        
+        void beginToEdit();
+        void restoreItem();
+        
+        void show();
+        
+        void setAnchor(const QPointF& point);
+        QPointF anchor() const;
+        
+        void scale(float sx, float sy);
+        void rotate(double a);
+        
+        void setPress(bool press);
+        bool isPress();
+        
+        void toggleAction();
+        
+        void setActionNode(Node::ActionNode action);
+        
+        void setVisible(bool visible);
+        
+        double rotation();
+        
+    private:
+        QHash<Node::TypeNode, Node *> m_nodes;
+        QGraphicsItem * m_parent;
+        
+        QGraphicsScene *m_scene;
+        
+        // bool m_modify;
+        
+        QMatrix m_origMatrix;
+        QPointF m_origPos;
+        QPointF m_anchor;
+        
+        bool m_press;
+        double m_rotation;
 
 };
 

@@ -26,6 +26,7 @@
 #include <QKeySequence>
 #include <QList>
 #include <QGraphicsView>
+#include <cmath>
 
 #include <kgui/kaction.h>
 #include <kcore/kdebug.h>
@@ -93,7 +94,7 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
     K_FUNCINFOX("tools");
     Q_UNUSED(brushManager);
     Q_UNUSED(scene);
-    
+
     if (k->changedManager)
         k->changedManager = 0;
     
