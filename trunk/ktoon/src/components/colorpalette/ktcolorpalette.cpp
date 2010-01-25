@@ -113,7 +113,7 @@ KTColorPalette::~KTColorPalette()
 void KTColorPalette::setupChooserTypeColor()
 {
     QFrame *colorMixer = new QFrame(k->centralWidget);
-    colorMixer->setFrameStyle(QFrame::Box | QFrame::Sunken );
+    colorMixer->setFrameStyle(QFrame::Box | QFrame::Sunken);
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
 
@@ -125,18 +125,18 @@ void KTColorPalette::setupChooserTypeColor()
     layoutContainer->addStretch(2);
 
     k->colorPicker = new KTColorPicker(colorMixer);
-    connect( k->colorPicker, SIGNAL(newCol(int, int)), this, SLOT(setHS(int, int)));
+    connect(k->colorPicker, SIGNAL(newCol(int, int)), this, SLOT(setHS(int, int)));
     connect(k->displayColorValue, SIGNAL(hueChanged(int)), k->colorPicker, SLOT(setH(int)));
     connect(k->displayColorValue, SIGNAL(saturationChanged(int)), k->colorPicker, SLOT(setS(int)));
 
     layoutContainer->addWidget(k->colorPicker, 0, Qt::AlignLeft);
 
-    k->luminancePicker = new KTLuminancePicker( colorMixer );
-    connect( k->luminancePicker, SIGNAL( newHsv(int, int, int )), this, SLOT (syncHsv(int, int, int)));
+    k->luminancePicker = new KTLuminancePicker(colorMixer);
+    connect(k->luminancePicker, SIGNAL(newHsv(int, int, int)), this, SLOT(syncHsv(int, int, int)));
 
     k->luminancePicker->setMaximumWidth(15);
     k->luminancePicker->setMinimumWidth(15);
-    connect(k->displayColorValue, SIGNAL(valueChanged(int)), k->luminancePicker, SLOT(setVal( int )));
+    connect(k->displayColorValue, SIGNAL(valueChanged(int)), k->luminancePicker, SLOT(setVal(int)));
 
     layoutContainer->addWidget(k->luminancePicker, 0, Qt::AlignLeft);
     layoutContainer->setSpacing(3);

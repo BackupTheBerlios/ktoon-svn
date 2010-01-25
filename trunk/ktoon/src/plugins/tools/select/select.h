@@ -64,8 +64,8 @@ class Select : public KTToolPlugin
         virtual void itemResponse(const KTItemResponse *event);
         virtual void saveConfig();
 
-    signals:
-        void itemAddedOnSelection();
+    //signals:
+    //    void itemAddedOnSelection();
 
     private:
         void setupActions();
