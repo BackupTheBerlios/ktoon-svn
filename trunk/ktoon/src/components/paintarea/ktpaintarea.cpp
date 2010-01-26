@@ -263,14 +263,16 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
                     viewport()->update();
                     break;
                default:
-                    kFatal() << "Calling out drawPhotogram() from KTPaintArea / itemResponse";
                     graphicsScene()->drawCurrentPhotogram();
                     viewport()->update(scene()->sceneRect().toRect());
                     break;
         }
-     }
+    } else {
+        graphicsScene()->drawCurrentPhotogram();
+        viewport()->update(scene()->sceneRect().toRect());
+    }
 
-     graphicsScene()->itemResponse(event);
+    graphicsScene()->itemResponse(event);
 }
 
 void KTPaintArea::projectResponse(KTProjectResponse *)
