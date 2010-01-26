@@ -138,7 +138,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
     connect(k->paintArea, SIGNAL(changedZero(const QPointF&)), this, SLOT(changeRulerOrigin(const QPointF&)));
 
-    connect(k->paintArea, SIGNAL(requestTriggered(const KTProjectRequest*)), this, 
+    connect(k->paintArea, SIGNAL(requestTriggered(const KTProjectRequest *)), this, 
                           SIGNAL(requestTriggered(const KTProjectRequest *)));
 
     setupDrawActions();
@@ -152,7 +152,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
     
     KTPaintAreaStatus *status = new KTPaintAreaStatus(this);
     setStatusBar(status);
-    
+
     connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), status, 
             SLOT(setBrush(const QBrush &)));
 
@@ -547,10 +547,11 @@ void KTViewDocument::applyFilter()
     QAction *action = qobject_cast<QAction *>(sender());
 
     if (action) {
+        /*
+        SQA issue: Code to check
         AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(action->parent());
         QString filter = action->text();
-
-        /*
+        
         KTFrame *frame = k->paintArea->currentFrame();
         if (frame) {
             aFilter->filter(action->text(), frame->components());

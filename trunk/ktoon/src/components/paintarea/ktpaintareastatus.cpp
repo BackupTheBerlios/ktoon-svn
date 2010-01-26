@@ -206,14 +206,13 @@ void KTPaintAreaStatus::selectRenderer(int id)
 
 void KTPaintAreaStatus::setBrush(const QBrush &brush)
 {
-    k->brushStatus->setBackground( brush );
+    k->brushStatus->setBackground(brush);
 }
 
 void KTPaintAreaStatus::setPen(const QPen &pen)
 {
-    k->brushStatus->setForeground( pen );
+    k->brushStatus->setForeground(pen);
 }
-
 
 void KTPaintAreaStatus::applyRotationFromItem(const QString & text)
 {

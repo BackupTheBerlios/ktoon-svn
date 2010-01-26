@@ -32,10 +32,10 @@
 #include "ktcellscolor.h"
 #include "ktpaletteparser.h"
 
-
 /**
-	@author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
+    @author Jorge Cuadrado <kuadrosx@toonka.com>
+**/
+
 class KTViewColorCells : public QFrame
 {
     Q_OBJECT
@@ -53,7 +53,7 @@ class KTViewColorCells : public QFrame
         void setupForm();
         void setupButtons();
         void fillDefaultColors();
-        void addDefaultColor(int i , int j, const QColor &);
+        void addDefaultColor(int i, int j, const QColor &);
         void fillNamedColor();
         void readPalettes(const QString &paletteDir);
         void addPalette(KTCellsColor *palette);
@@ -66,8 +66,8 @@ class KTViewColorCells : public QFrame
     public slots:
         virtual void addCurrentColor();
         virtual void removeCurrentColor();
-        virtual void addPalette(const QString & name, const QList<QBrush> & brushes, bool editable );
-        void changeColor(QTableWidgetItem*/*, QTableWidgetItem **/);
+        virtual void addPalette(const QString & name, const QList<QBrush> & brushes, bool editable);
+        void changeColor(QTableWidgetItem*);
 };
 
 #endif

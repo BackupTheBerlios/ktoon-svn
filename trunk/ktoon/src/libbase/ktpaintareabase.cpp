@@ -259,7 +259,7 @@ void KTPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
-void KTPaintAreaBase::tabletEvent( QTabletEvent * event )
+void KTPaintAreaBase::tabletEvent(QTabletEvent * event)
 {
     QGraphicsView::tabletEvent(event);
 }

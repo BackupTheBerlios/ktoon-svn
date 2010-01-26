@@ -560,6 +560,8 @@ void KTPaintArea::updatePaintArea()
 {
     KTGraphicsScene* currentScene = graphicsScene();
     currentScene->drawCurrentPhotogram();
+    kFatal() << "Updating paint area !!! O_o";
+
     //currentScene->update(currentScene->sceneRect());
 }
 

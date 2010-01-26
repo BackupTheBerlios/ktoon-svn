@@ -215,15 +215,16 @@ void KTColorPalette::setColor(const QBrush& brush)
             k->gradientManager->setCurrentColor(color);
 
         if (k->displayColorValue && k->outlineAndFillColors && k->colorPicker && k->nameColor && k->luminancePicker) {
-            k->colorPicker->setCol(color.hue(), color.saturation ());
 
+            k->colorPicker->setCol(color.hue(), color.saturation ());
             if (k->type == Solid)
                 k->outlineAndFillColors->setCurrentColor(color);
 
-                k->nameColor->setText(color.name ());
-                k->luminancePicker->setCol(color.hue(), color.saturation(), color.value());
-                k->containerPalette->setColor( brush );
-                k->displayColorValue->setColor(color);
+            k->nameColor->setText(color.name ());
+            k->luminancePicker->setCol(color.hue(), color.saturation(), color.value());
+            k->containerPalette->setColor(brush);
+            k->displayColorValue->setColor(color);
+
         }
     } else if (brush.gradient()) {
                QGradient gradient(*brush.gradient());
@@ -231,7 +232,7 @@ void KTColorPalette::setColor(const QBrush& brush)
 
                k->containerPalette->setColor(gradient);
                k->outlineAndFillColors->setCurrentColor(gradient);
-               if (sender () != k->gradientManager)
+               if (sender() != k->gradientManager)
                    k->gradientManager->setGradient(gradient);
     }
 
@@ -253,7 +254,7 @@ void KTColorPalette::setFG(const QBrush &brush)
     else
         changeBrushType(tr("Gradient"));
 
-    k->outlineAndFillColors->setCurrent( KDualColorButton::Foreground );
+    k->outlineAndFillColors->setCurrent(KDualColorButton::Foreground);
     setColor(brush);
 }
 

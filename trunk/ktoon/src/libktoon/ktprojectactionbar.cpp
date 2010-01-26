@@ -123,7 +123,7 @@ void KTProjectActionBar::setup(Actions actions)
         
         k->actions.addButton(button, MoveFrameUp);
         
-        k->buttonLayout->addWidget( button );
+        k->buttonLayout->addWidget(button);
         
         button->setAnimated(k->isAnimated);
     }
@@ -152,7 +152,7 @@ void KTProjectActionBar::setup(Actions actions)
     if (actions & InsertLayer) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/add_layer.png"), size);
         button->setToolTip(tr("Insert a layer"));
-        button->setEnabled(false);
+        //button->setEnabled(false);
         
         k->actions.addButton(button, InsertLayer);
         
@@ -163,7 +163,7 @@ void KTProjectActionBar::setup(Actions actions)
     if (actions & RemoveLayer) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/remove_layer.png"), size);
         button->setToolTip(tr("Remove the layer"));
-        button->setEnabled(false);
+        //button->setEnabled(false);
         
         k->actions.addButton(button, RemoveLayer);
         
