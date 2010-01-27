@@ -216,27 +216,27 @@ KTProjectRequest KTRequestBuilder::fromResponse(KTProjectResponse *response)
     switch (response->part()) {
             case KTProjectRequest::Item:
                  {
-                    request = KTRequestBuilder::createItemRequest( static_cast<KTItemResponse*> ( response)->sceneIndex(), static_cast<KTItemResponse*> ( response)->layerIndex(), static_cast<KTItemResponse*> ( response)->frameIndex(), static_cast<KTItemResponse*> ( response)->itemIndex(), response->action(), response->arg().toString(), response->data());
+                    request = KTRequestBuilder::createItemRequest(static_cast<KTItemResponse*> (response)->sceneIndex(), static_cast<KTItemResponse*> (response)->layerIndex(), static_cast<KTItemResponse*> (response)->frameIndex(), static_cast<KTItemResponse*> (response)->itemIndex(), response->action(), response->arg().toString(), response->data());
                  }
             break;
             case KTProjectRequest::Frame:
                  {
-                    request = KTRequestBuilder::createFrameRequest( static_cast<KTFrameResponse*> ( response)->sceneIndex(), static_cast<KTFrameResponse*> ( response)->layerIndex(), static_cast<KTFrameResponse*> ( response)->frameIndex(), response->action(), response->arg().toString(), response->data());
+                    request = KTRequestBuilder::createFrameRequest(static_cast<KTFrameResponse*> (response)->sceneIndex(), static_cast<KTFrameResponse*> (response)->layerIndex(), static_cast<KTFrameResponse*> (response)->frameIndex(), response->action(), response->arg().toString(), response->data());
                  }
             break;
             case KTProjectRequest::Layer:
                  {
-                    request = KTRequestBuilder::createLayerRequest( static_cast<KTLayerResponse*> ( response)->sceneIndex(), static_cast<KTLayerResponse*> ( response)->layerIndex(), response->action(), response->arg().toString(), response->data());
+                    request = KTRequestBuilder::createLayerRequest(static_cast<KTLayerResponse*> (response)->sceneIndex(), static_cast<KTLayerResponse*> (response)->layerIndex(), response->action(), response->arg().toString(), response->data());
                  }
             break;
             case KTProjectRequest::Scene:
                  {
-                    request = KTRequestBuilder::createSceneRequest( static_cast<KTSceneResponse*> ( response)->sceneIndex(), response->action(), response->arg().toString(), response->data());
+                    request = KTRequestBuilder::createSceneRequest(static_cast<KTSceneResponse*> (response)->sceneIndex(), response->action(), response->arg().toString(), response->data());
                  }
             break;
             case KTProjectRequest::Library:
                  {
-                    request = KTRequestBuilder::createLibraryRequest( response->action(), response->arg().toString(), KTLibraryObject::Type(static_cast<KTLibraryResponse*>(response)->symbolType()), response->data(), static_cast<KTLibraryResponse*>(response)->sceneIndex(), static_cast<KTLibraryResponse*>(response)->layerIndex(), static_cast<KTLibraryResponse*>(response)->frameIndex() );
+                    request = KTRequestBuilder::createLibraryRequest(response->action(), response->arg().toString(), KTLibraryObject::Type(static_cast<KTLibraryResponse*>(response)->symbolType()), response->data(), static_cast<KTLibraryResponse*>(response)->sceneIndex(), static_cast<KTLibraryResponse*>(response)->layerIndex(), static_cast<KTLibraryResponse*>(response)->frameIndex());
                  }
             break;
             default:

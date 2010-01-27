@@ -178,9 +178,8 @@ bool KTScene::removeLayer( int position)
     return false;
 }
 
-
 /**
- * Retorna el layer que se encuentra en la posici�n indicada
+ * Retorna el layer que se encuentra en la posicion indicada
  * @param position 
  * @return 
  */

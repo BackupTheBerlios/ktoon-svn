@@ -168,7 +168,7 @@ void KTExposureHeader::moveLayer(int position, int newPosition)
     m_blockSectionMoved = false;
 }
 
-int KTExposureHeader::lastFrame( int logicalIndex)
+int KTExposureHeader::lastFrame(int logicalIndex)
 {
     return m_layers[logicalIndex].lastFrame;
 }
@@ -219,7 +219,7 @@ void KTExposureHeader::paintSection (QPainter * painter, const QRect & rect, int
     int height = rect.height() - 5;
 
     painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
-	
+    
     QString text = m_layers[logicalIndex].title;
     QFontMetrics fm( painter->font());
 
@@ -321,14 +321,14 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new
     k->header = new KTExposureHeader(this);
 
     connect(k->header, SIGNAL(visiblityChanged(int, bool)), this, SIGNAL(requestChangeVisiblityLayer(int, bool)));
-    connect(k->header, SIGNAL(changedName (int, const QString &)), this, SIGNAL(requestRenameLayer(int, 
+    connect(k->header, SIGNAL(changedName(int, const QString &)), this, SIGNAL(requestRenameLayer(int, 
                               const QString & )));
-    connect(k->header, SIGNAL(sectionMoved (int , int , int)), this, SLOT(emitRequestMoveLayer(int, int , int)));
+    connect(k->header, SIGNAL(sectionMoved (int, int, int)), this, SLOT(emitRequestMoveLayer(int, int, int)));
 
     setHorizontalHeader(k->header);
 
     connect(this, SIGNAL(cellClicked(int, int)), this, SLOT(emitRequestSetUsedFrame(int, int)));
-    connect(this, SIGNAL(currentCellChanged(int , int , int , int)), this, SLOT(emitRequestSelectFrame(int , int , int , int)));
+    connect(this, SIGNAL(currentCellChanged(int, int, int, int)), this, SLOT(emitRequestSelectFrame(int, int, int, int)));
 
     setSelectionBehavior(QAbstractItemView::SelectItems);
     setSelectionMode(QAbstractItemView::SingleSelection);
@@ -336,23 +336,23 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new
     k->menu = 0;
 }
 
-void KTExposureTable::emitRequestRenameFrame( QTableWidgetItem * item )
+void KTExposureTable::emitRequestRenameFrame(QTableWidgetItem * item)
 {
-    QModelIndex  index = indexFromItem ( item );
+    QModelIndex  index = indexFromItem(item);
     emit requestRenameFrame(index.column(), index.row(), item->text());
 }
 
-void KTExposureTable::emitRequestSelectFrame(  int currentRow_, int currentColumn_, int previousRow, int previousColumn )
+void KTExposureTable::emitRequestSelectFrame(int currentRow_, int currentColumn_, int previousRow, int previousColumn)
 {
     if (previousRow != currentRow_ || previousColumn != currentColumn_)
         emit  requestSelectFrame(currentLayer(), currentRow());
 }
 
-void KTExposureTable::emitRequestMoveLayer( int , int oldVisualIndex, int newVisualIndex  )
+void KTExposureTable::emitRequestMoveLayer(int logicalIndex, int oldVisualIndex, int newVisualIndex)
 {
     if (! k->header->signalMovedBlocked()) {
-		k->header->moveLayer(newVisualIndex, oldVisualIndex);
-		emit requestMoveLayer(oldVisualIndex,  newVisualIndex);
+        k->header->moveLayer(newVisualIndex, oldVisualIndex);
+        emit requestMoveLayer(oldVisualIndex, newVisualIndex);
     }
 }
 
@@ -363,7 +363,7 @@ KTExposureTable::~KTExposureTable()
 
 QString KTExposureTable::frameName(int indexLayer, int indexFrame)
 {
-    QTableWidgetItem *frame = item( indexFrame , indexLayer);
+    QTableWidgetItem *frame = item(indexFrame , indexLayer);
     if (frame)
         return frame->text();
 }
@@ -444,7 +444,7 @@ void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString 
 
     int logicalIndex = k->header->logicalIndex(indexLayer);
 
-    k->header->setLastFrame(logicalIndex, k->header->lastFrame(logicalIndex)+1 );
+    k->header->setLastFrame(logicalIndex, k->header->lastFrame(logicalIndex) + 1);
 
     setItem(k->header->lastFrame(logicalIndex)-1, logicalIndex, frame);
 
@@ -535,12 +535,12 @@ void KTExposureTable::emitRequestSetUsedFrame(int indexFrame,  int indexLayer)
     }
 }
 
-int KTExposureTable::numUsed(int column) const
+int KTExposureTable::usedFrames(int column) const
 {
     return k->header->lastFrame(column);
 }
 
-bool KTExposureTable::edit( const QModelIndex & index, EditTrigger trigger, QEvent *event )
+bool KTExposureTable::edit(const QModelIndex & index, EditTrigger trigger, QEvent *event)
 {
     QTableWidgetItem *item = itemFromIndex(index);
 

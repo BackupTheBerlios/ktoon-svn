@@ -58,7 +58,7 @@ class KTExposureTable : public QTableWidget
         void setLockFrame(int indexLayer, int indexFrame, bool locked);
         void setLockLayer(int indexLayer,  bool locked);
         void setVisibilityChanged(int visualIndex, bool visibility);
-        int numUsed(int column) const;
+        int usedFrames(int column) const;
 
         QString frameName(int indexLayer, int indexFrame);
         void setFrameName(int indexLayer, int indexFrame,const QString & name);

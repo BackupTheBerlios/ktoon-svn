@@ -36,8 +36,6 @@ bool KTCommandExecutor::createLayer(KTLayerResponse *response)
     int scenePosition = response->sceneIndex();
     int position = response->layerIndex();
 
-    kFatal() << "*** Logical Position: " << position;
-
     QString name = response->arg().toString();
     QString state = response->state();
 

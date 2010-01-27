@@ -226,7 +226,9 @@ void PolyLine::itemResponse(const KTItemResponse *response)
             }
         }
     } else {
-        kFatal() << "Project not exist";
+        #ifdef K_DEBUG
+               kFatal() << "Project not exist";
+        #endif
     }
         
     switch (response->action()) {

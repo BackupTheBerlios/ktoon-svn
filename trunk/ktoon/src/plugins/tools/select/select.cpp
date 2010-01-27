@@ -277,7 +277,9 @@ void Select::itemResponse(const KTItemResponse *event)
             }
         }
     } else {
-        kFatal() << "Project does not exist";
+        #ifdef K_DEBUG
+               kFatal() << "Project does not exist";
+        #endif
     }
     
     switch (event->action()) {

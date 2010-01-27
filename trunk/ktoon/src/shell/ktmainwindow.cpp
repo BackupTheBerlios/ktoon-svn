@@ -180,8 +180,6 @@ void KTMainWindow::createNewProject()
     //if (!closeProject())
     //    return;
 
-    kFatal() << "*** Setting up a new project";
-
     m_projectManager->setupNewProject();
     enableToolViews(true);
     setMenuItemsContext(true);
