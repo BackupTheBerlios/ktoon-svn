@@ -129,6 +129,7 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 
 void KTGraphicsScene::drawCurrentPhotogram()
 {
+    kFatal() << "drawCurrentPhotogram(): " << k->framePosition.frame;
     drawPhotogram(k->framePosition.frame);
 }
 
@@ -189,6 +190,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                      }
                  }
 
+                 // TODO: Crashpoint when layers are deleted 
                  KTFrame *frame = layer->frame(photogram);
 
                  if (frame) {

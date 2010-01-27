@@ -187,7 +187,9 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
                  setUpdatesEnabled(true);
 
                  sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
-                 kFatal() << "Calling out drawPhotogram() from KTPaintArea / frameResponse"; 
+
+                 //kFatal() << "Calling out drawPhotogram() from KTPaintArea - frameResponse: " << event->frameIndex(); 
+
                  sscene->drawPhotogram(event->frameIndex());
                  setCurrentScene(event->sceneIndex());
 
