@@ -98,7 +98,7 @@ bool KTFrame::isVisible() const
     return k->isVisible;
 }
 
-void KTFrame::fromXml(const QString &xml )
+void KTFrame::fromXml(const QString &xml)
 {
     QDomDocument document;
 	
@@ -161,7 +161,7 @@ QDomElement KTFrame::toXml(QDomDocument &doc) const
     doc.appendChild(root);
 
     foreach (KTGraphicObject *object, k->graphics.visualValues())
-             root.appendChild( object->toXml(doc) );
+             root.appendChild(object->toXml(doc));
 
     return root;
 }
@@ -182,7 +182,7 @@ void KTFrame::insertItem(int position, QGraphicsItem *item)
     k->graphics.insert(position, object);
 }
 
-QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group )
+QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group)
 {
     #ifdef K_DEBUG
            K_FUNCINFO;
@@ -196,19 +196,15 @@ QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group 
     foreach (qreal p, group) {
              int pos = (int)p - count;
              QGraphicsItem *item = this->item(pos);
-
              KTGraphicObject *object = this->graphic(pos);
              object->setItem(0);
-
              removeGraphicAt(pos);
-
              g->addToGroup(item);
-
              delete object;
-
              count++;
     }
-    insertItem(position, g );
+
+    insertItem(position, g);
 
     return g;
 }

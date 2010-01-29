@@ -76,7 +76,7 @@ void KTLibraryDialog::addItem(QGraphicsItem *item)
     QLineEdit *name = new QLineEdit;
     connect(name, SIGNAL(returnPressed()), this, SLOT(checkNames()));
 
-    QLayout *grid = KFormFactory::makeGrid( QStringList() << tr("Name"), QWidgetList() << name);
+    QLayout *grid = KFormFactory::makeGrid(QStringList() << tr("Name"), QWidgetList() << name);
     layout->addLayout(grid);
 
     int index = k->toolBox->addItem(container, tr("Item %1").arg(k->toolBox->count()+1));

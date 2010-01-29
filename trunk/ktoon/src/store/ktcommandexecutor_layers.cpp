@@ -69,6 +69,9 @@ bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
     int scenePos = response->sceneIndex();
     int position = response->layerIndex();
 
+    kFatal() << "removeLayer - scenePos: " << scenePos;
+    kFatal() << "removeLayer - position: " << position;
+
     KTScene *scene = m_project->scene(scenePos);
 
     if (scene) {

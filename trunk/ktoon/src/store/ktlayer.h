@@ -39,92 +39,92 @@ class KTScene;
 class KTProject;
 
 /**
- * @brief Esta clase representa un layer, los layers estan contenidos en KTDocument y contienen KTFrame's
+ * @brief This class represents a layer. Layers are defined by the KTDocument class and they contain KTFrames
  * @author David Cuadrado \<krawek@toonka.com\>
 */
 
 class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 {
-	Q_OBJECT
-	public:
-		/**
-		 * Constructor por defecto
-		 */
-		KTLayer(KTScene *parent);
-		
-		/**
-		 * Destructor
-		 */
-		~KTLayer();
-		
-		/**
-		 * Retorna los frames del layer
-		 */
-		Frames frames();
-		
-		/**
-		 * Pone la lista de frames, esta funcion reemplaza los frames anteriores
-		 */
-		void setFrames(const Frames &frames);
-		
-		/**
-		 * Pone el nombre del layer
-		 */
-		void setLayerName(const QString &name);
-		
-		/**
-		 * Bloquea el layer
-		 */
-		void setLocked(bool isLocked);
-		
-		/**
-		 * Pone la visibilidad del layer
-		 */
-		void setVisible(bool isVisible);
-		
-		/**
-		 * Retorna el nombre del layer
-		 */
-		QString layerName() const;
-		
-		/**
-		 * Returna verdadero cuando el layer esta bloqueado
-		*/
-		bool isLocked() const;
-		
-		/**
-		 * Retorna verdadero si el layer es visible
-		 */
-		bool isVisible() const;
-		
-		KTFrame *createFrame(int position, bool loaded = false);
-		
-		bool removeFrame(int position);
-		
-		bool moveFrame(int from, int to);
-		
-		bool expandFrame(int position, int size);
-		
-		KTFrame *frame(int position) const;
-		
-		KTScene *scene() const;
-		KTProject *project() const;
-		
-		int logicalIndexOf(KTFrame *frame) const;
-		int visualIndexOf(KTFrame *frame) const;
-		
-		int logicalIndex() const;
-		int visualIndex() const;
+    Q_OBJECT
+    public:
+        /**
+         * Default Constructor
+         */
+        KTLayer(KTScene *parent);
+        
+        /**
+         * Destructor
+         */
+        ~KTLayer();
+        
+        /**
+         * Retorna los frames del layer
+         */
+        Frames frames();
+        
+        /**
+         * Pone la lista de frames, esta funcion reemplaza los frames anteriores
+         */
+        void setFrames(const Frames &frames);
+        
+        /**
+         * Pone el nombre del layer
+         */
+        void setLayerName(const QString &name);
+        
+        /**
+         * Bloquea el layer
+         */
+        void setLocked(bool isLocked);
+        
+        /**
+         * Pone la visibilidad del layer
+         */
+        void setVisible(bool isVisible);
+        
+        /**
+         * Retorna el nombre del layer
+         */
+        QString layerName() const;
+        
+        /**
+         * Returna verdadero cuando el layer esta bloqueado
+        */
+        bool isLocked() const;
+        
+        /**
+         * Retorna verdadero si el layer es visible
+         */
+        bool isVisible() const;
+        
+        KTFrame *createFrame(int position, bool loaded = false);
+        
+        bool removeFrame(int position);
+        
+        bool moveFrame(int from, int to);
+        
+        bool expandFrame(int position, int size);
+        
+        KTFrame *frame(int position) const;
+        
+        KTScene *scene() const;
+        KTProject *project() const;
+        
+        int logicalIndexOf(KTFrame *frame) const;
+        int visualIndexOf(KTFrame *frame) const;
+        
+        int logicalIndex() const;
+        int visualIndex() const;
 
-                int framesNumber() const;
-		
-	public:
-		virtual void fromXml(const QString &xml );
-		virtual QDomElement toXml(QDomDocument &doc) const;
-		
-	private:
-		struct Private;
-		Private *const k;
+        int framesNumber() const;
+        
+    public:
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc) const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

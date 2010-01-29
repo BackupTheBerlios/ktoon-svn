@@ -38,7 +38,7 @@ class KTTLRuler : public QHeaderView
         void select(int logical);
 
     protected:
-        void paintSection( QPainter *painter, const QRect & rect, int logicalIndex ) const;
+        void paintSection(QPainter *painter, const QRect & rect, int logicalIndex) const;
         void mouseMoveEvent(QMouseEvent *e);
 
     private slots:

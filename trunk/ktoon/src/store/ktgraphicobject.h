@@ -37,36 +37,34 @@ class KTItemTweener;
 */
 class STORE_EXPORT KTGraphicObject : public QObject, public KTAbstractSerializable
 {
-	public:
-		enum Transformations{ ScaleX = 1, ScaleY, Rotate, TranslateX, TranslateY };
-		
-		KTGraphicObject(QGraphicsItem *item, KTFrame *parent);
-		~KTGraphicObject();
-		
-		void setItem(QGraphicsItem *item);
-		QGraphicsItem *item() const;
-		
-		void setObjectName(const QString &name);
-		QString objectName() const;
-		
-		void setTweener(KTItemTweener *tweener);
-		KTItemTweener *tweener() const;
-		
-		KTFrame *frame() const;
-		int logicalIndex() const;
-		int visualIndex() const;
-		
-	public:
-		virtual void fromXml(const QString &xml );
-		virtual QDomElement toXml(QDomDocument &doc)  const;
-		
-	private:
-		void initItemData();
-		
-		struct Private;
-		Private *const k;
-		
+    public:
+        enum Transformations{ScaleX = 1, ScaleY, Rotate, TranslateX, TranslateY};
+        
+        KTGraphicObject(QGraphicsItem *item, KTFrame *parent);
+        ~KTGraphicObject();
+        
+        void setItem(QGraphicsItem *item);
+        QGraphicsItem *item() const;
+        
+        void setObjectName(const QString &name);
+        QString objectName() const;
+        
+        void setTweener(KTItemTweener *tweener);
+        KTItemTweener *tweener() const;
+        
+        KTFrame *frame() const;
+        int logicalIndex() const;
+        int visualIndex() const;
+        
+    public:
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc)  const;
+        
+    private:
+        void initItemData();
+        
+        struct Private;
+        Private *const k;
 };
 
 #endif
-

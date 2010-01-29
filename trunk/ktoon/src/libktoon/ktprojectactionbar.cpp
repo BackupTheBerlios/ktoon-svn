@@ -52,11 +52,9 @@ KTProjectActionBar::KTProjectActionBar(Actions actions, Qt::Orientation orientat
     setFixedSize(22);
 }
 
-
 KTProjectActionBar::~KTProjectActionBar()
 {
 }
-
 
 void KTProjectActionBar::setFixedSize(int s)
 {

@@ -218,7 +218,10 @@ void KTExposureHeader::paintSection (QPainter * painter, const QRect & rect, int
 
     int height = rect.height() - 5;
 
-    painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
+    //QBrush brush(Qt::red);
+    //painter->setBackground(brush);
+
+    //painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
     
     QString text = m_layers[logicalIndex].title;
     QFontMetrics fm( painter->font());
@@ -235,6 +238,8 @@ void KTExposureHeader::paintSection (QPainter * painter, const QRect & rect, int
     } else {
         buttonOption.palette.setBrush(QPalette::Button, Qt::red);
         buttonOption.state |= QStyle::State_Sunken;
+        QColor color(255, 0, 0, 60);
+        painter->fillRect(rect.normalized().adjusted(0, 1, 0, -1), color);
     }
 
     /*
@@ -451,7 +456,7 @@ void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString 
     for (int i = k->header->lastFrame(logicalIndex)-1; i > indexFrame; i--)
          moveFrame(indexLayer, i , indexLayer, i-1, external);
 
-    if (k->header->lastFrame(logicalIndex)  == rowCount())
+    if (k->header->lastFrame(logicalIndex) == rowCount())
         setRowCount(k->header->lastFrame(logicalIndex) + 50);
 }
 
