@@ -63,6 +63,9 @@ class KTExposureHeader: public QHeaderView
         bool signalMovedBlocked();
         void setVisibilityChanged(int logicalndex, bool visibility);
 
+    public slots:
+        void updateSelection(int col, int row);
+
     private slots:
         void emitVisiblityChanged(int section);
         void showEditorName(int section);
@@ -74,7 +77,9 @@ class KTExposureHeader: public QHeaderView
     private:
         QVector<LayerItem> m_layers;
         QLineEdit *m_editor;
-        int m_sectionEdited, m_blockSectionMoved;
+        int m_sectionEdited;
+        int m_blockSectionMoved;
+        int currentCol;
 
     signals:
         void changedName(int indexLayer, const QString & name);
@@ -218,18 +223,11 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
 
     int height = rect.height() - 5;
 
-    //QBrush brush(Qt::red);
-    //painter->setBackground(brush);
-
-    //painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
-    
     QString text = m_layers[logicalIndex].title;
     QFontMetrics fm( painter->font());
 
     int x = rect.x() + (sectionSize(logicalIndex) - fm.width( text ))/2;
     int y = fm.height() + (rect.y() / 2);
-
-    //painter->drawText(x, y, text);
 
     QStyleOptionButton buttonOption;
 
@@ -240,32 +238,30 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
         buttonOption.state |= QStyle::State_Sunken;
         QColor color(255, 0, 0, 40);
         painter->fillRect(rect.normalized().adjusted(0, 1, 0, -1), color);
+    }
 
-        /*
+    kFatal() << "logicalIndex : " << logicalIndex << " - currentCol: " << currentCol;
+
+    if (logicalIndex == currentCol) {
         QColor color(250, 209, 132, 80);
         painter->fillRect(rect.normalized().adjusted(0, 1, 0, -1), color);
         QColor border(250, 209, 132, 255);
-        painter->setPen(QPen(border, 2, Qt::SolidLine)); 
+        painter->setPen(QPen(border, 2, Qt::SolidLine));
         painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
-        */
     }
 
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine));
     painter->drawText(x, y, text);
 
-    /*
-    int pxWidth = 0;
-    if (m_layers[logicalIndex].isLocked) {
-        QPixmap pixmap(THEME_DIR + "icons/kilit_pic.png");
-        //painter->drawPixmap(x+fm.width(text)+3, 3, pixmap);
-        painter->drawPixmap(x+15, 3, pixmap);
-        //pxWidth =  pixmap.width();
-    }
-    */
-    
     height -= 4;
     buttonOption.rect = QRect(rect.x()+3, rect.y() + ((rect.height()-height)/2) + 1, height, height);
     style()->drawControl(QStyle::CE_PushButton, &buttonOption, painter);
+}
+
+void KTExposureHeader::updateSelection(int row, int col)
+{
+    //kFatal() << "Selection -> Col: " << col;
+    currentCol = col;
 }
 
 #include "ktexposuretable.moc"
@@ -288,7 +284,7 @@ KTExposureItemDelegate::~KTExposureItemDelegate()
 {
 }
 
-void KTExposureItemDelegate::paint( QPainter *painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+void KTExposureItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
     QItemDelegate::paint(painter, option, index);
 
@@ -345,6 +341,8 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new
     setHorizontalHeader(k->header);
 
     connect(this, SIGNAL(cellClicked(int, int)), this, SLOT(emitRequestSetUsedFrame(int, int)));
+    connect(this, SIGNAL(cellClicked(int, int)), k->header, SLOT(updateSelection(int, int)));
+
     connect(this, SIGNAL(currentCellChanged(int, int, int, int)), this, SLOT(emitRequestSelectFrame(int, int, int, int)));
 
     setSelectionBehavior(QAbstractItemView::SelectItems);
