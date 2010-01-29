@@ -107,7 +107,7 @@ KTFrame *KTLayer::createFrame(int position, bool loaded)
     k->frames.insert(position, frame);
 
     if (loaded)
-        KTProjectLoader::createFrame( scene()->visualIndex(), visualIndex(), position, frame->frameName(), project());
+        KTProjectLoader::createFrame(scene()->visualIndex(), visualIndex(), position, frame->frameName(), project());
 
     return frame;
 }

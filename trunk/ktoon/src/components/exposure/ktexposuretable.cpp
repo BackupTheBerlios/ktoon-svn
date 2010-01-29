@@ -65,7 +65,7 @@ class KTExposureHeader: public QHeaderView
 
     private slots:
         void emitVisiblityChanged(int section);
-        void showEditorName(int section );
+        void showEditorName(int section);
         void hideEditorName();
 
     protected:
@@ -81,7 +81,7 @@ class KTExposureHeader: public QHeaderView
         void visiblityChanged(int indexLayer, bool visibility);
 };
 
-KTExposureHeader::KTExposureHeader(QWidget * parent) : QHeaderView(Qt::Horizontal , parent), m_sectionEdited(-1),
+KTExposureHeader::KTExposureHeader(QWidget * parent) : QHeaderView(Qt::Horizontal, parent), m_sectionEdited(-1),
                                                        m_blockSectionMoved(false)
 {
     setClickable(true);
@@ -116,7 +116,7 @@ void KTExposureHeader::setVisibilityChanged(int logicalndex, bool visibility)
 
 void KTExposureHeader::showEditorName(int section)
 {
-    int x = sectionViewportPosition (section);
+    int x = sectionViewportPosition(section);
     m_editor->setGeometry(x, 0, sectionSize(section), height());
     m_sectionEdited = section;
     m_editor->setText(m_layers[section].title);
@@ -195,7 +195,7 @@ void KTExposureHeader::mousePressEvent(QMouseEvent * event)
         QHeaderView::mousePressEvent(event);
 }
 
-void KTExposureHeader::paintSection (QPainter * painter, const QRect & rect, int logicalIndex) const
+void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int logicalIndex) const
 {
     if (!rect.isValid()) 
         return;
@@ -229,7 +229,7 @@ void KTExposureHeader::paintSection (QPainter * painter, const QRect & rect, int
     int x = rect.x() + (sectionSize(logicalIndex) - fm.width( text ))/2;
     int y = fm.height() + (rect.y() / 2);
 
-    painter->drawText(x, y, text);
+    //painter->drawText(x, y, text);
 
     QStyleOptionButton buttonOption;
 
@@ -238,9 +238,20 @@ void KTExposureHeader::paintSection (QPainter * painter, const QRect & rect, int
     } else {
         buttonOption.palette.setBrush(QPalette::Button, Qt::red);
         buttonOption.state |= QStyle::State_Sunken;
-        QColor color(255, 0, 0, 60);
+        QColor color(255, 0, 0, 40);
         painter->fillRect(rect.normalized().adjusted(0, 1, 0, -1), color);
+
+        /*
+        QColor color(250, 209, 132, 80);
+        painter->fillRect(rect.normalized().adjusted(0, 1, 0, -1), color);
+        QColor border(250, 209, 132, 255);
+        painter->setPen(QPen(border, 2, Qt::SolidLine)); 
+        painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
+        */
     }
+
+    painter->setPen(QPen(Qt::black, 1, Qt::SolidLine));
+    painter->drawText(x, y, text);
 
     /*
     int pxWidth = 0;
@@ -297,6 +308,7 @@ void KTExposureItemDelegate::paint( QPainter *painter, const QStyleOptionViewIte
             int y = option.rect.topLeft().y() + 2;
             int w = option.rect.bottomRight().x() - x - 2;
             int h = option.rect.bottomRight().y() - y - 2;
+
             painter->setPen(Qt::gray);
             painter->drawRect(x, y, w, h);
         }
