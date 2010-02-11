@@ -55,6 +55,7 @@ KTipDialog::KTipDialog(KTipDatabase *database, QWidget *parent) : QDialog(parent
 void KTipDialog::setupGUI()
 {
 	setWindowTitle(tr("Tip of day"));
+        setWindowIcon(QPixmap(THEME_DIR + "icons/today_tip.png"));
 	
 	int h,s,v;
 	QColor baseColor = palette().base().color();
