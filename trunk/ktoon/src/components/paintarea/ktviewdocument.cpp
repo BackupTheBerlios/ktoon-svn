@@ -385,7 +385,7 @@ void KTViewDocument::loadPlugins()
                                  {
                                    // Temporary code - SQA Issue
                                    QString toolStr = act->text();
-                                   if (toolStr.compare(tr("Tweener Translator")) == 0 || toolStr.compare(tr("Poly line")) == 0) {
+                                   if (toolStr.compare(tr("Tweener Translator")) == 0 || toolStr.compare(tr("Polyline")) == 0) {
                                        act->setDisabled(true); 
                                    }
 

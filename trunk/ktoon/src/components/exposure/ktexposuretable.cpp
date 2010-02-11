@@ -64,7 +64,7 @@ class KTExposureHeader: public QHeaderView
         void setVisibilityChanged(int logicalndex, bool visibility);
 
     public slots:
-        void updateSelection(int col, int row);
+        void updateSelection(int col);
 
     private slots:
         void emitVisiblityChanged(int section);
@@ -240,8 +240,6 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
         painter->fillRect(rect.normalized().adjusted(0, 1, 0, -1), color);
     }
 
-    kFatal() << "logicalIndex : " << logicalIndex << " - currentCol: " << currentCol;
-
     if (logicalIndex == currentCol) {
         QColor color(250, 209, 132, 80);
         painter->fillRect(rect.normalized().adjusted(0, 1, 0, -1), color);
@@ -258,10 +256,10 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
     style()->drawControl(QStyle::CE_PushButton, &buttonOption, painter);
 }
 
-void KTExposureHeader::updateSelection(int row, int col)
+void KTExposureHeader::updateSelection(int col)
 {
-    //kFatal() << "Selection -> Col: " << col;
     currentCol = col;
+    updateSection(col);
 }
 
 #include "ktexposuretable.moc"
@@ -341,7 +339,7 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new
     setHorizontalHeader(k->header);
 
     connect(this, SIGNAL(cellClicked(int, int)), this, SLOT(emitRequestSetUsedFrame(int, int)));
-    connect(this, SIGNAL(cellClicked(int, int)), k->header, SLOT(updateSelection(int, int)));
+    //connect(this, SIGNAL(cellClicked(int, int)), k->header, SLOT(updateSelection(int, int)));
 
     connect(this, SIGNAL(currentCellChanged(int, int, int, int)), this, SLOT(emitRequestSelectFrame(int, int, int, int)));
 
@@ -361,6 +359,10 @@ void KTExposureTable::emitRequestSelectFrame(int currentRow_, int currentColumn_
 {
     if (previousRow != currentRow_ || previousColumn != currentColumn_)
         emit  requestSelectFrame(currentLayer(), currentRow());
+
+    if (previousColumn != currentColumn_) {
+        k->header->updateSelection(currentColumn_);
+    }
 }
 
 void KTExposureTable::emitRequestMoveLayer(int logicalIndex, int oldVisualIndex, int newVisualIndex)
@@ -444,7 +446,6 @@ int KTExposureTable::currentFrame() const
 
 void KTExposureTable::insertLayer(int index, const QString & name)
 {
-    //kDebug() << "*** Inserting Layer column! - Index: " << index; 
     insertColumn(index);
     k->header->insertLayer(index, name);
 }
@@ -539,12 +540,9 @@ void KTExposureTable::moveLayer(int oldPosLayer, int newPosLayer)
 
 void KTExposureTable::emitRequestSetUsedFrame(int indexFrame,  int indexLayer)
 {
-    kDebug() << "*** Selecting Frame..."; 
-
     int visualIndex = k->header->visualIndex(indexLayer);
 
     if (indexFrame == k->header->lastFrame(indexLayer)) {
-        kDebug() << "*** Adding Frame #" << indexFrame;
         emit requestSetUsedFrame(visualIndex, indexFrame);
         emit requestSelectFrame(visualIndex, indexFrame);
     }

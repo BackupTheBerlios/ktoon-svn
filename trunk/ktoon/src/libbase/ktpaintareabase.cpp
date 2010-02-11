@@ -300,14 +300,30 @@ void KTPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
 {
     if (KTFrame *frame = k->scene->currentFrame()) {
         if (frame->isLocked()) {
-            QString text = tr("Locked");
-            QFont kfont(QFont("Arial", 20));
+            QString text = tr("Locked!");
+            QFont kfont(QFont("Arial", 30));
             QFontMetricsF fm(kfont);
             painter->setFont(kfont);
 
             painter->fillRect(rect, QColor(201,201,201, 200));
-            painter->drawText(QPointF(k->scene->sceneRect().topRight().x() - fm.width(text) - 5, 
-                              k->scene->sceneRect().topRight().y() + fm.height() - 5), text);
+
+            QRectF rect = fm.boundingRect(text);
+   
+            int middleX = k->scene->sceneRect().topRight().x() - k->scene->sceneRect().topLeft().x();
+            int middleY = k->scene->sceneRect().bottomLeft().y() - k->scene->sceneRect().topLeft().y();
+
+            int x = (middleX - rect.width()) / 2; 
+            int y = (middleY - rect.height()) / 2;
+
+            painter->drawText(x, y, text);
+
+            x = (middleX - 20) / 2;
+            y = (middleY - 20) / 2;
+            painter->setPen(QPen(QColor(100, 100, 100), 4, Qt::SolidLine));
+            painter->drawRoundedRect(x, y + 18, 20, 20, 1, 1, Qt::AbsoluteSize);
+
+            x = (middleX - 30) / 2;                                                                         
+            painter->fillRect(x, y + 30, 30, 20, QColor(100, 100, 100));
         }
     }
 }

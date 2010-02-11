@@ -164,6 +164,8 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
     foreach (KTLayer *layer, k->scene->layers().values()) {
 
+             kFatal() << "FRAMES NUMBER: " << layer->framesNumber();
+
              if (layer->isVisible()) {
 
                  if (k->onionSkin.previous > 0) {

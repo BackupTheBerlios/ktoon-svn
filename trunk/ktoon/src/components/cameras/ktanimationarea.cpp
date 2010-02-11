@@ -57,6 +57,8 @@ struct KTAnimationArea::Private
 
 KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QFrame(parent), k(new Private)
 {
+    setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+
     k->project = project;
 
     k->draw = false;
@@ -116,7 +118,13 @@ void KTAnimationArea::paintEvent(QPaintEvent *)
 
    QPainter painter;
    painter.begin(this);
-   painter.drawImage(QPoint(0, 0), k->renderCamera);
+
+   int x = (frameSize().width() - k->renderCamera.size().width()) / 2;
+   int y = (frameSize().height() - k->renderCamera.size().height()) / 2;
+   painter.drawImage(QPoint(x, y), k->renderCamera);
+
+   painter.setPen(QPen(Qt::gray, 0.5, Qt::SolidLine));
+   painter.drawRect(x, y, k->renderCamera.size().width()-1, k->renderCamera.size().height()-1);
 }
 
 void KTAnimationArea::play()

@@ -169,18 +169,7 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
     title->setFont(font);
     layout->addWidget(title, 0, Qt::AlignCenter);
 
-    QFrame *animationAreaContainer = new QFrame;
-    animationAreaContainer->setMidLineWidth(2);
-    animationAreaContainer->setLineWidth(2);
-    animationAreaContainer->setFrameStyle(QFrame::Box | QFrame::Raised);
-    animationAreaContainer->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-
-    QBoxLayout *animationAreaLayout = new QBoxLayout(QBoxLayout::TopToBottom, animationAreaContainer);
-    animationAreaLayout->setMargin(0);
-
     m_animationArea = new KTAnimationArea(project);
-    //animationAreaLayout->addWidget(m_animationArea);
-    //layout->addWidget(animationAreaContainer, 0, Qt::AlignCenter);
     layout->addWidget(m_animationArea, 0, Qt::AlignCenter);
 
     KTCameraBar *m_bar = new KTCameraBar;
