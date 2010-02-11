@@ -87,7 +87,7 @@ void FillTool::setupActions()
     
     m_actions.insert(tr("Shape fill"), action2);
     
-    KAction *action3 = new KAction(QIcon(THEME_DIR + "icons/fill.png"), tr("Contour fill"), this);
+    KAction *action3 = new KAction(QIcon(THEME_DIR + "icons/contour.png"), tr("Contour fill"), this);
     // action3->setShortcut( QKeySequence(tr("Ctrl+F")) );
     action3->setCursor(QCursor(THEME_DIR + "cursors/contour_fill.png"));
     

@@ -89,7 +89,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
            K_FUNCINFO;
     #endif
 
-    setWindowIcon(QPixmap(THEME_DIR + "icons/layer_pic.png")); // FIXME: new image for documents
+    setWindowIcon(QPixmap(THEME_DIR + "icons/illustration_mode.png"));
    
     k->currentTool = 0;
     k->actionManager = new KActionManager(this);

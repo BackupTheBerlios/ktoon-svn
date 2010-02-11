@@ -217,7 +217,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 
 void Select::setupActions()
 {
-    KAction *select = new KAction(QIcon(), tr("Object Selection"), this);
+    KAction *select = new KAction(QPixmap(THEME_DIR + "icons/selection.png"), tr("Object Selection"), this);
     select->setShortcut(QKeySequence(tr("Ctrl+N")));
 
     //select->setCursor(QCursor(THEME_DIR + "cursors/contour.png"));

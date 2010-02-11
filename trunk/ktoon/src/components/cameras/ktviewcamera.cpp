@@ -179,8 +179,9 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
     animationAreaLayout->setMargin(0);
 
     m_animationArea = new KTAnimationArea(project);
-    animationAreaLayout->addWidget(m_animationArea);
-    layout->addWidget(animationAreaContainer, 0, Qt::AlignCenter);
+    //animationAreaLayout->addWidget(m_animationArea);
+    //layout->addWidget(animationAreaContainer, 0, Qt::AlignCenter);
+    layout->addWidget(m_animationArea, 0, Qt::AlignCenter);
 
     KTCameraBar *m_bar = new KTCameraBar;
     layout->addWidget(m_bar, 0, Qt::AlignCenter);

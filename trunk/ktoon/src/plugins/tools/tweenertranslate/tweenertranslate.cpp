@@ -172,7 +172,7 @@ bool TweenerTranslate::isComplete() const
 
 void TweenerTranslate::setupActions()
 {
-    KAction *translater = new KAction(QIcon(), tr("Tweener Translator"), this);
+    KAction *translater = new KAction(QPixmap(THEME_DIR + "icons/send_to_back.png"), tr("Tweener Translator"), this);
     k->actions.insert("TweenerTranslater", translater);
 }
 
