@@ -187,7 +187,8 @@ KTLayer *KTScene::layer(int position) const
 {
     if (position < 0 || position >= k->layers.count()) {
         #ifdef K_DEBUG
-               K_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+               K_FUNCINFO << " FATAL ERROR: index out of bound -> Position: " << position;
+               K_FUNCINFO << " FATAL ERROR: The layer requested doesn't exist anymore";
         #endif
         return 0;
     }

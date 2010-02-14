@@ -129,7 +129,7 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 
 void KTGraphicsScene::drawCurrentPhotogram()
 {
-    kFatal() << "drawCurrentPhotogram(): " << k->framePosition.frame;
+    // kFatal() << "drawCurrentPhotogram()/Frame: " << k->framePosition.frame;
     drawPhotogram(k->framePosition.frame);
 }
 
@@ -163,8 +163,11 @@ void KTGraphicsScene::drawPhotogram(int photogram)
     // Drawing frames from another layers
 
     foreach (KTLayer *layer, k->scene->layers().values()) {
-
-             kFatal() << "FRAMES NUMBER: " << layer->framesNumber();
+             kFatal() << " "; 
+             kFatal() << "Updating photogram...";
+             kFatal() << "Layer Name: " << layer->layerName();
+             kFatal() << "drawPhotogram() - FRAMES TOTAL: " << layer->framesNumber();
+             kFatal() << " ";
 
              if (layer->isVisible()) {
 

@@ -222,6 +222,8 @@ void KTExposureSheet::setScene(int index)
            K_FUNCINFO;
     #endif
 
+    kDebug() << "Scene Index: " << index;
+
     if (k->scenes->TabWidget()->count() >= index) {
         k->scenes->blockSignals(true);
         k->scenes->TabWidget()->setCurrentIndex(index);		
@@ -298,6 +300,8 @@ void KTExposureSheet::renameFrame(int indexLayer, int indexFrame, const QString 
 
 void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 {
+    kDebug() << "selectFrame IndexLayer: " << indexLayer;
+
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex() , indexLayer, 
                                                  indexFrame, KTProjectRequest::Select, "1");
     emit localRequestTriggered(&request);
@@ -420,10 +424,11 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                 break;
                 case KTProjectRequest::Select:
                  {
+                     kDebug() << "*** KTExposureSheet/Select case";
                      setScene(e->sceneIndex());
-                     scene->blockSignals(true );
-                     scene->selectFrame( e->layerIndex(), 0);
-                     scene->blockSignals(false );
+                     scene->blockSignals(true);
+                     scene->selectFrame(e->layerIndex(), 0);
+                     scene->blockSignals(false);
                  }
                 case KTProjectRequest::View:
                  {
@@ -456,7 +461,6 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 break;
                 case KTProjectRequest::Remove:
                  {
-                     kFatal() << "*** Removing frame...";
                      scene->removeFrame(e->layerIndex(), e->frameIndex());
                  }
                 break;
@@ -478,6 +482,7 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 break;
                 case KTProjectRequest::Select:
                  {
+                     kDebug() << "*** KTExposureSheet::frameResponse - Selecting frame / Layer: " << e->layerIndex();
                      setScene(e->sceneIndex());
                      scene->selectFrame(e->layerIndex(), e->frameIndex());
                  }

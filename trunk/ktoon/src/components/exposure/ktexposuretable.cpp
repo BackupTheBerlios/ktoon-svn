@@ -95,7 +95,7 @@ KTExposureHeader::KTExposureHeader(QWidget * parent) : QHeaderView(Qt::Horizonta
     connect(this, SIGNAL(sectionDoubleClicked(int)), this, SLOT(showEditorName(int)));
 
     m_editor = new QLineEdit(this);
-    m_editor->setFocusPolicy( Qt::ClickFocus);
+    m_editor->setFocusPolicy(Qt::ClickFocus);
     m_editor->setInputMask("");
     connect(m_editor, SIGNAL(editingFinished()), this, SLOT(hideEditorName()));
     m_editor->hide();
@@ -116,6 +116,7 @@ void KTExposureHeader::setVisibilityChanged(int logicalndex, bool visibility)
     // FIXME: in ktexpousertable.cpp visibility or !m_layers[logicalndex].isVisible
     // m_layers[logicalndex].isVisible = !m_layers[logicalndex].isVisible;
     m_layers[logicalndex].isVisible = visibility;
+
     updateSection(logicalndex);
 }
 
@@ -226,7 +227,7 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
     QString text = m_layers[logicalIndex].title;
     QFontMetrics fm( painter->font());
 
-    int x = rect.x() + (sectionSize(logicalIndex) - fm.width( text ))/2;
+    int x = rect.x() + (sectionSize(logicalIndex) - fm.width(text))/2;
     int y = fm.height() + (rect.y() / 2);
 
     QStyleOptionButton buttonOption;
@@ -240,7 +241,7 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
         painter->fillRect(rect.normalized().adjusted(0, 1, 0, -1), color);
     }
 
-    if (logicalIndex == currentCol) {
+    if ((logicalIndex == currentCol) || (m_layers.size() == 1)) {
         QColor color(250, 209, 132, 80);
         painter->fillRect(rect.normalized().adjusted(0, 1, 0, -1), color);
         QColor border(250, 209, 132, 255);
@@ -315,11 +316,13 @@ struct KTExposureTable::Private
 {
     KTExposureHeader *header;
     QMenu *menu;
+    bool removingLayer;
 };
 
 KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new Private)
 {
     setItemDelegate(new KTExposureItemDelegate(this));
+    k->removingLayer = false;
 
     QTableWidgetItem *prototype = new QTableWidgetItem();
 
@@ -339,7 +342,6 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new
     setHorizontalHeader(k->header);
 
     connect(this, SIGNAL(cellClicked(int, int)), this, SLOT(emitRequestSetUsedFrame(int, int)));
-    //connect(this, SIGNAL(cellClicked(int, int)), k->header, SLOT(updateSelection(int, int)));
 
     connect(this, SIGNAL(currentCellChanged(int, int, int, int)), this, SLOT(emitRequestSelectFrame(int, int, int, int)));
 
@@ -357,16 +359,29 @@ void KTExposureTable::emitRequestRenameFrame(QTableWidgetItem * item)
 
 void KTExposureTable::emitRequestSelectFrame(int currentRow_, int currentColumn_, int previousRow, int previousColumn)
 {
-    if (previousRow != currentRow_ || previousColumn != currentColumn_)
-        emit  requestSelectFrame(currentLayer(), currentRow());
+    if (!k->removingLayer) {
+        if (previousRow != currentRow_ || previousColumn != currentColumn_)
+            emit requestSelectFrame(currentLayer(), currentRow());
 
-    if (previousColumn != currentColumn_) {
-        k->header->updateSelection(currentColumn_);
+        if ((previousColumn != currentColumn_) || (columnCount() == 1)) {
+             kDebug() << "previousColumn: " << previousColumn << " - current: " << currentColumn_;
+             k->header->updateSelection(currentColumn_);
+        }
+    } else {
+        k->removingLayer = false;
+        if (previousColumn == 0) {
+            selectFrame(1, previousRow);
+        } else {
+            selectFrame(currentColumn_, currentRow_);
+            k->header->updateSelection(currentColumn_);
+        }
     }
 }
 
 void KTExposureTable::emitRequestMoveLayer(int logicalIndex, int oldVisualIndex, int newVisualIndex)
 {
+    Q_UNUSED(logicalIndex);
+
     if (! k->header->signalMovedBlocked()) {
         k->header->moveLayer(newVisualIndex, oldVisualIndex);
         emit requestMoveLayer(oldVisualIndex, newVisualIndex);
@@ -383,6 +398,8 @@ QString KTExposureTable::frameName(int indexLayer, int indexFrame)
     QTableWidgetItem *frame = item(indexFrame , indexLayer);
     if (frame)
         return frame->text();
+
+    return "";
 }
 
 void KTExposureTable::setFrameName(int indexLayer, int indexFrame,const QString & name)
@@ -427,6 +444,8 @@ int KTExposureTable::currentLayer() const
     #ifdef K_DEBUG
            K_FUNCINFO;
     #endif
+
+    kDebug() << "*** currentLayer(): " << k->header->visualIndex(currentColumn());
     return k->header->visualIndex(currentColumn());
 }
 
@@ -500,6 +519,8 @@ void KTExposureTable::setVisibilityChanged(int visualIndex, bool visibility)
 
 void KTExposureTable::removeLayer(int indexLayer)
 {
+    k->removingLayer = true;
+
     int logicalIndex = k->header->logicalIndex(indexLayer);
     k->header->removeLayer(logicalIndex);
     removeColumn(logicalIndex);
@@ -576,7 +597,7 @@ void KTExposureTable::mousePressEvent(QMouseEvent * event)
     }
 }
 
-void KTExposureTable::commitData ( QWidget *editor )
+void KTExposureTable::commitData(QWidget *editor)
 {
     QLineEdit *lineEdit = qobject_cast<QLineEdit *>(editor);
     QTableWidget::commitData(0); // Don't rename

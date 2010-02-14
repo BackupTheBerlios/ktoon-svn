@@ -188,8 +188,6 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 
                  sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
 
-                 //kFatal() << "Calling out drawPhotogram() from KTPaintArea - frameResponse: " << event->frameIndex(); 
-
                  sscene->drawPhotogram(event->frameIndex());
                  setCurrentScene(event->sceneIndex());
 
@@ -229,8 +227,11 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
         sscene->setLayerVisible(event->layerIndex(), event->arg().toBool());
     }
 
-    if (event->action() != KTProjectRequest::Add ||  event->action() != KTProjectRequest::Remove) {
-        kFatal() << "Calling out drawPhotogram() from KTPaintArea / layerResponse";
+    //if (event->action() != KTProjectRequest::Add ||  event->action() != KTProjectRequest::Remove) {
+
+    if (event->action() != KTProjectRequest::Add && event->action() != KTProjectRequest::Remove) {
+        kFatal() << " ";
+        kFatal() << "From KTPaintArea / layerResponse";
         graphicsScene()->drawCurrentPhotogram();
         viewport()->update(scene()->sceneRect().toRect());
     }
