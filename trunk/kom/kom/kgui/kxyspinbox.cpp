@@ -71,13 +71,13 @@ KXYSpinBox::~KXYSpinBox()
 
 void KXYSpinBox::updateXValue()
 {
-     int value = (int) m_x->value()*340/520;
+     int value = (int) m_x->value()*380/520;
      m_y->setValue(value);
 }
 
 void KXYSpinBox::updateYValue()
 {
-     int value = (int) m_y->value()*520/340; 
+     int value = (int) m_y->value()*520/380; 
      m_x->setValue(value);
 }
 
