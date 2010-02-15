@@ -96,7 +96,7 @@ KTPaintArea::~KTPaintArea()
 void KTPaintArea::setCurrentScene(int index)
 {
     #ifdef K_DEBUG
-           K_FUNCINFOX("paintarea") << index;
+           K_FUNCINFO;
     #endif
 
     KTScene *scene = k->project->scene(index);
@@ -112,6 +112,10 @@ void KTPaintArea::setCurrentScene(int index)
 
 void KTPaintArea::mousePressEvent(QMouseEvent *event)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     if (event->buttons() == Qt::RightButton) {
 
         if (QGraphicsItem *item = scene()->itemAt(mapToScene(event->pos()))) {
@@ -180,6 +184,9 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
             case KTProjectRequest::Paste:
             case KTProjectRequest::Select: 
                  { 
+                 kFatal() << "SELECTING A FRAME!!! :O";            
+                 // Code commented only for SQA reasons 
+                 /*
                  KTGraphicsScene *sscene = graphicsScene();
                  if (!sscene->scene()) 
                      return;
@@ -190,10 +197,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 
                  sscene->drawPhotogram(event->frameIndex());
                  setCurrentScene(event->sceneIndex());
-
-                 #ifdef K_DEBUG
-                        kDebug("paintarea") << "frame: " << event->frameIndex() << " " << "layer: " << event->layerIndex();
-                 #endif
+                 */
                  }
                  break;
 
@@ -214,9 +218,12 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 
 void KTPaintArea::layerResponse(KTLayerResponse *event)
 {
-    if (graphicsScene()->isDrawing()) { 
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
+    if (graphicsScene()->isDrawing())
         return;
-    }
 
     KTGraphicsScene *sscene = graphicsScene();
 
@@ -227,35 +234,43 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
         sscene->setLayerVisible(event->layerIndex(), event->arg().toBool());
     }
 
-    //if (event->action() != KTProjectRequest::Add ||  event->action() != KTProjectRequest::Remove) {
-
     if (event->action() != KTProjectRequest::Add && event->action() != KTProjectRequest::Remove) {
-        kFatal() << " ";
-        kFatal() << "From KTPaintArea / layerResponse";
         graphicsScene()->drawCurrentPhotogram();
         viewport()->update(scene()->sceneRect().toRect());
+    } else {
+        if (event->action() == KTProjectRequest::Remove) {
+            KTScene *scene = k->project->scene(event->sceneIndex());
+            kDebug() << "EVENT ACTION: Remove - Scene Index: " << event->sceneIndex() << " - Layer Index: " << event->layerIndex();
+            kDebug() << "LAYERS: " << scene->layersTotal();
+
+            KTGraphicsScene *sscene = graphicsScene();
+
+            if (!sscene->scene())
+                return;
+            viewport()->update();
+        }
     }
 }
 
 void KTPaintArea::sceneResponse(KTSceneResponse *event)
 {
-     #ifdef K_DEBUG
-            K_FUNCINFOX("paintarea");
-     #endif
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
 
-     if (graphicsScene()->isDrawing()) 
-         return;
+    if (graphicsScene()->isDrawing()) 
+        return;
 
-     switch(event->action()) {
-            case KTProjectRequest::Select:
-                 setCurrentScene(event->sceneIndex());
-                 break;
-            case KTProjectRequest::Remove:
-                 if (event->sceneIndex() == k->currentSceneIndex)
-                     setCurrentScene(k->currentSceneIndex-1);
-                 break;
-            default: break;
-     }
+    switch(event->action()) {
+           case KTProjectRequest::Select:
+                setCurrentScene(event->sceneIndex());
+                break;
+           case KTProjectRequest::Remove:
+                if (event->sceneIndex() == k->currentSceneIndex)
+                    setCurrentScene(k->currentSceneIndex-1);
+                break;
+           default: break;
+    }
 }
 
 void KTPaintArea::itemResponse(KTItemResponse *event)
@@ -561,9 +576,12 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
 
 void KTPaintArea::updatePaintArea() 
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     KTGraphicsScene* currentScene = graphicsScene();
     currentScene->drawCurrentPhotogram();
-    //currentScene->update(currentScene->sceneRect());
 }
 
 void KTPaintArea::setCurrentTool(QString tool) 

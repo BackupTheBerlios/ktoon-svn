@@ -56,6 +56,7 @@ bool KTCommandExecutor::createLayer(KTLayerResponse *response)
 
         layer->fromXml(state);
         response->setArg(layer->layerName());
+        //m_project->updateScene(scenePosition, scene);
 
         return true;
     }
@@ -63,14 +64,14 @@ bool KTCommandExecutor::createLayer(KTLayerResponse *response)
     return false;
 }
 
-
 bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     int scenePos = response->sceneIndex();
     int position = response->layerIndex();
-
-    kFatal() << "removeLayer - scenePos: " << scenePos;
-    kFatal() << "removeLayer - position: " << position;
 
     KTScene *scene = m_project->scene(scenePos);
 
@@ -83,6 +84,7 @@ bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
             response->setArg(layer->layerName());
 
             if (scene->removeLayer(position)) {
+                //m_project->updateScene(position, scene);
                 emit responsed(response);
 
                 return true;
@@ -92,7 +94,6 @@ bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
 
     return false;
 }
-
 
 bool KTCommandExecutor::moveLayer(KTLayerResponse *response)
 {

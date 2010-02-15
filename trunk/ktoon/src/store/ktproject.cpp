@@ -195,7 +195,7 @@ int KTProject::fps() const
     return k->fps;
 }
 
-KTScene *KTProject::createScene(int position, bool loaded )
+KTScene *KTProject::createScene(int position, bool loaded)
 {
     #ifdef K_DEBUG
            kDebug("project") << "Creating scene " << position;
@@ -214,6 +214,11 @@ KTScene *KTProject::createScene(int position, bool loaded )
         KTProjectLoader::createScene(position, scene->sceneName(), this);
 
     return scene;
+}
+
+void KTProject::updateScene(int position, KTScene *scene)
+{
+    k->scenes.insert(position, scene);
 }
 
 bool KTProject::removeScene(int position)

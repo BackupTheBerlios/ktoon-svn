@@ -99,6 +99,11 @@ Layers KTScene::layers() const
     return k->layers;
 }
 
+int KTScene::layersTotal() const
+{
+    return k->layerCount;
+}
+
 SoundLayers KTScene::soundLayers() const
 {
     return k->soundLayers;
@@ -133,6 +138,7 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
     k->layers.insert(position, layer);
 
     kFatal() << "*** Layer logical position from KTScene: " << position;
+    kFatal() << "*** Layer Name: " << layer->layerName();
 
     if (loaded)
         KTProjectLoader::createLayer(project()->visualIndexOf(this), position, layer->layerName(), project());
@@ -170,6 +176,7 @@ bool KTScene::removeLayer( int position)
 
     if (layer) {
         k->layers.remove(position);
+        k->layerCount--;
         delete layer;
 
         return true;

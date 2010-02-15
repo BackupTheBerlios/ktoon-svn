@@ -129,7 +129,6 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 
 void KTGraphicsScene::drawCurrentPhotogram()
 {
-    // kFatal() << "drawCurrentPhotogram()/Frame: " << k->framePosition.frame;
     drawPhotogram(k->framePosition.frame);
 }
 
@@ -162,7 +161,10 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
     // Drawing frames from another layers
 
+    kFatal() << "drawPhotogram -> LAYER VECTOR SIZE: " << k->scene->layersTotal();
+
     foreach (KTLayer *layer, k->scene->layers().values()) {
+             if (layer) {
              kFatal() << " "; 
              kFatal() << "Updating photogram...";
              kFatal() << "Layer Name: " << layer->layerName();
@@ -202,6 +204,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                      valid = true;
                      addFrame(frame);
                  }
+             }
              }
     }
 
@@ -298,11 +301,13 @@ void KTGraphicsScene::setPreviousOnionSkinCount(int n)
 
 KTFrame *KTGraphicsScene::currentFrame()
 {
-    if (k->scene) {
+    kDebug() << "KTGraphicsScene.currentFrame() -> Layers Total: " << k->scene->layersTotal();
+
+    if (k->scene && (k->scene->layersTotal() > 0)) {
         KTLayer *layer = k->scene->layer(k->framePosition.layer);
         if (layer) {
             if (!layer->frames().isEmpty())
-                return layer->frame(k->framePosition.frame );
+                return layer->frame(k->framePosition.frame);
         }
     }
 
@@ -377,23 +382,28 @@ KTToolPlugin *KTGraphicsScene::currentTool() const
 
 void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     QGraphicsScene::mousePressEvent(event);
     k->inputInformation->updateFromMouseEvent(event);
     k->isDrawing = false;
 
     if (event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier))) {
-
+        // FIX ME: uggly if
     } else if (k->tool) {
                if (k->tool->toolType() == KTToolPlugin::Brush && event->isAccepted())
                    return;
 
+               // If there's no frame... the tool is disabled 
                if (currentFrame()) {
                    if (event->buttons() == Qt::LeftButton && !currentFrame()->isLocked()) {
                        k->tool->begin();
                        k->isDrawing = true;
                        k->tool->press(k->inputInformation, k->brushManager, this);
                    }
-               }
+               } 
     }
 }
 

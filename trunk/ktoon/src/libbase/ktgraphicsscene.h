@@ -83,7 +83,7 @@ class KTOON_EXPORT KTGraphicsScene : public QGraphicsScene
         void mouseReleased(QGraphicsSceneMouseEvent *event);
 
         virtual void aboutToMousePress();
-        
+
     protected:
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

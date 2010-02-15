@@ -89,6 +89,7 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
           * Returns layers list
           */
         Layers layers() const;
+        int layersTotal() const;
         SoundLayers soundLayers() const;
 
         KTLayer *layer(int position) const;

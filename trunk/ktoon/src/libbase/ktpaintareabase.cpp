@@ -42,6 +42,7 @@
 #include "ktgraphicalgorithm.h"
 
 // KOM
+#include <ktscene.h>
 #include <kcore/kconfig.h>
 #include <kcore/kdebug.h>
 #include <kgui/kapplication.h>
@@ -100,7 +101,7 @@ KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), k(ne
     k->angle = 0;
 
     k->rotator = new KTPaintAreaRotator(this, this);
-    k->drawingRect = QRectF(QPointF(0,0), QSizeF(500, 400)); // FIXME: configurable
+    k->drawingRect = QRectF(QPointF(0,0), QSizeF(520, 380)); // FIXME: configurable
 
     k->scene->setSceneRect(k->drawingRect);
     setScene(k->scene);
@@ -201,8 +202,14 @@ bool KTPaintAreaBase::drawGrid() const
 
 void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
 {
-    if (!canPaint()) 
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
+    if (!canPaint()) { 
+        kDebug() << ">>> I can't paint right now!";
         return;
+    }
 
     k->scene->aboutToMousePress();
     QGraphicsView::mousePressEvent(event);
@@ -298,9 +305,40 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 
 void KTPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
 {
-    if (KTFrame *frame = k->scene->currentFrame()) {
-        if (frame->isLocked()) {
-            QString text = tr("Locked!");
+    KTScene *currentScene = k->scene->scene();
+    kDebug() << "TOTAL LAYERS: " << currentScene->layersTotal();
+
+    if (currentScene->layersTotal() > 0) {
+        if (KTFrame *frame = k->scene->currentFrame()) {
+            if (frame->isLocked()) {
+                QString text = tr("Locked!");
+                QFont kfont(QFont("Arial", 30));
+                QFontMetricsF fm(kfont);
+                painter->setFont(kfont);
+
+                painter->fillRect(rect, QColor(201,201,201, 200));
+
+                QRectF rect = fm.boundingRect(text);
+   
+                int middleX = k->scene->sceneRect().topRight().x() - k->scene->sceneRect().topLeft().x();
+                int middleY = k->scene->sceneRect().bottomLeft().y() - k->scene->sceneRect().topLeft().y();
+
+                int x = (middleX - rect.width()) / 2; 
+                int y = (middleY - rect.height()) / 2;
+
+                painter->drawText(x, y, text);
+
+                x = (middleX - 20) / 2;
+                y = (middleY - 20) / 2;
+                painter->setPen(QPen(QColor(100, 100, 100), 4, Qt::SolidLine));
+                painter->drawRoundedRect(x, y + 18, 20, 20, 1, 1, Qt::AbsoluteSize);
+
+                x = (middleX - 30) / 2;                                                                         
+                painter->fillRect(x, y + 30, 30, 20, QColor(100, 100, 100));
+            } 
+        }
+    } else {
+            QString text = tr("No Layers!");
             QFont kfont(QFont("Arial", 30));
             QFontMetricsF fm(kfont);
             painter->setFont(kfont);
@@ -308,13 +346,12 @@ void KTPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
             painter->fillRect(rect, QColor(201,201,201, 200));
 
             QRectF rect = fm.boundingRect(text);
-   
+  
             int middleX = k->scene->sceneRect().topRight().x() - k->scene->sceneRect().topLeft().x();
             int middleY = k->scene->sceneRect().bottomLeft().y() - k->scene->sceneRect().topLeft().y();
 
-            int x = (middleX - rect.width()) / 2; 
+            int x = (middleX - rect.width()) / 2;
             int y = (middleY - rect.height()) / 2;
-
             painter->drawText(x, y, text);
 
             x = (middleX - 20) / 2;
@@ -322,14 +359,17 @@ void KTPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
             painter->setPen(QPen(QColor(100, 100, 100), 4, Qt::SolidLine));
             painter->drawRoundedRect(x, y + 18, 20, 20, 1, 1, Qt::AbsoluteSize);
 
-            x = (middleX - 30) / 2;                                                                         
+            x = (middleX - 30) / 2;
             painter->fillRect(x, y + 30, 30, 20, QColor(100, 100, 100));
-        }
     }
 }
 
 bool KTPaintAreaBase::canPaint() const
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     if (k->scene) {
         KTFrame *frame = k->scene->currentFrame();
 

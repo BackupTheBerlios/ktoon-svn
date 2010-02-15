@@ -271,6 +271,7 @@ void KTProjectManager::handleProjectRequest(const KTProjectRequest *request)
 {
     #ifdef K_DEBUG
            K_FUNCINFO;
+           kWarning() << "Package: ";
            kWarning() << request->xml();
     #endif
 
@@ -286,6 +287,7 @@ void KTProjectManager::handleLocalRequest(const KTProjectRequest *request)
 {
     #ifdef K_DEBUG
            K_FUNCINFO;
+           kWarning() << "Package: ";
            kWarning() << request->xml();
     #endif
 

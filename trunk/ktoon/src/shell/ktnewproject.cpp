@@ -51,6 +51,8 @@ struct KTNewProject::Private
 
 KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private)
 {
+    setWindowIcon(QPixmap(THEME_DIR + "icons/layer_pic.png"));
+
     k->useNetwork = false;
     setWindowTitle(tr("Create a new project"));
     setModal(true);
@@ -74,8 +76,8 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private
     k->size->setMaximum(1000);
     //k->size->setModifyTogether(true);;
 
-    k->size->setX( 520 );
-    k->size->setY( 340);
+    k->size->setX(520);
+    k->size->setY(380);
 	
     layout->addWidget(k->size, 2, 0);
 

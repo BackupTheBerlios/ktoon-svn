@@ -62,6 +62,7 @@ class KTExposureHeader: public QHeaderView
         void setLockLayer(int logicalndex, bool lock);
         bool signalMovedBlocked();
         void setVisibilityChanged(int logicalndex, bool visibility);
+        int layersTotal();
 
     public slots:
         void updateSelection(int col);
@@ -261,6 +262,11 @@ void KTExposureHeader::updateSelection(int col)
 {
     currentCol = col;
     updateSection(col);
+}
+
+int KTExposureHeader::layersTotal()
+{
+    return m_layers.size();
 }
 
 #include "ktexposuretable.moc"
@@ -524,6 +530,9 @@ void KTExposureTable::removeLayer(int indexLayer)
     int logicalIndex = k->header->logicalIndex(indexLayer);
     k->header->removeLayer(logicalIndex);
     removeColumn(logicalIndex);
+
+    if (k->header->layersTotal() == 0)
+        kDebug() << "NO MORE LAYERS. LOCKING PAINTAREA!";
 }
 
 void KTExposureTable::removeFrame(int indexLayer, int indexFrame)

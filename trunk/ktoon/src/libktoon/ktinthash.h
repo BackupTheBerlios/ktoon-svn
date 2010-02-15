@@ -199,9 +199,9 @@ T KTIntHash<T>::takeVisual(int pos)
 template<typename T>
 void KTIntHash<T>::insert(int pos, T value)
 {
-    if (k->logicalIndices.contains(pos)) {
-        qDebug("###########################     OVERRIDING!! %d", pos);
-    }
+    if (k->logicalIndices.contains(pos))
+        qDebug("######   OVERRIDING!! %d", pos);
+
     k->logicalIndices.insert(k->counter, value);
     k->visualIndices.insert(pos, k->counter);
     
