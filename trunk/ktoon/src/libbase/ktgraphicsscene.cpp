@@ -162,6 +162,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
     // Drawing frames from another layers
 
     kFatal() << "drawPhotogram -> LAYER VECTOR SIZE: " << k->scene->layersTotal();
+    kFatal() << "*** === ***";
 
     foreach (KTLayer *layer, k->scene->layers().values()) {
              if (layer) {
@@ -207,6 +208,8 @@ void KTGraphicsScene::drawPhotogram(int photogram)
              }
              }
     }
+
+    kFatal() << "*** === ***";
 
     // Drawing tweening objects
     

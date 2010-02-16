@@ -306,7 +306,7 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 void KTPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
 {
     KTScene *currentScene = k->scene->scene();
-    kDebug() << "TOTAL LAYERS: " << currentScene->layersTotal();
+    kDebug() << "KTPaintAreaBase::drawForeground -> TOTAL LAYERS: " << currentScene->layersTotal();
 
     if (currentScene->layersTotal() > 0) {
         if (KTFrame *frame = k->scene->currentFrame()) {
