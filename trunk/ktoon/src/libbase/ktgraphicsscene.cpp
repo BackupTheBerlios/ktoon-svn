@@ -152,6 +152,8 @@ void KTGraphicsScene::drawItems(QPainter *painter, int numItems, QGraphicsItem *
 
 void KTGraphicsScene::drawPhotogram(int photogram)
 {
+    Q_CHECK_PTR(k->scene);
+
     if (photogram < 0 || !k->scene) 
         return;
 
@@ -161,15 +163,16 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
     // Drawing frames from another layers
 
-    kFatal() << "drawPhotogram -> LAYER VECTOR SIZE: " << k->scene->layersTotal();
+    kFatal() << "drawPhotogram() -> Scene Name: " << k->scene->sceneName();
+    kFatal() << "drawPhotogram() -> LAYER VECTOR SIZE: " << k->scene->layersTotal();
     kFatal() << "*** === ***";
 
     foreach (KTLayer *layer, k->scene->layers().values()) {
              if (layer) {
              kFatal() << " "; 
              kFatal() << "Updating photogram...";
-             kFatal() << "Layer Name: " << layer->layerName();
              kFatal() << "drawPhotogram() - FRAMES TOTAL: " << layer->framesNumber();
+             kFatal() << "Layer Name: " << layer->layerName();
              kFatal() << " ";
 
              if (layer->isVisible()) {
@@ -333,6 +336,8 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
 
     clean();
     k->scene = scene;
+
+    kFatal() << "KTGraphicsScene::setCurrentScene - LayersTotal -> " << k->scene->layersTotal();
 
     drawCurrentPhotogram();
 }

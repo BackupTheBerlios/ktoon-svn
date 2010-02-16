@@ -103,9 +103,11 @@ void KTPaintArea::setCurrentScene(int index)
 
     KTScene *scene = k->project->scene(index);
     if (scene) {
+        kFatal() << "SCENE EXISTS!";
         k->currentSceneIndex = index;
         graphicsScene()->setCurrentScene(scene);
     } else {
+        kFatal() << "SCENE DOESNOT EXISTS!";
         setDragMode(QGraphicsView::NoDrag);
         k->currentSceneIndex = -1;
         graphicsScene()->setCurrentScene(0);

@@ -119,6 +119,8 @@ void KTScene::setLayers(const Layers &layers)
 
 KTLayer *KTScene::createLayer(int position, bool loaded)
 {
+    Q_CHECK_PTR(layers);
+
     #ifdef K_DEBUG
            K_FUNCINFO << position;
     #endif
@@ -140,8 +142,10 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
     kFatal() << "*** Layer logical position from KTScene: " << position;
     kFatal() << "*** Layer Name: " << layer->layerName();
 
-    if (loaded)
+    if (loaded) {
+        kFatal() << "KTScene::createLayer() -> LOADED!";
         KTProjectLoader::createLayer(project()->visualIndexOf(this), position, layer->layerName(), project());
+    }
 
     return layer;
 }
@@ -170,8 +174,10 @@ KTSoundLayer *KTScene::createSoundLayer(int position, bool loaded)
     return layer;
 }
 
-bool KTScene::removeLayer( int position)
+bool KTScene::removeLayer(int position)
 {
+    Q_CHECK_PTR(layers);
+
     KTLayer *layer = this->layer(position);
 
     if (layer) {

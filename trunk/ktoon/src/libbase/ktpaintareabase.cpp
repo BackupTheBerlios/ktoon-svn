@@ -181,18 +181,18 @@ void KTPaintAreaBase::setDrawGrid(bool draw)
     viewport()->update();
 }
 
-void KTPaintAreaBase::setTool(KTToolPlugin *tool )
+void KTPaintAreaBase::setTool(KTToolPlugin *tool)
 {
     if (!scene()) 
         return;
 
     if (tool)
         disconnect(tool,SIGNAL(requested(const KTProjectRequest *)), this, 
-                   SIGNAL(requestTriggered(const KTProjectRequest* )));
+                   SIGNAL(requestTriggered(const KTProjectRequest *)));
 
     k->scene->setTool(tool);
     connect(tool,SIGNAL(requested(const KTProjectRequest *)), this, 
-            SIGNAL(requestTriggered( const KTProjectRequest* )));
+            SIGNAL(requestTriggered( const KTProjectRequest *)));
 }
 
 bool KTPaintAreaBase::drawGrid() const
@@ -200,7 +200,7 @@ bool KTPaintAreaBase::drawGrid() const
     return k->drawGrid;
 }
 
-void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
+void KTPaintAreaBase::mousePressEvent(QMouseEvent * event)
 {
     #ifdef K_DEBUG
            K_FUNCINFO;
@@ -215,7 +215,7 @@ void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
     QGraphicsView::mousePressEvent(event);
 }
 
-void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )
+void KTPaintAreaBase::mouseMoveEvent(QMouseEvent * event)
 {
     if (!canPaint()) 
         return;
@@ -227,7 +227,7 @@ void KTPaintAreaBase::mouseMoveEvent( QMouseEvent * event )
         setDragMode(QGraphicsView::NoDrag);
 	QPointF p1 = event->pos();
         QPointF p2 = k->drawingRect.center();
-        k->rotator->rotateTo( (int)(-(180*KTGraphicalAlgorithm::angleForPos(p1,p2))/M_PI) );
+        k->rotator->rotateTo((int)(-(180*KTGraphicalAlgorithm::angleForPos(p1,p2))/M_PI));
         setUpdatesEnabled(true);
     } else {
         QGraphicsView::mouseMoveEvent(event);
