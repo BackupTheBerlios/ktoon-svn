@@ -192,11 +192,7 @@ void KTPaintAreaBase::setTool(KTToolPlugin *tool)
 
     k->scene->setTool(tool);
     connect(tool,SIGNAL(requested(const KTProjectRequest *)), this, 
-<<<<<<< .mine
-            SIGNAL(requestTriggered(const KTProjectRequest* )));
-=======
-            SIGNAL(requestTriggered( const KTProjectRequest *)));
->>>>>>> .r1306
+            SIGNAL(requestTriggered(const KTProjectRequest*)));
 }
 
 bool KTPaintAreaBase::drawGrid() const

@@ -163,28 +163,13 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
     // Drawing frames from another layers
 
-<<<<<<< .mine
     //foreach (KTLayer *layer, k->scene->layers().values()) {
     for (int i=0;i < k->scene->layersTotal(); i++) {
-=======
-    kFatal() << "drawPhotogram() -> Scene Name: " << k->scene->sceneName();
-    kFatal() << "drawPhotogram() -> LAYER VECTOR SIZE: " << k->scene->layersTotal();
-    kFatal() << "*** === ***";
->>>>>>> .r1306
 
              KTLayer *layer = k->scene->layer(i);
 
              if (layer) {
-<<<<<<< .mine
                  if (layer->isVisible()) {
-=======
-             kFatal() << " "; 
-             kFatal() << "Updating photogram...";
-             kFatal() << "drawPhotogram() - FRAMES TOTAL: " << layer->framesNumber();
-             kFatal() << "Layer Name: " << layer->layerName();
-             kFatal() << " ";
->>>>>>> .r1306
-
                      if (k->onionSkin.previous > 0) {
                          double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.previous);
                          double opacity = 0.5;
@@ -340,8 +325,6 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
 
     clean();
     k->scene = scene;
-
-    kFatal() << "KTGraphicsScene::setCurrentScene - LayersTotal -> " << k->scene->layersTotal();
 
     drawCurrentPhotogram();
 }

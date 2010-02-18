@@ -435,7 +435,6 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
 
 void KTExposureTable::selectFrame(int indexLayer, int indexFrame)
 {
-    kFatal() << "KTExposureTable::selectFrame -> IndexFrame: " << indexFrame << " - Layer: " << k->header->logicalIndex(indexLayer);
     setCurrentCell(indexFrame, k->header->logicalIndex(indexLayer));
 }
 
