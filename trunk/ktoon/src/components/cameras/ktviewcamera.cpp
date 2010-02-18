@@ -23,6 +23,7 @@
 #include "ktviewcamera.h"
 #include "ktexportwidget.h"
 #include <kcore/kdebug.h>
+#include <kgui/kseparator.h>
 
 #include <QStatusBar>
 #include <QLabel>
@@ -159,14 +160,18 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
 
     setObjectName("KTViewCamera_");
     setWindowTitle(tr("Render Camera Preview"));
-    setWindowIcon(QPixmap(THEME_DIR + "icons/camera_preview.png"));
+    //setWindowIcon(QPixmap(THEME_DIR + "icons/camera.png"));
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
     QFont font = this->font();
     font.setPointSize(8);
+    font.setUnderline(true);
     QLabel *title = new QLabel(tr("Render Camera Preview"));
     title->setFont(font);
+    QLabel *icon = new QLabel();
+    icon->setPixmap(QPixmap(THEME_DIR + "icons/camera.png"));
+    layout->addWidget(icon, 0, Qt::AlignCenter);
     layout->addWidget(title, 0, Qt::AlignCenter);
 
     m_animationArea = new KTAnimationArea(project);

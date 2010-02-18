@@ -60,7 +60,7 @@ KTScene::~KTScene()
            KEND;
     #endif
 
-    k->layers.clear(true);
+    //k->layers.clear(true);
     delete k;
 }
 
@@ -139,9 +139,6 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
 
     k->layers.insert(position, layer);
 
-    kFatal() << "*** Layer logical position from KTScene: " << position;
-    kFatal() << "*** Layer Name: " << layer->layerName();
-
     if (loaded) {
         kFatal() << "KTScene::createLayer() -> LOADED!";
         KTProjectLoader::createLayer(project()->visualIndexOf(this), position, layer->layerName(), project());
@@ -157,7 +154,7 @@ KTSoundLayer *KTScene::createSoundLayer(int position, bool loaded)
     #endif
 
     if (position < 0 || position > k->soundLayers.count()) {
-        kDebug() << "Error in createLayer";
+        kDebug() << "Error in createSoundLayer";
         return 0;
     }
 

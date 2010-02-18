@@ -163,56 +163,62 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
     // Drawing frames from another layers
 
+<<<<<<< .mine
+    //foreach (KTLayer *layer, k->scene->layers().values()) {
+    for (int i=0;i < k->scene->layersTotal(); i++) {
+=======
     kFatal() << "drawPhotogram() -> Scene Name: " << k->scene->sceneName();
     kFatal() << "drawPhotogram() -> LAYER VECTOR SIZE: " << k->scene->layersTotal();
     kFatal() << "*** === ***";
+>>>>>>> .r1306
 
-    foreach (KTLayer *layer, k->scene->layers().values()) {
+             KTLayer *layer = k->scene->layer(i);
+
              if (layer) {
+<<<<<<< .mine
+                 if (layer->isVisible()) {
+=======
              kFatal() << " "; 
              kFatal() << "Updating photogram...";
              kFatal() << "drawPhotogram() - FRAMES TOTAL: " << layer->framesNumber();
              kFatal() << "Layer Name: " << layer->layerName();
              kFatal() << " ";
+>>>>>>> .r1306
 
-             if (layer->isVisible()) {
+                     if (k->onionSkin.previous > 0) {
+                         double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.previous);
+                         double opacity = 0.5;
 
-                 if (k->onionSkin.previous > 0) {
-                     double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.previous);
-                     double opacity = 0.5;
+                         for (int frameIndex = photogram-1; frameIndex > photogram-k->onionSkin.previous-1; frameIndex--) {
+                              KTFrame * frame = layer->frame(frameIndex);
+                              if (frame)
+                                  addFrame(frame, opacity);
+                              opacity -= opacityFactor;
+                         }
+                     }
 
-                     for (int frameIndex = photogram-1; frameIndex > photogram-k->onionSkin.previous-1; frameIndex--) {
-                          KTFrame * frame = layer->frame(frameIndex);
-                          if (frame)
-                              addFrame(frame, opacity);
-                          opacity -= opacityFactor;
+                     if (k->onionSkin.next > 0) {
+                         double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.next);
+                         double opacity = 0.5;
+
+                         for (int frameIndex = photogram+1; frameIndex < photogram+k->onionSkin.next+1; frameIndex++) {
+                              KTFrame * frame = layer->frame(frameIndex);
+                              if (frame)
+                                  addFrame(frame, opacity);
+                              opacity -= opacityFactor;
+                         }
+                     }
+
+                     // TODO: Crashpoint when layers are deleted 
+                     KTFrame *frame = layer->frame(photogram);
+
+                     if (frame) {
+                         valid = true;
+                         addFrame(frame);
                      }
                  }
-
-                 if (k->onionSkin.next > 0) {
-                     double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.next);
-                     double opacity = 0.5;
-
-                     for (int frameIndex = photogram+1; frameIndex < photogram+k->onionSkin.next+1; frameIndex++) {
-                          KTFrame * frame = layer->frame(frameIndex);
-                          if (frame)
-                              addFrame(frame, opacity);
-                          opacity -= opacityFactor;
-                     }
-                 }
-
-                 // TODO: Crashpoint when layers are deleted 
-                 KTFrame *frame = layer->frame(photogram);
-
-                 if (frame) {
-                     valid = true;
-                     addFrame(frame);
-                 }
-             }
              }
     }
-
-    kFatal() << "*** === ***";
 
     // Drawing tweening objects
     
@@ -307,8 +313,6 @@ void KTGraphicsScene::setPreviousOnionSkinCount(int n)
 
 KTFrame *KTGraphicsScene::currentFrame()
 {
-    kDebug() << "KTGraphicsScene.currentFrame() -> Layers Total: " << k->scene->layersTotal();
-
     if (k->scene && (k->scene->layersTotal() > 0)) {
         KTLayer *layer = k->scene->layer(k->framePosition.layer);
         if (layer) {

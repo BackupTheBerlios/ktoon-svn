@@ -369,10 +369,8 @@ void KTExposureTable::emitRequestSelectFrame(int currentRow_, int currentColumn_
         if (previousRow != currentRow_ || previousColumn != currentColumn_)
             emit requestSelectFrame(currentLayer(), currentRow());
 
-        if ((previousColumn != currentColumn_) || (columnCount() == 1)) {
-             kDebug() << "previousColumn: " << previousColumn << " - current: " << currentColumn_;
+        if ((previousColumn != currentColumn_) || (columnCount() == 1)) 
              k->header->updateSelection(currentColumn_);
-        }
     } else {
         k->removingLayer = false;
         if (previousColumn == 0) {
@@ -452,7 +450,6 @@ int KTExposureTable::currentLayer() const
            K_FUNCINFO;
     #endif
 
-    kDebug() << "*** currentLayer(): " << k->header->visualIndex(currentColumn());
     return k->header->visualIndex(currentColumn());
 }
 
@@ -531,9 +528,6 @@ void KTExposureTable::removeLayer(int indexLayer)
     int logicalIndex = k->header->logicalIndex(indexLayer);
     k->header->removeLayer(logicalIndex);
     removeColumn(logicalIndex);
-
-    if (k->header->layersTotal() == 0)
-        kDebug() << "NO MORE LAYERS. LOCKING PAINTAREA!";
 }
 
 void KTExposureTable::removeFrame(int indexLayer, int indexFrame)

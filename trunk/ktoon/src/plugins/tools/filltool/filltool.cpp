@@ -75,7 +75,7 @@ QStringList FillTool::keys() const
 
 void FillTool::setupActions()
 {
-    KAction *action1 = new KAction(QIcon(THEME_DIR + "icons/fill.png"), tr("Fill"), this);
+    KAction *action1 = new KAction(QIcon(THEME_DIR + "icons/fillcolor.png"), tr("Fill"), this);
     action1->setShortcut(QKeySequence(tr("Ctrl+F")));
     action1->setCursor(QCursor(THEME_DIR + "cursors/paint.png"));
     

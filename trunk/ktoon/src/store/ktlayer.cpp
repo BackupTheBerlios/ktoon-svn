@@ -47,7 +47,6 @@ KTLayer::KTLayer(KTScene *parent) : QObject(parent), k(new Private)
 KTLayer::~KTLayer()
 {
     k->frames.clear(true);
-
     delete k;
 }
 

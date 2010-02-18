@@ -197,10 +197,6 @@ int KTProject::fps() const
 
 KTScene *KTProject::createScene(int position, bool loaded)
 {
-    #ifdef K_DEBUG
-           kDebug("project") << "Creating scene " << position;
-    #endif
-
     if (position < 0 || position > k->scenes.count())
         return 0;
 
@@ -399,10 +395,6 @@ bool KTProject::removeSymbol(const QString &name)
 
 bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int layerIndex, int frameIndex)
 {
-    #ifdef K_DEBUG
-           kDebug() << sceneIndex << " " << layerIndex << " " << frameIndex;
-    #endif
-
     KTLibraryObject *object = k->library->findObject(name);
     KTFrame *target = 0;
 

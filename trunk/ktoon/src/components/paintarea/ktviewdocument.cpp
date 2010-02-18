@@ -348,7 +348,7 @@ void KTViewDocument::createTools()
 
     // Fill menu
     k->fillMenu = new QMenu(tr("Fill"), k->toolbar);
-    k->fillMenu->setIcon(QPixmap(THEME_DIR + "icons/fill.png"));
+    k->fillMenu->setIcon(QPixmap(THEME_DIR + "icons/fillcolor.png"));
     connect(k->fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu(QAction*)));
 
     k->toolbar->addAction(k->fillMenu->menuAction());
@@ -385,7 +385,7 @@ void KTViewDocument::loadPlugins()
                                  {
                                    // Temporary code - SQA Issue
                                    QString toolStr = act->text();
-                                   if (toolStr.compare(tr("Tweener Translator")) == 0 || toolStr.compare(tr("Polyline")) == 0) {
+                                   if (toolStr.compare(tr("Motion Tween")) == 0 || toolStr.compare(tr("Polyline")) == 0) {
                                        act->setDisabled(true); 
                                    }
 
@@ -600,7 +600,10 @@ void KTViewDocument::createToolBar()
     k->barGrid->addWidget(prevOnionSkinSpin);
 
     QLabel *layers = new QLabel("");
-    layers->setPixmap(QPixmap(THEME_DIR + "icons/onion.png"));
+    QPixmap pix(THEME_DIR + "icons/layer.png");
+    layers->setToolTip(tr("Onion Skin"));
+    layers->setPixmap(pix);
+    layers->setMaximumSize(20, 20);
     k->barGrid->addWidget(layers);
 
     QSpinBox *nextOnionSkinSpin = new QSpinBox(this);
@@ -752,11 +755,12 @@ void KTViewDocument::setZoomFactor(int /*percent*/)
 
 void KTViewDocument::scaleRuler(double factor)
 {
-/*
+    Q_UNUSED(factor);
+    /*
     double sep = factor * k->verticalRuler->scaleFactor();
     k->verticalRuler->scale(sep);
     k->horizontalRuler->scale(sep);
-*/
+    */
 }
 
 void KTViewDocument::changeRulerOrigin(const QPointF &zero)

@@ -192,7 +192,11 @@ void KTPaintAreaBase::setTool(KTToolPlugin *tool)
 
     k->scene->setTool(tool);
     connect(tool,SIGNAL(requested(const KTProjectRequest *)), this, 
+<<<<<<< .mine
+            SIGNAL(requestTriggered(const KTProjectRequest* )));
+=======
             SIGNAL(requestTriggered( const KTProjectRequest *)));
+>>>>>>> .r1306
 }
 
 bool KTPaintAreaBase::drawGrid() const
@@ -207,7 +211,7 @@ void KTPaintAreaBase::mousePressEvent(QMouseEvent * event)
     #endif
 
     if (!canPaint()) { 
-        kDebug() << ">>> I can't paint right now!";
+        kDebug() << "KTPaintAreaBase::mousePressEvent -> I can't paint right now!";
         return;
     }
 
@@ -306,7 +310,6 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 void KTPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
 {
     KTScene *currentScene = k->scene->scene();
-    kDebug() << "KTPaintAreaBase::drawForeground -> TOTAL LAYERS: " << currentScene->layersTotal();
 
     if (currentScene->layersTotal() > 0) {
         if (KTFrame *frame = k->scene->currentFrame()) {

@@ -51,7 +51,7 @@ struct KTNewProject::Private
 
 KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private)
 {
-    setWindowIcon(QPixmap(THEME_DIR + "icons/layer_pic.png"));
+    setWindowIcon(QPixmap(THEME_DIR + "icons/new.png"));
 
     k->useNetwork = false;
     setWindowTitle(tr("Create a new project"));

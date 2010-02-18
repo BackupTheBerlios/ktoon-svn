@@ -36,8 +36,6 @@ bool KTCommandExecutor::createLayer(KTLayerResponse *response)
     int scenePosition = response->sceneIndex();
     int position = response->layerIndex();
 
-    kFatal() << "*** KTCommandExecutor::createLayer - Layer Index: " << response->layerIndex();
-
     QString name = response->arg().toString();
     QString state = response->state();
 
@@ -74,8 +72,6 @@ bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
 
     int scenePos = response->sceneIndex();
     int position = response->layerIndex();
-
-    kFatal() << "*** KTCommandExecutor::removeLayer - Layer Index: " << response->layerIndex();
 
     KTScene *scene = m_project->scene(scenePos);
 

@@ -190,7 +190,7 @@ void KTMainWindow::setupMenu()
 
     // Adding Option New	
     QMenu *newMenu = new QMenu(tr("&New"), this);
-    newMenu->setIcon(QPixmap(THEME_DIR + "icons/layer_pic.png"));
+    newMenu->setIcon(QPixmap(THEME_DIR + "icons/file_new.png"));
     m_fileMenu->addMenu(newMenu);
     newMenu->addAction(m_actionManager->find("newproject"));
 
@@ -347,7 +347,7 @@ void KTMainWindow::setupActions()
 
 void KTMainWindow::setupFileActions()
 {
-    KAction *newProject = new KAction(QPixmap(THEME_DIR + "icons/project.png"), tr("New project"), QKeySequence(),
+    KAction *newProject = new KAction(QPixmap(THEME_DIR + "icons/new.png"), tr("New project"), QKeySequence(),
                                       this, SLOT(newProject()), m_actionManager);
     newProject->setStatusTip(tr("Open new project"));
     m_actionManager->insert(newProject, "newproject", "file");
@@ -357,7 +357,7 @@ void KTMainWindow::setupFileActions()
     m_actionManager->insert( openFile, "openproject", "file" );
     openFile->setStatusTip(tr("Load existent project"));
 
-    KAction *openNetFile = new KAction(QPixmap(THEME_DIR + "icons/open.png"), tr("Open project from server..."), 
+    KAction *openNetFile = new KAction(QPixmap(THEME_DIR + "icons/net_document.png"), tr("Open project from server..."), 
                                        tr(""), this, SLOT(openProjectFromServer()), m_actionManager);
     m_actionManager->insert(openNetFile, "opennetproject", "file");
 
@@ -370,7 +370,7 @@ void KTMainWindow::setupFileActions()
     m_actionManager->insert(save, "saveproject", "file");
     save->setStatusTip(tr("Save current project in current location"));
 
-    KAction *saveAs = new KAction(QPixmap(THEME_DIR + "icons/copy.png"), tr( "Save project &As..." ), m_actionManager);
+    KAction *saveAs = new KAction(QPixmap(THEME_DIR + "icons/save_as.png"), tr( "Save project &As..." ), m_actionManager);
     connect(saveAs, SIGNAL(triggered()), this, SLOT(saveAs()));
     saveAs->setStatusTip(tr("Open dialog box to save current project in any location"));
     m_actionManager->insert(saveAs, "saveprojectas", "file");
@@ -524,7 +524,7 @@ void KTMainWindow::updateOpenRecentMenu(QMenu *menu, QStringList recents)
     foreach (QString recent, recents) {
              if (!recent.isEmpty() && m_recentProjects.indexOf(recent) == -1) {
                  m_recentProjects << recent;
-                 action[i] = new QAction(recent, this); 
+                 action[i] = new QAction(QPixmap(THEME_DIR + "icons/add_layer.png"), recent, this); 
                  menu->addAction(action[i]);
                  connect(action[i], SIGNAL(triggered()), this, SLOT(openRecentProject()));
                  i++;

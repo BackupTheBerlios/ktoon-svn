@@ -99,8 +99,6 @@ void KTPaintArea::setCurrentScene(int index)
            K_FUNCINFO;
     #endif
 
-    kDebug() << "[void KTPaintArea::setCurrentScene(int)] INDEX: " << index;
-
     KTScene *scene = k->project->scene(index);
     if (scene) {
         kFatal() << "SCENE EXISTS!";
@@ -188,18 +186,15 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
             case KTProjectRequest::Paste:
             case KTProjectRequest::Select: 
                  { 
-                 kFatal() << "KTPaintArea::frameResponse -> SELECTING A FRAME ON LAYER INDEX: " << event->layerIndex();            
-
                  KTGraphicsScene *sscene = graphicsScene();
                  if (!sscene->scene()) 
                      return;
 
                  setUpdatesEnabled(true);
 
-                 sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
-
-                 sscene->drawPhotogram(event->frameIndex());
                  setCurrentScene(event->sceneIndex());
+                 sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
+                 sscene->drawPhotogram(event->frameIndex());
                  }
                  break;
 
@@ -242,10 +237,6 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
     } else {
         if (event->action() == KTProjectRequest::Remove) {
             KTScene *scene = k->project->scene(event->sceneIndex());
-            kDebug() << "*** KTProjectRequest::Remove";
-            kDebug() << "KTPaintArea::layerResponse - EVENT ACTION: Remove - Scene Index: " << event->sceneIndex() << " - Layer Index: " << event->layerIndex();
-            kDebug() << "KTPaintArea::layerResponse - LAYERS: " << scene->layersTotal();
-
             KTGraphicsScene *sscene = graphicsScene();
 
             if (!sscene->scene())
