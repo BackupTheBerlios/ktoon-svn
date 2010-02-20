@@ -160,7 +160,6 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
 
     setObjectName("KTViewCamera_");
     setWindowTitle(tr("Render Camera Preview"));
-    //setWindowIcon(QPixmap(THEME_DIR + "icons/camera.png"));
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 

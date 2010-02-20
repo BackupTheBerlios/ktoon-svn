@@ -28,7 +28,7 @@
 #include <kgui/kfontchooser.h>
 #include <kcore/kspellhighlighter.h>
 
-// #include <kcore/kdebug.h>
+#include <kcore/kdebug.h>
 
 TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
 {

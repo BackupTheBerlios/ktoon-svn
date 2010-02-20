@@ -298,6 +298,9 @@ void KTGraphicsScene::setPreviousOnionSkinCount(int n)
 
 KTFrame *KTGraphicsScene::currentFrame()
 {
+    kFatal() << "KTGraphicsScene::currentFrame - LAYER: " << k->framePosition.layer;
+    kFatal() << "KTGraphicsScene::currentFrame - FRAME: " << k->framePosition.frame;
+
     if (k->scene && (k->scene->layersTotal() > 0)) {
         KTLayer *layer = k->scene->layer(k->framePosition.layer);
         if (layer) {

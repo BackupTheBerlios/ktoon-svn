@@ -114,7 +114,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) :
     // Calling out the events/actions manager
     splash->setMessage(tr("Loading action manager..."));
     m_actionManager = new KActionManager(this);
-	
+
     // Defining the menu bar
     splash->setMessage(tr("Creating menu bar..."));
     setupActions();
@@ -125,15 +125,15 @@ KTMainWindow::KTMainWindow(KTSplash *splash) :
     createGUI(); // This method is called from the ktmainwindow_gui class
     setupMenu();
     setupToolBar();
-	
+
     // Check if user wants to see a KToon tip for every time he launches the program
     KCONFIG->beginGroup("TipOfDay");
     bool showTips = qvariant_cast<bool>(KCONFIG->value("ShowOnStart", true));
-	
+
     // If option is enabled, then, show a little dialog with a nice tip
     if (showTips)
         QTimer::singleShot(0, this, SLOT(showTipDialog()));
-	
+
     // Time to load plugins... 
     KTPluginManager::instance()->loadPlugins();
 
@@ -621,8 +621,8 @@ void KTMainWindow::save()
 
 void KTMainWindow::preferences()
 {
-    m_statusBar->setStatus( tr( "Preferences Dialog Opened" ), 2000 );
-    KTPreferences *preferences = new KTPreferences( this );
+    m_statusBar->setStatus(tr("Preferences Dialog Opened"), 2000);
+    KTPreferences *preferences = new KTPreferences(this);
     preferences->exec();
 
     delete preferences;

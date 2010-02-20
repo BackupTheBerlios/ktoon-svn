@@ -25,6 +25,7 @@
 #include <QMouseEvent>
 #include <QDropEvent>
 #include <QLinearGradient>
+#include <QBoxLayout>
 
 #include <kcore/kdebug.h>
 
@@ -36,7 +37,11 @@
 
 KTAnimationspace::KTAnimationspace(QWidget *internal, QWidget *parent) : QMainWindow(parent)
 {
-    setCentralWidget(internal);
+    QWidget *widget = new QWidget();
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, widget);
+    layout->addWidget(internal, 0, Qt::AlignCenter);
+    widget->setLayout(layout);
+    setCentralWidget(widget);
 }
 
 KTAnimationspace::~KTAnimationspace()

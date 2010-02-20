@@ -44,6 +44,8 @@ bool KTCommandExecutor::createLayer(KTLayerResponse *response)
     if (scene) {
         KTLayer *layer = scene->createLayer(position);
 
+        kFatal() << "KTCommandExecutor::createLayer - Adding Layer: " << position;
+
         if (! layer) 
             return false;
 
@@ -83,8 +85,9 @@ bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
             response->setState(document.toString());
             response->setArg(layer->layerName());
 
+            kFatal() << "KTCommandExecutor::removeLayer - Removing Layer: " << position;
+
             if (scene->removeLayer(position)) {
-                //m_project->updateScene(position, scene);
                 emit responsed(response);
 
                 return true;

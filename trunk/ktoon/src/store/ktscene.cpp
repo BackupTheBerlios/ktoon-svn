@@ -42,6 +42,7 @@ struct KTScene::Private
     QString name;
     bool isLocked;
     int layerCount;
+    int nameIndex;
     bool isVisible;
 
     QList<KTGraphicObject *> tweeningObjects;
@@ -51,6 +52,7 @@ KTScene::KTScene(KTProject *parent) : QObject(parent), k(new Private)
 {
     k->isLocked = false;
     k->layerCount = 0;
+    k->nameIndex = 0;
     k->isVisible = true;
 }
 
@@ -135,7 +137,9 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
     KTLayer *layer = new KTLayer(this);
 
     k->layerCount++;
-    layer->setLayerName(tr("Layer %1").arg(k->layerCount));
+    k->nameIndex++;
+
+    layer->setLayerName(tr("Layer %1").arg(k->nameIndex));
 
     k->layers.insert(position, layer);
 
@@ -161,9 +165,9 @@ KTSoundLayer *KTScene::createSoundLayer(int position, bool loaded)
     KTSoundLayer *layer = new KTSoundLayer(this);
     k->layerCount++;
 
-    layer->setLayerName(tr("Sound layer %1").arg(k->layerCount));
+    layer->setLayerName(tr("Sound layer %1").arg(k->nameIndex));
 
-    k->soundLayers.insert( position, layer);
+    k->soundLayers.insert(position, layer);
 
     if (loaded)
         KTProjectLoader::createSoundLayer(visualIndex(), position, layer->layerName(), project());
@@ -178,8 +182,21 @@ bool KTScene::removeLayer(int position)
     KTLayer *layer = this->layer(position);
 
     if (layer) {
+        kFatal() << "KTScene::removeLayer - Index: " << position;
         k->layers.remove(position);
+
+        kFatal() << "KTScene::removeLayer Fixing from: " << position+1 << " to " << k->layerCount - 1; 
+        for (int i=position+1; i > k->layerCount - 1; i++) {
+             KTLayer *next = this->layer(i);
+             k->layers.insert(i-1, next);
+             k->layers.remove(i);
+             delete next;
+        }
+
         k->layerCount--;
+        if (k->nameIndex == position + 1)
+            k->nameIndex--;
+
         delete layer;
 
         return true;

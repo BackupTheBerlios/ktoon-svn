@@ -14,7 +14,7 @@
 	<solution>
 		<linux package="aspell" url="http://aspell.net/" comment="" >
 			<distribution name="gentoo" package="aspell" url="http://aspell.net/" comment="Try: emerge aspell" />
-			<distribution name="ubuntu" package="libaspell-dev" url="http://aspell.net/" comment="Try: apt-get install libaspell-dev" />
+			<distribution name="ubuntu" package="libaspell-dev aspell-LANG" url="http://aspell.net/" comment="Try: apt-get install libaspell-dev aspell-LANG (where LANG is the two-letters code of your language)" />
 		</linux>
 		<windows package="aspell" url="http://aspell.net/" comment="" />
 		<macosx package="aspell" url="http://aspell.net/" comment="" />

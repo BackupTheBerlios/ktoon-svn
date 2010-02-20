@@ -122,6 +122,7 @@ int main(int argc, char ** argv)
    QString locale = QString(QLocale::system().name()).left(2);
    if (locale.length() < 2)
        locale = "en";
+
    kAppProp->setDataDir(SHARE_DIR + "data/" + locale + "/");
 
    kAppProp->setThemeDir(SHARE_DIR + "themes/default" + "/");
@@ -167,9 +168,12 @@ int main(int argc, char ** argv)
 
     // Loading localization files... now you got KToon in your native language
 
+    // SQA Comment - this code seems to be NO required 
+    /*
     QTranslator *qttranslator = new QTranslator(&application);
     qttranslator->load(QString("qt_") + locale, SHARE_DIR + "data/translations");
     application.installTranslator(qttranslator);
+    */
 
     QTranslator *translator = new QTranslator(&application);
     translator->load(QString("ktoon_")+locale,  SHARE_DIR + "data/translations");

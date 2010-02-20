@@ -234,6 +234,7 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
         viewport()->update(scene()->sceneRect().toRect());
     } else {
         if (event->action() == KTProjectRequest::Remove) {
+            kFatal() << "KTPaintArea::layerResponse <- updating workarea!";
             KTGraphicsScene *sscene = graphicsScene();
 
             if (!sscene->scene())

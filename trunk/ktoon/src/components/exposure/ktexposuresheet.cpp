@@ -399,6 +399,7 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                 break;
                 case KTProjectRequest::Remove:
                  {
+                     kFatal() << "KTExposureSheet::layerResponse - LayerIndex: " << e->layerIndex();
                      scene->removeLayer(e->layerIndex());
                  }
                 break;
