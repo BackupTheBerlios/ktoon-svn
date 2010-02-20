@@ -21,34 +21,34 @@
  ***************************************************************************/
 
 #include "kfontchooser.h"
-#include <QComboBox>
+#include "kformfactory.h"
 
+#include <QComboBox>
 #include <QHBoxLayout>
 #include <QFontDatabase>
 #include <QFontComboBox>
 
-#include "kformfactory.h"
+#include <kcore/kdebug.h>
 
 KFontChooser::KFontChooser(QWidget *parent) : QFrame(parent)
 {
-	QHBoxLayout *mainLayout = new QHBoxLayout(this);
-	m_families = new QFontComboBox;
-	
-	connect(m_families, SIGNAL(currentFontChanged(const QFont & )), this, SLOT(loadFontInfo(const QFont &)));
-	
-	mainLayout->addLayout(KFormFactory::makeLine(tr("Family"), m_families));
-	
-	m_fontStyle = new QComboBox;
-	connect(m_fontStyle, SIGNAL(activated (int)), this, SLOT(emitFontChanged( int)));
-	mainLayout->addLayout(KFormFactory::makeLine(tr("Style"), m_fontStyle));
-	
-	m_fontSize = new QComboBox;
-	connect(m_fontSize, SIGNAL(activated (int)), this, SLOT(emitFontChanged( int)));
-	mainLayout->addLayout(KFormFactory::makeLine(tr("Size"), m_fontSize));
-	
-	setCurrentFont(m_families->currentFont());
-}
+    QHBoxLayout *mainLayout = new QHBoxLayout(this);
+     
+    m_families = new QFontComboBox;
+    connect(m_families, SIGNAL(currentFontChanged(const QFont &)), this, SLOT(loadFontInfo(const QFont &)));
+    
+    mainLayout->addLayout(KFormFactory::makeLine(tr("Family"), m_families));
 
+    m_fontStyle = new QComboBox;
+    connect(m_fontStyle, SIGNAL(activated (int)), this, SLOT(emitFontChanged(int)));
+    mainLayout->addLayout(KFormFactory::makeLine(tr("Style"), m_fontStyle));
+
+    m_fontSize = new QComboBox;
+    connect(m_fontSize, SIGNAL(activated (int)), this, SLOT(emitFontChanged(int)));
+    mainLayout->addLayout(KFormFactory::makeLine(tr("Size"), m_fontSize));
+
+    initFont();
+}
 
 KFontChooser::~KFontChooser()
 {
@@ -56,69 +56,68 @@ KFontChooser::~KFontChooser()
 
 void KFontChooser::loadFontInfo(const QFont &newFont)
 {
-	QString currentSize = m_fontSize->currentText();
-	QString currentStyle = m_fontStyle->currentText();
-	
-	QString family = newFont.family();
-	
-	QFontDatabase fdb;
-	
-	m_fontStyle->clear();
-	
-	m_fontStyle->addItem(tr("Normal"), QFont::StyleNormal );
-	m_fontStyle->addItem(tr("Italic"), QFont::StyleItalic );
-	m_fontStyle->addItem(tr("Oblique"), QFont::StyleOblique );
-	
-// 	m_fontStyle->addItems();
-	
-	
-	m_fontSize->clear();
-	
-	QList<int> points = fdb.pointSizes(family);
-	
-	foreach(int point, points)
-	{
-		m_fontSize->addItem(QString::number(point));
-	}
-	
-	int sizeIndex = m_fontSize->findText(currentSize);
-	int styleIndex = m_fontStyle->findText(currentStyle);
-	if ( sizeIndex >= 0 )
-	{
-		m_fontSize->setCurrentIndex(sizeIndex);
-	}
-	
-	if(styleIndex >= 0)
-	{
-		m_fontStyle->setCurrentIndex(styleIndex);
-	}
-	
-	m_families->blockSignals(true);
-	m_currentFont = newFont;
-	m_currentFont.setPointSize( m_fontSize->currentText().toInt() );
-	m_currentFont.setStyle( QFont::Style(m_fontStyle->itemData( m_fontStyle->currentIndex() ).toInt()) );
-	m_families->blockSignals(false);
-	
-	emit fontChanged();
+    QString currentSize = m_fontSize->currentText();
+    QString currentStyle = m_fontStyle->currentText();
+    
+    QString family = newFont.family();
+    
+    QFontDatabase fdb;
+    
+    m_fontStyle->clear();
+    
+    m_fontStyle->addItem(tr("Normal"), QFont::StyleNormal);
+    m_fontStyle->addItem(tr("Italic"), QFont::StyleItalic);
+    m_fontStyle->addItem(tr("Oblique"), QFont::StyleOblique);
+    
+    // m_fontStyle->addItems();
+    
+    m_fontSize->clear();
+    
+    QList<int> points = fdb.pointSizes(family);
+    
+    foreach (int point, points)
+             m_fontSize->addItem(QString::number(point));
+    
+    int sizeIndex = m_fontSize->findText(currentSize);
+    int styleIndex = m_fontStyle->findText(currentStyle);
+
+    if (sizeIndex >= 0)
+        m_fontSize->setCurrentIndex(sizeIndex);
+    
+    if (styleIndex >= 0)
+        m_fontStyle->setCurrentIndex(styleIndex);
+    
+    m_families->blockSignals(true);
+    m_currentFont = newFont;
+    m_currentFont.setPointSize(m_fontSize->currentText().toInt());
+    m_currentFont.setStyle(QFont::Style(m_fontStyle->itemData( m_fontStyle->currentIndex() ).toInt()));
+    m_families->blockSignals(false);
+    
+    emit fontChanged();
 }
 
-void KFontChooser::emitFontChanged(int )
+void KFontChooser::emitFontChanged(int)
 {
-	emit fontChanged();
+    emit fontChanged();
 }
 
 void KFontChooser::setCurrentFont(const QFont &font)
 {
-	QFontDatabase fdb;
-	
-	m_families->setCurrentIndex(m_families->findText(font.family()));
-	m_fontStyle->setCurrentIndex(m_fontStyle->findText(fdb.styleString(font.family())));
-	m_fontSize->setCurrentIndex(m_fontSize->findText(QString::number(font.pointSize())));
+    QFontDatabase fdb;
+
+    m_families->setCurrentIndex(m_families->findText(font.family()));
+    m_fontStyle->setCurrentIndex(m_fontStyle->findText(fdb.styleString(font.family())));
+    m_fontSize->setCurrentIndex(m_fontSize->findText(QString::number(font.pointSize())));
+}
+
+void KFontChooser::initFont()
+{
+    m_families->setCurrentIndex(0);
+    m_fontStyle->setCurrentIndex(0);
+    m_fontSize->setCurrentIndex(0);
 }
 
 QFont KFontChooser::currentFont() const
 {
-	return m_currentFont;
+    return m_currentFont;
 }
-
-

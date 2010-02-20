@@ -34,26 +34,27 @@ class QFontComboBox;
 */
 class K_GUI_EXPORT KFontChooser : public QFrame
 {
-	Q_OBJECT
-	public:
-		KFontChooser(QWidget *parent = 0);
-		~KFontChooser();
-		void setCurrentFont(const QFont &font);
-		QFont currentFont() const;
-		
-	signals:
-		void fontChanged();
-		
-	private slots:
-		void emitFontChanged(int = 0);
-		void loadFontInfo(const QFont &newFont);
-		
-	private:
-		QFontComboBox *m_families;
-		QComboBox *m_fontStyle;
-		QComboBox *m_fontSize;
-		
-		QFont m_currentFont;
+    Q_OBJECT
+    public:
+        KFontChooser(QWidget *parent = 0);
+        ~KFontChooser();
+        void setCurrentFont(const QFont &font);
+        void initFont();
+        QFont currentFont() const;
+        
+    signals:
+        void fontChanged();
+        
+    private slots:
+        void emitFontChanged(int = 0);
+        void loadFontInfo(const QFont &newFont);
+        
+    private:
+        QFontComboBox *m_families;
+        QComboBox *m_fontStyle;
+        QComboBox *m_fontSize;
+        
+        QFont m_currentFont;
 };
 
 #endif
