@@ -124,7 +124,7 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
     Q_CHECK_PTR(layers);
 
     #ifdef K_DEBUG
-           K_FUNCINFO << position;
+           K_FUNCINFO << " - Index: " <<  position;
     #endif
 
     if (position < 0 || position > k->layers.count()) {
@@ -184,9 +184,8 @@ bool KTScene::removeLayer(int position)
     if (layer) {
         kFatal() << "KTScene::removeLayer - Index: " << position;
         k->layers.remove(position);
- 
-        kFatal() << "KTScene::removeLayer Fixing from: " << position+1 << " to " << k->layerCount - 1; 
 
+        /*
         for (int i=position+1; i <= k->layerCount - 1; i++) {
              kFatal() << "Reubicando layer " << i << " en posicion " << i-1; 
              KTLayer *next = this->layer(i);
@@ -194,6 +193,7 @@ bool KTScene::removeLayer(int position)
              k->layers.remove(i);
              delete next;
         }
+        */
 
         k->layerCount--;
         if (k->nameIndex == position + 1)
@@ -216,6 +216,7 @@ KTLayer *KTScene::layer(int position) const
 {
     if (position < 0 || position >= k->layers.count()) {
         #ifdef K_DEBUG
+               K_FUNCINFO << " FATAL ERROR: LAYERS TOTAL: " << k->layers.count();
                K_FUNCINFO << " FATAL ERROR: index out of bound -> Position: " << position;
                K_FUNCINFO << " FATAL ERROR: The layer requested doesn't exist anymore";
         #endif
@@ -289,10 +290,10 @@ void KTScene::fromXml(const QString &xml)
 QDomElement KTScene::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("scene");
-    root.setAttribute("name", k->name );
+    root.setAttribute("name", k->name);
 
     foreach (KTLayer *layer, k->layers.visualValues())
-             root.appendChild( layer->toXml(doc));
+             root.appendChild(layer->toXml(doc));
 
     foreach (KTSoundLayer *sound, k->soundLayers.visualValues())
              root.appendChild(sound->toXml(doc));

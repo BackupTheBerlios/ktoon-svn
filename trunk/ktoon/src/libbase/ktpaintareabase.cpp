@@ -311,6 +311,7 @@ void KTPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
 
     if (currentScene->layersTotal() > 0) {
         if (KTFrame *frame = k->scene->currentFrame()) {
+            kFatal() << "FRAME NAME: " << frame->frameName();
             if (frame->isLocked()) {
                 QString text = tr("Locked!");
                 QFont kfont(QFont("Arial", 30));

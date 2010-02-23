@@ -148,6 +148,7 @@ void KTExposureHeader::insertLayer(int logicalIndex, const QString &text)
     layer.lastFrame = 0;
     layer.isVisible = true;
     layer.isLocked = false;
+    kFatal() << "KTExposureHeader::insertLayer -> logicalIndex: " << logicalIndex;
     m_layers.insert(logicalIndex, layer);
 }
 
@@ -522,11 +523,17 @@ void KTExposureTable::setVisibilityChanged(int visualIndex, bool visibility)
 
 void KTExposureTable::removeLayer(int indexLayer)
 {
-    k->removingLayer = true;
+    setUpdatesEnabled(false);
 
+    k->removingLayer = true;
     int logicalIndex = k->header->logicalIndex(indexLayer);
+
+    kFatal() << "KTExposureTable::removeLayer - logicalIndex: " << logicalIndex;
+
     k->header->removeLayer(logicalIndex);
     removeColumn(logicalIndex);
+
+    setUpdatesEnabled(true);
 }
 
 void KTExposureTable::removeFrame(int indexLayer, int indexFrame)
@@ -564,6 +571,8 @@ void KTExposureTable::moveLayer(int oldPosLayer, int newPosLayer)
 
 void KTExposureTable::emitRequestSetUsedFrame(int indexFrame,  int indexLayer)
 {
+    kFatal() << "KTExposureTable::emitRequestSetUsedFrame <- Damn!";
+
     int visualIndex = k->header->visualIndex(indexLayer);
 
     if (indexFrame == k->header->lastFrame(indexLayer)) {

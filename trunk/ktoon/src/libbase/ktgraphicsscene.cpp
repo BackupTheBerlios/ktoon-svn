@@ -298,11 +298,33 @@ void KTGraphicsScene::setPreviousOnionSkinCount(int n)
 
 KTFrame *KTGraphicsScene::currentFrame()
 {
-    kFatal() << "KTGraphicsScene::currentFrame - LAYER: " << k->framePosition.layer;
-    kFatal() << "KTGraphicsScene::currentFrame - FRAME: " << k->framePosition.frame;
+    kFatal() << "KTGraphicsScene::currentFrame - LAYER INDEX: " << k->framePosition.layer << " - Total: " << k->scene->layersTotal();
+    kFatal() << "KTGraphicsScene::currentFrame - FRAME INDEX: " << k->framePosition.frame;
 
-    if (k->scene && (k->scene->layersTotal() > 0)) {
+    if (k->scene && (k->scene->layersTotal() > 0) && (k->framePosition.layer < k->scene->layersTotal())) {
+       QList<int> indices = k->scene->layers().visualIndices();
+       for (int i = 0; i < indices.size(); i++) {
+             kFatal() << "VISUAL INDEX: " << indices.at(i);
+             KTLayer *layer = k->scene->layer(indices.at(i));
+             kFatal() << "LOGICAL INDEX: " << k->scene->layers().logicalIndex(layer);
+       }
+  
+        if (k->scene->layers().contains(k->framePosition.layer)) {
         KTLayer *layer = k->scene->layer(k->framePosition.layer);
+        Q_CHECK_PTR(layer);
+        if (layer) {
+            if (!layer->frames().isEmpty())
+                return layer->frame(k->framePosition.frame);
+        } else {
+                kFatal() << "KTGraphicsScene::currentFrame - No layer available";
+        }
+        } else {
+                kFatal() << "KTGraphicsScene::currentFrame - Layer index incorrect!"; 
+                kFatal() << ""; 
+        }
+    } else {
+        kFatal() << "KTGraphicsScene::currentFrame - Returning border frame :s";
+        KTLayer *layer = k->scene->layer(k->scene->layersTotal() - 1);
         if (layer) {
             if (!layer->frames().isEmpty())
                 return layer->frame(k->framePosition.frame);

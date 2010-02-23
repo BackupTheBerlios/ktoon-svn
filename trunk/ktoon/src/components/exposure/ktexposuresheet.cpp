@@ -420,6 +420,7 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                 break;
                 case KTProjectRequest::Select:
                  {
+                     kFatal() << "KTExposureSheet::layerResponse - KTProjectRequest::Select";
                      setScene(e->sceneIndex());
                      scene->blockSignals(true);
                      scene->selectFrame(e->layerIndex(), 0);
