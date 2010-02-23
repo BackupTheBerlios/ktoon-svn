@@ -85,7 +85,7 @@ bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
             response->setState(document.toString());
             response->setArg(layer->layerName());
 
-            kFatal() << "KTCommandExecutor::removeLayer - Removing Layer: " << position;
+            kFatal() << "KTCommandExecutor::removeLayer - Removing Layer at Index: " << position;
 
             if (scene->removeLayer(position)) {
                 emit responsed(response);

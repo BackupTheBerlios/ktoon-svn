@@ -185,19 +185,11 @@ bool KTScene::removeLayer(int position)
         kFatal() << "KTScene::removeLayer - Index: " << position;
         k->layers.remove(position);
 
-        /*
-        for (int i=position+1; i <= k->layerCount - 1; i++) {
-             kFatal() << "Reubicando layer " << i << " en posicion " << i-1; 
-             KTLayer *next = this->layer(i);
-             k->layers.insert(i-1, next);
-             k->layers.remove(i);
-             delete next;
-        }
-        */
-
         k->layerCount--;
         if (k->nameIndex == position + 1)
             k->nameIndex--;
+
+        kFatal() << "LAYERS TOTAL: " << k->layerCount; 
 
         delete layer;
 
