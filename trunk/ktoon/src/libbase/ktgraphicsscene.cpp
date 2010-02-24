@@ -306,6 +306,7 @@ KTFrame *KTGraphicsScene::currentFrame()
        for (int i = 0; i < indices.size(); i++) {
              kFatal() << "VISUAL INDEX: " << indices.at(i);
              KTLayer *layer = k->scene->layer(indices.at(i));
+             //kFatal() << "LOGICAL INDEX: " << k->scene->layers().visualIndices[indices.at(i)];
              kFatal() << "LOGICAL INDEX: " << k->scene->layers().logicalIndex(layer);
        }
   

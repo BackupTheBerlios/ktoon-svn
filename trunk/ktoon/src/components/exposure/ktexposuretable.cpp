@@ -571,8 +571,6 @@ void KTExposureTable::moveLayer(int oldPosLayer, int newPosLayer)
 
 void KTExposureTable::emitRequestSetUsedFrame(int indexFrame,  int indexLayer)
 {
-    kFatal() << "KTExposureTable::emitRequestSetUsedFrame <- Damn!";
-
     int visualIndex = k->header->visualIndex(indexLayer);
 
     if (indexFrame == k->header->lastFrame(indexLayer)) {

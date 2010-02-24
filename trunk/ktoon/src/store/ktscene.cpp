@@ -124,7 +124,7 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
     Q_CHECK_PTR(layers);
 
     #ifdef K_DEBUG
-           K_FUNCINFO << " - Index: " <<  position;
+           kFatal() << "KTScene::createLayer - Index: " <<  position;
     #endif
 
     if (position < 0 || position > k->layers.count()) {
@@ -189,7 +189,13 @@ bool KTScene::removeLayer(int position)
         if (k->nameIndex == position + 1)
             k->nameIndex--;
 
-        kFatal() << "LAYERS TOTAL: " << k->layerCount; 
+        kFatal() << "KTScene::removeLayer - LAYERS TOTAL: " << k->layerCount; 
+        QList<int> indices = this->layers().visualIndices();
+        for (int i = 0; i < indices.size(); i++) {
+             kFatal() << "VISUAL INDEX: " << indices.at(i);
+             KTLayer *layer = this->layer(indices.at(i));
+             kFatal() << "LOGICAL INDEX: " << this->layers().logicalIndex(layer);
+        }
 
         delete layer;
 

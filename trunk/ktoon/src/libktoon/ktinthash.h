@@ -133,13 +133,6 @@ bool KTIntHash<T>::contains(int pos)
 }
 
 template<typename T>
-void KTIntHash<T>::remove(int pos)
-{
-    k->logicalIndices.remove(pos);
-    k->visualIndices.removeAll(pos);
-}
-
-template<typename T>
 void KTIntHash<T>::moveVisual(int from, int to)
 {
     if (containsVisual(from) && containsVisual(to)) {
@@ -206,6 +199,31 @@ void KTIntHash<T>::insert(int pos, T value)
     k->visualIndices.insert(pos, k->counter);
     
     k->counter++;
+}
+
+template<typename T>
+void KTIntHash<T>::remove(int pos)
+{
+    qDebug("KTIntHash.remove() - Count(): %d", count());
+    qDebug("KTIntHash.remove() - Pos: %d", pos);
+
+    if (containsVisual(pos)) {
+        if (pos == count()-1) {
+            int logicalIndex = k->visualIndices.takeAt(pos);
+            k->logicalIndices.remove(logicalIndex);
+            k->counter--;
+        } else {
+            int logicalIndex = k->visualIndices.takeAt(pos);
+            k->logicalIndices.remove(logicalIndex);
+            for (int i=pos+1;i<=count();i++) {
+                 qDebug("KTIntHash.remove() - Procesando: %d", i);
+                 T value = visualValue(i); 
+                 insert(i-1, value);
+            }
+        }
+    } else {
+        qDebug("KTIntHash<T>::remove - Objeto no encontrado!");
+    }
 }
 
 template<typename T>

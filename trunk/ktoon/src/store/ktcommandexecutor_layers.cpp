@@ -42,9 +42,8 @@ bool KTCommandExecutor::createLayer(KTLayerResponse *response)
     KTScene *scene = m_project->scene(scenePosition);
 
     if (scene) {
-        KTLayer *layer = scene->createLayer(position);
-
         kFatal() << "KTCommandExecutor::createLayer - Adding Layer on Index: " << position;
+        KTLayer *layer = scene->createLayer(position);
 
         if (! layer) 
             return false;

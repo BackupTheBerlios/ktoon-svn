@@ -40,6 +40,7 @@ SOURCES += ktgraphicalgorithm.cpp \
            ktsocketbase.cpp \
            ktxmlparserbase.cpp \
            ktproxyitem.cpp
+
 KLIB_DIR = "../../src/klib"
 
 include($$KLIB_DIR/klib.pri)
