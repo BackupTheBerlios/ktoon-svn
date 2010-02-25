@@ -192,6 +192,8 @@ T KTIntHash<T>::takeVisual(int pos)
 template<typename T>
 void KTIntHash<T>::insert(int pos, T value)
 {
+    qDebug("###### Inserting at pos index: %d", pos);
+
     if (k->logicalIndices.contains(pos))
         qDebug("######   OVERRIDING!! %d", pos);
 
@@ -213,12 +215,16 @@ void KTIntHash<T>::remove(int pos)
             k->logicalIndices.remove(logicalIndex);
             k->counter--;
         } else {
-            int logicalIndex = k->visualIndices.takeAt(pos);
-            k->logicalIndices.remove(logicalIndex);
-            for (int i=pos+1;i<=count();i++) {
+            int logicalPos = k->visualIndices.takeAt(pos);
+            k->logicalIndices.remove(logicalPos);
+            int total = count();
+            qDebug("KTIntHash.remove() - Total: %d", total);
+            for (int i=pos+1;i<=total;i++) {
                  qDebug("KTIntHash.remove() - Procesando: %d", i);
-                 T value = visualValue(i); 
-                 insert(i-1, value);
+                 T value = this->takeVisual(i); 
+                 int index = i - 1;
+                 k->logicalIndices.insert(index, value);
+                 k->visualIndices.insert(index, index);
             }
         }
     } else {
