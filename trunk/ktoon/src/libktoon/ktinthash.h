@@ -198,8 +198,8 @@ void KTIntHash<T>::insert(int pos, T value)
     if (k->logicalIndices.contains(pos))
         qDebug("######   OVERRIDING!! %d", pos);
 
-    k->logicalIndices.insert(k->counter, value);
-    k->visualIndices.insert(pos, k->counter);
+    k->logicalIndices.insert(pos, value);
+    k->visualIndices.insert(pos, pos);
     
     k->counter++;
 }
@@ -218,10 +218,11 @@ void KTIntHash<T>::remove(int pos)
             k->counter--;
         } else {
             qDebug("KTIntHash.remove() - Deleting previous item");
-            int logicalPos = k->visualIndices.takeAt(pos);
-            qDebug("KTIntHash.remove() - Deleting Pos: %d", logicalPos);
-            k->logicalIndices.remove(logicalPos);
-            int total = count();
+            //int logicalPos = k->visualIndices.takeAt(pos);
+            //qDebug("KTIntHash.remove() - Deleting Pos: %d", logicalPos);
+            //k->logicalIndices.remove(logicalPos);
+            //k->removeVisual(pos);
+            int total = count() - 1;
             qDebug("KTIntHash.remove() - Total: %d", total);
             for (int i=pos+1;i<=total;i++) {
                  qDebug("KTIntHash.remove() - Procesando: %d", i);

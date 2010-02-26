@@ -186,8 +186,13 @@ bool KTScene::removeLayer(int position)
         k->layers.remove(position);
 
         k->layerCount--;
-        if (k->nameIndex == position + 1)
+        if (k->nameIndex == position + 1) {
             k->nameIndex--;
+        } else {
+            if (k->layerCount == 0) {
+                k->nameIndex = 0;
+            }
+        }
 
         kFatal() << "KTScene::removeLayer - LAYERS TOTAL: " << k->layerCount; 
         QList<int> indices = this->layers().visualIndices();
