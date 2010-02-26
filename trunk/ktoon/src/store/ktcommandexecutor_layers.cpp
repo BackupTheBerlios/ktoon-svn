@@ -91,6 +91,8 @@ bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
 
                 return true;
             }
+        } else {
+            kFatal() << "KTCommandExecutor::removeLayer - No layer at index: " << position;
         }
     }
 

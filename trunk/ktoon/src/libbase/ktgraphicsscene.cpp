@@ -298,16 +298,21 @@ void KTGraphicsScene::setPreviousOnionSkinCount(int n)
 
 KTFrame *KTGraphicsScene::currentFrame()
 {
-    kFatal() << "KTGraphicsScene::currentFrame - LAYER INDEX: " << k->framePosition.layer << " - Total: " << k->scene->layersTotal();
+    kFatal() << "KTGraphicsScene::currentFrame - LAYER INDEX: " << k->framePosition.layer;
+    kFatal() << "KTGraphicsScene::currentFrame - Layers Total: " << k->scene->layersTotal();
     kFatal() << "KTGraphicsScene::currentFrame - FRAME INDEX: " << k->framePosition.frame;
+    kFatal() << "";
 
     if (k->scene && (k->scene->layersTotal() > 0) && (k->framePosition.layer < k->scene->layersTotal())) {
        QList<int> indices = k->scene->layers().visualIndices();
-       for (int i = 0; i < indices.size(); i++) {
-             kFatal() << "VISUAL INDEX: " << indices.at(i);
+       //int size = k->scene->layers().count();
+       int size = k->scene->layersTotal();
+       for (int i = 0; i < size; i++) {
+             kFatal() << "KTGraphicsScene - VISUAL INDEX: " << indices.at(i);
              KTLayer *layer = k->scene->layer(indices.at(i));
-             //kFatal() << "LOGICAL INDEX: " << k->scene->layers().visualIndices[indices.at(i)];
-             kFatal() << "LOGICAL INDEX: " << k->scene->layers().logicalIndex(layer);
+             kFatal() << "KTGraphicsScene - LOGICAL INDEX: " << k->scene->layers().logicalIndex(layer);
+             kFatal() << "KTGraphicsScene - LAYER NAME: " << layer->layerName();
+             kFatal() << "";
        }
   
         if (k->scene->layers().contains(k->framePosition.layer)) {
@@ -317,7 +322,7 @@ KTFrame *KTGraphicsScene::currentFrame()
             if (!layer->frames().isEmpty())
                 return layer->frame(k->framePosition.frame);
         } else {
-                kFatal() << "KTGraphicsScene::currentFrame - No layer available";
+                kFatal() << "KTGraphicsScene::currentFrame - No layer available: " << k->framePosition.frame;
         }
         } else {
                 kFatal() << "KTGraphicsScene::currentFrame - Layer index incorrect!"; 

@@ -191,10 +191,13 @@ bool KTScene::removeLayer(int position)
 
         kFatal() << "KTScene::removeLayer - LAYERS TOTAL: " << k->layerCount; 
         QList<int> indices = this->layers().visualIndices();
-        for (int i = 0; i < indices.size(); i++) {
-             kFatal() << "VISUAL INDEX: " << indices.at(i);
+        int size = this->layersTotal();
+        for (int i = 0; i < size; i++) {
+             kFatal() << "KTScene::removeLayer - VISUAL INDEX: " << indices.at(i);
              KTLayer *layer = this->layer(indices.at(i));
-             kFatal() << "LOGICAL INDEX: " << this->layers().logicalIndex(layer);
+             kFatal() << "KTScene::removeLayer - LOGICAL INDEX: " << this->layers().logicalIndex(layer);
+             kFatal() << "KTScene::removeLayer - LAYER NAME: " << layer->layerName();
+             kFatal() << "";
         }
 
         delete layer;
