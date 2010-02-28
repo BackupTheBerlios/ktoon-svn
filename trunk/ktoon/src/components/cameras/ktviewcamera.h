@@ -58,6 +58,7 @@ class KTViewCamera : public QFrame
         void setFPS(int fps);
         void updatePhotograms(KTProject *project);
         void exportDialog();
+        void doStop();
 
     signals:
         void requestTriggered(const KTProjectRequest *event);

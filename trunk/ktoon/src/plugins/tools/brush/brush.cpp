@@ -57,6 +57,7 @@ Brush::~Brush()
 
 void Brush::init(KTGraphicsScene *scene)
 {
+    zLevel = 0;
     foreach (QGraphicsView * view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
              Q_CHECK_PTR(view->scene());
@@ -86,7 +87,17 @@ void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushMa
     m_item = new KTPathItem();
     m_item->setPen(brushManager->pen());
 
+    m_item->setZValue(zLevel);
+
+    kFatal() << "*** Inserting item at level: " << zLevel;
+
+    zLevel++;
+
     scene->addItem(m_item);
+
+    kDebug() << "";
+    kDebug() << "Pressing mouse from Brush!";
+    kDebug() << "";
 }
 
 void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -120,13 +131,17 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 
     smoothPath(m_path, smoothness);
 
-    m_item->setBrush( brushManager->brush());
+    m_item->setBrush(brushManager->brush());
     m_item->setPath(m_path);
 
     // Add KTProjectRequest
 
     QDomDocument doc;
     doc.appendChild(m_item->toXml(doc));
+
+    kDebug() << ""; 
+    kDebug() << "Releasing mouse from Brush!";
+    kDebug() << "";
 
     KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString());
 

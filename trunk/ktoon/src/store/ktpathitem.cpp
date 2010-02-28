@@ -33,7 +33,7 @@
 
 #include <QCursor>
 
-KTPathItem::KTPathItem( QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsPathItem(parent, scene), m_dragOver(false)
+KTPathItem::KTPathItem(QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsPathItem(parent, scene), m_dragOver(false)
 {
     setAcceptDrops(true);
 }
@@ -53,12 +53,12 @@ QDomElement KTPathItem::toXml(QDomDocument &doc) const
     QString strPath = "";
     QChar t;
     
-    for(int i = 0; i <  path().elementCount () ; i++) {
+    for(int i=0; i < path().elementCount(); i++) {
         QPainterPath::Element e = path().elementAt (i);
-        switch(e.type ) {
+        switch (e.type) {
             case QPainterPath::MoveToElement:
             {
-                if(t != 'M') {
+                if (t != 'M') {
                     t = 'M';
                     strPath += "M " + QString::number(e.x) + " " + QString::number(e.y) + " ";
                 } else {
@@ -69,7 +69,7 @@ QDomElement KTPathItem::toXml(QDomDocument &doc) const
             break;
             case QPainterPath::LineToElement:
             {
-                if(t != 'L') {
+                if (t != 'L') {
                     t = 'L';
                     strPath += " L " + QString::number(e.x) + " " + QString::number(e.y) + " ";
                 } else {
@@ -80,7 +80,7 @@ QDomElement KTPathItem::toXml(QDomDocument &doc) const
             case QPainterPath::CurveToElement:
             {
                 
-                if(t != 'C') {
+                if (t != 'C') {
                     t = 'C';
                     strPath += " C " + QString::number(e.x) + " " + QString::number(e.y) + " ";
                 } else {

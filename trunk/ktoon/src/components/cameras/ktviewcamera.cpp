@@ -234,6 +234,11 @@ void KTViewCamera::doPlayBack()
     updateSceneInfo();
 }
 
+void KTViewCamera::doStop()
+{
+    m_animationArea->stop();
+}
+
 void KTViewCamera::updateSceneInfo()
 {
     showSceneInfo(m_animationArea->currentScene());

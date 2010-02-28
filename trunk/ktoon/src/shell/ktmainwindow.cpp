@@ -951,10 +951,12 @@ void KTMainWindow::addPage(QWidget *widget)
 
 void KTMainWindow::updateAnimation(int index)
 {
-    if (index == 1) 
+    if (index == 1) {
         viewCamera->updatePhotograms(m_projectManager->project());
-    else 
+    } else {
+        viewCamera->doStop();
         m_viewDoc->updatePaintArea();
+    }
 }
 
 /**

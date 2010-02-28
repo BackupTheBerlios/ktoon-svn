@@ -307,15 +307,19 @@ void KTPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
 {
     KTScene *currentScene = k->scene->scene();
 
+    /*
     kFatal() << "";
     kFatal() << "KTPaintAreaBase::drawForeground - LAYERS TOTAL: " << currentScene->layersTotal();
     kFatal() << "";
+    */
 
     if (currentScene->layersTotal() > 0) {
         if (KTFrame *frame = k->scene->currentFrame()) {
+            /*
             kFatal() << ""; 
             kFatal() << "KTPaintAreaBase::drawForeground - FRAME NAME: " << frame->frameName();
             kFatal() << "";
+            */
 
             if (frame->isLocked()) {
                 QString text = tr("Locked!");

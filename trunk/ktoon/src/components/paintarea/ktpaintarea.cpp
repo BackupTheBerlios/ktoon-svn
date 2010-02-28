@@ -278,8 +278,11 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
                     break;
         }
     } else {
+        /*
+        kFatal() << "Updating Paint Area!!! OOOOOO_OOOOOOOO";
         graphicsScene()->drawCurrentPhotogram();
         viewport()->update(scene()->sceneRect().toRect());
+        */
     }
 
     graphicsScene()->itemResponse(event);

@@ -52,9 +52,11 @@ KTLayer::~KTLayer()
 
 Frames KTLayer::frames()
 {
+   /*
     kFatal() << "";
     kFatal() << "KTLayer::frames - LAYER NAME: " << k->name;
     kFatal() << "";
+    */
 
     return k->frames;
 }

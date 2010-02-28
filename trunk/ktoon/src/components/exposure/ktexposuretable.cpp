@@ -91,7 +91,9 @@ KTExposureHeader::KTExposureHeader(QWidget * parent) : QHeaderView(Qt::Horizonta
                                                        m_blockSectionMoved(false)
 {
     setClickable(true);
-    setMovable(true);
+
+    //SQA: Disabled while layers movability is enhanced 
+    //setMovable(true);
 
     connect(this, SIGNAL(sectionDoubleClicked(int)), this, SLOT(showEditorName(int)));
 

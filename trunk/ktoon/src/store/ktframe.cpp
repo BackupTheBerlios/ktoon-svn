@@ -394,3 +394,9 @@ KTProject *KTFrame::project() const
 {
     return layer()->project();
 }
+
+int KTFrame::count()
+{
+    return k->graphics.count();
+}
+
