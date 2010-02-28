@@ -531,6 +531,8 @@ void KTGraphicsScene::dragEnterEvent(QGraphicsSceneDragDropEvent * event)
 
 void  KTGraphicsScene::dragLeaveEvent(QGraphicsSceneDragDropEvent * event)
 {
+    Q_UNUSED(event);
+
     removeItem(k->lines.last());
     delete k->lines.takeLast();
 }
@@ -594,4 +596,13 @@ void KTGraphicsScene::aboutToMousePress()
             }
             ++it;
     }
+}
+
+void KTGraphicsScene::includeObject(QGraphicsItem *object)
+{
+    kFatal() << "KTGraphicsScene::includeObject - Layer: " << k->framePosition.layer << " - Frame: "  << k->framePosition.frame;
+
+    //kFatal() << "* KTGraphicsScene::includeObject - Inserting item at level: " << zLevel;
+    //item->setZValue(zLevel);
+    addItem(object);
 }

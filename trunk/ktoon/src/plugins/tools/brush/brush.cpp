@@ -57,7 +57,7 @@ Brush::~Brush()
 
 void Brush::init(KTGraphicsScene *scene)
 {
-    zLevel = 0;
+    //zLevel = 0;
     foreach (QGraphicsView * view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
              Q_CHECK_PTR(view->scene());
@@ -87,13 +87,13 @@ void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushMa
     m_item = new KTPathItem();
     m_item->setPen(brushManager->pen());
 
-    m_item->setZValue(zLevel);
+    //m_item->setZValue(zLevel);
+    //zLevel++;
+    //scene->addItem(m_item);
 
-    kFatal() << "*** Inserting item at level: " << zLevel;
+    //QGraphicsItem object = qobject_cast<QGraphicsScene *>(m_item); 
 
-    zLevel++;
-
-    scene->addItem(m_item);
+    scene->includeObject(m_item);
 
     kDebug() << "";
     kDebug() << "Pressing mouse from Brush!";

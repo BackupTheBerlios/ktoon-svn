@@ -34,6 +34,7 @@ struct KTLayer::Private
     QString name;
     int framesCount;
     bool isLocked;
+    int zLevelBase;
 };
 
 KTLayer::KTLayer(KTScene *parent) : QObject(parent), k(new Private)
@@ -261,4 +262,14 @@ int KTLayer::visualIndex() const
 int KTLayer::framesNumber() const
 {
     return k->framesCount;
+}
+
+void KTLayer::setZLevel(int level)
+{
+    zLevelBase = level; 
+}
+
+int KTLayer::getZLevel()
+{
+    return zLevelBase;
 }
