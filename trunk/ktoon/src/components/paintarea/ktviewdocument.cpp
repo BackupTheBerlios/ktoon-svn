@@ -595,6 +595,7 @@ void KTViewDocument::createToolBar()
     k->barGrid->addSeparator();
 
     QSpinBox *prevOnionSkinSpin = new QSpinBox(this);
+    prevOnionSkinSpin->setToolTip(tr("Preview Frames"));
     connect(prevOnionSkinSpin, SIGNAL(valueChanged(int)), this, SLOT(setPreviousOnionSkin(int)));
 
     k->barGrid->addWidget(prevOnionSkinSpin);
@@ -607,6 +608,7 @@ void KTViewDocument::createToolBar()
     k->barGrid->addWidget(layers);
 
     QSpinBox *nextOnionSkinSpin = new QSpinBox(this);
+    nextOnionSkinSpin->setToolTip(tr("Next Frames"));
     connect(nextOnionSkinSpin, SIGNAL(valueChanged (int)), this, SLOT(setNextOnionSkin(int)));
 
     k->barGrid->addWidget(nextOnionSkinSpin);

@@ -169,8 +169,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
     //foreach (KTLayer *layer, k->scene->layers().values()) {
 
-    kDebug() << "*** Processing: " << k->scene->layersTotal() << " layers";
-    kDebug() << "";
+    kDebug() << "KTGraphicsScene::drawPhotogram - Processing: " << k->scene->layersTotal() << " layers";
 
     for (int i=0; i < k->scene->layersTotal(); i++) {
 
@@ -210,7 +209,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                      if (frame) {
                          valid = true;
-                         kDebug() << "*** Adding current photogram - layer index: " << i << " - frame index: " << photogram;
+                         kDebug() << "KTGraphicsScene::drawPhotogram - Adding current photogram - layer index: " << i << " - frame index: " << photogram;
                          addFrame(frame);
                      }
                  }
@@ -247,8 +246,10 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
 {
     if (frame) {
         kDebug() << "KTGraphicsScene::addFrame - Adding " << frame->count() << " objects";
+        kDebug() << "";
         foreach (KTGraphicObject *object, frame->graphics().values())
                  addGraphicObject(object, opacity);
+        kDebug() << "";
     }
 }
 
@@ -268,7 +269,20 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 
     if (! qgraphicsitem_cast<KTItemGroup *>(item->parentItem())) {
         item->setSelected(false);
-        addItem(item);
+
+    KTLayer *layer = k->scene->layer(k->framePosition.layer);
+    if (layer) {
+        KTFrame *frame = layer->frame(k->framePosition.frame);
+        if (frame) {
+            int zLevel = frame->getTopZLevel();
+            kFatal() << "KTGraphicsScene::addGraphicObject - Layer: " << k->framePosition.layer << " - Frame: "  << k->framePosition.frame;
+            kFatal() << "* KTGraphicsScene::addGraphicObject - Inserting item at level: " << zLevel;
+            item->setZValue(zLevel);
+            addItem(item);
+        }
+    }
+
+        //addItem(item);
     }
 }
 
@@ -602,7 +616,14 @@ void KTGraphicsScene::includeObject(QGraphicsItem *object)
 {
     kFatal() << "KTGraphicsScene::includeObject - Layer: " << k->framePosition.layer << " - Frame: "  << k->framePosition.frame;
 
-    //kFatal() << "* KTGraphicsScene::includeObject - Inserting item at level: " << zLevel;
-    //item->setZValue(zLevel);
-    addItem(object);
+    KTLayer *layer = k->scene->layer(k->framePosition.layer);
+    if (layer) {
+        KTFrame *frame = layer->frame(k->framePosition.frame);
+        if (frame) {
+            int zLevel = frame->getTopZLevel();    
+            kFatal() << "* KTGraphicsScene::includeObject - Inserting item at level: " << zLevel;
+            object->setZValue(zLevel);
+            addItem(object);
+        }
+    }
 }

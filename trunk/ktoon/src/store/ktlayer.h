@@ -118,8 +118,8 @@ class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 
         int framesNumber() const;
 
-        void setZLevel(int level);
-        int getZLevel();
+        //void setZLevel(int level);
+        //int getZLevel();
         
     public:
         virtual void fromXml(const QString &xml);

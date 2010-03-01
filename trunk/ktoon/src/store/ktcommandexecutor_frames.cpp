@@ -51,7 +51,7 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
     if (layer) {
         KTFrame *frame = layer->createFrame(position);
         
-        if (! frame) 
+        if (!frame) 
             return false;
         
         if (!name.isEmpty()) {
@@ -69,6 +69,16 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
         if (!state.isEmpty()) {
             frame->fromXml(state);
             response->setArg(frame->frameName());
+        }
+
+        if (layerPosition == 0) {
+            frame->setZLevel(0); 
+        } else {
+            KTLayer *previewlayer = scene->layer(layerPosition-1);
+            KTFrame *previewFrame = previewlayer->frame(position);
+            if (previewFrame) {
+                frame->setZLevel(previewFrame->getTopZLevel());
+            }
         }
         
         return true;

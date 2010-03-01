@@ -114,8 +114,11 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
        int repeat() const;
        
        void clean();
-
        int count();
+
+       void setZLevel(int level);
+       int getZLevel();
+       int getTopZLevel();
        
     public:
        virtual void fromXml(const QString &xml);
