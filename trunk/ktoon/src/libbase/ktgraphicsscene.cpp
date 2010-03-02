@@ -74,6 +74,7 @@ struct KTGraphicsScene::Private
     bool isDrawing;
     KTBrushManager *brushManager;
     KTInputDeviceInformation *inputInformation;
+    int zLayerCounter;
 
     QList<KTLineGuide *> lines;
 };
@@ -91,6 +92,7 @@ KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
     k->onionSkin.previous = 0;
     k->tool = 0;
     k->isDrawing = false;
+    k->zLayerCounter = 0;
 
     setBackgroundBrush(Qt::gray);
 
@@ -247,8 +249,12 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
     if (frame) {
         kDebug() << "KTGraphicsScene::addFrame - Adding " << frame->count() << " objects";
         kDebug() << "";
-        foreach (KTGraphicObject *object, frame->graphics().values())
-                 addGraphicObject(object, opacity);
+        //foreach (KTGraphicObject *object, frame->graphics().values())
+        for (int i=0; i < frame->count(); i++) {
+             KTGraphicObject *object = frame->graphic(i);
+             addGraphicObject(object, opacity);
+        }
+
         kDebug() << "";
     }
 }
@@ -275,9 +281,11 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
         KTFrame *frame = layer->frame(k->framePosition.frame);
         if (frame) {
             int zLevel = frame->getTopZLevel();
-            kFatal() << "KTGraphicsScene::addGraphicObject - Layer: " << k->framePosition.layer << " - Frame: "  << k->framePosition.frame;
-            kFatal() << "* KTGraphicsScene::addGraphicObject - Inserting item at level: " << zLevel;
-            item->setZValue(zLevel);
+            //kFatal() << "KTGraphicsScene::addGraphicObject - Layer: " << k->framePosition.layer << " - Frame: "  << k->framePosition.frame;
+            //kFatal() << "* KTGraphicsScene::addGraphicObject - Inserting item at level: " << zLevel;
+            item->setZValue(k->zLayerCounter);
+            k->zLayerCounter++;
+            kFatal() << "KTGraphicsScene::addGraphicObject - Default zValue: " << item->zValue();
             addItem(item);
         }
     }
