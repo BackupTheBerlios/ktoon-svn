@@ -86,7 +86,8 @@ KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
     #endif
 
     setItemIndexMethod(QGraphicsScene::NoIndex);
-    setCurrentFrame(-1, -1);
+    //setCurrentFrame(-1, -1);
+    setCurrentFrame(0, 0);
 
     k->onionSkin.next = 0;
     k->onionSkin.previous = 0;
@@ -280,11 +281,11 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
     if (layer) {
         KTFrame *frame = layer->frame(k->framePosition.frame);
         if (frame) {
-            int zLevel = frame->getTopZLevel();
+            //int zLevel = frame->getTopZLevel();
             //kFatal() << "KTGraphicsScene::addGraphicObject - Layer: " << k->framePosition.layer << " - Frame: "  << k->framePosition.frame;
             //kFatal() << "* KTGraphicsScene::addGraphicObject - Inserting item at level: " << zLevel;
-            item->setZValue(k->zLayerCounter);
-            k->zLayerCounter++;
+            //item->setZValue(k->zLayerCounter);
+            //k->zLayerCounter++;
             kFatal() << "KTGraphicsScene::addGraphicObject - Default zValue: " << item->zValue();
             addItem(item);
         }

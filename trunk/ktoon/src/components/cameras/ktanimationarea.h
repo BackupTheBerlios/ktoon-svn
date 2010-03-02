@@ -49,7 +49,7 @@ class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectResp
         KTScene *currentScene() const;
         void setFPS(int fps);
         void refreshAnimation(const KTProject *project);
-        void renderFrame(int index);
+        void initArea();
 
     public slots:
         virtual void render();
