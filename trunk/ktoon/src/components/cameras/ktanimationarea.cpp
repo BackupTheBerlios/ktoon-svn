@@ -319,17 +319,14 @@ void KTAnimationArea::render()
     k->isRendered = true;
 }
 
-void KTAnimationArea::initArea()
+void KTAnimationArea::initAnimationArea()
 {
     KTScene *scene = k->project->scene(k->currentSceneIndex);
-
-    if (!scene)
-        return;
+    k->currentFramePosition = 0;
 
     KTAnimationRenderer renderer;
     renderer.setScene(scene);
-
-    renderer.nextPhotogram();
+    renderer.renderPhotogram(0);
 
     QImage renderized = QImage(size(), QImage::Format_RGB32);
     renderized.fill(qRgb(255, 255, 255));
@@ -338,11 +335,9 @@ void KTAnimationArea::initArea()
     painter.setRenderHint(QPainter::Antialiasing);
     renderer.render(&painter);
 
-    k->photograms << renderized;
+    k->photograms.insert(0, renderized);
 
-    update();
-
-    k->isRendered = false;
+    repaint();
 }
 
 QSize KTAnimationArea::sizeHint() const
@@ -382,7 +377,6 @@ void KTAnimationArea::refreshAnimation(const KTProject *project)
 {
     k->project = project;
     //render();
-    //renderFrame(0);
-    initArea();
-    repaint();
+    //repaint();
+    initAnimationArea();
 }
