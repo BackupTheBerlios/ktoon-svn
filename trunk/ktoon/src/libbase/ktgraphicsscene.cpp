@@ -74,7 +74,9 @@ struct KTGraphicsScene::Private
     bool isDrawing;
     KTBrushManager *brushManager;
     KTInputDeviceInformation *inputInformation;
-    int zLayerCounter;
+    //int zLayerCounter;
+    int layerCounter;
+    int objectCounter;
 
     QList<KTLineGuide *> lines;
 };
@@ -93,7 +95,7 @@ KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
     k->onionSkin.previous = 0;
     k->tool = 0;
     k->isDrawing = false;
-    k->zLayerCounter = 0;
+    //k->zLayerCounter = 0;
 
     setBackgroundBrush(Qt::gray);
 
@@ -213,6 +215,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                      if (frame) {
                          valid = true;
                          kDebug() << "KTGraphicsScene::drawPhotogram - Adding current photogram - layer index: " << i << " - frame index: " << photogram;
+                         k->layerCounter = i;
                          addFrame(frame);
                      }
                  }
@@ -250,7 +253,7 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
     if (frame) {
         kDebug() << "KTGraphicsScene::addFrame - Adding " << frame->count() << " objects";
         kDebug() << "";
-        //foreach (KTGraphicObject *object, frame->graphics().values())
+        k->objectCounter = 0;
         for (int i=0; i < frame->count(); i++) {
              KTGraphicObject *object = frame->graphic(i);
              addGraphicObject(object, opacity);
@@ -281,12 +284,10 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
     if (layer) {
         KTFrame *frame = layer->frame(k->framePosition.frame);
         if (frame) {
-            //int zLevel = frame->getTopZLevel();
-            //kFatal() << "KTGraphicsScene::addGraphicObject - Layer: " << k->framePosition.layer << " - Frame: "  << k->framePosition.frame;
-            //kFatal() << "* KTGraphicsScene::addGraphicObject - Inserting item at level: " << zLevel;
-            //item->setZValue(k->zLayerCounter);
-            //k->zLayerCounter++;
-            kFatal() << "KTGraphicsScene::addGraphicObject - Default zValue: " << item->zValue();
+            int factor = k->objectCounter + (k->layerCounter)*100; 
+            k->objectCounter++;
+            kFatal() << "KTGraphicsScene::addGraphicObject - New zValue: " << factor << " - Layer: " << k->layerCounter << " - Old zValue: " << k->objectCounter;
+            item->setZValue(factor);
             addItem(item);
         }
     }
@@ -629,8 +630,8 @@ void KTGraphicsScene::includeObject(QGraphicsItem *object)
     if (layer) {
         KTFrame *frame = layer->frame(k->framePosition.frame);
         if (frame) {
-            int zLevel = frame->getTopZLevel();    
-            kFatal() << "* KTGraphicsScene::includeObject - Inserting item at level: " << zLevel;
+            int zLevel = frame->getTopZLevel() + (k->framePosition.layer*100);    
+            kFatal() << "* KTGraphicsScene::includeObject - Inserting item at zLevel: " << zLevel;
             object->setZValue(zLevel);
             addItem(object);
         }

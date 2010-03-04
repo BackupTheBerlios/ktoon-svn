@@ -71,6 +71,7 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
             response->setArg(frame->frameName());
         }
 
+        /*
         if (layerPosition == 0) {
             frame->setZLevel(0); 
         } else {
@@ -80,6 +81,7 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
                 frame->setZLevel(previewFrame->getTopZLevel());
             }
         }
+        */
         
         return true;
     }

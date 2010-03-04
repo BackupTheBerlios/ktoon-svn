@@ -337,9 +337,13 @@ void KTExposureSheet::closeAllScenes()
            K_FUNCINFO;
     #endif
 
+    k->scenes->blockSignals(true);
+
     delete k->currentTable;
     k->scenes->removeAllTabs();
     k->currentTable = 0;
+
+    k->scenes->blockSignals(false);
 }
 
 void KTExposureSheet::sceneResponse(KTSceneResponse *e)

@@ -37,31 +37,31 @@ class KTPaintAreaEvent;
 */
 class KTPenWidget : public KTModuleWidgetBase
 {
-	Q_OBJECT
-	public:
-		KTPenWidget(QWidget *parent = 0);
-		~KTPenWidget();
-		QPen pen() const;
-		
-	private:
-		void emitPenChanged();
-		
-	private:
-		struct Private;
-		Private *const k;
-		
-	public slots:
-		void reset();
-		
-	private slots:
-		void setThickness(int value);
-		void setStyle(int s);
-		void setJoinStyle(int s);
-		void setCapStyle(int s );
-		
-	signals:
-		void penChanged(const QPen &pen);
-		void paintAreaEventTriggered(const KTPaintAreaEvent *e);
+    Q_OBJECT
+    public:
+        KTPenWidget(QWidget *parent = 0);
+        ~KTPenWidget();
+        QPen pen() const;
+        
+    private:
+        void emitPenChanged();
+        
+    private:
+        struct Private;
+        Private *const k;
+        
+    public slots:
+        void reset();
+        void setThickness(int value);
+        
+    private slots:
+        void setStyle(int s);
+        void setJoinStyle(int s);
+        void setCapStyle(int s);
+        
+    signals:
+        void penChanged(const QPen &pen);
+        void paintAreaEventTriggered(const KTPaintAreaEvent *e);
 
 };
 

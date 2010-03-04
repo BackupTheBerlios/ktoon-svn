@@ -64,7 +64,7 @@ class KTOON_EXPORT KTToolPlugin : public QObject, public KTToolInterface
         virtual void aboutToChangeTool() = 0;
         virtual void saveConfig() = 0;
         virtual void aboutToChangeScene(KTGraphicsScene *scene);
-        
+
         virtual void itemResponse(const KTItemResponse *event);
         virtual void keyPressEvent(QKeyEvent *event);
         virtual QMenu *menu() const;

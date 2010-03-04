@@ -116,8 +116,8 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
        void clean();
        int count();
 
-       void setZLevel(int level);
-       int getZLevel();
+       //void setZLevel(int level);
+       //int getZLevel();
        int getTopZLevel();
        
     public:

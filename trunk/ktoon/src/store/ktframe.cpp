@@ -47,7 +47,7 @@ struct KTFrame::Private
     bool isVisible;
     GraphicObjects graphics;
     int repeat;
-    int zLevelBase;
+    //int zLevelBase;
 };
 
 KTFrame::KTFrame(KTLayer *parent) : QObject(parent), k(new Private)
@@ -401,6 +401,7 @@ int KTFrame::count()
     return k->graphics.count();
 }
 
+/*
 void KTFrame::setZLevel(int level)
 {
     k->zLevelBase = level;
@@ -410,8 +411,9 @@ int KTFrame::getZLevel()
 {
     return k->zLevelBase;
 }
+*/
 
 int KTFrame::getTopZLevel()
 {
-    return k->zLevelBase + k->graphics.count();
+    return k->graphics.count();
 }

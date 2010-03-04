@@ -239,6 +239,11 @@ void KTMainWindow::viewNewDocument(const QString &title)
         connect(m_viewDoc, SIGNAL(autoSave()), this, SLOT(callSave()));
 
         m_projectManager->undoModified();
+
+        KCONFIG->beginGroup("Pen Parameters");
+        int thicknessValue = KCONFIG->value("thickness", -1).toInt();
+        kFatal() << "KTMainWindow::viewNewDocument: " << thicknessValue;
+        m_penWidget->setThickness(thicknessValue);
     }
 }
 
@@ -346,7 +351,10 @@ bool KTMainWindow::closeProject()
     m_projectManager->closeProject();
 
     // Cleaning widgets
+    m_exposureSheet->blockSignals(true);
     m_exposureSheet->closeAllScenes();
+    m_exposureSheet->blockSignals(false);
+
     m_timeLine->closeAllScenes();
     m_scenes->closeAllScenes();
 
