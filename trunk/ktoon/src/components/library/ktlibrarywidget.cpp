@@ -282,6 +282,17 @@ void KTLibraryWidget::importBitmap()
     }
 }
 
+void KTLibraryWidget::importBitmapArray()
+{
+    QString dir = getenv("HOME");
+    QString path = QFileDialog::getExistingDirectory(this, tr("Choose the images directory..."), dir,
+                                                 QFileDialog::ShowDirsOnly
+                                                 | QFileDialog::DontResolveSymlinks);
+
+    if (path.isEmpty())
+        return;
+}
+
 void KTLibraryWidget::importSound()
 {
     QString sound = QFileDialog::getOpenFileName(this, tr("Import an audio file..."), QDir::homePath(),

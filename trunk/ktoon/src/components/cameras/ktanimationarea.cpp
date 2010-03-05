@@ -338,6 +338,8 @@ void KTAnimationArea::initAnimationArea()
     k->photograms.insert(0, renderized);
 
     repaint();
+
+    k->isRendered = false;
 }
 
 QSize KTAnimationArea::sizeHint() const

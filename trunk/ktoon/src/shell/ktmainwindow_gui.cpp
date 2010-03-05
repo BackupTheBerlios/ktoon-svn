@@ -81,6 +81,9 @@ void KTMainWindow::createGUI()
     new KAction(QPixmap(THEME_DIR + "icons/gceditor.png"), tr("Bitmap"), QKeySequence(), m_libraryWidget, SLOT(importBitmap()),
                 m_actionManager, "importbitmap");
 
+    new KAction(QPixmap(THEME_DIR + "icons/gceditor.png"), tr("Bitmap Array"), QKeySequence(), m_libraryWidget, SLOT(importBitmapArray()),
+                m_actionManager, "importbitmaparray");
+
     //new KAction(QPixmap(), tr("Audio File..."), QKeySequence(), m_libraryWidget, SLOT(importSound()),
     //            m_actionManager, "importaudiofile");
 
@@ -254,6 +257,8 @@ void KTMainWindow::setupMenu()
 
     // Adding Options import bitmap and import audio file
     m_insertMenu->addAction(m_actionManager->find("importbitmap"));
+    m_insertMenu->addAction(m_actionManager->find("importbitmaparray"));
+
     //m_insertMenu->addAction(m_actionManager->find("importaudiofile"));
 
     // Setting up the window menu

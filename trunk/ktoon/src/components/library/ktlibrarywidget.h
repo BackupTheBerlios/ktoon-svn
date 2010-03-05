@@ -62,6 +62,7 @@ class KTLibraryWidget : public KTModuleWidgetBase
 
     public slots:
         void importBitmap();
+        void importBitmapArray();
         void importSound();
 
     signals:
