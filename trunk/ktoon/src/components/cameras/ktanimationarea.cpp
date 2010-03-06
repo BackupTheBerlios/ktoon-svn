@@ -23,6 +23,8 @@
 #include "ktanimationarea.h"
 
 #include <QGraphicsItem>
+#include <QApplication>
+#include <QMessageBox>
 
 #include "ktprojectresponse.h"
 #include "ktgraphicobject.h"
@@ -31,7 +33,7 @@
 #include "ktsoundlayer.h"
 
 #include <kcore/kdebug.h>
-// #include <kgui/kosd.h>
+//#include <kgui/kosd.h>
 
 struct KTAnimationArea::Private
 {
@@ -142,8 +144,11 @@ void KTAnimationArea::play()
 
    if (k->project && !k->timer->isActive()) {
        if (!k->isRendered) {
-           // KOsd::self()->display(tr("Rendering photograms... Please, wait a while..."));
+           // ToDo: Add a QDialog here...
+           //QMessageBox::about(this, tr("Information"), tr("Rendering...")); 
+           QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
            render();
+           QApplication::restoreOverrideCursor();
        }
        k->timer->start(1000 / k->fps);
    }

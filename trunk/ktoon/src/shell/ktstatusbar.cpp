@@ -33,7 +33,7 @@ KTStatusBar::KTStatusBar(QWidget *parent)
 
     m_progressBar->setMaximum(10);
 
-    m_status = new QLabel( this );
+    m_status = new QLabel(this);
     m_status->setIndent(10);
 
     addPermanentWidget(m_status, 1);
@@ -54,7 +54,7 @@ void KTStatusBar::clear()
     m_timer->stop();
 }
 
-void KTStatusBar::setStatus(const QString &status, int ms )
+void KTStatusBar::setStatus(const QString &status, int ms)
 {
     m_status->setText(status);
     m_status->repaint();
@@ -66,7 +66,7 @@ void KTStatusBar::setStatus(const QString &status, int ms )
     }
 }
 
-void KTStatusBar::addWidget ( QWidget *widget, int stretch, bool permanent)
+void KTStatusBar::addWidget(QWidget *widget, int stretch, bool permanent)
 {
     if (permanent)
         QStatusBar::addPermanentWidget(widget,stretch);

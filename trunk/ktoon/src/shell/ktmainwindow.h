@@ -164,12 +164,12 @@ class KTMainWindow : public KTabbedMainWindow
           void updateAnimation(int index);
 
     private slots:
-          void messageToStatus(const QString &);
+          // void messageToStatus(const QString &);
           void preferences();
           void aboutKToon();
           void showTipDialog();
           void importPalettes();
-          void connectToDisplays(const QWidget *widget);
+          // void connectToDisplays(const QWidget *widget);
           void saveProject();
           void openRecentProject();
           void createCommand(const KTPaintAreaEvent *event);
@@ -183,7 +183,7 @@ class KTMainWindow : public KTabbedMainWindow
     private:
           KTViewDocument *m_viewDoc;
           KTAnimationspace *m_animationSpace;
-          KTStatusBar *m_statusBar;
+          // KTStatusBar *m_statusBar;
           KActionManager *m_actionManager;
           QMenu *m_fileMenu;
           QMenu *m_settingsMenu;

@@ -27,10 +27,12 @@
 #include <kgui/koptionaldialog.h>
 #include <kcore/kconfig.h>
 
+#include <QApplication>
 #include <QGroupBox>
 #include <QFileDialog>
 #include <QGraphicsItem>
 #include <QLabel>
+#include <QMessageBox>
 
 #include <ktrequestbuilder.h>
 
@@ -295,34 +297,47 @@ void KTLibraryWidget::importBitmapArray()
 
     QDir source(path); 
     QFileInfoList photograms = source.entryInfoList(QDir::Files, QDir::Name);
+    int size = photograms.size();
 
-    for (int i = 0; i < photograms.size(); ++i) {
-         QString symName = photograms.at(i).absoluteFilePath(); 
-         QFile f(symName);
-         kFatal() << "FILE: " << symName;
+    int answer = QMessageBox::information(this, tr("Information"), tr("%1 images will be loaded. Continue?").arg(size), QMessageBox::Cancel | QMessageBox::Ok);
 
-         if (f.open(QIODevice::ReadOnly)) {
-             QByteArray data = f.readAll();
-             f.close();
+    kFatal() << "ANSWER: " << answer;
 
-             KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
+    if (answer == 1024) {
+
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+        for (int i = 0; i < size; ++i) {
+             QString symName = photograms.at(i).absoluteFilePath(); 
+             QFile f(symName);
+             kFatal() << "FILE: " << symName;
+
+             if (f.open(QIODevice::ReadOnly)) {
+                 QByteArray data = f.readAll();
+                 f.close();
+
+                 KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
                                                                                KTLibraryObject::Image, data);
-             emit requestTriggered(&request);
-
-             if (i < photograms.size()-1) {
-
-                 KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1,
-                                                            KTProjectRequest::Add, QString());
                  emit requestTriggered(&request);
 
-                 request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1, 
+                 if (i < photograms.size()-1) {
+
+                     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, 
+                                                                                 k->currentFrame.frame + 1, KTProjectRequest::Add, QString());
+                     emit requestTriggered(&request);
+
+                     request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1, 
                                                             KTProjectRequest::Select);
-                 emit requestTriggered(&request);
-             }
+                     emit requestTriggered(&request);
+                 }
 
-         } else {
-             kFatal() << "ERROR: Can't open file " << symName;
+             } else {
+                 kFatal() << "ERROR: Can't open file " << symName;
+             }
          }
+
+         QApplication::restoreOverrideCursor();
+
     }
 }
 
