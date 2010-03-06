@@ -31,6 +31,7 @@
 #include "ktsoundlayer.h"
 
 #include <kcore/kdebug.h>
+// #include <kgui/kosd.h>
 
 struct KTAnimationArea::Private
 {
@@ -140,8 +141,10 @@ void KTAnimationArea::play()
    k->currentFramePosition = 0;
 
    if (k->project && !k->timer->isActive()) {
-       if (!k->isRendered) 
+       if (!k->isRendered) {
+           // KOsd::self()->display(tr("Rendering photograms... Please, wait a while..."));
            render();
+       }
        k->timer->start(1000 / k->fps);
    }
 }

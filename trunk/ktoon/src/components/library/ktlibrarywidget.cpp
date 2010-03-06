@@ -270,6 +270,8 @@ void KTLibraryWidget::importBitmap()
 
     QString symName = fileInfo.baseName();
 
+    kFatal() << "FILE: " << symName;
+
     if (f.open(QIODevice::ReadOnly)) {
         QByteArray data = f.readAll();
         f.close();
@@ -288,9 +290,40 @@ void KTLibraryWidget::importBitmapArray()
     QString path = QFileDialog::getExistingDirectory(this, tr("Choose the images directory..."), dir,
                                                  QFileDialog::ShowDirsOnly
                                                  | QFileDialog::DontResolveSymlinks);
-
     if (path.isEmpty())
         return;
+
+    QDir source(path); 
+    QFileInfoList photograms = source.entryInfoList(QDir::Files, QDir::Name);
+
+    for (int i = 0; i < photograms.size(); ++i) {
+         QString symName = photograms.at(i).absoluteFilePath(); 
+         QFile f(symName);
+         kFatal() << "FILE: " << symName;
+
+         if (f.open(QIODevice::ReadOnly)) {
+             QByteArray data = f.readAll();
+             f.close();
+
+             KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
+                                                                               KTLibraryObject::Image, data);
+             emit requestTriggered(&request);
+
+             if (i < photograms.size()-1) {
+
+                 KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1,
+                                                            KTProjectRequest::Add, QString());
+                 emit requestTriggered(&request);
+
+                 request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1, 
+                                                            KTProjectRequest::Select);
+                 emit requestTriggered(&request);
+             }
+
+         } else {
+             kFatal() << "ERROR: Can't open file " << symName;
+         }
+    }
 }
 
 void KTLibraryWidget::importSound()
