@@ -31,13 +31,14 @@
 #include "ktgraphicsscene.h"
 #include "ktanimationrenderer.h"
 #include "ktsoundlayer.h"
+#include "ktrenderdialog.h"
 
 #include <kcore/kdebug.h>
 //#include <kgui/kosd.h>
 
 struct KTAnimationArea::Private
 {
-    QFrame *container;
+    QWidget *container;
     QImage renderCamera;
 
     const KTProject *project;
@@ -60,6 +61,8 @@ struct KTAnimationArea::Private
 
 KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QFrame(parent), k(new Private)
 {
+    k->container = parent;
+
     setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 
     k->project = project;
@@ -146,10 +149,21 @@ void KTAnimationArea::play()
        if (!k->isRendered) {
            // ToDo: Add a QDialog here...
            //QMessageBox::about(this, tr("Information"), tr("Rendering...")); 
+           //KOsd::self()->display(tr("Rendering..."));
+           KTRenderDialog dialog(k->container);
+           //dialog.exec();
+           dialog.setVisible(true);
+           dialog.show();
+           dialog.raise();
+           dialog.activateWindow();
+
            QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
            render();
            QApplication::restoreOverrideCursor();
+
+           dialog.close();
        }
+
        k->timer->start(1000 / k->fps);
    }
 }

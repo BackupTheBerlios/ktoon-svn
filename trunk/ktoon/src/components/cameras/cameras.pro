@@ -6,11 +6,13 @@
 HEADERS += ktviewcamera.h \
            ktcamerabar.h \
            ktanimationarea.h \
-           ktcamerawidget.h 
+           ktcamerawidget.h \ 
+           ktrenderdialog.h
 SOURCES += ktviewcamera.cpp \
            ktcamerabar.cpp \
            ktanimationarea.cpp \
-           ktcamerawidget.cpp 
+           ktcamerawidget.cpp \ 
+           ktrenderdialog.cpp
 
 include(../components_config.pri)
 CONFIG += static
