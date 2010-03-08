@@ -25,16 +25,16 @@
 #include <QGraphicsItem>
 #include <QApplication>
 #include <QMessageBox>
+#include <QProgressDialog>
+#include <QDesktopWidget>
 
 #include "ktprojectresponse.h"
 #include "ktgraphicobject.h"
 #include "ktgraphicsscene.h"
 #include "ktanimationrenderer.h"
 #include "ktsoundlayer.h"
-#include "ktrenderdialog.h"
 
 #include <kcore/kdebug.h>
-//#include <kgui/kosd.h>
 
 struct KTAnimationArea::Private
 {
@@ -147,24 +147,13 @@ void KTAnimationArea::play()
 
    if (k->project && !k->timer->isActive()) {
        if (!k->isRendered) {
-           // ToDo: Add a QDialog here...
-           //QMessageBox::about(this, tr("Information"), tr("Rendering...")); 
-           //KOsd::self()->display(tr("Rendering..."));
-           KTRenderDialog dialog(k->container);
-           //dialog.exec();
-           dialog.setVisible(true);
-           dialog.show();
-           dialog.raise();
-           dialog.activateWindow();
-
            QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
            render();
            QApplication::restoreOverrideCursor();
-
-           dialog.close();
        }
 
-       k->timer->start(1000 / k->fps);
+       if (k->isRendered)
+           k->timer->start(1000 / k->fps);
    }
 }
 
@@ -327,6 +316,17 @@ void KTAnimationArea::render()
     KTAnimationRenderer renderer;
     renderer.setScene(scene);
 
+    QProgressDialog progressDialog(this, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
+    progressDialog.setLabelText(tr("Rendering...")); 
+    progressDialog.setCancelButton(0);
+    progressDialog.setRange(1, renderer.totalPhotograms());
+    progressDialog.setWindowTitle(tr("Rendering..."));
+    progressDialog.show();
+    int i = 1;
+
+   QDesktopWidget desktop;
+   progressDialog.move((int) (desktop.screenGeometry().width() - progressDialog.width())/2 , (int) (desktop.screenGeometry().height() - progressDialog.height())/2);
+
     while (renderer.nextPhotogram()) {
            QImage renderized = QImage(size(), QImage::Format_RGB32);
            renderized.fill(qRgb(255, 255, 255));
@@ -336,6 +336,8 @@ void KTAnimationArea::render()
            renderer.render(&painter);
 
            k->photograms << renderized;
+           progressDialog.setValue(i);
+           i++;
     }
 
     k->isRendered = true;

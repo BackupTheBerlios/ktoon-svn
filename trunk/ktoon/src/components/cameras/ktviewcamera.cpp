@@ -33,6 +33,7 @@
 #include <QSpinBox>
 
 #include "ktprojectresponse.h"
+//#include "ktrenderdialog.h"
 
 class KTViewCamera::Status : public QStatusBar
 {
