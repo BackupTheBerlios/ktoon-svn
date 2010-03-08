@@ -177,6 +177,7 @@ void KOsd::mousePressEvent(QMouseEvent *e)
 {
     if (m_timer)
         m_timer->stop();
+
     hide();
 }
 

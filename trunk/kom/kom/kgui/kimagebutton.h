@@ -37,38 +37,38 @@
 
 class K_GUI_EXPORT KImageButton : public QPushButton
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	public:
-		KImageButton(const QIcon &icon, int size, QWidget *parent = 0, bool animate = false);
-		KImageButton(const QIcon &icon, int size, QObject *reciever, const  char *slot, QWidget *parent = 0, bool animate = false);
-		~KImageButton();
-		virtual void setImage( const QIcon &icon);
-		
-		void setAnimated(bool anim);
-		
-	protected:
-		void enterEvent(QEvent *e);
-		void leaveEvent(QEvent *e);
-		
-		
-	private slots:
-		void animate();
-		
-	private:
-		void setup();
-		
-	private:
-		int m_imageSize;
-		class Animation;
-		Animation *m_animator;
-		
-		bool m_isAnimated;
-		
-// 	protected:
-// 		void resizeEvent(QResizeEvent *e);
-// 		void paintEvent(QPaintEvent *e);
-// 		QPixmap getPixmap();
+    public:
+        KImageButton(const QIcon &icon, int size, QWidget *parent = 0, bool animate = false);
+        KImageButton(const QIcon &icon, int size, QObject *reciever, const  char *slot, QWidget *parent = 0, bool animate = false);
+        ~KImageButton();
+        virtual void setImage(const QIcon &icon);
+        
+        void setAnimated(bool anim);
+        
+    protected:
+        void enterEvent(QEvent *e);
+        void leaveEvent(QEvent *e);
+        
+    private slots:
+        void animate();
+        
+    private:
+        void setup();
+        
+    private:
+        int m_imageSize;
+        class Animation;
+        Animation *m_animator;
+        
+        bool m_isAnimated;
+/*      
+    protected:
+        void resizeEvent(QResizeEvent *e);
+        void paintEvent(QPaintEvent *e);
+        QPixmap getPixmap();
+*/
 };
 
 #endif
