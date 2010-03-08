@@ -316,11 +316,14 @@ void KTAnimationArea::render()
     KTAnimationRenderer renderer;
     renderer.setScene(scene);
 
+    QFont font = this->font();
+    font.setPointSize(8);
+
     QProgressDialog progressDialog(this, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
+    progressDialog.setFont(font);
     progressDialog.setLabelText(tr("Rendering...")); 
     progressDialog.setCancelButton(0);
     progressDialog.setRange(1, renderer.totalPhotograms());
-    progressDialog.setWindowTitle(tr("Rendering..."));
     progressDialog.show();
     int i = 1;
 

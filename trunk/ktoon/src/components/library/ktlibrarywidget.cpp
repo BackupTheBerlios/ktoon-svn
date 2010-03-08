@@ -33,6 +33,8 @@
 #include <QGraphicsItem>
 #include <QLabel>
 #include <QMessageBox>
+#include <QProgressDialog>
+#include <QDesktopWidget>
 
 #include <ktrequestbuilder.h>
 
@@ -301,18 +303,30 @@ void KTLibraryWidget::importBitmapArray()
 
     int answer = QMessageBox::information(this, tr("Information"), tr("%1 images will be loaded. Continue?").arg(size), QMessageBox::Cancel | QMessageBox::Ok);
 
-    kFatal() << "ANSWER: " << answer;
-
-    if (answer == 1024) {
+    if (answer == QMessageBox::Ok) {
 
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+        QFont font = this->font();
+        font.setPointSize(8);
+
+        QProgressDialog progressDialog(this, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
+        progressDialog.setFont(font);
+        progressDialog.setLabelText(tr("Loading images..."));
+        progressDialog.setCancelButton(0);
+        progressDialog.setRange(1, size);
+        progressDialog.show();
+        int index = 1;
+
+        QDesktopWidget desktop;
+        progressDialog.move((int) (desktop.screenGeometry().width() - progressDialog.width())/2 , (int) (desktop.screenGeometry().height() - progressDialog.height())/2);
 
         for (int i = 0; i < size; ++i) {
              QString symName = photograms.at(i).absoluteFilePath(); 
              QFile f(symName);
-             kFatal() << "FILE: " << symName;
 
              if (f.open(QIODevice::ReadOnly)) {
+
                  QByteArray data = f.readAll();
                  f.close();
 
@@ -331,8 +345,15 @@ void KTLibraryWidget::importBitmapArray()
                      emit requestTriggered(&request);
                  }
 
+                 progressDialog.setLabelText(tr("Loading image #%1").arg(index));
+                 progressDialog.setValue(index);
+                 index++;
+
              } else {
                  kFatal() << "ERROR: Can't open file " << symName;
+                 QMessageBox::critical(this, tr("ERROR!"), tr("ERROR: Can't open file %1. Please, check file permissions and try again.").arg(symName), QMessageBox::Ok);
+                 QApplication::restoreOverrideCursor();
+                 return;
              }
          }
 
