@@ -290,6 +290,7 @@ void KTLibraryWidget::importBitmap()
 
 void KTLibraryWidget::importBitmapArray()
 {
+    QDesktopWidget desktop;
     QString dir = getenv("HOME");
     QString path = QFileDialog::getExistingDirectory(this, tr("Choose the images directory..."), dir,
                                                  QFileDialog::ShowDirsOnly
@@ -301,7 +302,17 @@ void KTLibraryWidget::importBitmapArray()
     QFileInfoList photograms = source.entryInfoList(QDir::Files, QDir::Name);
     int size = photograms.size();
 
-    int answer = QMessageBox::information(this, tr("Information"), tr("%1 images will be loaded. Continue?").arg(size), QMessageBox::Cancel | QMessageBox::Ok);
+    QMessageBox msgBox;
+    msgBox.setWindowTitle(tr("Information"));  
+    msgBox.setIcon(QMessageBox::Question);
+    msgBox.setText(tr("%1 images will be loaded.").arg(size));
+    msgBox.setInformativeText("Do you want to continue?");
+    msgBox.setStandardButtons(QMessageBox::Cancel | QMessageBox::Ok);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    msgBox.show();
+    msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2 , (int) (desktop.screenGeometry().height() - msgBox.height())/2);
+
+    int answer = msgBox.exec();
 
     if (answer == QMessageBox::Ok) {
 
@@ -318,7 +329,6 @@ void KTLibraryWidget::importBitmapArray()
         progressDialog.show();
         int index = 1;
 
-        QDesktopWidget desktop;
         progressDialog.move((int) (desktop.screenGeometry().width() - progressDialog.width())/2 , (int) (desktop.screenGeometry().height() - progressDialog.height())/2);
 
         for (int i = 0; i < size; ++i) {
