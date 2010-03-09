@@ -273,16 +273,16 @@ void KMainWindow::enableToolViews(bool flag)
                     KToolView *v = *it;
 
                     // Temporary code while Library, Help and Time Line are fixed
-                    //if (v->getObjectID().compare("KToolView-Library")==0 
-                    //    || v->getObjectID().compare("KToolView-Scenes Manager")==0
-
-                      if (v->getObjectID().compare("KToolView-Scenes Manager")==0
+                    /*
+                    if (v->getObjectID().compare("KToolView-Scenes Manager")==0
                         || v->getObjectID().compare("KToolView-Time Line")==0  
                         || v->getObjectID().compare("KToolView-Help")==0 
                         || v->getObjectID().compare("KToolView-Camera")==0)
                         v->enableButton(false);
                     else
-                        v->enableButton(flag);
+                    */
+
+                    v->enableButton(flag);
 
                     ++it;
              }
@@ -540,6 +540,7 @@ void KMainWindow::setCurrentPerspective(int workspace)
                           //if (view->getObjectID().compare("KToolView-Library")==0
                           //    || view->getObjectID().compare("KToolView-Time Line")==0
 
+                          /*
                           if (view->getObjectID().compare("KToolView-Time Line")==0
                               || view->getObjectID().compare("KToolView-Help")==0
                               || view->getObjectID().compare("KToolView-Camera")==0) {
@@ -548,6 +549,10 @@ void KMainWindow::setCurrentPerspective(int workspace)
                           } else {
                               bar->enable(view->button());
                           } 
+                          */
+
+                          bar->enable(view->button());
+
                           if (view->button()->isChecked())
                               view->show();
                       } else {
