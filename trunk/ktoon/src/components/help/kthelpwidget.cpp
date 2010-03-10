@@ -39,7 +39,7 @@
 KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidgetBase(parent)
 {
     setWindowTitle(tr("Help"));
-    setWindowIcon(QPixmap(THEME_DIR + "/icons/help.png"));
+    setWindowIcon(QPixmap(THEME_DIR + "icons/help.png"));
 
     if (QString(QLocale::system().name()).length() > 1)
         m_helpPath = path + "/" + QString(QLocale::system().name()).left(2);

@@ -138,7 +138,7 @@ void KTProjectActionBar::setup(Actions actions)
     }
     
     if (actions & LockFrame) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/kilit_pic.png"), size);
+        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/padlock.png"), size);
         button->setToolTip(tr("Lock frame"));
         
         k->actions.addButton(button, LockFrame);

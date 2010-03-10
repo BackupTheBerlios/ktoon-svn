@@ -474,14 +474,14 @@ void KTMainWindow::setupWindowActions()
 
 void KTMainWindow::setupInsertActions()
 {
-    new KAction(QPixmap(THEME_DIR+"/icons/scene.png"), tr("Insert scene"), QKeySequence(), m_scenes, 
+    new KAction(QPixmap(THEME_DIR + "icons/scene.png"), tr("Insert scene"), QKeySequence(), m_scenes, 
                 SLOT(emitRequestInsertScene()), m_actionManager, "InsertScene");
 
 /*	
-    new KAction(QPixmap(THEME_DIR+"/icons/layer.png"), tr("Insert layer"), QKeySequence(), m_exposureSheet, 
+    new KAction(QPixmap(THEME_DIR + "icons/layer.png"), tr("Insert layer"), QKeySequence(), m_exposureSheet, 
                 SLOT(createLayer()), m_actionManager, "InsertLayer");
 
-    new KAction(QPixmap(THEME_DIR+"/icons/frame.png"), tr("Insert frame"), QKeySequence(), m_projectManager, 
+    new KAction(QPixmap(THEME_DIR + "icons/frame.png"), tr("Insert frame"), QKeySequence(), m_projectManager, 
                 SLOT(createFrame()), m_actionManager, "InsertFrame");
 */
 }

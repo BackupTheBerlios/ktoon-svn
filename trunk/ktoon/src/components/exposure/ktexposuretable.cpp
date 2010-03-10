@@ -303,7 +303,7 @@ void KTExposureItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
     if (item) {
 
         //if (item->data(KTExposureTable::IsLocked).toBool()) {
-        //     QPixmap pixmap(THEME_DIR + "icons/kilit_pic.png");
+        //     QPixmap pixmap(THEME_DIR + "icons/padlock.png");
         //     painter->drawPixmap(1, 5, pixmap);
         //} else 
 

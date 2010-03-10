@@ -174,7 +174,7 @@ KTPreferences::KTPreferences(QWidget *parent) : KConfigurationDialog(parent)
     addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR + "icons/font_config.png"));
     
     m_drawingAreaProperties = new KTPaintAreaConfig;
-    addPage(m_drawingAreaProperties, tr("Paint area"), QIcon(THEME_DIR + "icons/drawing_area.png"));
+    addPage(m_drawingAreaProperties, tr("Paint area"), QIcon(THEME_DIR + "icons/drawing_area_preferences.png"));
     
     // resize(400,400);
 }
