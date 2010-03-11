@@ -200,6 +200,8 @@ void KTProjectActionBar::setup(Actions actions)
         k->buttonLayout->addWidget(button);
         button->setAnimated(k->isAnimated);
     }
+
+    // TODO: Find the place where Scene operations are called out for this bar delete them
     
     if (actions & InsertScene) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/add_scene.png"), size);  // TODO
@@ -223,7 +225,7 @@ void KTProjectActionBar::setup(Actions actions)
     }
 
     /*
-     
+
     if (actions & MoveSceneUp) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_scene_up.png"), size);
         

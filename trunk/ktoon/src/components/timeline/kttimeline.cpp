@@ -61,7 +61,17 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
     setWindowTitle(tr("Time Line"));
     setWindowIcon(QPixmap(THEME_DIR + "icons/time_line.png"));
     
-    k->actionBar = new KTProjectActionBar(KTProjectActionBar::AllActions);
+    //k->actionBar = new KTProjectActionBar(KTProjectActionBar::AllActions);
+
+    k->actionBar = new KTProjectActionBar(KTProjectActionBar::InsertLayer |
+                        KTProjectActionBar::RemoveLayer |
+                        KTProjectActionBar::MoveLayerUp |
+                        KTProjectActionBar::MoveLayerDown |
+                        KTProjectActionBar::InsertFrame |
+                        KTProjectActionBar::RemoveFrame |
+                        KTProjectActionBar::MoveFrameUp |
+                        KTProjectActionBar::MoveFrameDown|
+                        KTProjectActionBar::LockFrame);
     
     k->actionBar->insertSeparator(4);
     k->actionBar->insertSeparator(9);
