@@ -105,14 +105,14 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
     buttonLayout->setMargin(0);
     buttonLayout->setSpacing(0);
 
-    KImageButton *addGC = new KImageButton(QPixmap(THEME_DIR + "icons/plussign.png"), 22, buttons);
+    KImageButton *addGC = new KImageButton(QPixmap(THEME_DIR + "icons/plus_sign.png"), 22, buttons);
     connect(addGC, SIGNAL(clicked()), this, SIGNAL(requestCurrentGraphic()));
     addGC->setEnabled(false);
 
     buttonLayout->addWidget(addGC);
     addGC->setToolTip(tr("Add the current graphic to library"));
 
-    KImageButton *delGC = new KImageButton(QPixmap(THEME_DIR + "icons/minussign.png"), 22, buttons);
+    KImageButton *delGC = new KImageButton(QPixmap(THEME_DIR + "icons/minus_sign.png"), 22, buttons);
     connect(delGC, SIGNAL(clicked()), this, SLOT(removeCurrentGraphic()));
     delGC->setEnabled(false);
 

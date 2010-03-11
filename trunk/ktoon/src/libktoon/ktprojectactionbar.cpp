@@ -221,6 +221,8 @@ void KTProjectActionBar::setup(Actions actions)
         k->buttonLayout->addWidget(button);
         button->setAnimated(k->isAnimated);
     }
+
+    /*
      
     if (actions & MoveSceneUp) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_scene_up.png"), size);
@@ -253,6 +255,8 @@ void KTProjectActionBar::setup(Actions actions)
         k->buttonLayout->addWidget(button);
         button->setAnimated(k->isAnimated);
     }
+
+    */
     
     k->buttonLayout->addStretch();
     

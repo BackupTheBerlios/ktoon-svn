@@ -245,7 +245,8 @@ void KTViewDocument::setupDrawActions()
 
     ungroup->setStatusTip(tr("Ungroups the selected object"));
 
-    /*
+    /***
+
     k->viewPreviousGroup = new QActionGroup(this);
     k->viewPreviousGroup->setExclusive(true);
     KAction *noPrevious = new KAction(QPixmap(THEME_DIR + "icons/no_previous.png"), tr("No Previous"), 
@@ -320,7 +321,8 @@ void KTViewDocument::setupDrawActions()
     
     threeNext->setCheckable(true);
     threeNext->setStatusTip(tr("Shows the next 3 onion skins"));
-    */
+
+    ***/
 }
 
 void KTViewDocument::createTools()
