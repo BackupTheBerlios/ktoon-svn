@@ -111,7 +111,7 @@ void KOsd::display(const QString &message, Level level, int ms)
     }
 
     if (ms < 0)
-        ms = m_document->toPlainText().length() * 90;
+        ms = m_document->toPlainText().length() * 70;
 
     m_animator->level = level;
 
