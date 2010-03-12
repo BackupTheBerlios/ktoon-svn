@@ -302,73 +302,78 @@ void KTLibraryWidget::importBitmapArray()
     QFileInfoList photograms = source.entryInfoList(QDir::Files, QDir::Name);
     int size = photograms.size();
 
-    QMessageBox msgBox;
-    msgBox.setWindowTitle(tr("Information"));  
-    msgBox.setIcon(QMessageBox::Question);
-    msgBox.setText(tr("%1 images will be loaded.").arg(size));
-    msgBox.setInformativeText("Do you want to continue?");
-    msgBox.setStandardButtons(QMessageBox::Cancel | QMessageBox::Ok);
-    msgBox.setDefaultButton(QMessageBox::Ok);
-    msgBox.show();
-    msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2 , (int) (desktop.screenGeometry().height() - msgBox.height())/2);
+    if (size > 0) {
 
-    int answer = msgBox.exec();
+        QMessageBox msgBox;
+        msgBox.setWindowTitle(tr("Information"));  
+        msgBox.setIcon(QMessageBox::Question);
+        msgBox.setText(tr("%1 images will be loaded.").arg(size));
+        msgBox.setInformativeText("Do you want to continue?");
+        msgBox.setStandardButtons(QMessageBox::Cancel | QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.show();
+        msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2 , (int) (desktop.screenGeometry().height() - msgBox.height())/2);
 
-    if (answer == QMessageBox::Ok) {
+        int answer = msgBox.exec();
 
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        if (answer == QMessageBox::Ok) {
 
-        QFont font = this->font();
-        font.setPointSize(8);
+            QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-        QProgressDialog progressDialog(this, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
-        progressDialog.setFont(font);
-        progressDialog.setLabelText(tr("Loading images..."));
-        progressDialog.setCancelButton(0);
-        progressDialog.setRange(1, size);
-        progressDialog.show();
-        int index = 1;
+            QFont font = this->font();
+            font.setPointSize(8);
 
-        progressDialog.move((int) (desktop.screenGeometry().width() - progressDialog.width())/2 , (int) (desktop.screenGeometry().height() - progressDialog.height())/2);
+            QProgressDialog progressDialog(this, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
+            progressDialog.setFont(font);
+            progressDialog.setLabelText(tr("Loading images..."));
+            progressDialog.setCancelButton(0);
+            progressDialog.setRange(1, size);
+            progressDialog.show();
+            int index = 1;
 
-        for (int i = 0; i < size; ++i) {
-             QString symName = photograms.at(i).absoluteFilePath(); 
-             QFile f(symName);
+            progressDialog.move((int) (desktop.screenGeometry().width() - progressDialog.width())/2 , (int) (desktop.screenGeometry().height() - progressDialog.height())/2);
 
-             if (f.open(QIODevice::ReadOnly)) {
+            for (int i = 0; i < size; ++i) {
+                 QString symName = photograms.at(i).absoluteFilePath(); 
+                 QFile f(symName);
 
-                 QByteArray data = f.readAll();
-                 f.close();
+                 if (f.open(QIODevice::ReadOnly)) {
 
-                 KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
-                                                                               KTLibraryObject::Image, data);
-                 emit requestTriggered(&request);
+                     QByteArray data = f.readAll();
+                     f.close();
 
-                 if (i < photograms.size()-1) {
-
-                     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, 
-                                                                                 k->currentFrame.frame + 1, KTProjectRequest::Add, QString());
+                     KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
+                                                                                       KTLibraryObject::Image, data);
                      emit requestTriggered(&request);
 
-                     request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1, 
+                     if (i < photograms.size()-1) {
+
+                         KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, 
+                                                                                         k->currentFrame.frame + 1, KTProjectRequest::Add, QString());
+                         emit requestTriggered(&request);
+
+                         request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1, 
                                                             KTProjectRequest::Select);
-                     emit requestTriggered(&request);
+                         emit requestTriggered(&request);
+                     }
+
+                     progressDialog.setLabelText(tr("Loading image #%1").arg(index));
+                     progressDialog.setValue(index);
+                     index++;
+
+                 } else {
+                     kFatal() << "ERROR: Can't open file " << symName;
+                     QMessageBox::critical(this, tr("ERROR!"), tr("ERROR: Can't open file %1. Please, check file permissions and try again.").arg(symName), QMessageBox::Ok);
+                     QApplication::restoreOverrideCursor();
+                     return;
                  }
-
-                 progressDialog.setLabelText(tr("Loading image #%1").arg(index));
-                 progressDialog.setValue(index);
-                 index++;
-
-             } else {
-                 kFatal() << "ERROR: Can't open file " << symName;
-                 QMessageBox::critical(this, tr("ERROR!"), tr("ERROR: Can't open file %1. Please, check file permissions and try again.").arg(symName), QMessageBox::Ok);
-                 QApplication::restoreOverrideCursor();
-                 return;
              }
-         }
 
-         QApplication::restoreOverrideCursor();
+             QApplication::restoreOverrideCursor();
 
+        }
+    } else {
+        KOsd::self()->display(tr("No image files were found.<br/>Please, try another directory"), KOsd::Error);
     }
 }
 
