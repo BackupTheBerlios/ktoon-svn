@@ -455,13 +455,29 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                  }
 
                  QList<QTreeWidgetItem *> selectedGroup = k->libraryTree->selectedItems();
-                 if (!selectedGroup.isEmpty())
-                     k->display->render(qvariant_cast<QGraphicsItem *>(k->library->findObject(
-                                        selectedGroup[0]->text(0))->data()));
-                 else
+                 if (!selectedGroup.isEmpty()) {
+                     kDebug() << "*** KTLibraryWidget::libraryResponse -> selectedGroup: " << selectedGroup.size();
+                     QTreeWidgetItem *pop = selectedGroup[0];
+                     kDebug() << "*** KTLibraryWidget::libraryResponse -> Item Name: " << pop->text(1);
+                     if (selectedGroup[0]->text(1).size() > 0) {
+                         kDebug() << "";
+                         kDebug() << "*|*|* Removing object: " << selectedGroup[0]->text(1);
+                         k->display->render(qvariant_cast<QGraphicsItem *>(k->library->findObject(
+                                            selectedGroup[0]->text(1))->data()));
+                         kDebug() << "";
+                     } else {
+                         kDebug() << "*** KTLibraryWidget::libraryResponse -> Remove action FAILED!";
+                     }
+                 } else {
                      k->display->render(0);
+                 }
               }
             break;
+
+            case KTProjectRequest::AddSymbolToProject:
+                 kFatal() << "*** KTLibraryWidget::libraryResponse -> No action taken";
+            break;
+  
             default:
               {
                  kFatal() << "*** Project Code: " << response->action();

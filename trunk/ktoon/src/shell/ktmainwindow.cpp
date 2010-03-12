@@ -65,6 +65,7 @@
 #include <QDomDocument>
 #include <QMessageBox>
 #include <QDesktopServices>
+#include <QDesktopWidget>
 //
 
 /**
@@ -263,6 +264,10 @@ void KTMainWindow::newProject()
     #endif
 
     KTNewProject *wizard = new KTNewProject(this);
+    QDesktopWidget desktop;
+    wizard->show();
+    wizard->move((int) (desktop.screenGeometry().width() - wizard->width())/2 , (int) (desktop.screenGeometry().height() - wizard->height())/2);
+
     // connectToDisplays(wizard);
     if (wizard->exec() != QDialog::Rejected) {
        if (wizard->useNetwork())
@@ -665,7 +670,9 @@ void KTMainWindow::showTipDialog()
 {
     KTipDialog *tipDialog = new KTipDialog(DATA_DIR + "tips", this);
     tipDialog->show();
-    // tipDialog.exec();
+
+    QDesktopWidget desktop;
+    tipDialog->move((int) (desktop.screenGeometry().width() - tipDialog->width())/2 , (int) (desktop.screenGeometry().height() - tipDialog->height())/2);
 }
 
 /**

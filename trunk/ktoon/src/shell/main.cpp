@@ -26,9 +26,10 @@
 #include <qtextcodec.h>
 #include <qmessagebox.h>
 #include <qdir.h>
-#include <QLocale>
 
+#include <QLocale>
 #include <QTranslator>
+#include <QDesktopWidget>
 
 #include "ktapplication.h"
 
@@ -182,6 +183,9 @@ int main(int argc, char ** argv)
     // Time to show the KToon initial splash 
     KTSplash *splash = new KTSplash;
     splash->show();
+    QDesktopWidget desktop;
+    splash->move((int) (desktop.screenGeometry().width() - splash->width())/2 , (int) (desktop.screenGeometry().height() - splash->height())/2);
+
     splash->setMessage(QObject::tr("Initializing..."));
 
     splash->setMessage(QObject::tr( "Loading Modules"));

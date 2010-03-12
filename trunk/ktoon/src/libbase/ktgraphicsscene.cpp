@@ -427,7 +427,7 @@ void KTGraphicsScene::setTool(KTToolPlugin *tool)
     if (k->tool) {
         if (k->tool->toolType() == KTToolPlugin::Selection) {
             foreach (KTLineGuide *line, k->lines) {
-                     line->setFlag( QGraphicsItem::ItemIsMovable, false );
+                     line->setFlag(QGraphicsItem::ItemIsMovable, false);
                      line->setEnabledSyncCursor(true);
             }
         }
