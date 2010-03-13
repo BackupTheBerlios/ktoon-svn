@@ -107,6 +107,7 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 
     KImageButton *addGC = new KImageButton(QPixmap(THEME_DIR + "icons/plus_sign.png"), 22, buttons);
     connect(addGC, SIGNAL(clicked()), this, SIGNAL(requestCurrentGraphic()));
+    // SQA code  
     addGC->setEnabled(false);
 
     buttonLayout->addWidget(addGC);
@@ -114,7 +115,8 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 
     KImageButton *delGC = new KImageButton(QPixmap(THEME_DIR + "icons/minus_sign.png"), 22, buttons);
     connect(delGC, SIGNAL(clicked()), this, SLOT(removeCurrentGraphic()));
-    delGC->setEnabled(false);
+    // SQA code
+    //delGC->setEnabled(false);
 
     delGC->setToolTip(tr("Remove the selected symbol from library"));
     buttonLayout->addWidget(delGC);
@@ -229,7 +231,7 @@ void KTLibraryWidget::removeCurrentGraphic()
     if (!k->libraryTree->currentItem()) 
         return;
 
-    QString symKey = k->libraryTree->currentItem()->text(0);
+    QString symKey = k->libraryTree->currentItem()->text(1);
 
     KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Remove, symKey,
                                KTLibraryObject::Type(k->libraryTree->currentItem()->data(0, 3216).toInt()), 0);
@@ -246,13 +248,13 @@ void KTLibraryWidget::renameObject(QTreeWidgetItem* item)
          KTGraphicComponent *graphic = k->graphics[item];
 
          if (graphic) {
-             graphic->setComponentName(item->text(0));
+             graphic->setComponentName(item->text(1));
          } else { // A Folder
              foreach (QTreeWidgetItem *folder, k->libraryTree->topLevelItems()) {
-                      if (folder != item && folder->text(0) == item->text(0)) {
+                      if (folder != item && folder->text(1) == item->text(1)) {
                           // Invalid name
                           item->setFlags(item->flags() | Qt::ItemIsEditable );
-                          item->setText(0, item->text(0)+QString::number(() % 999) );
+                          item->setText(0, item->text(1)+QString::number(() % 999) );
                           k->libraryTree->editItem(item, 0);
                           break;
                       }
@@ -447,7 +449,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                  QString key = response->arg().toString();
                  QTreeWidgetItemIterator it(k->libraryTree);
                  while ((*it)) {
-                        if (key == (*it)->text(0)) {
+                        if (key == (*it)->text(1)) {
                             delete (*it);
                             break;
                         }
@@ -470,6 +472,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                      }
                  } else {
                      k->display->render(0);
+                     kDebug() << "*** KTLibraryWidget::libraryResponse -> Nothing was really deleted";
                  }
               }
             break;
