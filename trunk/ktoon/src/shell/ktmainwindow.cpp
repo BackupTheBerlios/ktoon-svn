@@ -202,7 +202,6 @@ void KTMainWindow::viewNewDocument(const QString &title)
 {
     #ifdef K_DEBUG
        K_FUNCINFO;
-       kDebug() << m_projectManager->isOpen();
     #endif
 
     if (m_projectManager->isOpen()) {
@@ -243,7 +242,6 @@ void KTMainWindow::viewNewDocument(const QString &title)
 
         KCONFIG->beginGroup("Pen Parameters");
         int thicknessValue = KCONFIG->value("thickness", -1).toInt();
-        kFatal() << "KTMainWindow::viewNewDocument: " << thicknessValue;
         m_penWidget->setThickness(thicknessValue);
     }
 }
@@ -296,12 +294,30 @@ bool KTMainWindow::closeProject()
         return true;
 	
     if (m_projectManager->isModified()) {
+
+        QDesktopWidget desktop;
+
+        QMessageBox msgBox;
+        msgBox.setWindowTitle(tr("Question"));
+        msgBox.setIcon(QMessageBox::Question);
+        msgBox.setText(tr("The document has been modified."));
+        msgBox.setInformativeText("Do you want to save your project?");
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Save);
+        msgBox.show();
+        msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2 , (int) (desktop.screenGeometry().height() - msgBox.height())/2);
+
+        int ret = msgBox.exec();
+
+        /*
         int ret = QMessageBox::warning(this, QApplication::applicationName (),
                                        tr("The document has been modified.\n"
                                        "Do you want to save your project?"),
                                        QMessageBox::Save | QMessageBox::Discard
                                        | QMessageBox::Cancel,
                                        QMessageBox::Save);
+        */
+
         switch (ret) {
             case QMessageBox::Save:
                  saveProject();

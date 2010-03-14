@@ -94,10 +94,6 @@ void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushMa
     //QGraphicsItem object = qobject_cast<QGraphicsScene *>(m_item); 
 
     scene->includeObject(m_item);
-
-    kDebug() << "";
-    kDebug() << "Pressing mouse from Brush!";
-    kDebug() << "";
 }
 
 void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -138,10 +134,6 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 
     QDomDocument doc;
     doc.appendChild(m_item->toXml(doc));
-
-    kDebug() << ""; 
-    kDebug() << "Releasing mouse from Brush!";
-    kDebug() << "";
 
     KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString());
 

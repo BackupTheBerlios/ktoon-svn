@@ -329,6 +329,7 @@ void PolyLine::setupActions()
 {
     KAction *pencil = new KAction(QIcon(THEME_DIR + "icons/polyline.png"), tr("Polyline"), this);
     pencil->setShortcut(QKeySequence(tr("")));
+    pencil->setCursor(QCursor(THEME_DIR + "cursors/polyline.png"));
     
     k->actions.insert(tr("PolyLine"), pencil);
 }

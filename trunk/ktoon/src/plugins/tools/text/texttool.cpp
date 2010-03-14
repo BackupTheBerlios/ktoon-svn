@@ -141,12 +141,14 @@ void TextTool::aboutToChangeTool()
 
 void TextTool::aboutToChangeScene(KTGraphicsScene *scene)
 {
+    Q_UNUSED(scene);
 }
 
 void TextTool::setupActions()
 {
     KAction *pencil = new KAction(QIcon(THEME_DIR + "icons/text.png"), tr("Text"), this);
     pencil->setShortcut(QKeySequence(tr("Ctrl+T")));
+    pencil->setCursor(QCursor(THEME_DIR + "cursors/text.png"));
 
     m_actions.insert(tr("Text"), pencil);
 }
@@ -156,4 +158,3 @@ void TextTool::saveConfig()
 }
 
 Q_EXPORT_PLUGIN2(kt_textool, TextTool);
-

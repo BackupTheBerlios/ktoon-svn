@@ -528,7 +528,7 @@ void KTMainWindow::updateOpenRecentMenu(QMenu *menu, QStringList recents)
     foreach (QString recent, recents) {
              if (!recent.isEmpty() && m_recentProjects.indexOf(recent) == -1) {
                  m_recentProjects << recent;
-                 action[i] = new QAction(QPixmap(THEME_DIR + "icons/add_layer.png"), recent, this); 
+                 action[i] = new QAction(QPixmap(THEME_DIR + "icons/new.png"), recent, this); 
                  menu->addAction(action[i]);
                  connect(action[i], SIGNAL(triggered()), this, SLOT(openRecentProject()));
                  i++;

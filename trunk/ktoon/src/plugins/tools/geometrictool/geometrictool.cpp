@@ -69,7 +69,7 @@ void GeometricTool::setupActions()
     action1->setShortcut(QKeySequence(tr("Ctrl+R")));
     action1->setCursor(QCursor(THEME_DIR + "cursors/square.png"));
     
-    m_actions.insert( tr("Rectangle"), action1 );
+    m_actions.insert( tr("Rectangle"), action1);
     
     KAction *action2 = new KAction(QIcon(THEME_DIR + "icons/ellipse.png"), tr("Ellipse"), this);
     action2->setShortcut(QKeySequence(tr("Ctrl+E")));
@@ -79,6 +79,8 @@ void GeometricTool::setupActions()
     
     KAction *action3 = new KAction(QIcon(THEME_DIR + "icons/line.png"), tr("Line"), this);
     action3->setShortcut(QKeySequence(tr("Ctrl+L")));
+    action3->setCursor(QCursor(THEME_DIR + "cursors/line.png"));
+
     m_actions.insert(tr("Line"), action3);
 }
 
@@ -117,6 +119,7 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
     Q_UNUSED(scene);
     
     if (currentTool() == tr("Rectangle")) {
+
         m_rect = static_cast<KTRectItem *>(m_item)->rect();
         
         m_rect.setBottomRight(m_item->mapFromScene(input->pos()) );
@@ -140,8 +143,9 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
         static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
         
     } else if (currentTool() == tr("Ellipse")) {
+
         m_rect = static_cast<KTEllipseItem *>(m_item)->rect();
-        m_rect.setBottomRight(m_item->mapFromScene(input->pos()) );
+        m_rect.setBottomRight(m_item->mapFromScene(input->pos()));
         static_cast<KTEllipseItem *>(m_item)->setRect(m_rect);
         QBrush brush = static_cast<QAbstractGraphicsShapeItem *>(m_item)->brush();
         QMatrix m;
@@ -161,6 +165,7 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
         static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
         
     } else if( currentTool() == tr("Line")) {
+
         QPointF pos = m_item->mapFromScene(input->pos());
         QLineF line(static_cast<KTLineItem *>(m_item)->line().x1(), static_cast<KTLineItem *>(m_item)->line().y1(), pos.x(), pos.y());
         
@@ -173,8 +178,9 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
     Q_UNUSED(input);
+
     QDomDocument doc;
-    doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_item)->toXml( doc ));
+    doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_item)->toXml(doc));
     
     KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
     
@@ -209,5 +215,5 @@ void GeometricTool::saveConfig()
 {
 }
 
-Q_EXPORT_PLUGIN2( kt_geometric, GeometricTool )
+Q_EXPORT_PLUGIN2(kt_geometric, GeometricTool)
 

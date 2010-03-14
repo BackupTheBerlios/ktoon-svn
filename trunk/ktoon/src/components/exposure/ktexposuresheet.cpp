@@ -403,7 +403,6 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                 break;
                 case KTProjectRequest::Remove:
                  {
-                     kFatal() << "KTExposureSheet::layerResponse - LayerIndex: " << e->layerIndex();
                      scene->removeLayer(e->layerIndex());
                  }
                 break;
@@ -424,7 +423,6 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                 break;
                 case KTProjectRequest::Select:
                  {
-                     kFatal() << "KTExposureSheet::layerResponse - KTProjectRequest::Select";
                      setScene(e->sceneIndex());
                      scene->blockSignals(true);
                      scene->selectFrame(e->layerIndex(), 0);

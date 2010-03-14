@@ -123,10 +123,6 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
 {
     Q_CHECK_PTR(layers);
 
-    #ifdef K_DEBUG
-           kFatal() << "KTScene::createLayer - Index: " <<  position;
-    #endif
-
     if (position < 0 || position > k->layers.count()) {
         #ifdef K_DEBUG
                kDebug() << "Error in createLayer";
@@ -143,10 +139,8 @@ KTLayer *KTScene::createLayer(int position, bool loaded)
 
     k->layers.insert(position, layer);
 
-    if (loaded) {
-        kFatal() << "KTScene::createLayer() -> LOADED!";
+    if (loaded)
         KTProjectLoader::createLayer(project()->visualIndexOf(this), position, layer->layerName(), project());
-    }
 
     return layer;
 }
@@ -182,7 +176,6 @@ bool KTScene::removeLayer(int position)
     KTLayer *layer = this->layer(position);
 
     if (layer) {
-        kFatal() << "KTScene::removeLayer - Index: " << position;
         k->layers.remove(position);
 
         k->layerCount--;
@@ -194,15 +187,10 @@ bool KTScene::removeLayer(int position)
             }
         }
 
-        kFatal() << "KTScene::removeLayer - LAYERS TOTAL: " << k->layerCount; 
         QList<int> indices = this->layers().visualIndices();
         int size = this->layersTotal();
         for (int i = 0; i < size; i++) {
-             kFatal() << "KTScene::removeLayer - VISUAL INDEX: " << indices.at(i);
              KTLayer *layer = this->layer(indices.at(i));
-             kFatal() << "KTScene::removeLayer - LOGICAL INDEX: " << this->layers().logicalIndex(layer);
-             kFatal() << "KTScene::removeLayer - LAYER NAME: " << layer->layerName();
-             kFatal() << "";
         }
 
         delete layer;

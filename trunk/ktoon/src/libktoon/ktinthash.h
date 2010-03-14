@@ -192,9 +192,6 @@ T KTIntHash<T>::takeVisual(int pos)
 template<typename T>
 void KTIntHash<T>::insert(int pos, T value)
 {
-    qDebug("###### Inserting at pos (visual) index: %d", pos);
-    qDebug("###### Inserting at counter (logical) index: %d", k->counter);
-
     if (k->logicalIndices.contains(pos))
         qDebug("######   OVERRIDING!! %d", pos);
 
@@ -207,34 +204,24 @@ void KTIntHash<T>::insert(int pos, T value)
 template<typename T>
 void KTIntHash<T>::remove(int pos)
 {
-    qDebug("KTIntHash.remove() - Count(): %d", count());
-    qDebug("KTIntHash.remove() - Pos: %d", pos);
-
     if (containsVisual(pos)) {
         if (pos == count()-1) {
-            qDebug("KTIntHash.remove() - Deleting last item");
             int logicalIndex = k->visualIndices.takeAt(pos);
             k->logicalIndices.remove(logicalIndex);
             k->counter--;
         } else {
-            qDebug("KTIntHash.remove() - Deleting previous item");
             //int logicalPos = k->visualIndices.takeAt(pos);
-            //qDebug("KTIntHash.remove() - Deleting Pos: %d", logicalPos);
             //k->logicalIndices.remove(logicalPos);
             //k->removeVisual(pos);
             int total = count() - 1;
-            qDebug("KTIntHash.remove() - Total: %d", total);
             for (int i=pos+1;i<=total;i++) {
-                 qDebug("KTIntHash.remove() - Procesando: %d", i);
                  T value = this->takeVisual(i); 
                  int index = i - 1;
                  k->logicalIndices.insert(index, value);
                  k->visualIndices.insert(index, index);
             }
         }
-    } else {
-        qDebug("KTIntHash<T>::remove - Objeto no encontrado!");
-    }
+    } 
 }
 
 template<typename T>

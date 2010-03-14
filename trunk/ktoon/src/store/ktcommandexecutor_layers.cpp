@@ -42,7 +42,7 @@ bool KTCommandExecutor::createLayer(KTLayerResponse *response)
     KTScene *scene = m_project->scene(scenePosition);
 
     if (scene) {
-        kFatal() << "KTCommandExecutor::createLayer - Adding Layer on Index: " << position;
+        // kFatal() << "KTCommandExecutor::createLayer - Adding Layer on Index: " << position;
         KTLayer *layer = scene->createLayer(position);
 
         if (! layer) 
@@ -84,7 +84,7 @@ bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
             response->setState(document.toString());
             response->setArg(layer->layerName());
 
-            kFatal() << "KTCommandExecutor::removeLayer - Removing Layer at Index: " << position;
+            // kFatal() << "KTCommandExecutor::removeLayer - Removing Layer at Index: " << position;
 
             if (scene->removeLayer(position)) {
                 emit responsed(response);

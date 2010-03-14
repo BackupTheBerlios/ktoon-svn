@@ -43,7 +43,7 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
     KCONFIG->beginGroup("Pen Parameters");
     int thicknessValue = KCONFIG->value("thickness", -1).toInt();
 
-    kFatal() << "KTPenWidget::KTPenWidget: " << thicknessValue;
+    // kFatal() << "KTPenWidget::KTPenWidget: " << thicknessValue;
 
     if (thicknessValue <= 0)
         thicknessValue = 3;
