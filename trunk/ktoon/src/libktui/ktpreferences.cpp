@@ -165,16 +165,16 @@ KTPreferences::KTPreferences(QWidget *parent) : KConfigurationDialog(parent)
     setWindowTitle(tr("Application KTPreferences"));
     
     m_generalPage = new GeneralPage;
-    addPage(m_generalPage, tr("General"), QPixmap(THEME_DIR + "icons/general_config.png"));
+    addPage(m_generalPage, tr("General"), QPixmap(THEME_DIR + "icons/ktoon_general_preferences.png"));
     
     m_themeSelector = new KTThemeSelector;
-    addPage(m_themeSelector, tr("Theme preferences"), QPixmap(THEME_DIR + "icons/theme_config.png"));
+    addPage(m_themeSelector, tr("Theme preferences"), QPixmap(THEME_DIR + "icons/ktoon_theme_properties.png"));
     
     m_fontChooser = new FontPage;
-    addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR + "icons/font_config.png"));
+    addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR + "icons/ktoon_font_properties.png"));
     
     m_drawingAreaProperties = new KTPaintAreaConfig;
-    addPage(m_drawingAreaProperties, tr("Paint area"), QIcon(THEME_DIR + "icons/drawing_area_preferences.png"));
+    addPage(m_drawingAreaProperties, tr("Paint area"), QIcon(THEME_DIR + "icons/ktoon_workspace_properties.png"));
     
     // resize(400,400);
 }

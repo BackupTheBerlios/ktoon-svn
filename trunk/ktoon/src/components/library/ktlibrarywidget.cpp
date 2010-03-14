@@ -121,12 +121,12 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
     delGC->setToolTip(tr("Remove the selected symbol from library"));
     buttonLayout->addWidget(delGC);
 
-    KImageButton *gctoDrawingArea = new KImageButton(QPixmap(THEME_DIR + "icons/insert_object.png"), 22, buttons);
+    KImageButton *gctoDrawingArea = new KImageButton(QPixmap(THEME_DIR + "icons/library_to_ws.png"), 22, buttons);
     connect(gctoDrawingArea, SIGNAL(clicked()), this, SLOT(emitSelectedComponent()));
     gctoDrawingArea->setToolTip(tr("Inserts the selected symbol into the drawing area"));
     buttonLayout->addWidget(gctoDrawingArea);
 
-    KImageButton *addFolderGC = new KImageButton(QPixmap(THEME_DIR + "icons/add_folder.png"), 22, buttons);
+    KImageButton *addFolderGC = new KImageButton(QPixmap(THEME_DIR + "icons/create_folder.png"), 22, buttons);
     addFolderGC->setEnabled(false);
     connect(addFolderGC, SIGNAL(clicked()), k->libraryTree, SLOT(createFolder()));
     addFolderGC->setToolTip(tr("Adds a folder to the symbol list"));
@@ -422,19 +422,19 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                      switch (obj->type()) {
                             case KTLibraryObject::Item:
                                {
-                                 item->setIcon(0, QIcon(THEME_DIR + "icons/library_object.png"));
+                                 item->setIcon(0, QIcon(THEME_DIR + "icons/drawing_object.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item, 1);
                                }
                             break;
                             case KTLibraryObject::Sound:
                                {
-                                 item->setIcon(0, QIcon(THEME_DIR + "icons/library_sound.png"));
+                                 item->setIcon(0, QIcon(THEME_DIR + "icons/sound_object.png"));
                                }
                             break;
                             case KTLibraryObject::Image:
                                {
-                                 item->setIcon(0, QIcon(THEME_DIR + "icons/library_image.png"));
+                                 item->setIcon(0, QIcon(THEME_DIR + "icons/bitmap.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item, 1);
                                  emitSelectedComponent();

@@ -108,7 +108,7 @@ KTFrame *KTLayer::createFrame(int position, bool loaded)
 
     k->framesCount++;
 
-    frame->setFrameName(tr("Drawing %1").arg(k->framesCount));
+    frame->setFrameName(tr("Frame %1").arg(k->framesCount));
 
     k->frames.insert(position, frame);
 

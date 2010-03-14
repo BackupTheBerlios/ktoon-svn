@@ -51,7 +51,7 @@ void KTGCTable::createFolder(const QString &name)
     else
         newFolder->setText(0, name);
 
-    newFolder->setIcon(0, QPixmap(THEME_DIR + "icons/folder_icon.png"));
+    newFolder->setIcon(0, QPixmap(THEME_DIR + "icons/open.png"));
     m_currentFolder = newFolder;
 
     setCurrentItem(m_currentFolder);

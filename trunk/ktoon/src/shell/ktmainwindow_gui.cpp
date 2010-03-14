@@ -78,10 +78,10 @@ void KTMainWindow::createGUI()
     addToPerspective(libraryView->toggleViewAction(), Drawing);
     // connectToDisplays(m_libraryWidget);
 
-    new KAction(QPixmap(THEME_DIR + "icons/gceditor.png"), tr("Bitmap"), QKeySequence(), m_libraryWidget, SLOT(importBitmap()),
+    new KAction(QPixmap(THEME_DIR + "icons/bitmap.png"), tr("Bitmap"), QKeySequence(), m_libraryWidget, SLOT(importBitmap()),
                 m_actionManager, "importbitmap");
 
-    new KAction(QPixmap(THEME_DIR + "icons/gceditor.png"), tr("Bitmap Array"), QKeySequence(), m_libraryWidget, SLOT(importBitmapArray()),
+    new KAction(QPixmap(THEME_DIR + "icons/bitmap_array.png"), tr("Bitmap Array"), QKeySequence(), m_libraryWidget, SLOT(importBitmapArray()),
                 m_actionManager, "importbitmaparray");
 
     //new KAction(QPixmap(), tr("Audio File..."), QKeySequence(), m_libraryWidget, SLOT(importSound()),

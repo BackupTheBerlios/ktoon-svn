@@ -31,6 +31,7 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QSpinBox>
+#include <QDesktopWidget>
 
 #include "ktprojectresponse.h"
 //#include "ktrenderdialog.h"
@@ -102,11 +103,10 @@ KTViewCamera::Status::Status(KTViewCamera *camera, QWidget *parent) : QStatusBar
 
     m_sceneInfoLayout->addSpacing(20);
 
-    m_loop = new QCheckBox(tr("Loop"));
-    QPixmap pix(THEME_DIR + "icons/layer.png");
+    m_loop = new QCheckBox();
+    QPixmap pix(THEME_DIR + "icons/loop.png");
     m_loop->setToolTip(tr("Loop"));
     m_loop->setIcon(pix); 
-    m_loop->setFont(font);
     connect(m_loop, SIGNAL(clicked()), camera, SLOT(setLoop()));
     m_sceneInfoLayout->addWidget(m_loop,1);
 
@@ -274,6 +274,9 @@ void KTViewCamera::updatePhotograms(KTProject *project)
 
 void KTViewCamera::exportDialog()
 {
-    KTExportWidget exportWidget(project, this);
-    exportWidget.exec();
+    QDesktopWidget desktop;
+    KTExportWidget *exportWidget = new KTExportWidget(project, this);
+    exportWidget->show();
+    exportWidget->move((int) (desktop.screenGeometry().width() - exportWidget->width())/2 , (int) (desktop.screenGeometry().height() - exportWidget->height())/2);
+    exportWidget->exec();
 }

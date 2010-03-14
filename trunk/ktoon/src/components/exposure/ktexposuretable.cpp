@@ -226,12 +226,12 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
 
     style()->drawControl(QStyle::CE_HeaderSection, &headerOption, painter);
 
-    int height = rect.height() - 5;
+    int height = rect.height() - 7;
 
     QString text = m_layers[logicalIndex].title;
     QFontMetrics fm( painter->font());
 
-    int x = rect.x() + (sectionSize(logicalIndex) - fm.width(text))/2;
+    int x = rect.x() + (sectionSize(logicalIndex) - fm.width(text)) + 3;
     int y = fm.height() + (rect.y() / 2);
 
     QStyleOptionButton buttonOption;
@@ -253,6 +253,7 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
         painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
     }
 
+    painter->setFont(QFont("Arial", 8, QFont::Normal, false));
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine));
     painter->drawText(x, y, text);
 
@@ -412,6 +413,8 @@ QString KTExposureTable::frameName(int indexLayer, int indexFrame)
 void KTExposureTable::setFrameName(int indexLayer, int indexFrame,const QString & name)
 {
     QTableWidgetItem *frame = item(indexFrame , indexLayer);
+    frame->setFont(QFont("Arial", 8, QFont::Normal, false));
+
     if (frame) {
         if (frame->text() != name)
             frame->setText(name);
@@ -472,13 +475,16 @@ int KTExposureTable::currentFrame() const
 void KTExposureTable::insertLayer(int index, const QString & name)
 {
     insertColumn(index);
+    setColumnWidth(index, 70);
     k->header->insertLayer(index, name);
 }
 
 void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString & name, bool external)
 {
     QTableWidgetItem * frame = new QTableWidgetItem;
-    frame->setBackgroundColor(Qt::lightGray);
+    frame->setBackgroundColor(QColor(0xe6e6e6));
+    frame->setFont(QFont("Arial", 8, QFont::Normal, false));
+    frame->setSizeHint(QSize(70, 10));
     frame->setText(name);
     frame->setData(IsUsed, true);
     frame->setTextAlignment(Qt::AlignCenter);
