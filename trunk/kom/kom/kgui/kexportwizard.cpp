@@ -36,8 +36,8 @@
 KExportWizard::KExportWizard(QWidget *parent) : QDialog(parent)
 {
     m_cancelButton = new QPushButton(tr("Cancel"));
-    m_backButton = new QPushButton(tr("< Back"));
-    m_nextButton = new QPushButton(tr("Next >"));
+    m_backButton = new QPushButton(tr("Back"));
+    m_nextButton = new QPushButton(tr("Next"));
 
     connect(m_cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
     connect(m_backButton, SIGNAL(clicked()), this, SLOT(back()));

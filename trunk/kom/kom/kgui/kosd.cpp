@@ -73,10 +73,10 @@ void KOsd::display(const QString &message, Level level, int ms)
 
     if (level != None) {
   
-        QString logo = THEME_DIR + "/icons/help.png";
         switch (level) {
                 case Info:
                    {
+                     QString logo = THEME_DIR + "icons/info_message.png";
                      background = QColor(0xc1e2fb);
                      m_document->setHtml("<img src=\"" + logo + "\"><font style=\"font-size:12px;\"><b>&nbsp;&nbsp;" \
                                          + tr("Information") + "</b></font><br><font style=\"font-size:12px\">" + htmlMessage + "</font>");
@@ -84,12 +84,15 @@ void KOsd::display(const QString &message, Level level, int ms)
                    break;
                 case Warning:
                    {
+                     QString logo = THEME_DIR + "icons/warning_message.png";
+                     background = QColor(0xf77100);
                      m_document->setHtml("<img src=\"" + logo + "\"><font style=\"font-size:12px;\"><b>&nbsp;&nbsp;" \
                                          + tr("Attention") + "</b></font><br><font style=\"font-size:12px\">" + htmlMessage + "</font>");
                    }
                    break;
                 case Error:
                    {
+                     QString logo = THEME_DIR + "icons/error_message.png";
                      background = Qt::red;
                      m_document->setHtml("<img src=\"" + logo + "\"><font style=\"font-size:12px;\"><b>&nbsp;&nbsp;" \
                                          + tr("Error") + "</b></font><br><font style=\"font-size:12px\">" + htmlMessage + "</font>");
@@ -97,7 +100,8 @@ void KOsd::display(const QString &message, Level level, int ms)
                    break;
                 case Fatal:
                    {
-                     background = Qt::magenta;
+                     QString logo = THEME_DIR + "icons/fatal_message.png";
+                     background = Qt::red;
                      m_document->setHtml("<img src=\"" + logo + "\"><font style=\"font-size:12px;\"><b>&nbsp;&nbsp;" \
                                          + tr("Error") + "</b></font><br><font style=\"font-size:12px\">" + htmlMessage+"</font>");
                    }

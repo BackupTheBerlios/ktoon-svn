@@ -20,6 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <kcore/kglobal.h>
 #include "kitemselector.h"
 
 #include <QListWidget>
@@ -47,13 +48,16 @@ KItemSelector::KItemSelector(QWidget *parent) : QWidget(parent), k( new Private 
     controlBox->addStretch();
 
     QToolButton *bnext = new QToolButton;
-    bnext->setText(">>");
+    bnext->setIcon(QPixmap(THEME_DIR + "icons/export_scene.png"));
+    //bnext->setText(">>");
     connect(bnext, SIGNAL(clicked()), this, SLOT(addCurrent()));
 
     controlBox->addWidget(bnext);
+    controlBox->setSpacing(5);
 
     QToolButton *bprev = new QToolButton;
-    bprev->setText("<<");
+    //bprev->setText("<<");
+    bprev->setIcon(QPixmap(THEME_DIR + "icons/unexport_scene.png"));
     connect(bprev, SIGNAL(clicked()), this, SLOT(removeCurrent()));
 
     controlBox->addWidget(bprev);
