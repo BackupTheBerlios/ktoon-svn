@@ -1,7 +1,20 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Project KTOON: 2D Animation Toolkit 0.9a                              *
+ *   Project Contact: ktoon@labtoon.org                                    *
+ *   Project Website: http://www.ktoon.net                                 *
+ *   Project Leader: Gustavo Gonzalez <xtingray@ktoon.net>                 *
  *                                                                         *
+ *   Developers:                                                           *
+ *   2010:                                                                 * 
+ *    Gustavo Gonzalez                                                     *
+ *   2006:                                                                 *
+ *    David Cuadrado                                                       *
+ *    Jorge Cuadrado                                                       *
+ *   2003:                                                                 *
+ *    Fernado Roldan                                                       * 
+ *    Simena Dinas                                                         *
+ *                                                                         *
+ *   License:                                                              *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -17,18 +30,17 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "ktimportprojectpackage.h"
+
 #include <QFile>
+#include "ktimportprojectpackage.h"
 
 KTImportProjectPackage::KTImportProjectPackage(const QString & projectPath)
 {
-	QDomElement root = createElement ( "importproject" );
-	root.setAttribute ( "version",  "0" );
-	appendChild(root);
-	setProject(projectPath);
-
+    QDomElement root = createElement("importproject");
+    root.setAttribute("version", "0");
+    appendChild(root);
+    setProject(projectPath);
 }
-
 
 KTImportProjectPackage::~KTImportProjectPackage()
 {
@@ -37,12 +49,12 @@ KTImportProjectPackage::~KTImportProjectPackage()
 
 void KTImportProjectPackage::setProject(const QString & projectPath)
 {
-	QFile file(projectPath);
-	file.open(QIODevice::ReadOnly);
-	QByteArray data = file.readAll().toBase64();
-	
-	removeChild(m_data);
-	m_data = createElement("data");
-	m_data.appendChild(createCDATASection ( data ));
-	firstChild().appendChild(m_data);
+    QFile file(projectPath);
+    file.open(QIODevice::ReadOnly);
+    QByteArray data = file.readAll().toBase64();
+    
+    removeChild(m_data);
+    m_data = createElement("data");
+    m_data.appendChild(createCDATASection(data));
+    firstChild().appendChild(m_data);
 }

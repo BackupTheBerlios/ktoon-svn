@@ -1,26 +1,35 @@
- /****************************************************************************
- **
- ** Copyright (C) 2005-2006 Trolltech ASA. All rights reserved.
- **
- ** This file is part of the example classes of the Qt Toolkit.
- **
- ** This file may be used under the terms of the GNU General Public
- ** License version 2.0 as published by the Free Software Foundation
- ** and appearing in the file LICENSE.GPL included in the packaging of
- ** this file.  Please review the following information to ensure GNU
- ** General Public Licensing requirements will be met:
- ** http://www.trolltech.com/products/qt/opensource.html
- **
- ** If you are unsure which license is appropriate for your use, please
- ** review the following information:
- ** http://www.trolltech.com/products/qt/licensing.html or contact the
- ** sales department at sales@trolltech.com.
- **
- ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
- ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
- **
- ****************************************************************************/
-
+/***************************************************************************
+ *   Project KTOON: 2D Animation Toolkit 0.9a                              *
+ *   Project Contact: ktoon@labtoon.org                                    *
+ *   Project Website: http://www.ktoon.net                                 *
+ *   Project Leader: Gustavo Gonzalez <xtingray@ktoon.net>                 *
+ *                                                                         *
+ *   Developers:                                                           *
+ *   2010:                                                                 * 
+ *    Gustavo Gonzalez                                                     *
+ *   2006:                                                                 *
+ *    David Cuadrado                                                       *
+ *    Jorge Cuadrado                                                       *
+ *   2003:                                                                 *
+ *    Fernado Roldan                                                       * 
+ *    Simena Dinas                                                         *
+ *                                                                         *
+ *   License:                                                              *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 #ifndef SPINBOXDELEGATE_H
 #define SPINBOXDELEGATE_H
@@ -28,20 +37,19 @@
 #include <QItemDelegate>
 #include <QSpinBox>
 
-
 class SpinBoxDelegate : public QItemDelegate
 {
-	Q_OBJECT
-	public:
-		SpinBoxDelegate(QObject *parent = 0);
-		QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,  const QModelIndex &index) const;
+    Q_OBJECT
+    public:
+        SpinBoxDelegate(QObject *parent = 0);
+        QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,  const QModelIndex &index) const;
 
-		void setEditorData(QWidget *editor, const QModelIndex &index) const;
-		void setModelData(QWidget *editor, QAbstractItemModel *model,
-				  const QModelIndex &index) const;
+        void setEditorData(QWidget *editor, const QModelIndex &index) const;
+        void setModelData(QWidget *editor, QAbstractItemModel *model,
+                  const QModelIndex &index) const;
 
-		void updateEditorGeometry(QWidget *editor,
-					  const QStyleOptionViewItem &option, const QModelIndex &index) const;
+        void updateEditorGeometry(QWidget *editor,
+                      const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
 #endif
