@@ -159,12 +159,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 {
     Q_CHECK_PTR(k->scene);
 
-    /*
-    kDebug() << "";
-    kDebug() << "*** wOw! Updating photogram!";
-    kDebug() << "";
-    */
-
     if (photogram < 0 || !k->scene) 
         return;
 
@@ -173,10 +167,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
     bool valid = false;
 
     // Drawing frames from another layers
-
-    // foreach (KTLayer *layer, k->scene->layers().values()) {
-
-    // kDebug() << "KTGraphicsScene::drawPhotogram - Processing: " << k->scene->layersTotal() << " layers";
 
     for (int i=0; i < k->scene->layersTotal(); i++) {
 
@@ -187,8 +177,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                      if (k->onionSkin.previous > 0) {
                          double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.previous);
                          double opacity = 0.5;
-
-                         //kDebug() << "*** Adding pre/photograms";
 
                          for (int frameIndex = photogram-1; frameIndex > photogram-k->onionSkin.previous-1; frameIndex--) {
                               KTFrame * frame = layer->frame(frameIndex);
@@ -201,8 +189,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                      if (k->onionSkin.next > 0) {
                          double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.next);
                          double opacity = 0.5;
-
-                         // kDebug() << "*** Adding post/photograms";
 
                          for (int frameIndex = photogram+1; frameIndex < photogram+k->onionSkin.next+1; frameIndex++) {
                               KTFrame * frame = layer->frame(frameIndex);
@@ -217,7 +203,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                      if (frame) {
                          valid = true;
-                         // kDebug() << "KTGraphicsScene::drawPhotogram - Adding current photogram - layer index: " << i << " - frame index: " << photogram;
                          k->layerCounter = i;
                          addFrame(frame);
                      }
@@ -254,7 +239,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
 {
     if (frame) {
-        // kDebug() << "KTGraphicsScene::addFrame - Adding " << frame->count() << " objects";
 
         k->objectCounter = 0;
         for (int i=0; i < frame->count(); i++) {
@@ -262,20 +246,12 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
              addGraphicObject(object, opacity);
         }
 
-        // kDebug() << "";
     }
 }
 
 void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 {
-    /*
-      #ifdef K_DEBUG
-             K_FUNCINFO;
-      #endif
-    */
-
     QGraphicsItem *item = object->item();
-    // kDebug() << "KTGraphicsScene::addGraphicObject with Z value: " << item->zValue() << " - Opacity: " << opacity;
 
     k->onionSkin.opacityMap.insert(item, opacity);
 
@@ -283,21 +259,20 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
         group->recoverChilds();
 
     if (! qgraphicsitem_cast<KTItemGroup *>(item->parentItem())) {
+
         item->setSelected(false);
+        KTLayer *layer = k->scene->layer(k->framePosition.layer);
 
-    KTLayer *layer = k->scene->layer(k->framePosition.layer);
-    if (layer) {
-        KTFrame *frame = layer->frame(k->framePosition.frame);
-        if (frame) {
-            int factor = k->objectCounter + (k->layerCounter)*100; 
-            k->objectCounter++;
-            // kFatal() << "KTGraphicsScene::addGraphicObject - New zValue: " << factor << " - Layer: " << k->layerCounter << " - Old zValue: " << k->objectCounter;
-            item->setZValue(factor);
-            addItem(item);
+        if (layer) {
+            KTFrame *frame = layer->frame(k->framePosition.frame);
+            if (frame) {
+                int factor = k->objectCounter + (k->layerCounter)*100; 
+                k->objectCounter++;
+                item->setZValue(factor);
+                addItem(item);
+            }
         }
-    }
 
-        //addItem(item);
     }
 }
 
@@ -346,40 +321,25 @@ void KTGraphicsScene::setPreviousOnionSkinCount(int n)
 
 KTFrame *KTGraphicsScene::currentFrame()
 {
-    /*
-    kFatal() << "KTGraphicsScene::currentFrame - LAYER INDEX: " << k->framePosition.layer;
-    kFatal() << "KTGraphicsScene::currentFrame - Layers Total: " << k->scene->layersTotal();
-    kFatal() << "KTGraphicsScene::currentFrame - FRAME INDEX: " << k->framePosition.frame;
-    kFatal() << "";
-    */
-
     if (k->scene && (k->scene->layersTotal() > 0) && (k->framePosition.layer < k->scene->layersTotal())) {
-       /*
-       QList<int> indices = k->scene->layers().visualIndices();
-       int size = k->scene->layersTotal();
-       for (int i = 0; i < size; i++) {
-             // kFatal() << "KTGraphicsScene - VISUAL INDEX: " << indices.at(i);
-             KTLayer *layer = k->scene->layer(indices.at(i));
-             kFatal() << "KTGraphicsScene - LOGICAL INDEX: " << k->scene->layers().logicalIndex(layer);
-             kFatal() << "KTGraphicsScene - LAYER NAME: " << layer->layerName();
-             kFatal() << "";
-       }
-       */
   
         if (k->scene->layers().contains(k->framePosition.layer)) {
-        KTLayer *layer = k->scene->layer(k->framePosition.layer);
-        Q_CHECK_PTR(layer);
-        if (layer) {
-            if (!layer->frames().isEmpty())
-                return layer->frame(k->framePosition.frame);
+            KTLayer *layer = k->scene->layer(k->framePosition.layer);
+            Q_CHECK_PTR(layer);
+            if (layer) {
+                if (!layer->frames().isEmpty())
+                    return layer->frame(k->framePosition.frame);
+            } else {
+                    #ifdef K_DEBUG
+                           kFatal() << "KTGraphicsScene::currentFrame - No layer available: " << k->framePosition.frame;
+                    #endif
+            }
         } else {
-                kFatal() << "KTGraphicsScene::currentFrame - No layer available: " << k->framePosition.frame;
-        }
-        } else {
-                kFatal() << "KTGraphicsScene::currentFrame - Layer index incorrect!"; 
+                #ifdef K_DEBUG
+                       kFatal() << "KTGraphicsScene::currentFrame - Layer index incorrect!"; 
+                #endif
         }
     } else {
-        // kFatal() << "KTGraphicsScene::currentFrame - Returning border frame :s";
         KTLayer *layer = k->scene->layer(k->scene->layersTotal() - 1);
         if (layer) {
             if (!layer->frames().isEmpty())
@@ -455,7 +415,6 @@ KTToolPlugin *KTGraphicsScene::currentTool() const
     return k->tool;
 }
 
-
 void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     #ifdef K_DEBUG
@@ -466,20 +425,26 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     k->inputInformation->updateFromMouseEvent(event);
     k->isDrawing = false;
 
-    if (event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier))) {
+    /* Trashy stuff - ignore it
+     if (event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier))) {
         // FIX ME: uggly if
-    } else if (k->tool) {
-               if (k->tool->toolType() == KTToolPlugin::Brush && event->isAccepted())
-                   return;
+     } else if (k->tool) {
+    */
 
-               // If there's no frame... the tool is disabled 
-               if (currentFrame()) {
-                   if (event->buttons() == Qt::LeftButton && !currentFrame()->isLocked()) {
-                       k->tool->begin();
-                       k->isDrawing = true;
-                       k->tool->press(k->inputInformation, k->brushManager, this);
-                   }
-               } 
+    if ((event->buttons() != Qt::LeftButton) || (event->modifiers () != (Qt::ShiftModifier | Qt::ControlModifier))) {
+        if (k->tool) {      
+            if (k->tool->toolType() == KTToolPlugin::Brush && event->isAccepted())
+                return;
+
+            // If there's no frame... the tool is disabled 
+            if (currentFrame()) {
+                if (event->buttons() == Qt::LeftButton && !currentFrame()->isLocked()) {
+                    k->tool->begin();
+                    k->isDrawing = true;
+                    k->tool->press(k->inputInformation, k->brushManager, this);
+                }
+            } 
+        }
     }
 }
 
@@ -595,7 +560,7 @@ void KTGraphicsScene::itemResponse(KTItemResponse *event)
     #endif
 
     if (k->tool) {
-        // k->tool->init(this); //FIXME:k->tool->init(this); in itemResponse ???
+        // k->tool->init(this); // FIXME:k->tool->init(this); in itemResponse ???
         k->tool->itemResponse(event);
     }
 }
@@ -628,14 +593,11 @@ void KTGraphicsScene::aboutToMousePress()
 
 void KTGraphicsScene::includeObject(QGraphicsItem *object)
 {
-    // kFatal() << "KTGraphicsScene::includeObject - Layer: " << k->framePosition.layer << " - Frame: "  << k->framePosition.frame;
-
     KTLayer *layer = k->scene->layer(k->framePosition.layer);
     if (layer) {
         KTFrame *frame = layer->frame(k->framePosition.frame);
         if (frame) {
             int zLevel = frame->getTopZLevel() + (k->framePosition.layer*100);    
-            // kFatal() << "* KTGraphicsScene::includeObject - Inserting item at zLevel: " << zLevel;
             object->setZValue(zLevel);
             addItem(object);
         }

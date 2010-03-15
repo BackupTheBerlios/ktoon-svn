@@ -465,8 +465,8 @@ void KTViewDocument::selectTool()
                          maxWidth = 130;
                      } else if (toolStr.compare("Text")==0) {
                                 maxWidth = 350;
-                     } else if (toolStr.compare("Tweener Translator")==0) {
-                                maxWidth = 300;
+                     } else if (toolStr.compare("Motion Tween")==0) {
+                                maxWidth = 400;
                      } 
 
                      k->brushesMenu->setDefaultAction(action);

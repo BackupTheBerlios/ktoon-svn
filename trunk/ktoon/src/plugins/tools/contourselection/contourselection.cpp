@@ -255,8 +255,8 @@ void ContourSelection::setupActions()
 {
     KAction *select = new KAction(QPixmap(THEME_DIR + "icons/nodes.png"), tr("Nodes selection "), this);
     select->setShortcut(QKeySequence(tr("Ctrl+M")));
+    // select->setCursor(QCursor(THEME_DIR + "cursors/contour.png"));
 
-    //select->setCursor(QCursor(THEME_DIR + "cursors/contour.png"));
     k->actions.insert(tr("ContourSelection"), select);
 }
 

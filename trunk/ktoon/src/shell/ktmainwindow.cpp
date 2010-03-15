@@ -97,8 +97,8 @@ KTMainWindow::KTMainWindow(KTSplash *splash) :
     setObjectName("KTMainWindow_");
 
     // Defining the status bar
-    // m_statusBar = new KTStatusBar(this);
-    // setStatusBar(m_statusBar);
+    m_statusBar = new KTStatusBar(this);
+    setStatusBar(m_statusBar);
 
     // Naming the main frame...
     setWindowTitle(tr("KToon: 2D Animation Toolkit"));
@@ -212,13 +212,13 @@ void KTMainWindow::viewNewDocument(const QString &title)
         KOsd::self()->display(tr("Opening a new document..."));
 
         m_viewDoc = new KTViewDocument(m_projectManager->project());
-        //connectToDisplays(m_viewDoc);
+        connectToDisplays(m_viewDoc);
 
         m_viewDoc->setWindowTitle(tr("Illustration: %1").arg(title));
 
         addWidget(m_viewDoc, true, All);
 
-        //connectToDisplays(m_viewDoc);
+        connectToDisplays(m_viewDoc);
         ui4project(m_viewDoc);
         ui4localRequest(m_viewDoc);
       
@@ -266,7 +266,7 @@ void KTMainWindow::newProject()
     wizard->show();
     wizard->move((int) (desktop.screenGeometry().width() - wizard->width())/2 , (int) (desktop.screenGeometry().height() - wizard->height())/2);
 
-    // connectToDisplays(wizard);
+    connectToDisplays(wizard);
     if (wizard->exec() != QDialog::Rejected) {
        if (wizard->useNetwork())
            setupNetworkProject(wizard->parameters());
@@ -650,7 +650,7 @@ void KTMainWindow::save()
 
 void KTMainWindow::preferences()
 {
-    // m_statusBar->setStatus(tr("Preferences Dialog Opened"), 2000);
+    m_statusBar->setStatus(tr("Preferences Dialog Opened"));
     KTPreferences *preferences = new KTPreferences(this);
     preferences->exec();
 
@@ -706,7 +706,7 @@ void KTMainWindow::importPalettes()
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Import gimp palettes"), home, 
                                                        tr("Gimp Palette (*.gpl)"));
 
-    // m_statusBar->setStatus(tr("Importing palettes"));
+    m_statusBar->setStatus(tr("Importing palettes"));
     QStringList::ConstIterator it = files.begin();
 	
     //int progress = 1;
@@ -715,9 +715,9 @@ void KTMainWindow::importPalettes()
            importer.import(*it, KTPaletteImporter::Gimp);
            ++it;
 
-           importer.saveFile(CONFIG_DIR + "/palettes");
+           importer.saveFile(SHARE_DIR + "data/palettes");
            m_colorPalette->parsePaletteFile( importer.filePath());
-           // m_statusBar->advance(progress++, files.count());
+           //m_statusBar->advance(progress++, files.count());
     }
 }
 
@@ -779,12 +779,12 @@ void KTMainWindow::ui4localRequest(QWidget *widget)
  * @if spanish
  * Este metodo asigna un mensaje a la barra de estados.
  * @endif
+ */
 
 void KTMainWindow::messageToStatus(const QString &msg)
 {
-    m_statusBar->setStatus(msg, msg.length() * 90);
+    m_statusBar->setStatus(msg);
 }
-*/
 
 /**
  * @if english

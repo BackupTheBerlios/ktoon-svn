@@ -56,7 +56,7 @@ void KTMainWindow::createGUI()
     m_actionManager->insert(colorView->toggleViewAction(),"show palette");
     addToPerspective(colorView->toggleViewAction(), Drawing);
 
-    //connectToDisplays(m_colorPalette);
+    connectToDisplays(m_colorPalette);
     ui4paintArea(m_colorPalette);
 
     // Adding the pen parameters widget to the left side of the interface 
@@ -66,7 +66,7 @@ void KTMainWindow::createGUI()
     m_actionManager->insert(penView->toggleViewAction(), "show pen");
     addToPerspective(penView->toggleViewAction(), Drawing);
 
-    //connectToDisplays(m_penWidget);
+    connectToDisplays(m_penWidget);
     ui4paintArea(m_penWidget);
 
     // Adding the objects library widget to the left side of the interface
@@ -76,7 +76,7 @@ void KTMainWindow::createGUI()
     libraryView = addToolView(m_libraryWidget, Qt::LeftDockWidgetArea, Drawing);
     m_actionManager->insert(libraryView->toggleViewAction(), "show library");
     addToPerspective(libraryView->toggleViewAction(), Drawing);
-    // connectToDisplays(m_libraryWidget);
+    connectToDisplays(m_libraryWidget);
 
     new KAction(QPixmap(THEME_DIR + "icons/bitmap.png"), tr("Bitmap"), QKeySequence(), m_libraryWidget, SLOT(importBitmap()),
                 m_actionManager, "importbitmap");
@@ -98,7 +98,7 @@ void KTMainWindow::createGUI()
 
     ui4project(m_scenes);
     ui4localRequest(m_scenes);
-    // connectToDisplays(m_scenes);
+    connectToDisplays(m_scenes);
 
     // Adding the exposure sheet to the right side of the interface
     m_exposureSheet = new KTExposureSheet;
@@ -108,7 +108,7 @@ void KTMainWindow::createGUI()
 
     ui4project(m_exposureSheet);
     ui4localRequest(m_exposureSheet);
-    // connectToDisplays(m_exposureSheet);
+    connectToDisplays(m_exposureSheet);
 
     // Adding the help widget to the right side of the interface
 
@@ -118,7 +118,7 @@ void KTMainWindow::createGUI()
 
     connect(m_helper, SIGNAL(pageLoaded(const QString &, const QString &)), this, SLOT(showHelpPage(const QString &,
                              const QString &)));
-    // connectToDisplays(m_helper);
+    connectToDisplays(m_helper);
 
     // Adding the time line widget to the bottom side of the interface
     m_timeLine = new KTTimeLine;
@@ -129,7 +129,7 @@ void KTMainWindow::createGUI()
 
     ui4project(m_timeLine);
     ui4localRequest(m_timeLine);
-    // connectToDisplays(m_timeLine);
+    connectToDisplays(m_timeLine);
 
     // Adding the script editor to the bottom side, if kinas was enabled
 
@@ -166,11 +166,12 @@ void KTMainWindow::createGUI()
  * @if spanish
  * Este metodo enlaza widgets con el visualizador de estados
  * @endif
+ */
+
 void KTMainWindow::connectToDisplays(const QWidget *widget)
 {
     connect(widget, SIGNAL(sendToStatus(const QString &)), this, SLOT(messageToStatus(const QString &)));
 }
-*/
 
 /**
  * @if english

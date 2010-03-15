@@ -27,20 +27,20 @@ KTStatusBar::KTStatusBar(QWidget *parent)
 {
     setObjectName("KTStatusBar_");
 
-    m_progressBar = new QProgressBar(this);
-    m_progressBar->setMaximumSize(100, m_progressBar->height()/2);
-    m_progressBar->setMinimumWidth(100);
+    //m_progressBar = new QProgressBar(this);
+    //m_progressBar->setMaximumSize(100, m_progressBar->height()/2);
+    //m_progressBar->setMinimumWidth(100);
 
-    m_progressBar->setMaximum(10);
+    //m_progressBar->setMaximum(10);
 
     m_status = new QLabel(this);
     m_status->setIndent(10);
 
     addPermanentWidget(m_status, 1);
-    addPermanentWidget(m_progressBar, 0);
+    //addPermanentWidget(m_progressBar, 0);
 
-    m_timer = new QTimer(this);
-    connect(m_timer, SIGNAL(timeout()), this, SLOT(clear()));
+    // m_timer = new QTimer(this);
+    // connect(m_timer, SIGNAL(timeout()), this, SLOT(clear()));
 }
 
 
@@ -48,23 +48,30 @@ KTStatusBar::~KTStatusBar()
 {
 }
 
+/*
 void KTStatusBar::clear()
 {
     advance(0);
     m_timer->stop();
 }
+*/
 
-void KTStatusBar::setStatus(const QString &status, int ms)
+//void KTStatusBar::setStatus(const QString &status, int ms)
+void KTStatusBar::setStatus(const QString &status)
 {
     m_status->setText(status);
     m_status->repaint();
 
+    /*
     if (ms > 0) {
         if (m_timer->isActive())
             m_timer->stop();
         m_timer->start(ms);
     }
+    */
 }
+
+/*
 
 void KTStatusBar::addWidget(QWidget *widget, int stretch, bool permanent)
 {
@@ -72,13 +79,6 @@ void KTStatusBar::addWidget(QWidget *widget, int stretch, bool permanent)
         QStatusBar::addPermanentWidget(widget,stretch);
     else
         QStatusBar::addWidget(widget,stretch);
-
-    /*	
-    if (widget->sizeHint().height() + 4 > height())
-	{
-        //setFixedHeight(widget->sizeHint().height() + 4);
-	}
-    */
 }
 
 void KTStatusBar::advance(int step, int totalSteps)
@@ -88,3 +88,5 @@ void KTStatusBar::advance(int step, int totalSteps)
 
     m_progressBar->setValue(step);
 }
+
+*/
