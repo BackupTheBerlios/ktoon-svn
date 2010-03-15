@@ -224,7 +224,8 @@ void KControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void KControlNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     k->nodeGroup->emitNodeClicked();
-    QGraphicsItem::mouseReleaseEvent(event);
+    // TODO: Why this instruction makes the system crash? 
+    // QGraphicsItem::mouseReleaseEvent(event);
 }
 
 void KControlNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
