@@ -48,6 +48,7 @@ class K_GUI_EXPORT KConfigurationDialog : public QDialog
         
         void addPage(QWidget *page, const QString &label, const QIcon &icon);
         QWidget *currentPage() const;
+        void setCurrentItem(int row);
         
     public slots:
         virtual void ok();

@@ -48,14 +48,14 @@ KConfigurationDialog::KConfigurationDialog(QWidget *parent) : QDialog(parent), k
     
     QHBoxLayout *pages = new QHBoxLayout;
     
-    k->list = new QListWidget;
+    k->list = new QListWidget(this);
     k->list->setViewMode(QListView::IconMode);
     k->list->setWrapping(false);
     k->list->setFlow(QListView::TopToBottom);
     k->list->setIconSize(QSize(96, 84));
     k->list->setMovement(QListView::Static);
-    k->list->setMaximumWidth((84+12)*2);
-    k->list->setMinimumWidth(84+12);
+    k->list->setMaximumWidth(128);
+    //k->list->setMinimumWidth(95);
     k->list->setSpacing(12);
     
     connect(k->list, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(changePage(QListWidgetItem *, QListWidgetItem*)));
@@ -118,4 +118,9 @@ void KConfigurationDialog::changePage(QListWidgetItem *curr, QListWidgetItem *pr
         curr = prev;
     
     k->pageArea->setCurrentIndex(k->list->row(curr));
+}
+
+void KConfigurationDialog::setCurrentItem(int row)
+{
+   k->list->setCurrentRow(row);
 }
