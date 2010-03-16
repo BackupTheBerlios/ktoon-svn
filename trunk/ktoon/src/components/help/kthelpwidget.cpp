@@ -52,10 +52,12 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
     setWindowTitle(tr("Help"));
     setWindowIcon(QPixmap(THEME_DIR + "icons/help.png"));
 
+    kFatal() << "PATH: " << path;
+
     if (QString(QLocale::system().name()).length() > 1)
         m_helpPath = path + "/" + QString(QLocale::system().name()).left(2);
     else
-        m_helpPath = path+"/en";
+        m_helpPath = path + "/en";
 
     QTreeWidget *contentsListView = new QTreeWidget(this);
     contentsListView->setHeaderLabels (QStringList() << tr(""));
@@ -67,10 +69,10 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
     // contentsListView->setRootIsDecorated(true);
     // contentsListView->addColumn(tr("Topics"));
 
-    addChild( contentsListView);
+    addChild(contentsListView);
 
     QDomDocument document;
-    QFile file( m_helpPath.path()+"/help.xml" );
+    QFile file(m_helpPath.path() + "/help.xml");
 
     // kDebug() << "Help path: " << m_helpPath.path();
     if (file.open(QIODevice::ReadOnly)) {

@@ -61,13 +61,13 @@ void KTHelpBrowser::setDocument(const QString &doc)
     m_document->setHtml(doc);
 }
 
-void KTHelpBrowser::setSource( const QString &filePath)
+void KTHelpBrowser::setSource(const QString &filePath)
 {
     m_pageArea->setSource(filePath);
 }
 
 void KTHelpBrowser::setDataDirs(const QStringList &dirs)
 {
-    m_pageArea->setSearchPaths (dirs);
+    m_pageArea->setSearchPaths(dirs);
 }
 

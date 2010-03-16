@@ -35,7 +35,7 @@
 
 #include "ktnewproject.h"
 #include "ktabout.h"
-#include "kthelpbrowser.h"
+//#include "kthelpbrowser.h"
 
 #include "ktpackagehandler.h"
 
@@ -245,6 +245,13 @@ void KTMainWindow::viewNewDocument(const QString &title)
         m_animationSpace->setWindowIcon(QIcon(THEME_DIR + "icons/animation_mode.png"));
         m_animationSpace->setWindowTitle(tr("Animation"));
         addWidget(m_animationSpace, true, All);
+
+        page = new KTHelpBrowser(this);
+        page->setDataDirs(QStringList() << m_helper->helpPath());
+        page->setSource("/usr/local/ktoon/share/data/help/en/about.html");
+        // page->setWindowTitle(tr("Help:%1").arg(title));
+        page->setWindowTitle(tr("Help"));
+        addWidget(page, true, All);
 
         exposureView->expandDock(true);
         connect(m_viewDoc, SIGNAL(autoSave()), this, SLOT(callSave()));
@@ -821,13 +828,17 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
     #ifdef K_DEBUG
        K_FUNCINFO;
     #endif
-    KTHelpBrowser *page = new KTHelpBrowser(this);
-    page->setDataDirs(QStringList() << m_helper->helpPath());
+
+    kFatal() << "*** HELP Path: " << filePath;
+    kFatal() << "*** helpPath(): " << m_helper->helpPath();
+
+    //KTHelpBrowser *page = new KTHelpBrowser(this);
+    //page->setDataDirs(QStringList() << m_helper->helpPath());
 
     // page->setDocument(document);
     page->setSource(filePath);
-    page->setWindowTitle(tr("Help:%1").arg(title));
-    addWidget(page, false, All);
+    //page->setWindowTitle(tr("Help:%1").arg(title));
+    //addWidget(page, false, All);
 }
 
 /**
