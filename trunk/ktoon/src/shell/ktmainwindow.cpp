@@ -275,9 +275,11 @@ void KTMainWindow::newProject()
     KTNewProject *wizard = new KTNewProject(this);
     QDesktopWidget desktop;
     wizard->show();
-    wizard->move((int) (desktop.screenGeometry().width() - wizard->width())/2 , (int) (desktop.screenGeometry().height() - wizard->height())/2);
+    wizard->move((int) (desktop.screenGeometry().width() - wizard->width())/2 , 
+                 (int) (desktop.screenGeometry().height() - wizard->height())/2);
 
-    connectToDisplays(wizard);
+    //connectToDisplays(wizard);
+
     if (wizard->exec() != QDialog::Rejected) {
        if (wizard->useNetwork())
            setupNetworkProject(wizard->parameters());
@@ -316,7 +318,8 @@ bool KTMainWindow::closeProject()
         msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Save);
         msgBox.show();
-        msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2 , (int) (desktop.screenGeometry().height() - msgBox.height())/2);
+        msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2 , 
+                    (int) (desktop.screenGeometry().height() - msgBox.height())/2);
 
         int ret = msgBox.exec();
 
@@ -663,6 +666,12 @@ void KTMainWindow::preferences()
 {
     m_statusBar->setStatus(tr("Preferences Dialog Opened"));
     KTPreferences *preferences = new KTPreferences(this);
+    preferences->show();
+
+    QDesktopWidget desktop;
+    preferences->move((int) (desktop.screenGeometry().width() - preferences->width())/2 , 
+                      (int) (desktop.screenGeometry().height() - preferences->height())/2);
+
     preferences->exec();
 
     delete preferences;
@@ -699,7 +708,8 @@ void KTMainWindow::showTipDialog()
     tipDialog->show();
 
     QDesktopWidget desktop;
-    tipDialog->move((int) (desktop.screenGeometry().width() - tipDialog->width())/2 , (int) (desktop.screenGeometry().height() - tipDialog->height())/2);
+    tipDialog->move((int) (desktop.screenGeometry().width() - tipDialog->width())/2 , 
+                    (int) (desktop.screenGeometry().height() - tipDialog->height())/2);
 }
 
 /**

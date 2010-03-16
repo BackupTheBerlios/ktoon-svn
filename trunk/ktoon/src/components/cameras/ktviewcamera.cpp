@@ -239,7 +239,6 @@ QSize KTViewCamera::sizeHint() const
 
 void KTViewCamera::doPlay()
 {
-    kFatal() << "*** Playing Animation!!!";
     m_animationArea->play();
     updateSceneInfo();
 }

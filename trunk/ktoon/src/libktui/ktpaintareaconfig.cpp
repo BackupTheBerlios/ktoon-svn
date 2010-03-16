@@ -69,32 +69,32 @@ void KTPaintAreaConfig::setupPage()
     m_gridColor = new KColorButton;
     pageLayout->addWidget(m_gridColor, 0, 1);
     
-    m_gridColor->setColor( qvariant_cast<QColor>(KCONFIG->value("GridColor", QColor(Qt::gray))));
+    m_gridColor->setColor(qvariant_cast<QColor>(KCONFIG->value("GridColor", QColor(Qt::gray))));
     
-    pageLayout->addWidget(new QLabel(tr("Grid separation")), 0, 0);
+    pageLayout->addWidget(new QLabel(tr("Grid separation")), 1, 0);
     m_gridSeparation = new QSpinBox(this);
     
-    pageLayout->addWidget(m_gridSeparation, 0, 1);
+    pageLayout->addWidget(m_gridSeparation, 1, 1);
     
     m_gridSeparation->setMaximum(100);
     m_gridSeparation->setMinimum(10);
     m_gridSeparation->setValue(10);
     
-    pageLayout->addWidget(new QLabel(tr("Background color")), 1, 0);
+    pageLayout->addWidget(new QLabel(tr("Background color")), 2, 0);
     m_backgroundColor = new KColorButton;
-    pageLayout->addWidget(m_backgroundColor, 1, 1);
+    pageLayout->addWidget(m_backgroundColor, 2, 1);
     
     m_backgroundColor->setColor(qvariant_cast<QColor>(KCONFIG->value("BackgroundColor", QColor(Qt::white))));
     
-    pageLayout->addWidget(new QLabel(tr("Onion skin color")), 2, 0);
+    pageLayout->addWidget(new QLabel(tr("Onion skin color")), 3, 0);
     m_onionSkinColor = new KColorButton;
-    pageLayout->addWidget(m_onionSkinColor, 2, 1);
+    pageLayout->addWidget(m_onionSkinColor, 3, 1);
     
     m_onionSkinColor->setColor(qvariant_cast<QColor>(KCONFIG->value("OnionSkinColor", QColor(Qt::lightGray))));
     
-    pageLayout->addWidget(new QLabel(tr("Onion skin background ")), 3, 0);
+    pageLayout->addWidget(new QLabel(tr("Onion skin background ")), 4, 0);
     m_onionSkinBackground = new KColorButton;
-    pageLayout->addWidget(m_onionSkinBackground, 3, 1);
+    pageLayout->addWidget(m_onionSkinBackground, 4, 1);
     
     m_onionSkinBackground->setColor(qvariant_cast<QColor>(KCONFIG->value("OnionSkinBackground", 
                     QColor(Qt::lightGray))));

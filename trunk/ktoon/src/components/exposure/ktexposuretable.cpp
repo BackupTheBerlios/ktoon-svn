@@ -241,7 +241,9 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
     QString text = m_layers[logicalIndex].title;
     QFontMetrics fm( painter->font());
 
-    int x = rect.x() + (sectionSize(logicalIndex) - fm.width(text)) + 3;
+    //int x = rect.x() + (sectionSize(logicalIndex) - fm.width(text)) + 3;
+
+    int x = rect.x() + (sectionSize(logicalIndex) - fm.width(text)); 
     int y = fm.height() + (rect.y() / 2);
 
     QStyleOptionButton buttonOption;

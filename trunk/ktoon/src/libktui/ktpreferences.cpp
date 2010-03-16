@@ -65,7 +65,7 @@ class KTPreferences::GeneralPage : public QWidget
         
     private:
         QLineEdit *m_home, *m_repository, *m_browser;
-        QComboBox *m_renderType;
+        //QComboBox *m_renderType;
         QCheckBox *m_openLastProject;
         
     // private slots:
@@ -93,9 +93,12 @@ KTPreferences::GeneralPage::GeneralPage()
     str = KCONFIG->value("Browser").toString();
     if (!str.isEmpty())
         m_browser->setText(str);
+    else
+        m_browser->setText("/usr/bin/firefox");
     
     str = KCONFIG->value("RenderType").toString();
 
+    /*
     m_renderType = new QComboBox();
     
     m_renderType->addItem(tr("Image"),  KToon::Image);
@@ -103,14 +106,15 @@ KTPreferences::GeneralPage::GeneralPage()
     m_renderType->addItem(tr("Native"), KToon::Native);
     if (!str.isEmpty())
         m_renderType->setCurrentIndex(str.toInt());
+    */
     
     bool openLast = KCONFIG->value("OpenLastProject", true).toBool();
     m_openLastProject = new QCheckBox();
     m_openLastProject->setChecked(openLast);
 
     QLayout *form = KFormFactory::makeGrid( QStringList() << tr("KToon Home") << tr("Cache") << tr("Browser") 
-                    << tr("Render Type") << tr("Open last project"), QWidgetList() << m_home 
-                    << m_repository << m_browser << m_renderType << m_openLastProject);
+                    << tr("Open last project"), QWidgetList() << m_home 
+                    << m_repository << m_browser << m_openLastProject);
     
     layout->addLayout(form);
     layout->addStretch(3);
@@ -136,7 +140,7 @@ void KTPreferences::GeneralPage::saveValues()
     if (!str.isEmpty() && m_browser->isModified())
         KCONFIG->setValue("Browser", str);
     
-    KCONFIG->setValue("RenderType", QString::number((m_renderType->itemData(m_renderType->currentIndex ()).toInt())));
+    //KCONFIG->setValue("RenderType", QString::number((m_renderType->itemData(m_renderType->currentIndex ()).toInt())));
     KCONFIG->setValue("OpenLastProject", m_openLastProject->isChecked());
     KCONFIG->sync();
 }
@@ -157,7 +161,8 @@ class KTPreferences::FontPage : public QWidget
 KTPreferences::FontPage::FontPage()
 {
     m_fontChooser = new KFontChooser(this);
-    m_fontChooser->setCurrentFont(font());
+    //m_fontChooser->setCurrentFont(font());
+    m_fontChooser->initFont();
 }
 
 KTPreferences::FontPage::~FontPage()
@@ -176,16 +181,22 @@ KTPreferences::KTPreferences(QWidget *parent) : KConfigurationDialog(parent)
     setWindowTitle(tr("Application KTPreferences"));
     
     m_generalPage = new GeneralPage;
-    addPage(m_generalPage, tr("General"), QPixmap(THEME_DIR + "icons/ktoon_general_preferences.png"));
+    //addPage(m_generalPage, tr("General"), QPixmap(THEME_DIR + "icons/ktoon_general_preferences.png"));
+    addPage(m_generalPage, tr("General"), QPixmap(THEME_DIR + "icons/base.png"));
     
     m_themeSelector = new KTThemeSelector;
-    addPage(m_themeSelector, tr("Theme preferences"), QPixmap(THEME_DIR + "icons/ktoon_theme_properties.png"));
+    //addPage(m_themeSelector, tr("Theme"), QPixmap(THEME_DIR + "icons/ktoon_theme_properties.png"));
+    addPage(m_themeSelector, tr("Theme"), QPixmap(THEME_DIR + "icons/base.png"));
     
     m_fontChooser = new FontPage;
-    addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR + "icons/ktoon_font_properties.png"));
+    //addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR + "icons/ktoon_font_properties.png"));
+    addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR + "icons/base.png"));
     
     m_drawingAreaProperties = new KTPaintAreaConfig;
-    addPage(m_drawingAreaProperties, tr("Paint area"), QIcon(THEME_DIR + "icons/ktoon_workspace_properties.png"));
+    //addPage(m_drawingAreaProperties, tr("Workspace"), QIcon(THEME_DIR + "icons/ktoon_workspace_properties.png"));
+    addPage(m_drawingAreaProperties, tr("Workspace"), QIcon(THEME_DIR + "icons/base.png"));
+
+    setCurrentItem(0);
     
     // resize(400,400);
 }
