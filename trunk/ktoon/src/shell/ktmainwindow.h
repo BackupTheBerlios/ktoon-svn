@@ -88,10 +88,12 @@ class KTMainWindow : public KTabbedMainWindow
 {
     Q_OBJECT;
     public:
+
         enum Perspective {
              Drawing = 0x01,
              Animation = 0x02,
-             All = Drawing | Animation
+             Help = 0x04,
+             All = Drawing | Animation | Help
         };
 
         KTMainWindow(KTSplash *splash = 0);
@@ -173,7 +175,7 @@ class KTMainWindow : public KTabbedMainWindow
           void changePerspective(QAction *a);
 
           void addPage(QWidget *widget);
-          void updateAnimation(int index);
+          void updateCurrentTab(int index);
 
     private slots:
           void messageToStatus(const QString &);
@@ -233,6 +235,7 @@ class KTMainWindow : public KTabbedMainWindow
           KToolView *exportView;
           KTViewCamera *viewCamera;
           bool isSaveDialogOpen; 
+          int lastTab;
 
     signals:
           void responsed(KTProjectResponse *);

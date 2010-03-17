@@ -225,7 +225,8 @@ void KTMainWindow::viewNewDocument(const QString &title)
         m_viewDoc = new KTViewDocument(m_projectManager->project());
         connectToDisplays(m_viewDoc);
 
-        m_viewDoc->setWindowTitle(tr("Illustration: %1").arg(title));
+        //m_viewDoc->setWindowTitle(tr("Illustration: %1").arg(title));
+        m_viewDoc->setWindowTitle(tr("Illustration"));
 
         addWidget(m_viewDoc, true, All);
 
@@ -239,7 +240,7 @@ void KTMainWindow::viewNewDocument(const QString &title)
         viewCamera = new KTViewCamera(m_projectManager->project());
         ui4project(viewCamera);
 
-        connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateAnimation(int)));
+        connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateCurrentTab(int)));
 
         m_animationSpace = new KTAnimationspace(viewCamera);
         m_animationSpace->setWindowIcon(QIcon(THEME_DIR + "icons/animation_mode.png"));
@@ -385,8 +386,16 @@ bool KTMainWindow::closeProject()
     if (m_viewDoc)
         m_viewDoc->closeArea();
 
+    removeWidget(page, true);
     removeWidget(m_animationSpace, true);
     removeWidget(m_viewDoc, true);
+
+    delete page;
+    page = 0;
+
+    delete m_animationSpace;
+    m_animationSpace = 0;
+
     delete m_viewDoc;
     m_viewDoc = 0;
 	
@@ -1012,13 +1021,29 @@ void KTMainWindow::addPage(QWidget *widget)
     addWidget(widget);
 }
 
-void KTMainWindow::updateAnimation(int index)
+void KTMainWindow::updateCurrentTab(int index)
 {
     if (index == 1) {
+
+        if (helpView->isExpanded())
+            helpView->expandDock(false);
         viewCamera->updatePhotograms(m_projectManager->project());
+        lastTab = 1;
+
     } else {
-        viewCamera->doStop();
-        m_viewDoc->updatePaintArea();
+
+        if (index == 0) {
+            if (lastTab == 1)
+                viewCamera->doStop();
+            if (helpView->isExpanded())
+                helpView->expandDock(false);
+            m_viewDoc->updatePaintArea();
+            lastTab = 0;
+        } else {
+            if (!helpView->isExpanded())
+                helpView->expandDock(true);
+            lastTab = 2;
+        }
     }
 }
 

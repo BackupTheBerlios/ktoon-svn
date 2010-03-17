@@ -64,7 +64,7 @@ void KTMainWindow::createGUI()
 
     m_colorPalette = new KTColorPalette;
     colorView = addToolView(m_colorPalette, Qt::LeftDockWidgetArea, Drawing);
-    m_actionManager->insert(colorView->toggleViewAction(),"show palette");
+    m_actionManager->insert(colorView->toggleViewAction(), "show palette");
     addToPerspective(colorView->toggleViewAction(), Drawing);
 
     connectToDisplays(m_colorPalette);
@@ -104,8 +104,9 @@ void KTMainWindow::createGUI()
     // Adding the scenes widget to the right side of the interface
 
     m_scenes = new KTScenesWidget;
-    scenesView = addToolView(m_scenes, Qt::RightDockWidgetArea, All);
+    scenesView = addToolView(m_scenes, Qt::RightDockWidgetArea, Drawing);
     m_actionManager->insert(scenesView->toggleViewAction(), "show scenes");
+    addToPerspective(scenesView->toggleViewAction(), Drawing);
 
     ui4project(m_scenes);
     ui4localRequest(m_scenes);
@@ -126,9 +127,10 @@ void KTMainWindow::createGUI()
     m_helper = new KTHelpWidget(SHARE_DIR + "data/help/");
     helpView = addToolView(m_helper, Qt::RightDockWidgetArea, All);
     m_actionManager->insert(helpView->toggleViewAction(), "show help");
+    addToPerspective(helpView->toggleViewAction(), All);
 
-    connect(m_helper, SIGNAL(pageLoaded(const QString &, const QString &)), this, SLOT(showHelpPage(const QString &,
-                             const QString &)));
+    connect(m_helper, SIGNAL(pageLoaded(const QString &, const QString &)), this, 
+            SLOT(showHelpPage(const QString &, const QString &)));
     connectToDisplays(m_helper);
 
     // Adding the time line widget to the bottom side of the interface
@@ -307,8 +309,15 @@ void KTMainWindow::setupMenu()
     QAction *animationPerspective = new QAction(tr("Animation"), this);
     animationPerspective->setIcon(QPixmap(THEME_DIR + "icons/animation_mode.png"));
     animationPerspective->setShortcut(QKeySequence(Qt::Key_F10));
-    group->addAction(animationPerspective);
     animationPerspective->setData(Animation);
+    group->addAction(animationPerspective);
+
+   // Adding Option Animation
+    QAction *helpPerspective = new QAction(tr("Help"), this);
+    helpPerspective->setIcon(QPixmap(THEME_DIR + "icons/animation_mode.png"));
+    helpPerspective->setShortcut(QKeySequence(Qt::Key_F11));
+    helpPerspective->setData(Help);
+    group->addAction(helpPerspective);
 
     m_viewMenu->addActions(group->actions());
     connect(group, SIGNAL(triggered(QAction *)), this, SLOT(changePerspective(QAction *)));
@@ -616,6 +625,9 @@ void KTMainWindow::showWidgetPage()
 void KTMainWindow::changePerspective(QAction *a)
 {
     int perspective = a->data().toInt();
+
+    kFatal() << "KTMainWindow::changePerspective -> NEW: " << perspective;
+
     setCurrentTab(perspective - 1);
     a->setChecked(true);
 }
