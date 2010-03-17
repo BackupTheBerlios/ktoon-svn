@@ -514,8 +514,14 @@ void KMainWindow::relayoutToolView()
  */
 void KMainWindow::setCurrentPerspective(int workspace)
 {
-    if (m_currentPerspective == workspace)
+    kFatal() << "";
+    kFatal() << "";
+    kFatal() << "*** Updating perspective: " << workspace;
+
+    if (m_currentPerspective == workspace) {
+        kFatal() << "*** wow! Same workspace... scaping!";
         return;
+    }
 
     typedef QList<KToolView *> Views;
 
@@ -523,18 +529,35 @@ void KMainWindow::setCurrentPerspective(int workspace)
 
     setUpdatesEnabled(false);
 
-    if (centralWidget())
+    if (centralWidget()) {
+        kFatal() << "*** oh no! it is central widget!";
         centralWidget()->setUpdatesEnabled(false);
+    }
 
     QHash<KButtonBar *, int> hideButtonCount;
 
     foreach (Views views, viewsList) {
              foreach (KToolView *view, views) {
                       KButtonBar *bar = m_buttonBars[view->button()->area()];
+
+                      kFatal() << "HEY! Button index: " << view->button()->area();                     
+                      kFatal() << "HEY! Bar Title: " << bar->windowTitle();
+
                       bar->setUpdatesEnabled(false);
                       view->setUpdatesEnabled(false);
 
+                      kFatal() << "Button: " << view->getObjectID();
+                      kFatal() << "Printing Toolview Perspective: " << view->perspective();
+                      kFatal() << "Printing Workspace: " << workspace;
+                      bool flag = view->perspective() & workspace;
+                      // bool flag = (view->perspective() == workspace) || (view->perspective() == 4);
+                      int test = view->perspective() & workspace;
+                      kFatal() << "Printing view->perspective() & workspace: " << flag;
+                      kFatal() << "Printing test: " << test;
+
                       if (view->perspective() & workspace) {
+
+                      // if ((view->perspective() == workspace) || (view->perspective() == 4)) {
 
                           // Temporary code while Library, Help and Time Line are fixed
                           //if (view->getObjectID().compare("KToolView-Library")==0
@@ -551,21 +574,35 @@ void KMainWindow::setCurrentPerspective(int workspace)
                           } 
                           */
 
+                          kFatal() << "OK - Enabling button...";
+
                           bar->enable(view->button());
 
                           if (view->button()->isChecked())
                               view->show();
                       } else {
+                              kFatal() << "Bad - Hidding button...";
+                              kFatal() << "";
+
                               bar->disable(view->button());
                               if (view->button()->isChecked() || view->isVisible())
                                   view->close();
                               hideButtonCount[bar]++;
                       }
 
-                      if (bar->isEmpty())
+                      if (bar->isEmpty()) {
+                          kFatal() << "Hidding bar...";
                           bar->hide();
-                      else if (! bar->isVisible())
-                               bar->show();
+                      } else {
+                          if (! bar->isVisible()) {
+                              kFatal() << "Showing bar...";
+                              bar->show();
+                          } else {
+                              kFatal() << "HEY! Bar is already visible!"; 
+                          }
+                      }
+
+                      kFatal() << "";
 
                       view->setUpdatesEnabled(true);
                       bar->setUpdatesEnabled(true);
@@ -577,8 +614,10 @@ void KMainWindow::setCurrentPerspective(int workspace)
     while (barIt.hasNext()) {
            barIt.next();
 
-           if (barIt.key()->count() == barIt.value())
+           if (barIt.key()->count() == barIt.value()) {
+               kFatal() << "Warning: Ocultando barra...";
                barIt.key()->hide();
+           }
     }
 
     QHashIterator<QWidget *, int> widgetIt(m_managedWidgets);

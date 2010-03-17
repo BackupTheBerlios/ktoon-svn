@@ -26,7 +26,7 @@
 KWorkspaceMainWindow::KWorkspaceMainWindow(QWidget *parent) : KMainWindow(parent)
 {
     m_workspace = new QWorkspace;
-    setCentralWidget( m_workspace );
+    setCentralWidget(m_workspace);
 }
 
 KWorkspaceMainWindow::~KWorkspaceMainWindow()

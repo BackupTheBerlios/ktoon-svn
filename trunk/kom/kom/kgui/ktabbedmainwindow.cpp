@@ -165,8 +165,22 @@ void KTabbedMainWindow::emitWidgetChanged(int index)
 {
     if (index != -1) {
         QWidget *w = m_tabWidget->widget(index);
-        setCurrentPerspective(index + 1); 
-        emit tabHasChanged(index);       
+        
+       switch (index) {
+               case 0:
+                    setCurrentPerspective(Drawing);
+               break;
+               case 1:
+                    setCurrentPerspective(Animation);
+               break;
+               case 2:
+                    setCurrentPerspective(Help);
+               break;
+       }
+
+       //setCurrentPerspective(index + 1); 
+
+       emit tabHasChanged(index);       
     }
 }
 
@@ -239,6 +253,18 @@ void KTabbedMainWindow::setCurrentTab(int index)
 {
     if (index != -1) {
         m_tabWidget->setCurrentIndex(index);
-        setCurrentPerspective(index + 1);
+
+        switch (index) {
+               case 0:
+                    setCurrentPerspective(Drawing);
+               break;
+               case 1:
+                    setCurrentPerspective(Animation);
+               break;
+               case 2:
+                    setCurrentPerspective(Help);
+               break;
+        }
+        //setCurrentPerspective(index + 1);
     }
 }

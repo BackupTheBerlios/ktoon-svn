@@ -39,7 +39,8 @@ class K_IDEAL_EXPORT KTabbedMainWindow : public KMainWindow
         enum Perspective {
              Drawing = 0x01,
              Animation = 0x02,
-             All = Drawing | Animation
+             Help = 0x04,
+             All = Drawing | Animation | Help
         };
 
         KTabbedMainWindow(QWidget *parent = 0);
