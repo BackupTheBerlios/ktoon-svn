@@ -587,19 +587,19 @@ void KMainWindow::setCurrentPerspective(int workspace)
                               if (view->button()->isChecked() || view->isVisible())
                                   view->close();
                               hideButtonCount[bar]++;
+
+                              kFatal() << "";
                       }
 
-                      kFatal() << "";
-
-                      if (bar->isEmpty()) {
+                      if (bar->isEmpty() && bar->isVisible()) {
                           kFatal() << "Internal: Hidding bar: " << bar->windowTitle();
                           bar->hide();
                       } else {
-                          if (! bar->isVisible()) {
+                          if (!bar->isVisible()) {
                               kFatal() << "Showing bar: " << bar->windowTitle();
                               bar->show();
                           } else {
-                              kFatal() << "HEY! Bar is already visible! -> " << bar->windowTitle(); 
+                              kFatal() << "HEY! Bar is already visible! -> " << bar->windowTitle();
                           }
                       }
 

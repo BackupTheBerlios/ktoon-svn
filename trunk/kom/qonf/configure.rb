@@ -28,7 +28,7 @@ class Configure
                            when 1 # Windows
                                   "/" # FIXME
                            else
-                                  "/usr/local"
+                                  "/usr"
                       end
         else
            @destdir = File.expand_path(@options['prefix'])
