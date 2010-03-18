@@ -181,20 +181,16 @@ KTPreferences::KTPreferences(QWidget *parent) : KConfigurationDialog(parent)
     setWindowTitle(tr("Application KTPreferences"));
     
     m_generalPage = new GeneralPage;
-    //addPage(m_generalPage, tr("General"), QPixmap(THEME_DIR + "icons/ktoon_general_preferences.png"));
-    addPage(m_generalPage, tr("General"), QPixmap(THEME_DIR + "icons/base.png"));
+    addPage(m_generalPage, tr("General"), QPixmap(THEME_DIR + "icons/ktoon_general_preferences.png"));
     
     m_themeSelector = new KTThemeSelector;
-    //addPage(m_themeSelector, tr("Theme"), QPixmap(THEME_DIR + "icons/ktoon_theme_properties.png"));
-    addPage(m_themeSelector, tr("Theme"), QPixmap(THEME_DIR + "icons/base.png"));
+    addPage(m_themeSelector, tr("Theme"), QPixmap(THEME_DIR + "icons/ktoon_theme_properties.png"));
     
     m_fontChooser = new FontPage;
-    //addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR + "icons/ktoon_font_properties.png"));
-    addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR + "icons/base.png"));
+    addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR + "icons/ktoon_font_properties.png"));
     
     m_drawingAreaProperties = new KTPaintAreaConfig;
-    //addPage(m_drawingAreaProperties, tr("Workspace"), QIcon(THEME_DIR + "icons/ktoon_workspace_properties.png"));
-    addPage(m_drawingAreaProperties, tr("Workspace"), QIcon(THEME_DIR + "icons/base.png"));
+    addPage(m_drawingAreaProperties, tr("Workspace"), QIcon(THEME_DIR + "icons/ktoon_workspace_properties.png"));
 
     setCurrentItem(0);
     
