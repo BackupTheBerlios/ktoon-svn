@@ -540,7 +540,7 @@ void KMainWindow::setCurrentPerspective(int workspace)
              foreach (KToolView *view, views) {
                       KButtonBar *bar = m_buttonBars[view->button()->area()];
 
-                      kFatal() << "HEY! Button index: " << view->button()->area();                     
+                      kFatal() << "HEY! Bar index: " << view->button()->area();                     
                       kFatal() << "HEY! Bar Title: " << bar->windowTitle();
 
                       bar->setUpdatesEnabled(false);
@@ -574,15 +574,14 @@ void KMainWindow::setCurrentPerspective(int workspace)
                           } 
                           */
 
-                          kFatal() << "OK - Enabling button...";
+                          kFatal() << "OK - Enabling button: " << view->getObjectID();
 
                           bar->enable(view->button());
 
                           if (view->button()->isChecked())
                               view->show();
                       } else {
-                              kFatal() << "Bad - Hidding button...";
-                              kFatal() << "";
+                              kFatal() << "Bad - Hidding button " << view->getObjectID();
 
                               bar->disable(view->button());
                               if (view->button()->isChecked() || view->isVisible())
@@ -590,15 +589,17 @@ void KMainWindow::setCurrentPerspective(int workspace)
                               hideButtonCount[bar]++;
                       }
 
+                      kFatal() << "";
+
                       if (bar->isEmpty()) {
-                          kFatal() << "Hidding bar...";
+                          kFatal() << "Internal: Hidding bar: " << bar->windowTitle();
                           bar->hide();
                       } else {
                           if (! bar->isVisible()) {
-                              kFatal() << "Showing bar...";
+                              kFatal() << "Showing bar: " << bar->windowTitle();
                               bar->show();
                           } else {
-                              kFatal() << "HEY! Bar is already visible!"; 
+                              kFatal() << "HEY! Bar is already visible! -> " << bar->windowTitle(); 
                           }
                       }
 
@@ -611,11 +612,12 @@ void KMainWindow::setCurrentPerspective(int workspace)
 
     QHashIterator<KButtonBar *, int> barIt(hideButtonCount);
 
+    // This loop hides the bars with no buttons
     while (barIt.hasNext()) {
            barIt.next();
 
            if (barIt.key()->count() == barIt.value()) {
-               kFatal() << "Warning: Ocultando barra...";
+               kFatal() << "External: Hiding Bar: " << barIt.key()->windowTitle();
                barIt.key()->hide();
            }
     }

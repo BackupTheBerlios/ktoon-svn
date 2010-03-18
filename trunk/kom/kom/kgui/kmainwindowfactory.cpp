@@ -128,7 +128,7 @@ KMainWindow *KMainWindowFactory::create(QMainWindow *other)
              if (area == 0)
                  area = Qt::LeftDockWidgetArea;
 
-             mainWindow->addToolView( dock->widget(), area);
+             mainWindow->addToolView(dock->widget(), area);
     }
 	
     QList<QToolBar *> toolBars = other->findChildren<QToolBar *>();
