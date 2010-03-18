@@ -32,13 +32,19 @@
  ***************************************************************************/
 
 #include "kthelpbrowser.h"
+#include <kcore/kglobal.h>
+
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QIcon>
 
 // Help Browser
 
-KTHelpBrowser::KTHelpBrowser( QWidget *parent) : QWidget(parent)
+KTHelpBrowser::KTHelpBrowser(QWidget *parent) : QWidget(parent)
 {
+    setWindowTitle(tr("Help"));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/help_tab.png")));
+
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(15);
     m_separator = new QSplitter(this);
@@ -50,7 +56,6 @@ KTHelpBrowser::KTHelpBrowser( QWidget *parent) : QWidget(parent)
 
     m_pageArea->setDocument(m_document);
 }
-
 
 KTHelpBrowser::~KTHelpBrowser()
 {
@@ -70,4 +75,3 @@ void KTHelpBrowser::setDataDirs(const QStringList &dirs)
 {
     m_pageArea->setSearchPaths(dirs);
 }
-

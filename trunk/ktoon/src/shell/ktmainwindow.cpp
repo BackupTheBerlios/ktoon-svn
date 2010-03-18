@@ -251,7 +251,7 @@ void KTMainWindow::viewNewDocument(const QString &title)
         page->setDataDirs(QStringList() << m_helper->helpPath());
         page->setSource("/usr/local/ktoon/share/data/help/en/about.html");
         // page->setWindowTitle(tr("Help:%1").arg(title));
-        page->setWindowTitle(tr("Help"));
+        // page->setWindowTitle(tr("Help"));
         addWidget(page, true, All);
 
         exposureView->expandDock(true);

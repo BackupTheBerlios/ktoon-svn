@@ -126,7 +126,7 @@ class Configure
    private
     def setPath()
         if @options['prefix'].nil? then
-           @options['prefix'] = "/usr/local"
+           @options['prefix'] = "/usr/local/ktoon"
         end
         if @options['bindir'].nil? then
            @options['bindir'] = @options['prefix'] + "/bin" 
