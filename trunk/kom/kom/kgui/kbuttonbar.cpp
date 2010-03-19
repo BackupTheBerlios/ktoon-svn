@@ -23,6 +23,7 @@
 #include "kbuttonbar.h"
 #include "kviewbutton.h"
 #include "ktoolview.h"
+#include "kcore/kdebug.h"
 
 #include <QToolButton>
 #include <QBoxLayout>
@@ -90,9 +91,10 @@ QMenu *KButtonBar::createMenu()
 
     menu->addSeparator();
 
-    a = menu->addAction(tr("Share space"));
+    a = menu->addAction(tr("Exclusive space"));
     a->setCheckable(true);
     a->setChecked(isExclusive());
+    //a->setChecked(false);
 
     connect(a, SIGNAL(triggered(bool)), this, SLOT(setExclusive(bool)));
 
@@ -151,6 +153,7 @@ bool KButtonBar::isEmpty() const
 
 void KButtonBar::setExclusive(bool excl)
 {
+    kFatal() << "KButtonBar::setExclusive -> " << excl;
     m_buttons.setExclusive(excl);
 }
 

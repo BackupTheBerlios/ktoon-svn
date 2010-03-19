@@ -159,6 +159,14 @@ QString KToolView::getObjectID() {
     return objectName();
 }
 
+bool KToolView::isChecked()
+{
+    if (m_button->isChecked())
+        return true;
+
+    return false;
+}
+
 /*
 #if QT_VERSION < 0x040200
 

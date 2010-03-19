@@ -514,14 +514,8 @@ void KMainWindow::relayoutToolView()
  */
 void KMainWindow::setCurrentPerspective(int workspace)
 {
-    kFatal() << "";
-    kFatal() << "";
-    kFatal() << "*** Updating perspective: " << workspace;
-
-    if (m_currentPerspective == workspace) {
-        kFatal() << "*** wow! Same workspace... scaping!";
+    if (m_currentPerspective == workspace)
         return;
-    }
 
     typedef QList<KToolView *> Views;
 
@@ -529,35 +523,18 @@ void KMainWindow::setCurrentPerspective(int workspace)
 
     setUpdatesEnabled(false);
 
-    if (centralWidget()) {
-        kFatal() << "*** oh no! it is central widget!";
+    if (centralWidget())
         centralWidget()->setUpdatesEnabled(false);
-    }
 
     QHash<KButtonBar *, int> hideButtonCount;
 
     foreach (Views views, viewsList) {
              foreach (KToolView *view, views) {
                       KButtonBar *bar = m_buttonBars[view->button()->area()];
-
-                      kFatal() << "HEY! Bar index: " << view->button()->area();                     
-                      kFatal() << "HEY! Bar Title: " << bar->windowTitle();
-
                       bar->setUpdatesEnabled(false);
                       view->setUpdatesEnabled(false);
 
-                      kFatal() << "Button: " << view->getObjectID();
-                      kFatal() << "Printing Toolview Perspective: " << view->perspective();
-                      kFatal() << "Printing Workspace: " << workspace;
-                      bool flag = view->perspective() & workspace;
-                      // bool flag = (view->perspective() == workspace) || (view->perspective() == 4);
-                      int test = view->perspective() & workspace;
-                      kFatal() << "Printing view->perspective() & workspace: " << flag;
-                      kFatal() << "Printing test: " << test;
-
                       if (view->perspective() & workspace) {
-
-                      // if ((view->perspective() == workspace) || (view->perspective() == 4)) {
 
                           // Temporary code while Library, Help and Time Line are fixed
                           //if (view->getObjectID().compare("KToolView-Library")==0
@@ -574,36 +551,25 @@ void KMainWindow::setCurrentPerspective(int workspace)
                           } 
                           */
 
-                          kFatal() << "OK - Enabling button: " << view->getObjectID();
-
                           bar->enable(view->button());
-
-                          if (view->button()->isChecked())
+ 
+                          //if (view->getObjectID().compare("KToolView-Help")!=0 && (workspace != 4) 
+                          if (view->button()->isChecked() && (workspace != 4) && view->getObjectID().compare("KToolView-Help")!=0) {
                               view->show();
+                          }
                       } else {
-                              kFatal() << "Bad - Hidding button " << view->getObjectID();
-
                               bar->disable(view->button());
                               if (view->button()->isChecked() || view->isVisible())
                                   view->close();
                               hideButtonCount[bar]++;
-
-                              kFatal() << "";
                       }
 
                       if (bar->isEmpty() && bar->isVisible()) {
-                          kFatal() << "Internal: Hidding bar: " << bar->windowTitle();
                           bar->hide();
                       } else {
-                          if (!bar->isVisible()) {
-                              kFatal() << "Showing bar: " << bar->windowTitle();
+                          if (!bar->isVisible())
                               bar->show();
-                          } else {
-                              kFatal() << "HEY! Bar is already visible! -> " << bar->windowTitle();
-                          }
                       }
-
-                      kFatal() << "";
 
                       view->setUpdatesEnabled(true);
                       bar->setUpdatesEnabled(true);
@@ -616,10 +582,8 @@ void KMainWindow::setCurrentPerspective(int workspace)
     while (barIt.hasNext()) {
            barIt.next();
 
-           if (barIt.key()->count() == barIt.value()) {
-               kFatal() << "External: Hiding Bar: " << barIt.key()->windowTitle();
+           if (barIt.key()->count() == barIt.value())
                barIt.key()->hide();
-           }
     }
 
     QHashIterator<QWidget *, int> widgetIt(m_managedWidgets);

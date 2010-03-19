@@ -53,6 +53,7 @@ class K_IDEAL_EXPORT KToolView : public QDockWidget
         int fixedSize() const;
         void enableButton(bool flag);
         QString getObjectID();
+        bool isChecked();
 
     public slots:
         void saveSize(bool checked);
