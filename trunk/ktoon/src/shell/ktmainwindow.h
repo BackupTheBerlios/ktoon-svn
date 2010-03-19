@@ -155,7 +155,7 @@ class KTMainWindow : public KTabbedMainWindow
           void openProject(const QString &path);
 
     private slots:
-          void viewNewDocument(const QString &name = QString::null);
+          void viewNewDocument();
           void createNewProject();
           void newProject();
           bool closeProject();
@@ -167,7 +167,7 @@ class KTMainWindow : public KTabbedMainWindow
           void save();
           void saveAs();
 
-          void showHelpPage(const QString &title, const QString &document);
+          void showHelpPage(const QString &document);
           void showWidgetPage();
 
           void showAnimationMenu(const QPoint &p);

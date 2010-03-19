@@ -43,7 +43,7 @@
 KTHelpBrowser::KTHelpBrowser(QWidget *parent) : QWidget(parent)
 {
     setWindowTitle(tr("Help"));
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/help_tab.png")));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/help_mode.png")));
 
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(15);

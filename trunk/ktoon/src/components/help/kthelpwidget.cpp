@@ -123,13 +123,13 @@ void KTHelpWidget::tryToLoadPage(QTreeWidgetItem *item, int)
     if (item) {
         QString fileName = m_files[item];
         if (! fileName.isNull())
-            loadPage(item->text(0), m_helpPath.path()+"/"+ fileName);
+            loadPage(m_helpPath.path()+"/"+ fileName);
     }
 }
 
-void KTHelpWidget::loadPage(const QString &title, const QString &filePath)
+void KTHelpWidget::loadPage(const QString &filePath)
 {
-    emit pageLoaded(title, filePath);
+    emit pageLoaded(filePath);
 }
 
 QString KTHelpWidget::helpPath () const

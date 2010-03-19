@@ -197,7 +197,7 @@ void KTMainWindow::createNewProject()
     setMenuItemsContext(true);
 
     if (!m_isNetworkProject)
-        viewNewDocument(tr("Document"));
+        viewNewDocument();
 }
 
 /**
@@ -209,7 +209,9 @@ void KTMainWindow::createNewProject()
  * @endif
 */
 
-void KTMainWindow::viewNewDocument(const QString &title)
+//void KTMainWindow::viewNewDocument(const QString &title)
+
+void KTMainWindow::viewNewDocument()
 {
     #ifdef K_DEBUG
        K_FUNCINFO;
@@ -331,15 +333,6 @@ bool KTMainWindow::closeProject()
 
         int ret = msgBox.exec();
 
-        /*
-        int ret = QMessageBox::warning(this, QApplication::applicationName (),
-                                       tr("The document has been modified.\n"
-                                       "Do you want to save your project?"),
-                                       QMessageBox::Save | QMessageBox::Discard
-                                       | QMessageBox::Cancel,
-                                       QMessageBox::Save);
-        */
-
         switch (ret) {
             case QMessageBox::Save:
                  saveProject();
@@ -352,9 +345,6 @@ bool KTMainWindow::closeProject()
         }
 
     }
-
-    if (exposureView->isExpanded())
-        exposureView->expandDock(false);
 
     if (colorView->isExpanded())
         colorView->expandDock(false);
@@ -380,7 +370,7 @@ bool KTMainWindow::closeProject()
     */
 
     setUpdatesEnabled(false);
-    enableToolViews(false);
+    //enableToolViews(false);
     setMenuItemsContext(false);
 
     if (m_viewDoc)
@@ -410,6 +400,12 @@ bool KTMainWindow::closeProject()
     m_scenes->closeAllScenes();
 
     m_fileName = QString();
+
+    enableToolViews(false);
+
+    if (exposureView->isExpanded())
+        exposureView->expandDock(false);
+
     setUpdatesEnabled(true);
 
     return true;
@@ -567,7 +563,8 @@ void KTMainWindow::openProject(const QString &path)
             else
                 m_fileName = path;
 
-            viewNewDocument(m_projectManager->project()->projectName());
+            //viewNewDocument(m_projectManager->project()->projectName());
+            viewNewDocument();
 			
             // TODO: move this code to the project manager class
             KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Select);
@@ -832,7 +829,9 @@ void KTMainWindow::messageToStatus(const QString &msg)
  * @endif
 */
 
-void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
+//void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
+
+void KTMainWindow::showHelpPage(const QString &filePath)
 {
     #ifdef K_DEBUG
        K_FUNCINFO;
@@ -1023,9 +1022,12 @@ void KTMainWindow::addPage(QWidget *widget)
 
 void KTMainWindow::updateCurrentTab(int index)
 {
+    kFatal() << "Tab Index: " << index;  
+    kFatal() << "lastTab Index: " << lastTab;
+
     if (index == 1) {
 
-        if (helpView->isExpanded())
+        if (lastTab == 2)
             helpView->expandDock(false);
         viewCamera->updatePhotograms(m_projectManager->project());
         lastTab = 1;
@@ -1035,13 +1037,24 @@ void KTMainWindow::updateCurrentTab(int index)
         if (index == 0) {
             if (lastTab == 1)
                 viewCamera->doStop();
-            if (helpView->isExpanded())
+
+            if (scenesView ->isExpanded()) {
                 helpView->expandDock(false);
+                scenesView->expandDock(true);
+            }     
+
+            if (exposureView->isExpanded()) {
+                helpView->expandDock(false);
+                exposureView->expandDock(true);
+            } 
+
+            if (lastTab == 2)
+                helpView->expandDock(false);
+
             m_viewDoc->updatePaintArea();
             lastTab = 0;
         } else {
-            if (!helpView->isExpanded())
-                helpView->expandDock(true);
+            helpView->expandDock(true);
             lastTab = 2;
         }
     }

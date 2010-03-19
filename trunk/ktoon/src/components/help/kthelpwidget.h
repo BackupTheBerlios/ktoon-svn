@@ -57,10 +57,10 @@ class KTHelpWidget : public KTModuleWidgetBase
 
     private slots:
         void tryToLoadPage(QTreeWidgetItem *, int);
-        void loadPage(const QString &title,const QString &path);
+        void loadPage(const QString &path);
 
     signals:
-        void pageLoaded(const QString &title, const QString &content);
+        void pageLoaded(const QString &content);
 
     private:
         QDir m_helpPath;

@@ -129,8 +129,8 @@ void KTMainWindow::createGUI()
     m_actionManager->insert(helpView->toggleViewAction(), "show help");
     addToPerspective(helpView->toggleViewAction(), All);
 
-    connect(m_helper, SIGNAL(pageLoaded(const QString &, const QString &)), this, 
-            SLOT(showHelpPage(const QString &, const QString &)));
+    connect(m_helper, SIGNAL(pageLoaded(const QString &)), this, 
+            SLOT(showHelpPage(const QString &)));
     connectToDisplays(m_helper);
 
     // Adding the time line widget to the bottom side of the interface
@@ -314,7 +314,7 @@ void KTMainWindow::setupMenu()
 
    // Adding Option Animation
     QAction *helpPerspective = new QAction(tr("Help"), this);
-    helpPerspective->setIcon(QPixmap(THEME_DIR + "icons/animation_mode.png"));
+    helpPerspective->setIcon(QPixmap(THEME_DIR + "icons/help_mode.png"));
     helpPerspective->setShortcut(QKeySequence(Qt::Key_F11));
     helpPerspective->setData(Help);
     group->addAction(helpPerspective);
@@ -628,7 +628,13 @@ void KTMainWindow::changePerspective(QAction *a)
 
     kFatal() << "KTMainWindow::changePerspective -> NEW: " << perspective;
 
-    setCurrentTab(perspective - 1);
+    if (perspective < 3) {
+        setCurrentTab(perspective - 1);
+    } else { 
+        // Help perspective
+        setCurrentTab(2);
+    }
+
     a->setChecked(true);
 }
 
