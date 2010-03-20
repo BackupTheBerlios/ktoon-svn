@@ -42,8 +42,8 @@
 
 KTCameraWidget::KTCameraWidget(KTProject *project, QWidget *parent) : KTModuleWidgetBase(parent)
 {
-    // setWindowTitle(tr("Camera"));
-    // setWindowIcon(QPixmap(THEME_DIR + "icons/camera_preview.png"));
+    setWindowTitle(tr("Camera"));
+    setWindowIcon(QPixmap(THEME_DIR + "icons/camera_preview.png"));
 
     m_viewCamera = new KTViewCamera(project);
 

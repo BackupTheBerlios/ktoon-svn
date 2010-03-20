@@ -64,7 +64,7 @@ void KTMainWindow::createGUI()
     // Adding the color palette to the left side of the interface 
 
     m_colorPalette = new KTColorPalette;
-    colorView = addToolView(m_colorPalette, Qt::LeftDockWidgetArea, Drawing);
+    colorView = addToolView(m_colorPalette, Qt::LeftDockWidgetArea, Drawing, "Color Palette");
     m_actionManager->insert(colorView->toggleViewAction(), "show palette");
     addToPerspective(colorView->toggleViewAction(), Drawing);
 
@@ -74,7 +74,7 @@ void KTMainWindow::createGUI()
     // Adding the pen parameters widget to the left side of the interface 
 
     m_penWidget = new KTPenWidget;
-    penView = addToolView(m_penWidget, Qt::LeftDockWidgetArea, Drawing);
+    penView = addToolView(m_penWidget, Qt::LeftDockWidgetArea, Drawing, "Pen");
     m_actionManager->insert(penView->toggleViewAction(), "show pen");
     addToPerspective(penView->toggleViewAction(), Drawing);
 
@@ -85,7 +85,7 @@ void KTMainWindow::createGUI()
 
     m_libraryWidget = new KTLibraryWidget();
     m_libraryWidget->setLibrary(m_projectManager->project()->library());
-    libraryView = addToolView(m_libraryWidget, Qt::LeftDockWidgetArea, Drawing);
+    libraryView = addToolView(m_libraryWidget, Qt::LeftDockWidgetArea, Drawing, "Library");
     m_actionManager->insert(libraryView->toggleViewAction(), "show library");
     addToPerspective(libraryView->toggleViewAction(), Drawing);
     connectToDisplays(m_libraryWidget);
@@ -105,7 +105,7 @@ void KTMainWindow::createGUI()
     // Adding the scenes widget to the right side of the interface
 
     m_scenes = new KTScenesWidget;
-    scenesView = addToolView(m_scenes, Qt::RightDockWidgetArea, Drawing);
+    scenesView = addToolView(m_scenes, Qt::RightDockWidgetArea, Drawing, "Scenes Manager");
     m_actionManager->insert(scenesView->toggleViewAction(), "show scenes");
     addToPerspective(scenesView->toggleViewAction(), Drawing);
 
@@ -115,7 +115,7 @@ void KTMainWindow::createGUI()
 
     // Adding the exposure sheet to the right side of the interface
     m_exposureSheet = new KTExposureSheet;
-    exposureView = addToolView(m_exposureSheet, Qt::RightDockWidgetArea, Drawing);
+    exposureView = addToolView(m_exposureSheet, Qt::RightDockWidgetArea, Drawing, "Exposure Sheet");
     m_actionManager->insert(exposureView->toggleViewAction(), "show exposure");
     addToPerspective(exposureView->toggleViewAction(), Drawing);
 
@@ -126,7 +126,7 @@ void KTMainWindow::createGUI()
     // Adding the help widget to the right side of the interface
 
     m_helper = new KTHelpWidget(SHARE_DIR + "data/help/");
-    helpView = addToolView(m_helper, Qt::RightDockWidgetArea, All);
+    helpView = addToolView(m_helper, Qt::RightDockWidgetArea, All, "Help");
     m_actionManager->insert(helpView->toggleViewAction(), "show help");
     addToPerspective(helpView->toggleViewAction(), All);
 
@@ -142,7 +142,7 @@ void KTMainWindow::createGUI()
     // Adding the time line widget to the bottom side of the interface
     m_timeLine = new KTTimeLine;
     m_timeLine->setLibrary(m_projectManager->project()->library());
-    timeView = addToolView(m_timeLine, Qt::BottomDockWidgetArea, Drawing);
+    timeView = addToolView(m_timeLine, Qt::BottomDockWidgetArea, Drawing, "Time Line");
     m_actionManager->insert(timeView->toggleViewAction(), "show timeline");
     addToPerspective(timeView->toggleViewAction(), Drawing);
 
@@ -154,26 +154,8 @@ void KTMainWindow::createGUI()
 
 #ifdef ENABLE_KINAS
     KinasWidget *m_scriptEditor = new KinasWidget;
-    addToolView(m_scriptEditor, Qt::BottomDockWidgetArea, Drawing);
+    addToolView(m_scriptEditor, Qt::BottomDockWidgetArea, Drawing, "KToon Script");
 #endif
-
-    /*
-    // Adding the export widget to the bottom side of the interface
-    KTExportWidget *m_exportWidget = new KTExportWidget(m_projectManager->project());
-    exportView = addToolView(m_exportWidget, Qt::BottomDockWidgetArea, All);
-    // connectToDisplays(m_exportWidget);
-    */
-
-    /*
-    // Adding the camera widget to the bottom side of the interface
-    m_cameraWidget = new KTCameraWidget(m_projectManager->project());
-    view = addToolView(m_cameraWidget, Qt::BottomDockWidgetArea, Animation);
-    m_actionManager->insert(view->toggleViewAction(), "show camera");
-    addToPerspective(view->toggleViewAction(), Animation);
-
-    ui4project(m_cameraWidget);
-    // connectToDisplays(m_cameraWidget);
-    */
 
     enableToolViews(false);
 }

@@ -355,9 +355,6 @@ bool KTMainWindow::closeProject()
     if (libraryView->isExpanded())
         libraryView->expandDock(false);
 
-    if (scenesView->isExpanded())
-        scenesView->expandDock(false);
-    
     if (helpView->isExpanded())
         helpView->expandDock(false);
     
@@ -403,8 +400,13 @@ bool KTMainWindow::closeProject()
 
     enableToolViews(false);
 
+    if (scenesView->isExpanded())
+        scenesView->expandDock(false);
+
     if (exposureView->isExpanded())
         exposureView->expandDock(false);
+
+    m_statusBar->setStatus(tr(""));
 
     setUpdatesEnabled(true);
 
@@ -470,7 +472,7 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
             delete m_viewChat;
         }
 
-        m_viewChat = addToolView(netProjectManagerHandler->comunicationWidget(), Qt::RightDockWidgetArea, All);
+        m_viewChat = addToolView(netProjectManagerHandler->comunicationWidget(), Qt::RightDockWidgetArea, All, "Chat");
         m_viewChat->setVisible(false);
 
         return true;
