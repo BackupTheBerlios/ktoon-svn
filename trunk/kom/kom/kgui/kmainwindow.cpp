@@ -209,9 +209,9 @@ void KMainWindow::addButtonBar(Qt::ToolBarArea area)
  * @param perspective 
  * @return 
  */
-KToolView *KMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective)
+KToolView *KMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective, const QString &code)
 {
-    KToolView *toolView = new KToolView(widget->windowTitle(), widget->windowIcon());
+    KToolView *toolView = new KToolView(widget->windowTitle(), widget->windowIcon(), code);
     toolView->setWidget(widget);
     toolView->setPerspective(perspective);
     toolView->button()->setArea(toToolBarArea(area));

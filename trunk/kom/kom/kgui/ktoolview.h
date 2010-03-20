@@ -37,7 +37,7 @@ class K_IDEAL_EXPORT KToolView : public QDockWidget
     Q_OBJECT;
 
     public:
-        KToolView(const QString &title, const QIcon &icon = QIcon(), QWidget * parent = 0);
+        KToolView(const QString &title, const QIcon &icon = QIcon(), const QString &code = QString(), QWidget * parent = 0);
         virtual ~KToolView();
 
         void setDescription(const QString &description);

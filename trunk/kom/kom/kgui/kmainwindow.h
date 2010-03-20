@@ -52,7 +52,8 @@ class K_IDEAL_EXPORT KMainWindow : public QMainWindow
         KMainWindow(QWidget *parent = 0);
         ~KMainWindow();
 
-        KToolView *addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective = DefaultPerspective);
+        KToolView *addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective = DefaultPerspective, const QString &code = QString());
+
         void removeToolView(KToolView *view);
 
         // FIXME: remove tool view

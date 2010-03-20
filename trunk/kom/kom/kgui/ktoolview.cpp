@@ -32,12 +32,12 @@
 #include <QLayout>
 #include <QEvent>
 
-KToolView::KToolView(const QString &title, const QIcon &icon, QWidget * parent)
+KToolView::KToolView(const QString &title, const QIcon &icon, const QString &code, QWidget * parent)
           : QDockWidget(title, parent), m_size(-1), m_perspective(0)
 {
     setWindowIcon(icon);
     setup(title);
-    setObjectName("KToolView-" + title);
+    setObjectName("KToolView-" + code);
     expanded = false;
 }
 
