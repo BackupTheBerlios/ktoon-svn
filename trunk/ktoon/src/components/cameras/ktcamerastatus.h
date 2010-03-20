@@ -5,13 +5,13 @@
  *   Project Leader: Gustavo Gonzalez <xtingray@ktoon.net>                 *
  *                                                                         *
  *   Developers:                                                           *
- *   2010:                                                                 * 
+ *   2010:                                                                 *
  *    Gustavo Gonzalez                                                     *
  *   2006:                                                                 *
  *    David Cuadrado                                                       *
  *    Jorge Cuadrado                                                       *
  *   2003:                                                                 *
- *    Fernado Roldan                                                       * 
+ *    Fernado Roldan                                                       *
  *    Simena Dinas                                                         *
  *                                                                         *
  *   License:                                                              *
@@ -31,61 +31,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTVIEWCAMERA_H
-#define KTVIEWCAMERA_H
+#ifndef KTCAMERASTATUS_H
+#define KTCAMERASTATUS_H
 
-#include <kgui/kcirclebuttonbar.h>
-#include <kgui/kvhbox.h>
+#include <QStatusBar>
+#include <QLabel>
+#include <QHBoxLayout>
+#include <QCheckBox>
+#include <QSpinBox>
 
-#include <QMainWindow>
-#include <QFrame>
-#include "ktanimationarea.h"
-#include "ktcamerabar.h"
-#include "ktcamerastatus.h"
+#include "ktviewcamera.h"
 
-class KTProjectResponse;
-class QCheckBox;
-class KTCameraStatus;
+class KTViewCamera;
 
-/**
- * @author David Cuadrado \<krawek@toonka.com\>
-*/
-class KTViewCamera : public QFrame
+class KTCameraStatus : public QStatusBar
 {
     Q_OBJECT
 
     public:
-        KTViewCamera(KTProject *work, QWidget *parent = 0);
-        ~KTViewCamera();
+        KTCameraStatus(KTViewCamera *camera = 0, QWidget *parent = 0);
+        ~KTCameraStatus();
 
-        QSize sizeHint() const;
-        void updateSceneInfo();
-
-    private slots:
-        void showSceneInfo(const KTScene *scene);
-        void setLoop();
-        void doPlay();
-        void doPlayBack();
-
-    public slots:
-        bool handleProjectResponse(KTProjectResponse *event);
         void setFPS(int fps);
-        void updatePhotograms(KTProject *project);
-        void exportDialog();
-        void doStop();
-
-    signals:
-        void requestTriggered(const KTProjectRequest *event);
+        void setSceneName(const QString &name);
+        void setFramesTotal(const QString &total);
+        void addWidget(QWidget *widget, int stretch = 0);
+        bool loop();
 
     private:
-        QFrame *m_container;
-        KTAnimationArea *m_animationArea;
-
-        //class KTCameraStatus;
-        KTCameraStatus *m_status;
-    
-        KTProject *project;
-        //QCheckBox *m_loop;
+        QSpinBox *m_fps;
+        QLabel *m_sceneName;
+        QLabel *m_total;
+        QHBoxLayout *m_sceneInfoLayout;
+        QCheckBox *m_loop;
 };
 
 #endif

@@ -36,134 +36,13 @@
 #include <kcore/kdebug.h>
 #include <kgui/kseparator.h>
 
-#include <QStatusBar>
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QApplication>
-#include <QCheckBox>
-#include <QSpinBox>
 #include <QDesktopWidget>
 
 #include "ktprojectresponse.h"
 //#include "ktrenderdialog.h"
-
-class KTViewCamera::Status : public QStatusBar
-{
-    public:
-        Status(KTViewCamera *camera = 0, QWidget *parent = 0);
-        ~Status();
-
-        void setFPS(int fps);
-        void setSceneName(const QString &name);
-        void setFramesTotal(const QString &total);
-        void addWidget(QWidget *widget, int stretch = 0);
-        bool loop();
-
-    private:
-        QSpinBox *m_fps;
-        QLabel *m_sceneName;
-        QLabel *m_total;
-        QHBoxLayout *m_sceneInfoLayout;
-        QCheckBox *m_loop;
-};
-
-KTViewCamera::Status::Status(KTViewCamera *camera, QWidget *parent) : QStatusBar(parent)
-{
-    setSizeGripEnabled(false);
-
-    QFrame *sceneInfo = new QFrame;
-    m_sceneInfoLayout = new QHBoxLayout(sceneInfo);
-    m_sceneInfoLayout->setMargin(0);
-
-    QFont font = this->font();
-    font.setPointSize(6);
-
-    m_sceneName = new QLabel;
-    m_sceneName->setFont(font);
-
-    QLabel *sceneNameText = new QLabel(tr("<B>Scene name:</B> "));
-    sceneNameText->setFont(font);
-
-    m_sceneInfoLayout->addWidget(sceneNameText,1);
-    m_sceneInfoLayout->addWidget(m_sceneName,1);
-
-    m_sceneInfoLayout->addSpacing(20);
-
-    QLabel *framesTotal = new QLabel(tr("<B>Frames Total:</B> "));
-    framesTotal->setFont(font);
-
-    m_total = new QLabel;
-    m_total->setFont(font);
-
-    m_sceneInfoLayout->addWidget(framesTotal, 1);
-    m_sceneInfoLayout->addWidget(m_total, 1);
-
-    m_sceneInfoLayout->addSpacing(20);
-
-    QLabel *fpsText = new QLabel(tr("<B>FPS:</B> "));
-    fpsText->setFont(font);
-
-    m_fps = new QSpinBox;
-    m_fps->setMinimum(1);
-
-    m_fps->setFont(font);
-    connect(m_fps, SIGNAL(valueChanged(int)), camera, SLOT(setFPS(int)));
-
-    m_sceneInfoLayout->addWidget(fpsText,1);
-    m_sceneInfoLayout->addWidget(m_fps,1);
-
-    m_sceneInfoLayout->addSpacing(20);
-
-    m_loop = new QCheckBox();
-    QPixmap pix(THEME_DIR + "icons/loop.png");
-    m_loop->setToolTip(tr("Loop"));
-    m_loop->setIcon(pix); 
-    connect(m_loop, SIGNAL(clicked()), camera, SLOT(setLoop()));
-    m_sceneInfoLayout->addWidget(m_loop,1);
-
-    m_sceneInfoLayout->addSpacing(20);
-
-    QPushButton *exportButton = new QPushButton("Export");
-    exportButton->setIcon(QIcon(THEME_DIR + "icons/export.png"));
-    exportButton->setFont(font);
-    connect(exportButton, SIGNAL(pressed()), camera, SLOT(exportDialog()));
-    m_sceneInfoLayout->addWidget(exportButton,1);
-
-    addPermanentWidget(sceneInfo,2);
-    sceneInfo->show();
-}
-
-KTViewCamera::Status::~Status()
-{
-}
-
-void KTViewCamera::Status::setFPS(int fps)
-{
-    m_fps->setValue(fps);
-}
-
-void KTViewCamera::Status::setSceneName(const QString &name)
-{
-    m_sceneName->setText(name);
-}
-
-void KTViewCamera::Status::setFramesTotal(const QString &total)
-{
-    m_total->setText(total);
-}
-
-void KTViewCamera::Status::addWidget(QWidget *widget, int stretch)
-{
-    QFont font = widget->font();
-    font.setPointSize(6);
-    widget->setFont(font);
-    m_sceneInfoLayout->addWidget(widget, stretch, Qt::AlignCenter);
-}
-
-bool KTViewCamera::Status::loop()
-{
-    return m_loop->isChecked();
-}
 
 KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
 {
@@ -201,7 +80,7 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
     connect(m_bar, SIGNAL(ff()), m_animationArea, SLOT(nextFrame()));
     connect(m_bar, SIGNAL(rew()), m_animationArea, SLOT(previousFrame()));
 
-    m_status = new Status(this);
+    m_status = new KTCameraStatus(this);
 
     KTScene *scene = project->scene(0);
     if (scene)

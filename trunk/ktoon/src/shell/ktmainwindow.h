@@ -173,6 +173,7 @@ class KTMainWindow : public KTabbedMainWindow
           void showAnimationMenu(const QPoint &p);
 
           void changePerspective(QAction *a);
+          void setHelpPerspective();
 
           void addPage(QWidget *widget);
           void updateCurrentTab(int index);

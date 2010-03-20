@@ -31,61 +31,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTVIEWCAMERA_H
-#define KTVIEWCAMERA_H
+#include "ktbrushstatus.h"
 
-#include <kgui/kcirclebuttonbar.h>
-#include <kgui/kvhbox.h>
+#include <QLabel>
+#include <QHBoxLayout>
+#include <QPen>
+#include <QBrush>
 
-#include <QMainWindow>
-#include <QFrame>
-#include "ktanimationarea.h"
-#include "ktcamerabar.h"
-#include "ktcamerastatus.h"
+#include <kgui/kseparator.h>
 
-class KTProjectResponse;
-class QCheckBox;
-class KTCameraStatus;
-
-/**
- * @author David Cuadrado \<krawek@toonka.com\>
-*/
-class KTViewCamera : public QFrame
+KTBrushStatus::KTBrushStatus()
 {
-    Q_OBJECT
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->setMargin(2);
+    layout->setSpacing(2);
 
-    public:
-        KTViewCamera(KTProject *work, QWidget *parent = 0);
-        ~KTViewCamera();
+    m_pen = new KTColorWidget;
+    m_brush = new KTColorWidget;
 
-        QSize sizeHint() const;
-        void updateSceneInfo();
+    layout->addWidget(new KSeparator(Qt::Vertical));
+    layout->addWidget(new QLabel(tr("Current Color")));
+    layout->addSpacing(3);
+    layout->addWidget(m_pen);
+    layout->addSpacing(5);
+}
 
-    private slots:
-        void showSceneInfo(const KTScene *scene);
-        void setLoop();
-        void doPlay();
-        void doPlayBack();
+KTBrushStatus::~KTBrushStatus()
+{
+}
 
-    public slots:
-        bool handleProjectResponse(KTProjectResponse *event);
-        void setFPS(int fps);
-        void updatePhotograms(KTProject *project);
-        void exportDialog();
-        void doStop();
+void KTBrushStatus::setForeground(const QPen &pen)
+{
+    m_pen->setBrush(pen.brush());
+}
 
-    signals:
-        void requestTriggered(const KTProjectRequest *event);
-
-    private:
-        QFrame *m_container;
-        KTAnimationArea *m_animationArea;
-
-        //class KTCameraStatus;
-        KTCameraStatus *m_status;
-    
-        KTProject *project;
-        //QCheckBox *m_loop;
-};
-
-#endif
+void KTBrushStatus::setBackground(const QBrush &brush)
+{
+    m_brush->setBrush(brush);
+}

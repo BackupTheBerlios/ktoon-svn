@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# Check svn status
 # Author: David Cuadrado <krawek (at) gmail (dot) com>
+# Description: This script shows an state report about 
+#              a local copy of the KToon source code
+# Use: % cd /path/to/ktoon/code/ 
+#      % ./tools/checkSvn.sh 
 
 ADDED=""
 MODIFIED=""
@@ -48,7 +51,7 @@ function showUnknown()
 	echo $UNKNOWN | xargs -n1 echo -e "\t"
 }
 
-echo "Checking for 2 $(pwd)"
+echo "Checking for files in $(pwd)"
 
 showConflicts
 showCombined

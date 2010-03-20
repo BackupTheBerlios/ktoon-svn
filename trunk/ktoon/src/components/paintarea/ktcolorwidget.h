@@ -31,61 +31,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTVIEWCAMERA_H
-#define KTVIEWCAMERA_H
+#ifndef KTPAINTAREASTATUS_H
+#define KTPAINTAREASTATUS_H
 
-#include <kgui/kcirclebuttonbar.h>
-#include <kgui/kvhbox.h>
-
-#include <QMainWindow>
-#include <QFrame>
-#include "ktanimationarea.h"
-#include "ktcamerabar.h"
-#include "ktcamerastatus.h"
-
-class KTProjectResponse;
-class QCheckBox;
-class KTCameraStatus;
+#include <QBrush>
+#include <QSize>
+#include <QPaintEvent>
+#include <QWidget>
 
 /**
- * @author David Cuadrado \<krawek@toonka.com\>
+ * This class defines the options panel in the bottom of the paint area.
+ * Controls for Rotation, Antialising and OpenGL
+ * @author David Cuadrado <krawek@toonka.com>
 */
-class KTViewCamera : public QFrame
+
+class KTColorWidget : public QWidget
 {
     Q_OBJECT
 
     public:
-        KTViewCamera(KTProject *work, QWidget *parent = 0);
-        ~KTViewCamera();
-
+        KTColorWidget() : m_brush(Qt::transparent) {};
+        ~KTColorWidget() {};
+        void setBrush(const QBrush &brush);
         QSize sizeHint() const;
-        void updateSceneInfo();
 
-    private slots:
-        void showSceneInfo(const KTScene *scene);
-        void setLoop();
-        void doPlay();
-        void doPlayBack();
-
-    public slots:
-        bool handleProjectResponse(KTProjectResponse *event);
-        void setFPS(int fps);
-        void updatePhotograms(KTProject *project);
-        void exportDialog();
-        void doStop();
-
-    signals:
-        void requestTriggered(const KTProjectRequest *event);
+    protected:
+        void paintEvent(QPaintEvent *);
 
     private:
-        QFrame *m_container;
-        KTAnimationArea *m_animationArea;
-
-        //class KTCameraStatus;
-        KTCameraStatus *m_status;
-    
-        KTProject *project;
-        //QCheckBox *m_loop;
+        QBrush m_brush;
 };
 
 #endif

@@ -34,104 +34,19 @@
 #include "ktpaintareastatus.h"
 
 #include <QComboBox>
-//#include <QPushButton>
 #include <QCheckBox>
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QIntValidator>
+#include <QObject>
 
 #include <kgui/kseparator.h>
 
 #include "ktviewdocument.h"
 #include "ktglobal.h"
 #include "ktbrushmanager.h"
-
-/**
- * This class defines the options panel in the bottom of the paint area.
- * Controls for Rotation, Antialising and OpenGL
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class ColorWidget : public QWidget
-{
-    public:
-        ColorWidget() : m_brush(Qt::transparent) {};
-        ~ColorWidget() {};
-        void setBrush(const QBrush &brush);
-        QSize sizeHint() const;
-
-    protected:
-        void paintEvent(QPaintEvent *);
-
-    private:
-        QBrush m_brush;
-};
-
-QSize ColorWidget::sizeHint() const
-{
-    QSize size(20, 20);
-    return size;
-}
-
-void ColorWidget::setBrush(const QBrush &brush)
-{
-    m_brush = brush;
-    update();
-}
-
-void ColorWidget::paintEvent(QPaintEvent *)
-{
-    QPainter painter(this);
-    painter.fillRect(rect(), m_brush);
-}
-
-class BrushStatus : public QWidget
-{
-    public:
-        BrushStatus();
-        ~BrushStatus();
-
-        void setForeground(const QPen &pen);
-        void setBackground(const QBrush &brush);
-
-    private:
-        ColorWidget *m_pen;
-        ColorWidget *m_brush;
-};
-
-BrushStatus::BrushStatus()
-{
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->setMargin(2);
-    layout->setSpacing(2);
-
-    m_pen = new ColorWidget;
-    m_brush = new ColorWidget;
-
-    layout->addWidget(new KSeparator(Qt::Vertical));
-    layout->addWidget(new QLabel(tr("Current Color")));
-    layout->addSpacing(3);
-    layout->addWidget(m_pen);
-    layout->addSpacing(5);
-    //layout->addWidget(new KSeparator(Qt::Vertical));
-    //layout->addSpacing(5);
-    //layout->addWidget(new QLabel(tr("Current Brush")));
-    //layout->addWidget(m_brush);
-}
-
-BrushStatus::~BrushStatus()
-{
-}
-
-void BrushStatus::setForeground(const QPen &pen)
-{
-    m_pen->setBrush(pen.brush());
-}
-
-void BrushStatus::setBackground(const QBrush &brush)
-{
-    m_brush->setBrush(brush);
-}
+#include "ktcolorwidget.h"
+#include "ktbrushstatus.h"
 
 ////////////////
 
@@ -141,7 +56,7 @@ struct KTPaintAreaStatus::Private
     //QPushButton *antialiasHint;
     QCheckBox *antialiasHint;
     //QComboBox *renderer;
-    BrushStatus *brushStatus;
+    KTBrushStatus *brushStatus;
     QComboBox *rotation;
 };
 
@@ -182,7 +97,7 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 
     connect(k->antialiasHint, SIGNAL(clicked()), this, SLOT(selectAntialiasingHint()));
 
-    k->brushStatus = new BrushStatus;
+    k->brushStatus = new KTBrushStatus;
     addPermanentWidget(k->brushStatus);
 
     //connect(k->antialiasHint, SIGNAL(toggled(bool)), this, SLOT(selectAntialiasingHint(bool)));
@@ -213,7 +128,6 @@ void KTPaintAreaStatus::selectRenderer(int id)
         k->viewDocument->setOpenGL(false);
    */
 }
-
 
 void KTPaintAreaStatus::setBrush(const QBrush &brush)
 {

@@ -49,6 +49,8 @@ class KTGraphicsScene;
 */
 class ViewTool: public KTToolPlugin
 {
+    Q_OBJECT
+
     public:
         ViewTool();
         ~ViewTool();

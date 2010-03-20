@@ -31,61 +31,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTVIEWCAMERA_H
-#define KTVIEWCAMERA_H
+#ifndef KTBRUSHSTATUS_H
+#define KTBRUSHSTATUS_H
 
-#include <kgui/kcirclebuttonbar.h>
-#include <kgui/kvhbox.h>
+#include "ktcolorwidget.h"
 
-#include <QMainWindow>
-#include <QFrame>
-#include "ktanimationarea.h"
-#include "ktcamerabar.h"
-#include "ktcamerastatus.h"
+#include <QPen>
+#include <QBrush>
 
-class KTProjectResponse;
-class QCheckBox;
-class KTCameraStatus;
+class KTColorWidget;
 
-/**
- * @author David Cuadrado \<krawek@toonka.com\>
-*/
-class KTViewCamera : public QFrame
+class KTBrushStatus : public QWidget
 {
     Q_OBJECT
 
     public:
-        KTViewCamera(KTProject *work, QWidget *parent = 0);
-        ~KTViewCamera();
+        KTBrushStatus();
+        ~KTBrushStatus();
 
-        QSize sizeHint() const;
-        void updateSceneInfo();
-
-    private slots:
-        void showSceneInfo(const KTScene *scene);
-        void setLoop();
-        void doPlay();
-        void doPlayBack();
-
-    public slots:
-        bool handleProjectResponse(KTProjectResponse *event);
-        void setFPS(int fps);
-        void updatePhotograms(KTProject *project);
-        void exportDialog();
-        void doStop();
-
-    signals:
-        void requestTriggered(const KTProjectRequest *event);
+        void setForeground(const QPen &pen);
+        void setBackground(const QBrush &brush);
 
     private:
-        QFrame *m_container;
-        KTAnimationArea *m_animationArea;
-
-        //class KTCameraStatus;
-        KTCameraStatus *m_status;
-    
-        KTProject *project;
-        //QCheckBox *m_loop;
+        KTColorWidget *m_pen;
+        KTColorWidget *m_brush;
 };
 
 #endif

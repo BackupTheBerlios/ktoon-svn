@@ -19,10 +19,12 @@ then
 fi
 
 echo "Your translate file will be generated in " $KTTS
+echo "KTDIR: " $KTDIR
+echo "TRPRO: " $TRPRO
 
-echo -e "PREFIX =\n" > $TRPRO
-echo -e "ROOT =\n" >> $TRPRO
-echo -e "\n" >> $TRPRO
+echo "PREFIX =" > $TRPRO
+echo "ROOT =" >> $TRPRO
+echo "" >> $TRPRO
 
 HEADERS=$(find $KTDIR -name "*.h" -printf "%p ")
 SOURCES=$(find $KTDIR -name "*.cpp" -printf "%p ")
@@ -30,7 +32,7 @@ SOURCES=$(find $KTDIR -name "*.cpp" -printf "%p ")
 echo "HEADERS = $HEADERS" >> $TRPRO
 echo "SOURCES = $SOURCES" >> $TRPRO
 
-echo -e "TRANSLATIONS = $KTTS" >> $TRPRO
+echo "TRANSLATIONS = $KTTS" >> $TRPRO
 
 lupdate -noobsolete $TRPRO
 rm -fR $TRPRO

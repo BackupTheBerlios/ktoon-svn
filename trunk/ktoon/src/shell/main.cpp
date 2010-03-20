@@ -132,6 +132,7 @@ int main(int argc, char ** argv)
    kAppProp->setShareDir(QString::fromLocal8Bit(::getenv("KTOON_SHARE")));
 
    QString locale = QString(QLocale::system().name()).left(2);
+
    if (locale.length() < 2)
        locale = "en";
 
@@ -180,15 +181,8 @@ int main(int argc, char ** argv)
 
     // Loading localization files... now you got KToon in your native language
 
-    // SQA Comment - this code seems to be NO required 
-    /*
-    QTranslator *qttranslator = new QTranslator(&application);
-    qttranslator->load(QString("qt_") + locale, SHARE_DIR + "data/translations");
-    application.installTranslator(qttranslator);
-    */
-
-    QTranslator *translator = new QTranslator(&application);
-    translator->load(QString("ktoon_")+locale,  SHARE_DIR + "data/translations");
+    QTranslator *translator = new QTranslator;
+    translator->load(SHARE_DIR + "data/translations/" + "ktoon_" + locale + ".qm");
     application.installTranslator(translator);
 
     // Time to show the KToon initial splash 

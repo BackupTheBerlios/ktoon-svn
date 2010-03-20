@@ -50,7 +50,7 @@ class QSpinBox;
 
 class KTCameraWidget : public KTModuleWidgetBase
 {
-    Q_OBJECT;
+    Q_OBJECT
     public:
         KTCameraWidget(KTProject *project, QWidget *parent = 0);
         ~KTCameraWidget();

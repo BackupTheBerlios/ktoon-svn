@@ -1022,9 +1022,6 @@ void KTMainWindow::addPage(QWidget *widget)
 
 void KTMainWindow::updateCurrentTab(int index)
 {
-    kFatal() << "Tab Index: " << index;  
-    kFatal() << "lastTab Index: " << lastTab;
-
     if (index == 1) {
 
         if (lastTab == 2)

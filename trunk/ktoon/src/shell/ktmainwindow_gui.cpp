@@ -36,6 +36,7 @@
 
 #include <kgui/kcommandhistory.h>
 #include <kgui/ktoolview.h>
+#include <kgui/kviewbutton.h>
 #include <ksound/kaudioplayer.h>
 #include <kcore/kdebug.h>
 
@@ -128,6 +129,11 @@ void KTMainWindow::createGUI()
     helpView = addToolView(m_helper, Qt::RightDockWidgetArea, All);
     m_actionManager->insert(helpView->toggleViewAction(), "show help");
     addToPerspective(helpView->toggleViewAction(), All);
+
+    KViewButton *helpButton = helpView->button();
+
+    connect(helpButton, SIGNAL(helpIsOpen()), this,
+            SLOT(setHelpPerspective()));
 
     connect(m_helper, SIGNAL(pageLoaded(const QString &)), this, 
             SLOT(showHelpPage(const QString &)));
@@ -636,6 +642,12 @@ void KTMainWindow::changePerspective(QAction *a)
     }
 
     a->setChecked(true);
+}
+
+void KTMainWindow::setHelpPerspective()
+{
+    kFatal() << "Activating Help Tab!";
+    setCurrentTab(2);
 }
 
 void KTMainWindow::setUndoRedoActions()
