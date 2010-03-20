@@ -614,8 +614,6 @@ void KTMainWindow::changePerspective(QAction *a)
 {
     int perspective = a->data().toInt();
 
-    kFatal() << "KTMainWindow::changePerspective -> NEW: " << perspective;
-
     if (perspective < 3) {
         setCurrentTab(perspective - 1);
     } else { 
@@ -628,7 +626,6 @@ void KTMainWindow::changePerspective(QAction *a)
 
 void KTMainWindow::setHelpPerspective()
 {
-    kFatal() << "Activating Help Tab!";
     setCurrentTab(2);
 }
 

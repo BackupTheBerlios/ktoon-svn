@@ -251,9 +251,7 @@ void KTMainWindow::viewNewDocument()
 
         page = new KTHelpBrowser(this);
         page->setDataDirs(QStringList() << m_helper->helpPath());
-        page->setSource("/usr/local/ktoon/share/data/help/en/about.html");
-        // page->setWindowTitle(tr("Help:%1").arg(title));
-        // page->setWindowTitle(tr("Help"));
+        page->setSource(SHARE_DIR + "data/help/" + QString(QLocale::system().name()).left(2) + "/init.html");
         addWidget(page, true, All);
 
         exposureView->expandDock(true);
@@ -373,9 +371,21 @@ bool KTMainWindow::closeProject()
     if (m_viewDoc)
         m_viewDoc->closeArea();
 
-    removeWidget(page, true);
-    removeWidget(m_animationSpace, true);
-    removeWidget(m_viewDoc, true);
+    if (lastTab == 0) {
+        removeWidget(page, true);
+        removeWidget(m_animationSpace, true);
+        removeWidget(m_viewDoc, true);
+    } else {
+      if (lastTab == 1) {
+        removeWidget(page, true);
+        removeWidget(m_viewDoc, true);
+        removeWidget(m_animationSpace, true);
+      } else {
+        removeWidget(m_viewDoc, true);
+        removeWidget(m_animationSpace, true);   
+        removeWidget(page, true);
+      }
+    }
 
     delete page;
     page = 0;
@@ -839,16 +849,7 @@ void KTMainWindow::showHelpPage(const QString &filePath)
        K_FUNCINFO;
     #endif
 
-    kFatal() << "*** HELP Path: " << filePath;
-    kFatal() << "*** helpPath(): " << m_helper->helpPath();
-
-    //KTHelpBrowser *page = new KTHelpBrowser(this);
-    //page->setDataDirs(QStringList() << m_helper->helpPath());
-
-    // page->setDocument(document);
     page->setSource(filePath);
-    //page->setWindowTitle(tr("Help:%1").arg(title));
-    //addWidget(page, false, All);
 }
 
 /**

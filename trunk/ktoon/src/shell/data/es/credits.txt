@@ -5,7 +5,7 @@ Version 0.9a [ Codigo: Phoenix ]
 Director de Desarrollo
 
   Gustavo Gonzalez
-  <ktoon@toonka.com>
+  <xtingray@ktoon.net>
 
 Version <= 0.9
 
@@ -46,6 +46,7 @@ Agradecimientos especiales a:
 
 ----------------------------
 LabToon
+www.labtoon.org
 2010
 
 

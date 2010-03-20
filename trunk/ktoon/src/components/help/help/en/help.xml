@@ -1,11 +1,28 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<DHelpSystem>
-	<Section title="Introduction">
-		<SubSection title="About KToon..." file="about.html" />
-	</Section>
-	<Section title="Drawing">
-		<SubSection title="How to draw?" file="howtodraw.html" />
-		<SubSection title="How to animate?" file="howtoanimate.html" />
-	</Section>
-</DHelpSystem>
-
+<KHelpSystem>
+    <Section title="Introduction">
+        <SubSection title="2D Animation? What's that?" file="init.html" />
+    </Section>
+    <Section title="KToon? What's it?">
+        <SubSection title="Main Components" file="components.html" />
+        <SubSection title="Illustration Module" file="illustration.html" />
+        <SubSection title="Animation Module" file="animation.html" />
+        <SubSection title="Help Module" file="help.html" />
+    </Section>
+    <Section title="Let's try an example!">
+        <SubSection title="Time for drawing" file="drawing.html" />
+        <SubSection title="Let's add some new frames" file="adding_frames.html" />
+        <SubSection title="Preview time" file="preview_time.html" />
+        <SubSection title="Let's create a video file!" file="video_file.html" />
+    </Section>
+    <Section title="Additional Resources">
+        <SubSection title="Cool Links" file="links.html" />
+    </Section>
+    <Section title="Are you developer?">
+        <SubSection title="How to collaborate!" file="how_to_help.html" />
+        <SubSection title="Help with translations" file="translations.html" />
+    </Section>
+    <Section title="About Labtoon">
+        <SubSection title="Who are We?" file="labtoon.html" />
+    </Section>
+</KHelpSystem>

@@ -52,29 +52,27 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
     setWindowTitle(tr("Help"));
     setWindowIcon(QPixmap(THEME_DIR + "icons/help.png"));
 
-    kFatal() << "PATH: " << path;
-
     if (QString(QLocale::system().name()).length() > 1)
-        m_helpPath = path + "/" + QString(QLocale::system().name()).left(2);
+        m_helpPath = path + QString(QLocale::system().name()).left(2);
     else
-        m_helpPath = path + "/en";
+        m_helpPath = path + "en";
+
+    kDebug() << "Help path: " << path;
+    kDebug() << "Help m_helpPath: " << m_helpPath.path();
 
     QTreeWidget *contentsListView = new QTreeWidget(this);
-    contentsListView->setHeaderLabels (QStringList() << tr(""));
+    contentsListView->setHeaderLabels(QStringList() << tr(""));
     contentsListView->header()->hide();
 
     connect(contentsListView, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, 
                               SLOT(tryToLoadPage(QTreeWidgetItem *, int)));
 
-    // contentsListView->setRootIsDecorated(true);
-    // contentsListView->addColumn(tr("Topics"));
-
     addChild(contentsListView);
 
     QDomDocument document;
     QFile file(m_helpPath.path() + "/help.xml");
+    QTreeWidgetItem *first = new QTreeWidgetItem;
 
-    // kDebug() << "Help path: " << m_helpPath.path();
     if (file.open(QIODevice::ReadOnly)) {
         if (document.setContent(&file)) {
             QDomElement root = document.documentElement();
@@ -95,6 +93,8 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
                                           QTreeWidgetItem *subitem = new QTreeWidgetItem(item);
                                           subitem->setText(0, element2.attribute("title"));
                                           m_files.insert(subitem, element2.attribute("file"));
+                                          if (element2.attribute("file").compare("init.html") == 0)
+                                              first = subitem;
                                       }
                                   }
                                   subSection = subSection.nextSibling();
@@ -112,6 +112,9 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
     }
 
     contentsListView->show();
+    contentsListView->expandAll();
+    if (first)
+        contentsListView->setCurrentItem(first);
 }
 
 KTHelpWidget::~KTHelpWidget()
