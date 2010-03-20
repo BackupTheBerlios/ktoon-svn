@@ -394,7 +394,9 @@ void KViewButton::toggleView()
     if (mw)
         mw->setUpdatesEnabled(true);
 
-    if (m_toolView->objectName().compare("KToolView-Help") == 0) {
+	kFatal() << "objectName(): " << m_toolView->objectName() << " - Tag: " << "KToolView-" + tr("Help");
+
+    if (m_toolView->objectName().compare("KToolView-" + tr("Ayuda")) == 0) {
         kFatal() << "HEY! Click on Help was done!";
         emit helpIsOpen();
     }
