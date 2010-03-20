@@ -23,6 +23,7 @@
 #include "ktoolview.h"
 #include "kviewbutton.h"
 #include "kmainwindow.h"
+#include "kcore/kdebug.h"
 
 #include <QtDebug>
 #include <QAction>

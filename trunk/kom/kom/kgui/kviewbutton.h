@@ -75,6 +75,9 @@ class K_IDEAL_EXPORT KViewButton : public QToolButton
         void animate();
         void toggleSensibility();
 
+    signals:
+        void helpIsOpen();
+
     private:
         Qt::ToolBarArea m_area;
 

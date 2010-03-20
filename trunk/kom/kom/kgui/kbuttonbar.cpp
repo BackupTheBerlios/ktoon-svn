@@ -153,7 +153,6 @@ bool KButtonBar::isEmpty() const
 
 void KButtonBar::setExclusive(bool excl)
 {
-    kFatal() << "KButtonBar::setExclusive -> " << excl;
     m_buttons.setExclusive(excl);
 }
 

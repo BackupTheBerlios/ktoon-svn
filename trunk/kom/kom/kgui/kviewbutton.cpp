@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 #include "kviewbutton.h"
-
 #include "ktoolview.h"
+#include "kcore/kdebug.h"
 
 #include <QToolBar>
 #include <QStylePainter>
@@ -393,6 +393,11 @@ void KViewButton::toggleView()
 
     if (mw)
         mw->setUpdatesEnabled(true);
+
+    if (m_toolView->objectName().compare("KToolView-Help") == 0) {
+        kFatal() << "HEY! Click on Help was done!";
+        emit helpIsOpen();
+    }
 }
 
 
