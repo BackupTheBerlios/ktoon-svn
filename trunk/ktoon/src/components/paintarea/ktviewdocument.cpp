@@ -255,85 +255,6 @@ void KTViewDocument::setupDrawActions()
                                     k->actionManager, "ungroup");
 
     ungroup->setStatusTip(tr("Ungroups the selected object"));
-
-    /***
-
-    k->viewPreviousGroup = new QActionGroup(this);
-    k->viewPreviousGroup->setExclusive(true);
-    KAction *noPrevious = new KAction(QPixmap(THEME_DIR + "icons/no_previous.png"), tr("No Previous"), 
-                                       QKeySequence(Qt::Key_1), this, SLOT(disablePreviousOnionSkin()), 
-                                       k->actionManager, "no_previous");
-
-    k->viewPreviousGroup->addAction(noPrevious);
-    
-    noPrevious->setCheckable(true);
-    noPrevious->setStatusTip(tr("Disables previous onion skin visualization"));
-
-    noPrevious->setChecked(true);
-
-    KAction *onePrevious = new KAction(QPixmap(THEME_DIR + "icons/previous.png"), tr("Previous One"), 
-                                   QKeySequence(Qt::Key_2), this, SLOT(onePreviousOnionSkin()), k->actionManager,
-                                       "previews_one");
-
-    k->viewPreviousGroup->addAction(onePrevious);
-
-    onePrevious->setStatusTip(tr("Shows the previous onion skin"));
-    onePrevious->setCheckable(true);
-    
-    KAction *twoPrevious = new KAction(QPixmap(THEME_DIR + "icons/previous2.png"), tr("Previous Two"), 
-                                        QKeySequence(Qt::Key_3), this, SLOT(twoPreviousOnionSkin()), k->actionManager,
-                                        "previews_two");
-
-    k->viewPreviousGroup->addAction(twoPrevious);
-    twoPrevious->setStatusTip(tr("Shows the previous 2 onion skins"));
-    twoPrevious->setCheckable (true);
-    
-    KAction *threePrevious = new KAction(QPixmap(THEME_DIR + "icons/previous3.png"), tr("Previous Three"),
-                                         QKeySequence(Qt::Key_4), this, SLOT(threePreviousOnionSkin()), 
-                                         k->actionManager, "previews_three");
-
-    k->viewPreviousGroup->addAction(threePrevious);
-    threePrevious->setCheckable(true);
-    threePrevious->setStatusTip(tr("Shows the previous 3 onion skins" ));
-
-    // NEXT 
-    k->viewNextGroup = new QActionGroup(this);
-    k->viewNextGroup->setExclusive(true);
-    
-    KAction *noNext = new KAction(QPixmap(THEME_DIR + "icons/no_next.png"), tr("No Next"), 
-                                  QKeySequence(Qt::CTRL+Qt::Key_1), this, SLOT(disableNextOnionSkin()), 
-                                  k->actionManager, "no_next");
-
-    k->viewNextGroup->addAction(noNext);
-
-    noNext->setCheckable(true);
-    noNext->setStatusTip(tr("Disables next onion skin visualization"));
-    
-    KAction *oneNext = new KAction(QPixmap(THEME_DIR + "icons/next.png"), tr("Next One"), 
-                                   QKeySequence(Qt::CTRL+Qt::Key_2), this, SLOT(oneNextOnionSkin()), 
-                                   k->actionManager, "next_one");
-    k->viewNextGroup->addAction(oneNext);
-
-    oneNext->setCheckable(true);
-    oneNext->setStatusTip(tr("Shows the next onion skin"));
-    
-    KAction *twoNext = new KAction(QPixmap(THEME_DIR + "icons/next2.png"), tr("Next Two"), 
-                                   QKeySequence(Qt::CTRL+Qt::Key_3), this, SLOT(twoNextOnionSkin()), 
-                                   k->actionManager, "next_two");
-    k->viewNextGroup->addAction(twoNext);
-
-    twoNext->setCheckable(true);
-    twoNext->setStatusTip(tr("Shows the next 2 onion skins"));
-
-    KAction *threeNext = new KAction(QPixmap(THEME_DIR + "icons/next3.png"), tr("Next Three"), 
-                                     QKeySequence(Qt::CTRL+Qt::Key_4), this, SLOT(threeNextOnionSkin()), 
-                                     k->actionManager, "next_three");
-    k->viewNextGroup->addAction(threeNext);
-    
-    threeNext->setCheckable(true);
-    threeNext->setStatusTip(tr("Shows the next 3 onion skins"));
-
-    ***/
 }
 
 void KTViewDocument::createTools()
@@ -352,7 +273,6 @@ void KTViewDocument::createTools()
     k->toolbar->addAction(k->brushesMenu->menuAction());
 
     // Selection menu
-
     k->selectionMenu = new QMenu(tr("Selection"), k->toolbar );
     k->selectionMenu->setIcon(QPixmap(THEME_DIR + "icons/selection.png"));
     connect(k->selectionMenu, SIGNAL(triggered (QAction*)), this, SLOT(selectToolFromMenu(QAction*)));
@@ -467,17 +387,18 @@ void KTViewDocument::selectTool()
         QString toolStr = action->text();
         k->paintArea->setCurrentTool(toolStr);
         kDebug() << "*** Brush: " << toolStr;
-        int maxWidth = 0;
+        int minWidth = 0;
 
         switch (tool->toolType()) {
 
                 case KTToolInterface::Brush: 
-                     if (toolStr.compare("Pencil")==0) {
-                         maxWidth = 130;
-                     } else if (toolStr.compare("Text")==0) {
-                                maxWidth = 350;
-                     } else if (toolStr.compare("Motion Tween")==0) {
-                                maxWidth = 400;
+                     if (toolStr.compare(tr("Pencil"))==0) {
+                         minWidth = 130;
+                     } else if (toolStr.compare(tr("Text"))==0) {
+                                minWidth = 350;
+                     } else if (toolStr.compare(tr("Motion Tween"))==0) {
+                                kFatal() << "Working around motion tween!";
+                                minWidth = 222;
                      } 
 
                      k->brushesMenu->setDefaultAction(action);
@@ -509,8 +430,8 @@ void KTViewDocument::selectTool()
                      k->viewToolMenu->setActiveAction(action);
                      if (!action->icon().isNull())
                          k->viewToolMenu->menuAction()->setIcon(action->icon());
-                     if (toolStr.compare("Zoom")==0) {
-                         maxWidth = 120;
+                     if (toolStr.compare(tr("Zoom"))==0) {
+                         minWidth = 120;
                      }
                      break;
         }
@@ -518,7 +439,7 @@ void KTViewDocument::selectTool()
         QWidget *toolConfigurator = tool->configurator();
 
         if (toolConfigurator) {
-            k->configurationArea->setConfigurator(toolConfigurator, maxWidth);
+            k->configurationArea->setConfigurator(toolConfigurator, minWidth);
             toolConfigurator->show();
             if (!k->configurationArea->isVisible())
                 k->configurationArea->show();
@@ -705,52 +626,10 @@ void KTViewDocument::setCursor(const QCursor &)
  */
 }
 
-void KTViewDocument::disablePreviousOnionSkin()
-{
-    k->paintArea->setPreviousFramesOnionSkinCount(0);
-}
-
-void KTViewDocument::onePreviousOnionSkin()
-{
-    k->paintArea->setPreviousFramesOnionSkinCount(1);
-}
-
-void KTViewDocument::twoPreviousOnionSkin()
-{
-    k->paintArea->setPreviousFramesOnionSkinCount(2);
-}
-
-void KTViewDocument::threePreviousOnionSkin()
-{
-    k->paintArea->setPreviousFramesOnionSkinCount(3);
-}
-
 void KTViewDocument::setPreviousOnionSkin(int n)
 {
     k->paintArea->setPreviousFramesOnionSkinCount(n);
 }
-
-// NEXT
-void KTViewDocument::disableNextOnionSkin()
-{
-    k->paintArea->setNextFramesOnionSkinCount(0);
-}
-
-void KTViewDocument::oneNextOnionSkin()
-{
-    k->paintArea->setNextFramesOnionSkinCount(1);
-}
-
-void KTViewDocument::twoNextOnionSkin()
-{
-    k->paintArea->setNextFramesOnionSkinCount(2);
-}
-
-void KTViewDocument::threeNextOnionSkin()
-{
-    k->paintArea->setNextFramesOnionSkinCount(3);
-}
-
 
 void KTViewDocument::setNextOnionSkin(int n)
 {
@@ -783,29 +662,6 @@ void KTViewDocument::changeRulerOrigin(const QPointF &zero)
     k->verticalRuler->setZeroAt(zero);
     k->horizontalRuler->setZeroAt(zero);
 }
-
-/*
- void KTViewDocument::configure()
- {
-    KTPaintAreaConfig properties;
- 
-    if (properties.exec() != QDialog::Rejected) {
-        KTPaintAreaProperties areaProperties;
-
-        areaProperties.gridColor = properties.gridColor();
-        areaProperties.backgroundColor = properties.backgroundColor();
-        areaProperties.onionSkinColor = properties.onionSkinColor();
-        areaProperties.onionSkinBackground = properties.onionSkinBackground();
-        areaProperties.gridSeparation = properties.gridSeparation();
-
-        k->paintArea->setProperties(areaProperties);
-    }
- }
-
- void KTViewDocument::closeEvent(QCloseEvent *e)
- {
- }
-*/
 
 QSize KTViewDocument::sizeHint() const
 {

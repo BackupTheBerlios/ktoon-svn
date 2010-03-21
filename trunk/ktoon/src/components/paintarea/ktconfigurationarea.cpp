@@ -83,7 +83,7 @@ QSize KTConfigurationArea::sizeHint() const
     return QDockWidget::sizeHint();
 }
 
-void KTConfigurationArea::setConfigurator(QWidget *w, int maxWidth)
+void KTConfigurationArea::setConfigurator(QWidget *w, int minWidth)
 {
     Q_CHECK_PTR(w);
 
@@ -99,8 +99,10 @@ void KTConfigurationArea::setConfigurator(QWidget *w, int maxWidth)
     //        crash the whole application in this point
     setWidget(w);
 
-    if (maxWidth > 0)
-        setMaximumWidth(maxWidth);
+    if (minWidth > 0) {
+        setMinimumWidth(minWidth);
+        setMaximumWidth(minWidth);
+    }
 
     showConfigurator();
 }

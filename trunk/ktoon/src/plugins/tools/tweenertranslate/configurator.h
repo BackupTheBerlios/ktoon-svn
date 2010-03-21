@@ -41,27 +41,26 @@ class QGraphicsPathItem;
 */
 class Configurator : public QFrame
 {
-	Q_OBJECT
-	public:
-		Configurator(QWidget *parent = 0);
-		~Configurator();
-		
-		void updateSteps(const QGraphicsPathItem *path);
-		QString steps();
-		int totalSteps();
-		
-		
-	private slots:
-		void emitOptionChanged(int option);
-		
-	signals:
-		void clikedCreatePath();
-		void clikedSelect();
-		void clikedApplyTweener();
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT
+    public:
+        Configurator(QWidget *parent = 0);
+        ~Configurator();
+        
+        void updateSteps(const QGraphicsPathItem *path);
+        QString steps();
+        int totalSteps();
+        
+    private slots:
+        void emitOptionChanged(int option);
+        
+    signals:
+        void clikedCreatePath();
+        void clikedSelect();
+        void clikedApplyTweener();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

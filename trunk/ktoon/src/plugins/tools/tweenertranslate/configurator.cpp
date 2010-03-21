@@ -55,7 +55,7 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
     k->options->addItems(QStringList() << tr("Select object"));
     connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
 
-    QPushButton *button = new QPushButton(tr("apply"));
+    QPushButton *button = new QPushButton(tr("Apply"));
     connect(button, SIGNAL(clicked()), this, SIGNAL(clikedApplyTweener()));
 
     k->stepViewer = new StepsViewer;
@@ -93,7 +93,7 @@ void Configurator::emitOptionChanged(int option)
 
 QString Configurator::steps()
 {
-    return KTTweenerStep::createXml(k->stepViewer->totalSteps(), k->stepViewer->steps()).toString(); // FIXME: no usar createXml, usar KTItemTweener::toXml
+    return KTTweenerStep::createXml(k->stepViewer->totalSteps(), k->stepViewer->steps()).toString(); // FIXME: instead createXml, use KTItemTweener::toXml
 }
 
 int Configurator::totalSteps()

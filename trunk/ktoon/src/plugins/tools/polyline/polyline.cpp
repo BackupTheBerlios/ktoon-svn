@@ -125,11 +125,15 @@ void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brus
         k->path.moveTo(input->pos());
         k->item = new KTPathItem();
         
-        scene->addItem(k->item);
+        //scene->addItem(k->item);
+        scene->includeObject(k->item);
+
         k->begin = true;
     } else {
-        if (!scene->items().contains(k->item))
-            scene->addItem(k->item);
+        if (!scene->items().contains(k->item)) {
+            //scene->addItem(k->item);
+            scene->includeObject(k->item);
+        }
         
         k->begin = false;
         k->path = k->item->path();
@@ -140,10 +144,12 @@ void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brus
     k->item->setPen(brushManager->pen());
     
     if (!scene->items().contains(k->line1))
-        scene->addItem(k->line1);
+        scene->includeObject(k->line1); 
+        //scene->addItem(k->line1);
 
     if (!scene->items().contains(k->line2))
-        scene->addItem(k->line2);
+        scene->includeObject(k->line2);
+        //scene->addItem(k->line2);
 }
 
 void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)

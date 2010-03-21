@@ -78,7 +78,6 @@ class Brush : public KTToolPlugin
         QPainterPath m_path;
         ExactnessConfigurator * m_configurator;
         QMap<QString, KAction *> m_actions;
-        //int zLevel;
         KTPathItem *m_item;
 };
 

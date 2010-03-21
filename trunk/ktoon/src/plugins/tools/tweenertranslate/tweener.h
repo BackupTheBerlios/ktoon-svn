@@ -36,19 +36,18 @@
 
 #include <kttoolplugin.h>
 
-
 /**
  * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
- * plugin experimental
+ * experimental plugin
 */
 
-class TweenerTranslate : public KTToolPlugin
+class Tweener : public KTToolPlugin
 {
     Q_OBJECT;
     public:
 
-        TweenerTranslate();
-        virtual ~TweenerTranslate();
+        Tweener();
+        virtual ~Tweener();
         virtual void init(KTGraphicsScene *scene);
 
         virtual QStringList keys() const;

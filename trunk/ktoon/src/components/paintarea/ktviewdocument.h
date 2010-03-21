@@ -78,17 +78,9 @@ class KTViewDocument : public QMainWindow
         void updatePaintArea();
 
     public slots:
-        void disablePreviousOnionSkin();
-        void onePreviousOnionSkin();
-        void twoPreviousOnionSkin();
-        void threePreviousOnionSkin();
-        void disableNextOnionSkin();
-        void oneNextOnionSkin();
-        void twoNextOnionSkin();
-        void threeNextOnionSkin();
-
         void setNextOnionSkin(int n);
         void setPreviousOnionSkin(int n);
+
         void toggleShowGrid();
 
         void setZoomFactor(int porcent);

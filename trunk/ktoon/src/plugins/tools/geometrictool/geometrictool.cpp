@@ -119,7 +119,8 @@ void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager 
         }
         
         m_item->setPos(pos);
-        scene->addItem(m_item);
+        //scene->addItem(m_item);
+        scene->includeObject(m_item);
     }
 }
 

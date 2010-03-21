@@ -16,12 +16,12 @@ CONFIG += plugin
 include(../../../../ktconfig.pri)
 TEMPLATE = lib 
 HEADERS +=  \
-tweenertranslate.h \
+tweener.h \
 configurator.h \
 stepsviewer.h \
 spinboxdelegate.h
 SOURCES +=  \
-tweenertranslate.cpp \
+tweener.cpp \
 configurator.cpp \
 stepsviewer.cpp \
 spinboxdelegate.cpp

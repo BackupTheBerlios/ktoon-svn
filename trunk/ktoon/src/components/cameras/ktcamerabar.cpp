@@ -59,17 +59,17 @@ KTCameraBar::KTCameraBar(QWidget *parent)
     m_mainLayout->addWidget(m_rew);
     connect(m_rew, SIGNAL(clicked()), this, SIGNAL(rew()));
 
-    m_play_back = new KImageButton(QPixmap(THEME_DIR + "icons/play_back.png"), 33, this, true);
+    m_play_back = new KImageButton(QPixmap(THEME_DIR + "icons/play_back.png"), 25, this, true);
     m_play_back->setToolTip(tr("Play in reverse"));
     m_mainLayout->addWidget(m_play_back);
     connect(m_play_back, SIGNAL(clicked()), this, SIGNAL(playBack()));
 
-    m_play = new KImageButton(QPixmap(THEME_DIR + "icons/play.png"), 33, this, true);
+    m_play = new KImageButton(QPixmap(THEME_DIR + "icons/play.png"), 25, this, true);
     m_play->setToolTip(tr("Play"));
     m_mainLayout->addWidget(m_play);
     connect(m_play, SIGNAL(clicked()), this, SIGNAL(play()));
 
-    m_stop = new KImageButton(QPixmap(THEME_DIR + "icons/stop.png"), 33, this, true);
+    m_stop = new KImageButton(QPixmap(THEME_DIR + "icons/stop.png"), 25, this, true);
     m_stop->setToolTip(tr("Stop"));
     m_mainLayout->addWidget(m_stop);
     connect(m_stop, SIGNAL(clicked()), this, SIGNAL(stop()));

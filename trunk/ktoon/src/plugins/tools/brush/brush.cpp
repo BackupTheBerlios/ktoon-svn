@@ -68,7 +68,6 @@ Brush::~Brush()
 
 void Brush::init(KTGraphicsScene *scene)
 {
-    //zLevel = 0;
     foreach (QGraphicsView * view, scene->views()) {
              view->setDragMode(QGraphicsView::NoDrag);
              Q_CHECK_PTR(view->scene());
@@ -83,7 +82,7 @@ void Brush::init(KTGraphicsScene *scene)
 
 QStringList Brush::keys() const
 {
-    return QStringList() << tr("Pencil") ;
+    return QStringList() << tr("Pencil");
 }
 
 void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -97,12 +96,6 @@ void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 
     m_item = new KTPathItem();
     m_item->setPen(brushManager->pen());
-
-    //m_item->setZValue(zLevel);
-    //zLevel++;
-    //scene->addItem(m_item);
-
-    //QGraphicsItem object = qobject_cast<QGraphicsScene *>(m_item); 
 
     scene->includeObject(m_item);
 }
@@ -180,8 +173,6 @@ void Brush::smoothPath(QPainterPath &path, double smoothness, int from, int to)
 
 void Brush::setupActions()
 {
-    //KAction *pencil = new KAction(QIcon(brush_xpm), tr("Pencil"), this);
-
     KAction *pencil = new KAction(QPixmap(THEME_DIR + "icons/pencil.png"), tr("Pencil"), this);
     pencil->setShortcut(QKeySequence(tr("Ctrl+B")) );
 
