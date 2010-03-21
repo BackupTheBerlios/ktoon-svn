@@ -35,6 +35,9 @@
 #define STEPSVIEWER_H
 
 #include <QTableWidget>
+#include <QStandardItemModel>
+#include <QTableView>
+#include <QItemSelectionModel>
 
 class QGraphicsPathItem;
 class KTTweenerStep;
@@ -42,7 +45,7 @@ class KTTweenerStep;
 /**
  * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
 */
-class StepsViewer : public QTableWidget
+class StepsViewer : public QTableView 
 {
     Q_OBJECT
     public:
@@ -56,6 +59,9 @@ class StepsViewer : public QTableWidget
     private:
         struct Private;
         Private *const k;
+        QStandardItemModel *model;
+        //QTableView *table;
+        QItemSelectionModel *selectionModel;
 };
 
 #endif

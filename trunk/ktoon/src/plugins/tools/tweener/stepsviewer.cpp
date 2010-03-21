@@ -33,6 +33,7 @@
 
 #include <QGraphicsPathItem>
 #include <QDebug>
+#include <QFont>
 #include <cmath>
 
 #include "stepsviewer.h"
@@ -44,13 +45,29 @@ struct StepsViewer::Private
     QPolygonF points;
     QPolygonF stops;
     QList<int> frames;
+    int count;
 };
 
-StepsViewer::StepsViewer(QWidget *parent) : QTableWidget(parent), k(new Private)
+StepsViewer::StepsViewer(QWidget *parent) : QTableView(parent), k(new Private)
 {
+    model = new QStandardItemModel(8, 2, this);
+    model->setHeaderData(0, Qt::Horizontal, tr("Interval"));
+    model->setHeaderData(1, Qt::Horizontal, tr("Frames"));
+
+    setModel(model);
+    selectionModel = new QItemSelectionModel(model);
+    setSelectionModel(selectionModel); 
+
+    //setItemDelegate(new SpinBoxDelegate);
+
+    /*
+    setFont(QFont("Arial", 8, QFont::Normal, false));
     setColumnCount(2);
     setHorizontalHeaderLabels(QStringList() << tr("Interval") << tr("Frames"));
     setItemDelegate(new SpinBoxDelegate);
+    setColumnWidth(0, 61);
+    setColumnWidth(1, 61);
+    */
 }
 
 StepsViewer::~StepsViewer()
@@ -70,8 +87,8 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
         k->points = points;
         points.pop_front();
         
-        int count = 1;
-        setRowCount(0);
+        k->count = 1;
+        //setRowCount(0);
 
         for (int i = 1; i < path->path().elementCount(); i++) {
              QPainterPath::Element e  = path->path().elementAt(i);
@@ -96,16 +113,27 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
                 }
 
                 k->frames << frames;
+
+                /*
                 setRowCount(rowCount()+1);
-                QTableWidgetItem *item = new QTableWidgetItem(QString::number(count));
-                item->setText(QString::number(count));
-                item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-                QTableWidgetItem *item1 = new QTableWidgetItem(QString::number(frames));
-                item1->setText(QString::number(frames));
-                
-                setItem(count-1, 0, item);
-                setItem(count-1, 1, item1);
-                count++;
+                QTableWidgetItem *interval = new QTableWidgetItem(QString::number(count));
+                interval->setTextAlignment(Qt::AlignRight);
+                interval->setText(QString::number(count));
+                interval->setFlags(interval->flags() & ~Qt::ItemIsEditable);
+                QTableWidgetItem *framesItem = new QTableWidgetItem(QString::number(frames));
+                framesItem->setTextAlignment(Qt::AlignRight);
+                framesItem->setText(QString::number(frames));
+                setItem(count-1, 0, interval);
+                setItem(count-1, 1, framesItem);
+                */
+
+                model->setData(model->index(k->count-1, 0, QModelIndex()),
+                                            QString::number(k->count));
+                model->setData(model->index(k->count-1, 1, QModelIndex()),
+                                            QString::number(frames));
+
+
+                k->count++;
             }
         }
     }
@@ -115,17 +143,19 @@ QVector<KTTweenerStep *> StepsViewer::steps()
 {
     QVector<KTTweenerStep *> s;
     QVectorIterator<QPointF> point(k->points);
-    int count = 0;
+    int counter = 0;
     
     KTTweenerStep *step = new KTTweenerStep(0);
     step->setPosition(point.next());
     s << step;
     
-    for (int i = 0; i < rowCount(); i++) {
+    //for (int i = 0; i < rowCount(); i++) {
+    for (int i = 0; i < k->count; i++) {
          for (int j = 0; j < k->frames[i]; j++) {
-              int frames = item(i,1)->text().toInt();
-              count += (int)::ceil(frames /k->frames[i]);
-              KTTweenerStep *step = new KTTweenerStep(count);
+              // int frames = item(i,1)->text().toInt();
+              int frames = 10;
+              counter += (int)::ceil(frames /k->frames[i]);
+              KTTweenerStep *step = new KTTweenerStep(counter);
               step->setPosition(point.next());
               s << step;
          }
@@ -138,8 +168,11 @@ int StepsViewer::totalSteps()
 {
     int total = 0;
 
-    for (int i = 0; i < rowCount(); i++)
-         total += item(i,1)->text().toInt();
+    // for (int i = 0; i < rowCount(); i++)
+    for (int i = 0; i < k->count; i++)
+         total += 10;
+         //total += item(i,1)->text().toInt();
+ 
 
     return total;
 }
