@@ -139,9 +139,11 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
                                             QString::number(frames));
                 */
 
-                QStandardItem *item = new QStandardItem(QString::number(k->rows));
+                // QStandardItem *item = new QStandardItem(QString::number(k->rows));
+                QStandardItem *item = new QStandardItem();
                 item->setText(QString::number(k->rows));
-                QStandardItem *item1 = new QStandardItem(QString::number(frames));
+                // QStandardItem *item1 = new QStandardItem(QString::number(frames));
+                QStandardItem *item1 = new QStandardItem();
                 item1->setText(QString::number(frames));
 
                 QList<QStandardItem *> list;

@@ -32,6 +32,8 @@
  ***************************************************************************/
 
 #include "spinboxdelegate.h"
+#include "kcore/kdebug.h"
+
 #include <QModelIndex>
 
 SpinBoxDelegate::SpinBoxDelegate(QObject *parent)
@@ -69,5 +71,14 @@ void SpinBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
 
 void SpinBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &/* index */) const
 {
-    editor->setGeometry(option.rect);
+    QPoint point = option.rect.topLeft();
+    int height = option.rect.height();
+    int width = option.rect.width();
+    kFatal() << "Size -> H: " << height << " - W: " << width;
+    int x = point.x();
+    int y = point.y();
+    QRect rect(x, y, 10, 5);
+   
+    //editor->setGeometry(option.rect);
+    editor->setGeometry(rect);
 }
