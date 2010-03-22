@@ -34,34 +34,29 @@
 #ifndef STEPSVIEWER_H
 #define STEPSVIEWER_H
 
-#include <QTableWidget>
-#include <QStandardItemModel>
 #include <QTableView>
-#include <QItemSelectionModel>
 
 class QGraphicsPathItem;
 class KTTweenerStep;
 
+
 /**
  * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
 */
-class StepsViewer : public QTableView 
+class StepsViewer : public QTableView
 {
-    Q_OBJECT
-    public:
-        StepsViewer(QWidget *parent = 0);
-        ~StepsViewer();
-        void setPath(const QGraphicsPathItem *path);
-        
-        QVector<KTTweenerStep *> steps();
-        int totalSteps();
-        
-    private:
-        struct Private;
-        Private *const k;
-        QStandardItemModel *model;
-        //QTableView *table;
-        QItemSelectionModel *selectionModel;
+	Q_OBJECT
+	public:
+		StepsViewer(QWidget *parent = 0);
+		~StepsViewer();
+		void setPath(const QGraphicsPathItem *path);
+		
+		QVector<KTTweenerStep *> steps();
+		int totalSteps();
+		
+	private:
+		struct Private;
+		Private *const k;
 };
 
 #endif
