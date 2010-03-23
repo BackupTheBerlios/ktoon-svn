@@ -59,7 +59,8 @@ struct LayerItem
  */
 class KTExposureHeader: public QHeaderView
 {
-    Q_OBJECT;
+    Q_OBJECT
+
     public:
         KTExposureHeader(QWidget * parent = 0);
         ~KTExposureHeader();
@@ -265,7 +266,7 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
         painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
     }
 
-    painter->setFont(QFont("Arial", 6, QFont::Normal, false));
+    painter->setFont(QFont("Arial", 8, QFont::Normal, false));
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine));
     painter->drawText(x, y, text);
 

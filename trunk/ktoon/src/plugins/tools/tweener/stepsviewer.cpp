@@ -40,6 +40,7 @@
 #include <cmath>
 
 #include "stepsviewer.h"
+//#include "kstepsheader.h"
 #include "kttweenerstep.h"
 #include "spinboxdelegate.h"
 #include "kcore/kdebug.h"
@@ -56,15 +57,10 @@ struct StepsViewer::Private
 
 StepsViewer::StepsViewer(QWidget *parent) : QTableView(parent), k(new Private)
 {
-/*
-    setColumnCount(2);
-    setHorizontalHeaderLabels(QStringList() << tr("interval") << tr("frames"));
-    setItemDelegate(new SpinBoxDelegate);
-    setColumnWidth(0, 61);
-    setColumnWidth(1, 61);
-*/
-
     setFont(QFont("Arial", 8, QFont::Normal, false));
+
+    //KStepsHeader *header = new KStepsHeader(this);
+    //setHorizontalHeader(header);
 
     k->model = new QStandardItemModel(0, 2, this);
     k->model->setHeaderData(0, Qt::Horizontal, tr("Interval"));
@@ -82,9 +78,13 @@ StepsViewer::StepsViewer(QWidget *parent) : QTableView(parent), k(new Private)
     QList<QStandardItem *> list;
     list << item << item1;
     k->model->insertRow(0, list);
+    setRowHeight(0, 20);
 
-    setColumnWidth(0, 61);
-    setColumnWidth(1, 61);
+    setColumnWidth(0, 59);
+    setColumnWidth(1, 59);
+    //horizontalHeader()->setResizeMode(QHeaderView::Fixed);
+
+    setMinimumWidth(142);
     setMaximumWidth(142);
 }
 
@@ -134,37 +134,23 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
 
                 k->frames << frames;
 
-                /*
-                setRowCount(rowCount()+1);
-                QTableWidgetItem *item = new QTableWidgetItem(QString::number(k->rows));
-                item->setText(QString::number(k->rows));
-                item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-                QTableWidgetItem *item1 = new QTableWidgetItem(QString::number(frames));
-                item1->setText(QString::number(frames));
-                setItem(count-1, 0, item);
-                setItem(count-1, 1, item1);
-                k->model->setData(k->model->index(k->rows-1, 0, QModelIndex()),
-                                            QString::number(k->rows));
-                k->model->setData(k->model->index(k->rows-1, 1, QModelIndex()),
-                                            QString::number(frames));
-                */
-
-                // QStandardItem *item = new QStandardItem(QString::number(k->rows));
                 QStandardItem *item = new QStandardItem();
                 item->setFont(QFont("Arial", 8, QFont::Normal, false));
-                item->setTextAlignment(Qt::AlignRight);
+                item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
                 item->setSizeHint(QSize(10, 5));
                 item->setText(QString::number(k->rows));
-                // QStandardItem *item1 = new QStandardItem(QString::number(frames));
+
                 QStandardItem *item1 = new QStandardItem();
                 item1->setFont(QFont("Arial", 8, QFont::Normal, false));
-                item1->setTextAlignment(Qt::AlignRight);
+                item1->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
                 item1->setSizeHint(QSize(10, 5));
                 item1->setText(QString::number(frames));
 
                 QList<QStandardItem *> list;
                 list << item << item1;
                 k->model->insertRow(k->rows-1, list);
+
+                setRowHeight(k->rows-1, 20);
 
                 k->rows++;
    

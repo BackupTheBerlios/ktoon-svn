@@ -36,9 +36,9 @@
 
 #include <QTableView>
 
+//class KStepsHeader;
 class QGraphicsPathItem;
 class KTTweenerStep;
-
 
 /**
  * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
