@@ -70,12 +70,22 @@ StepsViewer::StepsViewer(QWidget *parent) : QTableView(parent), k(new Private)
     k->model->setHeaderData(0, Qt::Horizontal, tr("Interval"));
     k->model->setHeaderData(1, Qt::Horizontal, tr("Frames"));
 
+    setItemDelegate(new SpinBoxDelegate);
+
     setModel(k->model);
     k->selectionModel = new QItemSelectionModel(k->model);
     setSelectionModel(k->selectionModel); 
 
+    QStandardItem *item = new QStandardItem();
+    QStandardItem *item1 = new QStandardItem();
+
+    QList<QStandardItem *> list;
+    list << item << item1;
+    k->model->insertRow(0, list);
+
     setColumnWidth(0, 61);
     setColumnWidth(1, 61);
+    setMaximumWidth(142);
 }
 
 StepsViewer::~StepsViewer()
@@ -141,9 +151,15 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
 
                 // QStandardItem *item = new QStandardItem(QString::number(k->rows));
                 QStandardItem *item = new QStandardItem();
+                item->setFont(QFont("Arial", 8, QFont::Normal, false));
+                item->setTextAlignment(Qt::AlignRight);
+                item->setSizeHint(QSize(10, 5));
                 item->setText(QString::number(k->rows));
                 // QStandardItem *item1 = new QStandardItem(QString::number(frames));
                 QStandardItem *item1 = new QStandardItem();
+                item1->setFont(QFont("Arial", 8, QFont::Normal, false));
+                item1->setTextAlignment(Qt::AlignRight);
+                item1->setSizeHint(QSize(10, 5));
                 item1->setText(QString::number(frames));
 
                 QList<QStandardItem *> list;

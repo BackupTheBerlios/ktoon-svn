@@ -398,7 +398,7 @@ void KTViewDocument::selectTool()
                                 minWidth = 350;
                      } else if (toolStr.compare(tr("Motion Tween"))==0) {
                                 kFatal() << "Working around motion tween!";
-                                minWidth = 145;
+                                minWidth = 160;
                      } 
 
                      k->brushesMenu->setDefaultAction(action);

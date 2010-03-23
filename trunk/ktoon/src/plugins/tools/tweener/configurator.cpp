@@ -50,6 +50,8 @@ struct Configurator::Private
 
 Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
 {
+    setFont(QFont("Arial", 8, QFont::Normal, false));
+
     k->options = new KRadioButtonGroup(tr("Options"), Qt::Vertical);
     k->options->addItems(QStringList() << tr("Create path"));
     k->options->addItems(QStringList() << tr("Select object"));
