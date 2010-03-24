@@ -240,12 +240,7 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
     int height = rect.height() - 7;
 
     QString text = m_layers[logicalIndex].title;
-    QFontMetrics fm( painter->font());
-
-    //int x = rect.x() + (sectionSize(logicalIndex) - fm.width(text)) + 3;
-
-    int x = rect.x() + (sectionSize(logicalIndex) - fm.width(text)); 
-    int y = fm.height() + (rect.y() / 2);
+    QFontMetrics fm(painter->font());
 
     QStyleOptionButton buttonOption;
 
@@ -265,6 +260,9 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
         painter->setPen(QPen(border, 2, Qt::SolidLine));
         painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
     }
+
+    int x = rect.x() + ((sectionSize(logicalIndex) - fm.width(text))/2) + 7;
+    int y = fm.height() + (rect.y() / 2);
 
     painter->setFont(QFont("Arial", 8, QFont::Normal, false));
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine));
@@ -316,10 +314,12 @@ void KTExposureItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 
     if (item) {
 
-        //if (item->data(KTExposureTable::IsLocked).toBool()) {
-        //     QPixmap pixmap(THEME_DIR + "icons/padlock.png");
-        //     painter->drawPixmap(1, 5, pixmap);
-        //} else 
+        /* Useful code
+        if (item->data(KTExposureTable::IsLocked).toBool()) {
+             QPixmap pixmap(THEME_DIR + "icons/padlock.png");
+             painter->drawPixmap(1, 5, pixmap);
+        } else 
+        */
 
         if (item->data(KTExposureTable::IsUsed).toBool() && !item->data(KTExposureTable::IsLocked).toBool()) {
             int x = option.rect.topLeft().x() + 2;
@@ -327,7 +327,7 @@ void KTExposureItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
             int w = option.rect.bottomRight().x() - x - 2;
             int h = option.rect.bottomRight().y() - y - 2;
 
-            painter->setPen(Qt::gray);
+            painter->setPen(QColor(100,100,100,50));
             painter->drawRect(x, y, w, h);
         }
     }
@@ -354,6 +354,9 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new
     setItemPrototype(prototype);
 
     setRowCount(100);
+
+    for (int i=0; i < 100; i++)
+         setRowHeight(i, 20);
 
     k->header = new KTExposureHeader(this);
 
@@ -426,7 +429,7 @@ QString KTExposureTable::frameName(int indexLayer, int indexFrame)
 void KTExposureTable::setFrameName(int indexLayer, int indexFrame,const QString & name)
 {
     QTableWidgetItem *frame = item(indexFrame , indexLayer);
-    frame->setFont(QFont("Arial", 8, QFont::Normal, false));
+    frame->setFont(QFont("Arial", 7, QFont::Normal, false));
 
     if (frame) {
         if (frame->text() != name)
@@ -496,8 +499,8 @@ void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString 
 {
     QTableWidgetItem * frame = new QTableWidgetItem;
     frame->setBackgroundColor(QColor(0xe6e6e6));
-    frame->setFont(QFont("Arial", 8, QFont::Normal, false));
-    frame->setSizeHint(QSize(70, 10));
+    frame->setFont(QFont("Arial", 7, QFont::Normal, false));
+    frame->setSizeHint(QSize(65, 10));
     frame->setText(name);
     frame->setData(IsUsed, true);
     frame->setTextAlignment(Qt::AlignCenter);

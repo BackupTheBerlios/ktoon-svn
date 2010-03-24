@@ -19,11 +19,9 @@ HEADERS +=  \
 tweener.h \
 configurator.h \
 stepsviewer.h \
-spinboxdelegate.h \
-kstepsheader.h
+spinboxdelegate.h
 SOURCES +=  \
 tweener.cpp \
 configurator.cpp \
 stepsviewer.cpp \
-spinboxdelegate.cpp \
-kstepsheader.cpp
+spinboxdelegate.cpp

@@ -1,20 +1,9 @@
 /***************************************************************************
- *   Project KTOON: 2D Animation Toolkit 0.9a                              *
- *   Project Contact: ktoon@labtoon.org                                    *
- *   Project Website: http://www.ktoon.net                                 *
- *   Project Leader: Gustavo Gonzalez <xtingray@ktoon.net>                 *
+ *   Project KTOON: 2D Animation Toolkit 0.9                               *
+ *   Project Contact: ktoon@toonka.com                                     *
+ *   Project Website: http://ktoon.toonka.com                              *
+ *   Copyright (C) 2007 by Jorge Cuadrado <kuadrosx@toonka.com>            *
  *                                                                         *
- *   Developers:                                                           *
- *   2010:                                                                 * 
- *    Gustavo Gonzalez                                                     *
- *   2006:                                                                 *
- *    David Cuadrado                                                       *
- *    Jorge Cuadrado                                                       *
- *   2003:                                                                 *
- *    Fernado Roldan                                                       * 
- *    Simena Dinas                                                         *
- *                                                                         *
- *   License:                                                              *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -34,16 +23,16 @@
 #ifndef STEPSVIEWER_H
 #define STEPSVIEWER_H
 
-#include <QTableView>
+#include <QTableWidget>
 
-//class KStepsHeader;
 class QGraphicsPathItem;
 class KTTweenerStep;
+
 
 /**
  * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
 */
-class StepsViewer : public QTableView
+class StepsViewer : public QTableWidget
 {
 	Q_OBJECT
 	public:

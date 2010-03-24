@@ -61,7 +61,11 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
     connect(button, SIGNAL(clicked()), this, SIGNAL(clikedApplyTweener()));
 
     k->stepViewer = new StepsViewer;
-    QVBoxLayout *layout = new QVBoxLayout;
+    k->stepViewer->verticalHeader()->hide();
+    k->stepViewer->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->setAlignment(Qt::AlignHCenter);
     layout->addWidget(k->options);
     layout->addWidget(k->stepViewer);
     layout->addWidget(button);
