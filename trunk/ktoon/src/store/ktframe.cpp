@@ -180,6 +180,7 @@ QDomElement KTFrame::toXml(QDomDocument &doc) const
 
 void KTFrame::addItem(QGraphicsItem *item)
 {
+    kFatal() << "wOw! Inserting a new picture!";
     insertItem(k->graphics.count(), item);
 }
 

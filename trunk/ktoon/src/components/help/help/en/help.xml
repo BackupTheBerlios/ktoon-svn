@@ -14,6 +14,7 @@
         <SubSection title="Let's add some new frames" file="adding_frames.html" />
         <SubSection title="Preview time" file="preview_time.html" />
         <SubSection title="Let's create a video file!" file="video_file.html" />
+        <SubSection title="What about Stop Motion?" file="stop_motion.html" />
     </Section>
     <Section title="Additional Resources">
         <SubSection title="Cool Links" file="links.html" />
