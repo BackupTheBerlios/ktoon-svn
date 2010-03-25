@@ -280,7 +280,7 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
                 int factor = k->objectCounter + (k->layerCounter)*100; 
                 k->objectCounter++;
                 item->setZValue(factor);
-                kFatal() << "Tracing the tricky item";
+                kFatal() << "KTGraphicsScene::addGraphicObject() -> Tracing the tricky item";
                 addItem(item);
             }
         }

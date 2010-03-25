@@ -308,7 +308,7 @@ void KTPaintArea::libraryResponse(KTLibraryResponse *request)
     switch (request->action()) {
 
             case KTProjectRequest::AddSymbolToProject:
-                 kFatal() << "HEY! Painting a new picture!";
+                 kFatal() << "KTPaintArea::libraryResponse() -> HEY! Painting a new picture!";
                  graphicsScene()->drawCurrentPhotogram();
                  viewport()->update(scene()->sceneRect().toRect());
 

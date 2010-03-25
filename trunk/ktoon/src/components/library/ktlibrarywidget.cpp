@@ -46,6 +46,7 @@
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QDesktopWidget>
+#include <QBuffer>
 
 #include <ktrequestbuilder.h>
 
@@ -317,11 +318,23 @@ void KTLibraryWidget::importBitmapArray()
 
     if (size > 0) {
 
+        QString testFile = photograms.at(0).absoluteFilePath();
+        QFile file(testFile);
+        int kb = int(file.size()/1024);
+        file.close();
+
+        QString text = tr("%1 images will be loaded.").arg(size);
+        bool resize = false; 
+        if (kb > 200) {
+            text = text + "\n" + tr("Files are too big, so they will be resized.");
+            resize = true;
+        }
+
         QMessageBox msgBox;
         msgBox.setWindowTitle(tr("Information"));  
         msgBox.setIcon(QMessageBox::Question);
-        msgBox.setText(tr("%1 images will be loaded.").arg(size));
-        msgBox.setInformativeText("Do you want to continue?");
+        msgBox.setText(text);
+        msgBox.setInformativeText(tr("Do you want to continue?"));
         msgBox.setStandardButtons(QMessageBox::Cancel | QMessageBox::Ok);
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.show();
@@ -354,6 +367,20 @@ void KTLibraryWidget::importBitmapArray()
 
                      QByteArray data = f.readAll();
                      f.close();
+
+                     if (resize) {
+                         QPixmap *pixmap = new QPixmap();
+
+                         if (pixmap->loadFromData(data, "JPG")) {
+                             int width = 300;
+                             int height = (width * pixmap->height())/pixmap->width();
+                             QSize size(width, height);
+                             QPixmap newpix(pixmap->scaled(size));
+                             QBuffer buffer(&data);
+                             buffer.open(QIODevice::WriteOnly);
+                             newpix.save(&buffer, "JPG");
+                         }
+                     }
 
                      KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
                                                                                        KTLibraryObject::Image, data);
