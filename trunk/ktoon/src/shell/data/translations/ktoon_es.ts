@@ -71,22 +71,22 @@
 <context>
     <name>Configurator</name>
     <message>
-        <location filename="../../../plugins/tools/tweenertranslate/configurator.cpp" line="53"/>
+        <location filename="../../../plugins/tools/tweener/configurator.cpp" line="53"/>
         <source>Options</source>
         <translation>Opciones</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/tweenertranslate/configurator.cpp" line="54"/>
+        <location filename="../../../plugins/tools/tweener/configurator.cpp" line="54"/>
         <source>Create path</source>
         <translation>Crear directorio</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/tweenertranslate/configurator.cpp" line="55"/>
+        <location filename="../../../plugins/tools/tweener/configurator.cpp" line="55"/>
         <source>Select object</source>
-        <translation>Seleccionar Objeto</translation>
+        <translation>Escoger objeto</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/tweenertranslate/configurator.cpp" line="58"/>
+        <location filename="../../../plugins/tools/tweener/configurator.cpp" line="58"/>
         <source>apply</source>
         <translation>Aplicar</translation>
     </message>
@@ -2359,12 +2359,12 @@
 <context>
     <name>StepsViewer</name>
     <message>
-        <location filename="../../../plugins/tools/tweenertranslate/stepsviewer.cpp" line="52"/>
+        <location filename="../../../plugins/tools/tweener/stepsviewer.cpp" line="52"/>
         <source>interval</source>
         <translation>Intervalo</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/tweenertranslate/stepsviewer.cpp" line="52"/>
+        <location filename="../../../plugins/tools/tweener/stepsviewer.cpp" line="52"/>
         <source>frames</source>
         <translation>Marcos</translation>
     </message>
@@ -2395,12 +2395,7 @@
 <context>
     <name>TweenerTranslate</name>
     <message>
-        <location filename="../../../plugins/tools/tweenertranslate/tweenertranslate.cpp" line="101"/>
-        <source>TweenerTranslater</source>
-        <translation>TweenerTranslater</translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/tools/tweenertranslate/tweenertranslate.cpp" line="186"/>
+        <location filename="../../../plugins/tools/tweener/tweener.cpp" line="186"/>
         <source>Motion Tween</source>
         <translation>Motion Tween</translation>
     </message>
