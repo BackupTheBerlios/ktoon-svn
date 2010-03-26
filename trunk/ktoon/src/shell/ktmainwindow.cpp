@@ -322,7 +322,7 @@ bool KTMainWindow::closeProject()
         msgBox.setWindowTitle(tr("Question"));
         msgBox.setIcon(QMessageBox::Question);
         msgBox.setText(tr("The document has been modified."));
-        msgBox.setInformativeText("Do you want to save your project?");
+        msgBox.setInformativeText(tr("Do you want to save the project?"));
         msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Save);
         msgBox.show();

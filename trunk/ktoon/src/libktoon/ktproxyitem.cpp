@@ -65,7 +65,8 @@ void KTProxyItem::setItem(QGraphicsItem *item)
     k->realItem = item;
     
     if (k->realItem) {
-        k->realItem->installSceneEventFilter(this);
+        // TODO: Enable this line when filter support is ready 
+        //k->realItem->installSceneEventFilter(this);
         this->setFlags(k->realItem->flags());
     }
 }

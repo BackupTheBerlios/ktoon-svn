@@ -419,8 +419,15 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
 
     if (object && target) {
         switch (object->type()) {
-                case KTLibraryObject::Text:
                 case KTLibraryObject::Image:
+                     {
+                       kFatal() << "KTProject::addSymbolToProject() -> Tracing images...";
+                       KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
+                       libraryItem->moveBy(115, 80);
+                       target->addItem(libraryItem);
+                     }
+                break;
+                case KTLibraryObject::Text:
                 case KTLibraryObject::Svg:
                 case KTLibraryObject::Item:
                      {

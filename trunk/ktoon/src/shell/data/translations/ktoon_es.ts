@@ -772,6 +772,11 @@
         <translation>Los archivos son demasiado grandes, serán redimensionados.</translation>
     </message>
     <message>
+        <location filename="../../../components/library/ktlibrarywidget.cpp" line="326"/>
+        <source>Note: This task can take a while.</source>
+        <translation>Nota: Este procedimiento puede tomar algún tiempo.</translation>
+    </message>
+    <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="332"/>
         <source>Do you want to continue?</source>
         <translation>Desea continuar?</translation>
@@ -885,14 +890,19 @@
         <translation>Animación</translation>
     </message>
     <message>
-        <location filename="../../ktmainwindow.cpp" line="324"/>
+        <location filename="../../ktmainwindow.cpp" line="322"/>
         <source>Question</source>
         <translation>Pregunta</translation>
     </message>
     <message>
-        <location filename="../../ktmainwindow.cpp" line="326"/>
+        <location filename="../../ktmainwindow.cpp" line="324"/>
         <source>The document has been modified.</source>
         <translation>El proyecto ha sido modificado.</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow.cpp" line="325"/>
+        <source>Do you want to save the project?</source>
+        <translation>Deseas guardar el proyecto?</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="518"/>

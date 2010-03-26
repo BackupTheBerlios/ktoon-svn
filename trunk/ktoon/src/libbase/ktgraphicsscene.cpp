@@ -280,7 +280,6 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
                 int factor = k->objectCounter + (k->layerCounter)*100; 
                 k->objectCounter++;
                 item->setZValue(factor);
-                kFatal() << "KTGraphicsScene::addGraphicObject() -> Tracing the tricky item";
                 addItem(item);
             }
         }
@@ -605,8 +604,6 @@ void KTGraphicsScene::aboutToMousePress()
 
 void KTGraphicsScene::includeObject(QGraphicsItem *object)
 {
-    kFatal() << "Tracing a phantom...";
-
     KTLayer *layer = k->scene->layer(k->framePosition.layer);
     if (layer) {
         KTFrame *frame = layer->frame(k->framePosition.frame);

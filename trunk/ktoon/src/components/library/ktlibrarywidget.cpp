@@ -326,7 +326,7 @@ void KTLibraryWidget::importBitmapArray()
         QString text = tr("%1 images will be loaded.").arg(size);
         bool resize = false; 
         if (kb > 200) {
-            text = text + "\n" + tr("Files are too big, so they will be resized.");
+            text = text + "\n" + tr("Files are too big, so they will be resized.") + "\n" + tr("Note: This task can take a while.");
             resize = true;
         }
 
@@ -373,9 +373,7 @@ void KTLibraryWidget::importBitmapArray()
 
                          if (pixmap->loadFromData(data, "JPG")) {
                              int width = 300;
-                             int height = (width * pixmap->height())/pixmap->width();
-                             QSize size(width, height);
-                             QPixmap newpix(pixmap->scaled(size));
+                             QPixmap newpix(pixmap->scaledToWidth(width, Qt::SmoothTransformation));
                              QBuffer buffer(&data);
                              buffer.open(QIODevice::WriteOnly);
                              newpix.save(&buffer, "JPG");
@@ -516,7 +514,9 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
             break;
 
             case KTProjectRequest::AddSymbolToProject:
-                 kFatal() << "*** KTLibraryWidget::libraryResponse -> No action taken";
+                 #ifdef K_DEBUG
+                        kFatal() << "*** KTLibraryWidget::libraryResponse -> No action taken";
+                 #endif
             break;
   
             default:
