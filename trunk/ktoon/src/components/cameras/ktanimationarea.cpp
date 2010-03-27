@@ -100,11 +100,12 @@ KTAnimationArea::KTAnimationArea(const KTProject *project, QWidget *parent) : QF
 
     setCurrentScene(0);
 
+    /*
     KTScene *scene = project->scene(0);
     KTLayer *layer = scene->layer(0);
-
     if (layer->framesNumber() > 1)
         nextFrame();
+    */
 }
 
 

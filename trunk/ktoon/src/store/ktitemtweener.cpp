@@ -32,12 +32,11 @@
  ***************************************************************************/
 
 #include "ktitemtweener.h"
+#include <kcore/kdebug.h>
 
 #include <QGraphicsItemAnimation>
 #include <QGraphicsItem>
 #include <QHash>
-
-#include <kcore/kdebug.h>
 
 class Animator : public QGraphicsItemAnimation
 {
@@ -46,13 +45,7 @@ class Animator : public QGraphicsItemAnimation
         ~Animator();
         
         void afterAnimationStep(qreal step);
-        
-#if QT_VERSION < 0x040300
-        void holdPosition(qreal step, const QPointF &pos);
-    private:
-        QMap<qreal, QPointF > positionForStep;
-#endif
-        
+
     private:
         KTItemTweener *m_tweener;
 };
@@ -67,20 +60,7 @@ Animator::~Animator()
 
 void Animator::afterAnimationStep( qreal step )
 {
-#if QT_VERSION < 0x040300
-    if(item() && positionForStep.contains(step))
-    {
-        item()->setPos(positionForStep[step]);
-    }
-#endif
 }
-
-#if QT_VERSION < 0x040300
-void Animator::holdPosition(qreal step, const QPointF &pos)
-{
-    positionForStep[step] = pos;
-}
-#endif
 
 #define VERIFY_STEP(s) if( s > k->frames || k->frames == 0) { \
                          kWarning("items") << "Invalid step " << s << " for tweening, maximun step are " << k->frames << "; In " << __FUNCTION__; \
@@ -122,18 +102,6 @@ KTItemTweener::~KTItemTweener()
     delete k;
 }
 
-/*
-void KTItemTweener::afterAnimationStep(qreal step)
-{
-    QGraphicsItem *item = this->item();
-    if (item && step > 0) {
-        item->setFlag(QGraphicsItem::ItemIsMovable, false);
-        item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-        item->setFlag(QGraphicsItem::ItemIsFocusable, false);
-    }
-}
-*/
-
 double KTItemTweener::horizontalScaleAt(int step) const
 {
     return k->animator->horizontalScaleAt(STEP(step));
@@ -174,43 +142,38 @@ void KTItemTweener::setPosAt( int step, const QPointF & point )
     VERIFY_STEP(step);
     
     k->animator->setPosAt(STEP(step), point);
-    
     k->step(step)->setPosition(point);
-    
-#if QT_VERSION < 0x040300
-    k->animator->holdPosition(STEP(step), point);
-#endif
 }
 
 void KTItemTweener::setRotationAt(int step, double angle)
 {
     VERIFY_STEP(step);
+
     k->animator->setRotationAt(STEP(step), angle);
-    
     k->step(step)->setRotation(angle);
 }
 
 void KTItemTweener::setScaleAt(int step, double sx, double sy)
 {
     VERIFY_STEP(step);
+
     k->animator->setScaleAt(STEP(step), sx, sy);
-    
     k->step(step)->setScale(sx, sy);
 }
 
 void KTItemTweener::setShearAt(int step, double sh, double sv)
 {
     VERIFY_STEP(step);
+
     k->animator->setShearAt(STEP(step), sh, sv);
-    
     k->step(step)->setScale(sh, sv);
 }
 
 void KTItemTweener::setTranslationAt(int step, double dx, double dy)
 {
     VERIFY_STEP(step);
+
     k->animator->setTranslationAt(STEP(step), dx, dy);
-    
     k->step(step)->setTranslation(dx, dy);
 }
 

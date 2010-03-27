@@ -50,45 +50,43 @@ class QGraphicsItem;
 
 class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
 {
-	public:
-		KTItemTweener(int frames, QObject *parent = 0);
-		~KTItemTweener();
-		
-		double horizontalScaleAt( int step ) const;
-		double horizontalShearAt( int step ) const;
-		
-		void setItem( QGraphicsItem * item );
-		void setPosAt( int step, const QPointF & point );
-		void setRotationAt( int step, double angle );
-		void setScaleAt( int step, double sx, double sy );
-		void setShearAt( int step, double sh, double sv );
-		void setTranslationAt( int step, double dx, double dy );
-		
-		QMatrix matrixAt( int step ) const;
-		QPointF posAt( int step ) const;
-		double rotationAt( int step ) const;
-		double verticalScaleAt( int step ) const;
-		double verticalShearAt( int step ) const;
-		double xTranslationAt( int step ) const;
-		double yTranslationAt( int step ) const;
-		
-		void addStep(const KTTweenerStep &step);
-		
-		QGraphicsItem *item() const;
-		
-		void setFrames(int frames);
-		int frames() const;
-		
-		void setStep( int step );
-		
-		void fromXml(const QString &xml);
-		QDomElement toXml(QDomDocument &doc) const;
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+        KTItemTweener(int frames, QObject *parent = 0);
+        ~KTItemTweener();
+        
+        double horizontalScaleAt(int step) const;
+        double horizontalShearAt(int step) const;
+        
+        void setItem(QGraphicsItem * item);
+        void setPosAt(int step, const QPointF & point);
+        void setRotationAt(int step, double angle);
+        void setScaleAt(int step, double sx, double sy);
+        void setShearAt(int step, double sh, double sv);
+        void setTranslationAt(int step, double dx, double dy);
+        
+        QMatrix matrixAt(int step) const;
+        QPointF posAt(int step) const;
+        double rotationAt(int step) const;
+        double verticalScaleAt(int step) const;
+        double verticalShearAt(int step) const;
+        double xTranslationAt(int step) const;
+        double yTranslationAt(int step) const;
+        
+        void addStep(const KTTweenerStep &step);
+        
+        QGraphicsItem *item() const;
+        
+        void setFrames(int frames);
+        int frames() const;
+        
+        void setStep(int step);
+        
+        void fromXml(const QString &xml);
+        QDomElement toXml(QDomDocument &doc) const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif
-
-

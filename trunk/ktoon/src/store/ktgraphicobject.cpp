@@ -70,17 +70,14 @@ KTGraphicObject::~KTGraphicObject()
            KEND;
     #endif
 
-    if (k->item) {
-        /*
-          if ( QGraphicsScene *scene = k->item->scene() ) {
-               scene->removeItem(k->item);
-          }
-        */
+    if (k->item)
         delete k->item;
-    }
 
-    if (k->tweener && k->frame->scene())
+    /*
+    if (k->tweener && k->frame->scene()) {
         k->frame->scene()->removeTweeningObject(this);
+    }
+    */
 
     delete k;
 }

@@ -118,6 +118,11 @@ void KTCameraStatus::setFPS(int fps)
     m_fps->setValue(fps);
 }
 
+int KTCameraStatus::getFPS()
+{
+    m_fps->value();
+}
+
 void KTCameraStatus::setSceneName(const QString &name)
 {
     m_sceneName->setText(name);

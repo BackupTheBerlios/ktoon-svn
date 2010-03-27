@@ -148,6 +148,7 @@ bool KTViewCamera::handleProjectResponse(KTProjectResponse *response)
 
 void KTViewCamera::setFPS(int fps)
 {
+    project->setFPS(fps);
     m_status->setFPS(fps);
     m_animationArea->setFPS(fps);
 }
@@ -164,6 +165,7 @@ void KTViewCamera::updatePhotograms(KTProject *project)
 void KTViewCamera::exportDialog()
 {
     QDesktopWidget desktop;
+
     KTExportWidget *exportWidget = new KTExportWidget(project, this);
     exportWidget->show();
     exportWidget->move((int) (desktop.screenGeometry().width() - exportWidget->width())/2 , (int) (desktop.screenGeometry().height() - exportWidget->height())/2);

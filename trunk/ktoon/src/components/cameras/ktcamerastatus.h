@@ -53,6 +53,7 @@ class KTCameraStatus : public QStatusBar
         ~KTCameraStatus();
 
         void setFPS(int fps);
+        int getFPS();
         void setSceneName(const QString &name);
         void setFramesTotal(const QString &total);
         void addWidget(QWidget *widget, int stretch = 0);
