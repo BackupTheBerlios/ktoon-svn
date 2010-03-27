@@ -87,7 +87,7 @@
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/configurator.cpp" line="58"/>
-        <source>apply</source>
+        <source>Apply</source>
         <translation>Aplicar</translation>
     </message>
 </context>
@@ -402,18 +402,18 @@
     <name>KTCameraStatus</name>
     <message>
         <location filename="../../../components/cameras/ktcamerastatus.cpp" line="60"/>
-        <source>&lt;B&gt;Scene name:&lt;/B&gt; </source>
-        <translation>&lt;B&gt;Nombre de la escena:&lt;/B&gt; </translation>
+        <source>Scene name</source>
+        <translation>Nombre de la escena</translation>
     </message>
     <message>
         <location filename="../../../components/cameras/ktcamerastatus.cpp" line="68"/>
-        <source>&lt;B&gt;Frames Total:&lt;/B&gt; </source>
-        <translation>&lt;B&gt;Total de Marcos:&lt;/B&gt; </translation>
+        <source>Frames total</source>
+        <translation>Total de marcos</translation>
     </message>
     <message>
         <location filename="../../../components/cameras/ktcamerastatus.cpp" line="79"/>
-        <source>&lt;B&gt;FPS:&lt;/B&gt; </source>
-        <translation>&lt;B&gt;FPS:&lt;/B&gt; </translation>
+        <source>FPS</source>
+        <translation>FPS</translation>
     </message>
     <message>
         <location filename="../../../components/cameras/ktcamerastatus.cpp" line="95"/>
@@ -2360,12 +2360,12 @@
     <name>StepsViewer</name>
     <message>
         <location filename="../../../plugins/tools/tweener/stepsviewer.cpp" line="52"/>
-        <source>interval</source>
+        <source>Interval</source>
         <translation>Intervalo</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/stepsviewer.cpp" line="52"/>
-        <source>frames</source>
+        <source>Frames</source>
         <translation>Marcos</translation>
     </message>
 </context>

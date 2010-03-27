@@ -57,7 +57,7 @@ KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QStatusB
     m_sceneName = new QLabel;
     m_sceneName->setFont(font);
 
-    QLabel *sceneNameText = new QLabel(tr("<B>Scene name:</B> "));
+    QLabel *sceneNameText = new QLabel("<B>" + tr("Scene name") + ":</B> ");
     sceneNameText->setFont(font);
 
     m_sceneInfoLayout->addWidget(sceneNameText,1);
@@ -65,7 +65,7 @@ KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QStatusB
 
     m_sceneInfoLayout->addSpacing(20);
 
-    QLabel *framesTotal = new QLabel(tr("<B>Frames Total:</B> "));
+    QLabel *framesTotal = new QLabel("<B>" + tr("Frames total") + ":</B> ");
     framesTotal->setFont(font);
 
     m_total = new QLabel;
@@ -76,7 +76,7 @@ KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QStatusB
 
     m_sceneInfoLayout->addSpacing(20);
 
-    QLabel *fpsText = new QLabel(tr("<B>FPS:</B> "));
+    QLabel *fpsText = new QLabel("<B>" + tr("FPS") + ":</B> ");
     fpsText->setFont(font);
 
     m_fps = new QSpinBox;
