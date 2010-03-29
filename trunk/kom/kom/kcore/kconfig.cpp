@@ -27,9 +27,7 @@
 #include <QTextDocument>
 #include <QDomDocument>
 
-
 #include "kcore/kdebug.h"
-
 
 class KConfig::Private
 {
@@ -60,7 +58,7 @@ KConfig::KConfig() : QObject(), k(new Private)
 #endif
 
     if (!k->configDirectory.exists()) {
-        kDebug() << tr("%1 not exists... creating...").arg(k->configDirectory.path()) << endl;
+        kDebug() << tr("%1 doesn't exist. Creating...").arg(k->configDirectory.path()) << endl;
 
         if (!k->configDirectory.mkdir(k->configDirectory.path()))
             kError() << tr("I can't create %1").arg(k->configDirectory.path()) << endl;
@@ -135,7 +133,7 @@ void KConfig::sync()
         k->isOk = true;
         f.close();
     } else {
-        kFatal() << "*** NO Saving config file...";
+        kFatal() << "*** Can't save the config file. Permissions issue!";
         k->isOk = false;
     }
 

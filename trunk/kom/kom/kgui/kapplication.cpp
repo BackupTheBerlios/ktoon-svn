@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 #include "kapplication.h"
+#include "kdebug.h"
+#include "kactionmanager.h"
 
 #include <QDir>
 #include <QFile>
@@ -31,9 +33,6 @@
 
 #include <QApplication>
 #include <QMap>
-
-#include "kdebug.h"
-#include "kactionmanager.h"
 
 KApplication::KApplication(int & argc, char ** argv) : QApplication(argc, argv)
 {
@@ -113,7 +112,7 @@ void KApplication::changeFont(const QFont &font)
     QApplication::setFont(font, "QWidget");
 }
 
-KConfig *KApplication::config(const QString &group )
+KConfig *KApplication::config(const QString &group)
 {
     KConfig *config = KConfig::instance();
     config->beginGroup(group);
@@ -135,7 +134,7 @@ void KApplication::parseArgs(int &argc, char **argv)
                     if (argv[i+1] && ! QString(argv[i+1]).startsWith("-"))
                         arg = QString(argv[i+1]).simplified();
 
-                    m_parseArgs.insert(opt.remove(0,1), arg );
+                    m_parseArgs.insert(opt.remove(0,1), arg);
          }
     }
 }
@@ -177,4 +176,3 @@ QAction *KApplication::findGlobalAction(const QString &id)
 {
     return m_actionManager->find(id, "global");
 }
-
