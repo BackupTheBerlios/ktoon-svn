@@ -154,7 +154,7 @@ void KTConnectDialog::saveSettings()
 {
 	KCONFIG->beginGroup("Network");
 	
-	KCONFIG->setValue("server", k->server->text() );
+	KCONFIG->setValue("server", k->server->text());
 	KCONFIG->setValue("port", k->port->value());
 	KCONFIG->setValue("login", k->login->text());
 	

@@ -95,7 +95,7 @@
  * @return 
 */
 
-KTMainWindow::KTMainWindow(KTSplash *splash) : 
+KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) : 
               KTabbedMainWindow(), m_projectManager(0), m_viewDoc(0), m_animationSpace(0), 
               m_viewChat(0), m_exposureSheet(0), m_scenes(0), isSaveDialogOpen(false)
 {
@@ -154,10 +154,12 @@ KTMainWindow::KTMainWindow(KTSplash *splash) :
 
     KCONFIG->beginGroup("General");
     // check if into the config file, user always wants to start opening his last project created
-    bool openLast = KCONFIG->value("OpenLastProject", true).toBool();
+    bool openLast = KCONFIG->value("OpenLastProject").toBool();
 
-    if (openLast)
+    if (openLast && parameters == 1)
         openProject(KCONFIG->value("LastProject").toString());
+
+    KCONFIG->setValue("OpenLastProject", openLast);
 }
 
 /**
@@ -570,10 +572,13 @@ void KTMainWindow::openProject(const QString &path)
         tabWidget()->setCurrentWidget(m_viewDoc);
 
         if (m_projectManager->loadProject(path)) {
-            if (QDir::isRelativePath(path))
+            if (QDir::isRelativePath(path)) {
                 m_fileName = QDir::currentPath() + "/" + path;
-            else
+                kFatal() << "Tracing path 1: " << m_fileName;
+            } else {
                 m_fileName = path;
+                kFatal() << "Tracing path 2: " << m_fileName;
+            }
 
             //viewNewDocument(m_projectManager->project()->projectName());
             viewNewDocument();

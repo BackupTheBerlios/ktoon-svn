@@ -30,8 +30,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include <qdesktopwidget.h>
-//#include <QSize>
 #include <QRect>
 
 #include "ktapplication.h"
@@ -50,7 +50,6 @@
 KTApplication::KTApplication(int &argc, char **argv) : KApplication(argc, argv)
 {
     setApplicationName("ktoon");
-    // applyColors(Default);
 }
 
 KTApplication::~KTApplication()

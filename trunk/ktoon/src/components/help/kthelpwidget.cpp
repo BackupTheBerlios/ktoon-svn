@@ -57,9 +57,6 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
     else
         m_helpPath = path + "en";
 
-    kDebug() << "Help path: " << path;
-    kDebug() << "Help m_helpPath: " << m_helpPath.path();
-
     QTreeWidget *contentsListView = new QTreeWidget(this);
     contentsListView->setHeaderLabels(QStringList() << tr(""));
     contentsListView->header()->hide();

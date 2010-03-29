@@ -31,6 +31,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <ktapplication.h>
+#include "ktsplash.h"
+#include "ktmainwindow.h"
 
 #include <qfile.h>
 #include <qtextstream.h>
@@ -42,17 +44,10 @@
 #include <QTranslator>
 #include <QDesktopWidget>
 
-#include "ktapplication.h"
-
 #include <kcore/kapplicationproperties.h>
 #include <kcore/kdebug.h>
-
 #include <kgui/kcollapsiblewidget.h>
 #include <ksound/kaudioplayer.h>
-
-#include "ktsplash.h"
-
-#include "ktmainwindow.h"
 
 #ifdef Q_OS_UNIX
 #include "crashhandler.h"
@@ -128,7 +123,6 @@ int main(int argc, char ** argv)
    }
 
    kAppProp->setHomeDir(KCONFIG->value("Home").toString());
-
    kAppProp->setShareDir(QString::fromLocal8Bit(::getenv("KTOON_SHARE")));
 
    QString locale = QString(QLocale::system().name()).left(2);
@@ -189,12 +183,13 @@ int main(int argc, char ** argv)
     KTSplash *splash = new KTSplash;
     splash->show();
     QDesktopWidget desktop;
-    splash->move((int) (desktop.screenGeometry().width() - splash->width())/2 , (int) (desktop.screenGeometry().height() - splash->height())/2);
+    splash->move((int) (desktop.screenGeometry().width() - splash->width())/2, 
+                 (int) (desktop.screenGeometry().height() - splash->height())/2);
 
     splash->setMessage(QObject::tr("Initializing..."));
 
     splash->setMessage(QObject::tr( "Loading Modules"));
-    KTMainWindow mainWindow(splash);
+    KTMainWindow mainWindow(splash, argc);
 
     splash->setMessage(QObject::tr("Loaded!"));
 
@@ -214,13 +209,14 @@ int main(int argc, char ** argv)
            CHANDLER->setImagePath(THEME_DIR + "icons/");
     #endif
 
-    // If user added a second argument, it means, he wants to load a project from the command line
+    // If there is a second argument, it means to open a project from the command line
     if (argc == 2) {
+        kFatal() << "HEY! Opening file from console!";
         QString project = QString(argv[1]);
         mainWindow.openProject(project);
     }
 
-    // It is time to play with KToon!	
+    // It's time to play with KToon!	
     return application.exec();
 }
 

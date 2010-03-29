@@ -96,7 +96,7 @@ class KTMainWindow : public KTabbedMainWindow
              All = Drawing | Animation | Help
         };
 
-        KTMainWindow(KTSplash *splash = 0);
+        KTMainWindow(KTSplash *splash = 0, int parameters = 1);
         ~KTMainWindow();
 
     private:

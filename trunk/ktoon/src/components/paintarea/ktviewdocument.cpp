@@ -179,7 +179,9 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
 KTViewDocument::~KTViewDocument()
 {
-    k->currentTool->saveConfig();
+    if (k->currentTool)
+        k->currentTool->saveConfig();
+
     delete k->configurationArea;
     delete k->timer;
     delete k;

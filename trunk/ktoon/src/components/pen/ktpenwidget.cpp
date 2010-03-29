@@ -112,12 +112,14 @@ KTPenWidget::~KTPenWidget()
 
 void KTPenWidget::setThickness(int value)
 {
-    k->pen.setWidth(value);
+    if (value > 0) {
+        k->pen.setWidth(value);
 
-    KCONFIG->beginGroup("Pen Parameters");
-    KCONFIG->setValue("thickness", value);
+        KCONFIG->beginGroup("Pen Parameters");
+        KCONFIG->setValue("thickness", value);
 
-    emitPenChanged();
+        emitPenChanged();
+    }
 }
 
 void KTPenWidget::setStyle(int s)
