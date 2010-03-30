@@ -58,13 +58,13 @@ Animator::~Animator()
 {
 }
 
-void Animator::afterAnimationStep( qreal step )
+void Animator::afterAnimationStep(qreal step)
 {
 }
 
-#define VERIFY_STEP(s) if( s > k->frames || k->frames == 0) { \
-                         kWarning("items") << "Invalid step " << s << " for tweening, maximun step are " << k->frames << "; In " << __FUNCTION__; \
-                         return; }
+#define VERIFY_STEP(s) if (s > k->frames || k->frames == 0) { \
+                           kWarning("items") << "Invalid step " << s << " for tweening, maximun step are " << k->frames << "; In " << __FUNCTION__; \
+                           return; }
 
 #define STEP(s) s / (double)k->frames
 
@@ -73,15 +73,15 @@ struct KTItemTweener::Private
     Private() : frames(0) {}
     
     int frames;
+    //QGraphicsItem *object;
     
     Animator *animator;
     QHash<int, KTTweenerStep *> steps; // TODO: remove when Qt 4.3
-    
+
     inline KTTweenerStep *step(int step)
     {
         KTTweenerStep *s = steps[step];
-        if( ! s )
-        {
+        if (!s) {
             s = new KTTweenerStep(step);
             steps.insert(step, s);
         }
@@ -115,6 +115,7 @@ double KTItemTweener::horizontalShearAt(int step) const
 QGraphicsItem *KTItemTweener::item() const
 {
     return k->animator->item();
+    //return k->object;
 }
 
 QMatrix KTItemTweener::matrixAt(int step) const
@@ -132,12 +133,13 @@ double KTItemTweener::rotationAt(int step) const
     return k->animator->rotationAt(STEP(step));
 }
 
-void KTItemTweener::setItem(QGraphicsItem * item)
+void KTItemTweener::setItem(QGraphicsItem *item)
 {
     k->animator->setItem(item);
+    //k->object = item;
 }
 
-void KTItemTweener::setPosAt( int step, const QPointF & point )
+void KTItemTweener::setPosAt(int step, const QPointF & point)
 {
     VERIFY_STEP(step);
     

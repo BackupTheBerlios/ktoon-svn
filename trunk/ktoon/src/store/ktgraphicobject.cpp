@@ -32,13 +32,12 @@
  ***************************************************************************/
 
 #include "ktgraphicobject.h"
-
-#include <QMatrix>
-#include <QGraphicsItem>
-
 #include "ktframe.h"
 #include "ktscene.h"
 #include "ktitemtweener.h"
+
+#include <QMatrix>
+#include <QGraphicsItem>
 
 #include <kcore/kdebug.h>
 

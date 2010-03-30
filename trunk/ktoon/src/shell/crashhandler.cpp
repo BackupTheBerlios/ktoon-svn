@@ -180,7 +180,7 @@ void CrashHandler::setConfig(const QString &filePath)
 {
 #ifdef K_DEBUG
        K_FUNCINFO;
-       SHOW_VAR(filePath);
+       //SHOW_VAR(filePath);
 #endif
 
     QDomDocument doc;
