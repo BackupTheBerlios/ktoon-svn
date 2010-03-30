@@ -6,12 +6,15 @@
 INSTALLS += ktdata \
             launcher \
             desktop \
+            icons \
             target 
 target.path = /bin/ 
 launcher.files += ../../launcher/ktoon
 launcher.path = /bin/
 desktop.files += ../../launcher/ktoon.desktop
 desktop.path = /applications/
+icons.files += ../../launcher/icons/ktoon.png
+icons.path = /pixmaps/
 ktdata.files += data/* 
 ktdata.path = /data 
 TRANSLATIONS += data/translations/ktoon_es.ts \
