@@ -882,7 +882,8 @@ void KTMainWindow::showHelpPage(const QString &filePath)
 
 void KTMainWindow::saveAs()
 {
-    const char *home = getenv("HOME");
+    QString home = getenv("HOME");
+    home.append("/" + m_projectManager->project()->projectName());
 
     isSaveDialogOpen = true;
 

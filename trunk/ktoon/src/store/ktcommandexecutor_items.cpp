@@ -459,7 +459,7 @@ bool KTCommandExecutor::createTweening(KTItemResponse *response)
                 if (object == 0) 
                     return false;
                 
-                KTItemTweener *tweener = new KTItemTweener(0, object);
+                KTItemTweener *tweener = new KTItemTweener("tween00", 0, object);
                 tweener->fromXml(xml);
                 object->setTweener(tweener);
             }

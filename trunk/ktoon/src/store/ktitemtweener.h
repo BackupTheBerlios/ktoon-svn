@@ -51,8 +51,10 @@ class QGraphicsItem;
 class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
 {
     public:
-        KTItemTweener(int frames, QObject *parent = 0);
+        KTItemTweener(QString tag = QString(), int frames = 0, QObject *parent = 0);
         ~KTItemTweener();
+
+        QString name();
         
         double horizontalScaleAt(int step) const;
         double horizontalShearAt(int step) const;
