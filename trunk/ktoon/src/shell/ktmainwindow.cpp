@@ -77,6 +77,7 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QDesktopWidget>
+#include <QThread>
 //
 
 /**
@@ -84,6 +85,15 @@
  * Here is where all the KToon GUI is initialized 
  * @author David Cuadrado <krawek@toonka.com>
 */
+
+class SleeperThread : public QThread
+{
+    public:
+        static void msleep(unsigned long msecs)
+        {
+            QThread::msleep(msecs);
+        }
+};
 
 /**
  * @if english
@@ -122,6 +132,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
     m_projectManager->setHandler(new KTLocalProjectManagerHandler);
 
     splash->setMessage(tr("Setting up the project manager"));
+    SleeperThread::msleep(500);
 
     // Calling out the events/actions manager
     splash->setMessage(tr("Loading action manager..."));
@@ -129,9 +140,12 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
 
     // Defining the menu bar
     splash->setMessage(tr("Creating menu bar..."));
+    SleeperThread::msleep(500);
+
     setupActions();
 	
     splash->setMessage(tr("Creating GUI..."));
+    SleeperThread::msleep(500);
 	
     // Setting up all the GUI...
     createGUI(); // This method is called from the ktmainwindow_gui class

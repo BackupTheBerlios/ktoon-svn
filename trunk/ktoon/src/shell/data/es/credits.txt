@@ -31,12 +31,14 @@ Documentacion de Desarrollo
 ----------------------------
 Traductores
 
-  Spanish: David A. Cuadrado
+  Spanish:
+     Gustavo Gonzalez
+     David A. Cuadrado
 
 ----------------------------
 Diseño Iconografico
 
-  Carlos Andres Cajigas
+  Rodrigo Correa
 
 ----------------------------
 Agradecimientos especiales a:

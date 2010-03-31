@@ -43,6 +43,7 @@
 #include <QLocale>
 #include <QTranslator>
 #include <QDesktopWidget>
+#include <QThread>
 
 #include <kcore/kapplicationproperties.h>
 #include <kcore/kdebug.h>
@@ -73,6 +74,15 @@
 #ifndef HAVE_FFMPEG
 #define HAVE_FFMPEG
 #endif
+
+class SleeperThread : public QThread
+{
+    public:
+        static void msleep(unsigned long msecs)
+        {
+            QThread::msleep(msecs);
+        }
+};
 
 /**
  * Main class of the application. 
@@ -131,7 +141,6 @@ int main(int argc, char ** argv)
        locale = "en";
 
    kAppProp->setDataDir(SHARE_DIR + "data/" + locale + "/");
-
    kAppProp->setThemeDir(SHARE_DIR + "themes/default" + "/");
 
    /*
@@ -187,11 +196,15 @@ int main(int argc, char ** argv)
                  (int) (desktop.screenGeometry().height() - splash->height())/2);
 
     splash->setMessage(QObject::tr("Initializing..."));
+    SleeperThread::msleep(500);
 
-    splash->setMessage(QObject::tr( "Loading Modules"));
+    splash->setMessage(QObject::tr("Loading modules..."));
+    SleeperThread::msleep(500);
+
     KTMainWindow mainWindow(splash, argc);
 
     splash->setMessage(QObject::tr("Loaded!"));
+    SleeperThread::msleep(500);
 
     mainWindow.showMaximized();
 
@@ -211,7 +224,6 @@ int main(int argc, char ** argv)
 
     // If there is a second argument, it means to open a project from the command line
     if (argc == 2) {
-        kFatal() << "HEY! Opening file from console!";
         QString project = QString(argv[1]);
         mainWindow.openProject(project);
     }

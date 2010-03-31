@@ -91,9 +91,9 @@ void KTSplash::drawContents(QPainter * painter)
     // Draw background circles
     painter->setPen(Qt::NoPen);
     painter->setBrush(palette().background());
-    painter->drawEllipse(51,7,9,9);
-    painter->drawEllipse(62,7,9,9);
-    painter->drawEllipse(73,7,9,9);
+    painter->drawEllipse(11,7,9,9);
+    painter->drawEllipse(22,7,9,9);
+    painter->drawEllipse(33,7,9,9);
 
     QColor fill = palette().background().color();
 
@@ -111,19 +111,19 @@ void KTSplash::drawContents(QPainter * painter)
          painter->setBrush(QColor(r,g,b));
 
          if (position < 3)
-             painter->drawEllipse(51+position*11, 7, 9, 9);
+             painter->drawEllipse(11 + position * 11, 7, 9, 9);
     }
 
     painter->restore();
 
-    painter->setPen(0xCFCDD3);
+    painter->setPen(QColor(0, 0, 0));
 
     // Draw version number
     QRect r = rect();
-    r.setRect(r.x() + 5, r.y() + 22, r.width() - 30, r.height() - 30);
+    r.setRect(r.x() - 70, r.y() + 260, r.width() - 30, r.height() - 30);
 
     QFont forig = painter->font();
-    painter->setFont(QFont("helvetica", 12, 10, true));
+    painter->setFont(QFont("helvetica", 12, 10, false));
     painter->drawText(r, Qt::AlignRight, m_version);
 
     painter->setFont(forig);
@@ -131,7 +131,9 @@ void KTSplash::drawContents(QPainter * painter)
     // Draw message at given position, limited to 43 chars
     // If message is too long, string is truncated
     if (m_message.length() > 40) 
-        m_message.truncate(39); m_message += "...";
+        m_message.truncate(39); 
 
-    painter->drawText (90, 16, m_message);
+    //m_message += "...";
+    painter->setFont(QFont("helvetica", 8, 10, false));
+    painter->drawText(51, 16, m_message);
 }
