@@ -1,4 +1,4 @@
-QMAKE_PRL_BUILD_DIR = /home/xtingray/ktoon/sources/kom/kom/kcore
+QMAKE_PRL_BUILD_DIR = /home/ktoon/ktoon/source/kom/kom/kcore
 QMAKE_PRO_INPUT = kcore.pro
 QMAKE_PRL_TARGET = libkcore.so.1.0.0
 QMAKE_PRL_CONFIG = lex yacc warn_on uic resources qt warn_on release incremental link_prl nostrip exceptions no_mocdepend release stl qt_no_framework release warn_on dll create_prl shared dll moc thread opengl
