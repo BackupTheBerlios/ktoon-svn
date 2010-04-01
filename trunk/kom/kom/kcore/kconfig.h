@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KCONFIG_H
 #define KCONFIG_H
 
@@ -39,7 +38,6 @@
 #include <QVariant>
 
 #include "kcore/kglobal.h"
-
 
 class KConfig;
 
@@ -67,8 +65,10 @@ class K_CORE_EXPORT KConfig : public QObject
 
         static KConfig *instance();
 
+        bool firstTime();
         bool isOk();
         QDomDocument document();
+        QString currentGroup();
 
         void sync();
 

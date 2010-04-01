@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kconfig.h"
 #include <qdir.h>
 
@@ -44,6 +43,7 @@ class KConfig::Private
         QDomDocument document;
         QString path;
 
+        bool firstTime;
         bool isOk;
         QDir configDirectory;
 
@@ -67,17 +67,19 @@ KConfig::KConfig() : QObject(), k(new Private)
 #endif
 
     if (!k->configDirectory.exists()) {
+        k->firstTime = true;
         kDebug() << tr("%1 doesn't exist. Creating...").arg(k->configDirectory.path()) << endl;
 
         if (!k->configDirectory.mkdir(k->configDirectory.path()))
             kError() << tr("I can't create %1").arg(k->configDirectory.path()) << endl;
+    } else {
+        k->firstTime = false;
     }
 
     k->path = k->configDirectory.path() + "/" + QCoreApplication::applicationName().toLower() + ".cfg";
 
     init();
 }
-
 
 KConfig::~KConfig()
 {
@@ -119,6 +121,11 @@ void KConfig::init()
        QDomElement root = k->document.createElement("Config");
        k->document.appendChild(root);
    }
+}
+
+bool KConfig::firstTime()
+{
+    return k->firstTime;
 }
 
 bool KConfig::isOk()
@@ -238,3 +245,7 @@ QDomElement KConfig::find(const QDomElement &element, const QString &key) const
    return recent;
 }
 
+QString KConfig::currentGroup()
+{
+    return k->lastGroup;
+}
