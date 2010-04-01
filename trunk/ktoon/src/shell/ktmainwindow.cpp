@@ -35,10 +35,7 @@
 
 #include "ktnewproject.h"
 #include "ktabout.h"
-//#include "kthelpbrowser.h"
-
 #include "ktpackagehandler.h"
-
 #include "ktpaletteimporter.h"
 #include "ktpaintareacommand.h"
 
@@ -51,7 +48,6 @@
 
 #include "ktapplication.h"
 #include "ktpluginmanager.h"
-
 #include "ktprojectcommand.h"
 #include "ktlocalprojectmanagerhandler.h"
 
@@ -78,7 +74,6 @@
 #include <QDesktopServices>
 #include <QDesktopWidget>
 #include <QThread>
-//
 
 /**
  * This class defines the main window application.
@@ -155,7 +150,8 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
 
     // Check if user wants to see a KToon tip for every time he launches the program
     KCONFIG->beginGroup("TipOfDay");
-    bool showTips = qvariant_cast<bool>(KCONFIG->value("ShowOnStart", true));
+    //bool showTips = qvariant_cast<bool>(KCONFIG->value("ShowOnStart", true));
+    bool showTips = KCONFIG->value("ShowOnStart", true).toBool();
 
     // If option is enabled, then, show a little dialog with a nice tip
     if (showTips)
@@ -174,7 +170,10 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
     if (openLast && parameters == 1)
         openProject(KCONFIG->value("LastProject").toString());
 
-    KCONFIG->setValue("OpenLastProject", openLast);
+    if (KCONFIG->firstTime()) {
+        KCONFIG->setValue("OpenLastProject", openLast);
+        KCONFIG->setValue("AutoSave", 2);
+    }
 }
 
 /**
@@ -711,6 +710,9 @@ void KTMainWindow::preferences()
 {
     m_statusBar->setStatus(tr("Preferences Dialog Opened"));
     KTPreferences *preferences = new KTPreferences(this);
+
+    connect(preferences, SIGNAL(timerChanged()), m_viewDoc, SLOT(updateTimer()));
+
     preferences->show();
 
     QDesktopWidget desktop;
@@ -1004,7 +1006,7 @@ void KTMainWindow::closeEvent(QCloseEvent *event)
 
     KCONFIG->beginGroup("General");
     KCONFIG->setValue("LastProject", lastProject);
-    KCONFIG->setValue("recents", m_recentProjects);
+    KCONFIG->setValue("Recents", m_recentProjects);
 
     KMainWindow::closeEvent(event);
 }

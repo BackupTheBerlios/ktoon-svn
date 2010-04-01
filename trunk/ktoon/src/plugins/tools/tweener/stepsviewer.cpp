@@ -31,7 +31,7 @@
 struct StepsViewer::Private
 {
     QPolygonF points;
-    QPolygonF stops;
+    // QPolygonF stops;
     QList<int> frames;
 };
 
@@ -56,6 +56,7 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
     QPolygonF points = path->path().toFillPolygon();
     
     if (points.count() > 2) {
+
         k->points.clear();
         k->frames.clear();
         
@@ -67,13 +68,16 @@ void StepsViewer::setPath(const QGraphicsPathItem *path)
         setRowCount(0);
 
         for (int i = 1; i < path->path().elementCount(); i++) {
+
              QPainterPath::Element e  = path->path().elementAt(i);
             
              if (e.type != QPainterPath::CurveToElement) {
-                 if (e.type  == QPainterPath::CurveToDataElement && path->path().elementAt(i-1).type  == QPainterPath::CurveToElement) 
+
+                 if ((e.type  == QPainterPath::CurveToDataElement) && 
+                     (path->path().elementAt(i-1).type  == QPainterPath::CurveToElement)) 
                      continue;
              
-                 k->stops << e;
+                 // k->stops << e;
                 
                  int frames = 0;
                 

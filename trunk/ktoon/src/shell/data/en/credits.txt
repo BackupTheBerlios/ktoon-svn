@@ -32,7 +32,9 @@ Development Documentation
 Translators
 
   Spanish: 
+
      Gustavo Gonzalez
+
      David A. Cuadrado
 
 ----------------------------

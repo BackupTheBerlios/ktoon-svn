@@ -212,7 +212,7 @@ void KTMainWindow::setupMenu()
     m_recentProjectsMenu->setIcon(QPixmap(THEME_DIR + "icons/recent_files.png"));
 
     KCONFIG->beginGroup("General");
-    QStringList recents = KCONFIG->value("recents").toString().split(';');
+    QStringList recents = KCONFIG->value("Recents").toString().split(';');
     updateOpenRecentMenu(m_recentProjectsMenu, recents);	
     m_fileMenu->addMenu(m_recentProjectsMenu);
 

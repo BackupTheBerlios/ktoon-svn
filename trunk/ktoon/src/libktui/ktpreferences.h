@@ -55,27 +55,27 @@ class KTPaintAreaConfig;
 
 class KTPreferences : public KConfigurationDialog
 {
-	Q_OBJECT;
-	
-	public:
-		KTPreferences( QWidget *parent );
-		~KTPreferences();
-		
-		
-	private:
-		class GeneralPage;
-		class FontPage;
-		
-		KTThemeSelector *m_themeSelector;
-		FontPage *m_fontChooser;
-		GeneralPage *m_generalPage;
-		KTPaintAreaConfig *m_drawingAreaProperties;
-		
-	public slots:
-		void apply();
-		void ok();
-		
-	protected:
+    Q_OBJECT;
+    
+    public:
+        KTPreferences(QWidget *parent);
+        ~KTPreferences();
+        
+    private:
+        class GeneralPage;
+        class FontPage;
+        
+        KTThemeSelector *m_themeSelector;
+        FontPage *m_fontChooser;
+        GeneralPage *m_generalPage;
+        KTPaintAreaConfig *m_drawingAreaProperties;
+        
+    public slots:
+        void apply();
+        void ok();
+
+    signals:
+        void timerChanged();
 };
 
 #endif

@@ -101,7 +101,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
     #endif
 
     setWindowIcon(QPixmap(THEME_DIR + "icons/illustration_mode.png"));
-   
+
     k->currentTool = 0;
     k->actionManager = new KActionManager(this);
 
@@ -171,10 +171,8 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
             SLOT(setPen(const QPen &)));
 
     QTimer::singleShot(1000, this, SLOT(loadPlugins()));
-  
-    k->timer = new QTimer(this);
-    connect(k->timer, SIGNAL(timeout()), this, SLOT(callAutoSave()));
-    k->timer->start(60000);
+
+    updateTimer();
 }
 
 KTViewDocument::~KTViewDocument()
@@ -399,7 +397,6 @@ void KTViewDocument::selectTool()
                      } else if (toolStr.compare(tr("Text"))==0) {
                                 minWidth = 350;
                      } else if (toolStr.compare(tr("Motion Tween"))==0) {
-                                kFatal() << "Working around motion tween!";
                                 minWidth = 140;
                      } 
 
@@ -692,4 +689,20 @@ void KTViewDocument::updatePaintArea()
 void KTViewDocument::callAutoSave()
 {
     emit autoSave();
+}
+
+void KTViewDocument::updateTimer()
+{
+    kFatal() << "Updating timer from KTViewDocument!";
+
+    KCONFIG->beginGroup("General");
+    int autoSave = KCONFIG->value("AutoSave").toInt();
+
+    k->timer = new QTimer(this);
+
+    if (autoSave > 0) {
+        autoSave = autoSave*60000;
+        connect(k->timer, SIGNAL(timeout()), this, SLOT(callAutoSave()));
+        k->timer->start(autoSave);
+    }
 }

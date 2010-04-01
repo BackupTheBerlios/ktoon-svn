@@ -86,6 +86,7 @@ class KTViewDocument : public QMainWindow
         void setZoomFactor(int porcent);
         void scaleRuler(double factor);
         void changeRulerOrigin(const QPointF &zero);
+        void updateTimer();
 
     private:
         struct Private;

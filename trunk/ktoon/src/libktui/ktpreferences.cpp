@@ -61,10 +61,16 @@ class KTPreferences::GeneralPage : public QWidget
         GeneralPage();
         ~GeneralPage();
         void saveValues();
+        bool autoSaveUpdated(); 
         // KToon::RenderType m_renderType;
         
     private:
-        QLineEdit *m_home, *m_repository, *m_browser;
+        QLineEdit *m_home;
+        QLineEdit *m_repository; 
+        QLineEdit *m_browser;
+        QSpinBox *m_minutes;
+        int autoSave;
+        
         //QComboBox *m_renderType;
         QCheckBox *m_openLastProject;
         
@@ -112,9 +118,16 @@ KTPreferences::GeneralPage::GeneralPage()
     m_openLastProject = new QCheckBox();
     m_openLastProject->setChecked(openLast);
 
+    autoSave = KCONFIG->value("AutoSave").toInt();
+
+    m_minutes = new QSpinBox(this);
+    m_minutes->setMinimum(0);
+    m_minutes->setMaximum(15);
+    m_minutes->setValue(autoSave); 
+
     QLayout *form = KFormFactory::makeGrid( QStringList() << tr("KToon Home") << tr("Cache") << tr("Browser") 
-                    << tr("Open last project"), QWidgetList() << m_home 
-                    << m_repository << m_browser << m_openLastProject);
+                    << tr("Open last project") << tr("Auto save (minutes)"), QWidgetList() << m_home 
+                    << m_repository << m_browser << m_openLastProject << m_minutes);
     
     layout->addLayout(form);
     layout->addStretch(3);
@@ -139,10 +152,19 @@ void KTPreferences::GeneralPage::saveValues()
     str = m_browser->text();
     if (!str.isEmpty() && m_browser->isModified())
         KCONFIG->setValue("Browser", str);
-    
+
+    if (autoSaveUpdated())
+        KCONFIG->setValue("AutoSave", m_minutes->value()); 
+
     //KCONFIG->setValue("RenderType", QString::number((m_renderType->itemData(m_renderType->currentIndex ()).toInt())));
     KCONFIG->setValue("OpenLastProject", m_openLastProject->isChecked());
+
     KCONFIG->sync();
+}
+
+bool KTPreferences::GeneralPage::autoSaveUpdated()
+{
+    return autoSave != m_minutes->value();
 }
 
 class KTPreferences::FontPage : public QWidget
@@ -214,14 +236,13 @@ void KTPreferences::apply()
     if (static_cast<KTThemeSelector *>(currentPage()) ==  m_themeSelector) {
         if (m_themeSelector->applyColors())
             kApp->applyTheme(m_themeSelector->document());
-    }
-    else if (static_cast<GeneralPage *>(currentPage()) == m_generalPage) {
+    } else if (static_cast<GeneralPage *>(currentPage()) == m_generalPage) {
              m_generalPage->saveValues();
-    }
-    else if (qobject_cast<FontPage *>(currentPage()) == m_fontChooser) {
+             if (m_generalPage->autoSaveUpdated())
+                 emit timerChanged();
+    } else if (qobject_cast<FontPage *>(currentPage()) == m_fontChooser) {
              kApp->setFont(m_fontChooser->currentFont());
-    }
-    else if (qobject_cast<KTPaintAreaConfig *>(currentPage()) == m_drawingAreaProperties) {
+    } else if (qobject_cast<KTPaintAreaConfig *>(currentPage()) == m_drawingAreaProperties) {
     }
 }
 

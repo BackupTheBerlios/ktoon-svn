@@ -64,7 +64,8 @@ struct Tweener::Private
     QMap<QString, KAction *> actions;
     Configurator *configurator;
     KTGraphicsScene *scene;
-    bool creatingPath, selecting;
+    bool creatingPath;
+    bool selecting;
     QGraphicsPathItem *path;
     KNodeGroup *group;
 };
@@ -114,7 +115,6 @@ void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brush
             scene->addItem(k->path);
         } else {
             QPainterPath path = k->path->path();
-            // path.lineTo(input->pos());
             path.cubicTo(input->pos(), input->pos(), input->pos());
             k->path->setPath(path);
         }
@@ -135,6 +135,7 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
         } else {
             k->group->createNodes(k->path);
         }
+
         k->configurator->updateSteps(k->path);
     }
 }

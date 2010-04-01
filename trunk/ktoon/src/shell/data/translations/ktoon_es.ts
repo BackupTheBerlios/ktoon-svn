@@ -1522,7 +1522,7 @@
     <message>
         <location filename="../../../libktui/ktpreferences.cpp" line="193"/>
         <source>Workspace</source>
-        <translation>Espacio de Trabajo</translation>
+        <translation>Area de Trabajo</translation>
     </message>
 </context>
 <context>
@@ -1546,6 +1546,11 @@
         <location filename="../../../libktui/ktpreferences.cpp" line="116"/>
         <source>Open last project</source>
         <translation>Abrir último proyecto</translation>
+    </message>
+    <message>
+        <location filename="../../../libktui/ktpreferences.cpp" line="126"/>
+        <source>Auto save (minutes)</source>
+        <translation>Auto guardar (minutos)</translation>
     </message>
 </context>
 <context>
