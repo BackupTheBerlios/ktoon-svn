@@ -123,6 +123,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
 
     // Naming the main frame...
     setWindowTitle(tr("KToon: 2D Animation Toolkit"));
+    setWindowIcon(QIcon(THEME_DIR + "icons/about.png"));
 
     // Defining the render type for the drawings
     m_renderType = KToon::RenderType(KCONFIG->value("RenderType").toInt());

@@ -437,8 +437,12 @@ bool KTCommandExecutor::setPathItem(KTItemResponse *response)
 bool KTCommandExecutor::createTweening(KTItemResponse *response)
 {
     #ifdef K_DEBUG
-        K_FUNCINFOX("items");
+        //K_FUNCINFOX("items");
+        K_FUNCINFO;
+        SHOW_VAR(response);
     #endif
+
+    kFatal() << "KTCommandExecutor::createTweening -> Creating tweening from UI!";
 
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
@@ -446,7 +450,7 @@ bool KTCommandExecutor::createTweening(KTItemResponse *response)
     int position = response->itemIndex();
     
     QString xml = response->arg().toString();
-    
+
     KTScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
@@ -459,7 +463,7 @@ bool KTCommandExecutor::createTweening(KTItemResponse *response)
                 if (object == 0) 
                     return false;
                 
-                KTItemTweener *tweener = new KTItemTweener("tween00", 0, object);
+                KTItemTweener *tweener = new KTItemTweener(0, object);
                 tweener->fromXml(xml);
                 object->setTweener(tweener);
             }

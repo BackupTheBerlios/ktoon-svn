@@ -478,7 +478,7 @@ void KTProjectCommand::itemCommand()
             break;
             case KTProjectRequest::EditNodes:
             {
-                 k->executor->setPathItem( response);
+                 k->executor->setPathItem(response);
             }
             break;
             case KTProjectRequest::Select:

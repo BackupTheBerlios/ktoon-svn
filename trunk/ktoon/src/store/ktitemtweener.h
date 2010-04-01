@@ -51,7 +51,7 @@ class QGraphicsItem;
 class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
 {
     public:
-        KTItemTweener(QString tag = QString(), int frames = 0, QObject *parent = 0);
+        KTItemTweener(int frames = 0, QObject *parent = 0);
         ~KTItemTweener();
 
         QString name();
@@ -85,6 +85,7 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
         
         void fromXml(const QString &xml);
         QDomElement toXml(QDomDocument &doc) const;
+        static QDomDocument tweenToXml(QString name, int frames, const QVector<KTTweenerStep *> &steps);
         
     private:
         struct Private;

@@ -78,7 +78,7 @@
     <message>
         <location filename="../../../plugins/tools/tweener/configurator.cpp" line="54"/>
         <source>Create path</source>
-        <translation>Crear directorio</translation>
+        <translation>Crear ruta</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/configurator.cpp" line="55"/>
@@ -2393,7 +2393,7 @@
     </message>
 </context>
 <context>
-    <name>TweenerTranslate</name>
+    <name>Motion Tween</name>
     <message>
         <location filename="../../../plugins/tools/tweener/tweener.cpp" line="186"/>
         <source>Motion Tween</source>

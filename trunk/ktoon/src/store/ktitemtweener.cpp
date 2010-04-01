@@ -92,13 +92,10 @@ struct KTItemTweener::Private
     }
 };
 
-KTItemTweener::KTItemTweener(QString tag, int frames, QObject *parent) : QObject(parent), k(new Private)
+KTItemTweener::KTItemTweener(int frames, QObject *parent) : QObject(parent), k(new Private)
 {
     k->animator = new Animator(this);
-    k->name = tag;
     k->frames = frames;
-
-    kFatal() << "KTItemTweener::KTItemTweener -> " << k->name;
 }
 
 QString KTItemTweener::name()
@@ -254,12 +251,10 @@ void KTItemTweener::fromXml(const QString &xml)
     if (doc.setContent(xml)) {
         QDomElement root = doc.documentElement();
 
-        kFatal() << "KTItemTweener::fromXml 1 -> " << k->name;
-
         k->name = root.attribute("name");
         k->frames = root.attribute("frames").toInt();
 
-        kFatal() << "KTItemTweener::fromXml 2 -> " << k->name;
+        kFatal() << "KTItemTweener::fromXml -> " << k->name;
         
         QDomNode n = root.firstChild();
         
@@ -300,4 +295,22 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
              root.appendChild(step->toXml(doc));
     
     return root;
+}
+
+QDomDocument KTItemTweener::tweenToXml(QString name, int frames, const QVector<KTTweenerStep *> &steps)
+{
+    kFatal() << "KTItemTweener::tweenToXml -> Name: " << name;
+
+    QDomDocument doc;
+
+    QDomElement root = doc.createElement("tweening");
+    root.setAttribute("name", name);
+    root.setAttribute("frames", frames);
+   
+    foreach (KTTweenerStep *step, steps)
+             root.appendChild(step->toXml(doc));
+
+    doc.appendChild(root);
+   
+    return doc;
 }

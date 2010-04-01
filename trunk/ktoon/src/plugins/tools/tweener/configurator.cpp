@@ -32,6 +32,7 @@
  ***************************************************************************/
  
 #include "configurator.h"
+#include "ktitemtweener.h"
 
 #include <kgui/kradiobuttongroup.h>
 
@@ -99,7 +100,9 @@ void Configurator::emitOptionChanged(int option)
 
 QString Configurator::steps()
 {
-    return KTTweenerStep::createXml(k->stepViewer->totalSteps(), k->stepViewer->steps()).toString(); // FIXME: instead createXml, use KTItemTweener::toXml
+    //return KTTweenerStep::createXml(k->stepViewer->totalSteps(), k->stepViewer->steps()).toString(); // FIXME: instead createXml, use KTItemTweener::toXml
+
+    return KTItemTweener::tweenToXml(QString("tween00"), k->stepViewer->totalSteps(), k->stepViewer->steps()).toString();
 }
 
 int Configurator::totalSteps()

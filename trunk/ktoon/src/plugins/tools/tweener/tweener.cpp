@@ -97,7 +97,7 @@ void Tweener::init(KTGraphicsScene *scene)
 
 QStringList Tweener::keys() const
 {
-    return QStringList() << tr("Tweenerr");
+    return QStringList() << tr("Tweener");
 }
 
 void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -185,7 +185,7 @@ void Tweener::setupActions()
     KAction *translater = new KAction(QPixmap(THEME_DIR + "icons/tweener.png"), tr("Motion Tween"), this);
     translater->setCursor(QCursor(THEME_DIR + "cursors/tweener.png"));
 
-    k->actions.insert("Tweenerr", translater);
+    k->actions.insert("Tweener", translater);
 }
 
 void Tweener::setCreatePath()
@@ -228,6 +228,7 @@ void Tweener::applyTweener()
 {
     if (k->path) {
         foreach (QGraphicsItem *item, k->scene->selectedItems()) {
+                 kFatal() << "Tweener::applyTweener(): " << k->configurator->steps();
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
                                             k->scene->currentSceneIndex(),
                                             k->scene->currentLayerIndex(),
@@ -239,8 +240,10 @@ void Tweener::applyTweener()
                  if (KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex())) {
                      int frames = layer->frames().count();
                      int newFrames = k->configurator->totalSteps() + k->scene->currentFrameIndex() - frames;
+                     int total = k->scene->currentFrameIndex() + newFrames + 1;
+                     int start = k->scene->currentFrameIndex() + 1;
 
-                     for (int i = frames; i < newFrames; i++) {
+                     for (int i = start; i < total; i++) {
                           KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), 
                                                                             k->scene->currentLayerIndex(), i, KTProjectRequest::Add);
                           emit requested(&requestFrame);

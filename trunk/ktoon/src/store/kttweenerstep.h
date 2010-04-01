@@ -80,7 +80,7 @@ class STORE_EXPORT KTTweenerStep : public KTAbstractSerializable
         virtual QDomElement toXml(QDomDocument& doc) const;
         virtual void fromXml(const QString& xml);
         
-        static QDomDocument createXml(int frames, const QVector<KTTweenerStep *> &steps);
+        //static QDomDocument createXml(int frames, const QVector<KTTweenerStep *> &steps);
         
     private:
         struct Private;

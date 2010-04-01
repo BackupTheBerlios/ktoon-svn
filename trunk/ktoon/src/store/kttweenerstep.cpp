@@ -223,6 +223,7 @@ void KTTweenerStep::fromXml(const QString& xml)
     }
 }
 
+/*
 QDomDocument KTTweenerStep::createXml(int frames, const QVector<KTTweenerStep *> &steps)
 {
     QDomDocument doc;
@@ -237,3 +238,4 @@ QDomDocument KTTweenerStep::createXml(int frames, const QVector<KTTweenerStep *>
     
     return doc;
 }
+*/

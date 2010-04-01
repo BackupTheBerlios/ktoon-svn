@@ -136,7 +136,8 @@ void KTFrame::fromXml(const QString &xml)
                           QDomElement e2 = n2.toElement();
 
                           if (e2.tagName() == "tweening" && last) {
-                              KTItemTweener *tweener = new KTItemTweener("tween00", 0, last);
+                              kFatal() << "Reading tween from file!";
+                              KTItemTweener *tweener = new KTItemTweener(0, last);
                               QString newDoc;
 
                               {
