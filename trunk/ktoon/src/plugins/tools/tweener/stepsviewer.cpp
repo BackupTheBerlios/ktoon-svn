@@ -27,6 +27,7 @@
 #include "stepsviewer.h"
 #include "kttweenerstep.h"
 #include "spinboxdelegate.h"
+#include "kcore/kdebug.h"
 
 struct StepsViewer::Private
 {
@@ -145,3 +146,10 @@ int StepsViewer::totalSteps()
     return total;
 }
 
+void StepsViewer::cleanRows()
+{
+    int size = rowCount() - 1;
+    kFatal() << "StepsViewer::cleanRows() -> " << rowCount();
+    for (int i = size ; i >= 0; i--)
+         removeRow(i);
+}

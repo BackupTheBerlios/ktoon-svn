@@ -30,18 +30,19 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include <kgui/kradiobuttongroup.h>
+#include <kcore/kdebug.h>
  
 #include "configurator.h"
 #include "ktitemtweener.h"
-
-#include <kgui/kradiobuttongroup.h>
+#include "stepsviewer.h"
+#include "kttweenerstep.h"
 
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QHeaderView>
 #include <QGraphicsPathItem>
-#include "stepsviewer.h"
-#include "kttweenerstep.h"
 
 struct Configurator::Private
 {
@@ -54,8 +55,8 @@ Configurator::Configurator(QWidget *parent) : QFrame(parent), k(new Private)
     setFont(QFont("Arial", 8, QFont::Normal, false));
 
     k->options = new KRadioButtonGroup(tr("Options"), Qt::Vertical);
-    k->options->addItems(QStringList() << tr("Create path"));
-    k->options->addItems(QStringList() << tr("Select object"));
+    k->options->addItem(tr("Create path"), 0);
+    k->options->addItem(tr("Select object"), 1);
     connect(k->options, SIGNAL(clicked(int)), this, SLOT(emitOptionChanged(int)));
 
     QPushButton *button = new QPushButton(tr("Apply"));
@@ -109,3 +110,15 @@ int Configurator::totalSteps()
 {
     return k->stepViewer->totalSteps();
 }
+
+void Configurator::activatePathMode()
+{
+    k->options->setCurrentIndex(0);
+    k->stepViewer->cleanRows();
+}
+
+void Configurator::activateSelectionMode()
+{
+    k->options->setCurrentIndex(1);
+}
+

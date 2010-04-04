@@ -97,7 +97,7 @@ void Select::init(KTGraphicsScene *scene)
 
 QStringList Select::keys() const
 {
-    return QStringList() << tr("Select") ;
+    return QStringList() << tr("Select");
 }
 
 void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)

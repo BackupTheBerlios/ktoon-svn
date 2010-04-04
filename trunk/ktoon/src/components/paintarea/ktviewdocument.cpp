@@ -693,8 +693,6 @@ void KTViewDocument::callAutoSave()
 
 void KTViewDocument::updateTimer()
 {
-    kFatal() << "Updating timer from KTViewDocument!";
-
     KCONFIG->beginGroup("General");
     int autoSave = KCONFIG->value("AutoSave").toInt();
 

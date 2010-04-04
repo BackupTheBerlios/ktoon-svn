@@ -28,24 +28,25 @@
 class QGraphicsPathItem;
 class KTTweenerStep;
 
-
 /**
  * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
 */
+
 class StepsViewer : public QTableWidget
 {
-	Q_OBJECT
-	public:
-		StepsViewer(QWidget *parent = 0);
-		~StepsViewer();
-		void setPath(const QGraphicsPathItem *path);
-		
-		QVector<KTTweenerStep *> steps();
-		int totalSteps();
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT
+    public:
+        StepsViewer(QWidget *parent = 0);
+        ~StepsViewer();
+        void setPath(const QGraphicsPathItem *path);
+        
+        QVector<KTTweenerStep *> steps();
+        int totalSteps();
+        void cleanRows();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

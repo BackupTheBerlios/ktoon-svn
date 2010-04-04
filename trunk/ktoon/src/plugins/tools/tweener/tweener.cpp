@@ -72,6 +72,8 @@ struct Tweener::Private
 
 Tweener::Tweener() : KTToolPlugin(), k(new Private)
 {
+    kFatal() << "Tweener::Tweener() -> Object starting!";
+
     setupActions();
     k->configurator = 0;
     k->creatingPath = true;
@@ -87,12 +89,15 @@ Tweener::~Tweener()
 
 void Tweener::init(KTGraphicsScene *scene)
 {
+    kFatal() << "Tweener::init -> Activating plugin!";
+
     delete k->path;
     k->path = 0;
     delete k->group;
     k->group = 0;
 
     k->scene = scene;
+    k->configurator->activatePathMode();
     setCreatePath();
 }
 
@@ -103,12 +108,15 @@ QStringList Tweener::keys() const
 
 void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    Q_UNUSED(brushManager);
+
     if (k->creatingPath) {
         if (!k->path) {
             k->path = new QGraphicsPathItem;
-            QColor pen = Qt::black;
-            pen.setAlpha(125);
-            k->path->setPen(QPen(QBrush(pen),1, Qt::DotLine));
+            QColor color = Qt::lightGray;
+            //color.setAlpha(200);
+            QPen pen(QBrush(color), 1, Qt::DotLine);  
+            k->path->setPen(pen);
             QPainterPath path;
             path.moveTo(input->pos());
             k->path->setPath(path);
@@ -118,15 +126,23 @@ void Tweener::press(const KTInputDeviceInformation *input, KTBrushManager *brush
             path.cubicTo(input->pos(), input->pos(), input->pos());
             k->path->setPath(path);
         }
+    } else {
+        kFatal() << "Tweener::press -> Starting selection!";
     }
 }
 
 void Tweener::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    Q_UNUSED(input);
+    Q_UNUSED(brushManager);
+    Q_UNUSED(scene);
 }
 
 void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    Q_UNUSED(input);
+    Q_UNUSED(brushManager);
+
     if (k->creatingPath) {
         if (!k->group) {
             k->group = new KNodeGroup(k->path, scene);
@@ -137,6 +153,8 @@ void Tweener::release(const KTInputDeviceInformation *input, KTBrushManager *bru
         }
 
         k->configurator->updateSteps(k->path);
+    } else {
+        kFatal() << "Tweener::release -> Ending selection!"; 
     }
 }
 
@@ -149,7 +167,6 @@ int Tweener::toolType() const
 {
     return KTToolInterface::Brush;
 }
-
 
 QWidget *Tweener::configurator()
 {
@@ -183,6 +200,8 @@ bool Tweener::isComplete() const
 
 void Tweener::setupActions()
 {
+    kFatal() << "Tweener::setupActions() -> init!";
+
     KAction *translater = new KAction(QPixmap(THEME_DIR + "icons/tweener.png"), tr("Motion Tween"), this);
     translater->setCursor(QCursor(THEME_DIR + "cursors/tweener.png"));
 
@@ -217,8 +236,8 @@ void Tweener::setSelect()
     } 
 
     foreach (QGraphicsView * view, k->scene->views()) {
-             view->setDragMode (QGraphicsView::RubberBandDrag);
-             foreach (QGraphicsItem *item, view->scene()->items() ) {
+             view->setDragMode(QGraphicsView::RubberBandDrag);
+             foreach (QGraphicsItem *item, view->scene()->items()) {
                       if (item != k->path)
                           item->setFlags(QGraphicsItem::ItemIsSelectable);
              }

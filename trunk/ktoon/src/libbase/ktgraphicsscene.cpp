@@ -448,6 +448,7 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 return;
 
             // If there's no frame... the tool is disabled 
+
             if (currentFrame()) {
                 if (event->buttons() == Qt::LeftButton && !currentFrame()->isLocked()) {
                     k->tool->begin();
