@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KWIDGETLISTVIEW_H
 #define KWIDGETLISTVIEW_H
 
@@ -38,8 +37,8 @@
 
 /**
  * @if spanish
- * 	La clase KWidgetListView provee una lista de widgets basada en items
- * 	@brief Provee una lista de widgets
+ *     La clase KWidgetListView provee una lista de widgets basada en items
+ *     @brief Provee una lista de widgets
  * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
@@ -54,7 +53,7 @@ class K_GUI_EXPORT KWidgetListView : public QTableWidget
           * @param parent 
           * @return 
           */
-          KWidgetListView( QWidget * parent = 0 );
+          KWidgetListView(QWidget * parent = 0);
 
         /**
           * @if spanish

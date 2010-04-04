@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KRADIOBUTTONGROUP_H
 #define KRADIOBUTTONGROUP_H
 
@@ -43,27 +42,27 @@
 */
 class K_GUI_EXPORT KRadioButtonGroup : public QGroupBox
 {
-	Q_OBJECT
-	public:
-		KRadioButtonGroup(const QString &title, Qt::Orientation orientation, QWidget *parent = 0);
-		~KRadioButtonGroup();
-		
-		void addItem ( const QString & text, int index = -1 );
-		void addItems(const QStringList &texts);
-		
-		int currentIndex() const;
-		void setCurrentIndex ( int index );
-		
-	private slots:
-		void emitButtonId(QAbstractButton *button);
-		
-	signals:
-		void clicked(int index);
-		
-	private:
-		Qt::Orientation m_orientation;
-		QBoxLayout *m_layout;
-		QButtonGroup *m_buttonGroup;
+    Q_OBJECT
+    public:
+        KRadioButtonGroup(const QString &title, Qt::Orientation orientation, QWidget *parent = 0);
+        ~KRadioButtonGroup();
+        
+        void addItem(const QString & text, int index = -1);
+        void addItems(const QStringList &texts);
+        
+        int currentIndex() const;
+        void setCurrentIndex(int index);
+        
+    private slots:
+        void emitButtonId(QAbstractButton *button);
+        
+    signals:
+        void clicked(int index);
+        
+    private:
+        Qt::Orientation m_orientation;
+        QBoxLayout *m_layout;
+        QButtonGroup *m_buttonGroup;
 };
 
 #endif
