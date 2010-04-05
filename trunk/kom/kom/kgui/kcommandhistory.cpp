@@ -28,14 +28,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kcommandhistory.h"
+#include <kdebug.h>
+
 #include <QUndoStack>
 #include <QMenu>
 
-#include <kdebug.h>
-
-KCommandHistory::KCommandHistory(QUndoStack *stack, QObject *parent) : QObject(parent), m_stack(stack), m_currentIndex(0), m_isLastRedo(false)
+KCommandHistory::KCommandHistory(QUndoStack *stack, QObject *parent) 
+    : QObject(parent), m_stack(stack), m_currentIndex(0), m_isLastRedo(false)
 {
     m_undoMenu = new QMenu(tr("Undo"));
     m_redoMenu = new QMenu(tr("Redo"));
@@ -100,6 +100,7 @@ void KCommandHistory::updateFromIndex(int idx)
     }
     
     if (idx == m_stack->count()  && !m_isLastRedo) { // Added
+
         QAction *a = m_undoMenu->addAction(m_stack->text(idx-1));
         a->setData(idx);
         a->setText(QString::number(idx)+": "+m_stack->text(idx-1));
@@ -111,6 +112,7 @@ void KCommandHistory::updateFromIndex(int idx)
         m_undoMenu->setActiveAction(a);
         
         m_redoMenu->clear();
+
     } else if (idx > m_currentIndex) {
                // redo clicked
                qDebug("REDO");
@@ -124,17 +126,19 @@ void KCommandHistory::updateFromIndex(int idx)
                    kError() << "Error!";
                }
     } else if (idx < m_currentIndex) {
-        // Undo clicked
-        qDebug("UNDO");
-        kDebug() << idx << " " << m_currentIndex;
+
+               // Undo clicked
+               qDebug("UNDO");
+               kDebug() << idx << " " << m_currentIndex;
         
-        if (m_actions.contains(idx-1)) {
-            m_undoMenu->removeAction(m_actions[idx-1]);
-            m_redoMenu->addAction(m_actions[idx-1]);
-            m_redoMenu->menuAction()->setEnabled(true);
-        } else {
-            kError() << "Error!";
-        }
+               if (m_actions.contains(idx-1)) {
+                   m_undoMenu->removeAction(m_actions[idx-1]);
+                   m_redoMenu->addAction(m_actions[idx-1]);
+                   m_redoMenu->menuAction()->setEnabled(true);
+               } else {
+                   kError() << "Error!";
+               }
+
     }
     
     m_currentIndex = m_stack->index();

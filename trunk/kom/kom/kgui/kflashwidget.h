@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KFLASHWIDGET_H
 #define KFLASHWIDGET_H
 
@@ -42,29 +41,30 @@
 */
 class K_GUI_EXPORT KFlashWidget : public QX11EmbedContainer
 {
-	Q_OBJECT;
-	public:
-		KFlashWidget(const QString &swf, QWidget *parent = 0);
-		~KFlashWidget();
-		
-	public slots:
-		void play();
-		void stop();
-		
-	private slots:
-		void updateSize();
-		
-	signals:
-		void contextMenu(const QPoint &p);
-		
-	protected:
-		void mousePressEvent(QMouseEvent *e);
-		void mouseDoubleClickEvent( QMouseEvent *);
-		void paintEvent (QPaintEvent *e);
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT
+
+    public:
+        KFlashWidget(const QString &swf, QWidget *parent = 0);
+        ~KFlashWidget();
+        
+    public slots:
+        void play();
+        void stop();
+        
+    private slots:
+        void updateSize();
+        
+    signals:
+        void contextMenu(const QPoint &p);
+        
+    protected:
+        void mousePressEvent(QMouseEvent *e);
+        void mouseDoubleClickEvent(QMouseEvent *);
+        void paintEvent(QPaintEvent *e);
+        
+    private:
+        struct Private;
+        Private *const k;
 
 };
 

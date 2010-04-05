@@ -55,7 +55,7 @@ class K_GUI_EXPORT KTreeWidgetSearchLine : public KClickLineEdit
     Q_PROPERTY(Qt::CaseSensitivity caseSensitity READ caseSensitivity WRITE setCaseSensitivity)
     Q_PROPERTY(bool keepParentsVisible READ keepParentsVisible WRITE setKeepParentsVisible)
 
-public:
+    public:
 
     /**
      * Constructs a KTreeWidgetSearchLine with \a treeWidget being the QTreeWidget to
@@ -64,7 +64,7 @@ public:
      * If \a treeWidget is null then the widget will be disabled until listviews
      * are set with setTreeWidget(), setTreeWidgets() or added with addTreeWidget().
      */
-    KTreeWidgetSearchLine(QWidget *parent = 0, QTreeWidget *treeWidget = 0);
+        KTreeWidgetSearchLine(QWidget *parent = 0, QTreeWidget *treeWidget = 0);
 
     /**
      * Constructs a KTreeWidgetSearchLine with \a treeWidgets being the list of
@@ -73,21 +73,20 @@ public:
      * If \a treeWidgets is empty then the widget will be disabled until listviews
      * are set with setTreeWidget(), setTreeWidgets() or added with addTreeWidget().
      */
-    KTreeWidgetSearchLine(QWidget *parent,
-                        const QList<QTreeWidget *> &treeWidgets);
-
+        KTreeWidgetSearchLine(QWidget *parent,
+                              const QList<QTreeWidget *> &treeWidgets);
 
     /**
      * Destroys the KTreeWidgetSearchLine.
      */
-    virtual ~KTreeWidgetSearchLine();
+        virtual ~KTreeWidgetSearchLine();
 
     /**
      * Returns true if the search is case sensitive.  This defaults to false.
      *
      * @see setCaseSensitive()
      */
-    Qt::CaseSensitivity caseSensitivity() const;
+        Qt::CaseSensitivity caseSensitivity() const;
 
     /**
      * Returns the current list of columns that will be searched.  If the
@@ -95,7 +94,7 @@ public:
      *
      * @see setSearchColumns
      */
-    QList<int> searchColumns() const;
+        QList<int> searchColumns() const;
 
     /**
      * If this is true (the default) then the parents of matched items will also
@@ -103,7 +102,7 @@ public:
      *
      * @see setKeepParentsVisible()
      */
-    bool keepParentsVisible() const;
+        bool keepParentsVisible() const;
 
     /**
      * Returns the listview that is currently filtered by the search.
@@ -111,7 +110,7 @@ public:
      *
      * @see setTreeWidget(), treeWidgets()
      */
-    QTreeWidget *treeWidget() const;
+        QTreeWidget *treeWidget() const;
 
     /**
      * Returns the list of pointers to listviews that are currently filtered by
@@ -119,16 +118,17 @@ public:
      *
      * @see setTreeWidgets(), addTreeWidget(), treeWidget()
      */
-    const QList<QTreeWidget *> &treeWidgets() const;
+        const QList<QTreeWidget *> &treeWidgets() const;
 
-public slots:
+     public slots:
+
     /**
      * Adds a QTreeWidget to the list of listviews filtered by this search line.
      * If \a tw is null then the widget will be disabled.
      *
      * @see treeWidget(), setTreeWidgets(), removeTreeWidget()
      */
-    void addTreeWidget(QTreeWidget *tw);
+         void addTreeWidget(QTreeWidget *tw);
 
     /**
      * Removes a QTreeWidget from the list of listviews filtered by this search
@@ -137,20 +137,20 @@ public slots:
      *
      * @see listVew(), setTreeWidgets(), addTreeWidget()
      */
-    void removeTreeWidget(QTreeWidget *tw);
+        void removeTreeWidget(QTreeWidget *tw);
 
     /**
      * Updates search to only make visible the items that match \a s.  If
      * \a s is null then the line edit's text will be used.
      */
-    virtual void updateSearch(const QString &s = QString());
+        virtual void updateSearch(const QString &s = QString());
 
     /**
      * Make the search case sensitive or case insensitive.
      *
      * @see caseSenstivity()
      */
-    void setCaseSensitivity(Qt::CaseSensitivity cs);
+        void setCaseSensitivity(Qt::CaseSensitivity cs);
 
     /**
      * When a search is active on a list that's organized into a tree view if
@@ -162,7 +162,7 @@ public slots:
      *
      * @see keepParentsVisible
      */
-    void setKeepParentsVisible(bool v);
+        void setKeepParentsVisible(bool v);
 
     /**
      * Sets the list of columns to be searched.  The default is to search all,
@@ -173,7 +173,7 @@ public slots:
      *
      * @see searchColumns
      */
-    void setSearchColumns(const QList<int> &columns);
+        void setSearchColumns(const QList<int> &columns);
 
     /**
      * Sets the QTreeWidget that is filtered by this search line, replacing any
@@ -182,7 +182,7 @@ public slots:
      *
      * @see treeWidget(), setTreeWidgets()
      */
-    void setTreeWidget(QTreeWidget *tw);
+        void setTreeWidget(QTreeWidget *tw);
 
     /**
      * Sets QTreeWidgets that are filtered by this search line, replacing any
@@ -191,38 +191,38 @@ public slots:
      *
      * @see treeWidgets(), addTreeWidget(), setTreeWidget()
      */
-    void setTreeWidgets(const QList<QTreeWidget *> &tw);
+        void setTreeWidgets(const QList<QTreeWidget *> &tw);
 
-
-  protected:
+    protected:
 
     /**
      * Returns true if \a item matches the search \a s.  This will be evaluated
      * based on the value of caseSensitive().  This can be overridden in
      * subclasses to implement more complicated matching schemes.
      */
-    virtual bool itemMatches(const QTreeWidgetItem *item, const QString &s) const;
+        virtual bool itemMatches(const QTreeWidgetItem *item, const QString &s) const;
 
     /**
     * Re-implemented for internal reasons.  API not affected.
     */
-    virtual void contextMenuEvent( QContextMenuEvent*e );
+        virtual void contextMenuEvent(QContextMenuEvent*e);
 
     /**
      * Updates search to only make visible appropriate items in \a treeWidget.  If
      * \a treeWidget is null then nothing is done.
      */
-    virtual void updateSearch(QTreeWidget *treeWidget);
+        virtual void updateSearch(QTreeWidget *treeWidget);
 
     /**
      * Connects signals of this listview to the appropriate slots of the search
      * line.
      */
-    virtual void connectTreeWidget(QTreeWidget *);
+        virtual void connectTreeWidget(QTreeWidget *);
+
     /**
      * Disconnects signals of a listviews from the search line.
      */
-    virtual void disconnectTreeWidget(QTreeWidget *);
+        virtual void disconnectTreeWidget(QTreeWidget *);
 
     /**
      * Checks columns in all listviews and decides whether choosing columns to
@@ -238,9 +238,10 @@ public slots:
      *
      * @see setSearchColumns()
      */
-    virtual bool canChooseColumnsCheck();
+        virtual bool canChooseColumnsCheck();
 
-protected slots:
+    protected slots:
+
     /**
      * When keys are pressed a new search string is created and a timer is
      * activated.  The most recent search is activated when this timer runs out
@@ -254,7 +255,7 @@ protected slots:
      *
      * @see activateSearch()
      */
-    void queueSearch(const QString &search);
+        void queueSearch(const QString &search);
 
     /**
      * When the timer started with queueSearch() expires this slot is called.
@@ -264,9 +265,9 @@ protected slots:
      *
      * @see queueSearch()
      */
-    void activateSearch();
+        void activateSearch();
 
-private:
+    private:
 
     /**
      * This is used after changing the list of listviews. If choosing columns
@@ -274,30 +275,31 @@ private:
      *
      * @see canChooseColumnsCheck()
      */
-    void checkColumns();
+        void checkColumns();
 
     /**
      * This is used in case parent items of matching items shouldn't be
      * visible.  It hides all items that don't match the search string.
      */
-    void checkItemParentsNotVisible(QTreeWidget *treeWidget);
+        void checkItemParentsNotVisible(QTreeWidget *treeWidget);
 
     /**
      * This is used in case parent items of matching items should be visible.
      * It makes a recursive call to all children.  It returns true if at least
      * one item in the subtree with the given root item is visible.
      */
-    bool checkItemParentsVisible(QTreeWidgetItem* item);
+        bool checkItemParentsVisible(QTreeWidgetItem* item);
 
-private slots:
-    void rowsInserted(const QModelIndex & parent, int start, int end) const;
-    void treeWidgetDeleted( QObject *treeWidget );
-    void slotColumnActivated(QAction* action);
-    void slotAllVisibleColumns();
+    private slots:
 
-private:
-    class KTreeWidgetSearchLinePrivate;
-    KTreeWidgetSearchLinePrivate *k;
+        void rowsInserted(const QModelIndex & parent, int start, int end) const;
+        void treeWidgetDeleted(QObject *treeWidget);
+        void slotColumnActivated(QAction* action);
+        void slotAllVisibleColumns();
+
+    private:
+        class KTreeWidgetSearchLinePrivate;
+        KTreeWidgetSearchLinePrivate *k;
 };
 
 /**
@@ -308,38 +310,41 @@ class K_GUI_EXPORT KTreeWidgetSearchLineWidget : public QWidget
 {
     Q_OBJECT
 
-public:
+    public:
+
     /**
      * Creates a KTreeWidgetSearchLineWidget for \a treeWidget with \a parent as the
      * parent.
      */
-    KTreeWidgetSearchLineWidget(QWidget *parent = 0, QTreeWidget *treeWidget = 0);
+        KTreeWidgetSearchLineWidget(QWidget *parent = 0, QTreeWidget *treeWidget = 0);
 
     /**
      * Destroys the KTreeWidgetSearchLineWidget
      */
-    ~KTreeWidgetSearchLineWidget();
+        ~KTreeWidgetSearchLineWidget();
 
     /**
      * Returns a pointer to the search line.
      */
-    KTreeWidgetSearchLine *searchLine() const;
+        KTreeWidgetSearchLine *searchLine() const;
     
     /**
      * Sets the erase icon
      */
-    void setEraseIcon(const QIcon &icon);
+        void setEraseIcon(const QIcon &icon);
 
-protected slots:
+    protected slots:
+
     /**
      * Creates the widgets inside of the widget.  This is called from the
      * constructor via a single shot timer so that it it guaranteed to run
      * after construction is complete.  This makes it suitable for overriding in
      * subclasses.
      */
-    virtual void createWidgets();
+        virtual void createWidgets();
 
-protected:
+    protected:
+
     /**
      * Creates the search line.  This can be useful to reimplement in cases where
      * a KTreeWidgetSearchLine subclass is used.
@@ -347,11 +352,11 @@ protected:
      * It is const because it is be called from searchLine(), which to the user
      * doesn't conceptually alter the widget.
      */
-    virtual KTreeWidgetSearchLine *createSearchLine(QTreeWidget *treeWidget) const;
+        virtual KTreeWidgetSearchLine *createSearchLine(QTreeWidget *treeWidget) const;
 
-private:
-    class KTreeWidgetSearchLineWidgetPrivate;
-    KTreeWidgetSearchLineWidgetPrivate *k;
+    private:
+        class KTreeWidgetSearchLineWidgetPrivate;
+        KTreeWidgetSearchLineWidgetPrivate *k;
 };
 
 #endif

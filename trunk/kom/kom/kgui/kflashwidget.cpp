@@ -28,119 +28,109 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
-#include <QtGlobal> 
 #ifdef Q_WS_X11
 
 #include "kflashwidget.h"
 
+#include <QtGlobal>
 #include <QtDebug>
 #include <QMouseEvent>
 #include <QPainter>
 
-
 struct KFlashWidget::Private
 {
-	QString movie;
-	QProcess *process;
-	bool isOk;
+    QString movie;
+    QProcess *process;
+    bool isOk;
 };
 
 KFlashWidget::KFlashWidget(const QString &swf, QWidget *parent) : QX11EmbedContainer(parent), k(new Private)
 {
-	setWindowTitle(tr("Flashing"));
-	
-	k->movie = swf;
-	k->isOk = true;
-	
-// 	setAttribute(Qt::WA_OpaquePaintEvent, true);
-	
-	k->process = new QProcess(this);
-	
-	connect(k->process, SIGNAL(started ()), this, SLOT(updateSize()));
-// 	d->process->setEnvironment(QStringList()<<"SESSION_MANAGER=\"\"");
-	
-	resize(640, 480); // FIXME
+    setWindowTitle(tr("Flashing"));
+    
+    k->movie = swf;
+    k->isOk = true;
+    
+    // setAttribute(Qt::WA_OpaquePaintEvent, true);
+    
+    k->process = new QProcess(this);
+    
+    connect(k->process, SIGNAL(started ()), this, SLOT(updateSize()));
+    // k->process->setEnvironment(QStringList()<<"SESSION_MANAGER=\"\"");
+    
+    resize(640, 480); // FIXME
 }
-
 
 KFlashWidget::~KFlashWidget()
 {
-	k->process->kill();
-	k->process->waitForFinished();
-	
-	delete k;
+    k->process->kill();
+    k->process->waitForFinished();
+    
+    delete k;
 }
 
 void KFlashWidget::play()
 {
-	QStringList args;
+    QStringList args;
 
-	args << QStringList() << "-x" << QString::number(winId()) << "-s" << "1.5" << k->movie;
+    args << QStringList() << "-x" << QString::number(winId()) << "-s" << "1.5" << k->movie;
 
-	k->process->start("gnash", args);
-	
-	k->process->waitForStarted();
-	
-	if ( k->process->error() == QProcess::FailedToStart || k->process->state() == QProcess::NotRunning)
-	{
-		qWarning("Please install gnash");
-		k->isOk = false;
-	}
-	else
-	{
-		k->isOk = true;
-	}
-	repaint();
+    k->process->start("gnash", args);
+    
+    k->process->waitForStarted();
+    
+    if (k->process->error() == QProcess::FailedToStart || k->process->state() == QProcess::NotRunning) {
+        qWarning("Please install gnash");
+        k->isOk = false;
+    } else {
+        k->isOk = true;
+    }
+
+    repaint();
 }
 
 void KFlashWidget::stop()
 {
-	k->process->terminate();
-	k->process->waitForFinished();
+    k->process->terminate();
+    k->process->waitForFinished();
 }
 
 void KFlashWidget::mousePressEvent(QMouseEvent *e)
 {
-	if ( e->button() == Qt::RightButton )
-	{
-		emit contextMenu( mapToGlobal( e->pos() ));
-	}
-	
-	e->ignore();
+    if (e->button() == Qt::RightButton)
+        emit contextMenu(mapToGlobal(e->pos()));
+    
+    e->ignore();
 }
 
-void KFlashWidget::mouseDoubleClickEvent( QMouseEvent *e)
+void KFlashWidget::mouseDoubleClickEvent(QMouseEvent *e)
 {
-	stop();
-	play();
-	
-	e->ignore();
+    stop();
+    play();
+    
+    e->ignore();
 }
 
 void KFlashWidget::updateSize()
 {
-	// TODO: Update the widget size
+    // TODO: Update the widget size
 }
 
-void KFlashWidget::paintEvent (QPaintEvent *e)
+void KFlashWidget::paintEvent(QPaintEvent *e)
 {
-	QX11EmbedContainer::paintEvent(e);
-	
-	if ( !k->isOk )
-	{
-		QPainter painter(this);
-		
-		QString text = tr("Please install gnash from http://gnash.org");
-		
-		QFontMetrics fm(painter.font());
-		
-		QRect r = fm.boundingRect(text);
-		
-		QPoint pos = (rect().center() - r.topLeft())/2;
-		
-		painter.drawText(pos, text);
-	}
+    QX11EmbedContainer::paintEvent(e);
+    
+    if (!k->isOk) {
+
+        QPainter painter(this);
+        QString text = tr("Please install gnash from http://gnash.org");
+        QFontMetrics fm(painter.font());
+        QRect r = fm.boundingRect(text);
+        QPoint pos = (rect().center() - r.topLeft())/2;
+        
+        painter.drawText(pos, text);
+
+    }
 }
 
 #endif // Q_WS_X11

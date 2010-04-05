@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KINDICATORDRAWER_H
 #define KINDICATORDRAWER_H
 
@@ -37,19 +36,20 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
+
 class KIndicatorDrawer
 {
-	public:
-		KIndicatorDrawer();
-		~KIndicatorDrawer();
-		
-		void paint(QPainter *painter, const QRectF& rect, const QColor &color, const QColor &fg = Qt::white);
-		
-		void advance();
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+        KIndicatorDrawer();
+        ~KIndicatorDrawer();
+        
+        void paint(QPainter *painter, const QRectF& rect, const QColor &color, const QColor &fg = Qt::white);
+        
+        void advance();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

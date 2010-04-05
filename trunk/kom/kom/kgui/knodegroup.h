@@ -28,13 +28,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef NODEGROUP_H
 #define NODEGROUP_H
 
 #include "kgui/kcontrolnode.h"
-#include <QGraphicsScene>
 
+#include <QGraphicsScene>
 #include <QObject>
 #include <QHash>
 
@@ -42,45 +41,43 @@
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-
 class KNodeGroup : public QObject
 {
-	Q_OBJECT
-	public:
-		KNodeGroup(QGraphicsItem * parent, QGraphicsScene *scene);
-		~KNodeGroup();
-		
-		QGraphicsItem * parentItem();
-		void syncNodes(const QPainterPath & path);
-		void syncNodesFromParent();
-		
-		void setParentItem(QGraphicsItem *);
-		
-		void moveElementTo(int index, const QPointF& pos );
-		QHash<int, QPointF > changedNodes();
-		void clearChangesNodes();
-		void restoreItem();
-		void show();
-		void saveParentProperties();
-		
-		int removeSelectedNodes();
-		
-		void addControlNode(KControlNode* node);
-		
-		void createNodes(QGraphicsPathItem *nodes);
-		void emitNodeClicked();
-		
-		void expandAllNodes();
-		bool isSelected();
-		
-	private:
-		struct Private;
-		Private *const k;
-		
-	signals:
-		void itemChanged(QGraphicsItem *item );
-		void nodeClicked();
-		
+    Q_OBJECT
+    public:
+        KNodeGroup(QGraphicsItem * parent, QGraphicsScene *scene);
+        ~KNodeGroup();
+        
+        QGraphicsItem * parentItem();
+        void syncNodes(const QPainterPath & path);
+        void syncNodesFromParent();
+        
+        void setParentItem(QGraphicsItem *);
+        
+        void moveElementTo(int index, const QPointF& pos);
+        QHash<int, QPointF > changedNodes();
+        void clearChangesNodes();
+        void restoreItem();
+        void show();
+        void saveParentProperties();
+        
+        int removeSelectedNodes();
+        
+        void addControlNode(KControlNode* node);
+        
+        void createNodes(QGraphicsPathItem *nodes);
+        void emitNodeClicked();
+        
+        void expandAllNodes();
+        bool isSelected();
+        
+    private:
+        struct Private;
+        Private *const k;
+        
+    signals:
+        void itemChanged(QGraphicsItem *item);
+        void nodeClicked();
 };
 
 #endif

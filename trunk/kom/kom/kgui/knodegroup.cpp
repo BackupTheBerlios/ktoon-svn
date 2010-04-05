@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "knodegroup.h"
 
 #include <kcore/kdebug.h>
@@ -38,274 +37,215 @@
 
 struct KNodeGroup::Private
 {
-	QList<KControlNode*> nodes;
-	QGraphicsItem *parentItem;
-	QPainterPath path;
-	QPointF pos;
-	QHash<int, QPointF > changedNodes;
-	QGraphicsScene *scene;
+    QList<KControlNode*> nodes;
+    QGraphicsItem *parentItem;
+    QPainterPath path;
+    QPointF pos;
+    QHash<int, QPointF> changedNodes;
+    QGraphicsScene *scene;
 };
-
 
 KNodeGroup::KNodeGroup(QGraphicsItem * parent, QGraphicsScene *scene): k(new Private)
 {
-	KINIT;
-	
-	k->parentItem = parent;
-	k->scene = scene;
-	
-	if(QGraphicsPathItem *pathItem = qgraphicsitem_cast<QGraphicsPathItem *>(parent))
-	{
-		createNodes(pathItem);
-	}
+    KINIT;
+    
+    k->parentItem = parent;
+    k->scene = scene;
+    
+    if (QGraphicsPathItem *pathItem = qgraphicsitem_cast<QGraphicsPathItem *>(parent))
+        createNodes(pathItem);
 }
-
 
 QGraphicsItem * KNodeGroup::parentItem()
 {
-	return k->parentItem;
+    return k->parentItem;
 }
-
 
 KNodeGroup::~KNodeGroup()
 {
-	KEND;
-	qDeleteAll(k->nodes);
-	k->nodes.clear();
-	delete k;
+    KEND;
+    qDeleteAll(k->nodes);
+    k->nodes.clear();
+    delete k;
 }
-
 
 void KNodeGroup::syncNodes(const QPainterPath & path)
 {
-	if(k->nodes.isEmpty())
-	{
-		return;
-	}
-	foreach(KControlNode *node, k->nodes)
-	{
-		if(node)
-		{
-			node->setNotChange(true);
-			node->setPos(path.elementAt(node->index()));
-		}
-	}
-}
+    if (k->nodes.isEmpty())
+        return;
 
+    foreach (KControlNode *node, k->nodes) {
+             if (node) {
+                 node->setNotChange(true);
+                 node->setPos(path.elementAt(node->index()));
+             }
+    }
+}
 
 void KNodeGroup::syncNodesFromParent()
 {
-	if(k->parentItem)
-	{
-		if(qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem))
-		{
-			syncNodes(k->parentItem->sceneMatrix().map( qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path()));
-		}
-	}
+    if (k->parentItem) {
+        if (qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem))
+            syncNodes(k->parentItem->sceneMatrix().map(qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path()));
+    }
 }
-
 
 void KNodeGroup::setParentItem(QGraphicsItem *newParent)
 {
-	K_FUNCINFO;
-	k->parentItem = newParent;
-	foreach(KControlNode *node, k->nodes)
-	{
-		if(node)
-		{
-			node->setParentI(newParent);
-		}
-	}
+    K_FUNCINFO;
+    k->parentItem = newParent;
+    foreach (KControlNode *node, k->nodes) {
+             if (node)
+                 node->setParentI(newParent);
+    }
 }
 
-void KNodeGroup::moveElementTo(int index, const QPointF& pos )
+void KNodeGroup::moveElementTo(int index, const QPointF& pos)
 {
-
-	QPainterPath path = qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path();
-	path.setElementPositionAt(index,pos.x(), pos.y() );
-	QPainterPath::Element e = path.elementAt(0);
-	qgraphicsitem_cast<QGraphicsPathItem *>( k->parentItem)->setPath(path);
-	
-	if(k->changedNodes.contains (index))
-	{
-		(*k->changedNodes.find(index)) = pos;
-	}
-	else
-	{
-		k->changedNodes.insert(index, pos);
-		emit itemChanged( k->parentItem );
-	}
+    QPainterPath path = qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path();
+    path.setElementPositionAt(index,pos.x(), pos.y());
+    QPainterPath::Element e = path.elementAt(0);
+    qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->setPath(path);
+    
+    if (k->changedNodes.contains(index)) {
+        (*k->changedNodes.find(index)) = pos;
+    } else {
+        k->changedNodes.insert(index, pos);
+        emit itemChanged(k->parentItem);
+    }
 }
-
 
 QHash<int, QPointF > KNodeGroup::changedNodes()
 {
-	return k->changedNodes;
+    return k->changedNodes;
 }
-
 
 void KNodeGroup::clearChangesNodes()
 {
-	k->changedNodes.clear();
+    k->changedNodes.clear();
 }
-
 
 void KNodeGroup::restoreItem()
 {
-	qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->setPath(k->path);
-	k->parentItem->setPos(k->pos);
+    qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->setPath(k->path);
+    k->parentItem->setPos(k->pos);
 }
-
 
 void KNodeGroup::show()
 {
-	foreach(KControlNode *node, k->nodes)
-	{
-		if(qgraphicsitem_cast<QGraphicsPathItem *>( k->parentItem))
-		{
-			if(!node->scene())
-			{
-				k->scene->addItem(node);
-			}
-		}
-	}
+    foreach (KControlNode *node, k->nodes) {
+             if (qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)) {
+                 if (!node->scene()) {
+                     k->scene->addItem(node);
+                 }
+             }
+    }
 }
-
 
 void KNodeGroup::saveParentProperties()
 {
-	if(qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem))
-	{
-		k->path = qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path();
-		k->pos = k->parentItem->scenePos();
-	}
+    if (qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)) {
+        k->path = qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path();
+        k->pos = k->parentItem->scenePos();
+    }
 }
-
 
 int KNodeGroup::removeSelectedNodes()
 {
-	int count = 0;
-	foreach(KControlNode *node, k->nodes )
-	{
-		if ( node->isSelected() )
-		{
-			count++;
-			
-			k->nodes.removeAll(node);
-			// FIXME: re-crear el path.
-		}
-	}
-	
-	return count;
+    int count = 0;
+    foreach (KControlNode *node, k->nodes) {
+             if (node->isSelected()) {
+                 count++;
+                 k->nodes.removeAll(node);
+                 // FIXME: recreate the path
+             }
+    }
+    
+    return count;
 }
-
 
 void KNodeGroup::createNodes(QGraphicsPathItem *pathItem)
 {
-	if(pathItem)
-	{
-		/*foreach(DControlNode *node, d->nodes)
-		{
-			d->scene->removeItem(node);
-		}*/
-		qDeleteAll(k->nodes);
-		k->nodes.clear();
-		
-		QPainterPath path = pathItem->sceneMatrix().map( pathItem->path());
-		saveParentProperties();
-		int index = 0;
-		
-		while(index < path.elementCount())
-		{
-			QPainterPath::Element e = path.elementAt(index);
-			
-			if(e.type == QPainterPath::CurveToDataElement)
-			{
-				if(index - 2 < 0) continue;
-				if( path.elementAt(index-2).type == QPainterPath::CurveToElement )
-				{
-					KControlNode *node = new KControlNode(index, this,  path.elementAt(index), pathItem, k->scene);
-					QPainterPath::Element e1 = path.elementAt(index-1);
-					node->setLeft(new KControlNode(index-1,this, e1, pathItem, k->scene));
-					
-					if(index+1 < path.elementCount() )
-					{
-						QPainterPath::Element e2 = path.elementAt(index+1);
-						if(e2.type == QPainterPath::CurveToElement)
-						{
-							node->setRight(new KControlNode(index+1, this, e2, pathItem, k->scene));
-							k->nodes << node->right();
-							index++;
-						}
-					}
-					k->nodes << node;
-					k->nodes << node->left();
-				}
-			}
-			else if( (e.type == QPainterPath::LineToElement || e.type == QPainterPath::MoveToElement ) )
-			{
-				KControlNode *node;
-				if(index+1 < path.elementCount())
-				{
-					
-					if( path.elementAt(index+1).type == QPainterPath::CurveToElement )
-					{
-						node = new KControlNode(index, this, path.elementAt(index), pathItem, k->scene);
-						node->setRight(new KControlNode(index+1,this, path.elementAt(index+1), pathItem, k->scene));
-						
-						index++;
-						k->nodes << node;
-						k->nodes << node->right();
-					}
-					else
-					{
-						node = new KControlNode(index, this, path.elementAt(index), pathItem, k->scene);
-						k->nodes << node;
-					}
-				}
-				else
-				{
-					node = new KControlNode(index, this, path.elementAt(index), pathItem, k->scene);
-					k->nodes << node;
-				}
-			}
-			index++;
-		}
-	}
-	else
-	{
-		kDebug("selection") << "Item not item path";
-	}
+    if (pathItem) {
+
+        qDeleteAll(k->nodes);
+        k->nodes.clear();
+        
+        QPainterPath path = pathItem->sceneMatrix().map(pathItem->path());
+        saveParentProperties();
+        int index = 0;
+        
+        while (index < path.elementCount()) {
+               QPainterPath::Element e = path.elementAt(index);
+            
+               if (e.type == QPainterPath::CurveToDataElement) {
+                   if (index - 2 < 0) 
+                       continue;
+                   if (path.elementAt(index-2).type == QPainterPath::CurveToElement) {
+                       KControlNode *node = new KControlNode(index, this,  path.elementAt(index), pathItem, k->scene);
+                       QPainterPath::Element e1 = path.elementAt(index-1);
+                       node->setLeft(new KControlNode(index-1,this, e1, pathItem, k->scene));
+                    
+                       if (index+1 < path.elementCount()) {
+                           QPainterPath::Element e2 = path.elementAt(index+1);
+                           if (e2.type == QPainterPath::CurveToElement) {
+                               node->setRight(new KControlNode(index+1, this, e2, pathItem, k->scene));
+                               k->nodes << node->right();
+                               index++;
+                           }
+                       }
+                       k->nodes << node;
+                       k->nodes << node->left();
+                   }
+               } else if ((e.type == QPainterPath::LineToElement || e.type == QPainterPath::MoveToElement)) {
+                          KControlNode *node;
+                          if (index+1 < path.elementCount()) {
+                    
+                              if (path.elementAt(index+1).type == QPainterPath::CurveToElement) {
+                                  node = new KControlNode(index, this, path.elementAt(index), pathItem, k->scene);
+                                  node->setRight(new KControlNode(index+1,this, path.elementAt(index+1), pathItem, k->scene));
+                        
+                                  index++;
+                                  k->nodes << node;
+                                  k->nodes << node->right();
+                              } else {
+                                  node = new KControlNode(index, this, path.elementAt(index), pathItem, k->scene);
+                                  k->nodes << node;
+                              }
+               } else {
+                    node = new KControlNode(index, this, path.elementAt(index), pathItem, k->scene);
+                    k->nodes << node;
+               }
+            }
+            index++;
+        }
+    } else {
+        kDebug("selection") << "Item not item path";
+    }
 }
 
-void KNodeGroup::addControlNode(KControlNode* )
+void KNodeGroup::addControlNode(KControlNode*)
 {
-	
+    
 }
 
 void KNodeGroup::emitNodeClicked()
 {
-	emit nodeClicked();
+    emit nodeClicked();
 }
-
 
 void KNodeGroup::expandAllNodes()
 {
-	foreach(KControlNode *node, k->nodes )
-	{
-		node->setVisibleChilds(true);
-	}
+    foreach (KControlNode *node, k->nodes)
+             node->setVisibleChilds(true);
 }
 
 bool KNodeGroup::isSelected()
 {
-	foreach(KControlNode *node, k->nodes )
-        {
-		if(node->isSelected())
-		{
-			return true;
-		}
-	}
-	return false;
-}
+    foreach (KControlNode *node, k->nodes) {
+             if (node->isSelected())
+                 return true;
+    }
 
+    return false;
+}

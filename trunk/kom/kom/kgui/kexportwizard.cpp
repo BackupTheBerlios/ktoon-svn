@@ -28,13 +28,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kexportwizard.h"
-
 #include "kvhbox.h"
 #include "kseparator.h"
 #include "kdebug.h"
-
 #include "kimageeffect.h"
 
 // Qt

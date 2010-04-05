@@ -28,13 +28,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
-
 #include "kmoviegenerator.h"
 #include <kcore/kdebug.h>
 
 KMovieGenerator::KMovieGenerator(int width, int height)
- : QImage(width, height, QImage::Format_RGB32)
+    : QImage(width, height, QImage::Format_RGB32)
 {
     reset();
 }

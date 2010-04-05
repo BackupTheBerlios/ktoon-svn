@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KTHEMEMANAGER_H
 #define KTHEMEMANAGER_H
 
@@ -43,27 +42,27 @@ class KThemeDocument;
 */
 class K_GUI_EXPORT KThemeManager : public QXmlDefaultHandler
 {
-	public:
-		KThemeManager();
-		~KThemeManager();
-		
-		bool applyTheme(const QString &file);
-		bool applyTheme(const KThemeDocument &dd);
-		
-		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
-		
-		bool endElement( const QString& ns, const QString& localname, const QString& qname);
-		
-		bool error ( const QXmlParseException & exception );
-		bool fatalError ( const QXmlParseException & exception );
+    public:
+        KThemeManager();
+        ~KThemeManager();
+        
+        bool applyTheme(const QString &file);
+        bool applyTheme(const KThemeDocument &dd);
+        
+        bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
+        
+        bool endElement(const QString& ns, const QString& localname, const QString& qname);
+        
+        bool error(const QXmlParseException & exception);
+        bool fatalError(const QXmlParseException & exception);
 
-		bool characters ( const QString & ch );
-		
-		QColor getColor(const QXmlAttributes& atts);
-		
-	private:
-		QString m_root,m_qname;
-		QPalette m_palette;
+        bool characters(const QString & ch);
+        
+        QColor getColor(const QXmlAttributes& atts);
+        
+    private:
+        QString m_root,m_qname;
+        QPalette m_palette;
 };
 
 #endif

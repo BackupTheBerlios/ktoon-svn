@@ -206,7 +206,7 @@ void KRulerBase::resizeEvent(QResizeEvent *)
     update();
 }
 
-void KRulerBase::mouseMoveEvent ( QMouseEvent * e )
+void KRulerBase::mouseMoveEvent(QMouseEvent * e)
 {
     if (k->drawPointer)
         movePointers(e->pos());
@@ -228,7 +228,7 @@ void KRulerBase::setSeparation(int sep)
     }
 }
 
-void KRulerBase::mousePressEvent (QMouseEvent *e)
+void KRulerBase::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::RightButton)
         emit displayMenu(this, e->globalPos());

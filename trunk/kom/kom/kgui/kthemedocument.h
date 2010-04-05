@@ -45,26 +45,26 @@ typedef QMap<QString, QString> ThemeKey;
  * <KTheme name="" version="" >
  * <General>
  * <Text color="#000000" />
- * 	<Base color="#EFF0FF" />
- * 	<Foreground color="#3e3e45" />
- * 	<Background color="#556202" />
- * 	<Button color="#B7B6AB" />
- * 	<ButtonText color="#3e3e45" />
+ *     <Base color="#EFF0FF" />
+ *     <Foreground color="#3e3e45" />
+ *     <Background color="#556202" />
+ *     <Button color="#B7B6AB" />
+ *     <ButtonText color="#3e3e45" />
  * </General>
  * <Effects>
- * 	<Light color="" /> <!--QColorGroup::Light - lighter than Button color. -->
- * 	<Midlight color="#070707" /> <!-- QColorGroup::Midlight - between Button and Light.--> 
- * 	<Dark color="" />
- * 	<Mid color="" />
+ *     <Light color="" /> <!--QColorGroup::Light - lighter than Button color. -->
+ *     <Midlight color="#070707" /> <!-- QColorGroup::Midlight - between Button and Light.--> 
+ *     <Dark color="" />
+ *     <Mid color="" />
  * </Effects>
  * <Selections>
- * 	<Highlight color="#3B6886" />
- * 	<HighlightedText color="#EFEDDF" />
+ *     <Highlight color="#3B6886" />
+ *     <HighlightedText color="#EFEDDF" />
  * </Selections>
  * <TextEffects>
- * 	<BrightText color="" />
- * 	<Link color="" />
- * 	<LinkVisited color="" />
+ *     <BrightText color="" />
+ *     <Link color="" />
+ *     <LinkVisited color="" />
  * </TextEffects>
  * </KTheme>
  * @endverbatim
@@ -72,14 +72,14 @@ typedef QMap<QString, QString> ThemeKey;
 
 class K_GUI_EXPORT KThemeDocument : public QDomDocument
 {
-	public:
-		KThemeDocument();
-		KThemeDocument(const QString &name, const QString &version);
-		~KThemeDocument();
-		void addGeneralSection(ThemeKey tk);
-		void addEffectsSection(ThemeKey tk);
-		void addSelections(ThemeKey tk);
-		void addTextEffect(ThemeKey tk);
+    public:
+        KThemeDocument();
+        KThemeDocument(const QString &name, const QString &version);
+        ~KThemeDocument();
+        void addGeneralSection(ThemeKey tk);
+        void addEffectsSection(ThemeKey tk);
+        void addSelections(ThemeKey tk);
+        void addTextEffect(ThemeKey tk);
 };
 
 #endif

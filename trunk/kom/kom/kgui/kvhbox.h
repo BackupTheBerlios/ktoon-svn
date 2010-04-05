@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KVHBOX_H
 #define KVHBOX_H
 
@@ -47,29 +46,29 @@ class KVHBox;
 
 class K_GUI_EXPORT KVHBox : public QFrame
 {
-	Q_OBJECT
-	public:
-		KVHBox(QWidget *parent, Qt::Orientation o);
-		KVHBox(QWidget *parent = 0, bool isVertical = true);
-		~KVHBox();
-		void moveWidgetUp(QWidget *);
-		void moveWidgetDown(QWidget *);
-		void switchWidgetsPosition(QWidget *first, QWidget *second);
-		virtual QSize sizeHint() const;
-		void setSpacing( int space );
-		void setStretchFactor( QWidget* w, int stretch );
-		void addWidget(QWidget *child, Qt::Alignment alignment = 0);
-		QBoxLayout *boxLayout();
-		
-	signals:
-		void mouseAt(const QPoint &);
-		
-	protected:
-		virtual bool event( QEvent *e );
-		virtual void mouseMoveEvent(QMouseEvent *e);
-		
-	private:
-		QBoxLayout *m_pLayout;
+    Q_OBJECT
+    public:
+        KVHBox(QWidget *parent, Qt::Orientation o);
+        KVHBox(QWidget *parent = 0, bool isVertical = true);
+        ~KVHBox();
+        void moveWidgetUp(QWidget *);
+        void moveWidgetDown(QWidget *);
+        void switchWidgetsPosition(QWidget *first, QWidget *second);
+        virtual QSize sizeHint() const;
+        void setSpacing(int space);
+        void setStretchFactor(QWidget* w, int stretch);
+        void addWidget(QWidget *child, Qt::Alignment alignment = 0);
+        QBoxLayout *boxLayout();
+        
+    signals:
+        void mouseAt(const QPoint &);
+        
+    protected:
+        virtual bool event(QEvent *e );
+        virtual void mouseMoveEvent(QMouseEvent *e);
+        
+    private:
+        QBoxLayout *m_pLayout;
 
 };
 

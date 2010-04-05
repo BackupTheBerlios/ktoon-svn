@@ -27,32 +27,30 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
  
 #include "kthemedocument.h"
 
 KThemeDocument::KThemeDocument() : QDomDocument()
 {
-	QDomProcessingInstruction header = this->createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
-	this->appendChild(header);
-	
-	QDomElement root = createElement( "KTheme" );
-	
-	appendChild( root );
+    QDomProcessingInstruction header = this->createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
+    this->appendChild(header);
+    
+    QDomElement root = createElement("KTheme");
+    
+    appendChild(root);
 }
 
 KThemeDocument::KThemeDocument(const QString &name, const QString &version) : QDomDocument()
 {
-	QDomProcessingInstruction header = this->createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
-	this->appendChild(header);
-	
-	QDomElement root = createElement( "KTheme" );
-	root.setAttribute("name", name);
-	root.setAttribute("version", version);
-	
-	appendChild( root );
+    QDomProcessingInstruction header = this->createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
+    this->appendChild(header);
+    
+    QDomElement root = createElement("KTheme");
+    root.setAttribute("name", name);
+    root.setAttribute("version", version);
+    
+    appendChild( root );
 }
-
 
 KThemeDocument::~KThemeDocument()
 {
@@ -60,57 +58,61 @@ KThemeDocument::~KThemeDocument()
 
 void KThemeDocument::addGeneralSection(ThemeKey tk)
 {
-	QDomElement general = createElement("General");
-	QStringList keys = tk.keys();
-	QStringList values = tk.values();
-	for(int i = 0; i < keys.count(); i++)
-	{
-		QDomElement e = createElement(keys[i]);
-		e.setAttribute("color", values[i]);
-		general.appendChild(e);
-	}
-	documentElement().appendChild(general);
+    QDomElement general = createElement("General");
+    QStringList keys = tk.keys();
+    QStringList values = tk.values();
+
+    for (int i = 0; i < keys.count(); i++) {
+         QDomElement e = createElement(keys[i]);
+         e.setAttribute("color", values[i]);
+         general.appendChild(e);
+    }
+
+    documentElement().appendChild(general);
 }
 
-void KThemeDocument::addEffectsSection(ThemeKey tk)		
+void KThemeDocument::addEffectsSection(ThemeKey tk)        
 {
-	QDomElement general = createElement("Effects");
-	QStringList keys = tk.keys();
-	QStringList values = tk.values();
-	for(int i = 0; i < keys.count(); i++)
-	{
-		QDomElement e = createElement(keys[i]);
-		e.setAttribute("color", values[i]);
-		general.appendChild(e);
-	}
-	documentElement().appendChild(general);
+    QDomElement general = createElement("Effects");
+    QStringList keys = tk.keys();
+    QStringList values = tk.values();
+
+    for (int i = 0; i < keys.count(); i++) {
+         QDomElement e = createElement(keys[i]);
+         e.setAttribute("color", values[i]);
+         general.appendChild(e);
+    }
+
+    documentElement().appendChild(general);
 }
 
 void KThemeDocument::addSelections(ThemeKey tk)
 {
-	QDomElement general = createElement("Selections");
-	QStringList keys = tk.keys();
-	QStringList values = tk.values();
-	for(int i = 0; i < keys.count(); i++)
-	{
-		QDomElement e = createElement(keys[i]);
-		e.setAttribute("color", values[i]);
-		general.appendChild(e);
-	}
-	documentElement().appendChild(general);
+    QDomElement general = createElement("Selections");
+    QStringList keys = tk.keys();
+    QStringList values = tk.values();
+
+    for (int i = 0; i < keys.count(); i++) {
+         QDomElement e = createElement(keys[i]);
+         e.setAttribute("color", values[i]);
+         general.appendChild(e);
+    }
+
+    documentElement().appendChild(general);
 }
 
 void KThemeDocument::addTextEffect(ThemeKey tk)
 {
-	QDomElement general = createElement("TextEffects");
-	QStringList keys = tk.keys();
-	QStringList values = tk.values();
-	for(int i = 0; i < keys.count(); i++)
-	{
-		QDomElement e = createElement(keys[i]);
-		e.setAttribute("color", values[i]);
-		general.appendChild(e);
-	}
-	documentElement().appendChild(general);
+    QDomElement general = createElement("TextEffects");
+    QStringList keys = tk.keys();
+    QStringList values = tk.values();
+
+    for (int i = 0; i < keys.count(); i++) {
+         QDomElement e = createElement(keys[i]);
+         e.setAttribute("color", values[i]);
+         general.appendChild(e);
+    }
+
+    documentElement().appendChild(general);
 }
 

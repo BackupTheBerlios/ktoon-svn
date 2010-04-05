@@ -28,46 +28,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "koptionaldialog.h"
+#include "kseparator.h"
 
 #include <QVBoxLayout>
 #include <QLabel>
-#include "kseparator.h"
 
 KOptionalDialog::KOptionalDialog(const QString &text,const QString &title,QWidget *parent) : QDialog(parent)
 {
-	setWindowTitle(title);
-	m_layout = new QVBoxLayout;
-	
-	m_layout->addStretch(10);
-	
-	QLabel *label = new QLabel(text, this);
-	
-	m_layout->addWidget(label);
-	
-	m_layout->addStretch(10);
-	
-	m_layout->addWidget(new KSeparator);
-	
-	QHBoxLayout *buttonLayout = new QHBoxLayout;
-	buttonLayout->addStretch(1);
-	
-	m_checkBox = new QCheckBox(tr("Don't show again"));
-	buttonLayout->addWidget(m_checkBox);
-	
-	QPushButton *cancelButton = new QPushButton(tr("Cancel"));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
-	buttonLayout->addWidget(cancelButton);
-	
-	QPushButton *okButton = new QPushButton(tr("Accept"));
-	connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
-	buttonLayout->addWidget(okButton);
-	
-	m_layout->addLayout(buttonLayout);
-	setLayout(m_layout);
+    setWindowTitle(title);
+    m_layout = new QVBoxLayout;
+    
+    m_layout->addStretch(10);
+    
+    QLabel *label = new QLabel(text, this);
+    
+    m_layout->addWidget(label);
+    
+    m_layout->addStretch(10);
+    
+    m_layout->addWidget(new KSeparator);
+    
+    QHBoxLayout *buttonLayout = new QHBoxLayout;
+    buttonLayout->addStretch(1);
+    
+    m_checkBox = new QCheckBox(tr("Don't show again"));
+    buttonLayout->addWidget(m_checkBox);
+    
+    QPushButton *cancelButton = new QPushButton(tr("Cancel"));
+    connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+    buttonLayout->addWidget(cancelButton);
+    
+    QPushButton *okButton = new QPushButton(tr("Accept"));
+    connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
+    buttonLayout->addWidget(okButton);
+    
+    m_layout->addLayout(buttonLayout);
+    setLayout(m_layout);
 }
-
 
 KOptionalDialog::~KOptionalDialog()
 {
@@ -75,6 +73,5 @@ KOptionalDialog::~KOptionalDialog()
 
 bool KOptionalDialog::shownAgain()
 {
-	return m_checkBox->isChecked();
+    return m_checkBox->isChecked();
 }
-

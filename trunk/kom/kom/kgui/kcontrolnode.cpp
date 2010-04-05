@@ -28,8 +28,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kcontrolnode.h"
+#include "knodegroup.h"
+#include <kcore/kdebug.h>
+
 #include <QCursor>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
@@ -37,24 +39,23 @@
 #include <QStyleOption>
 #include <QStyleOptionButton>
 #include <QApplication>
-
-#include <kcore/kdebug.h>
 #include <QCursor>
-
 #include <QGraphicsPathItem>
-#include "knodegroup.h"
 
 struct KControlNode::Private
 {
     int index;
     QGraphicsItem * parent;
-    KControlNode *left, *right, *nodeParent;
+    KControlNode *nodeParent;
+    KControlNode *left;
+    KControlNode *right;
     bool notChange;
     KNodeGroup *nodeGroup;
     QGraphicsScene *scene;
 };
 
-KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos, QGraphicsItem * parent,  QGraphicsScene * scene) : QGraphicsItem(0, scene), k(new Private)
+KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos, QGraphicsItem * parent,  
+                           QGraphicsScene * scene) : QGraphicsItem(0, scene), k(new Private)
 {
     k->index  = index;
     k->parent = 0;
@@ -71,8 +72,7 @@ KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos
     
     setPos(pos);
     setZValue(1000);
-    
-    setParentI(parent);
+    changeParent(parent);
 }
 
 KControlNode::~KControlNode()
@@ -130,6 +130,8 @@ void KControlNode::paintLinesToChilds(QPainter * painter)
     painter->save();
     
     painter->setPen(QPen(QColor(0x8080FF)));
+    painter->setRenderHint(QPainter::Antialiasing, true);
+
     if (k->right) {
         if (k->right->isVisible())
             painter->drawLine(inverted.map(pos()), inverted.map(k->right->pos()));
@@ -146,7 +148,7 @@ void KControlNode::paintLinesToChilds(QPainter * painter)
 QRectF KControlNode::boundingRect() const
 {
     QSizeF size(8 , 8);
-    QRectF r(QPointF( -size.width()/2, -size.height()/2), size);
+    QRectF r(QPointF(-size.width()/2, -size.height()/2), size);
 
     if (k->right) {
         if (k->right->isVisible())
@@ -174,8 +176,9 @@ QVariant KControlNode::itemChange(GraphicsItemChange change, const QVariant &val
                     k->right->moveBy(diff.x(), diff.y());
 
                 QPointF scenePos = k->parent->mapFromScene(value.toPointF());
+
                 if (k->nodeGroup)
-                    k->nodeGroup->moveElementTo(k->index, scenePos );
+                    k->nodeGroup->moveElementTo(k->index, scenePos);
            }
         } else {
            k->notChange = false;
@@ -208,6 +211,7 @@ QVariant KControlNode::itemChange(GraphicsItemChange change, const QVariant &val
 void KControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (k->nodeParent) {
+
         setSelected(true);
         k->nodeParent->setSelected(true);
         if (k->nodeParent->left()) {
@@ -218,6 +222,7 @@ void KControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
             if (k->nodeParent->right() != this)
                 k->nodeParent->right()->setSelected(false);
         }
+
     } else {
         setSeletedChilds(false);
     }
@@ -318,7 +323,7 @@ int KControlNode::index() const
     return k->index;
 }
 
-void KControlNode::setParentI(QGraphicsItem *newParent)
+void KControlNode::changeParent(QGraphicsItem *newParent)
 {
     k->parent = newParent;
 }

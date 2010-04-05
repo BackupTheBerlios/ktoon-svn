@@ -28,38 +28,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KTERMTAB_H
 #define KTERMTAB_H
 
-#include <kgui/ktabwidget.h>
 #include <QToolButton>
 #include <kcore/kglobal.h>
-
+#include <kgui/ktabwidget.h>
 
 class KTerm;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
+
 class K_GUI_EXPORT KTermTab : public KTabWidget
 {
-	Q_OBJECT
-	public:
-		KTermTab(QWidget *parent = 0);
-		~KTermTab();
-		
-	private slots:
-		void closeTermTab();
-		
-	public slots:
-		void closeTermTab(KTerm *term);
-		void newTerm();
-		void closeCurrentTerm();
-		
-	private:
-		QToolButton *m_newTab, *m_closeTab;
-		
+    Q_OBJECT
+    public:
+        KTermTab(QWidget *parent = 0);
+        ~KTermTab();
+        
+    private slots:
+        void closeTermTab();
+        
+    public slots:
+        void closeTermTab(KTerm *term);
+        void newTerm();
+        void closeCurrentTerm();
+        
+    private:
+        QToolButton *m_newTab, *m_closeTab;
+        
 };
 
 #endif

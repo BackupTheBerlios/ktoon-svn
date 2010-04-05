@@ -36,37 +36,37 @@ KSeparator::KSeparator(QWidget* parent) : QFrame(parent)
 {
    setLineWidth(1);
    setMidLineWidth(0);
-   setOrientation( Qt::Horizontal );
+   setOrientation(Qt::Horizontal);
 }
-
 
 KSeparator::KSeparator(Qt::Orientation orientation, QWidget* parent)
    : QFrame(parent)
 {
    setLineWidth(1);
    setMidLineWidth(0);
-   setOrientation( orientation );
+   setOrientation(orientation);
 }
-
 
 void KSeparator::setOrientation(Qt::Orientation orientation)
 {
    if (orientation == Qt::Vertical) {
-      setFrameShape ( QFrame::VLine );
-      setFrameShadow( QFrame::Sunken );
+      setFrameShape(QFrame::VLine);
+      setFrameShadow(QFrame::Sunken);
       setMinimumSize(2, 0);
    }
    else {
-      setFrameShape ( QFrame::HLine );
-      setFrameShadow( QFrame::Sunken );
+      setFrameShape(QFrame::HLine);
+      setFrameShadow(QFrame::Sunken);
       setMinimumSize(0, 2);
    }
 }
 
 Qt::Orientation KSeparator::orientation() const
 {
-   return ( frameStyle() & VLine ) ? Qt::Vertical : Qt::Horizontal;
+   return (frameStyle() & VLine) ? Qt::Vertical : Qt::Horizontal;
 }
 
 void KSeparator::virtual_hook( int, void* )
-{ /*BASE::virtual_hook( id, data );*/ }
+{ 
+    /*BASE::virtual_hook( id, data );*/ 
+}

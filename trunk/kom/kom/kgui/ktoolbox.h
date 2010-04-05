@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KTOOLBOX_H
 #define KTOOLBOX_H
 
@@ -40,22 +39,21 @@
 */
 class K_GUI_EXPORT KToolBox : public QToolBox
 {
-	Q_OBJECT
-	public:
-		KToolBox(QWidget *parent = 0);
-		~KToolBox();
-		void addPage(QWidget *page, const QString &title);
-		
-	protected:
-		virtual void createIcon();
-		
-	private slots:
-		void changeIcon(int index);
-		
-	private:
-		QIcon m_icon;
-		int m_lastIndex;
-
+    Q_OBJECT
+    public:
+        KToolBox(QWidget *parent = 0);
+        ~KToolBox();
+        void addPage(QWidget *page, const QString &title);
+        
+    protected:
+        virtual void createIcon();
+        
+    private slots:
+        void changeIcon(int index);
+        
+    private:
+        QIcon m_icon;
+        int m_lastIndex;
 };
 
 #endif

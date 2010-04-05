@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KIDEALITY_H
 #define KIDEALTIY_H
 
@@ -40,7 +39,4 @@
 # define K_IDEAL_EXPORT
 #endif
 
-
 #endif // KIDEALITY_H
-
-

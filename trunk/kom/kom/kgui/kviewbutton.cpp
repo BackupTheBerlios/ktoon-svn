@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kviewbutton.h"
 #include "ktoolview.h"
 #include "kcore/kdebug.h"
@@ -39,7 +38,6 @@
 #include <QIcon>
 #include <QMouseEvent>
 #include <QMainWindow>
-
 #include <QTimer>
 #include <QtDebug>
 

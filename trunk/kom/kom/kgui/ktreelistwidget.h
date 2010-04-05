@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KTREELISTWIDGET_H
 #define KTREELISTWIDGET_H
 
@@ -38,32 +37,33 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
+
 class K_GUI_EXPORT KTreeListWidget : public QTreeWidget
 {
-	Q_OBJECT
-	public:
-		KTreeListWidget(QWidget *parent = 0);
-		~KTreeListWidget();
-		void addItems(const QStringList &items);
-		QList<QTreeWidgetItem *> topLevelItems();
-		
-		void setEditable(bool isEditable);
-		bool isEditable() const;
-		
-	public slots:
-		void removeAll();
-		
-	private slots:
-		void editDoubleClickedItem(QTreeWidgetItem *item, int col);
-		
-	protected slots:
-		virtual void closeEditor ( QWidget * editor, QAbstractItemDelegate::EndEditHint hint );
-		
-	signals:
-		void itemRenamed(QTreeWidgetItem *item);
-		
-	private:
-		bool m_isEditable;
+    Q_OBJECT
+    public:
+        KTreeListWidget(QWidget *parent = 0);
+        ~KTreeListWidget();
+        void addItems(const QStringList &items);
+        QList<QTreeWidgetItem *> topLevelItems();
+        
+        void setEditable(bool isEditable);
+        bool isEditable() const;
+        
+    public slots:
+        void removeAll();
+        
+    private slots:
+        void editDoubleClickedItem(QTreeWidgetItem *item, int col);
+        
+    protected slots:
+        virtual void closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint);
+        
+    signals:
+        void itemRenamed(QTreeWidgetItem *item);
+        
+    private:
+        bool m_isEditable;
 };
 
 #endif

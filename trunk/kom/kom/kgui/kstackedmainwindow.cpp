@@ -28,19 +28,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kstackedmainwindow.h"
 
 #include <QStackedWidget>
 
 KStackedMainWindow::KStackedMainWindow(QWidget *parent) : KMainWindow(parent)
 {
-	m_stack = new QStackedWidget;
-	setCentralWidget( m_stack );
-	
-	connect(this, SIGNAL(perspectiveChanged( int )), this, SLOT(setupPerspective(int)));
+    m_stack = new QStackedWidget;
+    setCentralWidget(m_stack);
+    
+    connect(this, SIGNAL(perspectiveChanged(int)), this, SLOT(setupPerspective(int)));
 }
-
 
 KStackedMainWindow::~KStackedMainWindow()
 {
@@ -48,27 +46,24 @@ KStackedMainWindow::~KStackedMainWindow()
 
 void KStackedMainWindow::addWidget(QWidget *widget, int perspective)
 {
-	if ( m_widgets.contains( perspective ) ) return;
-	
-	m_widgets.insert(perspective, widget);
-	
-	m_stack->addWidget(widget);
+    if (m_widgets.contains(perspective)) 
+        return;
+    
+    m_widgets.insert(perspective, widget);
+    m_stack->addWidget(widget);
 }
 
 void KStackedMainWindow::removeWidget(QWidget *widget)
 {
-	m_stack->removeWidget(widget);
-	
-	m_widgets.remove( m_widgets.key(widget) );
+    m_stack->removeWidget(widget);
+    
+    m_widgets.remove(m_widgets.key(widget));
 }
 
 void KStackedMainWindow::setupPerspective(int perspective)
 {
-	if ( m_widgets.contains(perspective) )
-	{
-		QWidget *w = m_widgets[perspective];
-		m_stack->setCurrentWidget(w);
-	}
+    if (m_widgets.contains(perspective)) {
+        QWidget *w = m_widgets[perspective];
+        m_stack->setCurrentWidget(w);
+    }
 }
-
-

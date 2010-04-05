@@ -28,40 +28,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
-#include <QtGlobal> 
 #ifdef Q_WS_X11
 
-#include "ktermtab.h"
-#include <qlabel.h>
-
+#include <QtGlobal> 
 #include <QTabBar>
+#include "ktermtab.h"
 
+#include <qlabel.h>
 #include "kterm.h"
 
 KTermTab::KTermTab(QWidget *parent) : KTabWidget(parent)
 {
-// 	tabBar()->setShape( QTabBar::TriangularNorth );
-	
-	m_newTab = new QToolButton(this);
-	m_newTab->setText(tr("New"));
-	
-	connect(m_newTab, SIGNAL(clicked()), this, SLOT(newTerm()));
-	
-	m_closeTab = new QToolButton(this);
-	m_closeTab->setText(tr("Close"));
-	
-	connect(m_closeTab, SIGNAL(clicked()), this, SLOT(closeCurrentTerm()));
-	
-	setCornerWidget( m_newTab, Qt::TopLeftCorner );
-	setCornerWidget( m_closeTab, Qt::TopRightCorner );
-	
-	m_closeTab->show();
-	m_newTab->show();
-	
-	newTerm();
+    // tabBar()->setShape( QTabBar::TriangularNorth );
+    m_newTab = new QToolButton(this);
+    m_newTab->setText(tr("New"));
+    
+    connect(m_newTab, SIGNAL(clicked()), this, SLOT(newTerm()));
+    
+    m_closeTab = new QToolButton(this);
+    m_closeTab->setText(tr("Close"));
+    
+    connect(m_closeTab, SIGNAL(clicked()), this, SLOT(closeCurrentTerm()));
+    
+    setCornerWidget(m_newTab, Qt::TopLeftCorner);
+    setCornerWidget(m_closeTab, Qt::TopRightCorner);
+    
+    m_closeTab->show();
+    m_newTab->show();
+    
+    newTerm();
 }
-
 
 KTermTab::~KTermTab()
 {
@@ -69,31 +65,30 @@ KTermTab::~KTermTab()
 
 void KTermTab::newTerm()
 {
-	KTerm *term = new KTerm;
-	addTab(term, tr("Console %1").arg(count()));
-		
-	term->showTerm();
-		
-	connect(term, SIGNAL(termClosed()), this, SLOT(closeTermTab()));
+    KTerm *term = new KTerm;
+    addTab(term, tr("Console %1").arg(count()));
+        
+    term->showTerm();
+        
+    connect(term, SIGNAL(termClosed()), this, SLOT(closeTermTab()));
 }
 
 void KTermTab::closeCurrentTerm()
 {
-	removeTab(currentIndex());
+    removeTab(currentIndex());
 }
 
 void KTermTab::closeTermTab()
 {
-	KTerm *term = qobject_cast<KTerm *>(sender());
-	if( term)
-	{
-		closeTermTab( term );
-	}
+    KTerm *term = qobject_cast<KTerm *>(sender());
+
+    if (term)
+        closeTermTab(term);
 }
 
 void KTermTab::closeTermTab(KTerm *term)
 {
-	removeTab(indexOf(term));
+    removeTab(indexOf(term));
 }
 
 #endif // Q_WS_X11

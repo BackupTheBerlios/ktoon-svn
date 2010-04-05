@@ -28,8 +28,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kosd.h"
+#include "kcore/kdebug.h"
 
 #include <QApplication>
 #include <QBitmap>
@@ -37,8 +37,6 @@
 #include <QPainter>
 #include <QDesktopWidget>
 #include <QLinearGradient>
-
-#include "kcore/kdebug.h"
 
 KOsd *KOsd::s_osd = 0;
 
@@ -134,7 +132,8 @@ void KOsd::display(const QString &message, Level level, int ms)
     int height = (int)textSize.height()+10;
 
     QDesktopWidget desktop;
-    move((int) (desktop.screenGeometry().width() - textSize.width()) - 25, (int) (desktop.screenGeometry().height() - textSize.height()) - 50);
+    move((int) (desktop.screenGeometry().width() - textSize.width()) - 25, 
+                (int) (desktop.screenGeometry().height() - textSize.height()) - 50);
 
     QRect geometry(0, 0, width + 10, height + 8);
     QRect geometry2(0, 0, width + 9, height + 7);

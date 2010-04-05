@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef CONTROLNODE_H
 #define CONTROLNODE_H
 
@@ -36,7 +35,6 @@
 #include <QObject>
 #include <QPointF>
 #include <QGraphicsScene>
-
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
@@ -48,7 +46,8 @@ class KControlNode : public QObject, public QGraphicsItem
     
     public:
         
-        KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos = QPoint(0,0) ,  QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
+        KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos = QPoint(0,0),  
+                     QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
         
         ~KControlNode();
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
@@ -62,7 +61,7 @@ class KControlNode : public QObject, public QGraphicsItem
         void setNodeParent(KControlNode *nodeParent);
         int index() const;
         
-        void setParentI(QGraphicsItem * newParent); // ### setParentI is not a significant name, pick one better 
+        void changeParent(QGraphicsItem * newParent);
         QGraphicsItem *parentI();
         
         KControlNode *left();

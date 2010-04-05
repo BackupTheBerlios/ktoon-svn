@@ -28,15 +28,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KTIP_H
 #define KTIP_H
 
 #include <QString>
 #include <QList>
 #include <QDialog>
-#include <kcore/kglobal.h>
 
+#include <kcore/kglobal.h>
 #include "kcore/ktipdatabase.h"
 
 class QCheckBox;
@@ -49,25 +48,25 @@ class QTextBrowser;
 
 class K_GUI_EXPORT KTipDialog : public QDialog
 {
-	Q_OBJECT;
-	public:
-		KTipDialog(const QString &file, QWidget *parent = 0);
-		KTipDialog(KTipDatabase *database, QWidget *parent = 0);
-		~KTipDialog();
-		
-	private:
-		void setupGUI();
-		
-	private slots:
-		void showPrevTip();
-		void showNextTip();
-		
-		void setShowOnStart();
-		
-	private:
-		QTextBrowser *m_textArea;
-		QCheckBox *m_showOnStart;
-		KTipDatabase *m_database;
+    Q_OBJECT;
+    public:
+        KTipDialog(const QString &file, QWidget *parent = 0);
+        KTipDialog(KTipDatabase *database, QWidget *parent = 0);
+        ~KTipDialog();
+        
+    private:
+        void setupGUI();
+        
+    private slots:
+        void showPrevTip();
+        void showNextTip();
+        
+        void setShowOnStart();
+        
+    private:
+        QTextBrowser *m_textArea;
+        QCheckBox *m_showOnStart;
+        KTipDatabase *m_database;
 };
 
 #endif

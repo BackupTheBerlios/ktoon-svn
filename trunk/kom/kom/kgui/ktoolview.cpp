@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "ktoolview.h"
 #include "kviewbutton.h"
 #include "kmainwindow.h"

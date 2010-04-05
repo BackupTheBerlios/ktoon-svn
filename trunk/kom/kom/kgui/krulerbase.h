@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef RULER_H
 #define RULER_H
 
@@ -50,70 +49,75 @@ class KRulerBase;
 
 class K_GUI_EXPORT KRulerBase : public QFrame
 {
-	Q_OBJECT
-	
-	public:
-// 		enum Unit {
-// 			SC_POINTS      = 0,
-// 			SC_PT          = 0,
-// 			SC_MILLIMETERS = 1,
-// 			SC_MM          = 1,
-// 			SC_INCHES      = 2,
-// 			SC_IN          = 2,
-// 			SC_PICAS       = 3,
-// 			SC_P           = 3,
-// 			SC_CENTIMETERS = 4,
-// 			SC_CM          = 4,
-// 			SC_CICERO      = 5,
-// 			SC_C           = 5
-// 		};
-		
-		KRulerBase(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0);
-		virtual ~KRulerBase();
-		
-// 		const double unitGetRatioFromIndex(const int index);
-// 		const double pts2mm(double pts);
-// 		const double mm2pts(double mm);
-		virtual void drawScale(QPainter *painter);
-		Qt::Orientation orientation();
-		
-		int separation() const;
-		double scaleFactor() const;
-		QPointF zero() const;
-		
-		void translateArrow(double dx, double dy);
-		
-	public slots:
-		void setZeroAt(const QPointF & pos);
-		void scale(double factor);
-		
-	private:
-		enum { ChangeScaleToFive, ChangeScaleToTen  };
-		
-		struct Private;
-		Private *const k;
-		
-	signals:
-		void displayMenu(KRulerBase *, QPoint pos);
-		
-	protected:
-		virtual void paintEvent ( QPaintEvent * e);
-		virtual void resizeEvent ( QResizeEvent * );
-		virtual void mouseMoveEvent ( QMouseEvent * e );
-		virtual void mousePressEvent (QMouseEvent *e);
-		virtual QSize sizeHint() const;
-		
-	public slots:
- 		virtual void movePointers(const QPointF &pos) = 0;
-		void setSeparation(int sep);
-		void setDrawPointer(bool yes = true);
-		void slide(int value);
-		
-		virtual void showMenu(KRulerBase *, QPoint pos);
-		
-	private slots:
-		void changeScaleTo5pts();
-		void changeScaleTo10pts();
+    Q_OBJECT
+    
+    public:
+
+    /***
+         enum Unit {
+             SC_POINTS      = 0,
+             SC_PT          = 0,
+             SC_MILLIMETERS = 1,
+             SC_MM          = 1,
+             SC_INCHES      = 2,
+             SC_IN          = 2,
+             SC_PICAS       = 3,
+             SC_P           = 3,
+             SC_CENTIMETERS = 4,
+             SC_CM          = 4,
+             SC_CICERO      = 5,
+             SC_C           = 5
+         };
+    */
+        
+        KRulerBase(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0);
+        virtual ~KRulerBase();
+        
+        // const double unitGetRatioFromIndex(const int index);
+        // const double pts2mm(double pts);
+        // const double mm2pts(double mm);
+
+        virtual void drawScale(QPainter *painter);
+        Qt::Orientation orientation();
+        
+        int separation() const;
+        double scaleFactor() const;
+        QPointF zero() const;
+        
+        void translateArrow(double dx, double dy);
+        
+    public slots:
+
+        void setZeroAt(const QPointF & pos);
+        void scale(double factor);
+        
+    private:
+        enum { ChangeScaleToFive, ChangeScaleToTen  };
+        
+        struct Private;
+        Private *const k;
+        
+    signals:
+        void displayMenu(KRulerBase *, QPoint pos);
+        
+    protected:
+        virtual void paintEvent(QPaintEvent * e);
+        virtual void resizeEvent(QResizeEvent *);
+        virtual void mouseMoveEvent(QMouseEvent * e);
+        virtual void mousePressEvent(QMouseEvent *e);
+        virtual QSize sizeHint() const;
+        
+    public slots:
+        virtual void movePointers(const QPointF &pos) = 0;
+        void setSeparation(int sep);
+        void setDrawPointer(bool yes = true);
+        void slide(int value);
+        
+        virtual void showMenu(KRulerBase *, QPoint pos);
+        
+    private slots:
+        void changeScaleTo5pts();
+        void changeScaleTo10pts();
 };
 
 #endif

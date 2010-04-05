@@ -39,11 +39,9 @@
 
 class KTreeListWidgetDelegate : public QItemDelegate
 {
-	public:
-		KTreeListWidgetDelegate(QObject * parent = 0 );
-		~KTreeListWidgetDelegate();
-// 		virtual bool editorEvent ( QEvent * event, QAbstractItemModel * model, const QStyleOptionViewItem & option, const QModelIndex & index );
-		
+    public:
+        KTreeListWidgetDelegate(QObject * parent = 0);
+        ~KTreeListWidgetDelegate();
 };
 
 KTreeListWidgetDelegate::KTreeListWidgetDelegate(QObject * parent) : QItemDelegate(parent)
@@ -54,36 +52,24 @@ KTreeListWidgetDelegate::~KTreeListWidgetDelegate()
 {
 }
 
-// bool KTreeListWidgetDelegate::editorEvent ( QEvent * event, QAbstractItemModel * model, const QStyleOptionViewItem & option, const QModelIndex & index )
-// {
-// // 	return QItemDelegate::editorEvent (event, model, option, index);
-// 	return true;
-// }
-
-
-
 //////////////////
 
 KTreeListWidget::KTreeListWidget(QWidget *parent) : QTreeWidget(parent)
 {
-	setEditTriggers(QAbstractItemView::EditKeyPressed | QAbstractItemView::DoubleClicked);
-// 	setAcceptDrops(true);
-// 	setDragEnabled(true);
-	
-	setHeaderLabels(QStringList() << "");
-	
-	header()->hide();
-	setUniformRowHeights (true);
-	
-	setAlternatingRowColors(true);
-	
-	KTreeListWidgetDelegate *delegator = new KTreeListWidgetDelegate(this);
-	
-	setItemDelegate(delegator);
-	
-	connect(this, SIGNAL(itemDoubleClicked ( QTreeWidgetItem *, int )), this, SLOT(editDoubleClickedItem(QTreeWidgetItem *, int  )));
+    setEditTriggers(QAbstractItemView::EditKeyPressed | QAbstractItemView::DoubleClicked);
+    setHeaderLabels(QStringList() << "");
+    
+    header()->hide();
+    setUniformRowHeights (true);
+    
+    setAlternatingRowColors(true);
+    
+    KTreeListWidgetDelegate *delegator = new KTreeListWidgetDelegate(this);
+    
+    setItemDelegate(delegator);
+    
+    connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(editDoubleClickedItem(QTreeWidgetItem *, int)));
 }
-
 
 KTreeListWidget::~KTreeListWidget()
 {
@@ -91,65 +77,58 @@ KTreeListWidget::~KTreeListWidget()
 
 void KTreeListWidget::editDoubleClickedItem(QTreeWidgetItem *item, int col)
 {
-	if ( item && m_isEditable )
-	{
-		item->setFlags( item->flags() | Qt::ItemIsEditable );
-		editItem(item, col);
-	}
+    if (item && m_isEditable) {
+        item->setFlags(item->flags() | Qt::ItemIsEditable);
+        editItem(item, col);
+    }
 }
 
 void KTreeListWidget::addItems(const QStringList &items)
 {
-	QStringList::ConstIterator it = items.begin();
-	
-	while(it != items.end())
-	{
-		QTreeWidgetItem *item = new QTreeWidgetItem(this);
-		item->setText(0, *it);
-		++it;
-	}
+    QStringList::ConstIterator it = items.begin();
+    
+    while (it != items.end()) {
+           QTreeWidgetItem *item = new QTreeWidgetItem(this);
+           item->setText(0, *it);
+           ++it;
+    }
 }
 
 QList<QTreeWidgetItem *> KTreeListWidget::topLevelItems()
 {
-	QList<QTreeWidgetItem *> items;
-	for ( int i = 0; i < topLevelItemCount (); i++ )
-	{
-		items << topLevelItem(i);
-	}
-	
-	return items;
+    QList<QTreeWidgetItem *> items;
+    for (int i = 0; i < topLevelItemCount (); i++)
+         items << topLevelItem(i);
+    
+    return items;
 }
 
 void KTreeListWidget::setEditable(bool isEditable)
 {
-	m_isEditable = isEditable;
+    m_isEditable = isEditable;
 }
 
 bool KTreeListWidget::isEditable() const
 {
-	return m_isEditable;
+    return m_isEditable;
 }
 
-void KTreeListWidget::closeEditor ( QWidget * editor, QAbstractItemDelegate::EndEditHint hint )
+void KTreeListWidget::closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
 {
-	K_FUNCINFO;
-	
-	QLineEdit *edit = qobject_cast<QLineEdit *>(editor);
-	if ( edit )
-	{
-		QTreeWidgetItem *item = currentItem();
-		if ( item )
-		{
-			emit itemRenamed(item);
-		}
-	}
-	QTreeWidget::closeEditor(editor, hint);
+    K_FUNCINFO;
+    
+    QLineEdit *edit = qobject_cast<QLineEdit *>(editor);
+
+    if (edit) {
+        QTreeWidgetItem *item = currentItem();
+        if (item)
+            emit itemRenamed(item);
+    }
+
+    QTreeWidget::closeEditor(editor, hint);
 }
 
 void KTreeListWidget::removeAll()
 {
-	clear();
+    clear();
 }
-
-

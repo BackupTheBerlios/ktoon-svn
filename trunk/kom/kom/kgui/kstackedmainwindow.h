@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KSTACKEDMAINWINDOW_H
 #define KSTACKEDMAINWINDOW_H
 
@@ -43,19 +42,19 @@ class QStackedWidget;
 */
 class K_IDEAL_EXPORT KStackedMainWindow : public KMainWindow
 {
-	Q_OBJECT;
-	public:
-		KStackedMainWindow(QWidget *parent = 0);
-		~KStackedMainWindow();
-		void addWidget(QWidget *widget, int perspective = DefaultPerspective);
-		void removeWidget(QWidget *widget);
-		
-	private slots:
-		void setupPerspective(int perspective);
-		
-	private:
-		QStackedWidget *m_stack;
-		QHash<int, QWidget *> m_widgets;
+    Q_OBJECT;
+    public:
+        KStackedMainWindow(QWidget *parent = 0);
+        ~KStackedMainWindow();
+        void addWidget(QWidget *widget, int perspective = DefaultPerspective);
+        void removeWidget(QWidget *widget);
+        
+    private slots:
+        void setupPerspective(int perspective);
+        
+    private:
+        QStackedWidget *m_stack;
+        QHash<int, QWidget *> m_widgets;
 };
 
 #endif

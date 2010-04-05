@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kvhbox.h"
 #include "kdebug.h"
 
@@ -39,34 +38,25 @@
 
 KVHBox::KVHBox(QWidget *parent, Qt::Orientation o) : QFrame(parent)
 {
-	if ( o == Qt::Vertical )
-	{
-		m_pLayout = new QVBoxLayout(this);
-	}
-	else
-	{
-		m_pLayout = new QHBoxLayout(this);
-	}
-	
-	m_pLayout->setMargin(1);
-	m_pLayout->setSpacing(1);
+    if (o == Qt::Vertical)
+        m_pLayout = new QVBoxLayout(this);
+    else
+        m_pLayout = new QHBoxLayout(this);
+    
+    m_pLayout->setMargin(1);
+    m_pLayout->setSpacing(1);
 }
 
 KVHBox::KVHBox(QWidget *parent, bool isVertical) : QFrame(parent)
 {
-	if ( isVertical )
-	{
-		m_pLayout = new QVBoxLayout(this);
-	}
-	else
-	{
-		m_pLayout = new QHBoxLayout(this);
-	}
-	
-	m_pLayout->setMargin(1);
-	m_pLayout->setSpacing(1);
+    if (isVertical)
+        m_pLayout = new QVBoxLayout(this);
+    else 
+        m_pLayout = new QHBoxLayout(this);
+    
+    m_pLayout->setMargin(1);
+    m_pLayout->setSpacing(1);
 }
-
 
 KVHBox::~KVHBox()
 {
@@ -74,111 +64,104 @@ KVHBox::~KVHBox()
 
 void KVHBox::addWidget(QWidget *child, Qt::Alignment alignment)
 {
-	child->setParent(this);
-	m_pLayout->addWidget(child);
-	if ( alignment != 0 )
-	{
-		m_pLayout->setAlignment(child, alignment);
-	}
+    child->setParent(this);
+    m_pLayout->addWidget(child);
+
+    if (alignment != 0)
+        m_pLayout->setAlignment(child, alignment);
 }
 
 void KVHBox::moveWidgetUp(QWidget *widget)
 {
-// 	dDebug() << "Childs " << children ().count() << endl;
-	int position = m_pLayout->indexOf(widget);
-	
-	
-// 	dDebug() << "Position: " << position << endl;
-	
-	if (position > 0 )
-	{
-		m_pLayout->removeWidget(widget);
-		m_pLayout->insertWidget(position-1, widget);
-	}
-	else
-	{
-		kError() << "The widget isn't in the layout" << endl;
-	}
+    // dDebug() << "Childs " << children ().count() << endl;
+    int position = m_pLayout->indexOf(widget);
+    
+    // dDebug() << "Position: " << position << endl;
+    
+    if (position > 0) {
+        m_pLayout->removeWidget(widget);
+        m_pLayout->insertWidget(position-1, widget);
+    } else {
+        kError() << "The widget isn't in the layout" << endl;
+    }
 }
 
 void KVHBox::moveWidgetDown(QWidget *widget)
 {
-	int position = m_pLayout->indexOf(widget);
-	
-	if (position >= 0 )
-	{
-		m_pLayout->removeWidget(widget);
-		m_pLayout->insertWidget(position+1, widget);
-	}
+    int position = m_pLayout->indexOf(widget);
+    
+    if (position >= 0) {
+        m_pLayout->removeWidget(widget);
+        m_pLayout->insertWidget(position+1, widget);
+    }
 }
 
-bool KVHBox::event( QEvent* ev )
+bool KVHBox::event(QEvent* ev)
 {
-	switch ( ev->type() )
-	{
-		case QEvent::ChildAdded:
-		{
-			QChildEvent* childEv = static_cast<QChildEvent *>( ev );
-			if ( childEv->child()->isWidgetType() ) 
-			{
-				QWidget* w = static_cast<QWidget *>( childEv->child() );
-				static_cast<QBoxLayout *>( layout() )->addWidget( w );
-			}
-			return QWidget::event( ev );
-		}
-		case QEvent::ChildRemoved:
-		{
-			QChildEvent* childEv = static_cast<QChildEvent *>( ev );
-			if ( childEv->child()->isWidgetType() ) 
-			{
-				QWidget* w = static_cast<QWidget *>( childEv->child() );
-				static_cast<QBoxLayout *>( layout() )->removeWidget( w );
-			}
-			return QWidget::event( ev );
-		}
-		default:
-			return QWidget::event( ev );
-	}
+    switch (ev->type()) {
+        case QEvent::ChildAdded:
+        {
+            QChildEvent* childEv = static_cast<QChildEvent *>(ev);
+
+            if (childEv->child()->isWidgetType()) {
+                QWidget* w = static_cast<QWidget *>(childEv->child());
+                static_cast<QBoxLayout *>(layout())->addWidget(w);
+            }
+
+            return QWidget::event(ev);
+        }
+        case QEvent::ChildRemoved:
+        {
+            QChildEvent* childEv = static_cast<QChildEvent *>(ev);
+
+            if (childEv->child()->isWidgetType()) {
+                QWidget* w = static_cast<QWidget *>(childEv->child());
+                static_cast<QBoxLayout *>(layout())->removeWidget(w);
+            }
+
+            return QWidget::event(ev);
+        }
+        default:
+            return QWidget::event(ev);
+    }
 }
 
 QSize KVHBox::sizeHint() const
 {
-	KVHBox* that = const_cast<KVHBox *>( this );
-	QApplication::sendPostedEvents( that, QEvent::ChildAdded );
-	return QFrame::sizeHint();
+    KVHBox* that = const_cast<KVHBox *>(this);
+    QApplication::sendPostedEvents(that, QEvent::ChildAdded);
+
+    return QFrame::sizeHint();
 }
 
-void KVHBox::setSpacing( int sp )
+void KVHBox::setSpacing(int sp)
 {
-	layout()->setSpacing( sp );
+    layout()->setSpacing(sp);
 }
 
-void KVHBox::setStretchFactor( QWidget* w, int stretch )
+void KVHBox::setStretchFactor(QWidget* w, int stretch)
 {
-	static_cast<QBoxLayout *>( layout() )->setStretchFactor( w, stretch );
+    static_cast<QBoxLayout *>(layout())->setStretchFactor(w, stretch);
 }
-
 
 void KVHBox::switchWidgetsPosition(QWidget *widget1, QWidget *widget2)
 {
-	int position1 = m_pLayout->indexOf(widget1);
-	int position2 = m_pLayout->indexOf(widget2);
-	
-	if (position1 > 0 && position2 > 0 )
-	{
-	}
+    int position1 = m_pLayout->indexOf(widget1);
+    int position2 = m_pLayout->indexOf(widget2);
+    
+    if (position1 > 0 && position2 > 0) {
+    }
 }
 
 void KVHBox::mouseMoveEvent(QMouseEvent *e)
 {
-	if ( hasMouseTracking() )
-	{
-		emit mouseAt(e->pos());
-	}
+    if (hasMouseTracking()) {
+        emit mouseAt(e->pos());
+    }
 }
 
 QBoxLayout *KVHBox::boxLayout()
 {
-	return m_pLayout;
+    return m_pLayout;
 }
 
