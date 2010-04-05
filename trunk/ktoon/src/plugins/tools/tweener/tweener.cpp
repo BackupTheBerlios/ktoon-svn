@@ -202,7 +202,9 @@ void Tweener::setupActions()
 {
     kFatal() << "Tweener::setupActions() -> init!";
 
-    KAction *translater = new KAction(QPixmap(THEME_DIR + "icons/tweener.png"), tr("Motion Tween"), this);
+    KAction *translater = new KAction(QPixmap(THEME_DIR + "icons/tweener.png"), 
+                                      tr("Motion Tween"), this);
+
     translater->setCursor(QCursor(THEME_DIR + "cursors/tweener.png"));
 
     k->actions.insert("Tweener", translater);
@@ -210,8 +212,11 @@ void Tweener::setupActions()
 
 void Tweener::setCreatePath()
 {
-    if (k->path)
+    if (k->path) {
         k->scene->addItem(k->path);
+        if (k->group)
+            k->group->createNodes(k->path);
+    }
 
     k->creatingPath = true;
     k->selecting = false;
