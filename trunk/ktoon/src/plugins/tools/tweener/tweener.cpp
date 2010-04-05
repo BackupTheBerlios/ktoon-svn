@@ -230,10 +230,12 @@ void Tweener::setSelect()
     k->creatingPath = false;
     k->selecting = true;
 
+    /*
     if (k->path) {
         delete k->group;
         k->group = 0;
     } 
+    */
 
     foreach (QGraphicsView * view, k->scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
@@ -280,6 +282,24 @@ void Tweener::updatePath()
 
 void Tweener::saveConfig()
 {
+}
+
+void Tweener::updateScene(KTGraphicsScene *scene)
+{
+    kFatal() << "Tweener::updateScene <- Hey!";
+
+    /*
+     k->scene->currentSceneIndex(),
+     k->scene->currentLayerIndex(),
+     k->scene->currentFrameIndex(),
+     */
+
+    if (k->creatingPath) {
+        if (k->path && k->group) {
+            k->scene->addItem(k->path);            
+            k->group->createNodes(k->path);
+        }
+    }
 }
 
 Q_EXPORT_PLUGIN2(kt_tweener, Tweener);

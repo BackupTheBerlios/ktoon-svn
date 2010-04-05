@@ -273,7 +273,7 @@ void KTViewDocument::createTools()
     k->toolbar->addAction(k->brushesMenu->menuAction());
 
     // Selection menu
-    k->selectionMenu = new QMenu(tr("Selection"), k->toolbar );
+    k->selectionMenu = new QMenu(tr("Selection"), k->toolbar);
     k->selectionMenu->setIcon(QPixmap(THEME_DIR + "icons/selection.png"));
     connect(k->selectionMenu, SIGNAL(triggered (QAction*)), this, SLOT(selectToolFromMenu(QAction*)));
 
@@ -551,7 +551,7 @@ void KTViewDocument::createMenu()
 {
      //tools menu
      k->toolsMenu = new QMenu(tr("&Tools"), this);
-     menuBar()->addMenu( k->toolsMenu );
+     menuBar()->addMenu(k->toolsMenu);
      k->toolsMenu->addAction(k->brushesMenu->menuAction());
      k->toolsMenu->addAction(k->selectionMenu->menuAction());
      k->toolsMenu->addAction(k->fillMenu->menuAction());
