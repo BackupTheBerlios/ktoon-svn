@@ -28,67 +28,61 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kelabel.h"
+
 #include <QMouseEvent>
 
 KELabel::KELabel(const QString &text, QWidget *parent) : KSqueezeLabel(text, parent)
 {
-	m_editor = new QLineEdit(text, this);
-	m_editor->setFont( QFont( font().family(), 9 ) );
-	m_editor->hide();
-	
-	m_editor->setFocusPolicy(Qt::ClickFocus);
-	
-	connect( m_editor, SIGNAL( returnPressed() ), SLOT( applyText() ) );
-	connect( m_editor, SIGNAL( lostFocus() ), SLOT( applyText() ) );
+    m_editor = new QLineEdit(text, this);
+    m_editor->setFont(QFont(font().family(), 9));
+    m_editor->hide();
+    
+    m_editor->setFocusPolicy(Qt::ClickFocus);
+    
+    connect(m_editor, SIGNAL(returnPressed()), SLOT(applyText()));
+    connect(m_editor, SIGNAL(lostFocus()), SLOT(applyText()));
 }
-
 
 KELabel::~KELabel()
 {
 }
 
-void KELabel::mouseDoubleClickEvent( QMouseEvent *event )
+void KELabel::mouseDoubleClickEvent(QMouseEvent *event)
 {
-	if ( event->button() == Qt::LeftButton )
-	{
-		edit();
-		event->accept();
-	}
-	else
-	{
-		event->ignore();
-	}
+    if (event->button() == Qt::LeftButton) {
+        edit();
+        event->accept();
+    } else {
+        event->ignore();
+    }
 }
 
 void KELabel::applyText()
 {
-	if(completeText() != m_editor->text())
-	{
-		setText( m_editor -> text() );
-		emit edited( m_editor->text() );
-	}
-	
-	m_editor->hide();
+    if (completeText() != m_editor->text()) {
+        setText(m_editor -> text());
+        emit edited(m_editor->text());
+    }
+    
+    m_editor->hide();
 }
 
 void KELabel::edit()
 {
-	m_editor->setText( completeText() );
-	m_editor->selectAll();
-	m_editor->resize( size() );
-	m_editor->show();
-	m_editor->setFocus();
+    m_editor->setText(completeText());
+    m_editor->selectAll();
+    m_editor->resize(size());
+    m_editor->show();
+    m_editor->setFocus();
 }
 
 void KELabel::clearFocus()
 {
-	m_editor->clearFocus();
+    m_editor->clearFocus();
 }
 
 void KELabel::setValidator(const QValidator * v)
 {
-	m_editor->setValidator(v);
+    m_editor->setValidator(v);
 }
-

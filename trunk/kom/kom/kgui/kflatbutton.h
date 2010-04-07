@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KFLATBUTTON_H
 #define KFLATBUTTON_H
 
@@ -40,14 +39,14 @@
 */
 class K_GUI_EXPORT KFlatButton : public QAbstractButton
 {
-	Q_OBJECT
-	public:
-		KFlatButton(QWidget *parent = 0);
-		KFlatButton(const QString &text, QWidget *parent = 0);
-		~KFlatButton();
-		
-	protected:
-		void paintEvent(QPaintEvent *e);
+    Q_OBJECT
+    public:
+        KFlatButton(QWidget *parent = 0);
+        KFlatButton(const QString &text, QWidget *parent = 0);
+        ~KFlatButton();
+        
+    protected:
+        void paintEvent(QPaintEvent *e);
 };
 
 #endif

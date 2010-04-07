@@ -106,7 +106,6 @@ class K_GUI_EXPORT KCollapsibleWidget : public QWidget
         Private *k;
 };
 
-
 /**
   @short A scrollable container that contains groups of settings,
          usually in the form of KCollapsibleWidgets.
@@ -121,11 +120,11 @@ class K_GUI_EXPORT KSettingsContainer : public QScrollArea
         KSettingsContainer(QWidget *parent = 0);
         ~KSettingsContainer();
 
-        KCollapsibleWidget* insertWidget( QWidget* w, const QString& name);
+        KCollapsibleWidget* insertWidget(QWidget* w, const QString& name);
         void removeWidget(QWidget *w);
         
     protected:
-        void dragEnterEvent (QDragEnterEvent * event);
+        void dragEnterEvent(QDragEnterEvent * event);
         void dragMoveEvent(QDragMoveEvent* event);
         void dropEvent(QDropEvent* e);
 

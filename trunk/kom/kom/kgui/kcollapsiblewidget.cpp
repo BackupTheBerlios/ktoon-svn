@@ -169,8 +169,8 @@ void KClickableLabel::mouseMoveEvent(QMouseEvent* e)
 void KClickableLabel::paintEvent(QPaintEvent *e)
 {
     QPainter painter(this);
-    if ( m_isEnter )
-    {
+
+    if (m_isEnter) {
         painter.save();
         
         QRect r = rect();
@@ -318,7 +318,7 @@ void KSettingsContainer::dropEvent(QDropEvent* event)
         
         QWidget *child = childAt(event->pos());
         
-        if (child ) {
+        if (child) {
             if (KCollapsibleWidget *prev = dynamic_cast< KCollapsibleWidget *>(child)) {
                 k->layout->insertWidget( k->layout->indexOf(prev)+1, mimeData->collapsibleWidget());
             } else if (KCollapsibleWidget *prev = dynamic_cast< KCollapsibleWidget *>(child->parentWidget())) {
@@ -357,7 +357,7 @@ KCollapsibleWidget::KCollapsibleWidget(const QString& caption, QWidget *parent)
 void KCollapsibleWidget::init()
 {
     k->innerWidget = 0;
-    k->cwlayout = new QGridLayout( this );
+    k->cwlayout = new QGridLayout(this);
     k->cwlayout->setMargin(0);
     
     k->label = new KClickableLabel;

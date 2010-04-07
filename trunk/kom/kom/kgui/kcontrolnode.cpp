@@ -214,10 +214,12 @@ void KControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
         setSelected(true);
         k->nodeParent->setSelected(true);
+
         if (k->nodeParent->left()) {
             if (k->nodeParent->left() != this)
                 k->nodeParent->left()->setSelected(false);
         }
+
         if (k->nodeParent->right()) {
             if (k->nodeParent->right() != this)
                 k->nodeParent->right()->setSelected(false);
@@ -246,10 +248,11 @@ void KControlNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
     foreach (QGraphicsItem *item, scene()->selectedItems()) {
              if (qgraphicsitem_cast<KControlNode*>(item)) {
+                 // TODO: Change this ugly if
                  if (k->nodeParent) { 
                  } else {
-                 if (item != this)
-                     item->moveBy(event->pos().x(), event->pos().y());
+                     if (item != this)
+                         item->moveBy(event->pos().x(), event->pos().y());
                  }
              }
     }

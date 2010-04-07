@@ -43,14 +43,13 @@ class QGridLayout;
 */
 class K_GUI_EXPORT KFormFactory
 {
-	public:
-		KFormFactory();
-		~KFormFactory();
-		
-	public:
-		static QBoxLayout *makeLine(const QString &text, QWidget *widget,  Qt::Orientation = Qt::Vertical);
-		static QGridLayout *makeGrid(const QStringList &texts, const QWidgetList &widgets, Qt::Alignment alignment = 0);
-
+    public:
+        KFormFactory();
+        ~KFormFactory();
+        
+    public:
+        static QBoxLayout *makeLine(const QString &text, QWidget *widget,  Qt::Orientation = Qt::Vertical);
+        static QGridLayout *makeGrid(const QStringList &texts, const QWidgetList &widgets, Qt::Alignment alignment = 0);
 };
 
 #endif

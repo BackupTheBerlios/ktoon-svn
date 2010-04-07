@@ -32,10 +32,10 @@
 #define KELABEL_H
 
 #include <kgui/ksqueezelabel.h>
+#include <kcore/kglobal.h>
 
 #include <QLineEdit>
 #include <QMouseEvent>
-#include <kcore/kglobal.h>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -43,28 +43,28 @@
 
 class K_GUI_EXPORT KELabel : public KSqueezeLabel
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	public:
-		KELabel(const QString &text, QWidget *parent = 0);
-		~KELabel();
-		void setValidator(const QValidator * v);
-		
-	public slots:
-		void edit();
-		void clearFocus();
-		
-	private slots:
-		void applyText();
-		
-	signals:
-		void edited(const QString &);
-		
-	protected:
-		virtual void mouseDoubleClickEvent( QMouseEvent *mouse_event );
-		
-	private:
-		QLineEdit *m_editor;
+    public:
+        KELabel(const QString &text, QWidget *parent = 0);
+        ~KELabel();
+        void setValidator(const QValidator * v);
+        
+    public slots:
+        void edit();
+        void clearFocus();
+        
+    private slots:
+        void applyText();
+        
+    signals:
+        void edited(const QString &);
+        
+    protected:
+        virtual void mouseDoubleClickEvent(QMouseEvent *mouse_event);
+        
+    private:
+        QLineEdit *m_editor;
 };
 
 #endif

@@ -29,6 +29,8 @@
  ***************************************************************************/
 
 #include "kdualcolorbutton.h"
+#include "kdebug.h"
+
 #include "kcolorarrow.xpm"
 #include "kcolorreset.xpm"
 
@@ -43,8 +45,6 @@
 #include <QPaintEvent>
 #include <QDropEvent>
 #include <QApplication>
-
-#include "kdebug.h"
 
 KDualColorButton::KDualColorButton(QWidget *parent) : QWidget(parent)
 {

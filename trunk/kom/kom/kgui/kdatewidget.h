@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KDATEWIDGET_H
 #define KDATEWIDGET_H
 
@@ -44,26 +43,27 @@ class QSpinBox;
 */
 class K_GUI_EXPORT KDateWidget : public QWidget
 {
-	Q_OBJECT;
-	public:
-		KDateWidget(QWidget *parent = 0);
-		KDateWidget(const QDate &date, QWidget *parent = 0);
-		~KDateWidget();
-		
-		void setDate(const QDate &date);
-		QDate date() const;
-		
-	private:
-		void init(const QDate &date);
-		
-	private slots:
-		void updateDateValues(int);
-		
-	private:
-		QDate m_date;
-		
-		QSpinBox *m_day, *m_year;
-		QComboBox *m_mounth;
+    Q_OBJECT
+
+    public:
+        KDateWidget(QWidget *parent = 0);
+        KDateWidget(const QDate &date, QWidget *parent = 0);
+        ~KDateWidget();
+        
+        void setDate(const QDate &date);
+        QDate date() const;
+        
+    private:
+        void init(const QDate &date);
+        
+    private slots:
+        void updateDateValues(int);
+        
+    private:
+        QDate m_date;
+        
+        QSpinBox *m_day, *m_year;
+        QComboBox *m_mounth;
 };
 
 #endif

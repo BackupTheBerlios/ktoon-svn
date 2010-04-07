@@ -28,16 +28,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kfontchooser.h"
 #include "kformfactory.h"
+#include <kcore/kdebug.h>
 
 #include <QComboBox>
 #include <QHBoxLayout>
 #include <QFontDatabase>
 #include <QFontComboBox>
-
-#include <kcore/kdebug.h>
 
 KFontChooser::KFontChooser(QWidget *parent) : QFrame(parent)
 {

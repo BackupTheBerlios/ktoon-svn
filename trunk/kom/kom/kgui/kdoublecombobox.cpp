@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kdoublecombobox.h"
 
 #include <QDoubleValidator>
@@ -41,185 +40,159 @@
 
 struct KDoubleComboBox::Private
 {
-	bool showAsPercent;
-	QDoubleValidator *validator;
-	QLineEdit *editor;
+    bool showAsPercent;
+    QDoubleValidator *validator;
+    QLineEdit *editor;
 };
 
 KDoubleComboBox::KDoubleComboBox(double min, double max, QWidget *parent)
  : QComboBox(parent), k(new Private)
 {
-	
-	k->validator = new QDoubleValidator(this);
-	k->editor = new QLineEdit;
-	k->editor->setValidator(k->validator);
-	setLineEdit(k->editor);
-	
-	setValidator(k->validator);
-	setMinimum(min);
-	setMaximum(max);
+    
+    k->validator = new QDoubleValidator(this);
+    k->editor = new QLineEdit;
+    k->editor->setValidator(k->validator);
+    setLineEdit(k->editor);
+    
+    setValidator(k->validator);
+    setMinimum(min);
+    setMaximum(max);
 
-	setDuplicatesEnabled(false);
-	setInsertPolicy(QComboBox::InsertAlphabetically);
-	
-	connect(this, SIGNAL(activated( int )), this, SLOT(emitActivated(int)));
-	connect(this, SIGNAL(highlighted( int )), this, SLOT(emitHighlighted(int)));
-	connect(this, SIGNAL(currentIndexChanged( int )), this, SLOT(emitCurrentIndexChanged(int)));
-	
-	connect(k->editor, SIGNAL(editingFinished()), this, SIGNAL(editingFinished()));
-	connect(k->editor, SIGNAL(returnPressed()), this, SIGNAL(editingFinished()));
-	
-	k->showAsPercent = false;
-	
-	setDecimals(2);
+    setDuplicatesEnabled(false);
+    setInsertPolicy(QComboBox::InsertAlphabetically);
+    
+    connect(this, SIGNAL(activated(int)), this, SLOT(emitActivated(int)));
+    connect(this, SIGNAL(highlighted(int)), this, SLOT(emitHighlighted(int)));
+    connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(emitCurrentIndexChanged(int)));
+    
+    connect(k->editor, SIGNAL(editingFinished()), this, SIGNAL(editingFinished()));
+    connect(k->editor, SIGNAL(returnPressed()), this, SIGNAL(editingFinished()));
+    
+    k->showAsPercent = false;
+    
+    setDecimals(2);
 }
-
 
 KDoubleComboBox::~KDoubleComboBox()
 {
-	delete k;
+    delete k;
 }
 
 void KDoubleComboBox::setShowAsPercent(bool p)
 {
-	if( k->showAsPercent == p ) return;
-	
-	k->showAsPercent = p;
-	
-	for(int index = 0; index < count(); index++ )
-	{
-		if( k->showAsPercent )
-		{
-			setItemText(index, QString::number(PERCENT(itemText(index).toDouble())));
-		}
-		else
-		{
-			double value = VALUE(itemText(index).toDouble());
-			setItemText(index, QString::number(value));
-		}
-	}
+    if (k->showAsPercent == p) 
+        return;
+    
+    k->showAsPercent = p;
+    
+    for (int index = 0; index < count(); index++) {
+         if (k->showAsPercent) {
+             setItemText(index, QString::number(PERCENT(itemText(index).toDouble())));
+         } else {
+             double value = VALUE(itemText(index).toDouble());
+             setItemText(index, QString::number(value));
+        }
+    }
 }
 
 bool KDoubleComboBox::showAsPercent() const
 {
-	return k->showAsPercent;
+    return k->showAsPercent;
 }
 
 void KDoubleComboBox::setDecimals(int n)
 {
-	k->validator->setDecimals(n);
+    k->validator->setDecimals(n);
 }
 
 int KDoubleComboBox::decimals() const
 {
-	return k->validator->decimals();
+    return k->validator->decimals();
 }
 
 void KDoubleComboBox::setMaximum(double max)
 {
-	k->validator->setTop(max);
+    k->validator->setTop(max);
 }
 
 void KDoubleComboBox::setMinimum(double min)
 {
-	k->validator->setBottom(min);
+    k->validator->setBottom(min);
 }
 
 double KDoubleComboBox::maximum() const
 {
-	return k->validator->top();
+    return k->validator->top();
 }
 
 double KDoubleComboBox::minimum() const
 {
-	return k->validator->bottom();
+    return k->validator->bottom();
 }
 
 void KDoubleComboBox::addValue(double v)
 {
-	if(minimum() < v && v < maximum() )
-	{
-		if(k->showAsPercent)
-		{
-			addItem(QString::number(PERCENT(v)));
-		}
-		else
-		{
-			addItem(QString::number(v));
-		}
-	}
+    if (minimum() < v && v < maximum()) {
+        if (k->showAsPercent)
+            addItem(QString::number(PERCENT(v)));
+        else
+            addItem(QString::number(v));
+    }
 }
 
 void KDoubleComboBox::addPercent(double p)
 {
-	if(p >= 0 && p <= 100)
-	{
-		if(k->showAsPercent )
-		{
-			addItem(QString::number(p));
-		}
-		else
-		{
-			addItem(QString::number(VALUE(p)));
-		}
-	}
+    if (p >= 0 && p <= 100) {
+        if (k->showAsPercent)
+            addItem(QString::number(p));
+        else
+            addItem(QString::number(VALUE(p)));
+    }
 }
 
 void KDoubleComboBox::emitHighlighted(int index)
 {
-	emit highlighted( itemText(index).toDouble());
+    emit highlighted(itemText(index).toDouble());
 }
 
 void KDoubleComboBox::emitActivated(int index)
 {
-	emit activated( itemText(index).toDouble());
+    emit activated(itemText(index).toDouble());
 }
 
 void KDoubleComboBox::emitCurrentIndexChanged(int index)
 {
-	emit currentIndexChanged( itemText(index).toDouble());
+    emit currentIndexChanged(itemText(index).toDouble());
 }
 
 double KDoubleComboBox::value()
 {
-	if( k->showAsPercent )
-	{
-		return (VALUE(currentText().toDouble()));
-	}
-	
-	return currentText().toDouble();
+    if (k->showAsPercent)
+        return (VALUE(currentText().toDouble()));
+    
+    return currentText().toDouble();
 }
 
 void KDoubleComboBox::setValue(int index, double v)
 {
-	if( k->showAsPercent )
-	{
-		setItemText(index, QString::number(PERCENT(v)));
-	}
-	else
-	{
-		setItemText(index, QString::number(v));
-	}
+    if (k->showAsPercent)
+        setItemText(index, QString::number(PERCENT(v)));
+    else
+        setItemText(index, QString::number(v));
 }
 
 void KDoubleComboBox::setPercent(int index, double p)
 {
-	if( k->showAsPercent )
-	{
-		setItemText(index, QString::number(p));
-	}
-	else
-	{
-		setItemText(index, QString::number(VALUE(p)));
-	}
+    if (k->showAsPercent)
+        setItemText(index, QString::number(p));
+    else
+        setItemText(index, QString::number(VALUE(p)));
 }
 
 double KDoubleComboBox::percent()
 {
-	if( k->showAsPercent )
-	{
-		return currentText().toDouble();
-	}
-	
-	return PERCENT(currentText().toDouble());
+    if (k->showAsPercent)
+        return currentText().toDouble();
+    
+    return PERCENT(currentText().toDouble());
 }

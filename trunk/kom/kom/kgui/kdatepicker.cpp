@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kdatepicker.h"
 
 #include <QVBoxLayout>
@@ -119,7 +118,7 @@ KDatePicker::KDatePicker(QWidget *parent) : QFrame(parent)
     
     QToolButton *nextMounth = new QToolButton();
     nextMounth->setAutoRaise(true);
-    nextMounth->setToolButtonStyle (Qt::ToolButtonIconOnly );
+    nextMounth->setToolButtonStyle(Qt::ToolButtonIconOnly);
     nextMounth->setIconSize(QSize(32,32));
     nextMounth->setIcon(QPixmap(":general/images/1rightarrow.png"));
     
@@ -128,7 +127,7 @@ KDatePicker::KDatePicker(QWidget *parent) : QFrame(parent)
     QToolButton *nextYear = new QToolButton();
     
     nextYear->setAutoRaise(true);
-    nextYear->setToolButtonStyle(Qt::ToolButtonIconOnly );
+    nextYear->setToolButtonStyle(Qt::ToolButtonIconOnly);
     nextYear->setIconSize(QSize(32,32));
     nextYear->setIcon(QPixmap(":general/images/2rightarrow.png"));
     
@@ -207,7 +206,7 @@ void KDatePicker::setWeek(int week)
 {
     QDate temp(m_dateTable->date().year(), 1, 1);
     
-    temp = temp.addDays( week * 7 - temp.dayOfWeek() + 1);
+    temp = temp.addDays(week * 7 - temp.dayOfWeek() + 1);
 
     setDate(temp);
 }

@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KCOLORBUTTON_H
 #define KCOLORBUTTON_H
 
@@ -51,7 +50,7 @@ class K_GUI_EXPORT KColorButton : public QAbstractButton
         KColorButton(QWidget* parent = 0);
         ~KColorButton();
 
-        void setColor(const QColor& );
+        void setColor(const QColor&);
         QColor color() const;
 
         QSize sizeHint() const;

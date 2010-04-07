@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #define INT64_C
 #define __STDC_CONSTANT_MACROS
 #include <stdint.h>

@@ -96,7 +96,7 @@ void KNodeGroup::setParentItem(QGraphicsItem *newParent)
     k->parentItem = newParent;
     foreach (KControlNode *node, k->nodes) {
              if (node)
-                 node->setParentI(newParent);
+                 node->changeParent(newParent);
     }
 }
 

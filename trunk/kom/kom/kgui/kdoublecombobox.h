@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KDOUBLECOMBOBOX_H
 #define KDOUBLECOMBOBOX_H
 
@@ -39,50 +38,49 @@
 */
 class KDoubleComboBox : public QComboBox
 {
-	Q_OBJECT;
-	
-	public:
-		KDoubleComboBox(double min, double max, QWidget *parent = 0);
-		~KDoubleComboBox();
-		
-		bool showAsPercent() const;
-		
-		void setDecimals(int d);
-		int decimals() const;
-		
-		void setMaximum(double max);
-		void setMinimum(double min);
-		
-		double maximum() const;
-		double minimum() const;
-		
-		void addValue(double v);
-		void addPercent(double p);
-		
-		double value();
-		void setValue(int index, double v);
-		
-		double percent();
-		void setPercent(int index, double p);
-		
-		
-	public slots:
-		void setShowAsPercent(bool p);
-		
-	private slots:
-		void emitHighlighted(int index);
-		void emitActivated(int index);
-		void emitCurrentIndexChanged(int index);
-		
-	signals:
-		void highlighted(double v);
-		void activated(double v);
-		void currentIndexChanged(double v);
-		void editingFinished();
-	
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    
+    public:
+        KDoubleComboBox(double min, double max, QWidget *parent = 0);
+        ~KDoubleComboBox();
+        
+        bool showAsPercent() const;
+        
+        void setDecimals(int d);
+        int decimals() const;
+        
+        void setMaximum(double max);
+        void setMinimum(double min);
+        
+        double maximum() const;
+        double minimum() const;
+        
+        void addValue(double v);
+        void addPercent(double p);
+        
+        double value();
+        void setValue(int index, double v);
+        
+        double percent();
+        void setPercent(int index, double p);
+        
+    public slots:
+        void setShowAsPercent(bool p);
+        
+    private slots:
+        void emitHighlighted(int index);
+        void emitActivated(int index);
+        void emitCurrentIndexChanged(int index);
+        
+    signals:
+        void highlighted(double v);
+        void activated(double v);
+        void currentIndexChanged(double v);
+        void editingFinished();
+    
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

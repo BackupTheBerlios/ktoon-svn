@@ -40,51 +40,43 @@ KFormFactory::KFormFactory()
 {
 }
 
-
 KFormFactory::~KFormFactory()
 {
 }
 
 QBoxLayout *KFormFactory::makeLine(const QString &text, QWidget *widget,  Qt::Orientation o)
 {
-	QBoxLayout *layout;
-	
-	if ( o == Qt::Vertical )
-	{
-		layout = new QVBoxLayout;
-	}
-	else
-	{
-		layout = new QHBoxLayout;
-	}
-	
-	layout->addWidget(new QLabel(text));
-	layout->addWidget(widget);
-	
-	if ( o == Qt::Vertical )
-	{
-		layout->addStretch(3);
-	}
-	
-	return layout;
+    QBoxLayout *layout;
+    
+    if (o == Qt::Vertical)
+        layout = new QVBoxLayout;
+    else
+        layout = new QHBoxLayout;
+    
+    layout->addWidget(new QLabel(text));
+    layout->addWidget(widget);
+    
+    if (o == Qt::Vertical)
+        layout->addStretch(3);
+    
+    return layout;
 }
 
 QGridLayout *KFormFactory::makeGrid(const QStringList &texts, const QWidgetList &widgets, Qt::Alignment alignment)
 {
-	Q_ASSERT(texts.count() != widgets.count());
-	
-	QGridLayout *layout = new QGridLayout;
-	
-// 	layout->setColumnStretch(0, 1);
-	
-	for(int i = 0; i < widgets.count(); i++ )
-	{
-		layout->addWidget(new QLabel(texts[i]), i, 0, Qt::AlignLeft);
-		layout->addWidget(widgets[i], i, 1, alignment);
-	}
-	
-	layout->setColumnStretch(2, 1);
-	
-	return layout;
+    Q_ASSERT(texts.count() != widgets.count());
+    
+    QGridLayout *layout = new QGridLayout;
+    
+    // layout->setColumnStretch(0, 1);
+    
+    for (int i = 0; i < widgets.count(); i++) {
+         layout->addWidget(new QLabel(texts[i]), i, 0, Qt::AlignLeft);
+         layout->addWidget(widgets[i], i, 1, alignment);
+    }
+    
+    layout->setColumnStretch(2, 1);
+    
+    return layout;
 }
 
