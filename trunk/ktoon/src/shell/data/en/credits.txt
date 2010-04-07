@@ -5,7 +5,7 @@ Version 0.9a [ Code Name: Phoenix ]
 Main developer
 
   Gustavo Gonzalez
-  <xtingray@labtoon.net>
+  <xtingray@ktoon.net>
 
 Version <= 0.9
 
