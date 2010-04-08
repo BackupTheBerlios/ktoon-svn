@@ -32,7 +32,6 @@
  ***************************************************************************/
 
 #include "ktitemconverter.h"
-
 #include "ktrectitem.h"
 #include "ktpathitem.h"
 #include "ktlineitem.h"
@@ -45,12 +44,9 @@
 #include <QBrush>
 #include <QPen>
 
-
-
 KTItemConverter::KTItemConverter()
 {
 }
-
 
 KTItemConverter::~KTItemConverter()
 {
@@ -58,164 +54,171 @@ KTItemConverter::~KTItemConverter()
 
 void KTItemConverter::copyProperties(QGraphicsItem *src, QGraphicsItem *dest)
 {
-	dest->setMatrix(src->matrix());
-	dest->setPos(src->scenePos());
-	dest->setFlags(src->flags() );
-	
-	dest->setSelected(src->isSelected());
-	
-	
-	// Shapes
-	QAbstractGraphicsShapeItem *shape =  dynamic_cast<QAbstractGraphicsShapeItem*>(src);
-	QAbstractGraphicsShapeItem *shapeDst = qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(dest);
-	
-	if ( shape && dest )
-	{
-		QBrush shapeBrush = shape->brush();
-		
-		if ( shapeBrush.color().isValid() || shapeBrush.gradient() || 
-		!shapeBrush.texture().isNull() )
-			shapeDst->setBrush( shape->brush() );
-		
-		shapeDst->setPen(shape->pen() );
-	}
+    dest->setMatrix(src->matrix());
+    dest->setPos(src->scenePos());
+    dest->setFlags(src->flags() );
+    dest->setSelected(src->isSelected());
+    
+    // Shapes
+    QAbstractGraphicsShapeItem *shape =  dynamic_cast<QAbstractGraphicsShapeItem*>(src);
+    QAbstractGraphicsShapeItem *shapeDst = qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(dest);
+    
+    if (shape && dest) {
+        QBrush shapeBrush = shape->brush();
+        
+        if (shapeBrush.color().isValid() || shapeBrush.gradient() || 
+        !shapeBrush.texture().isNull())
+            shapeDst->setBrush( shape->brush());
+        
+        shapeDst->setPen(shape->pen());
+    }
 }
 
 KTPathItem *KTItemConverter::convertToPath(QGraphicsItem *item)
 {
-	if(!item) return 0;
-	
-	KTPathItem *path = new KTPathItem( item->parentItem(), 0);
-	
-	QPainterPath ppath;
-	
-	switch(item->type() )
-	{
-		case KTPathItem::Type:
-		{
-			ppath = qgraphicsitem_cast<KTPathItem *>(item)->path();
-		}
-		break;
-		case KTRectItem::Type:
-		{
-			ppath.addRect(qgraphicsitem_cast<KTRectItem *>(item)->rect());
-		}
-		break;
-		case KTEllipseItem::Type:
-		{
-			ppath.addEllipse(qgraphicsitem_cast<KTEllipseItem *>(item)->rect());
-		}
-		break;
-		case KTProxyItem::Type:
-		{
-			QGraphicsItem * data = qgraphicsitem_cast<KTProxyItem*>(item)->item();
-			data->setPos(item->scenePos());
-			return convertToPath(data);
-		}
-		break;
-		case KTLineItem::Type:
-		{
-			QLineF line = qgraphicsitem_cast<KTLineItem *>(item)->line();
-			ppath.moveTo(line.p1());
-			ppath.lineTo(line.p2());
-		}
-		break;
-		case KTItemGroup::Type:
-		{
-			#ifdef K_DEBUG
-				kWarning() << "KTItemConverter::convertToPath no support groups";
-			#endif
-			delete path;
-			return 0;
-		}
-		break;
-		default:
-		{
-			#ifdef K_DEBUG
-				kWarning() << "KTItemConverter::convertToPath use default";
-			#endif
-			ppath = item->shape(); // TODO
-		}
-		break;
-	}
-	
-	path->setPath(ppath);
-	
-	KTItemConverter::copyProperties( item, path);
-	
-	return path;
-	
+    if (!item) 
+        return 0;
+    
+    KTPathItem *path = new KTPathItem(item->parentItem(), 0);
+    
+    QPainterPath ppath;
+    
+    switch (item->type()) {
+
+        case KTPathItem::Type:
+        {
+            ppath = qgraphicsitem_cast<KTPathItem *>(item)->path();
+        }
+        break;
+
+        case KTRectItem::Type:
+        {
+            ppath.addRect(qgraphicsitem_cast<KTRectItem *>(item)->rect());
+        }
+        break;
+
+        case KTEllipseItem::Type:
+        {
+            ppath.addEllipse(qgraphicsitem_cast<KTEllipseItem *>(item)->rect());
+        }
+        break;
+
+        case KTProxyItem::Type:
+        {
+            QGraphicsItem * data = qgraphicsitem_cast<KTProxyItem*>(item)->item();
+            data->setPos(item->scenePos());
+            return convertToPath(data);
+        }
+        break;
+
+        case KTLineItem::Type:
+        {
+            QLineF line = qgraphicsitem_cast<KTLineItem *>(item)->line();
+            ppath.moveTo(line.p1());
+            ppath.lineTo(line.p2());
+        }
+        break;
+
+        case KTItemGroup::Type:
+        {
+            #ifdef K_DEBUG
+                kWarning() << "KTItemConverter::convertToPath no support groups";
+            #endif
+            delete path;
+            return 0;
+        }
+        break;
+
+        default:
+        {
+            #ifdef K_DEBUG
+                kWarning() << "KTItemConverter::convertToPath use default";
+            #endif
+            ppath = item->shape(); // TODO
+        }
+        break;
+    }
+    
+    path->setPath(ppath);
+    KTItemConverter::copyProperties(item, path);
+    
+    return path;
 }
 
 KTEllipseItem *KTItemConverter::convertToEllipse(QGraphicsItem *item)
 {
-	KTEllipseItem *ellipse = new KTEllipseItem(item->parentItem());
-	
-	switch(item->type() )
-	{
-		case KTPathItem::Type:
-		{
-			ellipse->setRect(qgraphicsitem_cast<QGraphicsPathItem *>(item)->path().boundingRect());
-		}
-		break;
-		case KTEllipseItem::Type:
-		{
-			ellipse->setRect(qgraphicsitem_cast<QGraphicsEllipseItem *>(item)->rect());
-		}
-		break;
-		// TODO
-	}
-	
-	KTItemConverter::copyProperties( item, ellipse);
-	
-	return ellipse;
+    KTEllipseItem *ellipse = new KTEllipseItem(item->parentItem());
+    
+    switch (item->type()) {
+
+        case KTPathItem::Type:
+        {
+            ellipse->setRect(qgraphicsitem_cast<QGraphicsPathItem *>(item)->path().boundingRect());
+        }
+        break;
+
+        case KTEllipseItem::Type:
+        {
+            ellipse->setRect(qgraphicsitem_cast<QGraphicsEllipseItem *>(item)->rect());
+        }
+        break;
+        // TODO: default case
+    }
+    
+    KTItemConverter::copyProperties(item, ellipse);
+    
+    return ellipse;
 }
 
 KTRectItem *KTItemConverter::convertToRect(QGraphicsItem *item)
 {
-	KTRectItem *rect = new KTRectItem(item->parentItem());
-	
-	switch(item->type() )
-	{
-		case KTPathItem::Type:
-		{
-			rect->setRect(qgraphicsitem_cast<QGraphicsPathItem *>(item)->path().boundingRect());
-		}
-		break;
-		case KTEllipseItem::Type:
-		{
-			rect->setRect(qgraphicsitem_cast<QGraphicsEllipseItem *>(item)->rect());
-		}
-		break;
-		// TODO
-	}
-	
-	KTItemConverter::copyProperties( item, rect);
-	
-	return rect;
+    KTRectItem *rect = new KTRectItem(item->parentItem());
+    
+    switch (item->type()) {
+
+        case KTPathItem::Type:
+        {
+            rect->setRect(qgraphicsitem_cast<QGraphicsPathItem *>(item)->path().boundingRect());
+        }
+        break;
+
+        case KTEllipseItem::Type:
+        {
+            rect->setRect(qgraphicsitem_cast<QGraphicsEllipseItem *>(item)->rect());
+        }
+        break;
+        // TODO: include other kind of objects
+    }
+    
+    KTItemConverter::copyProperties(item, rect);
+    
+    return rect;
 }
 
 KTLineItem *KTItemConverter::convertToLine(QGraphicsItem *item)
 {
-	KTLineItem *line = new KTLineItem(item->parentItem());
-	switch(item->type() )
-	{
-		case KTPathItem::Type:
-		{
-			QRectF rect = qgraphicsitem_cast<QGraphicsPathItem *>(item)->path().boundingRect();
-			line->setLine(QLineF(rect.topLeft(), rect.bottomRight()));
-		}
-		break;
-		case KTEllipseItem::Type:
-		{
-			QRectF rect = qgraphicsitem_cast<QGraphicsEllipseItem *>(item)->rect();
-			line->setLine(QLineF(rect.topLeft(), rect.bottomRight()));
-		}
-		break;
-		// TODO
-	}
-	KTItemConverter::copyProperties( item, line);
-	
-	return line;
+    KTLineItem *line = new KTLineItem(item->parentItem());
+
+    switch (item->type()) {
+
+        case KTPathItem::Type:
+        {
+            QRectF rect = qgraphicsitem_cast<QGraphicsPathItem *>(item)->path().boundingRect();
+            line->setLine(QLineF(rect.topLeft(), rect.bottomRight()));
+        }
+        break;
+
+        case KTEllipseItem::Type:
+        {
+            QRectF rect = qgraphicsitem_cast<QGraphicsEllipseItem *>(item)->rect();
+            line->setLine(QLineF(rect.topLeft(), rect.bottomRight()));
+        }
+        break;
+        // TODO: include other kind of objects
+    }
+
+    KTItemConverter::copyProperties(item, line);
+    
+    return line;
 }
 

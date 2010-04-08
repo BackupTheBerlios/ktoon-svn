@@ -46,16 +46,17 @@
  * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
+
 class STORE_EXPORT KTAbstractSerializable
 {
-	protected:
-		KTAbstractSerializable() {};
-		
-	public:
-		virtual ~KTAbstractSerializable() {};
-		
-		virtual void fromXml(const QString &xml) = 0;
-		virtual QDomElement toXml(QDomDocument &doc) const = 0;
+    protected:
+        KTAbstractSerializable() {};
+        
+    public:
+        virtual ~KTAbstractSerializable() {};
+        
+        virtual void fromXml(const QString &xml) = 0;
+        virtual QDomElement toXml(QDomDocument &doc) const = 0;
 };
 
 #endif
