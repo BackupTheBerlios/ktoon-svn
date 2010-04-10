@@ -85,7 +85,7 @@ class STORE_EXPORT KTItemTweener : public QObject, public KTAbstractSerializable
         
         void fromXml(const QString &xml);
         QDomElement toXml(QDomDocument &doc) const;
-        static QDomDocument tweenToXml(QString name, int frames, const QVector<KTTweenerStep *> &steps);
+        static QDomDocument tweenToXml(QString name, int initFrame, int frames, const QVector<KTTweenerStep *> &steps);
         
     private:
         struct Private;

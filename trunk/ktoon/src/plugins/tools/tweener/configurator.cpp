@@ -99,11 +99,11 @@ void Configurator::emitOptionChanged(int option)
     }
 }
 
-QString Configurator::steps()
+QString Configurator::steps(int currentFrame)
 {
     //return KTTweenerStep::createXml(k->stepViewer->totalSteps(), k->stepViewer->steps()).toString(); // FIXME: instead createXml, use KTItemTweener::toXml
 
-    return KTItemTweener::tweenToXml(QString("tween00"), k->stepViewer->totalSteps(), k->stepViewer->steps()).toString();
+    return KTItemTweener::tweenToXml(QString("tween00"), currentFrame, k->stepViewer->totalSteps(), k->stepViewer->steps()).toString();
 }
 
 int Configurator::totalSteps()

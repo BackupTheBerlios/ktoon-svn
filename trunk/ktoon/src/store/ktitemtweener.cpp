@@ -74,7 +74,9 @@ struct KTItemTweener::Private
     Private() : frames(0) {}
     
     QString name;
+    int initFrame;
     int frames;
+
     //QGraphicsItem *object;
     
     Animator *animator;
@@ -252,6 +254,7 @@ void KTItemTweener::fromXml(const QString &xml)
         QDomElement root = doc.documentElement();
 
         k->name = root.attribute("name");
+        k->initFrame = root.attribute("init").toInt();
         k->frames = root.attribute("frames").toInt();
 
         kFatal() << "KTItemTweener::fromXml -> " << k->name;
@@ -289,6 +292,7 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
 
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", k->name);
+    root.setAttribute("init", k->initFrame);
     root.setAttribute("frames", k->frames);
     
     foreach (KTTweenerStep *step, k->steps.values())
@@ -297,7 +301,7 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
     return root;
 }
 
-QDomDocument KTItemTweener::tweenToXml(QString name, int frames, const QVector<KTTweenerStep *> &steps)
+QDomDocument KTItemTweener::tweenToXml(QString name, int initFrame, int frames, const QVector<KTTweenerStep *> &steps)
 {
     kFatal() << "KTItemTweener::tweenToXml -> Name: " << name;
 
@@ -305,6 +309,7 @@ QDomDocument KTItemTweener::tweenToXml(QString name, int frames, const QVector<K
 
     QDomElement root = doc.createElement("tweening");
     root.setAttribute("name", name);
+    root.setAttribute("init", initFrame);
     root.setAttribute("frames", frames);
    
     foreach (KTTweenerStep *step, steps)

@@ -255,13 +255,13 @@ void Tweener::applyTweener()
 {
     if (k->path) {
         foreach (QGraphicsItem *item, k->scene->selectedItems()) {
-                 kFatal() << "Tweener::applyTweener(): " << k->configurator->steps();
+                 kFatal() << "Tweener::applyTweener(): " << k->configurator->steps(k->scene->currentFrameIndex());
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
                                             k->scene->currentSceneIndex(),
                                             k->scene->currentLayerIndex(),
                                             k->scene->currentFrameIndex(),
                                             k->scene->currentFrame()->visualIndexOf(item),
-                                            KTProjectRequest::Tweening, k->configurator->steps());
+                                            KTProjectRequest::Tweening, k->configurator->steps(k->scene->currentFrameIndex()));
                  emit requested(&request);
 
                  if (KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex())) {

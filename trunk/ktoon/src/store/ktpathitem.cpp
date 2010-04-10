@@ -108,7 +108,7 @@ QDomElement KTPathItem::toXml(QDomDocument &doc) const
         }
     }
     
-    root.setAttribute("d", strPath);
+    root.setAttribute("coords", strPath);
     
     root.appendChild(KTSerializer::properties(this, doc));
     
