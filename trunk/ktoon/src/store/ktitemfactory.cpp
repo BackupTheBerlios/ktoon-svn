@@ -109,7 +109,7 @@ QGraphicsItem* KTItemFactory::createItem(const QString &root)
     return item;
 }
 
-bool KTItemFactory::startTag( const QString& qname, const QXmlAttributes& atts)
+bool KTItemFactory::startTag(const QString& qname, const QXmlAttributes& atts)
 {
     #ifdef K_DEBUG
            K_FUNCINFOX("items") << qname;

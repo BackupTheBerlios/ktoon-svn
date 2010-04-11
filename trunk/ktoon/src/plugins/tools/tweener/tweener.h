@@ -71,6 +71,7 @@ class Tweener : public KTToolPlugin
 
     private:
         void setupActions();
+        QString pathToCoords();
 
     private:
         struct Private;

@@ -65,7 +65,7 @@ QDomElement KTPathItem::toXml(QDomDocument &doc) const
     QChar t;
     
     for(int i=0; i < path().elementCount(); i++) {
-        QPainterPath::Element e = path().elementAt (i);
+        QPainterPath::Element e = path().elementAt(i);
         switch (e.type) {
             case QPainterPath::MoveToElement:
             {

@@ -76,6 +76,7 @@ struct KTItemTweener::Private
     QString name;
     int initFrame;
     int frames;
+    QString path;
 
     //QGraphicsItem *object;
     
@@ -256,6 +257,7 @@ void KTItemTweener::fromXml(const QString &xml)
         k->name = root.attribute("name");
         k->initFrame = root.attribute("init").toInt();
         k->frames = root.attribute("frames").toInt();
+        k->path = root.attribute("coords");
 
         kFatal() << "KTItemTweener::fromXml -> " << k->name;
         
@@ -294,6 +296,7 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
     root.setAttribute("name", k->name);
     root.setAttribute("init", k->initFrame);
     root.setAttribute("frames", k->frames);
+    root.setAttribute("coords", k->path);
     
     foreach (KTTweenerStep *step, k->steps.values())
              root.appendChild(step->toXml(doc));
@@ -301,9 +304,10 @@ QDomElement KTItemTweener::toXml(QDomDocument &doc) const
     return root;
 }
 
-QDomDocument KTItemTweener::tweenToXml(QString name, int initFrame, int frames, const QVector<KTTweenerStep *> &steps)
+QDomDocument KTItemTweener::tweenToXml(QString name, int initFrame, int frames, QString path, const QVector<KTTweenerStep *> &steps)
 {
     kFatal() << "KTItemTweener::tweenToXml -> Name: " << name;
+    kFatal() << "KTItemTweener::tweenToXml -> Path: " << path; 
 
     QDomDocument doc;
 
@@ -311,6 +315,7 @@ QDomDocument KTItemTweener::tweenToXml(QString name, int initFrame, int frames, 
     root.setAttribute("name", name);
     root.setAttribute("init", initFrame);
     root.setAttribute("frames", frames);
+    root.setAttribute("coords", path);
    
     foreach (KTTweenerStep *step, steps)
              root.appendChild(step->toXml(doc));

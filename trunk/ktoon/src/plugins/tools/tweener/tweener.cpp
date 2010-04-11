@@ -49,6 +49,7 @@
 #include <kcore/kdebug.h>
 #include <kgui/kaction.h>
 #include <kgui/knodegroup.h>
+#include <ktsvg2qt.h>
 
 #include "ktinputdeviceinformation.h"
 #include "ktbrushmanager.h"
@@ -251,17 +252,75 @@ void Tweener::setSelect()
     }
 }
 
+QString Tweener::pathToCoords()
+{
+    QString strPath = "";
+    QChar t;
+
+    for (int i=0; i < k->path->path().elementCount(); i++) {
+         QPainterPath::Element e = k->path->path().elementAt(i);
+         switch (e.type) {
+            case QPainterPath::MoveToElement:
+            {
+                if (t != 'M') {
+                    t = 'M';
+                    strPath += "M " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+                } else {
+                    strPath += QString::number(e.x) + " " + QString::number(e.y) + " ";
+                }
+            }
+            break;
+            case QPainterPath::LineToElement:
+            {
+                if (t != 'L') {
+                    t = 'L';
+                    strPath += " L " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+                } else {
+                    strPath += QString::number(e.x) + " " + QString::number(e.y) + " ";
+                }
+            }
+            break;
+            case QPainterPath::CurveToElement:
+            {
+                if (t != 'C') {
+                    t = 'C';
+                    strPath += " C " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+                } else {
+                    strPath += "  "+ QString::number(e.x) + " " + QString::number(e.y) + " ";
+                }
+            }
+            break;
+            case QPainterPath::CurveToDataElement:
+            {
+                if (t == 'C')
+                    strPath +=  " " + QString::number(e.x) + "  " + QString::number(e.y) + " ";
+            }
+            break;
+        }
+    }
+
+    return strPath;
+}
+
 void Tweener::applyTweener()
 {
     if (k->path) {
+
         foreach (QGraphicsItem *item, k->scene->selectedItems()) {
-                 kFatal() << "Tweener::applyTweener(): " << k->configurator->steps(k->scene->currentFrameIndex());
+
+                 // kFatal() << "Tweener::applyTweener(): " << k->configurator->steps(k->scene->currentFrameIndex());
+
+                 QString route = pathToCoords();
+
+                 kFatal() << "Tweener::applyTweener(): Map -> " << route;
+
                  KTProjectRequest request = KTRequestBuilder::createItemRequest(
                                             k->scene->currentSceneIndex(),
                                             k->scene->currentLayerIndex(),
                                             k->scene->currentFrameIndex(),
                                             k->scene->currentFrame()->visualIndexOf(item),
-                                            KTProjectRequest::Tweening, k->configurator->steps(k->scene->currentFrameIndex()));
+                                            KTProjectRequest::Tweening, 
+                                            k->configurator->steps(k->scene->currentFrameIndex(), route));
                  emit requested(&request);
 
                  if (KTLayer *layer = k->scene->scene()->layer(k->scene->currentLayerIndex())) {
@@ -272,10 +331,12 @@ void Tweener::applyTweener()
 
                      for (int i = start; i < total; i++) {
                           KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), 
-                                                                            k->scene->currentLayerIndex(), i, KTProjectRequest::Add);
+                                                                            k->scene->currentLayerIndex(), 
+                                                                            i, KTProjectRequest::Add);
                           emit requested(&requestFrame);
                      }
                  }
+
         }
     }
 }

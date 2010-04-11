@@ -47,7 +47,7 @@ class Configurator : public QFrame
         ~Configurator();
         
         void updateSteps(const QGraphicsPathItem *path);
-        QString steps(int currentFrame);
+        QString steps(int currentFrame, QString path);
         int totalSteps();
         void activatePathMode();
         void activateSelectionMode();
