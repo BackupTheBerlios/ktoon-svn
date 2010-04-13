@@ -46,31 +46,34 @@
 
 //------------------ CONSTRUCTOR -----------------
 
-KTSplash::KTSplash() : QSplashScreen(0), m_size(3), m_state(70), m_counter(0)
+KTSplash::KTSplash() : QSplashScreen(0), m_counter(0)
 {
+    flag = true;
+
     QImage image(THEME_DIR + "images/splash.png");
     setPixmap(QPixmap::fromImage(image));
     m_version = tr("Version ") + kAppProp->version();
 
-    m_timer = new QTimer(this);
-    connect(m_timer, SIGNAL(timeout()), this, SLOT(animate()));
-    m_timer->start(200);
+    m_state = 0;
+
+    m_pos[0] = 108;
+    m_pos[1] = 119;
+    m_pos[2] = 130;
 }
 
 KTSplash::~KTSplash()
 {
-    delete m_timer;
 }
 
 void KTSplash::animate()
 {
-    m_state -= 10;
     repaint();
+    m_state++;
 }
 
 void KTSplash::setMessage(const QString &msg)
 {
-    QSplashScreen::showMessage(msg,Qt::AlignTop, palette().text().color());
+    QSplashScreen::showMessage(msg, Qt::AlignTop, palette().text().color());
     m_message = msg;
     QString number;
     number = number.setNum(m_counter);
@@ -86,41 +89,38 @@ void KTSplash::setMessage(const QString &msg)
 
 void KTSplash::drawContents(QPainter * painter)
 {
-    int position;
+    if (flag) {
+        flag = false;
+        return;
+    } 
 
     // Draw background circles
+    painter->setRenderHints(QPainter::Antialiasing);
     painter->setPen(Qt::NoPen);
-    painter->setBrush(palette().background());
-    painter->drawEllipse(11,7,9,9);
-    painter->drawEllipse(22,7,9,9);
-    painter->drawEllipse(33,7,9,9);
+    painter->setBrush(QColor(230, 230, 230));
+    painter->drawEllipse(106, 272, 9, 9);
+    painter->drawEllipse(117, 272, 9, 9);
+    painter->drawEllipse(128, 272, 9, 9);
 
     QColor fill = palette().background().color();
-
-    fill.setAlpha(m_state);
+    fill.setAlpha(0);
 
     painter->fillRect(rect(), fill);
     painter->save();
 
-    QColor baseColor = palette().alternateBase().color();
-    for (int i = 0; i < m_size; i++) {
-         position = (m_state+i)%(2*m_size-1);
-         int r = abs(baseColor.red()-18*i)%255;
-         int g = abs(baseColor.green()-10*i)%255;
-         int b = abs(baseColor.blue()-28*i)%255;
-         painter->setBrush(QColor(r,g,b));
-
-         if (position < 3)
-             painter->drawEllipse(11 + position * 11, 7, 9, 9);
+    if (m_state < 3) {
+        painter->setBrush(QColor(120,200,120));
+        painter->drawEllipse(m_pos[m_state], 274, 5, 5);
+    } else {
+        m_state = 0;
     }
 
     painter->restore();
-
     painter->setPen(QColor(0, 0, 0));
 
     // Draw version number
     QRect r = rect();
-    r.setRect(r.x() - 70, r.y() + 260, r.width() - 30, r.height() - 30);
+    r.setRect(r.x() + 18, r.y() + 5, r.width() - 30, r.height() - 30);
 
     QFont forig = painter->font();
     painter->setFont(QFont("helvetica", 12, 10, false));
@@ -135,5 +135,5 @@ void KTSplash::drawContents(QPainter * painter)
 
     //m_message += "...";
     painter->setFont(QFont("helvetica", 8, 10, false));
-    painter->drawText(51, 16, m_message);
+    painter->drawText(146, 280, m_message);
 }

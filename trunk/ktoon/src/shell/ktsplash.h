@@ -74,10 +74,12 @@ class KTSplash : public QSplashScreen
          void animate();
 
     private:
-         QString m_message, m_version;
-         int m_size;
+         QString m_message;
+         QString m_version;
          int m_state;
          int m_counter;
+         int m_pos[3];
+         bool flag;
 
          QTimer *m_timer;
 
