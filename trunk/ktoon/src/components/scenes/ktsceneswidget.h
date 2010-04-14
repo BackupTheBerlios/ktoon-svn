@@ -54,7 +54,7 @@ class KTScenesWidget : public KTModuleWidgetBase
 {
     Q_OBJECT
     public:
-        KTScenesWidget( QWidget *parent = 0);
+        KTScenesWidget(QWidget *parent = 0);
         ~KTScenesWidget();
 
     public slots:
@@ -69,7 +69,7 @@ class KTScenesWidget : public KTModuleWidgetBase
         void setupTableScenes();
 
     private slots:
-        void sceneDobleClick(QTreeWidgetItem * item, int col );
+        void sceneDobleClick(QTreeWidgetItem * item, int col);
         void emitRequestInsertScene();
         void emitRequestRemoveScene();
         void emitRequestRenameScene(QTreeWidgetItem *item);

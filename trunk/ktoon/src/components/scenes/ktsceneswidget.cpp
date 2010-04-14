@@ -32,6 +32,9 @@
  ***************************************************************************/
 
 #include "ktsceneswidget.h"
+#include "ktprojectrequest.h"
+#include "ktprojectactionbar.h"
+#include "ktrequestbuilder.h"
 
 #include <kcore/kglobal.h>
 #include <kcore/kdebug.h>
@@ -45,11 +48,6 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QToolButton>
-
-#include "ktprojectrequest.h"
-
-#include "ktprojectactionbar.h"
-#include "ktrequestbuilder.h"
 
 struct KTScenesWidget::Private
 {
@@ -83,7 +81,7 @@ void KTScenesWidget::setupButtons()
     bar->button(KTProjectActionBar::InsertScene)->setIcon(QIcon(THEME_DIR + "icons/plus_sign.png"));
     bar->button(KTProjectActionBar::RemoveScene)->setIcon(QIcon(THEME_DIR + "icons/minus_sign.png"));
 
-    connect(bar, SIGNAL(actionSelected( int )), this, SLOT(sendEvent(int)));
+    connect(bar, SIGNAL(actionSelected(int)), this, SLOT(sendEvent(int)));
 
     addChild(bar);
 }
@@ -93,7 +91,7 @@ void KTScenesWidget::setupTableScenes()
     k->tableScenes = new KTScenesList(this);
 
     KTreeWidgetSearchLine *searcher = new KTreeWidgetSearchLine(this, k->tableScenes);
-    searcher->setClickMessage( tr("Filter here..."));
+    searcher->setClickMessage(tr("Filter here..."));
 
     addChild(searcher);
     addChild( k->tableScenes);
@@ -123,11 +121,11 @@ void KTScenesWidget::sendEvent(int action)
 
 void KTScenesWidget::selectScene(const QString & name, int index)
 {
-    KTProjectRequest event = KTRequestBuilder::createSceneRequest( index, KTProjectRequest::Select);
-    emit localRequestTriggered( &event );
+    KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
+    emit localRequestTriggered(&event);
 }
 
-void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int )
+void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int value)
 {
     #ifdef K_DEBUG
            K_FUNCINFO;
@@ -145,16 +143,16 @@ void KTScenesWidget::emitRequestInsertScene()
     if (index == 0)
         index = k->tableScenes->scenesCount();
 
-    KTProjectRequest event = KTRequestBuilder::createSceneRequest(  index, KTProjectRequest::Add);
+    KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Add);
 
-    emit requestTriggered( &event );
+    emit requestTriggered(&event);
 }
 
 void KTScenesWidget::emitRequestRemoveScene()
 {
     KTProjectRequest event = KTRequestBuilder::createSceneRequest( k->tableScenes->indexCurrentScene(), KTProjectRequest::Remove );
 
-    emit requestTriggered( &event );
+    emit requestTriggered(&event);
 }
 
 void KTScenesWidget::closeAllScenes()
@@ -171,7 +169,7 @@ void KTScenesWidget::sceneResponse(KTSceneResponse *e)
     switch (e->action()) {
             case KTProjectRequest::Add:
              {
-               k->tableScenes->insertScene(e->sceneIndex(), e->arg().toString() );
+               k->tableScenes->insertScene(e->sceneIndex(), e->arg().toString());
              }
             break;
             case KTProjectRequest::Remove:
@@ -181,12 +179,12 @@ void KTScenesWidget::sceneResponse(KTSceneResponse *e)
             break;
             case KTProjectRequest::Rename:
              {
-               k->tableScenes->renameScene(e->sceneIndex(), e->arg().toString() );
+               k->tableScenes->renameScene(e->sceneIndex(), e->arg().toString());
              }
             break;
             case KTProjectRequest::Select:
              {
-               k->tableScenes->selectScene( e->sceneIndex() );
+               k->tableScenes->selectScene(e->sceneIndex());
              }
             break;
             default: 

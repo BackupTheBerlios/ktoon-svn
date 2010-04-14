@@ -38,18 +38,18 @@
 
 KTScenesList::KTScenesList(QWidget *parent) : KTreeListWidget(parent)
 {
-    setHeaderLabels ( QStringList() << "name" );
-    // connect(this, SIGNAL( itemSelectionChanged ()), this, SLOT(changeCurrentScene()));
-    connect(this, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(changeCurrentScene(QTreeWidgetItem *, int)));
+    setHeaderLabels(QStringList() << "name");
+    // connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(changeCurrentScene()));
+    connect(this, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(changeCurrentScene(QTreeWidgetItem *, int)));
 }
 
 KTScenesList::~KTScenesList()
 {
 }
 
-void KTScenesList::addScene( const QString &name)
+void KTScenesList::addScene(const QString &name)
 {
-    QTreeWidgetItem *newScene = new QTreeWidgetItem( this);
+    QTreeWidgetItem *newScene = new QTreeWidgetItem(this);
     newScene->setText(0, name);
 }
 
@@ -57,7 +57,7 @@ void KTScenesList::insertScene(int index, const QString &name)
 {
     QTreeWidgetItem *newScene = new QTreeWidgetItem;
     newScene->setText(0, name);
-    insertTopLevelItem (index, newScene);
+    insertTopLevelItem(index, newScene);
 }
 
 void KTScenesList::changeCurrentName(QString name)
@@ -90,6 +90,7 @@ void KTScenesList::renameScene(int index, const QString &name)
 void KTScenesList::selectScene(int index)
 {
     QTreeWidgetItem *item = topLevelItem (index);
+
     if (item)
         setCurrentItem(item);
 }
@@ -101,7 +102,7 @@ void KTScenesList::changeCurrentScene()
     emit(changeCurrent(name, index));
 }
 
-void KTScenesList::changeCurrentScene(QTreeWidgetItem *item, int )
+void KTScenesList::changeCurrentScene(QTreeWidgetItem *item, int c)
 {
     QString name = item->text(0);
     int index = indexOfTopLevelItem(item);
