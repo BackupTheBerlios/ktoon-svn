@@ -374,7 +374,7 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
                 k->scenes->blockSignals(true);
                 QWidget * widget = k->scenes->getTable(e->sceneIndex());
                 k->scenes->TabWidget()->removeTab(e->sceneIndex());
-                delete widget;
+                //delete widget;
                 k->scenes->blockSignals(false);
             }
            break;

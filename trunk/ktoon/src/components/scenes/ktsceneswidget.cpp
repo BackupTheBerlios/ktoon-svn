@@ -144,13 +144,18 @@ void KTScenesWidget::emitRequestInsertScene()
         index = k->tableScenes->scenesCount();
 
     KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Add);
+    emit requestTriggered(&event);
 
+    event = KTRequestBuilder::createLayerRequest(index, 0, KTProjectRequest::Add);
+    emit requestTriggered(&event);
+
+    event = KTRequestBuilder::createFrameRequest(index, 0, 0, KTProjectRequest::Add);
     emit requestTriggered(&event);
 }
 
 void KTScenesWidget::emitRequestRemoveScene()
 {
-    KTProjectRequest event = KTRequestBuilder::createSceneRequest( k->tableScenes->indexCurrentScene(), KTProjectRequest::Remove );
+    KTProjectRequest event = KTRequestBuilder::createSceneRequest(k->tableScenes->indexCurrentScene(), KTProjectRequest::Remove);
 
     emit requestTriggered(&event);
 }

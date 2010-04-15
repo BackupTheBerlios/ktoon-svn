@@ -35,6 +35,8 @@
 #include "ktprojectresponse.h"
 #include "ktpaintareaevent.h"
 
+#include <kcore/kdebug.h>
+
 KTAbstractProjectResponseHandler::KTAbstractProjectResponseHandler()
 {
 }

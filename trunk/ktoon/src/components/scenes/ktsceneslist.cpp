@@ -36,6 +36,8 @@
 
 #include <QTreeWidgetItem>
 
+// TODO: Add support for renaming and moving objects from the list
+
 KTScenesList::KTScenesList(QWidget *parent) : KTreeListWidget(parent)
 {
     setHeaderLabels(QStringList() << "name");
