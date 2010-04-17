@@ -108,11 +108,12 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
         KTLibrary *library() const;
         void emitResponse(KTProjectResponse *response);
 
-        virtual void fromXml(const QString &xml );
+        virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;
 
         void setOpen(bool open);
         bool isOpen();
+        int scenesTotal() const;
 
     signals:
         void responsed(KTProjectResponse *response);

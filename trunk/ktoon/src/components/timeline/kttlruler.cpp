@@ -101,7 +101,7 @@ void KTTLRuler::select(int logical)
 {
     selectionModel()->select( model()->index(0, logical), QItemSelectionModel::ClearAndSelect);
 
-    viewport()->update(QRect(sectionViewportPosition(logical), 0, sectionSize(logical),viewport()->height()) );
+    viewport()->update(QRect(sectionViewportPosition(logical), 0, sectionSize(logical),viewport()->height()));
 }
 
 void KTTLRuler::mouseMoveEvent(QMouseEvent *e)

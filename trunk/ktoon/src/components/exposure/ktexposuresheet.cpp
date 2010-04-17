@@ -70,7 +70,7 @@ KTExposureSheet::KTExposureSheet(QWidget *parent) : KTModuleWidgetBase(parent, "
                         KTProjectActionBar::InsertFrame |
                         KTProjectActionBar::RemoveFrame |
                         KTProjectActionBar::MoveFrameUp |
-                        KTProjectActionBar::MoveFrameDown| 
+                        KTProjectActionBar::MoveFrameDown | 
                         KTProjectActionBar::LockFrame);
 
     connect(k->actionBar, SIGNAL(actionSelected(int)), this, SLOT(applyAction(int)));

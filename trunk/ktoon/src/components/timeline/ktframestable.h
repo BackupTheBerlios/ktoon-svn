@@ -43,20 +43,20 @@ class KTFramesTableItemDelegate;
 
 class KTFramesTableItem : public QTableWidgetItem
 {
-	public:
-		enum Attributes
-		{
-			IsUsed = 0x01,
-			IsLocked,
-			IsSound
-		};
-		
-		KTFramesTableItem();
-		virtual ~KTFramesTableItem();
-		
-		bool isUsed();
-		bool isLocked();
-		bool isSound();
+    public:
+        enum Attributes
+        {
+            IsUsed = 0x01,
+            IsLocked,
+            IsSound
+        };
+        
+        KTFramesTableItem();
+        virtual ~KTFramesTableItem();
+        
+        bool isUsed();
+        bool isLocked();
+        bool isSound();
 };
 
 class KTTLRuler;
@@ -66,58 +66,58 @@ class KTTLRuler;
 */
 class KTFramesTable : public QTableWidget
 {
-	Q_OBJECT;
-	
-	friend class KTFramesTableItemDelegate;
-	
-	public:
-		KTFramesTable(QWidget *parent = 0);
-		~KTFramesTable();
-		
-		bool isSoundLayer(int row);
-		
-	public slots:
-		// Layers
-		void insertLayer(int layerPos, const QString &name);
-		void insertSoundLayer(int layerPos, const QString &name);
-		
-		void removeCurrentLayer();
-		void removeLayer(int pos);
-		void moveLayer(int pos, int newPos);
-		
-		int lastFrameByLayer(int layerPos);
-		
-		// Frames
-		void insertFrame(int layerPos, const QString &name);
-		
-		void setCurrentFrame(KTFramesTableItem *);
-		void setCurrentLayer(int layerPos);
-		void selectFrame(int index);
-		
-		void setAttribute(int row, int col, KTFramesTableItem::Attributes att, bool value);
-		
-		void removeFrame(int layerPos, int position);
-		
-		void lockFrame(int layerPosition, int position, bool lock);
-		
-		void setItemSize(int w, int h);
-		
-	private:
-		void setup();
-		
-	protected:
-		void fixSize();
-		
-	private slots:
-		void emitFrameSelected(int col);
-		void emitFrameSelected(QTableWidgetItem *curr, QTableWidgetItem *prev);
-		
-	signals:
-		void frameRequest(int action, int frame, int layer, int scene, const QVariant &argument = QVariant());
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    
+    friend class KTFramesTableItemDelegate;
+    
+    public:
+        KTFramesTable(QWidget *parent = 0);
+        ~KTFramesTable();
+        
+        bool isSoundLayer(int row);
+        
+    public slots:
+        // Layers
+        void insertLayer(int layerPos, const QString &name);
+        void insertSoundLayer(int layerPos, const QString &name);
+        
+        void removeCurrentLayer();
+        void removeLayer(int pos);
+        void moveLayer(int pos, int newPos);
+        
+        int lastFrameByLayer(int layerPos);
+        
+        // Frames
+        void insertFrame(int layerPos, const QString &name);
+        
+        void setCurrentFrame(KTFramesTableItem *);
+        void setCurrentLayer(int layerPos);
+        void selectFrame(int index);
+        
+        void setAttribute(int row, int col, KTFramesTableItem::Attributes att, bool value);
+        
+        void removeFrame(int layerPos, int position);
+        
+        void lockFrame(int layerPosition, int position, bool lock);
+        
+        void setItemSize(int w, int h);
+        
+    private:
+        void setup();
+        
+    protected:
+        void fixSize();
+        
+    private slots:
+        void emitFrameSelected(int col);
+        void emitFrameSelected(QTableWidgetItem *curr, QTableWidgetItem *prev);
+        
+    signals:
+        void frameRequest(int action, int frame, int layer, int scene, const QVariant &argument = QVariant());
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

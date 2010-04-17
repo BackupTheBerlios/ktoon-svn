@@ -531,3 +531,8 @@ QString KTProject::dataDir() const
 {
     return CACHE_DIR + "/" + k->name;
 }
+
+int KTProject::scenesTotal() const
+{
+    return k->sceneCounter;
+}

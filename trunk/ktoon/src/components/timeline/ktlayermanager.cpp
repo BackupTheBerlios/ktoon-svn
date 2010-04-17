@@ -96,7 +96,7 @@ void KTLayerManagerHeader::paintSection(QPainter * painter, const QRect & rect, 
     
     style()->drawControl(QStyle::CE_HeaderSection, &headerOption, painter);
     
-    painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
+    //painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
     
     QString text = model()->headerData(logicalIndex, orientation(), Qt::DisplayRole).toString();;
     
@@ -109,8 +109,8 @@ void KTLayerManagerHeader::paintSection(QPainter * painter, const QRect & rect, 
     
     QPen originalPen = painter->pen();
     
-    painter->setPen(QPen(palette().text().color(), 2));
-    painter->drawRect(rect.normalized().adjusted(1, 1, -2, -2));
+    // painter->setPen(QPen(palette().text().color(), 2));
+    // painter->drawRect(rect.normalized().adjusted(1, 1, -2, -2));
     
     painter->setPen(originalPen);
     
@@ -122,20 +122,20 @@ void KTLayerManagerHeader::paintSection(QPainter * painter, const QRect & rect, 
             break;
             case LOCK_COLUMN:
             {
-                 painter->drawPixmap( rect.normalized().adjusted(3,3, -3, -3), m_lockIcon );
+                 //painter->drawPixmap(rect.normalized().adjusted(3,3, -3, -3), m_lockIcon, QRectF(0, 0, 10, 13));
+                 painter->drawPixmap(QPointF(rect.x() + 4.5, rect.y() + 6), m_lockIcon, QRectF(0, 0, 10, 13));
             }
             break;
             case VIEW_COLUMN:
             {
-                 painter->drawPixmap( rect.normalized().adjusted(3, 3, -3, -3), m_viewIcon );
+                 //painter->drawPixmap(rect.normalized().adjusted(3, 3, -3, -3), m_viewIcon, QRectF(0, 0, 16, 16));
+                 painter->drawPixmap(QPointF(rect.x() + 1, rect.y() + 5), m_viewIcon, QRectF(0, 0, 16, 16));
             }
             break;
     }
 }
 
-
 // DELEGATE
-
 
 class KTLayerManagerItemDelegate : public QItemDelegate
 {
@@ -155,11 +155,8 @@ KTLayerManagerItemDelegate::~KTLayerManagerItemDelegate()
 
 void KTLayerManagerItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
-    
     QItemDelegate::paint(painter, option, index);
-    
     KTLayerManager *table = qobject_cast<KTLayerManager *>(index.model()->parent());
-    
     QTableWidgetItem *item = table->itemFromIndex(index);
     
     if (item) {
@@ -211,16 +208,18 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), k(
     
     setItemPrototype(prototype);
     
-    setHorizontalHeaderLabels(QStringList() << tr("Layer") << tr("L") << tr("V"));
+    // setHorizontalHeaderLabels(QStringList() << tr("Layers") << tr("L") << tr("V"));
+    setHorizontalHeaderLabels(QStringList() << tr("Layers") << tr("") << tr(""));
     verticalHeader()->hide();
     
     setHorizontalHeader(new KTLayerManagerHeader(this));
     setItemDelegate(new KTLayerManagerItemDelegate(this));
-    
-    // connect(this, SIGNAL(itemChanged ( QTableWidgetItem *  )), this, SLOT(emitRequestRenameLayer( 
-    // QTableWidgetItem * )));
-}
 
+    /*
+    connect(this, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(emitRequestRenameLayer( 
+    QTableWidgetItem *)));
+    */
+}
 
 KTLayerManager::~KTLayerManager()
 {
@@ -230,7 +229,6 @@ KTLayerManager::~KTLayerManager()
 
     delete k;
 }
-
 
 void KTLayerManager::insertLayer(int position, const QString &name)
 {
@@ -271,18 +269,17 @@ void KTLayerManager::insertSoundLayer(int position, const QString &name)
         insertRow(position);
         setItem(position, 0, newLayer);
         fixSize();
-        
-        // QTableWidgetItem *lockItem = new QTableWidgetItem;
-        // lockItem->setFlags(Qt::ItemIsUserCheckable  | Qt::ItemIsEnabled);
-        // lockItem->setCheckState( Qt::Unchecked);
-        
-        // setItem(position, 1, lockItem);
-        
-        // QTableWidgetItem *viewItem = new QTableWidgetItem;
-        // viewItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-        // viewItem->setCheckState( Qt::Checked);
-        
-        // setItem(position, 2, viewItem);
+
+        /*
+        QTableWidgetItem *lockItem = new QTableWidgetItem;
+        lockItem->setFlags(Qt::ItemIsUserCheckable  | Qt::ItemIsEnabled);
+        lockItem->setCheckState( Qt::Unchecked);
+        setItem(position, 1, lockItem);
+        QTableWidgetItem *viewItem = new QTableWidgetItem;
+        viewItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+        viewItem->setCheckState( Qt::Checked);
+        setItem(position, 2, viewItem);
+        */
     }
 }
 
@@ -344,33 +341,28 @@ void KTLayerManager::moveLayer(int position, int newPosition)
         return;
     
     verticalHeader()->moveSection((position), (newPosition));
-    
-    //     QTableWidgetItem *item1 = takeItem(position, 0);
-    //     
-    //     bool up = true;
-    //     if ( position > newPosition )
-    //     {
-    //         up = false; // down
-    //     }
-    //     
-    //     if ( up )
-    //     {
-    //         for(int i = position+1; i <= newPosition; i++)
-    //         {
-    //             setItem(i-1, 0, takeItem(i, 0));
-    //         }
-    //     }
-    //     else
-    //     {
-    //         for(int i = position-1; i >= newPosition; i--)
-    //         {
-    //             setItem(i+1, 0, takeItem(i, 0));
-    //         }
-    //     }
-    //     
-    //     setItem(newPosition, 0, item1);
-    //     
-    //     setCurrentItem(item1);
+
+    /*
+     QTableWidgetItem *item1 = takeItem(position, 0);
+         
+     bool up = true;
+     if (position > newPosition) {
+         up = false; // down
+     }
+         
+     if (up) {
+         for (int i = position+1; i <= newPosition; i++) {
+              setItem(i-1, 0, takeItem(i, 0));
+         }
+     } else {
+         for (int i = position-1; i >= newPosition; i--) {
+              setItem(i+1, 0, takeItem(i, 0));
+         }
+     }
+        
+     setItem(newPosition, 0, item1);
+     setCurrentItem(item1);
+    */
 }
 
 

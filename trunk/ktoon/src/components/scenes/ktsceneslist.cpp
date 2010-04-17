@@ -101,9 +101,11 @@ void KTScenesList::selectScene(int index)
 
 void KTScenesList::changeCurrentScene()
 {
-    QString name = currentItem()->text(0);
-    int index = indexCurrentScene();
-    emit(changeCurrent(name, index));
+    if (currentItem()) {
+        QString name = currentItem()->text(0);
+        int index = indexCurrentScene();
+        emit(changeCurrent(name, index));
+    }
 }
 
 void KTScenesList::changeCurrentScene(QTreeWidgetItem *item, int c)

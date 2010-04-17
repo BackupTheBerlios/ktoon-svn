@@ -106,14 +106,17 @@ void KTPaintArea::setCurrentScene(int index)
            K_FUNCINFO;
     #endif
 
-    KTScene *scene = k->project->scene(index);
-    if (scene) {
-        k->currentSceneIndex = index;
-        graphicsScene()->setCurrentScene(scene);
-    } else {
-        setDragMode(QGraphicsView::NoDrag);
-        k->currentSceneIndex = -1;
-        graphicsScene()->setCurrentScene(0);
+    if (k->project->scenesTotal() > 0) {
+
+        KTScene *scene = k->project->scene(index);
+        if (scene) {
+            k->currentSceneIndex = index;
+            graphicsScene()->setCurrentScene(scene);
+        } else {
+            setDragMode(QGraphicsView::NoDrag);
+            k->currentSceneIndex = -1;
+            graphicsScene()->setCurrentScene(0);
+        }
     }
 }
 
@@ -262,16 +265,17 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 
     switch(event->action()) {
            case KTProjectRequest::Select:
-                setCurrentScene(event->sceneIndex());
+                kFatal() << "KTPaintArea::sceneResponse <- KTProjectRequest::Select : " << event->sceneIndex();
+                if (event->sceneIndex() >= 0)
+                    setCurrentScene(event->sceneIndex());
                 break;
            case KTProjectRequest::Remove:
-                /*
-                if (event->sceneIndex() == k->currentSceneIndex)
-                    setCurrentScene(k->currentSceneIndex-1);
-                */
-                setCurrentScene(k->currentSceneIndex);
+                kFatal() << "KTPaintArea::sceneResponse <- KTProjectRequest::Remove : " << k->currentSceneIndex << " - " << event->sceneIndex();
+                if (k->currentSceneIndex >= 0)
+                    setCurrentScene(k->currentSceneIndex);
                 break;
            default: 
+                kFatal() << "KTPaintArea::sceneResponse <- KTProjectRequest::Default";
                 break;
     }
 }

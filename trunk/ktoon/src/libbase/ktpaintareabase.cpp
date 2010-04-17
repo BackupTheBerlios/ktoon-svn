@@ -356,7 +356,7 @@ void KTPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
                 x = (middleX - 30) / 2;                                                                         
                 painter->fillRect(x, y + 30, 30, 20, QColor(100, 100, 100));
             } 
-        }
+        } 
     } else {
             QString text = tr("No Layers!");
             QFont kfont(QFont("Arial", 30));

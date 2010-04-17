@@ -51,7 +51,7 @@
 
 #include "ktlibrary.h"
 
-#define RETURN_IF_NOT_LIBRARY if( !k->library ) return;
+#define RETURN_IF_NOT_LIBRARY if (!k->library) return;
 
 struct KTTimeLine::Private
 {
