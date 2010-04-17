@@ -53,8 +53,7 @@ void KSeparator::setOrientation(Qt::Orientation orientation)
       setFrameShape(QFrame::VLine);
       setFrameShadow(QFrame::Sunken);
       setMinimumSize(2, 0);
-   }
-   else {
+   } else {
       setFrameShape(QFrame::HLine);
       setFrameShadow(QFrame::Sunken);
       setMinimumSize(0, 2);
@@ -66,7 +65,7 @@ Qt::Orientation KSeparator::orientation() const
    return (frameStyle() & VLine) ? Qt::Vertical : Qt::Horizontal;
 }
 
-void KSeparator::virtual_hook( int, void* )
+void KSeparator::virtual_hook(int, void*)
 { 
     /*BASE::virtual_hook( id, data );*/ 
 }
