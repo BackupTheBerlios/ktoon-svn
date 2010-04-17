@@ -35,6 +35,7 @@
 
 #include <QVBoxLayout>
 #include <QVariant>
+#include <QSpacerItem>
 
 #include <ktglobal.h>
 #include <kcore/kdebug.h>
@@ -128,7 +129,7 @@ void KTProjectActionBar::setup(Actions actions)
      
     if (actions & MoveFrameUp) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_frame_up.png"), size);
-        button->setToolTip( tr("Move frame up"));
+        button->setToolTip(tr("Move frame up"));
         
         k->actions.addButton(button, MoveFrameUp);
         
@@ -156,6 +157,10 @@ void KTProjectActionBar::setup(Actions actions)
         
         k->buttonLayout->addWidget(button);
         button->setAnimated(k->isAnimated);
+    }
+
+    if (actions & Separator) {
+        k->buttonLayout->addWidget(new KSeparator(Qt::Vertical));
     }
     
     if (actions & InsertLayer) {
@@ -212,8 +217,6 @@ void KTProjectActionBar::setup(Actions actions)
         button->setAnimated(k->isAnimated);
     }
 
-    // TODO: Find the place where Scene operations are called out for this bar delete them
-    
     if (actions & InsertScene) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/add_scene.png"), size);  // TODO
         
@@ -234,8 +237,6 @@ void KTProjectActionBar::setup(Actions actions)
         k->buttonLayout->addWidget(button);
         button->setAnimated(k->isAnimated);
     }
-
-    /*
 
     if (actions & MoveSceneUp) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_scene_up.png"), size);
@@ -269,15 +270,14 @@ void KTProjectActionBar::setup(Actions actions)
         button->setAnimated(k->isAnimated);
     }
 
-    */
-    
     k->buttonLayout->addStretch();
     
     mainLayout->addWidget(new KSeparator(Qt::Horizontal));
-    
     mainLayout->addLayout(k->buttonLayout);
     mainLayout->addWidget(new KSeparator(Qt::Horizontal));
 }
+
+// TODO: Check why this function do nothing :S
 
 void KTProjectActionBar::insertSeparator(int position)
 {
@@ -295,10 +295,32 @@ void KTProjectActionBar::insertSeparator(int position)
             }
             break;
     }
-    
-    k->buttonLayout->insertWidget(position+1, new KSeparator(sepOrientation), 1, Qt::AlignCenter);
+
+    k->buttonLayout->insertWidget(position + 1, new KSeparator(Qt::Vertical), 1, Qt::AlignCenter);
 }
 
+void KTProjectActionBar::insertBlankSpace(int position)
+{
+    Qt::Orientation sepOrientation = Qt::Vertical;
+   
+    switch (k->orientation) {
+            case Qt::Vertical:
+            {
+                 sepOrientation = Qt::Horizontal;
+            }
+            break;
+            case Qt::Horizontal:
+            {
+                 sepOrientation = Qt::Vertical;
+            }
+            break;
+    }
+
+    QWidget *widget = new QWidget();
+    widget->setFixedSize(5,5);
+   
+    k->buttonLayout->insertWidget(position + 1, widget, 1, Qt::AlignCenter);
+}
 
 KImageButton *KTProjectActionBar::button(Action action)
 {
@@ -330,7 +352,7 @@ void KTProjectActionBar::emitActionSelected(int action)
             if (! noAsk) {
                 KOptionalDialog dialog(tr("Do you want to remove this layer?"), tr("Remove?"), this);
 
-                if( dialog.exec() == QDialog::Rejected)
+                if (dialog.exec() == QDialog::Rejected)
                     return;
 
                 KCONFIG->setValue("RemoveWithoutAskLayer", dialog.shownAgain());
@@ -344,7 +366,7 @@ void KTProjectActionBar::emitActionSelected(int action)
             if (! noAsk) {
                 KOptionalDialog dialog(tr("Do you want to remove this scene?"), tr("Remove?"), this);
 
-                if (dialog.exec() == QDialog::Rejected )
+                if (dialog.exec() == QDialog::Rejected)
                     return;
 
                 KCONFIG->setValue("RemoveWithoutAskScene", dialog.shownAgain());

@@ -41,7 +41,7 @@
 KTScenesList::KTScenesList(QWidget *parent) : KTreeListWidget(parent)
 {
     setHeaderLabels(QStringList() << "name");
-    // connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(changeCurrentScene()));
+    connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(changeCurrentScene()));
     connect(this, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(changeCurrentScene(QTreeWidgetItem *, int)));
 }
 
@@ -70,8 +70,10 @@ void KTScenesList::changeCurrentName(QString name)
 int KTScenesList::removeCurrentScene()
 {
     int index = indexCurrentScene();
-    if (currentItem())
+
+    if (currentItem()) {
         delete currentItem();
+    }
 
     return index;
 }
@@ -91,7 +93,7 @@ void KTScenesList::renameScene(int index, const QString &name)
 
 void KTScenesList::selectScene(int index)
 {
-    QTreeWidgetItem *item = topLevelItem (index);
+    QTreeWidgetItem *item = topLevelItem(index);
 
     if (item)
         setCurrentItem(item);
@@ -106,6 +108,7 @@ void KTScenesList::changeCurrentScene()
 
 void KTScenesList::changeCurrentScene(QTreeWidgetItem *item, int c)
 {
+    Q_UNUSED(c);
     QString name = item->text(0);
     int index = indexOfTopLevelItem(item);
     emit(changeCurrent(name, index));
@@ -124,7 +127,7 @@ int KTScenesList::moveCurrentSceneDown()
 {
     int index = indexCurrentScene();
     if (index < topLevelItemCount()-1) 
-        insertTopLevelItem(  index+1, takeTopLevelItem(index));
+        insertTopLevelItem(index+1, takeTopLevelItem(index));
 
     return index;
 }

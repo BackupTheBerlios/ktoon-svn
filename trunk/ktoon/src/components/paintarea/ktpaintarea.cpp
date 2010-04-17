@@ -265,10 +265,14 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
                 setCurrentScene(event->sceneIndex());
                 break;
            case KTProjectRequest::Remove:
+                /*
                 if (event->sceneIndex() == k->currentSceneIndex)
                     setCurrentScene(k->currentSceneIndex-1);
+                */
+                setCurrentScene(k->currentSceneIndex);
                 break;
-           default: break;
+           default: 
+                break;
     }
 }
 

@@ -80,10 +80,11 @@ void KTScenesWidget::setupButtons()
     KTProjectActionBar *bar = new KTProjectActionBar(KTProjectActionBar::InsertScene | KTProjectActionBar::RemoveScene);
     bar->button(KTProjectActionBar::InsertScene)->setIcon(QIcon(THEME_DIR + "icons/plus_sign.png"));
     bar->button(KTProjectActionBar::RemoveScene)->setIcon(QIcon(THEME_DIR + "icons/minus_sign.png"));
+    bar->insertBlankSpace(1);
 
     connect(bar, SIGNAL(actionSelected(int)), this, SLOT(sendEvent(int)));
 
-    addChild(bar);
+    addChild(bar, Qt::AlignCenter);
 }
 
 void KTScenesWidget::setupTableScenes()
@@ -94,10 +95,10 @@ void KTScenesWidget::setupTableScenes()
     searcher->setClickMessage(tr("Filter here..."));
 
     addChild(searcher);
-    addChild( k->tableScenes);
+    addChild(k->tableScenes);
 
-    connect(k->tableScenes, SIGNAL(changeCurrent(QString , int )), this, SLOT(selectScene( QString, int)));
-    connect(k->tableScenes, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), this, SLOT(sceneDobleClick(QTreeWidgetItem *, int )));
+    connect(k->tableScenes, SIGNAL(changeCurrent(QString , int)), this, SLOT(selectScene(QString, int)));
+    connect(k->tableScenes, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), this, SLOT(sceneDobleClick(QTreeWidgetItem *, int)));
     connect(k->tableScenes, SIGNAL(itemRenamed(QTreeWidgetItem *)), this, SLOT(emitRequestRenameScene(QTreeWidgetItem *)));
 }
 

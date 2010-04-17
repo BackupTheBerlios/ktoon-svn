@@ -48,58 +48,63 @@ class QBoxLayout;
 
 class KTOON_EXPORT KTProjectActionBar : public QWidget
 {
-	Q_OBJECT;
-	
-	public:
-		enum Action
-		{
-			NoAction = 0x00,
-			
-			InsertFrame = 1 << 1,
-			RemoveFrame = 1 << 2,
-			MoveFrameUp = 1 << 3,
-			MoveFrameDown = 1 << 4,
-			LockFrame = 1 << 5,
-			
-			InsertLayer = 1 << 6,
-			RemoveLayer = 1 << 7,
-			MoveLayerUp = 1 << 8,
-			MoveLayerDown = 1 << 9,
-			LockLayer = 1 << 10,
-			
-			InsertScene = 1 << 11,
-			RemoveScene = 1 << 12,
-			MoveSceneUp = 1 << 13,
-			MoveSceneDown = 1 << 14,
-			LockScene = 1 << 15,
-			AllActions = InsertFrame | RemoveFrame | MoveFrameUp | MoveFrameDown | LockFrame | InsertLayer | RemoveLayer | MoveLayerUp | MoveLayerDown | InsertScene | RemoveScene | MoveSceneUp | MoveSceneDown,
-			FrameActions = InsertFrame | RemoveFrame | MoveFrameUp | MoveFrameDown,
-			LayerActions = InsertLayer | RemoveLayer | MoveLayerUp | MoveLayerDown,
-			SceneActions = InsertScene | RemoveScene | MoveSceneUp | MoveSceneDown
-		};
-		
-		Q_DECLARE_FLAGS(Actions, Action);
-		
-		KTProjectActionBar(Actions actions, Qt::Orientation orientation = Qt::Horizontal, QWidget *parent = 0);
-		~KTProjectActionBar();
-		void setFixedSize(int s);
-		
-		void insertSeparator(int position);
-		
-		KImageButton *button(Action action);
-		
-	private slots:
-		void emitActionSelected(int action);
-		
-	signals:
-		void actionSelected(int action);
-		
-	private:
-		void setup(Actions actions);
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT;
+    
+    public:
+        enum Action
+        {
+            NoAction = 0x00,
+            
+            InsertFrame = 1 << 1,
+            RemoveFrame = 1 << 2,
+            MoveFrameUp = 1 << 3,
+            MoveFrameDown = 1 << 4,
+            LockFrame = 1 << 5,
+            
+            InsertLayer = 1 << 6,
+            RemoveLayer = 1 << 7,
+            MoveLayerUp = 1 << 8,
+            MoveLayerDown = 1 << 9,
+            LockLayer = 1 << 10,
+            
+            InsertScene = 1 << 11,
+            RemoveScene = 1 << 12,
+            MoveSceneUp = 1 << 13,
+            MoveSceneDown = 1 << 14,
+            LockScene = 1 << 15,
+            Separator = 1 << 16,
+
+            AllActions = InsertFrame | RemoveFrame | MoveFrameUp | MoveFrameDown | LockFrame | InsertLayer | RemoveLayer 
+                                     | MoveLayerUp | MoveLayerDown | InsertScene | RemoveScene | MoveSceneUp | MoveSceneDown,
+
+            FrameActions = InsertFrame | RemoveFrame | MoveFrameUp | MoveFrameDown,
+            LayerActions = InsertLayer | RemoveLayer | MoveLayerUp | MoveLayerDown,
+            SceneActions = InsertScene | RemoveScene | MoveSceneUp | MoveSceneDown
+        };
+        
+        Q_DECLARE_FLAGS(Actions, Action);
+        
+        KTProjectActionBar(Actions actions, Qt::Orientation orientation = Qt::Horizontal, QWidget *parent = 0);
+        ~KTProjectActionBar();
+        void setFixedSize(int s);
+        
+        void insertSeparator(int position);
+        void insertBlankSpace(int position);
+        
+        KImageButton *button(Action action);
+        
+    private slots:
+        void emitActionSelected(int action);
+        
+    signals:
+        void actionSelected(int action);
+        
+    private:
+        void setup(Actions actions);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(KTProjectActionBar::Actions);
