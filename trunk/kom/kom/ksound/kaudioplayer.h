@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KAUDIOPLAYER_H
 #define KAUDIOPLAYER_H
 
@@ -42,43 +41,37 @@
 */
 class K_CORE_EXPORT KAudioPlayer : public QObject
 {
-	Q_OBJECT;
-	public:
-		KAudioPlayer();
-		~KAudioPlayer();
-		
-		static KAudioPlayer *instance();
-		
-		void loadEngine(const QString &engine);
-		
-		int load( const QUrl &url, int id = -1 );
-		void play(int offset = 0);
-		void pause();
-		
-		void setCurrentPlayer(int id);
-		
-		void stop();
-		void seek( uint ms );
-		void setVolume(int percent);
-		
-	private:
-		static KAudioPlayer *s_instance;
-		
-		KAudioEngineIface *m_engine;
+    Q_OBJECT;
+    public:
+        KAudioPlayer();
+        ~KAudioPlayer();
+        
+        static KAudioPlayer *instance();
+        void loadEngine(const QString &engine);
+        int load(const QUrl &url, int id = -1);
+        void play(int offset = 0);
+        void pause();
+        
+        void setCurrentPlayer(int id);
+        
+        void stop();
+        void seek(uint ms);
+        void setVolume(int percent);
+        
+    private:
+        static KAudioPlayer *s_instance;
+        KAudioEngineIface *m_engine;
 };
 
 namespace KPlayer
 {
-	inline int play(const QUrl &url, int seek = 0)
-	{
-		int id = KAudioPlayer::instance()->load(url);
-		
-		KAudioPlayer::instance()->play( seek );
-		
-		return id;
-	}
+    inline int play(const QUrl &url, int seek = 0) {
+        int id = KAudioPlayer::instance()->load(url);
+        KAudioPlayer::instance()->play(seek);
+        
+        return id;
+    }
 };
 
 #endif
-
 

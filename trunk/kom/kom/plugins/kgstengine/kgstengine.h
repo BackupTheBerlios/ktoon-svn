@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KGSTENGINE_H
 #define KGSTENGINE_H
 
@@ -47,52 +46,51 @@
 
 class KGstEngine : public QObject, public KAudioEngineIface
 {
-	Q_OBJECT;
-	Q_INTERFACES(KAudioEngineIface);
-	
-	public:
-		KGstEngine();
-		~KGstEngine();
-		virtual QString key() const;
-		
-		virtual int load( const QUrl &url, int id = -1 );
-		
-		virtual bool init();
-		virtual bool play(int offset = 0);
-		
-		virtual void stop();
-		virtual void pause();
-		virtual void seek( uint ms );
-		
-		bool setCurrentPlayer(int id);
-		
-		void setVolume(int percent);
-		
-		static KGstEngine *instance();
+    Q_OBJECT;
+    Q_INTERFACES(KAudioEngineIface);
+    
+    public:
+        KGstEngine();
+        ~KGstEngine();
+        virtual QString key() const;
+        
+        virtual int load(const QUrl &url, int id = -1);
+        
+        virtual bool init();
+        virtual bool play(int offset = 0);
+        
+        virtual void stop();
+        virtual void pause();
+        virtual void seek(uint ms);
+        
+        bool setCurrentPlayer(int id);
+        
+        void setVolume(int percent);
+        
+        static KGstEngine *instance();
 
-	private:
-		static KGstEngine *s_instance;
-		
-		struct PlayInfo
-		{
-			KGstEngine *engine;
-			GstElement *player;
-			QUrl url;
-			int id;
-			bool stopped;
-		};
-		
-		QHash<int, PlayInfo> m_players;
-		
-		int m_currentPlayer;
-		
-	private:
-		static GstBusSyncReply bus_cb( GstBus*, GstMessage*, gpointer );
-		void destroyPlayInfo(const PlayInfo *playInfo);
-		
-	protected:
-		PlayInfo createPlayInfo( const QUrl &url );
+    private:
+        static KGstEngine *s_instance;
+        
+        struct PlayInfo
+        {
+            KGstEngine *engine;
+            GstElement *player;
+            QUrl url;
+            int id;
+            bool stopped;
+        };
+        
+        QHash<int, PlayInfo> m_players;
+        
+        int m_currentPlayer;
+        
+    private:
+        static GstBusSyncReply bus_cb(GstBus*, GstMessage*, gpointer);
+        void destroyPlayInfo(const PlayInfo *playInfo);
+        
+    protected:
+        PlayInfo createPlayInfo(const QUrl &url);
 };
 
 #endif
-

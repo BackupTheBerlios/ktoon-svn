@@ -28,11 +28,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KCELLVIEW_H
 #define KCELLVIEW_H
 /**
- * @file dcellview.h
+ * @file kcellview.h
  * @brief Include this file if you need the class KCellView, KCellViewItem, KCellViewItemDelegate or KCellViewModel
  */
 

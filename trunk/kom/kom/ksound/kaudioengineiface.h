@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KAUDIOENGINEIFACE_H
 #define KAUDIOENGINEIFACE_H
 
@@ -38,34 +37,33 @@
 #include <qplugin.h>
 #include <kcore/kglobal.h>
 
-
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
 class K_CORE_EXPORT KAudioEngineIface
 {
-	public:
-		virtual ~KAudioEngineIface() {}
-		virtual QString key() const = 0;
-		
-		/**
-		 * If can't load this function returns -1, else returns the player id
-		 * @param url 
-		 * @param id 
-		 * @return 
-		 */
-		virtual int load( const QUrl &url, int id = -1 ) = 0;
-		
-		virtual bool init() = 0;
-		virtual bool play(int offset = 0) = 0;
-		
-		virtual void stop() = 0;
-		virtual void pause() = 0;
-		virtual void seek( uint ms ) = 0;
-		
-		virtual bool setCurrentPlayer(int id) = 0;
-		
-		virtual void setVolume(int percent) = 0;
+    public:
+        virtual ~KAudioEngineIface() {}
+        virtual QString key() const = 0;
+        
+        /**
+         * If can't load this function returns -1, else returns the player id
+         * @param url 
+         * @param id 
+         * @return 
+         */
+        virtual int load(const QUrl &url, int id = -1) = 0;
+        
+        virtual bool init() = 0;
+        virtual bool play(int offset = 0) = 0;
+        
+        virtual void stop() = 0;
+        virtual void pause() = 0;
+        virtual void seek(uint ms) = 0;
+        
+        virtual bool setCurrentPlayer(int id) = 0;
+        
+        virtual void setVolume(int percent) = 0;
 };
 
 Q_DECLARE_INTERFACE(KAudioEngineIface, "org.klib.KAudioEngineIface/0.1");

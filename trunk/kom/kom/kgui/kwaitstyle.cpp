@@ -82,13 +82,11 @@ void KWaitStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *opt
 {
     Q_ASSERT(option);
     
-    switch (element)
-    {
+    switch (element) {
         case PE_FrameFocusRect: break;
         case PE_IndicatorRadioButton:
         {
-            if (const QStyleOptionButton *button = qstyleoption_cast<const QStyleOptionButton *>(option))
-            {
+            if (const QStyleOptionButton *button = qstyleoption_cast<const QStyleOptionButton *>(option)) {
                 bool hover = (button->state & State_Enabled) && (button->state & State_MouseOver);
                 painter->save();
                 QPixmap radio;
@@ -114,8 +112,7 @@ void KWaitStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *opt
         case PE_PanelButtonCommand:
         {
             const QStyleOptionButton *button = qstyleoption_cast<const QStyleOptionButton *>(option);
-            if (button)
-            {
+            if (button) {
                 bool hover = (button->state & State_Enabled) && (button->state & State_MouseOver);
 
                 const QPushButton *pushButton = qobject_cast<const QPushButton *>(widget);
@@ -453,9 +450,11 @@ QSize KWaitStyle::sizeFromContents(ContentsType type, const QStyleOption *option
 
     switch (type) {
 
-//     case CT_PushButton:
-//         newSize.boundedTo (QSize(27, 20));
-//         break;
+       /*
+        case CT_PushButton:
+            newSize.boundedTo (QSize(27, 20));
+            break;
+       */
 
         case CT_Slider:
             newSize.setHeight(20);
@@ -479,22 +478,27 @@ int KWaitStyle::pixelMetric(PixelMetric pm, const QStyleOption *opt, const QWidg
                 return 1;
            }
            break;
-//         case QStyle::PM_DockWidgetHandleExtent:
-//         {
-//             return 0;
-//         }
-//         break;
-//         case QStyle::PM_DockWidgetFrameWidth:
-//         {
-//             return 0;
-//         }
-//         break;
-//         case QStyle::PM_DockWidgetTitleMargin:
-//         {
-//             return 0;
-//         }
-//         break;
-           default: break;
+
+           /*
+           case QStyle::PM_DockWidgetHandleExtent:
+           {
+               return 0;
+           }
+           break;
+           case QStyle::PM_DockWidgetFrameWidth:
+           {
+               return 0;
+           }
+           break;
+           case QStyle::PM_DockWidgetTitleMargin:
+           {
+               return 0;
+           }
+           break;
+           */
+
+           default: 
+           break;
     }
     
     return QPlastiqueStyle::pixelMetric(pm, opt, widget);
@@ -509,7 +513,7 @@ void KWaitStyle::polish(QWidget *widget)
             widget->layout()->setSpacing(0);
         } else {
             widget->layout()->setMargin(10);
-//             widget->layout()->setSpacing(0);
+            // widget->layout()->setSpacing(0);
         }
     }
 
@@ -531,14 +535,13 @@ void KWaitStyle::unpolish(QWidget *widget)
 
 void KWaitStyle::polish(QPalette &palette)
 {
-//     palette.setColor(QPalette::Background, QColor(241, 241, 241));
+    // palette.setColor(QPalette::Background, QColor(241, 241, 241));
 }
 
 QRect KWaitStyle::subElementRect(SubElement element, const QStyleOption *option, const QWidget *widget) const
 {
     QRect r;
-    switch(element) 
-    {
+    switch (element) {
         case SE_RadioButtonClickRect:
             r = widget->rect();
             break;

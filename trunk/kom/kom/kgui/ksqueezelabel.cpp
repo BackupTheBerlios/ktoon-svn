@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "ksqueezelabel.h"
 
 #include <qtooltip.h>
@@ -40,19 +39,18 @@
 
 KSqueezeLabel::KSqueezeLabel(QWidget *parent, const char *name) : QLabel(parent)
 {
-	setObjectName(name);
-	setSizePolicy(QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ));
+    setObjectName(name);
+    setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 }
 
-KSqueezeLabel::KSqueezeLabel( const QString &text , QWidget *parent, const char *name)
-	: QLabel(parent)
+KSqueezeLabel::KSqueezeLabel(const QString &text , QWidget *parent, const char *name)
+    : QLabel(parent)
 {
-	setObjectName(name);
-	setSizePolicy(QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ));
-	m_text = text;
-	squeezeText();
+    setObjectName(name);
+    setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+    m_text = text;
+    squeezeText();
 }
-
 
 KSqueezeLabel::~KSqueezeLabel()
 {
@@ -60,107 +58,93 @@ KSqueezeLabel::~KSqueezeLabel()
 
 void KSqueezeLabel::squeezeText()
 {
-	QFontMetrics fm(fontMetrics());
-	int labelWidth = size().width();
-	int textWidth = fm.width(m_text);
-	
-	if (textWidth > labelWidth)
-	{
-		QString squeezedText = squeezer(m_text, fm, labelWidth);
-
-		QLabel::setText(squeezedText);
-		setToolTip( m_text );
-	} 
-	else 
-	{
-		QLabel::setText(m_text);
-	}
+    QFontMetrics fm(fontMetrics());
+    int labelWidth = size().width();
+    int textWidth = fm.width(m_text);
+    
+    if (textWidth > labelWidth) {
+        QString squeezedText = squeezer(m_text, fm, labelWidth);
+        QLabel::setText(squeezedText);
+        setToolTip(m_text);
+    } else {
+        QLabel::setText(m_text);
+    }
 }
 
 QString KSqueezeLabel::squeezer(const QString &s, const QFontMetrics& fm, uint width)
 {
-	if ( s.isEmpty() || uint( fm.width( s ) ) <= width )
-	{
-		return s;
-	}
-	
-	const unsigned int length = s.length();
-	if ( length == 2 ) 
-	{
-		return s;
-	}
-	const int maxWidth = width - fm.width( '.' ) * 3;
-	if ( maxWidth <= 0 ) 
-	{
-		return "...";
-	}
-	
-	unsigned int leftIdx = 0, rightIdx = length;
-	unsigned int leftWidth = fm.charWidth( s, leftIdx++ );
-	unsigned int rightWidth = fm.charWidth( s, --rightIdx );
-	
-	while ( leftWidth + rightWidth < uint( maxWidth ) )
-	{
-		while ( leftWidth <= rightWidth && leftWidth + rightWidth < uint( maxWidth ) ) 
-		{
-			leftWidth += fm.charWidth( s, leftIdx++ );
-		}
-		while ( rightWidth <= leftWidth && leftWidth + rightWidth < uint( maxWidth ) ) 
-		{
-			rightWidth += fm.charWidth( s, --rightIdx );
-		}
-	}
-	
-	if ( leftWidth > rightWidth ) 
-	{
-		--leftIdx;
-	} else 
-	{
-		++rightIdx;
-	}
-	 
-	rightIdx = length - rightIdx;
-	if ( (leftIdx == 0 && rightIdx == 1) || (leftIdx == 1 && rightIdx == 0) ) 
-	{
-		return "...";
-	}
-	
-	return s.left( leftIdx ) + "..." + s.right( rightIdx );
+    if (s.isEmpty() || uint(fm.width(s)) <= width) {
+        return s;
+    }
+    
+    const unsigned int length = s.length();
+    if (length == 2) 
+        return s;
+
+    const int maxWidth = width - fm.width('.') * 3;
+
+    if (maxWidth <= 0)
+        return "...";
+    
+    unsigned int leftIdx = 0, rightIdx = length;
+    unsigned int leftWidth = fm.charWidth(s, leftIdx++);
+    unsigned int rightWidth = fm.charWidth(s, --rightIdx);
+    
+    while (leftWidth + rightWidth < uint(maxWidth)) {
+        while (leftWidth <= rightWidth && leftWidth + rightWidth < uint( maxWidth)) {
+            leftWidth += fm.charWidth(s, leftIdx++);
+        }
+        while (rightWidth <= leftWidth && leftWidth + rightWidth < uint( maxWidth)) {
+               rightWidth += fm.charWidth(s, --rightIdx);
+        }
+    }
+    
+    if (leftWidth > rightWidth) {
+        --leftIdx;
+    } else {
+        ++rightIdx;
+    }
+     
+    rightIdx = length - rightIdx;
+
+    if ((leftIdx == 0 && rightIdx == 1) || (leftIdx == 1 && rightIdx == 0))
+        return "...";
+    
+    return s.left(leftIdx) + "..." + s.right(rightIdx);
 }
 
-void KSqueezeLabel::resizeEvent( QResizeEvent * )
+void KSqueezeLabel::resizeEvent(QResizeEvent *)
 {
-	squeezeText();
+    squeezeText();
 }
 
-void KSqueezeLabel::setAlignment( Qt::Alignment alignment )
+void KSqueezeLabel::setAlignment(Qt::Alignment alignment)
 {
-	QString tmp(m_text);
-	QLabel::setAlignment(alignment);
-	m_text = tmp;
+    QString tmp(m_text);
+    QLabel::setAlignment(alignment);
+    m_text = tmp;
 }
 
 QSize KSqueezeLabel::sizeHint() const
 {
-	return QSize(contentsRect().width(), QLabel::sizeHint().height());
+    return QSize(contentsRect().width(), QLabel::sizeHint().height());
 }
 
 QSize KSqueezeLabel::minimumSizeHint() const
 {
-	QSize sh = QLabel::minimumSizeHint();
-	sh.setWidth(-1);
-	return sh;
+    QSize sh = QLabel::minimumSizeHint();
+    sh.setWidth(-1);
+
+    return sh;
 }
 
-void KSqueezeLabel::setText( const QString &text ) 
+void KSqueezeLabel::setText(const QString &text) 
 {
-	m_text = text;
-	squeezeText();
+    m_text = text;
+    squeezeText();
 }
 
 QString KSqueezeLabel::completeText() const
 {
-	return m_text;
+    return m_text;
 }
-
-

@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KTERM_H
 #define KTERM_H
 
@@ -38,26 +37,26 @@
 #include <kcore/kglobal.h>
 
 /**
-	@author David Cuadrado <krawek@gmail.com>
+    @author David Cuadrado <krawek@gmail.com>
 */
 class K_GUI_EXPORT KTerm : public QX11EmbedContainer
 {
-	Q_OBJECT
-	public:
-		KTerm(QWidget *w = 0);
-		~KTerm();
-		
-		QSize sizeHint() const;
-		
-	public slots:
-		void showTerm();
-		void closeTerm(int ec, QProcess::ExitStatus s);
-		
-	signals:
-		void termClosed();
-		
-	private:
-		QProcess *m_process;
+    Q_OBJECT
+    public:
+        KTerm(QWidget *w = 0);
+        ~KTerm();
+        
+        QSize sizeHint() const;
+        
+    public slots:
+        void showTerm();
+        void closeTerm(int ec, QProcess::ExitStatus s);
+        
+    signals:
+        void termClosed();
+        
+    private:
+        QProcess *m_process;
 };
 
 #endif

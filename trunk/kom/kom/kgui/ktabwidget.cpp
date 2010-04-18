@@ -28,12 +28,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "ktabwidget.h"
+#include "kdebug.h"
+
 #include <QWheelEvent>
 #include <QTabBar>
-
-#include "kdebug.h"
 
 KTabWidget::KTabWidget(QWidget *parent) : QTabWidget(parent)
 {
@@ -60,7 +59,7 @@ void KTabWidget::wheelEvent(QWheelEvent *ev)
         wheelMove(ev->delta());
 }
 
-void KTabWidget::wheelMove( int delta )
+void KTabWidget::wheelMove(int delta)
 {
     if (count() > 1) {
         int current = currentIndex();
@@ -71,7 +70,7 @@ void KTabWidget::wheelMove( int delta )
             if (current < 0)
                 current = count() - 1;
         }
-        setCurrentIndex( current );
+        setCurrentIndex(current);
     }
 }
 

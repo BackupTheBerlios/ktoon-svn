@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kgstengine.h"
 
 #include <QtDebug>
@@ -39,7 +38,6 @@
 #include <kcore/kdebug.h>
 
 KGstEngine *KGstEngine::s_instance = 0;
-
 
 GstBusSyncReply KGstEngine::bus_cb(GstBus*, GstMessage* msg, gpointer pinfo) // static
 {
@@ -151,7 +149,7 @@ bool KGstEngine::init()
         return false;
     }
 
-    gst_object_unref( dummy );
+    gst_object_unref(dummy);
 
     return true;
 }
@@ -194,7 +192,7 @@ void KGstEngine::pause()
         gst_element_set_state (m_players[m_currentPlayer].player, GST_STATE_PAUSED);
 }
 
-void KGstEngine::seek( uint ms )
+void KGstEngine::seek(uint ms)
 {
     qDebug() << "SEEKING "<< ms;
 	
@@ -251,7 +249,8 @@ void KGstEngine::setVolume(int percent)
 {
     if (m_currentPlayer < 0)
         return;
-    g_object_set( G_OBJECT(m_players[m_currentPlayer].player), "volume", percent*0.01, NULL );
+
+    g_object_set(G_OBJECT(m_players[m_currentPlayer].player), "volume", percent*0.01, NULL);
 }
 
-Q_EXPORT_PLUGIN2( gst_engine, KGstEngine );
+Q_EXPORT_PLUGIN2(gst_engine, KGstEngine);

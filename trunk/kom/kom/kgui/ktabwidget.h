@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KTABWIDGET_H
 #define KTABWIDGET_H
 
@@ -40,23 +39,23 @@
 */
 class K_GUI_EXPORT KTabWidget : public QTabWidget
 {
-	Q_OBJECT
-	public:
-		KTabWidget(QWidget *parent = 0);
-		~KTabWidget();
-		
-	public slots:
-		void removeAllTabs();
-		
-	protected:
-#ifndef QT_NO_WHEELEVENT
-    		virtual void wheelEvent( QWheelEvent *e );
-#endif
+    Q_OBJECT
+    public:
+        KTabWidget(QWidget *parent = 0);
+        ~KTabWidget();
+        
+    public slots:
+        void removeAllTabs();
+        
+    protected:
+    #ifndef QT_NO_WHEELEVENT
+            virtual void wheelEvent(QWheelEvent *e);
+    #endif
 
-	protected slots:
-#ifndef QT_NO_WHEELEVENT
-    		virtual void wheelMove( int delta );
-#endif
+    protected slots:
+    #ifndef QT_NO_WHEELEVENT
+            virtual void wheelMove(int delta);
+    #endif
 
 };
 

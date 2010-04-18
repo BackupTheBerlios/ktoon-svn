@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef DITEMSELECTOR_H
 #define DITEMSELECTOR_H
 
@@ -39,35 +38,34 @@
 */
 class KItemSelector : public QWidget
 {
-	Q_OBJECT
-	public:
-		KItemSelector(QWidget *parent = 0);
-		~KItemSelector();
-		
-		void setItems(const QStringList &items);
-		int addItem(const QString &item);
-		void addItems(const QStringList &items);
-		
-		QStringList selectedItems() const;
-		QList<int> selectedIndexes() const;
-		
-		
-		void clear();
-		void reset();
-                void selectFirstItem();
-		
-	private slots:
-		void addCurrent();
-		void removeCurrent();
-		void upCurrent();
-		void downCurrent();
-		
-	signals:
-		void changed();
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT
+    public:
+        KItemSelector(QWidget *parent = 0);
+        ~KItemSelector();
+        
+        void setItems(const QStringList &items);
+        int addItem(const QString &item);
+        void addItems(const QStringList &items);
+        
+        QStringList selectedItems() const;
+        QList<int> selectedIndexes() const;
+        
+        void clear();
+        void reset();
+        void selectFirstItem();
+        
+    private slots:
+        void addCurrent();
+        void removeCurrent();
+        void upCurrent();
+        void downCurrent();
+        
+    signals:
+        void changed();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

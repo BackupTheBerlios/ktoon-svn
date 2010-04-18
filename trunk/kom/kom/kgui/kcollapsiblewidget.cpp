@@ -255,7 +255,7 @@ KSettingsContainer::~KSettingsContainer()
     delete k;
 }
 
-KCollapsibleWidget* KSettingsContainer::insertWidget( QWidget *w, const QString& name )
+KCollapsibleWidget* KSettingsContainer::insertWidget(QWidget *w, const QString& name)
 {
     if (w && w->layout()) {
         QLayout *lay = w->layout();

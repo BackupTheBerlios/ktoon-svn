@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KMAINWINDOWABSTRACTSETTINGS_H
 #define KMAINWINDOWABSTRACTSETTINGS_H
 
@@ -44,13 +43,13 @@ class KMainWindow;
 
 class K_IDEAL_EXPORT KMainWindowAbstractSettings : public QObject
 {
-	public:
-		KMainWindowAbstractSettings(QObject *parent = 0) : QObject(parent) {}
-		~KMainWindowAbstractSettings() {};
-		
-		virtual void save(KMainWindow *w) = 0;
-		virtual void restore(KMainWindow *w) = 0;
-		
+    public:
+        KMainWindowAbstractSettings(QObject *parent = 0) : QObject(parent) {}
+        ~KMainWindowAbstractSettings() {};
+        
+        virtual void save(KMainWindow *w) = 0;
+        virtual void restore(KMainWindow *w) = 0;
+        
 };
 
 #endif

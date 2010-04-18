@@ -28,56 +28,47 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include <QtGlobal> 
 #ifdef Q_WS_X11
 
 #include "kterm.h"
 #include <QApplication>
 
-
 KTerm::KTerm(QWidget *w) : QX11EmbedContainer(w)
 {
-	m_process = new QProcess(this);
-	
-	connect(m_process, SIGNAL(finished ( int, QProcess::ExitStatus)), this, SLOT(closeTerm(int, QProcess::ExitStatus)));
-	
+    m_process = new QProcess(this);
+    connect(m_process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(closeTerm(int, QProcess::ExitStatus)));
 }
-
 
 KTerm::~KTerm()
 {
-	m_process->kill();
-	m_process->waitForFinished();
+    m_process->kill();
+    m_process->waitForFinished();
 }
 
 QSize KTerm::sizeHint() const
 {
-	QSize size(400,300);
-	
-	return size.expandedTo(QApplication::globalStrut());
+    QSize size(400,300);
+    
+    return size.expandedTo(QApplication::globalStrut());
 }
 
 void KTerm::showTerm()
 {
-	QStringList args;
+    QStringList args;
 
-	args << QStringList() << "-into" << QString::number(winId()) << "-bg" << palette().color(QPalette::Background).name() << "-fg" << palette().color(QPalette::Foreground).name();
+    args << QStringList() << "-into" << QString::number(winId()) << "-bg" << palette().color(QPalette::Background).name() << "-fg" << palette().color(QPalette::Foreground).name();
 
-	m_process->start("xterm", args);
-	
-	if( m_process->error() == QProcess::FailedToStart )
-	{
-		qWarning("-> Please install xterm first");
-	}
+    m_process->start("xterm", args);
+    
+    if (m_process->error() == QProcess::FailedToStart)
+        qWarning("-> Please install xterm first");
 }
 
 void KTerm::closeTerm(int ec, QProcess::ExitStatus s)
 {
-	emit termClosed();
-	close();
+    emit termClosed();
+    close();
 }
 
 #endif // Q_WS_X11
-
-

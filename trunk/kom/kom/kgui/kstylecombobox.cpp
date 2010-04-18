@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kstylecombobox.h"
 
 #include <QStyleFactory>
@@ -38,26 +37,20 @@
 
 KStyleComboBox::KStyleComboBox(QWidget *parent) : QComboBox(parent)
 {
-	addItems( QStyleFactory::keys() );
-	
-	connect(this, SIGNAL(activated( const QString& )), this, SLOT(chooseStyle(const QString &)));
-	
-	setCurrentIndex( findText(QApplication::style()->objectName(), Qt::MatchExactly|Qt::MatchFixedString) );
+    addItems(QStyleFactory::keys());
+    connect(this, SIGNAL(activated( const QString& )), this, SLOT(chooseStyle(const QString &)));
+    setCurrentIndex( findText(QApplication::style()->objectName(), Qt::MatchExactly|Qt::MatchFixedString));
 }
-
 
 KStyleComboBox::~KStyleComboBox()
 {
 }
 
-
 void KStyleComboBox::chooseStyle(const QString &style)
 {
-	QStyle *st = QStyleFactory::create( style );
-	if(st)
-	{
-		qApp->setStyle( st );
-		qApp->setPalette(st->standardPalette());
-	}
+    QStyle *st = QStyleFactory::create(style);
+    if (st) {
+        qApp->setStyle( st );
+        qApp->setPalette(st->standardPalette());
+    }
 }
-

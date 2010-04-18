@@ -52,13 +52,9 @@ KTabDialog::KTabDialog(int buttons, QWidget *parent, bool modal)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
-    
     m_tabWidget = new KTabWidget(this);
-    
     mainLayout->addWidget(m_tabWidget);
-    
     setupButtons(buttons);
-    
     setModal(modal);
 }
 
@@ -118,7 +114,6 @@ void KTabDialog::setupButtons(int buttons)
     
     static_cast<QVBoxLayout *>(layout())->addLayout(buttonLayout);
 }
-
 
 KTabDialog::~KTabDialog()
 {

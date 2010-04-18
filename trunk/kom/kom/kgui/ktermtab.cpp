@@ -40,7 +40,7 @@
 
 KTermTab::KTermTab(QWidget *parent) : KTabWidget(parent)
 {
-    // tabBar()->setShape( QTabBar::TriangularNorth );
+    // tabBar()->setShape(QTabBar::TriangularNorth);
     m_newTab = new QToolButton(this);
     m_newTab->setText(tr("New"));
     
@@ -68,9 +68,7 @@ void KTermTab::newTerm()
 {
     KTerm *term = new KTerm;
     addTab(term, tr("Console %1").arg(count()));
-        
     term->showTerm();
-        
     connect(term, SIGNAL(termClosed()), this, SLOT(closeTermTab()));
 }
 

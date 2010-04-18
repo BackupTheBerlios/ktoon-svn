@@ -28,65 +28,62 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KTABDIALOG_H
 #define KTABDIALOG_H
 
-#include <QDialog>
 #include "kgui/ktabwidget.h"
 
+#include <QDialog>
 #include <QHash>
 
 typedef QHash<int, QPushButton *> Buttons;
-
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
 class K_GUI_EXPORT KTabDialog : public QDialog
 {
-	Q_OBJECT
-	public:
-		enum Button
-		{
-			Help    = 1<<2,
-			Ok      = 1<<3,
-			Apply   = 1<<4,
-			Cancel  = 1<<5,
-			Custom1 = 1<<6,
-			Custom2 = 1<<7,
-			Custom3 = 1<<8
-		};
-		KTabDialog(QWidget *parent = 0, bool modal = true);
-		KTabDialog(int buttons = Ok|Cancel, QWidget *parent = 0, bool modal = true);
-		
-		~KTabDialog();
-		
-		void addTab ( QWidget * child, const QString & label );
-		void addTab ( QWidget * child, const QIcon & iconset, const QString & label );
-		
-		QWidget *currentTab();
-		
-		void setButtonText(Button b, const QString &text);
-		QPushButton *button(Button b);
-		
-		KTabWidget *tabWidget() const;
-		
-	private:
-		void setupButtons(int buttons);
-		
-	public slots:
-		virtual void ok();
-		virtual void cancel();
-		virtual void apply();
-		virtual void help(){};
-		virtual void custom1() {};
-		virtual void custom2() {};
-		virtual void custom3() {};
-		
-	private:
-		KTabWidget *m_tabWidget;
-		Buttons m_buttons;
+    Q_OBJECT
+    public:
+        enum Button
+        {
+            Help    = 1<<2,
+            Ok      = 1<<3,
+            Apply   = 1<<4,
+            Cancel  = 1<<5,
+            Custom1 = 1<<6,
+            Custom2 = 1<<7,
+            Custom3 = 1<<8
+        };
+        KTabDialog(QWidget *parent = 0, bool modal = true);
+        KTabDialog(int buttons = Ok|Cancel, QWidget *parent = 0, bool modal = true);
+        ~KTabDialog();
+        
+        void addTab(QWidget * child, const QString & label);
+        void addTab(QWidget * child, const QIcon & iconset, const QString & label);
+        
+        QWidget *currentTab();
+        
+        void setButtonText(Button b, const QString &text);
+        QPushButton *button(Button b);
+        
+        KTabWidget *tabWidget() const;
+        
+    private:
+        void setupButtons(int buttons);
+        
+    public slots:
+        virtual void ok();
+        virtual void cancel();
+        virtual void apply();
+        virtual void help(){};
+        virtual void custom1() {};
+        virtual void custom2() {};
+        virtual void custom3() {};
+        
+    private:
+        KTabWidget *m_tabWidget;
+        Buttons m_buttons;
 };
 
 #endif

@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KSQUEEZELABEL_H
 #define KSQUEEZELABEL_H
 
@@ -58,24 +57,24 @@
 
 class K_GUI_EXPORT KSqueezeLabel : public QLabel
 {
-	public:
-		KSqueezeLabel(QWidget *parent, const char *name=0);
-		KSqueezeLabel(const QString &text, QWidget *parent, const char *name=0);
-		~KSqueezeLabel();
-		
-		QSize sizeHint() const;
-		QSize minimumSizeHint() const;
-		void setText( const QString &text );
-		void setAlignment( Qt::Alignment alignment );
-		QString completeText() const;
-		
-	protected:
-		virtual void squeezeText();
-		void resizeEvent(QResizeEvent *);
-		
-	private:
-		QString squeezer(const QString &s, const QFontMetrics& fm, uint width);
-		QString m_text;
+   public:
+      KSqueezeLabel(QWidget *parent, const char *name=0);
+      KSqueezeLabel(const QString &text, QWidget *parent, const char *name=0);
+      ~KSqueezeLabel();
+      
+      QSize sizeHint() const;
+      QSize minimumSizeHint() const;
+      void setText(const QString &text);
+      void setAlignment(Qt::Alignment alignment);
+      QString completeText() const;
+      
+   protected:
+      virtual void squeezeText();
+      void resizeEvent(QResizeEvent *);
+      
+   private:
+      QString squeezer(const QString &s, const QFontMetrics& fm, uint width);
+      QString m_text;
 };
 
 #endif

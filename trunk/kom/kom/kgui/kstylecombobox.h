@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KSTYLECOMBOBOX_H
 #define KSTYLECOMBOBOX_H
 
@@ -40,14 +39,13 @@
 */
 class K_GUI_EXPORT KStyleComboBox : public QComboBox
 {
-	Q_OBJECT;
-	public:
-		KStyleComboBox(QWidget *parent = 0);
-		~KStyleComboBox();
-		
-	private slots:
-		void chooseStyle(const QString &style);
-
+    Q_OBJECT;
+    public:
+        KStyleComboBox(QWidget *parent = 0);
+        ~KStyleComboBox();
+        
+    private slots:
+        void chooseStyle(const QString &style);
 };
 
 #endif

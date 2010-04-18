@@ -42,9 +42,7 @@ class KIndicatorDrawer
     public:
         KIndicatorDrawer();
         ~KIndicatorDrawer();
-        
         void paint(QPainter *painter, const QRectF& rect, const QColor &color, const QColor &fg = Qt::white);
-        
         void advance();
         
     private:

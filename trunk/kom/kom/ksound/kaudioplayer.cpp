@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "kaudioplayer.h"
 
 #include <QDir>
@@ -40,11 +39,9 @@
 
 KAudioPlayer *KAudioPlayer::s_instance = 0;
 
-
 KAudioPlayer::KAudioPlayer() : QObject(), m_engine(0)
 {
 }
-
 
 KAudioPlayer::~KAudioPlayer()
 {
@@ -52,99 +49,80 @@ KAudioPlayer::~KAudioPlayer()
 
 KAudioPlayer *KAudioPlayer::instance()
 {
-	if ( !s_instance )
-	{
-		s_instance = new KAudioPlayer;
-	}
-	
-	return s_instance;
+    if (!s_instance)
+        s_instance = new KAudioPlayer;
+    
+    return s_instance;
 }
 
 void KAudioPlayer::loadEngine(const QString &engineKey)
 {
-	kDebug("audio engine") << "Loading engine: " << engineKey << " from: " << PLUGIN_DIR;
-	
-	QDir m_pluginDirectory = QDir(PLUGIN_DIR);
-	
-	foreach (QString fileName, m_pluginDirectory.entryList(QDir::Files))
-	{
-		QPluginLoader loader(m_pluginDirectory.absoluteFilePath(fileName));
-		QObject *plugin = qobject_cast<QObject*>(loader.instance());
-		
-		if (plugin)
-		{
-			kDebug("audio engine") << "******FILE: " << fileName;
-			KAudioEngineIface *engine = qobject_cast<KAudioEngineIface *>(plugin);
-			
-			if ( engine )
-			{
-				if ( engine->key() == engineKey )
-				{
-					kDebug("audio engine") << "Loaded!";
-					m_engine = engine;
-					m_engine->init();
-					break;
-				}
-			}
-		}
-	}
+    kDebug("audio engine") << "Loading engine: " << engineKey << " from: " << PLUGIN_DIR;
+    
+    QDir m_pluginDirectory = QDir(PLUGIN_DIR);
+    
+    foreach (QString fileName, m_pluginDirectory.entryList(QDir::Files)) {
+        QPluginLoader loader(m_pluginDirectory.absoluteFilePath(fileName));
+        QObject *plugin = qobject_cast<QObject*>(loader.instance());
+        
+        if (plugin) {
+            kDebug("audio engine") << "******FILE: " << fileName;
+            KAudioEngineIface *engine = qobject_cast<KAudioEngineIface *>(plugin);
+            
+            if (engine) {
+                if (engine->key() == engineKey) {
+                    kDebug("audio engine") << "Loaded!";
+                    m_engine = engine;
+                    m_engine->init();
+                    break;
+                }
+            }
+        }
+    }
 }
 
-
-int KAudioPlayer::load( const QUrl &url, int id )
+int KAudioPlayer::load(const QUrl &url, int id)
 {
-	if ( m_engine )
-	{
-		return m_engine->load(url, id);
-	}
-	return -1;
+    if (m_engine)
+        return m_engine->load(url, id);
+
+    return -1;
 }
 
 void KAudioPlayer::play(int offset)
 {
-	if ( m_engine )
-	{
-		m_engine->play( offset);
-	}
+    if (m_engine)
+        m_engine->play( offset);
 }
 
 void KAudioPlayer::pause()
 {
-	if ( m_engine )
-	{
-		m_engine->pause();
-	}
+    if (m_engine)
+        m_engine->pause();
 }
 
 void KAudioPlayer::setCurrentPlayer(int id)
 {
-	if ( m_engine )
-	{
-		m_engine->setCurrentPlayer( id );
-	}
+    if (m_engine)
+        m_engine->setCurrentPlayer(id);
 }
 
 void KAudioPlayer::stop()
 {
-	if ( m_engine )
-	{
-		m_engine->stop();
-	}
+    if (m_engine)
+        m_engine->stop();
 }
 
-void KAudioPlayer::seek( uint ms )
+void KAudioPlayer::seek(uint ms)
 {
-	if ( m_engine )
-	{
-		m_engine->seek(ms);
-	}
+    if (m_engine)
+        m_engine->seek(ms);
 }
 
 void KAudioPlayer::setVolume(int percent)
 {
-	if ( m_engine )
-	{
-		m_engine->setVolume( percent );
-	}
+    if (m_engine) {
+        m_engine->setVolume(percent);
+    }
 }
 

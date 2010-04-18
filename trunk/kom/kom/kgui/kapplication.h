@@ -28,7 +28,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KAPPLICATION_H
 #define KAPPLICATION_H
 
@@ -36,19 +35,17 @@
 #include <QMap>
 #include <QColorGroup>
 
-#include "kgui/kthememanager.h"
-#include "kcore/kconfig.h"
-
 #include <QLineEdit>
 #include <QPushButton>
 #include <QLabel>
 #include <QFileDialog>
 #include <QDialog>
 
+#include "kgui/kthememanager.h"
 #include "kgui/kvhbox.h"
-#include "kcore/kglobal.h"
-
 #include "kgui/kwizard.h"
+#include "kcore/kconfig.h"
+#include "kcore/kglobal.h"
 
 class QApplication;
 class QString;
