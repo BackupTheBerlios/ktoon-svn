@@ -122,14 +122,14 @@ void KTLayerManagerHeader::paintSection(QPainter * painter, const QRect & rect, 
             break;
             case LOCK_COLUMN:
             {
-                 //painter->drawPixmap(rect.normalized().adjusted(3,3, -3, -3), m_lockIcon, QRectF(0, 0, 10, 13));
-                 painter->drawPixmap(QPointF(rect.x() + 4.5, rect.y() + 6), m_lockIcon, QRectF(0, 0, 10, 13));
+                 //painter->drawPixmap(QPointF(rect.x() + 4.5, rect.y() + 6), m_lockIcon, QRectF(0, 0, 10, 13));
+                 painter->drawPixmap(QPointF(rect.x() + (rect.width()-10)/2, rect.y() + 6), m_lockIcon, QRectF(0, 0, 10, 13));
             }
             break;
             case VIEW_COLUMN:
             {
-                 //painter->drawPixmap(rect.normalized().adjusted(3, 3, -3, -3), m_viewIcon, QRectF(0, 0, 16, 16));
-                 painter->drawPixmap(QPointF(rect.x() + 1, rect.y() + 5), m_viewIcon, QRectF(0, 0, 16, 16));
+                 //painter->drawPixmap(QPointF(rect.x() + 1, rect.y() + 5), m_viewIcon, QRectF(0, 0, 16, 16));
+                 painter->drawPixmap(QPointF(rect.x() + (rect.width()-16)/2, rect.y() + 6), m_viewIcon, QRectF(0, 0, 16, 16));
             }
             break;
     }

@@ -57,7 +57,7 @@ class TextArea : public QTextBrowser
         ~TextArea();
 
     public slots:
-        void setSource ( const QUrl & name );
+        void setSource(const QUrl & name);
 };
 
 TextArea::TextArea()
@@ -74,7 +74,7 @@ void TextArea::setSource(const QUrl &name)
         KCONFIG->beginGroup("General");
         QString browser = KCONFIG->value("Browser").toString();
         if (!browser.isEmpty())
-            QProcess::startDetached (browser, QStringList() << name.toString() );
+            QProcess::startDetached(browser, QStringList() << name.toString());
     } else {
             QTextBrowser::setSource(name);
     }
@@ -103,7 +103,7 @@ CrashWidget::CrashWidget (int sig) : QDialog(0), m_sig(sig)
     QString text = CHANDLER->defaultText();
     QImage img(CHANDLER->defaultImage());
 
-    if (CHANDLER->containsSignalEntry(sig) ) {
+    if (CHANDLER->containsSignalEntry(sig)) {
         text = CHANDLER->signalText(sig);
         img = QImage(CHANDLER->signalImage(sig));
     }
@@ -121,15 +121,14 @@ CrashWidget::CrashWidget (int sig) : QDialog(0), m_sig(sig)
 
     m_tabber->addTab(page1, tr("What's happening?"));
 
-    QPushButton *end = new QPushButton( CHANDLER->buttonText(),this );
+    QPushButton *end = new QPushButton(CHANDLER->buttonText(),this);
     connect(end,SIGNAL(clicked()),SLOT(accept()));
     m_layout->addWidget(end);
 
     setLayout(m_layout);
 }
 
-
-CrashWidget::~CrashWidget ()
+CrashWidget::~CrashWidget()
 {
 }
 

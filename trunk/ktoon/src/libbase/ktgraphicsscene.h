@@ -68,6 +68,7 @@ class KTOON_EXPORT KTGraphicsScene : public QGraphicsScene
         void addGraphicObject(KTGraphicObject *object, double opacity = 1.0);
         
         void clean();
+        void removeScene();
         int currentFrameIndex() const;
         int currentLayerIndex() const;
         int currentSceneIndex() const;

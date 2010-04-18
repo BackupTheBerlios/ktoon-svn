@@ -74,6 +74,7 @@ class KTOON_EXPORT KTPaintAreaBase : public QGraphicsView
     private:
         virtual void saveState();
         virtual void restoreState();
+        void drawPadLock(QPainter *painter, const QRectF &rect, QString text);
 
     protected:
         virtual void mousePressEvent(QMouseEvent * event);

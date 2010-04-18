@@ -332,30 +332,38 @@ void KTGraphicsScene::setPreviousOnionSkinCount(int n)
 
 KTFrame *KTGraphicsScene::currentFrame()
 {
-    if (k->scene && (k->scene->layersTotal() > 0) && (k->framePosition.layer < k->scene->layersTotal())) {
+    if (k->scene) {
+
+        if (k->scene->layersTotal() > 0) {
+
+            if (k->framePosition.layer < k->scene->layersTotal()) {
   
-        if (k->scene->layers().contains(k->framePosition.layer)) {
-            KTLayer *layer = k->scene->layer(k->framePosition.layer);
-            Q_CHECK_PTR(layer);
-            if (layer) {
-                if (!layer->frames().isEmpty())
-                    return layer->frame(k->framePosition.frame);
-            } else {
+                if (k->scene->layers().contains(k->framePosition.layer)) {
+                    KTLayer *layer = k->scene->layer(k->framePosition.layer);
+                    Q_CHECK_PTR(layer);
+                    if (layer) {
+                        if (!layer->frames().isEmpty())
+                            return layer->frame(k->framePosition.frame);
+                    } else {
+                        #ifdef K_DEBUG
+                               kFatal() << "KTGraphicsScene::currentFrame - No layer available: " << k->framePosition.frame;
+                        #endif
+                    }
+                } else {
                     #ifdef K_DEBUG
-                           kFatal() << "KTGraphicsScene::currentFrame - No layer available: " << k->framePosition.frame;
+                           kFatal() << "KTGraphicsScene::currentFrame - Layer index incorrect!"; 
                     #endif
+                }
+            } else {
+                KTLayer *layer = k->scene->layer(k->scene->layersTotal() - 1);
+                if (layer) {
+                    if (!layer->frames().isEmpty())
+                        return layer->frame(k->framePosition.frame);
+                }
             }
-        } else {
-                #ifdef K_DEBUG
-                       kFatal() << "KTGraphicsScene::currentFrame - Layer index incorrect!"; 
-                #endif
+
         }
-    } else {
-        KTLayer *layer = k->scene->layer(k->scene->layersTotal() - 1);
-        if (layer) {
-            if (!layer->frames().isEmpty())
-                return layer->frame(k->framePosition.frame);
-        }
+
     }
 
     return 0;
@@ -614,4 +622,10 @@ void KTGraphicsScene::includeObject(QGraphicsItem *object)
             addItem(object);
         }
     }
+}
+
+void KTGraphicsScene::removeScene()
+{
+    clean();
+    k->scene = 0;
 }

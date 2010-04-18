@@ -290,7 +290,7 @@ void crashTrapper (int sig)
         bt = runCommand(gdb);
 
         /// clean up
-        bt.remove( QRegExp("\\(no debugging symbols found\\)") );
+        bt.remove(QRegExp("\\(no debugging symbols found\\)"));
         bt = bt.simplified();
 
         execInfo = runCommand("file " + HOME_DIR + "bin/ktoon.bin");

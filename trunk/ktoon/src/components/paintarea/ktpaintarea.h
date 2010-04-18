@@ -55,7 +55,8 @@ class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHand
     public:
         enum MoveItemType { MoveBack, MoveFront, MoveBackwards, MoveForwards };
 
-        KTPaintArea(const KTProject *project, QWidget * parent = 0);
+        //KTPaintArea(const KTProject *project, QWidget * parent = 0);
+        KTPaintArea(KTProject *project, QWidget * parent = 0);
         ~KTPaintArea();
 
         void setCurrentScene(int index);

@@ -114,7 +114,7 @@
     <name>CrashWidget</name>
     <message>
         <location filename="../../crashwidget.cpp" line="122"/>
-        <source>What&apos;s happening?</source>
+        <source>What's happening?</source>
         <translation>Qué sucede?</translation>
     </message>
     <message>

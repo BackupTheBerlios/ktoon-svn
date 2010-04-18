@@ -32,24 +32,20 @@
  ***************************************************************************/
 
 #include "ktproject.h"
-
-#include <QDir>
-
-#include <kcore/kdebug.h>
-
 #include "ktscene.h"
 #include "ktlayer.h"
 #include "ktsoundlayer.h"
 #include "ktframe.h"
-
 #include "ktlibrary.h"
 #include "ktlibraryobject.h"
 #include "ktgraphiclibraryitem.h"
-
 #include "ktitemfactory.h"
 #include "ktprojectresponse.h"
 #include "ktprojectloader.h"
 
+#include <kcore/kdebug.h>
+
+#include <QDir>
 #include <QGraphicsView>
 #include <QGraphicsSvgItem>
 #include <QSvgRenderer>

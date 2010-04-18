@@ -76,13 +76,16 @@
 
 struct KTPaintArea::Private
 {
-    const KTProject *project;
+    //const KTProject *project;
+    KTProject *project;
     int currentSceneIndex;
     QStringList copiesXml;
     QString currentTool; 
 };
 
-KTPaintArea::KTPaintArea(const KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
+// KTPaintArea::KTPaintArea(const KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
+
+KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
 {
     K_FUNCINFO;
 
@@ -244,11 +247,15 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
         viewport()->update(scene()->sceneRect().toRect());
     } else {
         if (event->action() == KTProjectRequest::Remove) {
-            kFatal() << "KTPaintArea::layerResponse <- KTProjectRequest::Remove";
-            KTGraphicsScene *sscene = graphicsScene();
+            // kFatal() << "KTPaintArea::layerResponse <- KTProjectRequest::Remove : " << event->layerIndex();
 
+            KTGraphicsScene *sscene = graphicsScene();
             if (!sscene->scene())
                 return;
+
+            if (event->layerIndex() == 0)
+                sscene->clear();
+
             viewport()->update();
         }
     }
@@ -271,8 +278,20 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
                 break;
            case KTProjectRequest::Remove:
                 kFatal() << "KTPaintArea::sceneResponse <- KTProjectRequest::Remove : " << k->currentSceneIndex << " - " << event->sceneIndex();
-                if (k->currentSceneIndex >= 0)
+                if (k->currentSceneIndex > 0) {
                     setCurrentScene(k->currentSceneIndex);
+                } else {
+                    if (k->currentSceneIndex == 0) {
+                        k->project->clear();
+
+                        KTGraphicsScene *sscene = graphicsScene();
+                        if (!sscene->scene())
+                            return;
+
+                        sscene->removeScene();
+                        viewport()->update();
+                    }
+                }
                 break;
            default: 
                 kFatal() << "KTPaintArea::sceneResponse <- KTProjectRequest::Default";
