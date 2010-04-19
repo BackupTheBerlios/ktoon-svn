@@ -122,13 +122,11 @@ void KTLayerManagerHeader::paintSection(QPainter * painter, const QRect & rect, 
             break;
             case LOCK_COLUMN:
             {
-                 //painter->drawPixmap(QPointF(rect.x() + 4.5, rect.y() + 6), m_lockIcon, QRectF(0, 0, 10, 13));
                  painter->drawPixmap(QPointF(rect.x() + (rect.width()-10)/2, rect.y() + 6), m_lockIcon, QRectF(0, 0, 10, 13));
             }
             break;
             case VIEW_COLUMN:
             {
-                 //painter->drawPixmap(QPointF(rect.x() + 1, rect.y() + 5), m_viewIcon, QRectF(0, 0, 16, 16));
                  painter->drawPixmap(QPointF(rect.x() + (rect.width()-16)/2, rect.y() + 6), m_viewIcon, QRectF(0, 0, 16, 16));
             }
             break;
@@ -142,6 +140,7 @@ class KTLayerManagerItemDelegate : public QItemDelegate
     public:
         KTLayerManagerItemDelegate(QObject * parent = 0);
         ~KTLayerManagerItemDelegate();
+        virtual void drawCheck(QPainter *painter, const QStyleOptionViewItem &option, const QRect &, Qt::CheckState state) const;
         virtual void paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const;
 };
 
@@ -152,6 +151,19 @@ KTLayerManagerItemDelegate::KTLayerManagerItemDelegate(QObject * parent) :  QIte
 KTLayerManagerItemDelegate::~KTLayerManagerItemDelegate()
 {
 }
+
+void KTLayerManagerItemDelegate::drawCheck(QPainter *painter, const QStyleOptionViewItem &option,
+                           const QRect &, Qt::CheckState state) const
+    {
+        const int textMargin = QApplication::style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1;
+
+        QRect checkRect = QStyle::alignedRect(option.direction, Qt::AlignCenter,
+            check(option, option.rect, Qt::Checked).size(),
+            QRect(option.rect.x() + textMargin, option.rect.y(),
+            option.rect.width() - (textMargin * 2), option.rect.height()));
+        QItemDelegate::drawCheck(painter, option, checkRect, state);
+    }
+
 
 void KTLayerManagerItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
@@ -170,15 +182,15 @@ void KTLayerManagerItemDelegate::paint(QPainter *painter, const QStyleOptionView
                 case LOCK_COLUMN:
                 case VIEW_COLUMN:
                 {
-                     QStyleOptionButton checkOption;
-                     checkOption.state = option.state;
-        
-                     if (item->checkState() == Qt::Checked)
-                         checkOption.state |= QStyle::State_On;
-        
-                     checkOption.rect = option.rect.normalized().adjusted(2,2,-2,-2);
-                
-                     table->style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkOption, painter);
+                     //QStyleOptionButton checkOption;
+                     //checkOption.state = option.state;
+
+                     //if (item->checkState() == Qt::Checked)
+                     //    checkOption.state |= QStyle::State_On;
+       
+                     //checkOption.rect = option.rect.normalized().adjusted(0,2,-2,-2);
+                     //checkOption.rect = QRect(0, 0, 4, 4); 
+                     //table->style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkOption, painter);
                 }
                 break;
         }
@@ -208,7 +220,6 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), k(
     
     setItemPrototype(prototype);
     
-    // setHorizontalHeaderLabels(QStringList() << tr("Layers") << tr("L") << tr("V"));
     setHorizontalHeaderLabels(QStringList() << tr("Layers") << tr("") << tr(""));
     verticalHeader()->hide();
     
@@ -244,14 +255,14 @@ void KTLayerManager::insertLayer(int position, const QString &name)
         fixSize();
         
         QTableWidgetItem *lockItem = new QTableWidgetItem;
-        lockItem->setFlags(Qt::ItemIsUserCheckable  | Qt::ItemIsEnabled);
+        lockItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
         lockItem->setCheckState(Qt::Unchecked);
         
         setItem(position, 1, lockItem);
         
         QTableWidgetItem *viewItem = new QTableWidgetItem;
         viewItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-        viewItem->setCheckState( Qt::Checked);
+        viewItem->setCheckState(Qt::Checked);
         
         setItem(position, 2, viewItem);
     }
