@@ -108,12 +108,12 @@ void CrashHandler::setTrapper (void (*trapper)(int))
 #endif
 }
 
-QString CrashHandler::program () const
+QString CrashHandler::program() const
 {
     return m_program;
 }
 
-void CrashHandler::setProgram (const QString &prog)
+void CrashHandler::setProgram(const QString &prog)
 {
     m_program = prog;
 }
@@ -209,7 +209,7 @@ void CrashHandler::setConfig(const QString &filePath)
                    } else if (e.tagName() == "Button") {
                               m_config.buttonText = e.attribute("text");
                    } else if (e.tagName() == "Default") {
-                              m_config.defaultText = e.attribute("text");
+                              m_config.defaultText = "<p align=\"justify\">" + e.attribute("text") + "</p>";
                               m_config.defaultImage = e.attribute("image");
                    } else if (e.tagName() == "Signal") {
                               int signalId = e.attribute("id").toInt();
