@@ -100,11 +100,14 @@ void KTLayerManagerHeader::paintSection(QPainter * painter, const QRect & rect, 
     
     QString text = model()->headerData(logicalIndex, orientation(), Qt::DisplayRole).toString();;
     
-    QFontMetrics fm(painter->font());
+    //QFontMetrics fm(painter->font());
+    QFont label("Arial", 9, QFont::Bold, false); 
+    QFontMetrics fm(label);
     
     int x = rect.x() + (sectionSize(logicalIndex) - fm.width( text ))/2;
     int y = fm.height() + (rect.y() / 2);
-    
+   
+    painter->setFont(label); 
     painter->drawText(x, y, text);
     
     QPen originalPen = painter->pen();
@@ -141,6 +144,7 @@ class KTLayerManagerItemDelegate : public QItemDelegate
         KTLayerManagerItemDelegate(QObject * parent = 0);
         ~KTLayerManagerItemDelegate();
         virtual void drawCheck(QPainter *painter, const QStyleOptionViewItem &option, const QRect &, Qt::CheckState state) const;
+        virtual void drawFocus(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect) const;
         virtual void paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const;
 };
 
@@ -153,44 +157,54 @@ KTLayerManagerItemDelegate::~KTLayerManagerItemDelegate()
 }
 
 void KTLayerManagerItemDelegate::drawCheck(QPainter *painter, const QStyleOptionViewItem &option,
-                           const QRect &, Qt::CheckState state) const
-    {
+                                           const QRect &, Qt::CheckState state) const
+{
+    if (option.rect.x() > 0) {
         const int textMargin = QApplication::style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1;
 
         QRect checkRect = QStyle::alignedRect(option.direction, Qt::AlignCenter,
-            check(option, option.rect, Qt::Checked).size(),
-            QRect(option.rect.x() + textMargin, option.rect.y(),
-            option.rect.width() - (textMargin * 2), option.rect.height()));
+                                              check(option, option.rect, Qt::Checked).size(),
+                                              QRect(option.rect.x() + textMargin, option.rect.y(),
+                                              option.rect.width() - (textMargin * 2), option.rect.height()));
         QItemDelegate::drawCheck(painter, option, checkRect, state);
     }
+}
 
+void KTLayerManagerItemDelegate::drawFocus(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect) const
+{
+}
 
 void KTLayerManagerItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
     QItemDelegate::paint(painter, option, index);
+
     KTLayerManager *table = qobject_cast<KTLayerManager *>(index.model()->parent());
     QTableWidgetItem *item = table->itemFromIndex(index);
-    
+
     if (item) {
         switch (index.column()) {
                 case LAYER_COLUMN:
                 {
-                     if (item->isSelected())
+                     if (item->isSelected()) {
+                         painter->setPen(QPen(QColor(255, 190, 31, 255), 1));
                          painter->drawRect(option.rect.normalized().adjusted(1,1,-2, -2));
+                     } 
                 }
                 break;
                 case LOCK_COLUMN:
                 case VIEW_COLUMN:
                 {
-                     //QStyleOptionButton checkOption;
-                     //checkOption.state = option.state;
+                     /*
+                     QStyleOptionButton checkOption;
+                     checkOption.state = option.state;
 
-                     //if (item->checkState() == Qt::Checked)
-                     //    checkOption.state |= QStyle::State_On;
+                     if (item->checkState() == Qt::Checked)
+                         checkOption.state |= QStyle::State_On;
        
-                     //checkOption.rect = option.rect.normalized().adjusted(0,2,-2,-2);
-                     //checkOption.rect = QRect(0, 0, 4, 4); 
-                     //table->style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkOption, painter);
+                     checkOption.rect = option.rect.normalized().adjusted(0,2,-2,-2);
+                     checkOption.rect = QRect(0, 0, 4, 4); 
+                     table->style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkOption, painter);
+                     */
                 }
                 break;
         }
@@ -245,6 +259,7 @@ void KTLayerManager::insertLayer(int position, const QString &name)
 {
     if (position >= 0 && position <= rowCount()) {
         QTableWidgetItem *newLayer = new QTableWidgetItem(name);
+        newLayer->setFont(QFont("Arial", 8, QFont::Normal, false));
         newLayer->setTextAlignment(Qt::AlignCenter);
         
         newLayer->setBackgroundColor(palette().background().color());

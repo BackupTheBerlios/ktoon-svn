@@ -72,11 +72,14 @@ void KTTLRuler::paintSection(QPainter * painter, const QRect & rect, int logical
     }
 
     if (logicalIndex % 5 == 0) {
-        QFontMetricsF fm(painter->font());
-        QString number = QString::number(logicalIndex+1);
-		
+        QFont label("Arial", 8, QFont::Normal, false);
+        QFontMetrics fm(label);
+
+        QString number = QString::number(logicalIndex + 1);
+	
+        painter->setFont(label);	
         painter->drawText((int)(rect.center().x() - (fm.width(number)/2)), 
-                          (int)(rect.center().y() + (fm.height()/2)) ,number);
+                          (int)(rect.center().y() + (fm.height()/2)), number);
     }
 
     painter->drawLine(rect.bottomLeft(), rect.bottomLeft() - QPointF(0, 4));

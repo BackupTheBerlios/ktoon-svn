@@ -37,6 +37,7 @@
 #include <QFile>
 #include <QTemporaryFile>
 #include <QProcess>
+#include <QTranslator>
 
 #include <csignal>
 #include <cstdio>
@@ -270,8 +271,14 @@ void crashTrapper (int sig)
 
     isActive = false;
     int argc = 1;
-    char *argv[] = { CHANDLER->program().toUtf8().data(), 0  };
+    char *argv[] = { CHANDLER->program().toUtf8().data(), 0 };
     application = new QApplication(argc, argv);
+
+    QString locale = QString(QLocale::system().name()).left(2);
+
+    QTranslator *translator = new QTranslator;
+    translator->load(SHARE_DIR + "data/translations/" + "ktoon_" + locale + ".qm");
+    application->installTranslator(translator);
 
     const pid_t pid = ::fork();
 
