@@ -66,16 +66,19 @@ void KTTLRuler::paintSection(QPainter * painter, const QRect & rect, int logical
     painter->save();
 
     if (selectionModel()->isSelected(model()->index(0, logicalIndex))) {
-        QBrush brush(Qt::red);
+        // QBrush brush(Qt::red);
+        QBrush brush(QColor(255, 100, 100, 150));
         brush.setStyle(Qt::Dense5Pattern);
         painter->fillRect(rect, brush);
     }
 
-    if (logicalIndex % 5 == 0) {
+    logicalIndex++;
+
+    if (logicalIndex == 1 || logicalIndex % 5 == 0) {
         QFont label("Arial", 8, QFont::Normal, false);
         QFontMetrics fm(label);
 
-        QString number = QString::number(logicalIndex + 1);
+        QString number = QString::number(logicalIndex);
 	
         painter->setFont(label);	
         painter->drawText((int)(rect.center().x() - (fm.width(number)/2)), 

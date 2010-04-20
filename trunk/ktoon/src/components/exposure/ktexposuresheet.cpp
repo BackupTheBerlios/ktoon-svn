@@ -67,6 +67,7 @@ KTExposureSheet::KTExposureSheet(QWidget *parent) : KTModuleWidgetBase(parent, "
 
     k->actionBar = new KTProjectActionBar(KTProjectActionBar::InsertLayer |
                         KTProjectActionBar::RemoveLayer |
+                        KTProjectActionBar::Separator |
                         KTProjectActionBar::InsertFrame |
                         KTProjectActionBar::RemoveFrame |
                         KTProjectActionBar::MoveFrameUp |

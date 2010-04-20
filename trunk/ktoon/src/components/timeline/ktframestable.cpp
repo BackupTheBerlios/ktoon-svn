@@ -74,7 +74,7 @@ void KTFramesTableItemDelegate::paint(QPainter * painter, const QStyleOptionView
     QStyleOptionViewItem opt = option;
     
     // draw the background color
-    value = index.data( Qt::BackgroundColorRole);
+    value = index.data(Qt::BackgroundColorRole);
     
     if (value.isValid()) {
 
@@ -94,7 +94,8 @@ void KTFramesTableItemDelegate::paint(QPainter * painter, const QStyleOptionView
         bool sound = table->isSoundLayer(index.row());
         
         if (!sound) {
-            if (index.column() % 5 == 0)
+            int counter = index.column() + 1;
+            if (counter == 1 || counter % 5 == 0)
                 painter->fillRect(option.rect, Qt::lightGray);
             else
                 painter->fillRect(option.rect, Qt::white);
@@ -111,7 +112,8 @@ void KTFramesTableItemDelegate::paint(QPainter * painter, const QStyleOptionView
         QPalette::ColorGroup cg = option.state & QStyle::State_Enabled ? QPalette::Normal : QPalette::Disabled;
         painter->save();
         painter->setPen(QPen(option.palette.brush(cg, QPalette::Highlight), 3));
-        painter->drawRect(option.rect.adjusted(1,1,-2,-2));
+        //painter->drawRect(option.rect.adjusted(1,1,-2,-2));
+        painter->fillRect(option.rect,  QColor(250, 209, 132, 255));
         painter->restore();
 
     }
@@ -127,7 +129,7 @@ void KTFramesTableItemDelegate::paint(QPainter * painter, const QStyleOptionView
             painter->setBrush(Qt::black);
             
             if (!item->isSound()) {
-                painter->drawEllipse( option.rect.left(), option.rect.bottom() - offset, offset, offset);
+                painter->drawEllipse(option.rect.left(), option.rect.bottom() - offset, offset, offset);
             } else {
                 painter->setBrush(Qt::blue);
                 painter->drawRect(option.rect.left(), option.rect.bottom() - offset, offset, offset);

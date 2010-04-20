@@ -74,8 +74,8 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
     
     k->actionBar = new KTProjectActionBar(KTProjectActionBar::InsertLayer |
                         KTProjectActionBar::RemoveLayer |
-                        KTProjectActionBar::MoveLayerUp |
-                        KTProjectActionBar::MoveLayerDown |
+                        // KTProjectActionBar::MoveLayerUp |
+                        // KTProjectActionBar::MoveLayerDown |
                         KTProjectActionBar::Separator |
                         KTProjectActionBar::InsertFrame |
                         KTProjectActionBar::RemoveFrame |
@@ -263,7 +263,6 @@ void KTTimeLine::layerResponse(KTLayerResponse *response)
             break;
     }
 }
-
 
 void KTTimeLine::frameResponse(KTFrameResponse *response)
 {

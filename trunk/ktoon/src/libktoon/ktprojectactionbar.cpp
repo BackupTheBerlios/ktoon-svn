@@ -55,12 +55,10 @@ struct KTProjectActionBar::Private
     bool isAnimated;
 };
 
-KTProjectActionBar::KTProjectActionBar(Actions actions, Qt::Orientation orientation, QWidget *parent) : QWidget(parent ), k(new Private(orientation))
+KTProjectActionBar::KTProjectActionBar(Actions actions, Qt::Orientation orientation, QWidget *parent) : QWidget(parent), k(new Private(orientation))
 {
     connect(&k->actions, SIGNAL(buttonClicked(int)), this, SLOT(emitActionSelected(int)));
-    
     setup(actions);
-    
     setFixedSize(22);
 }
 
@@ -101,6 +99,55 @@ void KTProjectActionBar::setup(Actions actions)
     k->buttonLayout->addStretch();
     
     int size = 16;
+
+   if (actions & InsertLayer) {
+        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/add_layer.png"), size);
+        button->setToolTip(tr("Insert a layer"));
+        //button->setEnabled(false);
+
+        k->actions.addButton(button, InsertLayer);
+
+        k->buttonLayout->addWidget(button);
+        button->setAnimated(k->isAnimated);
+    }
+
+    if (actions & RemoveLayer) {
+        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/remove_layer.png"), size);
+        button->setToolTip(tr("Remove the layer"));
+        //button->setEnabled(false);
+
+        k->actions.addButton(button, RemoveLayer);
+
+        k->buttonLayout->addWidget(button);
+        button->setAnimated(k->isAnimated);
+    }
+
+    if (actions & MoveLayerUp) {
+        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_layer_up.png"), size);
+
+        button->setToolTip(tr("Move layer up"));
+
+        k->actions.addButton(button, MoveLayerUp);
+
+        k->buttonLayout->addWidget(button);
+        button->setAnimated(true);
+    }
+    
+    if (actions & MoveLayerDown) {
+        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_layer_down.png" ), size);
+
+        button->setToolTip(tr("Move layer down"));
+
+        k->actions.addButton(button, MoveLayerDown);
+
+        k->buttonLayout->addWidget(button);
+        button->setAnimated(k->isAnimated);
+    }
+
+    if (actions & Separator) {
+        k->buttonLayout->addSpacing(5);
+        k->buttonLayout->addWidget(new KSeparator(Qt::Vertical));
+    }
     
     if (actions & InsertFrame) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/add_frame.png"), size);
@@ -159,54 +206,6 @@ void KTProjectActionBar::setup(Actions actions)
         button->setAnimated(k->isAnimated);
     }
 
-    if (actions & Separator) {
-        k->buttonLayout->addWidget(new KSeparator(Qt::Vertical));
-    }
-    
-    if (actions & InsertLayer) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/add_layer.png"), size);
-        button->setToolTip(tr("Insert a layer"));
-        //button->setEnabled(false);
-        
-        k->actions.addButton(button, InsertLayer);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
-     
-    if (actions & RemoveLayer) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/remove_layer.png"), size);
-        button->setToolTip(tr("Remove the layer"));
-        //button->setEnabled(false);
-        
-        k->actions.addButton(button, RemoveLayer);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
-     
-    if (actions & MoveLayerUp) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_layer_up.png"), size);
-        
-        button->setToolTip(tr("Move layer up"));
-        
-        k->actions.addButton(button, MoveLayerUp);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(true);
-    }
-     
-    if (actions & MoveLayerDown) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_layer_down.png" ), size);
-        
-        button->setToolTip(tr("Move layer down"));
-        
-        k->actions.addButton(button, MoveLayerDown);
-        
-        k->buttonLayout->addWidget(button);
-        button->setAnimated(k->isAnimated);
-    }
-    
     if (actions & LockLayer) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_layer_down.png" ), 22);
         button->setToolTip(tr("Lock layer"));

@@ -67,6 +67,7 @@ KTLayerManagerHeader::KTLayerManagerHeader(QWidget * parent) : QHeaderView(Qt::H
 {
     setClickable(true);
     setCascadingSectionResizes(true);
+    setMaximumHeight(20);
     
     m_lockIcon = QPixmap(THEME_DIR + "icons/padlock.png");
     m_viewIcon = QPixmap(THEME_DIR + "icons/show_hide_all_layers.png");
@@ -105,8 +106,8 @@ void KTLayerManagerHeader::paintSection(QPainter * painter, const QRect & rect, 
     QFontMetrics fm(label);
     
     int x = rect.x() + (sectionSize(logicalIndex) - fm.width( text ))/2;
-    int y = fm.height() + (rect.y() / 2);
-   
+    //int y = fm.height() + (rect.y() / 2);
+    int y = 14;
     painter->setFont(label); 
     painter->drawText(x, y, text);
     
@@ -125,12 +126,12 @@ void KTLayerManagerHeader::paintSection(QPainter * painter, const QRect & rect, 
             break;
             case LOCK_COLUMN:
             {
-                 painter->drawPixmap(QPointF(rect.x() + (rect.width()-10)/2, rect.y() + 6), m_lockIcon, QRectF(0, 0, 10, 13));
+                 painter->drawPixmap(QPointF(rect.x() + (rect.width()-10)/2, rect.y() + 3), m_lockIcon, QRectF(0, 0, 10, 13));
             }
             break;
             case VIEW_COLUMN:
             {
-                 painter->drawPixmap(QPointF(rect.x() + (rect.width()-16)/2, rect.y() + 6), m_viewIcon, QRectF(0, 0, 16, 16));
+                 painter->drawPixmap(QPointF(rect.x() + (rect.width()-16)/2, rect.y() + 2), m_viewIcon, QRectF(0, 0, 16, 16));
             }
             break;
     }
