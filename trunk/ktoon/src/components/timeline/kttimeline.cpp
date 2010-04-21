@@ -337,7 +337,8 @@ void KTTimeLine::requestCommand(int action)
     int framePos = -1;
     
     if (scenePos >= 0) {
-        layerPos = layerManager(scenePos)->verticalHeader()->visualIndex(layerManager(scenePos)->currentRow());
+        // layerPos = layerManager(scenePos)->verticalHeader()->visualIndex(layerManager(scenePos)->currentRow());
+        layerPos = layerManager(scenePos)->rowCount();
         framePos = framesTable(scenePos)->lastFrameByLayer(layerPos);
     }
     
@@ -437,7 +438,7 @@ bool KTTimeLine::requestLayerAction(int action, int layerPos, int scenePos, cons
     switch (action) {
             case KTProjectActionBar::InsertLayer:
             {
-                 KTProjectRequest event = KTRequestBuilder::createLayerRequest(scenePos, layerPos + 1,
+                 KTProjectRequest event = KTRequestBuilder::createLayerRequest(scenePos, layerPos,
                                           KTProjectRequest::Add, arg);
                  emit requestTriggered(&event);
 

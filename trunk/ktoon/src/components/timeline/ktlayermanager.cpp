@@ -227,6 +227,8 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), k(
     #ifdef K_DEBUG
         KINIT;
     #endif
+
+    setSelectionMode(QAbstractItemView::SingleSelection);
     
     QTableWidgetItem *prototype = new QTableWidgetItem;
     prototype->setTextAlignment(Qt::AlignCenter);
@@ -240,6 +242,8 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), k(
     
     setHorizontalHeader(new KTLayerManagerHeader(this));
     setItemDelegate(new KTLayerManagerItemDelegate(this));
+
+    connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(emitSelectionSignal()));
 
     /*
     connect(this, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(emitRequestRenameLayer( 
@@ -259,6 +263,7 @@ KTLayerManager::~KTLayerManager()
 void KTLayerManager::insertLayer(int position, const QString &name)
 {
     if (position >= 0 && position <= rowCount()) {
+
         QTableWidgetItem *newLayer = new QTableWidgetItem(name);
         newLayer->setFont(QFont("Arial", 8, QFont::Normal, false));
         newLayer->setTextAlignment(Qt::AlignCenter);
@@ -267,6 +272,7 @@ void KTLayerManager::insertLayer(int position, const QString &name)
         newLayer->setTextColor(palette().foreground().color());
         
         insertRow(position);
+
         setItem(position, 0, newLayer);
         fixSize();
         
@@ -281,6 +287,7 @@ void KTLayerManager::insertLayer(int position, const QString &name)
         viewItem->setCheckState(Qt::Checked);
         
         setItem(position, 2, viewItem);
+
     }
 }
 
@@ -406,4 +413,9 @@ void KTLayerManager::lockLayer(int position, bool locked)
         else
             item->setCheckState (Qt::Unchecked);
     }
+}
+
+void KTLayerManager::emitSelectionSignal()
+{
+    kFatal() << "KTLayerManager::emitSelectionSignal() : HERE WE GOOO!";
 }
