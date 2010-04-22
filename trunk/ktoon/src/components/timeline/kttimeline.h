@@ -52,41 +52,39 @@ class KTLibrary;
 
 class KTTimeLine : public KTModuleWidgetBase
 {
-	Q_OBJECT
-	public:
-		KTTimeLine(QWidget *parent = 0);
-		~KTTimeLine();
-		void closeAllScenes();
-		
-		void setLibrary(const KTLibrary *library);
-		
-	private:
-		KTLayerManager *layerManager(int sceneIndex);
-		KTFramesTable *framesTable(int sceneIndex);
-		
-	protected:
-		void sceneResponse(KTSceneResponse *e);
-		void layerResponse(KTLayerResponse *e);
-		void frameResponse(KTFrameResponse *e);
-		void libraryResponse(KTLibraryResponse *response);
-		
-	public slots:
-		void insertScene(int position, const QString &name);
-		void removeScene(int position);
-		
-		
-		
-	private slots:
-		void requestCommand(int action);
-		bool requestFrameAction(int action, int framePos = -1, int layerPos = -1, int scenePos = -1, const QVariant &arg = QVariant());
-		bool requestLayerAction(int action, int layerPos = -1, int scenePos = -1, const QVariant &arg = QVariant());
-		bool requestSceneAction(int action, int scenePos = -1, const QVariant &arg = QVariant());
-		
-		void emitRequestRenameLayer(int layer, const QString &name);
-		
-	private:
-		struct Private;
-		Private *const k;
+    Q_OBJECT
+    public:
+        KTTimeLine(QWidget *parent = 0);
+        ~KTTimeLine();
+        void closeAllScenes();
+        
+        void setLibrary(const KTLibrary *library);
+        
+    private:
+        KTLayerManager *layerManager(int sceneIndex);
+        KTFramesTable *framesTable(int sceneIndex);
+        
+    protected:
+        void sceneResponse(KTSceneResponse *e);
+        void layerResponse(KTLayerResponse *e);
+        void frameResponse(KTFrameResponse *e);
+        void libraryResponse(KTLibraryResponse *response);
+        
+    public slots:
+        void insertScene(int position, const QString &name);
+        void removeScene(int position);
+        
+    private slots:
+        void requestCommand(int action);
+        bool requestFrameAction(int action, int framePos = -1, int layerPos = -1, int scenePos = -1, const QVariant &arg = QVariant());
+        bool requestLayerAction(int action, int layerPos = -1, int scenePos = -1, const QVariant &arg = QVariant());
+        bool requestSceneAction(int action, int scenePos = -1, const QVariant &arg = QVariant());
+        
+        void emitRequestRenameLayer(int layer, const QString &name);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 #endif

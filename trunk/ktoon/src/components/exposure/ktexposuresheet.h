@@ -57,7 +57,7 @@
 
 class KTExposureSheet : public KTModuleWidgetBase
 {
-    Q_OBJECT;
+    Q_OBJECT
     public:
         KTExposureSheet(QWidget *parent = 0);
         ~KTExposureSheet();
@@ -78,7 +78,7 @@ class KTExposureSheet : public KTModuleWidgetBase
         void addScene(int index, const QString &name);
         void renameScene(int index, const QString &name);
         void setScene(int index);
-        void changeVisiblityLayer( int, bool  );
+        void changeVisiblityLayer(int, bool);
 
     private slots: 
         void emitRequestChangeScene(int index);

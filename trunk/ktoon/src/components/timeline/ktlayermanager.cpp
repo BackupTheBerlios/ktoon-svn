@@ -32,6 +32,7 @@
  ***************************************************************************/
 
 #include "ktlayermanager.h"
+#include "ktrequestbuilder.h"
 
 #include <qlabel.h>
 #include <qlayout.h>
@@ -307,7 +308,7 @@ void KTLayerManager::insertSoundLayer(int position, const QString &name)
         /*
         QTableWidgetItem *lockItem = new QTableWidgetItem;
         lockItem->setFlags(Qt::ItemIsUserCheckable  | Qt::ItemIsEnabled);
-        lockItem->setCheckState( Qt::Unchecked);
+        lockItem->setCheckState(Qt::Unchecked);
         setItem(position, 1, lockItem);
         QTableWidgetItem *viewItem = new QTableWidgetItem;
         viewItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
@@ -409,13 +410,15 @@ void KTLayerManager::lockLayer(int position, bool locked)
     
     if (item) {
         if (locked)
-            item->setCheckState (Qt::Checked);
+            item->setCheckState(Qt::Checked);
         else
-            item->setCheckState (Qt::Unchecked);
+            item->setCheckState(Qt::Unchecked);
     }
 }
 
 void KTLayerManager::emitSelectionSignal()
 {
     kFatal() << "KTLayerManager::emitSelectionSignal() : HERE WE GOOO!";
+    KTProjectRequest event = KTRequestBuilder::createLayerRequest(0, 0, KTProjectRequest::Select);
+    emit requestTriggered(&event);
 }

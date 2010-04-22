@@ -42,6 +42,7 @@
 #include <QTableWidget>
 
 #include <kgui/kimagebutton.h>
+#include "ktprojectrequest.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -92,6 +93,7 @@ class KTLayerManager : public QTableWidget
         
     signals:
         void requestRenameEvent(int layerPosition, const QString &newName);
+        void requestTriggered(const KTProjectRequest *event);
         
     private:
         struct Private;

@@ -373,7 +373,6 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
             {
                  KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos + 1,
                                           KTProjectRequest::Add, arg);
-            
                  emit requestTriggered(&event);
             
                  return true;
@@ -383,7 +382,6 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
             {
                  KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos,
                                           KTProjectRequest::Remove, arg);
-            
                  emit requestTriggered(&event);
 
                  return true;
@@ -402,7 +400,6 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
             {
                  KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos,
                                           KTProjectRequest::Move, framePos+1);
-            
                  emit requestTriggered(&event);
 
                  return true;
@@ -413,7 +410,6 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
             {
                  KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos,
                                           KTProjectRequest::Select, arg);
-        
                  emit localRequestTriggered(&event);
 
                  return true;

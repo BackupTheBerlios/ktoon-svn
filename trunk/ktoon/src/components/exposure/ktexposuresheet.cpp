@@ -404,6 +404,8 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
 {
     //KTExposureTable *scene = dynamic_cast<KTExposureTable*>(k->scenes->widget((e->sceneIndex())));
 
+    kFatal() << "KTExposureSheet::layerResponse <- Here!";
+
     KTExposureTable *scene = k->scenes->getTable(e->sceneIndex());
 
     if (scene) {
@@ -435,6 +437,7 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                 break;
                 case KTProjectRequest::Select:
                  {
+                     kFatal() << "YEAH! Getting the message!";
                      setScene(e->sceneIndex());
                      scene->blockSignals(true);
                      scene->selectFrame(e->layerIndex(), 0);
@@ -442,7 +445,7 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                  }
                 case KTProjectRequest::View:
                  {
-                     scene->setVisibilityChanged( e->layerIndex(), e->arg().toBool());
+                     scene->setVisibilityChanged(e->layerIndex(), e->arg().toBool());
                  }
                 break;
         }
