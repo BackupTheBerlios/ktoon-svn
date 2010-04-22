@@ -244,7 +244,7 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), k(
     setHorizontalHeader(new KTLayerManagerHeader(this));
     setItemDelegate(new KTLayerManagerItemDelegate(this));
 
-    connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(emitSelectionSignal()));
+    //connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(emitSelectionSignal()));
 
     /*
     connect(this, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(emitRequestRenameLayer( 
@@ -400,7 +400,6 @@ void KTLayerManager::moveLayer(int position, int newPosition)
     */
 }
 
-
 void KTLayerManager::lockLayer(int position, bool locked)
 {
     if (position < 0 || position >= rowCount()) 
@@ -416,9 +415,3 @@ void KTLayerManager::lockLayer(int position, bool locked)
     }
 }
 
-void KTLayerManager::emitSelectionSignal()
-{
-    kFatal() << "KTLayerManager::emitSelectionSignal() : HERE WE GOOO!";
-    KTProjectRequest event = KTRequestBuilder::createLayerRequest(0, 0, KTProjectRequest::Select);
-    emit requestTriggered(&event);
-}

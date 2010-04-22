@@ -141,8 +141,8 @@ void KTTimeLine::insertScene(int position, const QString &name)
     connect(framesTable, SIGNAL(frameRequest(int, int, int, int, const QVariant&)), this, 
         SLOT(requestFrameAction(int, int, int, int, const QVariant&)));
     
-    connect(layerManager->verticalScrollBar(), SIGNAL(valueChanged (int)), framesTable->verticalScrollBar(), 
-        SLOT(setValue(int)));
+    connect(layerManager->verticalScrollBar(), SIGNAL(valueChanged (int)), framesTable->verticalScrollBar(), SLOT(setValue(int)));
+    connect(layerManager, SIGNAL(itemSelectionChanged()), this, SLOT(emitSelectionSignal()));
     connect(framesTable->verticalScrollBar(), SIGNAL(valueChanged (int)), layerManager->verticalScrollBar(), 
         SLOT(setValue(int)));
     
@@ -356,6 +356,8 @@ void KTTimeLine::requestCommand(int action)
 
 bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int scenePos, const QVariant &arg)
 {
+    kFatal() << "KTTimeLine::requestFrameAction - hey!";
+
     if (scenePos < 0)
         scenePos = k->container->currentIndex();
     
@@ -408,6 +410,8 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
         
             case KTProjectRequest::Select:
             {
+                 kFatal() << "KTTimeLine::requestFrameAction: " << scenePos << " / " << layerPos << " / " << framePos;
+
                  KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos,
                                           KTProjectRequest::Select, arg);
                  emit localRequestTriggered(&event);
@@ -532,4 +536,13 @@ void KTTimeLine::emitRequestRenameLayer(int layer, const QString &name)
     KTProjectRequest event = KTRequestBuilder::createLayerRequest(scenePos, layer, KTProjectRequest::Rename, name);
     
     emit requestTriggered(&event);
+}
+
+void KTTimeLine::emitSelectionSignal()
+{
+    kFatal() << "KTLayerManager::emitSelectionSignal() : HERE WE GOOO!";
+    //KTProjectRequest event = KTRequestBuilder::createLayerRequest(0, 0, KTProjectRequest::Select);
+    //requestFrameAction(KTProjectRequest::Select, 0, 0, 0);
+    requestFrameAction(KTProjectRequest::Select, 0, 0, 0);
+    //emit requestTriggered(&event);
 }

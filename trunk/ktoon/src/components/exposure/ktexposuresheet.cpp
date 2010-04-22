@@ -402,13 +402,13 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
 
 void KTExposureSheet::layerResponse(KTLayerResponse *e)
 {
-    //KTExposureTable *scene = dynamic_cast<KTExposureTable*>(k->scenes->widget((e->sceneIndex())));
-
-    kFatal() << "KTExposureSheet::layerResponse <- Here!";
-
     KTExposureTable *scene = k->scenes->getTable(e->sceneIndex());
 
+    kFatal() << "KTExposureSheet::layerResponse -> SCENE INDEX: " << e->sceneIndex();
+    kFatal() << "KTExposureSheet::layerResponse -> ACTION: " << e->action();
+
     if (scene) {
+        kFatal() << "KTExposureSheet::layerResponse -> IF ACCEPTED!";
         switch (e->action()) {
                 case KTProjectRequest::Add:
                  {
@@ -432,7 +432,7 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                 break;
                 case KTProjectRequest::Lock:
                  {
-                     scene->setLockLayer( e->layerIndex(), e->arg().toBool());
+                     scene->setLockLayer(e->layerIndex(), e->arg().toBool());
                  }
                 break;
                 case KTProjectRequest::Select:
@@ -448,7 +448,12 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                      scene->setVisibilityChanged(e->layerIndex(), e->arg().toBool());
                  }
                 break;
+                default:
+                     kFatal() << "Layer option undefined! -> " << e->action();
+                break;
         }
+    } else {
+        kFatal() << "KTExposureSheet::layerResponse -> THERE'S NO SCENE: " << e->sceneIndex();
     }
 }
 
@@ -495,6 +500,7 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 break;
                 case KTProjectRequest::Select:
                  {
+                     kFatal() << "KTExposureSheet::frameResponse -> SELECT FRAME: " << e->sceneIndex() << " / " << e->layerIndex() << " / " << e->frameIndex();
                      setScene(e->sceneIndex());
                      scene->selectFrame(e->layerIndex(), e->frameIndex());
                  }

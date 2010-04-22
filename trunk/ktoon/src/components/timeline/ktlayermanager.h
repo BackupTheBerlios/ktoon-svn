@@ -89,11 +89,11 @@ class KTLayerManager : public QTableWidget
         
     protected slots:
         void commitData(QWidget * editor);
-        void emitSelectionSignal();
+        //void emitSelectionSignal();
         
     signals:
         void requestRenameEvent(int layerPosition, const QString &newName);
-        void requestTriggered(const KTProjectRequest *event);
+        // void requestTriggered(const KTProjectRequest *event);
         
     private:
         struct Private;
