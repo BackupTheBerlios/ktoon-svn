@@ -311,7 +311,8 @@ void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 {
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex() , indexLayer, 
                                                  indexFrame, KTProjectRequest::Select, "1");
-    emit localRequestTriggered(&request);
+    //emit localRequestTriggered(&request);
+    emit requestTriggered(&request);
 }
 
 void KTExposureSheet::changeVisiblityLayer(int visualIndexLayer, bool visibility)

@@ -143,6 +143,7 @@ void KTTimeLine::insertScene(int position, const QString &name)
     
     connect(layerManager->verticalScrollBar(), SIGNAL(valueChanged (int)), framesTable->verticalScrollBar(), SLOT(setValue(int)));
     connect(layerManager, SIGNAL(itemSelectionChanged()), this, SLOT(emitSelectionSignal()));
+
     connect(framesTable->verticalScrollBar(), SIGNAL(valueChanged (int)), layerManager->verticalScrollBar(), 
         SLOT(setValue(int)));
     
@@ -299,6 +300,13 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
             {
             }
             break;
+            case KTProjectRequest::Select:
+            {
+                 kFatal() << "HEY! OVER HERE!";
+                 layerManager(response->sceneIndex())->setCurrentCell(response->layerIndex(), 0);
+            }
+            break;
+
     }
 }
 
@@ -541,8 +549,8 @@ void KTTimeLine::emitRequestRenameLayer(int layer, const QString &name)
 void KTTimeLine::emitSelectionSignal()
 {
     kFatal() << "KTLayerManager::emitSelectionSignal() : HERE WE GOOO!";
-    //KTProjectRequest event = KTRequestBuilder::createLayerRequest(0, 0, KTProjectRequest::Select);
-    //requestFrameAction(KTProjectRequest::Select, 0, 0, 0);
-    requestFrameAction(KTProjectRequest::Select, 0, 0, 0);
-    //emit requestTriggered(&event);
+    int scenePos = k->container->currentIndex();
+    int layerPos = layerManager(scenePos)->currentRow();
+    int frame = framesTable(scenePos)->lastFrameByLayer(layerPos);
+    requestFrameAction(KTProjectRequest::Select, scenePos, layerPos, frame);
 }
