@@ -55,11 +55,11 @@
 
 struct KTTimeLine::Private
 {
-    Private() : container(0), actionBar(0), library(0) {}
+    Private() : container(0), actionBar(0), selectedLayer(0), library(0) {}
     
     KTabWidget *container;
     KTProjectActionBar *actionBar;
-    
+    int selectedLayer; 
     const KTLibrary *library;
 };
 
@@ -302,8 +302,11 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
             break;
             case KTProjectRequest::Select:
             {
-                 kFatal() << "HEY! OVER HERE!";
-                 layerManager(response->sceneIndex())->setCurrentCell(response->layerIndex(), 0);
+                 kFatal() << "KTTimeLine::frameResponse - Layer Index: " << response->layerIndex();
+                 if (k->selectedLayer != response->layerIndex()) {
+                     // layerManager(response->sceneIndex())->setCurrentCell(response->layerIndex(), 0);
+                     layerManager(response->sceneIndex())->setCurrentCell(0, 0);
+                 }
             }
             break;
 
@@ -551,6 +554,7 @@ void KTTimeLine::emitSelectionSignal()
     kFatal() << "KTLayerManager::emitSelectionSignal() : HERE WE GOOO!";
     int scenePos = k->container->currentIndex();
     int layerPos = layerManager(scenePos)->currentRow();
+    k->selectedLayer = layerPos;
     int frame = framesTable(scenePos)->lastFrameByLayer(layerPos);
     requestFrameAction(KTProjectRequest::Select, scenePos, layerPos, frame);
 }
