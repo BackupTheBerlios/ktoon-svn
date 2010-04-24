@@ -562,10 +562,10 @@ void KTExposureTable::removeFrame(int indexLayer, int indexFrame)
     setUpdatesEnabled(false);
     QTableWidgetItem *i  = takeItem(indexFrame, indexLayer);
     if (i) {
-        for (int index = indexFrame+1; index < k->header->lastFrame(indexLayer); index++) {
+        for (int index = indexFrame + 1; index < k->header->lastFrame(indexLayer); index++) {
              QTableWidgetItem * idx  = takeItem(index, indexLayer);
              if (idx)
-                 setItem(index-1, indexLayer, idx);
+                 setItem(index - 1, indexLayer, idx);
         }
              k->header->setLastFrame(indexLayer, k->header->lastFrame(indexLayer)-1);
     }
@@ -590,14 +590,23 @@ void KTExposureTable::moveLayer(int oldPosLayer, int newPosLayer)
     k->header->moveLayer(oldPosLayer, newPosLayer);
 }
 
-void KTExposureTable::emitRequestSetUsedFrame(int indexFrame,  int indexLayer)
+void KTExposureTable::emitRequestSetUsedFrame(int indexFrame, int indexLayer)
 {
-    int visualIndex = k->header->visualIndex(indexLayer);
+    int layer = k->header->visualIndex(indexLayer);
+    int lastFrame = k->header->lastFrame(indexLayer); 
 
-    if (indexFrame == k->header->lastFrame(indexLayer)) {
-        emit requestSetUsedFrame(visualIndex, indexFrame);
-        emit requestSelectFrame(visualIndex, indexFrame);
-    }
+    kFatal() << "KTExposureTable::emitRequestSetUsedFrame : indexFrame: " << indexFrame << " - lastFrame: " << lastFrame << " - layer: " << layer;
+
+    if (indexFrame >= lastFrame) {
+
+        for (int i=lastFrame; i <= indexFrame; i++) {
+             emit requestSetUsedFrame(layer, i);
+        }
+
+        // emit requestSetUsedFrame(visualIndex, indexFrame);
+
+        emit requestSelectFrame(layer, indexFrame);
+    } 
 }
 
 int KTExposureTable::usedFrames(int column) const
@@ -635,5 +644,10 @@ void KTExposureTable::commitData(QWidget *editor)
 
     if (lineEdit)
         emit requestRenameFrame(currentLayer(),  currentFrame(), lineEdit->text());
+}
+
+int KTExposureTable::layersTotal()
+{
+    return k->header->layersTotal();
 }
 

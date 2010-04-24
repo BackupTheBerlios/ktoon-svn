@@ -178,14 +178,21 @@ void KTExposureSheet::applyAction(int action)
                break;
             case KTProjectActionBar::InsertFrame:
                {
-                 int used = k->currentTable->usedFrames(k->currentTable->currentColumn());
-                 int finish = k->currentTable->currentFrame() + 1;
+                 for (int layer=0; layer < k->currentTable->layersTotal(); layer++) { 
 
-                 if (used < finish) {
-                     for (int i = used; i <= finish; i++)
-                          insertItem(k->currentTable->currentLayer(), i);
-                 } else {
-                          insertItem(k->currentTable->currentLayer(), finish);
+                      int used = k->currentTable->usedFrames(k->currentTable->currentColumn());
+                      int finish = k->currentTable->currentFrame() + 1;
+                      if (used < finish) {
+                          kFatal() << "FLAG 1";
+                          for (int frame = used; frame <= finish; frame++)
+                               insertItem(layer, frame);
+                               //insertItem(k->currentTable->currentLayer(), i);
+                      } else {
+                          kFatal() << "FLAG 2";
+                          insertItem(layer, finish);
+                          //insertItem(k->currentTable->currentLayer(), finish);
+                      }
+
                  }
                }
                break;
@@ -295,6 +302,7 @@ void KTExposureSheet::emitRequestExpandCurrentFrame()
 
 void KTExposureSheet::insertItem(int indexLayer, int indexFrame)
 {
+    kFatal() << "KTExposureSheet::insertItem - Adding a new Item!";
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
                                                  indexLayer, indexFrame, KTProjectRequest::Add);
     emit requestTriggered(&request);
