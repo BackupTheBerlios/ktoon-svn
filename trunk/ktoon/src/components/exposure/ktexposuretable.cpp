@@ -385,6 +385,9 @@ void KTExposureTable::emitRequestRenameFrame(QTableWidgetItem * item)
 
 void KTExposureTable::emitRequestSelectFrame(int currentRow_, int currentColumn_, int previousRow, int previousColumn)
 {
+    if (currentRow_ >= framesTotal())
+        return;
+
     if (!k->removingLayer) {
         if (previousRow != currentRow_ || previousColumn != currentColumn_)
             emit requestSelectFrame(currentLayer(), currentRow());
@@ -595,15 +598,11 @@ void KTExposureTable::emitRequestSetUsedFrame(int indexFrame, int indexLayer)
     int layer = k->header->visualIndex(indexLayer);
     int lastFrame = k->header->lastFrame(indexLayer); 
 
-    kFatal() << "KTExposureTable::emitRequestSetUsedFrame : indexFrame: " << indexFrame << " - lastFrame: " << lastFrame << " - layer: " << layer;
-
     if (indexFrame >= lastFrame) {
-
-        for (int i=lastFrame; i <= indexFrame; i++) {
-             emit requestSetUsedFrame(layer, i);
+        for (int j=0; j<columnCount(); j++) {
+             for (int i=lastFrame; i <= indexFrame; i++)
+                  emit requestSetUsedFrame(j, i);
         }
-
-        // emit requestSetUsedFrame(visualIndex, indexFrame);
 
         emit requestSelectFrame(layer, indexFrame);
     } 
@@ -649,5 +648,10 @@ void KTExposureTable::commitData(QWidget *editor)
 int KTExposureTable::layersTotal()
 {
     return k->header->layersTotal();
+}
+
+int KTExposureTable::framesTotal()
+{
+    return k->header->lastFrame(0);
 }
 

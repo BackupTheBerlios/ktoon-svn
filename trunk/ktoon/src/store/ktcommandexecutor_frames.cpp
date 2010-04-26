@@ -45,6 +45,10 @@
 
 bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int position = response->frameIndex();
@@ -54,16 +58,20 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
     
     KTScene *scene = m_project->scene(scenePosition);
     
-    if (!scene)
+    if (!scene) {
+        // kFatal() << "KTCommandExecutor::createFrame -> No scene! :S - ScenePosition: " << scenePosition;
         return false;
+    }
     
     KTLayer *layer = scene->layer(layerPosition);
     
     if (layer) {
         KTFrame *frame = layer->createFrame(position);
         
-        if (!frame) 
+        if (!frame) {
+            // kFatal() << "KTCommandExecutor::createFrame -> No frame! :S - FramePosition: " << position;
             return false;
+        }
         
         if (!name.isEmpty()) {
             #ifdef K_DEBUG
@@ -82,18 +90,6 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
             response->setArg(frame->frameName());
         }
 
-        /*
-        if (layerPosition == 0) {
-            frame->setZLevel(0); 
-        } else {
-            KTLayer *previewlayer = scene->layer(layerPosition-1);
-            KTFrame *previewFrame = previewlayer->frame(position);
-            if (previewFrame) {
-                frame->setZLevel(previewFrame->getTopZLevel());
-            }
-        }
-        */
-        
         return true;
     }
     

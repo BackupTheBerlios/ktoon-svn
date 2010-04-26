@@ -169,7 +169,7 @@ void KTPaintAreaBase::setUseOpenGL(bool opengl)
         if (opengl) {
             setViewport(new GLDevice());
         } else {
-                // setViewport(new KTImageDevice());
+            // setViewport(new KTImageDevice());
         }
 #else
         Q_UNUSED(opengl);
@@ -371,8 +371,12 @@ bool KTPaintAreaBase::canPaint() const
     if (k->scene) {
         KTFrame *frame = k->scene->currentFrame();
 
-        if (frame)
+        if (frame) {
+            kFatal() << "SORRY, THE PROBLEM IS THE FRAME";
             return !frame->isLocked();
+        }
+    } else {
+        kFatal() << "SORRY, THERE'S NO SCENE";
     }
 
     return false;

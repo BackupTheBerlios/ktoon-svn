@@ -113,7 +113,7 @@ void KTFramesTableItemDelegate::paint(QPainter * painter, const QStyleOptionView
         painter->save();
         painter->setPen(QPen(option.palette.brush(cg, QPalette::Highlight), 3));
         //painter->drawRect(option.rect.adjusted(1,1,-2,-2));
-        painter->fillRect(option.rect,  QColor(250, 209, 132, 255));
+        painter->fillRect(option.rect, QColor(250, 209, 132, 255));
         painter->restore();
 
     }
@@ -141,7 +141,7 @@ void KTFramesTableItemDelegate::paint(QPainter * painter, const QStyleOptionView
         if (item->isLocked()) {
             painter->save();
             painter->setBrush(Qt::red);
-            painter->drawEllipse( option.rect.left(), option.rect.bottom() - offset, offset, offset);
+            painter->drawEllipse(option.rect.left(), option.rect.bottom() - offset, offset, offset);
             painter->restore();
         }
     }
@@ -225,13 +225,13 @@ KTFramesTable::~KTFramesTable()
 void KTFramesTable::setup()
 {
     setItemDelegate(new KTFramesTableItemDelegate(this));
-        
     setSelectionBehavior(QAbstractItemView::SelectItems);
-    setSelectionMode (QAbstractItemView::SingleSelection);
+    setSelectionMode(QAbstractItemView::SingleSelection);
     
     setHorizontalHeader(k->ruler);
     connect(k->ruler, SIGNAL(logicalSectionSelected( int )), this, SLOT(emitFrameSelected( int )));
-    connect(this, SIGNAL(currentItemChanged( QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(emitFrameSelected(QTableWidgetItem *, QTableWidgetItem *)));
+    connect(this, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, 
+            SLOT(emitFrameSelected(QTableWidgetItem *, QTableWidgetItem *)));
     verticalHeader()->hide();
     
     setItemSize(10, 25);
@@ -247,9 +247,8 @@ void KTFramesTable::emitFrameSelected(int col)
     KTFramesTableItem *item = dynamic_cast<KTFramesTableItem *>(this->item(currentRow(), col));
     
     if (item) {
-        if (item->isUsed()) {
-            emit frameRequest(KTProjectRequest::Select, this->column(item), verticalHeader()->visualIndex(this->row(item)),  -1);
-        }
+        if (item->isUsed())
+            emit frameRequest(KTProjectRequest::Select, this->column(item), verticalHeader()->visualIndex(this->row(item)), -1);
     }
 }
 
@@ -259,7 +258,7 @@ void KTFramesTable::emitFrameSelected(QTableWidgetItem *curr, QTableWidgetItem *
     
     if (item) {
         if (item->isUsed()) {
-            emit frameRequest(KTProjectRequest::Select, this->column(item), verticalHeader()->visualIndex(this->row(item)),  -1);
+            emit frameRequest(KTProjectRequest::Select, this->column(item), verticalHeader()->visualIndex(this->row(item)), -1);
         }
     }
 }
@@ -287,8 +286,6 @@ void KTFramesTable::insertLayer(int pos, const QString &name)
     Private::LayerItem layer;
     layer.sound = false;
     k->layers.insert(pos, layer);
-    
-    // selectCell(pos, 0);
     
     fixSize();
 }
@@ -343,7 +340,7 @@ void KTFramesTable::moveLayer(int position, int newPosition)
          }
      } else {
          for (int i = position-1;i >= newPosition;i--) {
-             setItem(i+1, 0, takeItem(i, 0));
+              setItem(i+1, 0, takeItem(i, 0));
          }
      }
      
@@ -377,7 +374,7 @@ void KTFramesTable::insertFrame(int layerPos, const QString &name)
     k->layers[layerPos].lastItem++;
     
     if (k->layers[layerPos].lastItem >= columnCount())
-        insertColumn( k->layers[layerPos].lastItem );
+        insertColumn(k->layers[layerPos].lastItem);
     
     setAttribute(layerPos, k->layers[layerPos].lastItem, KTFramesTableItem::IsUsed, true);
     setAttribute(layerPos, k->layers[layerPos].lastItem, KTFramesTableItem::IsSound, k->layers[layerPos].sound);

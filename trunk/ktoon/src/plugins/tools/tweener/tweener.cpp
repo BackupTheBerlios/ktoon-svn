@@ -73,8 +73,6 @@ struct Tweener::Private
 
 Tweener::Tweener() : KTToolPlugin(), k(new Private)
 {
-    kFatal() << "Tweener::Tweener() -> Object starting!";
-
     setupActions();
     k->configurator = 0;
     k->creatingPath = true;
@@ -90,8 +88,6 @@ Tweener::~Tweener()
 
 void Tweener::init(KTGraphicsScene *scene)
 {
-    kFatal() << "Tweener::init -> Activating plugin!";
-
     delete k->path;
     k->path = 0;
     delete k->group;

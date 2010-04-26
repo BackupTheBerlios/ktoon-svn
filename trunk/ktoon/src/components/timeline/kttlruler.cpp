@@ -65,8 +65,10 @@ void KTTLRuler::paintSection(QPainter * painter, const QRect & rect, int logical
 
     painter->save();
 
-    if (selectionModel()->isSelected(model()->index(0, logicalIndex))) {
-        // QBrush brush(Qt::red);
+    QModelIndex currentSelection = currentIndex(); 
+    int column = currentSelection.row(); 
+
+    if (selectionModel()->isSelected(model()->index(column, logicalIndex))) {
         QBrush brush(QColor(255, 100, 100, 150));
         brush.setStyle(Qt::Dense5Pattern);
         painter->fillRect(rect, brush);
@@ -75,7 +77,7 @@ void KTTLRuler::paintSection(QPainter * painter, const QRect & rect, int logical
     logicalIndex++;
 
     if (logicalIndex == 1 || logicalIndex % 5 == 0) {
-        QFont label("Arial", 8, QFont::Normal, false);
+        QFont label("Arial", 7, QFont::Normal, false);
         QFontMetrics fm(label);
 
         QString number = QString::number(logicalIndex);
@@ -105,7 +107,7 @@ void KTTLRuler::updateSelected(int logical)
 
 void KTTLRuler::select(int logical)
 {
-    selectionModel()->select( model()->index(0, logical), QItemSelectionModel::ClearAndSelect);
+    selectionModel()->select(model()->index(0, logical), QItemSelectionModel::ClearAndSelect);
 
     viewport()->update(QRect(sectionViewportPosition(logical), 0, sectionSize(logical),viewport()->height()));
 }

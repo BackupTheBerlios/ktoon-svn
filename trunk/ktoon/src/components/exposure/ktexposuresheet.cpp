@@ -178,21 +178,29 @@ void KTExposureSheet::applyAction(int action)
                break;
             case KTProjectActionBar::InsertFrame:
                {
-                 for (int layer=0; layer < k->currentTable->layersTotal(); layer++) { 
+                 int usedFrames = k->currentTable->usedFrames(k->currentTable->currentColumn());
 
-                      int used = k->currentTable->usedFrames(k->currentTable->currentColumn());
-                      int finish = k->currentTable->currentFrame() + 1;
-                      if (used < finish) {
-                          kFatal() << "FLAG 1";
-                          for (int frame = used; frame <= finish; frame++)
+                 if (k->currentTable->currentRow() > usedFrames) {
+                     for (int layer=0; layer < k->currentTable->layersTotal(); layer++) { 
+                          int finish = k->currentTable->currentFrame() + 1;
+                          for (int frame = usedFrames; frame <= finish; frame++)
                                insertItem(layer, frame);
-                               //insertItem(k->currentTable->currentLayer(), i);
-                      } else {
-                          kFatal() << "FLAG 2";
-                          insertItem(layer, finish);
-                          //insertItem(k->currentTable->currentLayer(), finish);
-                      }
+                     }
+                 } else {
+                     int border = k->currentTable->framesTotal();
+                     for (int layer=0; layer < k->currentTable->layersTotal(); layer++)
+                          insertItem(layer, border);
 
+                     /*
+                     int row = k->currentTable->currentFrame() + 1;
+                     int initLayer = k->currentTable->currentLayer();
+
+                     for (int layer=0; layer < k->currentTable->layersTotal(); layer++)
+                          insertItem(layer, row);
+
+                     if (k->currentTable->layersTotal() > 1)
+                         selectFrame(initLayer, row);           
+                     */
                  }
                }
                break;
@@ -302,7 +310,6 @@ void KTExposureSheet::emitRequestExpandCurrentFrame()
 
 void KTExposureSheet::insertItem(int indexLayer, int indexFrame)
 {
-    kFatal() << "KTExposureSheet::insertItem - Adding a new Item!";
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
                                                  indexLayer, indexFrame, KTProjectRequest::Add);
     emit requestTriggered(&request);
@@ -382,7 +389,7 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
            case KTProjectRequest::Remove:
             {
                 k->scenes->blockSignals(true);
-                QWidget * widget = k->scenes->getTable(e->sceneIndex());
+                //QWidget * widget = k->scenes->getTable(e->sceneIndex());
                 k->scenes->TabWidget()->removeTab(e->sceneIndex());
                 //delete widget;
                 k->scenes->blockSignals(false);
@@ -413,11 +420,7 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
 {
     KTExposureTable *scene = k->scenes->getTable(e->sceneIndex());
 
-    kFatal() << "KTExposureSheet::layerResponse -> SCENE INDEX: " << e->sceneIndex();
-    kFatal() << "KTExposureSheet::layerResponse -> ACTION: " << e->action();
-
     if (scene) {
-        kFatal() << "KTExposureSheet::layerResponse -> IF ACCEPTED!";
         switch (e->action()) {
                 case KTProjectRequest::Add:
                  {
@@ -446,7 +449,6 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                 break;
                 case KTProjectRequest::Select:
                  {
-                     kFatal() << "YEAH! Getting the message!";
                      setScene(e->sceneIndex());
                      scene->blockSignals(true);
                      scene->selectFrame(e->layerIndex(), 0);
@@ -458,11 +460,11 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                  }
                 break;
                 default:
-                     kFatal() << "Layer option undefined! -> " << e->action();
+                     kFatal() << "KTExposureSheet::layerResponse - Layer option undefined! -> " << e->action();
                 break;
         }
     } else {
-        kFatal() << "KTExposureSheet::layerResponse -> THERE'S NO SCENE: " << e->sceneIndex();
+        kFatal() << "KTExposureSheet::layerResponse -> Scene index invalid: " << e->sceneIndex();
     }
 }
 
@@ -472,14 +474,14 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
            K_FUNCINFO;
     #endif
 
-    //KTExposureTable *scene = dynamic_cast<KTExposureTable*>(k->scenes->widget((e->sceneIndex())));
     KTExposureTable *scene = k->scenes->getTable(e->sceneIndex());
 
     if (scene) {
         switch (e->action()) {
                 case KTProjectRequest::Add:
                  {
-                     scene->setUseFrame(e->layerIndex(), e->frameIndex(),  e->arg().toString(), e->external());
+                     scene->setUseFrame(e->layerIndex(), e->frameIndex(), e->arg().toString(), e->external());
+
                      if (e->layerIndex() == 0 && e->frameIndex() == 0) {
                          setScene(e->sceneIndex());
                          scene->selectFrame(e->layerIndex(), e->frameIndex());
@@ -509,7 +511,6 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 break;
                 case KTProjectRequest::Select:
                  {
-                     kFatal() << "KTExposureSheet::frameResponse -> SELECT FRAME: " << e->sceneIndex() << " / " << e->layerIndex() << " / " << e->frameIndex();
                      setScene(e->sceneIndex());
                      scene->selectFrame(e->layerIndex(), e->frameIndex());
                  }
@@ -541,5 +542,7 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                  }
                 break;
         }
+    } else {
+        kFatal() << "KTExposureSheet::frameResponse -> Scene index invalid: " << e->sceneIndex();
     }
 }

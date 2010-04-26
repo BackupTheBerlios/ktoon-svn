@@ -112,13 +112,18 @@ bool KTLayer::isVisible() const
 
 KTFrame *KTLayer::createFrame(int position, bool loaded)
 {
-    if (position < 0 || position > k->frames.count())
+    /*
+    if (position < 0 || position > k->frames.count()) {
+        kFatal() << "KTLayer::createFrame -> index is out of range: " << position << " - frames.count(): " << k->frames.count();
+        return 0;
+    }
+    */
+
+    if (position < 0)
         return 0;
 
     KTFrame *frame = new KTFrame(this);
-
     k->framesCount++;
-
     frame->setFrameName(tr("Frame %1").arg(k->framesCount));
 
     k->frames.insert(position, frame);

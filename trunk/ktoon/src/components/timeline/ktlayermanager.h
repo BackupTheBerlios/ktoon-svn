@@ -86,13 +86,17 @@ class KTLayerManager : public QTableWidget
     protected:
         void resizeEvent(QResizeEvent *e);
         virtual void fixSize();
+        virtual void keyPressEvent(QKeyEvent *event);
         
     protected slots:
         void commitData(QWidget * editor);
+        void setLocalRequest(int row, int column);
+
         //void emitSelectionSignal();
         
     signals:
         void requestRenameEvent(int layerPosition, const QString &newName);
+        void localRequest();
         // void requestTriggered(const KTProjectRequest *event);
         
     private:

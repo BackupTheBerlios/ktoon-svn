@@ -244,6 +244,8 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), k(
     setHorizontalHeader(new KTLayerManagerHeader(this));
     setItemDelegate(new KTLayerManagerItemDelegate(this));
 
+    connect(this, SIGNAL(cellClicked(int, int)), this, SLOT(setLocalRequest(int, int)));
+
     //connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(emitSelectionSignal()));
 
     /*
@@ -415,3 +417,27 @@ void KTLayerManager::lockLayer(int position, bool locked)
     }
 }
 
+void KTLayerManager::setLocalRequest(int row, int column)
+{
+    emit localRequest();
+}
+
+void KTLayerManager::keyPressEvent(QKeyEvent *event)
+{
+    int row = currentRow();
+    int total = rowCount();
+
+    if (event->key() == Qt::Key_Up) {
+        if (row > 0) {
+            setCurrentCell(row - 1, 0);
+            emit localRequest();
+        }
+    }
+
+    if (event->key() == Qt::Key_Down) {
+        if (row < total-1) {
+            setCurrentCell(row + 1, 0);
+            emit localRequest();
+        }
+    }
+}

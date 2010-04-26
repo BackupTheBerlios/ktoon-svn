@@ -78,6 +78,7 @@ class KTExposureTable : public QTableWidget
         bool frameIsLocked(int indexLayer, int indexFrame);
         void selectFrame(int indexLayer, int indexFrame);
         int layersTotal();
+        int framesTotal();
 
         void setMenu(QMenu *menu);
 		

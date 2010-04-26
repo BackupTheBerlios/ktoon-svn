@@ -55,7 +55,7 @@
 
 struct KTTimeLine::Private
 {
-    Private() : container(0), actionBar(0), selectedLayer(0), library(0) {}
+    Private() : container(0), actionBar(0), selectedLayer(-1), library(0) {}
     
     KTabWidget *container;
     KTProjectActionBar *actionBar;
@@ -142,7 +142,7 @@ void KTTimeLine::insertScene(int position, const QString &name)
         SLOT(requestFrameAction(int, int, int, int, const QVariant&)));
     
     connect(layerManager->verticalScrollBar(), SIGNAL(valueChanged (int)), framesTable->verticalScrollBar(), SLOT(setValue(int)));
-    connect(layerManager, SIGNAL(itemSelectionChanged()), this, SLOT(emitSelectionSignal()));
+    connect(layerManager, SIGNAL(localRequest()), this, SLOT(emitSelectionSignal()));
 
     connect(framesTable->verticalScrollBar(), SIGNAL(valueChanged (int)), layerManager->verticalScrollBar(), 
         SLOT(setValue(int)));
@@ -223,6 +223,7 @@ void KTTimeLine::layerResponse(KTLayerResponse *response)
             if (framesTable)
                 framesTable->insertLayer(response->layerIndex(), response->arg().toString());
             }
+            
             break;
             case KTProjectRequest::Remove:
             {
@@ -302,11 +303,14 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
             break;
             case KTProjectRequest::Select:
             {
-                 kFatal() << "KTTimeLine::frameResponse - Layer Index: " << response->layerIndex();
-                 if (k->selectedLayer != response->layerIndex()) {
-                     // layerManager(response->sceneIndex())->setCurrentCell(response->layerIndex(), 0);
-                     layerManager(response->sceneIndex())->setCurrentCell(0, 0);
+                 int layerIndex = response->layerIndex();
+
+                 if (k->selectedLayer != layerIndex) {
+                     layerManager(response->sceneIndex())->setCurrentCell(layerIndex, 0);
+                     k->selectedLayer = layerIndex; 
                  }
+
+                 framesTable(response->sceneIndex())->setCurrentCell(layerIndex, response->frameIndex());
             }
             break;
 
@@ -348,13 +352,14 @@ void KTTimeLine::requestCommand(int action)
     int framePos = -1;
     
     if (scenePos >= 0) {
-        // layerPos = layerManager(scenePos)->verticalHeader()->visualIndex(layerManager(scenePos)->currentRow());
         layerPos = layerManager(scenePos)->rowCount();
         framePos = framesTable(scenePos)->lastFrameByLayer(layerPos);
     }
     
     if (!requestFrameAction(action, framePos, layerPos, scenePos)) {
+        kFatal() << "NO FRAME ACTION";
         if (!requestLayerAction(action, layerPos, scenePos)) {
+            kFatal() << "NO LAYER ACTION";
             if (!requestSceneAction(action, scenePos)) {
                 #ifdef K_DEBUG
                     kFatal("timeline") << "Can't handle action";
@@ -367,8 +372,6 @@ void KTTimeLine::requestCommand(int action)
 
 bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int scenePos, const QVariant &arg)
 {
-    kFatal() << "KTTimeLine::requestFrameAction - hey!";
-
     if (scenePos < 0)
         scenePos = k->container->currentIndex();
     
@@ -421,8 +424,6 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
         
             case KTProjectRequest::Select:
             {
-                 kFatal() << "KTTimeLine::requestFrameAction: " << scenePos << " / " << layerPos << " / " << framePos;
-
                  KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos,
                                           KTProjectRequest::Select, arg);
                  emit localRequestTriggered(&event);
@@ -452,6 +453,20 @@ bool KTTimeLine::requestLayerAction(int action, int layerPos, int scenePos, cons
                  KTProjectRequest event = KTRequestBuilder::createLayerRequest(scenePos, layerPos,
                                           KTProjectRequest::Add, arg);
                  emit requestTriggered(&event);
+
+                 if (layerPos == 0) {
+                     event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, 0,
+                                               KTProjectRequest::Add, arg);
+                     emit requestTriggered(&event);
+                 } else {
+                     int total = framesTable(scenePos)->lastFrameByLayer(layerPos - 1);
+                     // int total = framesTable(scenePos)->columnCount();
+                     for (int j=0; j <= total; j++) {
+                          event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, j,
+                                                                       KTProjectRequest::Add, arg);
+                          emit requestTriggered(&event);
+                     }
+                 }
 
                  return true;
             }
@@ -526,7 +541,7 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
             case KTProjectActionBar::MoveSceneDown:
             {
             KTProjectRequest event = KTRequestBuilder::createSceneRequest(scenePos, KTProjectRequest::Move,
-                                            scenePos - 1);
+                                     scenePos - 1);
             emit requestTriggered(&event);
             return true;
             }
@@ -535,7 +550,6 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
     
     return false;
 }
-
 
 void KTTimeLine::emitRequestRenameLayer(int layer, const QString &name)
 {
@@ -551,10 +565,10 @@ void KTTimeLine::emitRequestRenameLayer(int layer, const QString &name)
 
 void KTTimeLine::emitSelectionSignal()
 {
-    kFatal() << "KTLayerManager::emitSelectionSignal() : HERE WE GOOO!";
     int scenePos = k->container->currentIndex();
     int layerPos = layerManager(scenePos)->currentRow();
     k->selectedLayer = layerPos;
-    int frame = framesTable(scenePos)->lastFrameByLayer(layerPos);
-    requestFrameAction(KTProjectRequest::Select, scenePos, layerPos, frame);
+    int frame = framesTable(scenePos)->currentColumn();
+
+    requestFrameAction(KTProjectRequest::Select, frame, layerPos, scenePos);
 }
