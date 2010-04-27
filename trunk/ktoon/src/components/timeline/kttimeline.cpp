@@ -271,10 +271,13 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
     switch (response->action()) {
             case KTProjectRequest::Add:
             {
+                 kFatal() << "KTTimeLine::frameResponse -> Processing Add Frame #" << response->frameIndex() << " at index: " << response->layerIndex();
                  KTFramesTable *framesTable = this->framesTable(response->sceneIndex());
 
                  if (framesTable)
                      framesTable->insertFrame(response->layerIndex(), response->arg().toString());
+                 else
+                     kFatal() << "KTTimeLine::frameResponse -> NO TABLE AVAILABLE!";
             }
             break;
             case KTProjectRequest::Remove:
@@ -355,6 +358,8 @@ void KTTimeLine::requestCommand(int action)
         layerPos = layerManager(scenePos)->rowCount();
         framePos = framesTable(scenePos)->lastFrameByLayer(layerPos);
     }
+
+    kFatal() << "KTTimeLine::requestCommand -> scenePos: " << scenePos << " - layerPos: " << layerPos << " - framePos: " << framePos;
     
     if (!requestFrameAction(action, framePos, layerPos, scenePos)) {
         kFatal() << "NO FRAME ACTION";
