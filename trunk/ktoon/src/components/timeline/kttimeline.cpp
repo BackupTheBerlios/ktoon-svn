@@ -355,12 +355,10 @@ void KTTimeLine::requestCommand(int action)
     int framePos = -1;
     
     if (scenePos >= 0) {
-        layerPos = layerManager(scenePos)->rowCount();
-        framePos = framesTable(scenePos)->lastFrameByLayer(layerPos);
+        layerPos = layerManager(scenePos)->rowCount() - 1;
+        framePos = framesTable(scenePos)->lastFrameByLayer(layerPos) + 1;
     }
 
-    kFatal() << "KTTimeLine::requestCommand -> scenePos: " << scenePos << " - layerPos: " << layerPos << " - framePos: " << framePos;
-    
     if (!requestFrameAction(action, framePos, layerPos, scenePos)) {
         kFatal() << "NO FRAME ACTION";
         if (!requestLayerAction(action, layerPos, scenePos)) {
@@ -401,7 +399,7 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
             break;
             case KTProjectActionBar::RemoveFrame:
             {
-                 KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos,
+                 KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos - 1,
                                           KTProjectRequest::Remove, arg);
                  emit requestTriggered(&event);
 
