@@ -65,7 +65,7 @@ KTExposureSheet::KTExposureSheet(QWidget *parent) : KTModuleWidgetBase(parent, "
     setWindowTitle(tr("Exposure Sheet"));
     setWindowIcon(QPixmap(THEME_DIR + "icons/exposure_sheet.png"));
 
-    k->actionBar = new KTProjectActionBar(KTProjectActionBar::InsertLayer |
+    k->actionBar = new KTProjectActionBar(QString("Exposure"), KTProjectActionBar::InsertLayer |
                         KTProjectActionBar::RemoveLayer |
                         KTProjectActionBar::Separator |
                         KTProjectActionBar::InsertFrame |

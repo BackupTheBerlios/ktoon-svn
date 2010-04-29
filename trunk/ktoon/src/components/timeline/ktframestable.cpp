@@ -95,10 +95,12 @@ void KTFramesTableItemDelegate::paint(QPainter * painter, const QStyleOptionView
         
         if (!sound) {
             int counter = index.column() + 1;
-            if (counter == 1 || counter % 5 == 0)
-                painter->fillRect(option.rect, Qt::lightGray);
-            else
+            if (counter == 1 || counter % 5 == 0) {
+                painter->fillRect(option.rect, QColor(230, 230, 230));
+                //painter->fillRect(option.rect, Qt::lightGray);
+            } else {
                 painter->fillRect(option.rect, Qt::white);
+            }
         } else {
 
         }

@@ -48,6 +48,7 @@
 struct KTProjectActionBar::Private
 {
     Private(Qt::Orientation orientation) : orientation(orientation), isAnimated(true) {}
+    QString container;
     Qt::Orientation orientation;
     int fixedSize;
     QButtonGroup actions;
@@ -55,8 +56,9 @@ struct KTProjectActionBar::Private
     bool isAnimated;
 };
 
-KTProjectActionBar::KTProjectActionBar(Actions actions, Qt::Orientation orientation, QWidget *parent) : QWidget(parent), k(new Private(orientation))
+KTProjectActionBar::KTProjectActionBar(const QString &container, Actions actions, Qt::Orientation orientation, QWidget *parent) : QWidget(parent), k(new Private(orientation))
 {
+    k->container = container;
     connect(&k->actions, SIGNAL(buttonClicked(int)), this, SLOT(emitActionSelected(int)));
     setup(actions);
     setFixedSize(22);
@@ -175,9 +177,16 @@ void KTProjectActionBar::setup(Actions actions)
     }
      
     if (actions & MoveFrameUp) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_frame_up.png"), size);
+        KImageButton *button;
+        if (k->container.compare("Exposure") == 0) {
+            button = new KImageButton(QIcon(THEME_DIR + "icons/move_frame_up.png"), size);
+        } else {
+            if (k->container.compare("TimeLine") == 0)
+                button = new KImageButton(QIcon(THEME_DIR + "icons/move_frame_backward.png"), size);
+        }
+
         button->setToolTip(tr("Move frame up"));
-        
+
         k->actions.addButton(button, MoveFrameUp);
         
         k->buttonLayout->addWidget(button);
@@ -186,7 +195,15 @@ void KTProjectActionBar::setup(Actions actions)
     }
     
     if (actions & MoveFrameDown) {
-        KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_frame_down.png"), size);
+        KImageButton *button;
+
+        if (k->container.compare("Exposure") == 0) {
+            button = new KImageButton(QIcon(THEME_DIR + "icons/move_frame_down.png"), size);
+        } else {
+            if (k->container.compare("TimeLine") == 0)
+                button = new KImageButton(QIcon(THEME_DIR + "icons/move_frame_forward.png"), size);
+        }
+ 
         button->setToolTip(tr("Move frame down"));
         
         k->actions.addButton(button, MoveFrameDown);

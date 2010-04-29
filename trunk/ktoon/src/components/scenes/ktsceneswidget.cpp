@@ -77,7 +77,7 @@ KTScenesWidget::~KTScenesWidget()
 
 void KTScenesWidget::setupButtons()
 {
-    KTProjectActionBar *bar = new KTProjectActionBar(KTProjectActionBar::InsertScene | KTProjectActionBar::RemoveScene);
+    KTProjectActionBar *bar = new KTProjectActionBar(QString("TimeLine"), KTProjectActionBar::InsertScene | KTProjectActionBar::RemoveScene);
     bar->button(KTProjectActionBar::InsertScene)->setIcon(QIcon(THEME_DIR + "icons/plus_sign.png"));
     bar->button(KTProjectActionBar::RemoveScene)->setIcon(QIcon(THEME_DIR + "icons/minus_sign.png"));
     bar->insertBlankSpace(1);

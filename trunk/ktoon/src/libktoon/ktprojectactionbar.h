@@ -84,7 +84,7 @@ class KTOON_EXPORT KTProjectActionBar : public QWidget
         
         Q_DECLARE_FLAGS(Actions, Action);
         
-        KTProjectActionBar(Actions actions, Qt::Orientation orientation = Qt::Horizontal, QWidget *parent = 0);
+        KTProjectActionBar(const QString &container = QString(), Actions actions = NoAction, Qt::Orientation orientation = Qt::Horizontal, QWidget *parent = 0);
         ~KTProjectActionBar();
         void setFixedSize(int s);
         
