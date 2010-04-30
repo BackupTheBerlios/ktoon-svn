@@ -220,18 +220,20 @@ void KTLayerManagerItemDelegate::paint(QPainter *painter, const QStyleOptionView
 
 struct KTLayerManager::Private
 {
-    Private() : allSelected(false), allVisible(true), allLock(false), rowHeight(20) {}
+    Private() : allSelected(false), allVisible(true), allLock(false), rowHeight(20), sceneIndex(0) {}
     
     bool allSelected, allVisible, allLock;
     int rowHeight;
+    int sceneIndex;
 };
 
-KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), k(new Private)
+KTLayerManager::KTLayerManager(int sceneIndex, QWidget *parent) : QTableWidget(0, 3, parent), k(new Private)
 {
     #ifdef K_DEBUG
         KINIT;
     #endif
 
+    k->sceneIndex = sceneIndex;
     setSelectionMode(QAbstractItemView::SingleSelection);
     
     QTableWidgetItem *prototype = new QTableWidgetItem;
@@ -425,11 +427,14 @@ void KTLayerManager::setLocalRequest(int row, int column)
     if (column == 2) {
         QTableWidgetItem *item = this->itemAt(row, column);
 
+        bool checked = false;
         if (item->checkState() == Qt::Checked)
-            kFatal() << "KTLayerManager::setLocalRequest -> CHECKED";
-        else
-            kFatal() << "KTLayerManager::setLocalRequest -> UNCHECKED";
-   
+            checked = true;
+
+        KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->sceneIndex, 
+                                 row, KTProjectRequest::View, checked);
+        emit requestTriggered(&event);
+      
         this->setCurrentCell(row, 0);
     }
 

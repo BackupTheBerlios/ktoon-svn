@@ -126,7 +126,7 @@ void KTTimeLine::insertScene(int position, const QString &name)
     
     QSplitter *splitter = new QSplitter(k->container);
     
-    KTLayerManager *layerManager = new KTLayerManager(splitter);
+    KTLayerManager *layerManager = new KTLayerManager(position, splitter);
     
     layerManager->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     
@@ -139,16 +139,18 @@ void KTTimeLine::insertScene(int position, const QString &name)
     layerManager->setRowHeight(20);
     
     connect(framesTable, SIGNAL(frameRequest(int, int, int, int, const QVariant&)), this, 
-        SLOT(requestFrameAction(int, int, int, int, const QVariant&)));
+            SLOT(requestFrameAction(int, int, int, int, const QVariant&)));
     
-    connect(layerManager->verticalScrollBar(), SIGNAL(valueChanged (int)), framesTable->verticalScrollBar(), SLOT(setValue(int)));
+    connect(layerManager->verticalScrollBar(), SIGNAL(valueChanged(int)), framesTable->verticalScrollBar(), 
+            SLOT(setValue(int)));
+
     connect(layerManager, SIGNAL(localRequest()), this, SLOT(emitSelectionSignal()));
 
-    connect(framesTable->verticalScrollBar(), SIGNAL(valueChanged (int)), layerManager->verticalScrollBar(), 
-        SLOT(setValue(int)));
+    connect(framesTable->verticalScrollBar(), SIGNAL(valueChanged(int)), layerManager->verticalScrollBar(), 
+            SLOT(setValue(int)));
     
-    connect(layerManager, SIGNAL(requestRenameEvent(int, const QString&)), this, SLOT(emitRequestRenameLayer(int,
-        const QString &))); // FIXME
+    connect(layerManager, SIGNAL(requestRenameEvent(int, const QString&)), this, 
+            SLOT(emitRequestRenameLayer(int, const QString &))); // FIXME
     
     k->container->insertTab(position, splitter, name);
 }

@@ -124,8 +124,8 @@ void KTExposureSheet::addScene(int index, const QString &name)
     connect(newScene, SIGNAL(requestRenameLayer(int, const QString &)), 
                              this, SLOT(renameLayer(int, const QString &)));
     connect(newScene, SIGNAL(requestMoveLayer(int,int)), this, SLOT(moveLayer(int, int)));
-    connect(newScene, SIGNAL(requestChangeVisiblityLayer(int , bool)),
-                             this, SLOT(changeVisiblityLayer(int, bool)));
+    connect(newScene, SIGNAL(requestChangeVisibilityLayer(int , bool)),
+                             this, SLOT(changeVisibilityLayer(int, bool)));
 
     k->scenes->addScene(index, name, newScene);
 }
@@ -330,7 +330,7 @@ void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
     emit requestTriggered(&request);
 }
 
-void KTExposureSheet::changeVisiblityLayer(int visualIndexLayer, bool visibility)
+void KTExposureSheet::changeVisibilityLayer(int visualIndexLayer, bool visibility)
 {
     KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), visualIndexLayer,
                                                KTProjectRequest::View, visibility);

@@ -80,7 +80,7 @@ class KTExposureHeader: public QHeaderView
         void updateSelection(int col);
 
     private slots:
-        void emitVisiblityChanged(int section);
+        void emitVisibilityChanged(int section);
         void showEditorName(int section);
         void hideEditorName();
 
@@ -96,7 +96,7 @@ class KTExposureHeader: public QHeaderView
 
     signals:
         void changedName(int indexLayer, const QString & name);
-        void visiblityChanged(int indexLayer, bool visibility);
+        void visibilityChanged(int indexLayer, bool visibility);
 };
 
 KTExposureHeader::KTExposureHeader(QWidget * parent) : QHeaderView(Qt::Horizontal, parent), m_sectionEdited(-1),
@@ -120,9 +120,9 @@ KTExposureHeader::~KTExposureHeader()
 {
 }
 
-void KTExposureHeader::emitVisiblityChanged(int section)
+void KTExposureHeader::emitVisibilityChanged(int section)
 {
-   emit visiblityChanged(visualIndex(section), !m_layers[section].isVisible);
+   emit visibilityChanged(visualIndex(section), !m_layers[section].isVisible);
 }
 
 void KTExposureHeader::setVisibilityChanged(int logicalndex, bool visibility)
@@ -211,7 +211,7 @@ void KTExposureHeader::mousePressEvent(QMouseEvent * event)
 
     QRect rect(x+3, 3, height()-3, height()-3);
     if (rect.contains(event->pos()))
-        emitVisiblityChanged(section);
+        emitVisibilityChanged(section);
     else
         QHeaderView::mousePressEvent(event);
 }
@@ -360,7 +360,7 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new
 
     k->header = new KTExposureHeader(this);
 
-    connect(k->header, SIGNAL(visiblityChanged(int, bool)), this, SIGNAL(requestChangeVisiblityLayer(int, bool)));
+    connect(k->header, SIGNAL(visibilityChanged(int, bool)), this, SIGNAL(requestChangeVisibilityLayer(int, bool)));
     connect(k->header, SIGNAL(changedName(int, const QString &)), this, SIGNAL(requestRenameLayer(int, 
                               const QString & )));
     connect(k->header, SIGNAL(sectionMoved (int, int, int)), this, SLOT(emitRequestMoveLayer(int, int, int)));

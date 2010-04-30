@@ -72,7 +72,7 @@ class KTLayerManager : public QTableWidget
          * @param parent 
          * @return 
          */
-        KTLayerManager(QWidget *parent = 0);
+        KTLayerManager(int sceneIndex=0, QWidget *parent = 0);
         ~KTLayerManager();
         
         void insertLayer(int position, const QString &name);
