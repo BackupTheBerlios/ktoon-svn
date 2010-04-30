@@ -194,6 +194,9 @@ void KTLayerManagerItemDelegate::paint(QPainter *painter, const QStyleOptionView
                 }
                 break;
                 case LOCK_COLUMN:
+                {
+                }
+                break;
                 case VIEW_COLUMN:
                 {
                      /*
@@ -201,8 +204,8 @@ void KTLayerManagerItemDelegate::paint(QPainter *painter, const QStyleOptionView
                      checkOption.state = option.state;
 
                      if (item->checkState() == Qt::Checked)
-                         checkOption.state |= QStyle::State_On;
-       
+                         kFatal() << "Item checked!";
+
                      checkOption.rect = option.rect.normalized().adjusted(0,2,-2,-2);
                      checkOption.rect = QRect(0, 0, 4, 4); 
                      table->style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkOption, painter);
@@ -419,6 +422,17 @@ void KTLayerManager::lockLayer(int position, bool locked)
 
 void KTLayerManager::setLocalRequest(int row, int column)
 {
+    if (column == 2) {
+        QTableWidgetItem *item = this->itemAt(row, column);
+
+        if (item->checkState() == Qt::Checked)
+            kFatal() << "KTLayerManager::setLocalRequest -> CHECKED";
+        else
+            kFatal() << "KTLayerManager::setLocalRequest -> UNCHECKED";
+   
+        this->setCurrentCell(row, 0);
+    }
+
     emit localRequest();
 }
 
