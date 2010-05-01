@@ -97,6 +97,8 @@ class KTLayerManager : public QTableWidget
     signals:
         void requestRenameEvent(int layerPosition, const QString &newName);
         void localRequest();
+        void layerVisibility(int sceneIndex, int layerIndex, bool checked);
+
         // void requestTriggered(const KTProjectRequest *event);
         
     private:

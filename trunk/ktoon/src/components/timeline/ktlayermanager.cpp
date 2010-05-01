@@ -422,20 +422,24 @@ void KTLayerManager::lockLayer(int position, bool locked)
     }
 }
 
-void KTLayerManager::setLocalRequest(int row, int column)
+void KTLayerManager::setLocalRequest(int layer, int column)
 {
     if (column == 2) {
-        QTableWidgetItem *item = this->itemAt(row, column);
+        QTableWidgetItem *item = this->itemAt(layer, column);
 
         bool checked = false;
         if (item->checkState() == Qt::Checked)
             checked = true;
 
+        emit layerVisibility(k->sceneIndex, layer, checked);
+        //this->setCurrentCell(layer, 0);
+
+        /*
         KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->sceneIndex, 
                                  row, KTProjectRequest::View, checked);
         emit requestTriggered(&event);
-      
         this->setCurrentCell(row, 0);
+        */
     }
 
     emit localRequest();

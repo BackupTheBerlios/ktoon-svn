@@ -73,7 +73,7 @@ class KTTimeLine : public KTModuleWidgetBase
     public slots:
         void insertScene(int position, const QString &name);
         void removeScene(int position);
-        
+
     private slots:
         void requestCommand(int action);
         bool requestFrameAction(int action, int framePos = -1, int layerPos = -1, int scenePos = -1, const QVariant &arg = QVariant());
@@ -82,6 +82,7 @@ class KTTimeLine : public KTModuleWidgetBase
         
         void emitRequestRenameLayer(int layer, const QString &name);
         void emitSelectionSignal();
+        void emitLayerVisibility(int sceneIndex, int layerIndex, bool checked);
         
     private:
         struct Private;
