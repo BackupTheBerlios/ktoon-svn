@@ -34,6 +34,7 @@
 #ifndef KTLAYERMANAGER_H
 #define KTLAYERMANAGER_H
 
+#include <QScrollArea>
 #include <QPushButton>
 #include <QToolTip>
 #include <QLabel>
@@ -43,16 +44,18 @@
 
 #include <kgui/kimagebutton.h>
 #include "ktprojectrequest.h"
+#include "ktlayerindex.h"
+#include "ktlayercontrols.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 **/
 
-class KTLayerManager : public QTableWidget
+class KTLayerManager : public QWidget
 {
     Q_OBJECT;
     
-    friend class KTLayerManagerItemDelegate;
+    //friend class KTLayerManagerItemDelegate;
     
     public:
         enum Actions
@@ -72,8 +75,10 @@ class KTLayerManager : public QTableWidget
          * @param parent 
          * @return 
          */
-        KTLayerManager(int sceneIndex=0, QWidget *parent = 0);
+        KTLayerManager(int sceneIndex = 0, QWidget *parent = 0);
         ~KTLayerManager();
+        KTLayerIndex* getLayerIndex();
+        KTLayerControls* getLayerControls();
         
         void insertLayer(int position, const QString &name);
         void insertSoundLayer(int position, const QString &name);
@@ -83,10 +88,8 @@ class KTLayerManager : public QTableWidget
         void lockLayer(int position, bool locked);
         void setRowHeight(int rowHeight);
         
-    protected:
-        void resizeEvent(QResizeEvent *e);
-        virtual void fixSize();
-        virtual void keyPressEvent(QKeyEvent *event);
+     protected:
+        void resizeEvent(QResizeEvent *event);
         
     protected slots:
         void commitData(QWidget * editor);

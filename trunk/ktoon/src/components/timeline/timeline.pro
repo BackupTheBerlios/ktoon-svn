@@ -6,11 +6,15 @@
 HEADERS += kttimeline.h \
            ktlayermanager.h \
            kttlruler.h \
-           ktframestable.h 
+           ktframestable.h \ 
+           ktlayerindex.h \
+           ktlayercontrols.h
 SOURCES += kttimeline.cpp \
            ktlayermanager.cpp \
            kttlruler.cpp \
-           ktframestable.cpp 
+           ktframestable.cpp \
+           ktlayerindex.cpp \
+           ktlayercontrols.cpp
 
 CONFIG += static
 

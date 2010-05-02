@@ -95,12 +95,10 @@ void KTFramesTableItemDelegate::paint(QPainter * painter, const QStyleOptionView
         
         if (!sound) {
             int counter = index.column() + 1;
-            if (counter == 1 || counter % 5 == 0) {
+            if (counter == 1 || counter % 5 == 0) 
                 painter->fillRect(option.rect, QColor(230, 230, 230));
-                //painter->fillRect(option.rect, Qt::lightGray);
-            } else {
+            else 
                 painter->fillRect(option.rect, Qt::white);
-            }
         } else {
 
         }
@@ -114,7 +112,6 @@ void KTFramesTableItemDelegate::paint(QPainter * painter, const QStyleOptionView
         QPalette::ColorGroup cg = option.state & QStyle::State_Enabled ? QPalette::Normal : QPalette::Disabled;
         painter->save();
         painter->setPen(QPen(option.palette.brush(cg, QPalette::Highlight), 3));
-        //painter->drawRect(option.rect.adjusted(1,1,-2,-2));
         painter->fillRect(option.rect, QColor(250, 209, 132, 255));
         painter->restore();
 
@@ -122,19 +119,20 @@ void KTFramesTableItemDelegate::paint(QPainter * painter, const QStyleOptionView
     
     // Draw attributes
     
-    int offset = option.rect.width() - 2;
+    int offset = option.rect.width() - 5;
     
     if (item && index.isValid()) {
 
         if (item->isUsed()) {
             painter->save();
             painter->setBrush(Qt::black);
+            painter->setRenderHint(QPainter::Antialiasing, true);
             
             if (!item->isSound()) {
-                painter->drawEllipse(option.rect.left(), option.rect.bottom() - offset, offset, offset);
+                painter->drawEllipse(option.rect.x() + ((option.rect.width() - offset)/2), option.rect.y() + ((option.rect.height() + offset)/2), offset, offset);
             } else {
                 painter->setBrush(Qt::blue);
-                painter->drawRect(option.rect.left(), option.rect.bottom() - offset, offset, offset);
+                painter->drawRect(option.rect.left(), option.rect.bottom() - offset, offset - 2, offset - 2);
             }
             
             painter->restore();

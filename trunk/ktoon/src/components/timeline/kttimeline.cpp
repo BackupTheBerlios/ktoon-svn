@@ -102,6 +102,7 @@ KTTimeLine::~KTTimeLine()
 KTLayerManager *KTTimeLine::layerManager(int sceneIndex)
 {
     QSplitter *splitter = qobject_cast<QSplitter *>(k->container->widget(sceneIndex));
+    splitter->setMinimumHeight(146);
 
     if (splitter)
         return qobject_cast<KTLayerManager *>(splitter->widget(0));
@@ -125,36 +126,41 @@ void KTTimeLine::insertScene(int position, const QString &name)
         return;
     
     QSplitter *splitter = new QSplitter(k->container);
+    splitter->setContentsMargins(1, 1, 1, 1);
     
     KTLayerManager *layerManager = new KTLayerManager(position, splitter);
-    
-    layerManager->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    
+    layerManager->setFixedWidth(244);
+
     splitter->addWidget(layerManager);
 
-    connect(layerManager, SIGNAL(localRequest()), this, SLOT(emitSelectionSignal()));
+    connect(layerManager->getLayerIndex(), SIGNAL(localRequest()), this, SLOT(emitSelectionSignal()));
 
     connect(layerManager, SIGNAL(requestRenameEvent(int, const QString&)), this,
             SLOT(emitRequestRenameLayer(int, const QString &))); // FIXME
 
-    connect(layerManager, SIGNAL(layerVisibility(int, int, bool)), this, 
+    connect(layerManager->getLayerControls(), SIGNAL(layerVisibility(int, int, bool)), this, 
             SLOT(emitLayerVisibility(int, int, bool)));
 
     KTFramesTable *framesTable = new KTFramesTable(splitter);
     splitter->addWidget(framesTable);
     
     framesTable->setItemSize(10, 20);
-    layerManager->setRowHeight(20);
 
-    connect(layerManager->verticalScrollBar(), SIGNAL(valueChanged(int)), framesTable->verticalScrollBar(),
+    connect(layerManager->getLayerIndex()->verticalScrollBar(), SIGNAL(valueChanged(int)), framesTable->verticalScrollBar(),
             SLOT(setValue(int)));
-    
+
+    connect(layerManager->getLayerControls()->verticalScrollBar(), SIGNAL(valueChanged(int)), framesTable->verticalScrollBar(),
+            SLOT(setValue(int)));
+
     connect(framesTable, SIGNAL(frameRequest(int, int, int, int, const QVariant&)), this, 
             SLOT(requestFrameAction(int, int, int, int, const QVariant&)));
 
-    connect(framesTable->verticalScrollBar(), SIGNAL(valueChanged(int)), layerManager->verticalScrollBar(),
+    connect(framesTable->verticalScrollBar(), SIGNAL(valueChanged(int)), layerManager->getLayerIndex()->verticalScrollBar(),
             SLOT(setValue(int)));
-    
+
+    connect(framesTable->verticalScrollBar(), SIGNAL(valueChanged(int)), layerManager->getLayerControls()->verticalScrollBar(),
+            SLOT(setValue(int)));
+
     k->container->insertTab(position, splitter, name);
 }
 
@@ -268,6 +274,12 @@ void KTTimeLine::layerResponse(KTLayerResponse *response)
                      layerManager->renameLayer(response->layerIndex(), response->arg().toString());
             }
             break;
+            case KTProjectRequest::View:
+            {
+                 KTLayerManager *layerManager = this->layerManager(response->sceneIndex());
+                 layerManager->getLayerControls()->setLayerVisibility(response->layerIndex(), response->arg().toString());
+            }
+            break;
     }
 }
 
@@ -314,7 +326,7 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
                  int layerIndex = response->layerIndex();
 
                  if (k->selectedLayer != layerIndex) {
-                     layerManager(response->sceneIndex())->setCurrentCell(layerIndex, 0);
+                     layerManager(response->sceneIndex())->getLayerIndex()->setCurrentCell(layerIndex, 0);
                      k->selectedLayer = layerIndex; 
                  }
 
@@ -360,14 +372,14 @@ void KTTimeLine::requestCommand(int action)
     if (scenePos < 0)
         return;
     
-    int layerPos = layerManager(scenePos)->verticalHeader()->visualIndex(
-                   layerManager(scenePos)->currentRow());
+    int layerPos = layerManager(scenePos)->getLayerIndex()->verticalHeader()->visualIndex(
+                   layerManager(scenePos)->getLayerIndex()->currentRow());
 
     int framePos = framesTable(scenePos)->lastFrameByLayer(layerPos) + 1;
 
     if (!requestFrameAction(action, framePos, layerPos, scenePos)) {
         kFatal() << "NO FRAME ACTION";
-        layerPos = layerManager(scenePos)->rowCount();
+        layerPos = layerManager(scenePos)->getLayerIndex()->rowCount();
         framePos = framesTable(scenePos)->lastFrameByLayer(layerPos);
         if (!requestLayerAction(action, layerPos, scenePos)) {
             kFatal() << "NO LAYER ACTION";
@@ -402,7 +414,7 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
     switch (action) {
             case KTProjectActionBar::InsertFrame:
             {
-                 int layersTotal = layerManager(scenePos)->rowCount();
+                 int layersTotal = layerManager(scenePos)->getLayerIndex()->rowCount();
                  if (layersTotal == 1) {
                      KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos + 1,
                                               KTProjectRequest::Add, arg);
@@ -468,8 +480,8 @@ bool KTTimeLine::requestLayerAction(int action, int layerPos, int scenePos, cons
     
     if (scenePos >= 0) {
         if (layerPos < 0)
-            layerPos = layerManager(scenePos)->verticalHeader()->visualIndex(
-                                    layerManager(scenePos)->currentRow());
+            layerPos = layerManager(scenePos)->getLayerIndex()->verticalHeader()->visualIndex(
+                                    layerManager(scenePos)->getLayerIndex()->currentRow());
     }
 
     switch (action) {
@@ -590,7 +602,7 @@ void KTTimeLine::emitRequestRenameLayer(int layer, const QString &name)
 void KTTimeLine::emitSelectionSignal()
 {
     int scenePos = k->container->currentIndex();
-    int layerPos = layerManager(scenePos)->currentRow();
+    int layerPos = layerManager(scenePos)->getLayerIndex()->currentRow();
     k->selectedLayer = layerPos;
     int frame = framesTable(scenePos)->currentColumn();
 
@@ -599,9 +611,6 @@ void KTTimeLine::emitSelectionSignal()
 
 void KTTimeLine::emitLayerVisibility(int sceneIndex, int layerIndex, bool checked) 
 {
-
-    kFatal() << "KTTimeLine::emitLayerVisibility - VARS - sceneIndex: " << sceneIndex << " - layerIndex: " << layerIndex << " - checked: " << checked;
-
     KTProjectRequest event = KTRequestBuilder::createLayerRequest(sceneIndex,
                              layerIndex, KTProjectRequest::View, checked);
     emit requestTriggered(&event);

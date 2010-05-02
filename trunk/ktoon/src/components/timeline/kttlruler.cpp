@@ -84,11 +84,14 @@ void KTTLRuler::paintSection(QPainter * painter, const QRect & rect, int logical
 	
         painter->setFont(label);	
         painter->drawText((int)(rect.center().x() - (fm.width(number)/2)), 
-                          (int)(rect.center().y() + (fm.height()/2)), number);
+                          (int)(rect.center().y() + (fm.height()/2)) - 2, number);
     }
 
-    painter->drawLine(rect.bottomLeft(), rect.bottomLeft() - QPointF(0, 4));
-    painter->drawLine(rect.topLeft(), rect.topLeft()+ QPointF(0, 4));
+    int x = rect.bottomLeft().x() - 1;
+    int topY = rect.topLeft().y(); 
+    int bottomY = rect.bottomLeft().y();
+    painter->drawLine(x, bottomY, x, bottomY - 6);
+    painter->drawLine(x, topY, x, topY + 4);
 
     QPen pen = painter->pen();
     pen.setWidth(4);

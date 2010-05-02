@@ -31,117 +31,79 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktlayermanager.h"
-#include "ktrequestbuilder.h"
-#include "ktlayercontrols.h"
+#ifndef KTLAYERCONTROLS_H
+#define KTLAYERCONTROLS_H
 
-#include <qlabel.h>
-#include <qlayout.h>
+#include <QPushButton>
+#include <QToolTip>
+#include <QLabel>
+#include <QScrollBar>
+#include <QButtonGroup>
+#include <QTableWidget>
 
-#include <QPixmap>
-#include <QHeaderView>
-#include <QPainter>
-#include <QItemDelegate>
-#include <QRegion>
+#include <kgui/kimagebutton.h>
+#include "ktprojectrequest.h"
 
-#include <kgui/kseparator.h>
-#include <kgui/kapplication.h>
-#include <kcore/kdebug.h>
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+**/
 
-////////////////////////////////
-
-struct KTLayerManager::Private
+class KTLayerControls : public QTableWidget
 {
-    Private() : allSelected(false), allVisible(true), allLock(false), rowHeight(20), sceneIndex(0) {}
+    Q_OBJECT;
     
-    bool allSelected, allVisible, allLock;
-    int rowHeight;
-    int sceneIndex;
-    KTLayerIndex *layerIndex;
-    KTLayerControls *layerControls;
+    friend class KTLayerControlsItemDelegate;
+    
+    public:
+        enum Actions
+        {
+            NoAction = 0,
+            ShowOutlines,
+            LockLayers,
+            ToggleLayerView,
+            InsertLayer,
+            RemoveLayer,
+            MoveLayerUp,
+            MoveLayerDown
+        };
+        
+        /**
+         * Default constructor
+         * @param parent 
+         * @return 
+         */
+        KTLayerControls(int sceneIndex=0, QWidget *parent = 0);
+        ~KTLayerControls();
+        
+        void insertLayer(int position);
+        void insertSoundLayer(int position, const QString &name);
+        void removeLayer(int position);
+        void renameLayer(int position, const QString &name);
+        void moveLayer(int position, int newPosition);
+        void lockLayer(int position, bool locked);
+        void setRowHeight(int rowHeight);
+        void setLayerVisibility(int layerIndex, const QString &isChecked);
+        
+    protected:
+        void resizeEvent(QResizeEvent *e);
+        virtual void fixSize();
+        
+    protected slots:
+        void commitData(QWidget * editor);
+        void setLocalRequest(int row, int column);
+
+        //void emitSelectionSignal();
+        
+    signals:
+        void requestRenameEvent(int layerPosition, const QString &newName);
+        void localRequest();
+        void layerVisibility(int sceneIndex, int layerIndex, bool checked);
+
+        // void requestTriggered(const KTProjectRequest *event);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
-KTLayerManager::KTLayerManager(int sceneIndex, QWidget *parent) : QWidget(parent), k(new Private)
-{
-    #ifdef K_DEBUG
-        KINIT;
-    #endif
-
-    k->layerIndex = new KTLayerIndex(sceneIndex); 
-    k->layerIndex->setFixedWidth(200);
-    k->layerControls = new KTLayerControls(sceneIndex);
-    k->layerControls->setFixedWidth(44);
-
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->setContentsMargins(0, 0, 0, 16);
-    layout->setSpacing(0);
-    layout->addWidget(k->layerIndex);
-    layout->addWidget(k->layerControls);
-
-    setLayout(layout);
-
-
-}
-
-KTLayerManager::~KTLayerManager()
-{
-    #ifdef K_DEBUG
-        KEND;
-    #endif
-
-    delete k;
-}
-
-KTLayerIndex* KTLayerManager::getLayerIndex()
-{
-    return k->layerIndex;
-} 
-
-KTLayerControls* KTLayerManager::getLayerControls()
-{
-    return k->layerControls;
-}
-
-void KTLayerManager::insertLayer(int position, const QString &name)
-{
-    k->layerIndex->insertLayer(position, name);
-    k->layerControls->insertLayer(position);
-}
-
-void KTLayerManager::insertSoundLayer(int position, const QString &name)
-{
-}
-
-void KTLayerManager::removeLayer(int position)
-{
-}
-
-void KTLayerManager::renameLayer(int position, const QString &name)
-{
-}
-
-void KTLayerManager::resizeEvent(QResizeEvent *event)
-{
-    kFatal() << "WOW! EARTHQUAKE!";
-    k->layerIndex->refresh();
-}
-
-void KTLayerManager::setRowHeight(int rowHeight)
-{
-}
-
-void KTLayerManager::commitData(QWidget *editor)
-{
-}
-
-void KTLayerManager::moveLayer(int position, int newPosition)
-{
-}
-
-void KTLayerManager::lockLayer(int position, bool locked)
-{
-}
-
-void KTLayerManager::setLocalRequest(int layer, int column)
-{
-}
+#endif
