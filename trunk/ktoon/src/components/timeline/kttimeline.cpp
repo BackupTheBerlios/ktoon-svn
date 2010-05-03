@@ -135,13 +135,13 @@ void KTTimeLine::insertScene(int position, const QString &name)
 
     connect(layerManager->getLayerIndex(), SIGNAL(localRequest()), this, SLOT(emitSelectionSignal()));
 
-    connect(layerManager, SIGNAL(requestRenameEvent(int, const QString&)), this,
-            SLOT(emitRequestRenameLayer(int, const QString &))); // FIXME
+    // connect(layerManager, SIGNAL(requestRenameEvent(int, const QString&)), this,
+    //        SLOT(emitRequestRenameLayer(int, const QString &))); // FIXME
 
     connect(layerManager->getLayerControls(), SIGNAL(layerVisibility(int, int, bool)), this, 
             SLOT(emitLayerVisibility(int, int, bool)));
 
-    KTFramesTable *framesTable = new KTFramesTable(splitter);
+    KTFramesTable *framesTable = new KTFramesTable(position, splitter);
     splitter->addWidget(framesTable);
     
     framesTable->setItemSize(10, 20);
@@ -285,6 +285,10 @@ void KTTimeLine::layerResponse(KTLayerResponse *response)
 
 void KTTimeLine::frameResponse(KTFrameResponse *response)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     switch (response->action()) {
             case KTProjectRequest::Add:
             {
@@ -323,6 +327,7 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
             break;
             case KTProjectRequest::Select:
             {
+                 kFatal() << "KTTimeLine::frameResponse -> Selecting frame #" << response->frameIndex(); 
                  int layerIndex = response->layerIndex();
 
                  if (k->selectedLayer != layerIndex) {
@@ -395,30 +400,35 @@ void KTTimeLine::requestCommand(int action)
 
 bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int scenePos, const QVariant &arg)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     if (scenePos < 0)
         scenePos = k->container->currentIndex();
 
-    kFatal() << "KTTimeLine::requestFrameAction - layerPos: " << layerPos;
-
-    /*
-    if (scenePos >= 0) {
-        if (layerPos < 0)
-            layerPos = layerManager(scenePos)->verticalHeader()->visualIndex(
-                                    layerManager(scenePos)->currentRow());
-        
-        if (framePos < 0)
-            framePos = framesTable(scenePos)->lastFrameByLayer(layerPos);
-    }
-    */
-    
     switch (action) {
             case KTProjectActionBar::InsertFrame:
             {
                  int layersTotal = layerManager(scenePos)->getLayerIndex()->rowCount();
+                 int usedFrames = framesTable(scenePos)->lastFrameByLayer(layerPos);
+
+                 if (usedFrames < 0) {
+                     usedFrames = 0;
+                     framePos = 1;
+                 }
+
+                 kFatal() << "KTTimeLine::requestFrameAction <- Processing local request!";
+                 kFatal() << "KTTimeLine::requestFrameAction <- Adding Frame at position: " << framePos;
+                 kFatal() << "* START: " << usedFrames;
+                 kFatal() << "* STOP: " << framePos;
+                    
                  if (layersTotal == 1) {
-                     KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos + 1,
-                                              KTProjectRequest::Add, arg);
-                     emit requestTriggered(&event);
+                     for (int frame = usedFrames; frame < framePos; frame++) {
+                          KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, frame + 1,
+                                                   KTProjectRequest::Add, arg);
+                          emit requestTriggered(&event);
+                     }
 
                  } else {
                      for (int layer=0; layer < layersTotal; layer++) {
@@ -458,8 +468,7 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
                  return true;
             }
             break;
-        
-            case KTProjectRequest::Select:
+            case KTProjectActionBar::SelectFrame:
             {
                  KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos,
                                           KTProjectRequest::Select, arg);

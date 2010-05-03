@@ -44,8 +44,6 @@ KTTLRuler::KTTLRuler(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
     #endif
 
     setHighlightSections(true);
-    // setSelectionMode(QAbstractItemView::SingleSelection);
-    // setSelectionBehavior(QAbstractItemView::SelectColumns);
 
     setClickable(true);	
     connect(this, SIGNAL(sectionClicked(int)), this, SLOT(updateSelected(int)));
@@ -111,7 +109,6 @@ void KTTLRuler::updateSelected(int logical)
 void KTTLRuler::select(int logical)
 {
     selectionModel()->select(model()->index(0, logical), QItemSelectionModel::ClearAndSelect);
-
     viewport()->update(QRect(sectionViewportPosition(logical), 0, sectionSize(logical),viewport()->height()));
 }
 

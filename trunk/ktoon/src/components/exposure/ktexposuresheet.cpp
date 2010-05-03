@@ -118,12 +118,17 @@ void KTExposureSheet::addScene(int index, const QString &name)
 
     connect(newScene, SIGNAL(requestSetUsedFrame(int, int)), 
                              this, SLOT(insertItem(int, int)));
+
     connect(newScene, SIGNAL(requestRenameFrame(int, int,const QString &)), 
                              this, SLOT(renameFrame(int, int, const QString &)));
+
     connect(newScene, SIGNAL(requestSelectFrame(int, int)), SLOT(selectFrame(int, int)));
+
     connect(newScene, SIGNAL(requestRenameLayer(int, const QString &)), 
                              this, SLOT(renameLayer(int, const QString &)));
+
     connect(newScene, SIGNAL(requestMoveLayer(int,int)), this, SLOT(moveLayer(int, int)));
+
     connect(newScene, SIGNAL(requestChangeVisibilityLayer(int , bool)),
                              this, SLOT(changeVisibilityLayer(int, bool)));
 

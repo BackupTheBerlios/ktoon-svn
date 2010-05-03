@@ -71,7 +71,7 @@ class KTFramesTable : public QTableWidget
     friend class KTFramesTableItemDelegate;
     
     public:
-        KTFramesTable(QWidget *parent = 0);
+        KTFramesTable(int sceneIndex = 0, QWidget *parent = 0);
         ~KTFramesTable();
         
         bool isSoundLayer(int row);
@@ -110,6 +110,7 @@ class KTFramesTable : public QTableWidget
         
     private slots:
         void emitFrameSelected(int col);
+        // void emitFrameSelectionChanged();
         void emitFrameSelected(QTableWidgetItem *curr, QTableWidgetItem *prev);
         
     signals:

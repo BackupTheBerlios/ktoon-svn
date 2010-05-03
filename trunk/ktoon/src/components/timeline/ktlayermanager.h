@@ -34,16 +34,6 @@
 #ifndef KTLAYERMANAGER_H
 #define KTLAYERMANAGER_H
 
-#include <QScrollArea>
-#include <QPushButton>
-#include <QToolTip>
-#include <QLabel>
-#include <QScrollBar>
-#include <QButtonGroup>
-#include <QTableWidget>
-
-#include <kgui/kimagebutton.h>
-#include "ktprojectrequest.h"
 #include "ktlayerindex.h"
 #include "ktlayercontrols.h"
 
@@ -55,20 +45,7 @@ class KTLayerManager : public QWidget
 {
     Q_OBJECT;
     
-    //friend class KTLayerManagerItemDelegate;
-    
     public:
-        enum Actions
-        {
-            NoAction = 0,
-            ShowOutlines,
-            LockLayers,
-            ToggleLayerView,
-            InsertLayer,
-            RemoveLayer,
-            MoveLayerUp,
-            MoveLayerDown
-        };
         
         /**
          * Default constructor
@@ -86,23 +63,9 @@ class KTLayerManager : public QWidget
         void renameLayer(int position, const QString &name);
         void moveLayer(int position, int newPosition);
         void lockLayer(int position, bool locked);
-        void setRowHeight(int rowHeight);
         
      protected:
         void resizeEvent(QResizeEvent *event);
-        
-    protected slots:
-        void commitData(QWidget * editor);
-        void setLocalRequest(int row, int column);
-
-        //void emitSelectionSignal();
-        
-    signals:
-        void requestRenameEvent(int layerPosition, const QString &newName);
-        void localRequest();
-        void layerVisibility(int sceneIndex, int layerIndex, bool checked);
-
-        // void requestTriggered(const KTProjectRequest *event);
         
     private:
         struct Private;

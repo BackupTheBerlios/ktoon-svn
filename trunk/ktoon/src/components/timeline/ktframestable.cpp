@@ -42,7 +42,8 @@
 
 #include <kcore/kdebug.h>
 #include "kttlruler.h"
-#include "ktprojectrequest.h"
+//#include "ktprojectrequest.h"
+#include "ktprojectactionbar.h"
 
 ////////// KTFramesTableItemDelegate ///////////
 
@@ -207,12 +208,14 @@ struct KTFramesTable::Private
     };
     
     int rectWidth, rectHeight;
+    int sceneIndex;
     QList<LayerItem> layers;
     KTTLRuler *ruler;
 };
 
-KTFramesTable::KTFramesTable(QWidget *parent) : QTableWidget(0, 100, parent), k(new Private)
+KTFramesTable::KTFramesTable(int sceneIndex, QWidget *parent) : QTableWidget(0, 100, parent), k(new Private)
 {
+    k->sceneIndex = sceneIndex;
     k->ruler = new KTTLRuler;
     setup();
 }
@@ -229,7 +232,10 @@ void KTFramesTable::setup()
     setSelectionMode(QAbstractItemView::SingleSelection);
     
     setHorizontalHeader(k->ruler);
-    connect(k->ruler, SIGNAL(logicalSectionSelected( int )), this, SLOT(emitFrameSelected( int )));
+    connect(k->ruler, SIGNAL(logicalSectionSelected(int)), this, SLOT(emitFrameSelected(int)));
+
+    // connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(emitFrameSelectionChanged()));
+
     connect(this, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, 
             SLOT(emitFrameSelected(QTableWidgetItem *, QTableWidgetItem *)));
     verticalHeader()->hide();
@@ -248,18 +254,34 @@ void KTFramesTable::emitFrameSelected(int col)
     
     if (item) {
         if (item->isUsed())
-            emit frameRequest(KTProjectRequest::Select, this->column(item), verticalHeader()->visualIndex(this->row(item)), -1);
-    }
+            emit frameRequest(KTProjectActionBar::SelectFrame, this->column(item), verticalHeader()->visualIndex(this->row(item)), -1);
+    } 
 }
 
-void KTFramesTable::emitFrameSelected(QTableWidgetItem *curr, QTableWidgetItem *prev)
+/*
+void KTFramesTable::emitFrameSelectionChanged()
 {
-    KTFramesTableItem *item = dynamic_cast<KTFramesTableItem *>(curr);
+    KTFramesTableItem *item = dynamic_cast<KTFramesTableItem *>(this->item(currentRow(), currentColumn()));
+
+    if (!item)
+        emit frameRequest(KTProjectActionBar::InsertFrame, currentColumn(), currentRow(), k->sceneIndex);
+}
+*/
+
+void KTFramesTable::emitFrameSelected(QTableWidgetItem *current, QTableWidgetItem *prev)
+{
+    kFatal() << "KTFramesTable::emitFrameSelected -> Tracing...";
+
+    KTFramesTableItem *item = dynamic_cast<KTFramesTableItem *>(current);
     
     if (item) {
-        if (item->isUsed()) {
-            emit frameRequest(KTProjectRequest::Select, this->column(item), verticalHeader()->visualIndex(this->row(item)), -1);
-        }
+        if (item->isUsed())
+            emit frameRequest(KTProjectActionBar::SelectFrame, this->column(item), verticalHeader()->visualIndex(this->row(item)), -1);
+        else
+            kFatal() << "KTFramesTable::emitFrameSelected <- item virgin! I";
+    } else { 
+        kFatal() << "KTFramesTable::emitFrameSelected <- item virgin! II";
+        emit frameRequest(KTProjectActionBar::InsertFrame, currentColumn(), currentRow(), k->sceneIndex);
     }
 }
 
@@ -394,7 +416,7 @@ void KTFramesTable::setCurrentLayer(int layerPos)
 
 void KTFramesTable::selectFrame(int index)
 {
-    setCurrentItem(item( currentRow(), index));
+    setCurrentItem(item(currentRow(), index));
 }
 
 void KTFramesTable::removeFrame(int layerPos, int position)

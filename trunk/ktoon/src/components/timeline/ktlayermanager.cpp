@@ -32,19 +32,6 @@
  ***************************************************************************/
 
 #include "ktlayermanager.h"
-#include "ktrequestbuilder.h"
-#include "ktlayercontrols.h"
-
-#include <qlabel.h>
-#include <qlayout.h>
-
-#include <QPixmap>
-#include <QHeaderView>
-#include <QPainter>
-#include <QItemDelegate>
-#include <QRegion>
-
-#include <kgui/kseparator.h>
 #include <kgui/kapplication.h>
 #include <kcore/kdebug.h>
 
@@ -126,22 +113,10 @@ void KTLayerManager::resizeEvent(QResizeEvent *event)
     k->layerIndex->refresh();
 }
 
-void KTLayerManager::setRowHeight(int rowHeight)
-{
-}
-
-void KTLayerManager::commitData(QWidget *editor)
-{
-}
-
 void KTLayerManager::moveLayer(int position, int newPosition)
 {
 }
 
 void KTLayerManager::lockLayer(int position, bool locked)
-{
-}
-
-void KTLayerManager::setLocalRequest(int layer, int column)
 {
 }
