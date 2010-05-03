@@ -432,9 +432,11 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
 
                  } else {
                      for (int layer=0; layer < layersTotal; layer++) {
-                          KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layer, framePos + 1,
-                                                   KTProjectRequest::Add, arg);
-                          emit requestTriggered(&event);
+                          for (int frame = usedFrames; frame < framePos; frame++) {
+                               KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layer, framePos + 1,
+                                                        KTProjectRequest::Add, arg);
+                               emit requestTriggered(&event);
+                          }
                      }
                  }
             
