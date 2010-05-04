@@ -112,9 +112,11 @@ class KTFramesTable : public QTableWidget
         void emitFrameSelected(int col);
         // void emitFrameSelectionChanged();
         void emitFrameSelected(QTableWidgetItem *curr, QTableWidgetItem *prev);
+        void emitRequestSelectFrame(int currentRow, int currentColumn, int previousRow, int previousColumn);
         
     signals:
         void frameRequest(int action, int frame, int layer, int scene, const QVariant &argument = QVariant());
+        void emitSelection(int currentRow, int currentColumn);
         
     private:
         struct Private;

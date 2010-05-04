@@ -44,6 +44,10 @@
 
 bool KTCommandExecutor::createLayer(KTLayerResponse *response)
 {
+    #ifdef K_DEBUG
+        K_FUNCINFO;
+    #endif
+
     int scenePosition = response->sceneIndex();
     int position = response->layerIndex();
 

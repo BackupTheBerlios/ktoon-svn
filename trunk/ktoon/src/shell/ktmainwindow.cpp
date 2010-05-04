@@ -164,7 +164,8 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
     setCurrentPerspective(Drawing);
 
     KCONFIG->beginGroup("General");
-    // check if into the config file, user always wants to start opening his last project created
+    // check if into the config file, user always wants to start opening his last project 
+    // created
     bool openLast = KCONFIG->value("OpenLastProject").toBool();
 
     if (openLast && parameters == 1)
@@ -597,15 +598,16 @@ void KTMainWindow::openProject(const QString &path)
             //viewNewDocument(m_projectManager->project()->projectName());
             viewNewDocument();
 			
-            // TODO: move this code to the project manager class
+            // SQA: Apparently this code is not required
+            /*
             KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Select);
             response.setSceneIndex(0);
             response.setLayerIndex(0);
             response.setFrameIndex(0);
-
             m_viewDoc->handleProjectResponse(&response);
             m_exposureSheet->handleProjectResponse(&response);
             m_timeLine->handleProjectResponse(&response);
+            */
 
             int pos = m_recentProjects.indexOf(m_fileName);
 

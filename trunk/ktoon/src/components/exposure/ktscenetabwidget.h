@@ -56,6 +56,7 @@ class K_GUI_EXPORT KTSceneTabWidget : public QFrame
         KTExposureTable* getCurrentTable();
         KTExposureTable* getTable(int index);
         int currentIndex();
+        int count();
 
     private:
         QHash<int, KTExposureTable *> tables;

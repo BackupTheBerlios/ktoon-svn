@@ -109,7 +109,6 @@ void KTLayerManager::renameLayer(int position, const QString &name)
 
 void KTLayerManager::resizeEvent(QResizeEvent *event)
 {
-    kFatal() << "WOW! EARTHQUAKE!";
     k->layerIndex->refresh();
 }
 

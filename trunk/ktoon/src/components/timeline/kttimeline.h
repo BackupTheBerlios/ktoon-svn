@@ -79,6 +79,7 @@ class KTTimeLine : public KTModuleWidgetBase
         bool requestFrameAction(int action, int framePos = -1, int layerPos = -1, int scenePos = -1, const QVariant &arg = QVariant());
         bool requestLayerAction(int action, int layerPos = -1, int scenePos = -1, const QVariant &arg = QVariant());
         bool requestSceneAction(int action, int scenePos = -1, const QVariant &arg = QVariant());
+        void selectFrame(int indexLayer, int indexFrame);
         
         void emitRequestRenameLayer(int layer, const QString &name);
         void emitSelectionSignal();

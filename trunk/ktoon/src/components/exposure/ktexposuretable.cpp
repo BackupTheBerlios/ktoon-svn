@@ -385,6 +385,10 @@ void KTExposureTable::emitRequestRenameFrame(QTableWidgetItem * item)
 
 void KTExposureTable::emitRequestSelectFrame(int currentRow_, int currentColumn_, int previousRow, int previousColumn)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     if (currentRow_ >= framesTotal())
         return;
 
@@ -470,16 +474,12 @@ void KTExposureTable::setMenu(QMenu *menu)
 
 int KTExposureTable::currentLayer() const
 {
-    #ifdef K_DEBUG
-           K_FUNCINFO;
-    #endif
-
     return k->header->visualIndex(currentColumn());
 }
 
 int KTExposureTable::currentFrame() const
 {
-    QTableWidgetItem *frame = currentItem ();
+    QTableWidgetItem *frame = currentItem();
 
     if (frame) {
         if (frame->data(IsUsed).toBool())

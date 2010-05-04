@@ -56,7 +56,7 @@ class KTFramesTableItemDelegate : public QAbstractItemDelegate
         virtual QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const;
 };
 
-KTFramesTableItemDelegate::KTFramesTableItemDelegate(QObject * parent) :  QAbstractItemDelegate(parent)
+KTFramesTableItemDelegate::KTFramesTableItemDelegate(QObject * parent) : QAbstractItemDelegate(parent)
 {
 }
 
@@ -130,7 +130,9 @@ void KTFramesTableItemDelegate::paint(QPainter * painter, const QStyleOptionView
             painter->setRenderHint(QPainter::Antialiasing, true);
             
             if (!item->isSound()) {
-                painter->drawEllipse(option.rect.x() + ((option.rect.width() - offset)/2), option.rect.y() + ((option.rect.height() + offset)/2), offset, offset);
+                painter->drawEllipse(option.rect.x() + ((option.rect.width() - offset)/2), 
+                                     option.rect.y() + ((option.rect.height() + offset)/2), 
+                                     offset, offset);
             } else {
                 painter->setBrush(Qt::blue);
                 painter->drawRect(option.rect.left(), option.rect.bottom() - offset, offset - 2, offset - 2);
@@ -232,12 +234,16 @@ void KTFramesTable::setup()
     setSelectionMode(QAbstractItemView::SingleSelection);
     
     setHorizontalHeader(k->ruler);
+
+    connect(this, SIGNAL(currentCellChanged(int, int, int, int)), this, SLOT(emitRequestSelectFrame(int, int, int, int)));
+
     connect(k->ruler, SIGNAL(logicalSectionSelected(int)), this, SLOT(emitFrameSelected(int)));
 
     // connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(emitFrameSelectionChanged()));
 
     connect(this, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, 
             SLOT(emitFrameSelected(QTableWidgetItem *, QTableWidgetItem *)));
+
     verticalHeader()->hide();
     
     setItemSize(10, 25);
@@ -278,9 +284,9 @@ void KTFramesTable::emitFrameSelected(QTableWidgetItem *current, QTableWidgetIte
         if (item->isUsed())
             emit frameRequest(KTProjectActionBar::SelectFrame, this->column(item), verticalHeader()->visualIndex(this->row(item)), -1);
         else
-            kFatal() << "KTFramesTable::emitFrameSelected <- item virgin! I";
+            kFatal() << "KTFramesTable::emitFrameSelected <- item exists but isn't used right now";
     } else { 
-        kFatal() << "KTFramesTable::emitFrameSelected <- item virgin! II";
+        kFatal() << "KTFramesTable::emitFrameSelected <- new item... creating frames required";
         emit frameRequest(KTProjectActionBar::InsertFrame, currentColumn(), currentRow(), k->sceneIndex);
     }
 }
@@ -474,3 +480,11 @@ void KTFramesTable::fixSectionMoved(int logical, int visual, int newVisual)
      verticalHeader()->moveSection(newVisual, visual);
 }
 */
+
+void KTFramesTable::emitRequestSelectFrame(int currentRow, int currentColumn, int previousRow, int previousColumn)
+{
+     kFatal() << "KTFramesTable::emitRequestSelectFrame - Doing selection!";
+
+     emit emitSelection(currentRow, currentColumn);
+}
+

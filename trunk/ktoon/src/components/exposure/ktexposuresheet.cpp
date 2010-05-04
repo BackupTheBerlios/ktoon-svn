@@ -253,7 +253,9 @@ void KTExposureSheet::setScene(int index)
            K_FUNCINFO;
     #endif
 
-    if (k->scenes->TabWidget()->count() >= index) {
+    //if (k->scenes->TabWidget()->count() >= index) {
+
+    if (k->scenes->count() >= index) {
         k->scenes->blockSignals(true);
         k->scenes->TabWidget()->setCurrentIndex(index);		
         k->currentTable = k->scenes->getCurrentTable();
@@ -263,8 +265,10 @@ void KTExposureSheet::setScene(int index)
 
 void KTExposureSheet::emitRequestChangeScene(int index)
 {
-    KTProjectRequest request = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
-    emit localRequestTriggered(&request);
+    if (k->scenes->count() > 1) {
+        KTProjectRequest request = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
+        emit localRequestTriggered(&request);
+    }
 }
 
 void KTExposureSheet::emitRequestCopyCurrentFrame()
@@ -331,8 +335,9 @@ void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 {
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex() , indexLayer, 
                                                  indexFrame, KTProjectRequest::Select, "1");
-    //emit localRequestTriggered(&request);
     emit requestTriggered(&request);
+
+    //emit localRequestTriggered(&request);
 }
 
 void KTExposureSheet::changeVisibilityLayer(int visualIndexLayer, bool visibility)

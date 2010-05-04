@@ -161,6 +161,8 @@ void KTTimeLine::insertScene(int position, const QString &name)
     connect(framesTable->verticalScrollBar(), SIGNAL(valueChanged(int)), layerManager->getLayerControls()->verticalScrollBar(),
             SLOT(setValue(int)));
 
+    connect(framesTable, SIGNAL(emitSelection(int, int)), this, SLOT(selectFrame(int, int)));
+
     k->container->insertTab(position, splitter, name);
 }
 
@@ -293,12 +295,13 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
             case KTProjectRequest::Add:
             {
                  kFatal() << "KTTimeLine::frameResponse -> Processing Add Frame #" << response->frameIndex() << " at index: " << response->layerIndex();
+
                  KTFramesTable *framesTable = this->framesTable(response->sceneIndex());
 
                  if (framesTable)
                      framesTable->insertFrame(response->layerIndex(), response->arg().toString());
                  else
-                     kFatal() << "KTTimeLine::frameResponse -> NO TABLE AVAILABLE!";
+                     kFatal() << "KTTimeLine::frameResponse -> NO FRAME TABLE AVAILABLE!";
             }
             break;
             case KTProjectRequest::Remove:
@@ -327,7 +330,8 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
             break;
             case KTProjectRequest::Select:
             {
-                 kFatal() << "KTTimeLine::frameResponse -> Selecting frame #" << response->frameIndex(); 
+                 kFatal() << "KTTimeLine::frameResponse -> Selecting frame #" << response->frameIndex() << " at index: " << response->layerIndex();
+
                  int layerIndex = response->layerIndex();
 
                  if (k->selectedLayer != layerIndex) {
@@ -472,6 +476,7 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
             break;
             case KTProjectActionBar::SelectFrame:
             {
+                 kFatal() << "KTTimeLine::requestFrameAction -> Requesting for rame selection - Index: " << framePos;
                  KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos,
                                           KTProjectRequest::Select, arg);
                  emit localRequestTriggered(&event);
@@ -626,3 +631,14 @@ void KTTimeLine::emitLayerVisibility(int sceneIndex, int layerIndex, bool checke
                              layerIndex, KTProjectRequest::View, checked);
     emit requestTriggered(&event);
 }
+
+void KTTimeLine::selectFrame(int indexLayer, int indexFrame)
+{
+    int scenePos = k->container->currentIndex();
+
+    KTProjectRequest request = KTRequestBuilder::createFrameRequest(scenePos, indexLayer,
+                                                 indexFrame, KTProjectRequest::Select, "1");
+    emit requestTriggered(&request);
+
+}
+

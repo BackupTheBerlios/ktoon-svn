@@ -108,3 +108,8 @@ int KTSceneTabWidget::currentIndex()
     int index = tabber->currentIndex();
     return index;
 }
+
+int KTSceneTabWidget::count()
+{
+    return tabber->count();
+}
