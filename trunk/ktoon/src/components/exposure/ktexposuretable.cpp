@@ -383,28 +383,28 @@ void KTExposureTable::emitRequestRenameFrame(QTableWidgetItem * item)
     emit requestRenameFrame(index.column(), index.row(), item->text());
 }
 
-void KTExposureTable::emitRequestSelectFrame(int currentRow_, int currentColumn_, int previousRow, int previousColumn)
+void KTExposureTable::emitRequestSelectFrame(int currentSelectedRow, int currentColumn, int previousRow, int previousColumn)
 {
     #ifdef K_DEBUG
            K_FUNCINFO;
     #endif
 
-    if (currentRow_ >= framesTotal())
+    if (currentSelectedRow >= framesTotal())
         return;
 
     if (!k->removingLayer) {
-        if (previousRow != currentRow_ || previousColumn != currentColumn_)
+        if (previousRow != currentSelectedRow || previousColumn != currentColumn)
             emit requestSelectFrame(currentLayer(), currentRow());
 
-        if ((previousColumn != currentColumn_) || (columnCount() == 1)) 
-             k->header->updateSelection(currentColumn_);
+        if ((previousColumn != currentColumn) || (columnCount() == 1)) 
+             k->header->updateSelection(currentColumn);
     } else {
         k->removingLayer = false;
         if (previousColumn == 0) {
             selectFrame(1, previousRow);
         } else {
-            selectFrame(currentColumn_, currentRow_);
-            k->header->updateSelection(currentColumn_);
+            selectFrame(currentColumn, currentSelectedRow);
+            k->header->updateSelection(currentColumn);
         }
     }
 }

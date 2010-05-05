@@ -339,7 +339,9 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
                      k->selectedLayer = layerIndex; 
                  }
 
+                 framesTable(response->sceneIndex())->blockSignals(true);
                  framesTable(response->sceneIndex())->setCurrentCell(layerIndex, response->frameIndex());
+                 framesTable(response->sceneIndex())->blockSignals(false);
             }
             break;
 
@@ -387,11 +389,11 @@ void KTTimeLine::requestCommand(int action)
     int framePos = framesTable(scenePos)->lastFrameByLayer(layerPos) + 1;
 
     if (!requestFrameAction(action, framePos, layerPos, scenePos)) {
-        kFatal() << "NO FRAME ACTION";
+        kFatal() << "KTTimeLine::requestCommand -> It isn't frame action";
         layerPos = layerManager(scenePos)->getLayerIndex()->rowCount();
         framePos = framesTable(scenePos)->lastFrameByLayer(layerPos);
         if (!requestLayerAction(action, layerPos, scenePos)) {
-            kFatal() << "NO LAYER ACTION";
+            kFatal() << "KTTimeLine::requestCommand -> It isn't layer action";
             if (!requestSceneAction(action, scenePos)) {
                 #ifdef K_DEBUG
                     kFatal("timeline") << "Can't handle action";
@@ -422,11 +424,6 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
                      framePos = 1;
                  }
 
-                 kFatal() << "KTTimeLine::requestFrameAction <- Processing local request!";
-                 kFatal() << "KTTimeLine::requestFrameAction <- Adding Frame at position: " << framePos;
-                 kFatal() << "* START: " << usedFrames;
-                 kFatal() << "* STOP: " << framePos;
-                    
                  if (layersTotal == 1) {
                      for (int frame = usedFrames; frame < framePos; frame++) {
                           KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, frame + 1,
@@ -435,6 +432,12 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
                      }
 
                  } else {
+
+                     kFatal() << "KTTimeLine::requestFrameAction <- Requesting new frames! STAGE 2";
+                     kFatal() << "KTTimeLine::requestFrameAction <- Starting at position: " << usedFrames;
+                     int value = framePos - 1;
+                     kFatal() << "KTTimeLine::requestFrameAction <- Ending at position: " << value;
+
                      for (int layer=0; layer < layersTotal; layer++) {
                           for (int frame = usedFrames; frame < framePos; frame++) {
                                KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layer, framePos + 1,

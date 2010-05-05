@@ -209,8 +209,11 @@ struct KTFramesTable::Private
         bool sound;
     };
     
-    int rectWidth, rectHeight;
+    int rectWidth;
+    int rectHeight;
     int sceneIndex;
+    int layerIndex;
+    int frameIndex;
     QList<LayerItem> layers;
     KTTLRuler *ruler;
 };
@@ -218,6 +221,8 @@ struct KTFramesTable::Private
 KTFramesTable::KTFramesTable(int sceneIndex, QWidget *parent) : QTableWidget(0, 100, parent), k(new Private)
 {
     k->sceneIndex = sceneIndex;
+    k->frameIndex = 0;
+    k->layerIndex = 0;
     k->ruler = new KTTLRuler;
     setup();
 }
@@ -276,8 +281,6 @@ void KTFramesTable::emitFrameSelectionChanged()
 
 void KTFramesTable::emitFrameSelected(QTableWidgetItem *current, QTableWidgetItem *prev)
 {
-    kFatal() << "KTFramesTable::emitFrameSelected -> Tracing...";
-
     KTFramesTableItem *item = dynamic_cast<KTFramesTableItem *>(current);
     
     if (item) {
@@ -286,7 +289,6 @@ void KTFramesTable::emitFrameSelected(QTableWidgetItem *current, QTableWidgetIte
         else
             kFatal() << "KTFramesTable::emitFrameSelected <- item exists but isn't used right now";
     } else { 
-        kFatal() << "KTFramesTable::emitFrameSelected <- new item... creating frames required";
         emit frameRequest(KTProjectActionBar::InsertFrame, currentColumn(), currentRow(), k->sceneIndex);
     }
 }
@@ -483,8 +485,10 @@ void KTFramesTable::fixSectionMoved(int logical, int visual, int newVisual)
 
 void KTFramesTable::emitRequestSelectFrame(int currentRow, int currentColumn, int previousRow, int previousColumn)
 {
-     kFatal() << "KTFramesTable::emitRequestSelectFrame - Doing selection!";
-
-     emit emitSelection(currentRow, currentColumn);
+     if (k->frameIndex != currentColumn || k->layerIndex != currentRow) {
+         k->frameIndex = currentColumn;
+         k->layerIndex = currentRow;
+         emit emitSelection(currentRow, currentColumn);
+     }
 }
 

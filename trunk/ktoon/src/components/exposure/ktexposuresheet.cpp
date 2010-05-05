@@ -319,6 +319,10 @@ void KTExposureSheet::emitRequestExpandCurrentFrame()
 
 void KTExposureSheet::insertItem(int indexLayer, int indexFrame)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
                                                  indexLayer, indexFrame, KTProjectRequest::Add);
     emit requestTriggered(&request);
@@ -522,7 +526,9 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 case KTProjectRequest::Select:
                  {
                      setScene(e->sceneIndex());
+                     scene->blockSignals(true);
                      scene->selectFrame(e->layerIndex(), e->frameIndex());
+                     scene->blockSignals(false);
                  }
                 break;
                 case KTProjectRequest::Expand:
