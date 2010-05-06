@@ -42,7 +42,8 @@ KTScenesList::KTScenesList(QWidget *parent) : KTreeListWidget(parent)
 {
     setHeaderLabels(QStringList() << "name");
     connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(changeCurrentScene()));
-    connect(this, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(changeCurrentScene(QTreeWidgetItem *, int)));
+    connect(this, SIGNAL(itemClicked(QTreeWidgetItem *, int)), 
+            this, SLOT(changeCurrentScene(QTreeWidgetItem *, int)));
 }
 
 KTScenesList::~KTScenesList()

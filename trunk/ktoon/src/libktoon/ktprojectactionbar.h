@@ -72,8 +72,9 @@ class KTOON_EXPORT KTProjectActionBar : public QWidget
             RemoveScene = 1 << 13,
             MoveSceneUp = 1 << 14,
             MoveSceneDown = 1 << 15,
-            LockScene = 1 << 16,
-            Separator = 1 << 17,
+            SelectScene = 1 << 16,
+            LockScene = 1 << 17,
+            Separator = 1 << 18,
 
             AllActions = InsertFrame | RemoveFrame | MoveFrameUp | MoveFrameDown | LockFrame | InsertLayer | RemoveLayer 
                                      | MoveLayerUp | MoveLayerDown | InsertScene | RemoveScene | MoveSceneUp | MoveSceneDown,

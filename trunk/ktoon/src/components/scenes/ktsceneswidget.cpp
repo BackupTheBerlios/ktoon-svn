@@ -77,7 +77,8 @@ KTScenesWidget::~KTScenesWidget()
 
 void KTScenesWidget::setupButtons()
 {
-    KTProjectActionBar *bar = new KTProjectActionBar(QString("TimeLine"), KTProjectActionBar::InsertScene | KTProjectActionBar::RemoveScene);
+    KTProjectActionBar *bar = new KTProjectActionBar(QString("TimeLine"), 
+                              KTProjectActionBar::InsertScene | KTProjectActionBar::RemoveScene);
     bar->button(KTProjectActionBar::InsertScene)->setIcon(QIcon(THEME_DIR + "icons/plus_sign.png"));
     bar->button(KTProjectActionBar::RemoveScene)->setIcon(QIcon(THEME_DIR + "icons/minus_sign.png"));
     bar->insertBlankSpace(1);
@@ -97,9 +98,12 @@ void KTScenesWidget::setupTableScenes()
     addChild(searcher);
     addChild(k->tableScenes);
 
-    connect(k->tableScenes, SIGNAL(changeCurrent(QString , int)), this, SLOT(selectScene(QString, int)));
-    connect(k->tableScenes, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), this, SLOT(sceneDobleClick(QTreeWidgetItem *, int)));
-    connect(k->tableScenes, SIGNAL(itemRenamed(QTreeWidgetItem *)), this, SLOT(emitRequestRenameScene(QTreeWidgetItem *)));
+    connect(k->tableScenes, SIGNAL(changeCurrent(QString , int)), 
+            this, SLOT(selectScene(QString, int)));
+    connect(k->tableScenes, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int)), 
+            this, SLOT(sceneDobleClick(QTreeWidgetItem *, int)));
+    connect(k->tableScenes, SIGNAL(itemRenamed(QTreeWidgetItem *)), 
+            this, SLOT(emitRequestRenameScene(QTreeWidgetItem *)));
 }
 
 void KTScenesWidget::sendEvent(int action)
@@ -120,7 +124,7 @@ void KTScenesWidget::sendEvent(int action)
     }
 }
 
-void KTScenesWidget::selectScene(const QString & name, int index)
+void KTScenesWidget::selectScene(const QString &name, int index)
 {
     KTProjectRequest event = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
     emit localRequestTriggered(&event);

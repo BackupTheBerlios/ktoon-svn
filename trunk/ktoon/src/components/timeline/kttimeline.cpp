@@ -89,6 +89,9 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
     addChild(k->container);
     
     connect(k->actionBar, SIGNAL(actionSelected(int)), this, SLOT(requestCommand(int)));
+    connect(k->container, SIGNAL(currentChanged(int)), this, SLOT(emitRequestChangeScene(int)));
+
+    addChild(k->scenes);
 }
 
 KTTimeLine::~KTTimeLine()
@@ -219,6 +222,15 @@ void KTTimeLine::sceneResponse(KTSceneResponse *response)
             {
             
             }
+            break;
+            case KTProjectRequest::Select:
+            {
+                 kFatal() << "KTTimeLine::sceneResponse <- Doing Scene selection!";
+                 k->container->setCurrentIndex(response->sceneIndex());
+            }
+            break;
+            default:
+                 kFatal() << "KTTimeLine::sceneResponse : Unknown action :/";
             break;
     }
 }
@@ -580,12 +592,20 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
             break;
             case KTProjectActionBar::MoveSceneDown:
             {
-            KTProjectRequest event = KTRequestBuilder::createSceneRequest(scenePos, KTProjectRequest::Move,
+                 KTProjectRequest event = KTRequestBuilder::createSceneRequest(scenePos, KTProjectRequest::Move,
                                      scenePos - 1);
-            emit requestTriggered(&event);
-            return true;
+                 emit requestTriggered(&event);
+                 return true;
             }
             break;
+            case KTProjectActionBar::SelectScene:
+            {
+                 if (k->container->count() > 1) {
+                     KTProjectRequest request = KTRequestBuilder::createSceneRequest(scenePos, KTProjectRequest::Select);
+                     emit localRequestTriggered(&request);
+                     return true;
+                 }
+            }
     }
     
     return false;
@@ -629,4 +649,3 @@ void KTTimeLine::selectFrame(int indexLayer, int indexFrame)
     emit requestTriggered(&request);
 
 }
-
