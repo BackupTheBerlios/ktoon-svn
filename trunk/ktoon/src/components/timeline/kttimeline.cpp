@@ -294,8 +294,6 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
     switch (response->action()) {
             case KTProjectRequest::Add:
             {
-                 kFatal() << "KTTimeLine::frameResponse -> Processing Add Frame #" << response->frameIndex() << " at index: " << response->layerIndex();
-
                  KTFramesTable *framesTable = this->framesTable(response->sceneIndex());
 
                  if (framesTable)
@@ -330,8 +328,6 @@ void KTTimeLine::frameResponse(KTFrameResponse *response)
             break;
             case KTProjectRequest::Select:
             {
-                 kFatal() << "KTTimeLine::frameResponse -> Selecting frame #" << response->frameIndex() << " at index: " << response->layerIndex();
-
                  int layerIndex = response->layerIndex();
 
                  if (k->selectedLayer != layerIndex) {
@@ -401,7 +397,6 @@ void KTTimeLine::requestCommand(int action)
             }
         }
     }
-    
 }
 
 bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int scenePos, const QVariant &arg)
@@ -419,11 +414,6 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
                  int layersTotal = layerManager(scenePos)->getLayerIndex()->rowCount();
                  int usedFrames = framesTable(scenePos)->lastFrameByLayer(layerPos);
 
-                 if (usedFrames < 0) {
-                     usedFrames = 0;
-                     framePos = 1;
-                 }
-
                  if (layersTotal == 1) {
                      for (int frame = usedFrames; frame < framePos; frame++) {
                           KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, frame + 1,
@@ -432,15 +422,11 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
                      }
 
                  } else {
-
-                     kFatal() << "KTTimeLine::requestFrameAction <- Requesting new frames! STAGE 2";
-                     kFatal() << "KTTimeLine::requestFrameAction <- Starting at position: " << usedFrames;
-                     int value = framePos - 1;
-                     kFatal() << "KTTimeLine::requestFrameAction <- Ending at position: " << value;
+                     usedFrames++;
 
                      for (int layer=0; layer < layersTotal; layer++) {
-                          for (int frame = usedFrames; frame < framePos; frame++) {
-                               KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layer, framePos + 1,
+                          for (int frame = usedFrames; frame <= framePos; frame++) {
+                               KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layer, frame,
                                                         KTProjectRequest::Add, arg);
                                emit requestTriggered(&event);
                           }
@@ -479,7 +465,6 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
             break;
             case KTProjectActionBar::SelectFrame:
             {
-                 kFatal() << "KTTimeLine::requestFrameAction -> Requesting for rame selection - Index: " << framePos;
                  KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos,
                                           KTProjectRequest::Select, arg);
                  emit localRequestTriggered(&event);

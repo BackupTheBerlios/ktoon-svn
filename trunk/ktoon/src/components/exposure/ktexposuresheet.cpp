@@ -253,8 +253,6 @@ void KTExposureSheet::setScene(int index)
            K_FUNCINFO;
     #endif
 
-    //if (k->scenes->TabWidget()->count() >= index) {
-
     if (k->scenes->count() >= index) {
         k->scenes->blockSignals(true);
         k->scenes->TabWidget()->setCurrentIndex(index);		
@@ -525,8 +523,9 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 break;
                 case KTProjectRequest::Select:
                  {
-                     setScene(e->sceneIndex());
+                     //setScene(e->sceneIndex());
                      scene->blockSignals(true);
+                     setScene(e->sceneIndex());
                      scene->selectFrame(e->layerIndex(), e->frameIndex());
                      scene->blockSignals(false);
                  }
