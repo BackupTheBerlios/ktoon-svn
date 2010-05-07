@@ -39,6 +39,7 @@
 #include <QLineEdit>
 #include <QMouseEvent>
 #include <QMenu>
+#include <QHeaderView>
 
 #include <kcore/kdebug.h>
 #include <ktglobal.h>
@@ -48,28 +49,33 @@
  */
 
 /////////////////
-
-class KTExposureVerticalHeader: public QHeaderView
+class KTExposureVerticalHeader : public QHeaderView
 {
-    Q_OBJECT
+    //Q_OBJECT
 
     public:
         KTExposureVerticalHeader(QWidget * parent = 0);
         ~KTExposureVerticalHeader();
-        void paintSection(QPainter *painter, const QRect & rect, int logicalIndex) const;
+        // void paintSection(QPainter *painter, const QRect & rect, int logicalIndex) const;
 };
 
 KTExposureVerticalHeader::KTExposureVerticalHeader(QWidget * parent) : QHeaderView(Qt::Vertical, parent)
 {
+    setClickable(true);
+    setFixedWidth(10);
+    setFixedHeight(5);
 }
 
 KTExposureVerticalHeader::~KTExposureVerticalHeader()
 {
 }
 
+/*
 void KTExposureVerticalHeader::paintSection(QPainter * painter, const QRect & rect, int logicalIndex) const
 {
+    painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
 }
+*/
 
 /////////////////
 
@@ -151,6 +157,9 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new
     connect(k->header, SIGNAL(sectionMoved (int, int, int)), this, SLOT(emitRequestMoveLayer(int, int, int)));
 
     setHorizontalHeader(k->header);
+
+    KTExposureVerticalHeader *verticalHeader = new KTExposureVerticalHeader(this);
+    //setVerticalHeader(verticalHeader);
 
     connect(this, SIGNAL(cellClicked(int, int)), this, SLOT(emitRequestSetUsedFrame(int, int)));
 

@@ -36,8 +36,10 @@
 
 #include<QTableWidget>
 
-class KTExposureHeader;
+//class KTExposureHeader;
+class KTExposureVerticalHeader;
 class QMenu;
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
@@ -45,6 +47,7 @@ class KTExposureTable : public QTableWidget
 {
     Q_OBJECT;
 
+    friend class KTExposureVerticalHeader;
     friend class KTExposureItemDelegate;
 
     public:
