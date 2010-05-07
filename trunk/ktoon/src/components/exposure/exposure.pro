@@ -4,9 +4,11 @@
 # Target is a library:  
 
 HEADERS += ktexposuresheet.h \
+           ktexposureheader.h \
            ktexposuretable.h \
            ktscenetabwidget.h
 SOURCES += ktexposuresheet.cpp \
+           ktexposureheader.cpp \ 
            ktexposuretable.cpp \
            ktscenetabwidget.cpp
 

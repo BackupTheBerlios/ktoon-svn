@@ -91,7 +91,6 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
     connect(k->actionBar, SIGNAL(actionSelected(int)), this, SLOT(requestCommand(int)));
     connect(k->container, SIGNAL(currentChanged(int)), this, SLOT(emitRequestChangeScene(int)));
 
-    addChild(k->scenes);
 }
 
 KTTimeLine::~KTTimeLine()
@@ -475,6 +474,7 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
                  return true;
             }
             break;
+            /*
             case KTProjectActionBar::SelectFrame:
             {
                  KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos,
@@ -484,6 +484,7 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
                  return true;
             }
             break;
+            */
     }
     
     return false;
@@ -598,14 +599,6 @@ bool KTTimeLine::requestSceneAction(int action, int scenePos, const QVariant &ar
                  return true;
             }
             break;
-            case KTProjectActionBar::SelectScene:
-            {
-                 if (k->container->count() > 1) {
-                     KTProjectRequest request = KTRequestBuilder::createSceneRequest(scenePos, KTProjectRequest::Select);
-                     emit localRequestTriggered(&request);
-                     return true;
-                 }
-            }
     }
     
     return false;
@@ -649,3 +642,19 @@ void KTTimeLine::selectFrame(int indexLayer, int indexFrame)
     emit requestTriggered(&request);
 
 }
+
+void KTTimeLine::emitRequestChangeScene(int sceneIndex)
+{
+    if (k->container->count() > 1) {
+        KTProjectRequest request = KTRequestBuilder::createSceneRequest(sceneIndex, KTProjectRequest::Select);
+        emit localRequestTriggered(&request);
+    }
+}
+
+void KTTimeLine::emitRequestChangeFrame(int sceneIndex, int layerIndex, int frameIndex)
+{
+    KTProjectRequest event = KTRequestBuilder::createFrameRequest(sceneIndex, layerIndex, frameIndex,
+                             KTProjectRequest::Select, "1");
+    emit requestTriggered(&event);
+}
+

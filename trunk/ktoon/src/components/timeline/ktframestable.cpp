@@ -265,7 +265,8 @@ void KTFramesTable::emitFrameSelected(int col)
     
     if (item) {
         if (item->isUsed())
-            emit frameRequest(KTProjectActionBar::SelectFrame, this->column(item), verticalHeader()->visualIndex(this->row(item)), -1);
+            emit emitRequestChangeFrame(k->sceneIndex, verticalHeader()->visualIndex(this->row(item)), this->column(item));
+            //emit frameRequest(KTProjectActionBar::SelectFrame, this->column(item), verticalHeader()->visualIndex(this->row(item)), -1);
     } 
 }
 
@@ -285,7 +286,8 @@ void KTFramesTable::emitFrameSelected(QTableWidgetItem *current, QTableWidgetIte
     
     if (item) {
         if (item->isUsed())
-            emit frameRequest(KTProjectActionBar::SelectFrame, this->column(item), verticalHeader()->visualIndex(this->row(item)), -1);
+            emit emitRequestChangeFrame(k->sceneIndex, verticalHeader()->visualIndex(this->row(item)), this->column(item));
+            // emit frameRequest(KTProjectActionBar::SelectFrame, this->column(item), verticalHeader()->visualIndex(this->row(item)), -1);
         else
             kFatal() << "KTFramesTable::emitFrameSelected <- item exists but isn't used right now";
     } else { 

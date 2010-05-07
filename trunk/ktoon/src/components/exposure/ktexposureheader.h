@@ -31,97 +31,73 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTLAYERTABLE_H
-#define KTLAYERTABLE_H
+#ifndef KTEXPOSUREHEADER_H
+#define KTEXPOSUREHEADER_H
 
-#include <QTableWidget>
-#include <QTableWidgetItem>
-#include <QHash>
+#include <QHeaderView>
+#include <QPainter>
+#include <QStyleOptionButton>
+//#include <QMap>
+#include <QVector>
+//#include <QItemDelegate>
+#include <QLineEdit>
+#include <QMouseEvent>
+//#include <QMenu>
 
-class KTFramesTable;
-class KTFramesTableItemDelegate;
+//#include <kcore/kdebug.h>
+//#include <ktglobal.h>
 
-class KTFramesTableItem : public QTableWidgetItem
+struct LayerItem
 {
-    public:
-        enum Attributes
-        {
-            IsUsed = 0x01,
-            IsLocked,
-            IsSound
-        };
-        
-        KTFramesTableItem();
-        virtual ~KTFramesTableItem();
-        
-        bool isUsed();
-        bool isLocked();
-        bool isSound();
+    QString title;
+    int lastFrame;
+    bool isVisible;
+    bool isLocked;
 };
 
-class KTTLRuler;
-
 /**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class KTFramesTable : public QTableWidget
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ */
+class KTExposureHeader: public QHeaderView
 {
-    Q_OBJECT;
-    
-    friend class KTFramesTableItemDelegate;
-    
+    Q_OBJECT
+
     public:
-        KTFramesTable(int sceneIndex = 0, QWidget *parent = 0);
-        ~KTFramesTable();
-        
-        bool isSoundLayer(int row);
-        
+        KTExposureHeader(QWidget * parent = 0);
+        ~KTExposureHeader();
+        void paintSection(QPainter *painter, const QRect & rect, int logicalIndex) const;
+        void insertLayer(int logicalIndex, const QString &text);
+        void setLayerName(int logicalIndex, const QString &text);
+        void setLastFrame(int logicalIndex, int num);
+        int lastFrame(int logicalIndex);
+        void removeLayer(int logicalIndex);
+        void moveLayer(int index, int newIndex);
+        void setLockLayer(int logicalndex, bool lock);
+        bool signalMovedBlocked();
+        void setVisibilityChanged(int logicalndex, bool visibility);
+        int layersTotal();
+
     public slots:
-        // Layers
-        void insertLayer(int layerPos, const QString &name);
-        void insertSoundLayer(int layerPos, const QString &name);
-        
-        void removeCurrentLayer();
-        void removeLayer(int pos);
-        void moveLayer(int pos, int newPos);
-        
-        int lastFrameByLayer(int layerPos);
-        
-        // Frames
-        void insertFrame(int layerPos, const QString &name);
-        
-        void setCurrentFrame(KTFramesTableItem *);
-        void setCurrentLayer(int layerPos);
-        void selectFrame(int index);
-        
-        void setAttribute(int row, int col, KTFramesTableItem::Attributes att, bool value);
-        
-        void removeFrame(int layerPos, int position);
-        
-        void lockFrame(int layerPosition, int position, bool lock);
-        
-        void setItemSize(int w, int h);
-        
-    private:
-        void setup();
-        
-    protected:
-        void fixSize();
-        
+        void updateSelection(int col);
+
     private slots:
-        void emitFrameSelected(int col);
-        // void emitFrameSelectionChanged();
-        void emitFrameSelected(QTableWidgetItem *curr, QTableWidgetItem *prev);
-        void emitRequestSelectFrame(int currentRow, int currentColumn, int previousRow, int previousColumn);
-        
-    signals:
-        void frameRequest(int action, int frame, int layer, int scene, const QVariant &argument = QVariant());
-        void emitRequestChangeFrame(int sceneIndex, int layerIndex, int frameIndex);
-        void emitSelection(int currentRow, int currentColumn);
-        
+        void emitVisibilityChanged(int section);
+        void showEditorName(int section);
+        void hideEditorName();
+
+    protected:
+        virtual void mousePressEvent(QMouseEvent * event);
+
     private:
-        struct Private;
-        Private *const k;
+        QVector<LayerItem> m_layers;
+        QLineEdit *m_editor;
+        int m_sectionEdited;
+        int m_blockSectionMoved;
+        int currentCol;
+
+    signals:
+        void changedName(int indexLayer, const QString & name);
+        void visibilityChanged(int indexLayer, bool visibility);
 };
 
 #endif
