@@ -56,26 +56,54 @@ class KTExposureVerticalHeader : public QHeaderView
     public:
         KTExposureVerticalHeader(QWidget * parent = 0);
         ~KTExposureVerticalHeader();
-        // void paintSection(QPainter *painter, const QRect & rect, int logicalIndex) const;
+        void paintSection(QPainter *painter, const QRect & rect, int logicalIndex) const;
 };
 
 KTExposureVerticalHeader::KTExposureVerticalHeader(QWidget * parent) : QHeaderView(Qt::Vertical, parent)
 {
-    setClickable(true);
-    setFixedWidth(10);
-    setFixedHeight(5);
+    //setClickable(true);
+    setFixedWidth(25);
 }
 
 KTExposureVerticalHeader::~KTExposureVerticalHeader()
 {
 }
 
-/*
 void KTExposureVerticalHeader::paintSection(QPainter * painter, const QRect & rect, int logicalIndex) const
 {
-    painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
+    Q_UNUSED(logicalIndex);
+
+    if (!rect.isValid())
+        return;
+
+    QStyleOptionHeader headerOption;
+    headerOption.rect = rect;
+    headerOption.orientation = Qt::Vertical;
+    headerOption.position = QStyleOptionHeader::Middle;
+    headerOption.text = "";
+
+    QStyle::State state = QStyle::State_None;
+
+    if (isEnabled())
+        state |= QStyle::State_Enabled;
+
+    if (window()->isActiveWindow())
+        state |= QStyle::State_Active;
+ 
+    style()->drawControl(QStyle::CE_HeaderSection, &headerOption, painter);
+
+    QString text;
+    text = text.setNum(logicalIndex + 1);
+    QFont font("Arial", 7, QFont::Normal, false);
+    QFontMetrics fm(font);
+
+    int x = rect.normalized().x() + ((rect.normalized().width() - fm.width(text))/2);
+    int y = rect.normalized().bottomLeft().y() - (1 + (rect.normalized().height() - fm.height())/2);
+
+    painter->setFont(font);
+    painter->setPen(QPen(Qt::black, 1, Qt::SolidLine));
+    painter->drawText(x, y, text);
 }
-*/
 
 /////////////////
 
@@ -135,6 +163,9 @@ struct KTExposureTable::Private
 
 KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new Private)
 {
+    KTExposureVerticalHeader *verticalHeader = new KTExposureVerticalHeader(this);
+    setVerticalHeader(verticalHeader);
+
     setItemDelegate(new KTExposureItemDelegate(this));
     k->removingLayer = false;
 
@@ -157,9 +188,6 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new
     connect(k->header, SIGNAL(sectionMoved (int, int, int)), this, SLOT(emitRequestMoveLayer(int, int, int)));
 
     setHorizontalHeader(k->header);
-
-    KTExposureVerticalHeader *verticalHeader = new KTExposureVerticalHeader(this);
-    //setVerticalHeader(verticalHeader);
 
     connect(this, SIGNAL(cellClicked(int, int)), this, SLOT(emitRequestSetUsedFrame(int, int)));
 

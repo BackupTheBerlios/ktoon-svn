@@ -98,6 +98,9 @@ void KTExposureHeader::setVisibilityChanged(int logicalndex, bool visibility)
 
 void KTExposureHeader::showEditorName(int section)
 {
+    QFont font("Arial", 8, QFont::Normal, false);
+    m_editor->setFont(font);
+
     int x = sectionViewportPosition(section);
     m_editor->setGeometry(x, 0, sectionSize(section), height());
     m_sectionEdited = section;
@@ -198,10 +201,9 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
 
     style()->drawControl(QStyle::CE_HeaderSection, &headerOption, painter);
 
-    int height = rect.height() - 7;
-
     QString text = m_layers[logicalIndex].title;
-    QFontMetrics fm(painter->font());
+    QFont font("Arial", 8, QFont::Normal, false);
+    QFontMetrics fm(font);
 
     QStyleOptionButton buttonOption;
 
@@ -217,20 +219,26 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
     if ((logicalIndex == currentCol) || (m_layers.size() == 1)) {
         QColor color(250, 209, 132, 80);
         painter->fillRect(rect.normalized().adjusted(0, 1, 0, -1), color);
-        QColor border(250, 209, 132, 255);
-        painter->setPen(QPen(border, 2, Qt::SolidLine));
-        painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
+        if (m_layers[logicalIndex].isVisible) {
+            painter->setPen(QPen(QColor(250, 209, 132, 255), 2, Qt::SolidLine));
+            painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
+        } else {
+            painter->setPen(QPen(QColor(255, 0, 0, 70), 2, Qt::SolidLine));
+            painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
+        }
     }
 
-    int x = rect.x() + ((sectionSize(logicalIndex) - fm.width(text))/2) + 7;
-    int y = fm.height() + (rect.y() / 2);
+    int buttonWidth = 12;
+    int width = (rect.normalized().width() - (fm.width(text) + buttonWidth) + 4)/ 2;
+    int x = rect.normalized().x() + width + buttonWidth;
+    int y = rect.normalized().bottomLeft().y() - (1 + (rect.normalized().height() - fm.height())/2);
 
-    painter->setFont(QFont("Arial", 8, QFont::Normal, false));
+    painter->setFont(font);
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine));
     painter->drawText(x, y, text);
 
-    height -= 4;
-    buttonOption.rect = QRect(rect.x()+3, rect.y() + ((rect.height()-height)/2) + 1, height, height);
+    buttonOption.rect = QRect(rect.x() + width - 4, rect.y() + ((rect.normalized().height()-buttonWidth)/2) + 1, buttonWidth, buttonWidth);
+  
     style()->drawControl(QStyle::CE_PushButton, &buttonOption, painter);
 }
 
