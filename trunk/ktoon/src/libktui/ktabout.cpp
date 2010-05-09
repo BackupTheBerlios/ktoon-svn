@@ -87,7 +87,7 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
     addTab(m_credits, tr("Credits"));
 
     QPalette pal = m_credits->palette();
-    pal.setColor(QPalette::Foreground, 0x686868);
+    pal.setColor(QPalette::Foreground, QColor(50, 50, 50, 255));
 
     m_credits->setPalette(pal);
     m_credits->setFont(QFont("verdana", 24));
@@ -127,10 +127,10 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
     // 6: Licence
 
     QTextBrowser *licenceText = new QTextBrowser;
-    QFile licenceFile(DATA_DIR + "/COPYING");
+    QFile licenceFile(DATA_DIR + "/license.html");
     QString line = "";
     if (licenceFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream stream( &licenceFile );
+        QTextStream stream(&licenceFile);
         while (! stream.atEnd()) {
                line += stream.readLine();
                //licenceText->append(line);

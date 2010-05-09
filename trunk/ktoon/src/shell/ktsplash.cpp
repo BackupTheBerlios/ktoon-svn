@@ -120,10 +120,10 @@ void KTSplash::drawContents(QPainter * painter)
 
     // Draw version number
     QRect r = rect();
-    r.setRect(r.x() + 18, r.y() + 5, r.width() - 30, r.height() - 30);
+    r.setRect(r.x() + 23, r.y() + 5, r.width() - 30, r.height() - 30);
 
     QFont forig = painter->font();
-    painter->setFont(QFont("helvetica", 12, 10, false));
+    painter->setFont(QFont("helvetica", 10, QFont::Normal, false));
     painter->drawText(r, Qt::AlignRight, m_version);
 
     painter->setFont(forig);

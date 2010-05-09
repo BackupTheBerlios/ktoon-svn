@@ -2,7 +2,7 @@ KToon
 
 Version 0.9a [ Code Name: Phoenix ]
 
-Main developer
+Developers
 
   Gustavo Gonzalez
   <xtingray@ktoon.net>
@@ -16,6 +16,8 @@ Developers
   Jorge H. Cuadrado
 
 Version <= 0.7
+
+Developers
 
   Simena Dinas
 
