@@ -2,7 +2,7 @@ KToon
 
 Version 0.9a [ Codigo: Phoenix ]
 
-Director de Desarrollo
+Desarrolladores
 
   Gustavo Gonzalez
   <xtingray@ktoon.net>
@@ -31,7 +31,7 @@ Documentacion de Desarrollo
 ----------------------------
 Traductores
 
-  Spanish:
+  Espanol:
 
      Gustavo Gonzalez
 

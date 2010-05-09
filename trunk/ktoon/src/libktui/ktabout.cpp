@@ -58,6 +58,13 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
 {
     setWindowTitle(tr("About") + QString(" KToon"));
 
+    QString lang = "";
+    if (QString(QLocale::system().name()).length() > 1)
+        lang = path + QString(QLocale::system().name()).left(2);
+    else
+        lang = "en";
+
+
     Qt::WindowFlags flags = 0;
     flags = Qt::Dialog;
     flags |= Qt::CustomizeWindowHint;
@@ -127,7 +134,8 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
     // 6: Licence
 
     QTextBrowser *licenceText = new QTextBrowser;
-    QFile licenceFile(DATA_DIR + "/license.html");
+    //QFile licenceFile(DATA_DIR + "/license.html");
+    QFile licenceFile(SHARE_DIR + "data/help/" + lang + "/license.html");
     QString line = "";
     if (licenceFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream stream(&licenceFile);
