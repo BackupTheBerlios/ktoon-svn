@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ca_ES" sourcelanguage="en_US">
+<TS version="2.0" language="ca" sourcelanguage="ca">
 <context>
     <name>Brush</name>
     <message>
@@ -8,7 +8,7 @@
         <location filename="../../../plugins/tools/brush/brush.cpp" line="185"/>
         <location filename="../../../plugins/tools/brush/brush.cpp" line="191"/>
         <source>Pencil</source>
-        <translation>Lapiz</translation>
+        <translation type="unfinished">Llapis</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/brush/brush.cpp" line="186"/>
@@ -21,12 +21,14 @@
     <message>
         <location filename="../../configwizard.cpp" line="82"/>
         <source>Welcome</source>
-        <translation>Bienvenido</translation>
+        <translatorcomment>Podria possar-li (da) per fer-ho mes correcte politicament</translatorcomment>
+        <translation type="unfinished">Benvingut</translation>
     </message>
     <message>
         <location filename="../../configwizard.cpp" line="88"/>
         <source>&lt;h1&gt;Welcome to the KToon Configuration wizard!&lt;/h1&gt;&lt;br&gt;&lt;br&gt;&lt;table border=0 align=right &gt;&lt;tr&gt;&lt;td&gt;- KToon is a 2D Animation Toolkit designed by animators for animators.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;- KToon is free/open software and it is covered under the GNU GPL license terms.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;- KToon is Software Project developed by Toonka Films (http://www.toonka.com)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br&gt;&lt;br&gt;This is an &quot;easy to use tool&quot; to allow you to configure your KToon environment.&lt;br&gt;&lt;br&gt;Please, choose the &quot;Next&quot; button to setting up some parameters&lt;br&gt; required to use KToon correctly or use the &quot;Cancel&quot; button&lt;br&gt; to close this dialog. Enjoy KToon!&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;--The KToon Team&lt;/em&gt;&lt;br&gt;&lt;br&gt;</source>
-        <translation>&lt;h1&gt;Bienvenido a la herramienta de configuración de KToon!&lt;/h1&gt;&lt;br&gt;&lt;br&gt;&lt;table border=0 align=right &gt;&lt;tr&gt;&lt;td&gt;- KToon es una herramienta de animación en 2D diseñada por animadores para animadores.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;- KToon es software libre y abierto y se encuentra licenciado bajo los términos de la licencia GNU GPL.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;- KToon es un proyecto de software desarrollado por LabToon (http://www.labtoon.org)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br&gt;&lt;br&gt;Esta es una herramienta facil de usar para configurar tu ambiente de trabajo con KToon.&lt;br&gt;&lt;br&gt;Por favor, presiona el botón &quot;Siguiente&quot; para configurar algunos parámetros&lt;br&gt; requeridos para utilizar KToon de forma adecuada o presiona el botón &quot;Cancelar&quot;&lt;br&gt; para cerrar este dialogo. Disfruta animando con KToon!&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;--El equipo de desarrollo&lt;/em&gt;&lt;br&gt;&lt;br&gt;</translation>
+        <translatorcomment>No se que coi passa amb els accents!</translatorcomment>
+        <translation type="unfinished">&lt;h1&gt;Benvingut a l&apos;eina de configuració de KToon!&lt;/h1&gt;&lt;br&gt;&lt;br&gt;&lt;table border=0 align=right &gt;&lt;tr&gt;&lt;td&gt;- KToon és una eina d&apos;animació en 2D dissenyada per animadors i per animadors.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;- KToon és software lliure i obert i es troba llicenciat sota els termes de la llicència GNU GPL.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;- KToon és un projecte de software desenvolupat per LabToon (http://www.labtoon.org)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br&gt;&lt;br&gt;Aquesta és una eina fàcil d&apos;utilitzar per configurar el seu ambient de feina amb KToon.&lt;br&gt;&lt;br&gt;Si us plau, presioni el botó &quot;Següent&quot; per configurar alguns paràmetres&lt;br&gt; requerits per utilizar KToon de forma adecuada o presioni el botó &quot;Cancel·la&quot;&lt;br&gt; per tancar aquest diàleg. Gaudeixi animant amb KToon!&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;--L&apos;equip de desenvolupament&lt;/em&gt;&lt;br&gt;&lt;br&gt;</translation>
     </message>
 </context>
 <context>
@@ -34,38 +36,39 @@
     <message>
         <location filename="../../configwizard.cpp" line="102"/>
         <source>Configure KToon</source>
-        <translation>Configurar KToon</translation>
+        <translation type="unfinished">Configura KToon</translation>
     </message>
     <message>
         <location filename="../../configwizard.cpp" line="109"/>
         <source>&lt;h3&gt;Step 1&lt;h3&gt;</source>
-        <translation>Paso 1</translation>
+        <translation type="unfinished">Pas 1</translation>
     </message>
     <message>
         <location filename="../../configwizard.cpp" line="110"/>
         <source>Choose your KToon installation directory</source>
-        <translation>Selecciona tu directorio de instalación de KToon</translation>
+        <translatorcomment>Mirar les gemminades i si instal·lacio va amb apostrof</translatorcomment>
+        <translation type="unfinished">Selecciona el teu directori d&apos;instal·lació de KToon</translation>
     </message>
     <message>
         <location filename="../../configwizard.cpp" line="118"/>
         <source>Choose the directory where KToon is installed</source>
-        <translation>Selecciona el directorio donde KToon se encuentra instalado</translation>
+        <translation type="unfinished">Selecciona el directori on KToon es troba instal·lat</translation>
     </message>
     <message>
         <location filename="../../configwizard.cpp" line="120"/>
         <location filename="../../configwizard.cpp" line="145"/>
         <source>Browse...</source>
-        <translation>Navegar...</translation>
+        <translation type="unfinished">Navega...</translation>
     </message>
     <message>
         <location filename="../../configwizard.cpp" line="129"/>
         <source>Choose a temporal directory</source>
-        <translation>Selecciona un directorio temporal</translation>
+        <translation type="unfinished">Selecciona un directori temporal</translation>
     </message>
     <message>
         <location filename="../../configwizard.cpp" line="137"/>
         <source>Choose the directory for temporal files</source>
-        <translation>Selecciona un directorio para archivos temporales</translation>
+        <translation type="unfinished">Selecciona un directori per arxius temporals</translation>
     </message>
 </context>
 <context>
@@ -73,22 +76,23 @@
     <message>
         <location filename="../../../plugins/tools/tweener/configurator.cpp" line="53"/>
         <source>Options</source>
-        <translation>Opciones</translation>
+        <translation type="unfinished">Opcions</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/configurator.cpp" line="54"/>
         <source>Create path</source>
-        <translation>Crear ruta</translation>
+        <translatorcomment>Ruta en castella com a camí</translatorcomment>
+        <translation type="unfinished">Crea camí</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/configurator.cpp" line="55"/>
         <source>Select object</source>
-        <translation>Escoger objeto</translation>
+        <translation type="unfinished">Tria objecte</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/configurator.cpp" line="58"/>
         <source>Apply</source>
-        <translation>Aplicar</translation>
+        <translation type="unfinished">Aplica</translation>
     </message>
 </context>
 <context>
@@ -97,12 +101,13 @@
         <location filename="../../../plugins/tools/contourselection/contourselection.cpp" line="96"/>
         <location filename="../../../plugins/tools/contourselection/contourselection.cpp" line="271"/>
         <source>ContourSelection</source>
-        <translation>ContourSelection</translation>
+        <translatorcomment>S&apos;hauria de traduir com a seleccio de contorn</translatorcomment>
+        <translation type="unfinished">Selecció de contorn</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/contourselection/contourselection.cpp" line="267"/>
         <source>Nodes selection </source>
-        <translation>Selección de Nodos</translation>
+        <translation type="unfinished">Selecció de nodes</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/contourselection/contourselection.cpp" line="268"/>
@@ -114,19 +119,21 @@
     <name>CrashWidget</name>
     <message>
         <location filename="../../crashwidget.cpp" line="122"/>
-        <source>What's happening?</source>
-        <translation>Qué sucede?</translation>
+        <source>What&apos;s happening?</source>
+        <translation type="unfinished">Què està succeint?</translation>
     </message>
     <message>
         <location filename="../../crashwidget.cpp" line="144"/>
         <source>Executable information</source>
-        <translation>Información sobre el ejecutable</translation>
+        <translatorcomment>Sobre traduit com en quant</translatorcomment>
+        <translation type="unfinished">Informació en quant a l&apos;executable</translation>
     </message>
     <message>
         <location filename="../../crashwidget.cpp" line="150"/>
         <location filename="../../crashwidget.cpp" line="157"/>
         <source>Backtrace</source>
-        <translation>Rastros del Problema</translation>
+        <translatorcomment>Rastros com a rastres, o pistes aseguir</translatorcomment>
+        <translation type="unfinished">Rastres del problema</translation>
     </message>
 </context>
 <context>
@@ -137,7 +144,8 @@
         <location filename="../../../plugins/tools/erasertool/erasertool.cpp" line="79"/>
         <location filename="../../../plugins/tools/erasertool/erasertool.cpp" line="100"/>
         <source>Eraser</source>
-        <translation>Borrador</translation>
+        <translatorcomment>Erease con netejar, idem al GIMP</translatorcomment>
+        <translation type="unfinished">Netejador</translation>
     </message>
 </context>
 <context>
@@ -145,12 +153,13 @@
     <message>
         <location filename="../../../plugins/tools/brush/exactnessconfigurator.cpp" line="53"/>
         <source>Smoothness</source>
-        <translation>Suavidad</translation>
+        <translatorcomment>Hauria de mirar si es un verb o una definicio per triar el temps idoni</translatorcomment>
+        <translation type="unfinished">Suavitat</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/brush/exactnessconfigurator.cpp" line="66"/>
         <source>My Values:</source>
-        <translation>Mis Valores:</translation>
+        <translation type="unfinished">Els meus valors:</translation>
     </message>
 </context>
 <context>
@@ -158,32 +167,34 @@
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="418"/>
         <source>Image name prefix: </source>
-        <translation>Prefijo de imágenes: </translation>
+        <translation type="unfinished">Nom de prefix d&apos;imatges: </translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="423"/>
         <source>File: </source>
-        <translation>Archivo: </translation>
+        <translatorcomment>File com a fitxer i no com arxiu (idem GIMP)</translatorcomment>
+        <translation type="unfinished">Fitxer: </translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="425"/>
         <source>Directory: </source>
-        <translation>Directorio: </translation>
+        <translation type="unfinished">Directori: </translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="456"/>
         <source>i.e. &lt;B&gt;%1&lt;/B&gt;01.png / &lt;B&gt;%1&lt;/B&gt;01.jpg</source>
-        <translation>ej. &lt;B&gt;%1&lt;/B&gt;01.png / &lt;B&gt;%1&lt;/B&gt;01.jpg</translation>
+        <translation type="unfinished">ex. &lt;B&gt;%1&lt;/B&gt;01.png / &lt;B&gt;%1&lt;/B&gt;01.jpg</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="470"/>
         <source>Size</source>
-        <translation>Dimensión</translation>
+        <translatorcomment>mida pensava en mesura pero aixi sera com al GIMP</translatorcomment>
+        <translation type="unfinished">Mida</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="475"/>
         <source>Configuration</source>
-        <translation>Configuración</translation>
+        <translation type="unfinished">Configuració</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="486"/>
@@ -193,42 +204,44 @@
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="556"/>
         <source>Choose a file name...</source>
-        <translation>Seleccione un nombre de archivo...</translation>
+        <translation type="unfinished">Triï un nom de fitxer...</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="569"/>
         <source>Choose a directory...</source>
-        <translation>Escoja un directorio...</translation>
+        <translation type="unfinished">Triï un directori...</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="613"/>
         <source>Warning!</source>
-        <translation>Advertencia!</translation>
+        <translation type="unfinished">Advertència!</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="614"/>
         <source>File exists. Overwrite it?</source>
-        <translation>El archivo existe. Deseas reemplazarlo?</translation>
+        <translatorcomment>reemplaçar en comptes de sobreescriure</translatorcomment>
+        <translation type="unfinished">El fitxer existeix. Desitja reemplaçar-ho?</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="626"/>
         <source>Images name prefix can&apos;t be empty! Please, type a prefix.</source>
-        <translation>El prefijo para las imagenes no puede ser vacio! Por favor, ingresa un prefijo.</translation>
+        <translation type="unfinished">El prefix per les imatges no pot estar buit! Si us plau, escrigui un prefix.</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="639"/>
         <source>Directory &quot;</source>
-        <translation>Directorio &quot;</translation>
+        <translation type="unfinished">Directori &quot;</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="646"/>
         <source>You have no permission to create this file. Please, choose another path.</source>
-        <translation>No tienes permisos para crear este archivo. Por favor, escoge una ruta diferente.</translation>
+        <translatorcomment>drecera en comptes de cami (en quant a directoris)</translatorcomment>
+        <translation type="unfinished">No té permisos per crear aquest fitxer. Si us plau, triï una drecera diferent.</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="669"/>
         <source>Format problem. KToon Internal error.</source>
-        <translation>Problema de formato. Error Interno de KToon.</translation>
+        <translation type="unfinished">Problema de format. Error Intern de KToon.</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="678"/>
@@ -244,6 +257,7 @@
         <location filename="../../../plugins/tools/filltool/filltool.cpp" line="93"/>
         <location filename="../../../plugins/tools/filltool/filltool.cpp" line="189"/>
         <source>Fill</source>
+        <translatorcomment>seria terraple (mirar millor)</translatorcomment>
         <translation>Fill</translation>
     </message>
     <message>
@@ -277,7 +291,7 @@
         <location filename="../../../plugins/tools/geometrictool/geometrictool.cpp" line="106"/>
         <location filename="../../../plugins/tools/geometrictool/geometrictool.cpp" line="132"/>
         <source>Rectangle</source>
-        <translation>Rectángulo</translation>
+        <translation type="unfinished">Rectangle</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/geometrictool/geometrictool.cpp" line="68"/>
@@ -286,7 +300,8 @@
         <location filename="../../../plugins/tools/geometrictool/geometrictool.cpp" line="111"/>
         <location filename="../../../plugins/tools/geometrictool/geometrictool.cpp" line="156"/>
         <source>Ellipse</source>
-        <translation>Elipse</translation>
+        <translatorcomment>literalment aixi, podria canviar-ho per oval</translatorcomment>
+        <translation type="unfinished">El·lipse</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/geometrictool/geometrictool.cpp" line="68"/>
@@ -295,7 +310,7 @@
         <location filename="../../../plugins/tools/geometrictool/geometrictool.cpp" line="115"/>
         <location filename="../../../plugins/tools/geometrictool/geometrictool.cpp" line="178"/>
         <source>Line</source>
-        <translation>Línea</translation>
+        <translation type="unfinished">Línia</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/geometrictool/geometrictool.cpp" line="80"/>
@@ -318,27 +333,28 @@
     <message>
         <location filename="../../../libktui/ktabout.cpp" line="59"/>
         <source>About</source>
-        <translation>Acerca de</translation>
+        <translation type="unfinished">En quant a</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktabout.cpp" line="87"/>
         <source>Credits</source>
-        <translation>Créditos</translation>
+        <translation type="unfinished">Crèdits</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktabout.cpp" line="104"/>
         <source>Sponsors</source>
-        <translation>Patrocinadores</translation>
+        <translation type="unfinished">Patrocinadors</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktabout.cpp" line="143"/>
         <source>License Agreement</source>
-        <translation>Acuerdo de Licencia</translation>
+        <translation type="unfinished">Acord de llicència</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktabout.cpp" line="144"/>
         <source>Close</source>
-        <translation>Cerrar</translation>
+        <translatorcomment>No confondre tancat (close) i sortir (exit)</translatorcomment>
+        <translation type="unfinished">Tanca</translation>
     </message>
 </context>
 <context>
@@ -346,7 +362,7 @@
     <message>
         <location filename="../../../components/cameras/ktanimationarea.cpp" line="335"/>
         <source>Rendering...</source>
-        <translation>Renderizando...</translation>
+        <translation type="unfinished">Renderitzant...</translation>
     </message>
 </context>
 <context>
@@ -354,12 +370,13 @@
     <message>
         <location filename="../../ktapplication.cpp" line="97"/>
         <source>Initializing repository %1</source>
-        <translation>Inicializando repositorio %1</translation>
+        <translatorcomment>repositori es correcte!</translatorcomment>
+        <translation type="unfinished">Inicialitzant repositori %1</translation>
     </message>
     <message>
         <location filename="../../ktapplication.cpp" line="102"/>
         <source>Can not create the projects repository</source>
-        <translation>No es posible crear el repositorio de proyectos</translation>
+        <translation type="unfinished">No és posible crear el repositori de projectes</translation>
     </message>
 </context>
 <context>
@@ -367,7 +384,7 @@
     <message>
         <location filename="../../../components/paintarea/ktbrushstatus.cpp" line="53"/>
         <source>Current Color</source>
-        <translation>Color Actual</translation>
+        <translation type="unfinished">Color actual</translation>
     </message>
 </context>
 <context>
@@ -375,27 +392,28 @@
     <message>
         <location filename="../../../components/cameras/ktcamerabar.cpp" line="58"/>
         <source>Rewind</source>
-        <translation>Devolver</translation>
+        <translation type="unfinished">Retrocedeix</translation>
     </message>
     <message>
         <location filename="../../../components/cameras/ktcamerabar.cpp" line="63"/>
         <source>Play in reverse</source>
-        <translation>Reproducir en reversa</translation>
+        <translatorcomment>reves o inversa?</translatorcomment>
+        <translation type="unfinished">Reprodueix al revés</translation>
     </message>
     <message>
         <location filename="../../../components/cameras/ktcamerabar.cpp" line="68"/>
         <source>Play</source>
-        <translation>Reproducir</translation>
+        <translation type="unfinished">Reprodueix</translation>
     </message>
     <message>
         <location filename="../../../components/cameras/ktcamerabar.cpp" line="73"/>
         <source>Stop</source>
-        <translation>Detener</translation>
+        <translation type="unfinished">Atura</translation>
     </message>
     <message>
         <location filename="../../../components/cameras/ktcamerabar.cpp" line="78"/>
         <source>Forward</source>
-        <translation>Adelantar</translation>
+        <translation type="unfinished">Avança</translation>
     </message>
 </context>
 <context>
@@ -403,12 +421,12 @@
     <message>
         <location filename="../../../components/cameras/ktcamerastatus.cpp" line="60"/>
         <source>Scene name</source>
-        <translation>Nombre de la escena</translation>
+        <translation type="unfinished">Nom de l&apos;escena</translation>
     </message>
     <message>
         <location filename="../../../components/cameras/ktcamerastatus.cpp" line="68"/>
         <source>Frames total</source>
-        <translation>Total de marcos</translation>
+        <translation type="unfinished">Total de marcs</translation>
     </message>
     <message>
         <location filename="../../../components/cameras/ktcamerastatus.cpp" line="79"/>
@@ -418,7 +436,7 @@
     <message>
         <location filename="../../../components/cameras/ktcamerastatus.cpp" line="95"/>
         <source>Loop</source>
-        <translation>Repetir</translation>
+        <translation type="unfinished">Repeteix</translation>
     </message>
 </context>
 <context>
@@ -426,7 +444,7 @@
     <message>
         <location filename="../../../net/ktchat.cpp" line="78"/>
         <source>Send</source>
-        <translation>Enviar</translation>
+        <translation type="unfinished">Envia</translation>
     </message>
 </context>
 <context>
@@ -434,17 +452,18 @@
     <message>
         <location filename="../../../components/colorpalette/ktcolorpalette.cpp" line="93"/>
         <source>Color Palette</source>
-        <translation>Paleta de Colores</translation>
+        <translation type="unfinished">Paleta de colors</translation>
     </message>
     <message>
         <location filename="../../../components/colorpalette/ktcolorpalette.cpp" line="162"/>
         <source>Color Mixer</source>
-        <translation>Mezclador de Colores</translation>
+        <translatorcomment>mesclar o barrejar o combinar</translatorcomment>
+        <translation type="unfinished">Mesclador de colors</translation>
     </message>
     <message>
         <location filename="../../../components/colorpalette/ktcolorpalette.cpp" line="169"/>
         <source>Gradients</source>
-        <translation>Gradientes</translation>
+        <translation type="unfinished">Gradients</translation>
     </message>
     <message>
         <location filename="../../../components/colorpalette/ktcolorpalette.cpp" line="189"/>
@@ -452,7 +471,7 @@
         <location filename="../../../components/colorpalette/ktcolorpalette.cpp" line="275"/>
         <location filename="../../../components/colorpalette/ktcolorpalette.cpp" line="343"/>
         <source>Solid</source>
-        <translation>Solido</translation>
+        <translation type="unfinished">Sòlid</translation>
     </message>
     <message>
         <location filename="../../../components/colorpalette/ktcolorpalette.cpp" line="190"/>
@@ -461,12 +480,13 @@
         <location filename="../../../components/colorpalette/ktcolorpalette.cpp" line="277"/>
         <location filename="../../../components/colorpalette/ktcolorpalette.cpp" line="345"/>
         <source>Gradient</source>
-        <translation>Gradiente</translation>
+        <translation type="unfinished">Gradient</translation>
     </message>
     <message>
         <location filename="../../../components/colorpalette/ktcolorpalette.cpp" line="335"/>
         <source>type brush</source>
-        <translation>Tipo de Brocha</translation>
+        <translatorcomment>pinzell (brush) i no brocha i raspall</translatorcomment>
+        <translation type="unfinished">Tipus de pinzell</translation>
     </message>
 </context>
 <context>
@@ -474,7 +494,8 @@
     <message>
         <location filename="../../../components/colorpalette/ktcolorvalue.cpp" line="173"/>
         <source>percent</source>
-        <translation>Porcentaje</translation>
+        <translatorcomment>en angles esta en minuscula (preguntar)</translatorcomment>
+        <translation type="unfinished">Percentge</translation>
     </message>
 </context>
 <context>
@@ -482,17 +503,18 @@
     <message>
         <location filename="../../../store/ktcommandexecutor_items.cpp" line="97"/>
         <source>Frame doesn&apos;t exists!</source>
-        <translation>Frame no existe!</translation>
+        <translatorcomment>frame com a marc o fotograma? Millor inexistent per evitar negatius i articles</translatorcomment>
+        <translation type="unfinished">Frame inexistent!</translation>
     </message>
     <message>
         <location filename="../../../store/ktcommandexecutor_items.cpp" line="105"/>
         <source>Layer doesn&apos;t exists!</source>
-        <translation>Capa no existe!</translation>
+        <translation type="unfinished">Capa inexistent!</translation>
     </message>
     <message>
         <location filename="../../../store/ktcommandexecutor_items.cpp" line="113"/>
         <source>Scene doesn&apos;t exists!</source>
-        <translation>Escena no existe!</translation>
+        <translation type="unfinished">Escena inexistent!</translation>
     </message>
 </context>
 <context>
@@ -500,12 +522,13 @@
     <message>
         <location filename="../../../components/paintarea/ktconfigurationarea.cpp" line="277"/>
         <source>Cursor here for expand</source>
-        <translation>Cursor aquí para expandir</translation>
+        <translatorcomment>escalar en comptes d&apos;expandir (idem GIMP)</translatorcomment>
+        <translation type="unfinished">Cursor aquí per escalar</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktconfigurationarea.cpp" line="320"/>
         <source>Properties</source>
-        <translation>Propiedades</translation>
+        <translation type="unfinished">Propietats</translation>
     </message>
 </context>
 <context>
@@ -513,17 +536,18 @@
     <message>
         <location filename="../../../net/ktconnectdialog.cpp" line="73"/>
         <source>Connection Dialog</source>
-        <translation>Dialogo de Conexión</translation>
+        <translation type="unfinished">Diàleg de connexió</translation>
     </message>
     <message>
         <location filename="../../../net/ktconnectdialog.cpp" line="83"/>
         <source>Login</source>
-        <translation>Nombre</translation>
+        <translation type="unfinished">Nom</translation>
     </message>
     <message>
         <location filename="../../../net/ktconnectdialog.cpp" line="83"/>
         <source>Password</source>
-        <translation>Clave</translation>
+        <translatorcomment>de fet login es clau... Pero millor aixi per costum</translatorcomment>
+        <translation type="unfinished">Clau</translation>
     </message>
     <message>
         <location filename="../../../net/ktconnectdialog.cpp" line="83"/>
@@ -533,12 +557,13 @@
     <message>
         <location filename="../../../net/ktconnectdialog.cpp" line="83"/>
         <source>Port</source>
-        <translation>Puerto</translation>
+        <translation type="unfinished">Port</translation>
     </message>
     <message>
         <location filename="../../../net/ktconnectdialog.cpp" line="85"/>
         <source>Store password</source>
-        <translation>Guardar clave</translation>
+        <translatorcomment>Desa o recorda (literalment enmagatzema)</translatorcomment>
+        <translation type="unfinished">Desa la clau</translation>
     </message>
 </context>
 <context>
@@ -546,17 +571,19 @@
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="697"/>
         <source>Export</source>
-        <translation>Exportar</translation>
+        <translation type="unfinished">Exporta</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="707"/>
         <source>Export to Video File</source>
-        <translation>Exportar como archivo de vídeo</translation>
+        <translatorcomment>O anomena i desa com o desa com arxiu de video</translatorcomment>
+        <translation type="unfinished">Exporta com a fitxer de vídeo</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="710"/>
         <source>Export to Images Array</source>
-        <translation>Exportar como arreglo de imagenes</translation>
+        <translatorcomment>array com a contenidor (dificil traduccio, idem a la programacio) o grup</translatorcomment>
+        <translation type="unfinished">Exporta com a contenidor d&apos;imatges</translation>
     </message>
 </context>
 <context>
@@ -564,42 +591,45 @@
     <message>
         <location filename="../../../components/exposure/ktexposuresheet.cpp" line="65"/>
         <source>Exposure Sheet</source>
-        <translation>Tabla de Exposición</translation>
+        <translatorcomment>Sheet es full, no taula</translatorcomment>
+        <translation type="unfinished">Fulla d&apos;exposició</translation>
     </message>
     <message>
         <location filename="../../../components/exposure/ktexposuresheet.cpp" line="95"/>
         <source>actions</source>
-        <translation>Acciones</translation>
+        <translation type="unfinished">accions</translation>
     </message>
     <message>
         <location filename="../../../components/exposure/ktexposuresheet.cpp" line="98"/>
         <source>Insert frame</source>
-        <translation>Insertar marco</translation>
+        <translation type="unfinished">Inserta marc</translation>
     </message>
     <message>
         <location filename="../../../components/exposure/ktexposuresheet.cpp" line="99"/>
         <source>Remove frame</source>
-        <translation>Remover marco</translation>
+        <translatorcomment>Suprimir (idem GIMP).</translatorcomment>
+        <translation type="unfinished">Suprimeix marc</translation>
     </message>
     <message>
         <location filename="../../../components/exposure/ktexposuresheet.cpp" line="100"/>
         <source>Lock frame</source>
-        <translation>Bloquear marco</translation>
+        <translation type="unfinished">Bloqueja marc</translation>
     </message>
     <message>
         <location filename="../../../components/exposure/ktexposuresheet.cpp" line="102"/>
         <source>Copy frame</source>
-        <translation>Copiar marco</translation>
+        <translation type="unfinished">Copia marc</translation>
     </message>
     <message>
         <location filename="../../../components/exposure/ktexposuresheet.cpp" line="103"/>
         <source>Paste in frame</source>
-        <translation>Pegar en marco</translation>
+        <translation type="unfinished">Enganxa al marc</translation>
     </message>
     <message>
         <location filename="../../../components/exposure/ktexposuresheet.cpp" line="104"/>
         <source>Expand frame</source>
-        <translation>Expandir marco</translation>
+        <translatorcomment>Escala en comptes d&apos;expandeix (com el Gimp?)</translatorcomment>
+        <translation type="unfinished">Escala marc</translation>
     </message>
 </context>
 <context>
@@ -607,7 +637,7 @@
     <message>
         <location filename="../../../components/library/ktgctable.cpp" line="61"/>
         <source>New folder %1</source>
-        <translation>Nueva carpeta %1</translation>
+        <translation type="unfinished">Nova carpeta %1</translation>
     </message>
 </context>
 <context>
@@ -615,7 +645,7 @@
     <message>
         <location filename="../../../libktoon/ktgradientcreator.cpp" line="71"/>
         <source>Linear</source>
-        <translation>Lineal</translation>
+        <translation type="unfinished">Linial</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktgradientcreator.cpp" line="71"/>
@@ -625,22 +655,23 @@
     <message>
         <location filename="../../../libktoon/ktgradientcreator.cpp" line="71"/>
         <source>Conical</source>
-        <translation>Cónico</translation>
+        <translation type="unfinished">Cònic</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktgradientcreator.cpp" line="78"/>
         <source>Pad</source>
+        <translatorcomment>no se si es correcte...</translatorcomment>
         <translation>Uniforme</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktgradientcreator.cpp" line="78"/>
         <source>Reflect</source>
-        <translation>Reflectivo</translation>
+        <translation type="unfinished">Reflexa</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktgradientcreator.cpp" line="78"/>
         <source>Repeat</source>
-        <translation>Repetir</translation>
+        <translation type="unfinished">Repeteix</translation>
     </message>
 </context>
 <context>
@@ -648,7 +679,7 @@
     <message>
         <location filename="../../../components/help/kthelpbrowser.cpp" line="45"/>
         <source>Help</source>
-        <translation>Ayuda</translation>
+        <translation type="unfinished">Ajuda</translation>
     </message>
 </context>
 <context>
@@ -656,7 +687,7 @@
     <message>
         <location filename="../../../components/help/kthelpwidget.cpp" line="52"/>
         <source>Help</source>
-        <translation>Ayuda</translation>
+        <translation type="unfinished">Ajuda</translation>
     </message>
 </context>
 <context>
@@ -669,7 +700,7 @@
     <message>
         <location filename="../../../store/ktlayer.cpp" line="122"/>
         <source>Frame %1</source>
-        <translation>Marco %1</translation>
+        <translation type="unfinished">Marc %1</translation>
     </message>
 </context>
 <context>
@@ -695,17 +726,17 @@
     <message>
         <location filename="../../../components/paintarea/ktlibrarydialog.cpp" line="57"/>
         <source>Library Object</source>
-        <translation>Objeto de Biblioteca</translation>
+        <translation type="unfinished">Objecte de biblioteca</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktlibrarydialog.cpp" line="90"/>
         <source>Name</source>
-        <translation>Nombre</translation>
+        <translation type="unfinished">Nom</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktlibrarydialog.cpp" line="93"/>
         <source>Item %1</source>
-        <translation>Elemento %1</translation>
+        <translation type="unfinished">Element %1</translation>
     </message>
 </context>
 <context>
@@ -718,78 +749,80 @@
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="125"/>
         <source>Add the current graphic to library</source>
-        <translation>Adicionar el gráfico actual a biblioteca</translation>
+        <translation type="unfinished">Afegeix el gràfic actual a biblioteca</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="132"/>
         <source>Remove the selected symbol from library</source>
-        <translation>Remover el simbolo seleccionado desde la biblioteca</translation>
+        <translation type="unfinished">Suprimeix el símbol seleccionat de la biblioteca</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="137"/>
         <source>Inserts the selected symbol into the drawing area</source>
-        <translation>Insertar el simbolo seleccionado en el area de ilustración</translation>
+        <translation type="unfinished">Insereix el símbol seleccionat en l&apos;àrea de dibuix</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="143"/>
         <source>Adds a folder to the symbol list</source>
-        <translation>Adiciona una carpeta a la lista de objetos</translation>
+        <translatorcomment>o a la llista de simbols?</translatorcomment>
+        <translation type="unfinished">Afegeix una carpeta a la llista d&apos;objectes</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="280"/>
         <source>Import an image...</source>
-        <translation>Importar una imagen...</translation>
+        <translation type="unfinished">Importa una imatge...</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="281"/>
         <source>Images</source>
-        <translation>Imagenes</translation>
+        <translation type="unfinished">Imatges</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="300"/>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="413"/>
         <source>Cannot open file: %1</source>
-        <translation>No es posible abrir archivo: %1</translation>
+        <translation type="unfinished">No es pot obrir el fitxer: %1</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="308"/>
         <source>Choose the images directory...</source>
-        <translation>Escoge el directorio de imagenes...</translation>
+        <translation type="unfinished">Tria el directori d&apos;imatges...</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="329"/>
         <source>Information</source>
-        <translation>Información</translation>
+        <translation type="unfinished">Informació</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="324"/>
         <source>%1 images will be loaded.</source>
-        <translation>%1 imagenes serán cargadas.</translation>
+        <translation type="unfinished">%1 imatges seran carregades.</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="326"/>
         <source>Files are too big, so they will be resized.</source>
-        <translation>Los archivos son demasiado grandes, serán redimensionados.</translation>
+        <translation type="unfinished">Els fitxers són massa grans, seran redimensionats.</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="326"/>
         <source>Note: This task can take a while.</source>
-        <translation>Nota: Este procedimiento puede tomar algún tiempo.</translation>
+        <translatorcomment>Si es vol modificar la frase, millor traduir de l&apos;angles. Del castella costa mes...</translatorcomment>
+        <translation type="unfinished">Nota: Aquesta tasca pot trigar molta estona.</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="332"/>
         <source>Do you want to continue?</source>
-        <translation>Desea continuar?</translation>
+        <translation type="unfinished">Desitja continuar?</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="341"/>
         <source>Loading images...</source>
-        <translation>Cargando imagenes...</translation>
+        <translation type="unfinished">Carregant imatges...</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="381"/>
         <source>Loading image #%1</source>
-        <translation>Cargando imagen #%1</translation>
+        <translation type="unfinished">Carregant imatge #%1</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="387"/>
@@ -799,22 +832,24 @@
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="387"/>
         <source>ERROR: Can&apos;t open file %1. Please, check file permissions and try again.</source>
-        <translation>ERROR: No se puede abrir el archivo %1. Por favor, revisa los permisos de archivo e intenta de nuevo.</translation>
+        <translation type="unfinished">ERROR: No es pot obrir el fitxer %1. Si us plau, revisi els permisos del fitxer i intenti-ho un altre cop.</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="397"/>
         <source>No image files were found.&lt;br/&gt;Please, try another directory</source>
-        <translation>Ninguna imagen fue encontrada.&lt;br/&gt;Por favor, intenta con otro directorio</translation>
+        <translatorcomment>Millor la traduccio castellana. La que he utilitzat</translatorcomment>
+        <translation type="unfinished">No s&apos;han trobat arxius d&apos;imatge.&lt;br/&gt;Si us  plau, provi en un altre directori</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="403"/>
         <source>Import an audio file...</source>
-        <translation>Importar un archivo de sonido...</translation>
+        <translatorcomment>millor so que audio</translatorcomment>
+        <translation type="unfinished">Importa un fitxer de so...</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="404"/>
         <source>Sound file</source>
-        <translation>Archivo de sonido</translation>
+        <translation type="unfinished">Fitxer de so</translation>
     </message>
 </context>
 <context>
@@ -822,27 +857,28 @@
     <message>
         <location filename="../../../net/ktlistprojectdialog.cpp" line="56"/>
         <source>Projects List from Server</source>
-        <translation>Lista de proyectos en el servidor</translation>
+        <translation type="unfinished">Llista de projectes des del servidor</translation>
     </message>
     <message>
         <location filename="../../../net/ktlistprojectdialog.cpp" line="69"/>
         <source>name</source>
-        <translation>nombre</translation>
+        <translation type="unfinished">nom</translation>
     </message>
     <message>
         <location filename="../../../net/ktlistprojectdialog.cpp" line="69"/>
         <source>author</source>
-        <translation>author</translation>
+        <translation type="unfinished">autor</translation>
     </message>
     <message>
         <location filename="../../../net/ktlistprojectdialog.cpp" line="69"/>
         <source>description</source>
-        <translation>descripción</translation>
+        <translation type="unfinished">descripció</translation>
     </message>
     <message>
         <location filename="../../../net/ktlistprojectdialog.cpp" line="82"/>
         <source>OK</source>
-        <translation>Aceptar</translation>
+        <translatorcomment>Potser millor ok...</translatorcomment>
+        <translation type="unfinished">Accepta</translation>
     </message>
 </context>
 <context>
@@ -850,44 +886,46 @@
     <message>
         <location filename="../../ktmainwindow.cpp" line="115"/>
         <source>KToon: 2D Animation Toolkit</source>
-        <translation>KToon: Herramienta para animación en 2D</translation>
+        <translatorcomment>millor d&apos;animacio que per a la animacio</translatorcomment>
+        <translation type="unfinished">KToon: Eina d&apos;animació en 2D</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="124"/>
         <source>Setting up the project manager</source>
-        <translation>Configurando el administrador de proyectos</translation>
+        <translation type="unfinished">Configurant l&apos;administrador de projectes</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="127"/>
         <source>Loading action manager...</source>
-        <translation>Cargando el administrador de acciones...</translation>
+        <translation type="unfinished">Carregant l&apos;administrador d&apos;accions...</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="131"/>
         <source>Creating menu bar...</source>
-        <translation>Creando la barra de menús...</translation>
+        <translation type="unfinished">Creant la barra de menús...</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="134"/>
         <source>Creating GUI...</source>
-        <translation>Creando GUI...</translation>
+        <translation type="unfinished">Creant GUI...</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="225"/>
         <source>Opening a new document...</source>
-        <translation>Abriendo un nuevo proyecto...</translation>
+        <translatorcomment>en castella posava projecte</translatorcomment>
+        <translation type="unfinished">Obrint un nou document...</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="231"/>
         <source>Illustration</source>
-        <translation>Ilustración</translation>
+        <translation type="unfinished">Il·lustració</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="249"/>
         <location filename="../../ktmainwindow.cpp" line="957"/>
         <location filename="../../ktmainwindow_gui.cpp" line="315"/>
         <source>Animation</source>
-        <translation>Animación</translation>
+        <translation type="unfinished">Animació</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="322"/>
@@ -897,163 +935,165 @@
     <message>
         <location filename="../../ktmainwindow.cpp" line="324"/>
         <source>The document has been modified.</source>
-        <translation>El proyecto ha sido modificado.</translation>
+        <translation type="unfinished">El projecte ha estat modificat.</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="325"/>
         <source>Do you want to save the project?</source>
-        <translation>Deseas guardar el proyecto?</translation>
+        <translation type="unfinished">Desitja desar el projecte?</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="518"/>
         <location filename="../../ktmainwindow.cpp" line="644"/>
         <source>Import project package</source>
-        <translation>Importar archivo de proyecto</translation>
+        <translation type="unfinished">Importa fitxer de projecte</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="519"/>
         <source>KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)</source>
-        <translation>Archivo de KToon (*.ktn);;Archivo de KToon en Red (*.ktnet)</translation>
+        <translation type="unfinished">Fitxer de KToon (*.ktn);;Fitxer de KToon en xarxa (*.ktnet)</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="598"/>
         <source>Project %1 opened!</source>
-        <translation>Proyecto %1 abierto!</translation>
+        <translation type="unfinished">Projecte %1 obert!</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="601"/>
         <source>Cannot open project!</source>
-        <translation>No se puede abrir proyecto!</translation>
+        <translation type="unfinished">No es pot obrir projecte!</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="645"/>
         <source>KToon Project Package (*.ktn)</source>
-        <translation>Archivo de Proyecto (*.ktn)</translation>
+        <translation type="unfinished">Fitxer de projecte (*.ktn)</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="680"/>
         <source>Preferences Dialog Opened</source>
-        <translation>Dialogo de preferencias abierto</translation>
+        <translation type="unfinished">Diàleg de preferències obert</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="740"/>
         <source>Import gimp palettes</source>
-        <translation>Importar paletas de gimp</translation>
+        <translation type="unfinished">Importa paletes del gimp</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="741"/>
         <source>Gimp Palette (*.gpl)</source>
-        <translation>Paleta de Gimp (*.gpl)</translation>
+        <translation type="unfinished">Paleta del Gimp (*.gpl)</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="743"/>
         <source>Importing palettes</source>
-        <translation>Importando paletas</translation>
+        <translation type="unfinished">Important paletes</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="867"/>
         <source>Build project package</source>
-        <translation>Creando archivo de proyecto</translation>
+        <translatorcomment>lit. construint</translatorcomment>
+        <translation type="unfinished">Creant fitxer de projecte</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="883"/>
         <source>Directory &quot;</source>
-        <translation>Directorio &quot;</translation>
+        <translation type="unfinished">Directori &quot;</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="890"/>
         <source>You have no permission to create this file. Please, choose another path.</source>
-        <translation>No tienes permisos para crear este archivo. Por favor, escoge otra ruta.</translation>
+        <translation type="unfinished">No té permisos per crear aquest fitxer. Si us plau, triï una altra drecera.</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="922"/>
         <source>Project %1 saved</source>
-        <translation>Proyecto %1 guardado</translation>
+        <translation type="unfinished">Projecte %1 desat</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="924"/>
         <source>Cannot save the project!</source>
-        <translation>No se puede guardar el proyecto!</translation>
+        <translation type="unfinished">No es pot desar el projecte!</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="958"/>
         <source>New camera</source>
-        <translation>Nueva cámara</translation>
+        <translation type="unfinished">Nova càmera</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="93"/>
         <source>Bitmap</source>
-        <translation>Imagen</translation>
+        <translation type="unfinished">Imatge</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="96"/>
         <source>Bitmap Array</source>
-        <translation>Arreglo de Imagenes</translation>
+        <translatorcomment>contenidor, no contenedor</translatorcomment>
+        <translation type="unfinished">Contenidor d&apos;imatges</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="210"/>
         <source>&amp;File</source>
-        <translation>&amp;Archivo</translation>
+        <translation type="unfinished">&amp;Fitxer</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="214"/>
         <source>&amp;New</source>
-        <translation>&amp;Nuevo</translation>
+        <translation type="unfinished">&amp;Nou</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="229"/>
         <source>Recents</source>
-        <translation>Recientes</translation>
+        <translation type="unfinished">Recents</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="253"/>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="unfinished">&amp;Edita</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="266"/>
         <source>&amp;Insert</source>
-        <translation>&amp;Insertar</translation>
+        <translation type="unfinished">&amp;Inserta</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="285"/>
         <source>&amp;Window</source>
-        <translation>&amp;Ventana</translation>
+        <translation type="unfinished">&amp;Finestra</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="303"/>
         <source>Modules</source>
-        <translation>Módulos</translation>
+        <translation type="unfinished">Mòduls</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="308"/>
         <source>Drawing</source>
-        <translation>Ilustración</translation>
+        <translation type="unfinished">Il·lustració</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="322"/>
         <source>Help</source>
-        <translation>Ayuda</translation>
+        <translation type="unfinished">Ajuda</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="334"/>
         <source>&amp;Help</source>
-        <translation>&amp;Ayuda</translation>
+        <translation type="unfinished">&amp;Ajuda</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="381"/>
         <source>New project</source>
-        <translation>Nuevo proyecto</translation>
+        <translation type="unfinished">Nou projecte</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="383"/>
         <source>Open new project</source>
-        <translation>Abrir nuevo proyecto</translation>
+        <translation type="unfinished">Obre nou projecte</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="386"/>
         <source>Open project</source>
-        <translation>Abrir proyecto</translation>
+        <translation type="unfinished">Obre projecte</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="386"/>
@@ -1063,22 +1103,22 @@
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="389"/>
         <source>Load existent project</source>
-        <translation>Cargar proyecto existente</translation>
+        <translation type="unfinished">Carrega projecte existent</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="391"/>
         <source>Open project from server...</source>
-        <translation>Abrir proyecto desde servidor...</translation>
+        <translation type="unfinished">Obre projecte des de servidor...</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="395"/>
         <source>Import project to server...</source>
-        <translation>Importar proyecto a servidor...</translation>
+        <translation type="unfinished">Importa projecte al servidor...</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="399"/>
         <source>Save project</source>
-        <translation>Guardar proyecto</translation>
+        <translation type="unfinished">Desa projecte</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="400"/>
@@ -1088,22 +1128,24 @@
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="402"/>
         <source>Save current project in current location</source>
-        <translation>Guardar proyecto actual en ruta actual</translation>
+        <translation type="unfinished">Desa projecte actual en la drecera actual</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="404"/>
         <source>Save project &amp;As...</source>
-        <translation>Guardar proyecto &amp;como...</translation>
+        <translatorcomment>traduit aixi per similitud amb el GIMP fer una revisio...</translatorcomment>
+        <translation type="unfinished">Anomena i desa projecte &amp;com...</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="406"/>
         <source>Open dialog box to save current project in any location</source>
-        <translation>Abrir dialogo para guardar proyecto actual en cualquier ruta</translation>
+        <translation type="unfinished">Obre diàleg per desar projecte actual en qualsevol drecera</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="409"/>
         <source>Cl&amp;ose project</source>
-        <translation>C&amp;errar proyecto</translation>
+        <translatorcomment>Estrany......</translatorcomment>
+        <translation type="unfinished">T&amp;anca projecte</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="410"/>
@@ -1113,32 +1155,32 @@
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="412"/>
         <source>Close active project</source>
-        <translation>Cerrar proyecto activo</translation>
+        <translation type="unfinished">Tanca projecte actiu</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="417"/>
         <source>&amp;Import GIMP palettes</source>
-        <translation>&amp;Importar paletas de Gimp</translation>
+        <translation type="unfinished">&amp;Importa paletes del GIMP</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="419"/>
         <source>Import palettes</source>
-        <translation>Importar paletas</translation>
+        <translation type="unfinished">Importa paletes</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="423"/>
         <source>&amp;Export Project</source>
-        <translation>&amp;Exportar proyecto</translation>
+        <translation type="unfinished">&amp;Exporta projecte</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="425"/>
         <source>Export project to several video formats</source>
-        <translation>Exportar proyecto a varios formatos de vídeo</translation>
+        <translation type="unfinished">Exporta projecte a varis formats de vídeo</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="429"/>
         <source>E&amp;xit</source>
-        <translation>S&amp;alir</translation>
+        <translation type="unfinished">S&amp;urt</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="429"/>
@@ -1148,47 +1190,49 @@
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="431"/>
         <source>Close application</source>
-        <translation>Cerrar aplicación</translation>
+        <translation type="unfinished">Tanca aplicació</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="449"/>
         <source>Launch configuration wizard...</source>
-        <translation>Cargar asistente de configuración...</translation>
+        <translatorcomment>Launc com arrenca o arranca, literalment llançar</translatorcomment>
+        <translation type="unfinished">Arrenca assistent de configuració...</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="451"/>
         <source>Launch first configuration wizard</source>
-        <translation>Cargar primer asistente de configuración</translation>
+        <translation type="unfinished">Arrenca primer assistent de configuració</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="453"/>
         <source>Pr&amp;eferences...</source>
-        <translation>Pr&amp;eferencias...</translation>
+        <translation type="unfinished">Pr&amp;eferències...</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="455"/>
         <source>Opens the preferences dialog box</source>
-        <translation>Abre el dialogo de preferencias</translation>
+        <translation type="unfinished">Obre el diàleg de preferències</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="469"/>
         <source>About KToon</source>
-        <translation>Acerca de KToon</translation>
+        <translation type="unfinished">En quant a KToon</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="470"/>
         <source>Tip of day</source>
-        <translation>Consejo del día</translation>
+        <translation type="unfinished">Consell del dia</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="527"/>
         <source>Bar Actions</source>
+        <translatorcomment>no se com traduir-ho correctament. mirar per mes endavant</translatorcomment>
         <translation>Bar Actions</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="656"/>
         <source>Undo</source>
-        <translation>Deshacer</translation>
+        <translation type="unfinished">Desfés</translation>
     </message>
 </context>
 <context>
@@ -1196,17 +1240,17 @@
     <message>
         <location filename="../../../net/ktnetprojectmanagerhandler.cpp" line="106"/>
         <source>Communications</source>
-        <translation>Comunicaciones</translation>
+        <translation type="unfinished">Comunicacions</translation>
     </message>
     <message>
         <location filename="../../../net/ktnetprojectmanagerhandler.cpp" line="111"/>
         <source>chat</source>
-        <translation>chat</translation>
+        <translation type="unfinished">xat</translation>
     </message>
     <message>
         <location filename="../../../net/ktnetprojectmanagerhandler.cpp" line="116"/>
         <source>notices</source>
-        <translation>notificaciones</translation>
+        <translation type="unfinished">notícies</translation>
     </message>
 </context>
 <context>
@@ -1214,12 +1258,12 @@
     <message>
         <location filename="../../ktnewproject.cpp" line="68"/>
         <source>Create a new project</source>
-        <translation>Crear nuevo proyecto</translation>
+        <translation type="unfinished">Crea un nou projecte</translation>
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="74"/>
         <source>Project Name</source>
-        <translation>Nombre</translation>
+        <translation type="unfinished">Nom del projecte</translation>
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="80"/>
@@ -1229,12 +1273,12 @@
     <message>
         <location filename="../../ktnewproject.cpp" line="86"/>
         <source>Dimension</source>
-        <translation>Dimensión</translation>
+        <translation type="unfinished">Dimensió</translation>
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="95"/>
         <source>Options</source>
-        <translation>Opciones</translation>
+        <translation type="unfinished">Opcions</translation>
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="102"/>
@@ -1244,27 +1288,27 @@
     <message>
         <location filename="../../ktnewproject.cpp" line="114"/>
         <source>Project info</source>
-        <translation>Propiedades</translation>
+        <translation type="unfinished">Propietats</translation>
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="123"/>
         <source>Create a network project</source>
-        <translation>Proyecto en red</translation>
+        <translation type="unfinished">Crea un projecte en xarxa</translation>
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="144"/>
         <source>Network</source>
-        <translation>Red</translation>
+        <translation type="unfinished">Xarxa</translation>
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="165"/>
         <source>Login</source>
-        <translation>Usuario</translation>
+        <translation type="unfinished">Usuari</translation>
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="165"/>
         <source>Password</source>
-        <translation>Clave</translation>
+        <translation type="unfinished">Clau</translation>
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="165"/>
@@ -1274,12 +1318,13 @@
     <message>
         <location filename="../../ktnewproject.cpp" line="165"/>
         <source>Port</source>
-        <translation>Puerto</translation>
+        <translation type="unfinished">Port</translation>
     </message>
     <message>
         <location filename="../../ktnewproject.cpp" line="204"/>
         <source>Please fill the project name field</source>
-        <translation>Por favor, ingrese el nombre del proyecto</translation>
+        <translatorcomment>traduir aquesta paraula</translatorcomment>
+        <translation type="unfinished">Si us plau, escrigui el nom del projecte</translation>
     </message>
 </context>
 <context>
@@ -1287,17 +1332,17 @@
     <message>
         <location filename="../../../net/ktnotice.cpp" line="77"/>
         <source>Send</source>
-        <translation>Enviar</translation>
+        <translation type="unfinished">Envia</translation>
     </message>
     <message>
         <location filename="../../../net/ktnotice.cpp" line="94"/>
         <source>notice</source>
-        <translation>notificación</translation>
+        <translation type="unfinished">notifica</translation>
     </message>
     <message>
         <location filename="../../../net/ktnotice.cpp" line="94"/>
         <source> by </source>
-        <translation> por </translation>
+        <translation type="unfinished"> per </translation>
     </message>
 </context>
 <context>
@@ -1305,68 +1350,74 @@
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="133"/>
         <source>Drawing area</source>
-        <translation>Area de Ilustración</translation>
+        <translatorcomment>canviar-ho per dibuix?</translatorcomment>
+        <translation type="unfinished">Àrea d&apos;il·lustració</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="138"/>
         <source>Cut</source>
-        <translation>Cortar</translation>
+        <translatorcomment>retalla com al GIMP en comptes de talla</translatorcomment>
+        <translation type="unfinished">Retalla</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="139"/>
         <source>Copy</source>
-        <translation>Copiar</translation>
+        <translation type="unfinished">Copia</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="140"/>
         <source>Paste</source>
-        <translation>Pegar</translation>
+        <translation type="unfinished">Enganxa</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="141"/>
         <source>Delete</source>
-        <translation>Eliminar</translation>
+        <translatorcomment>o neteja (al gimp es neteja una area, no s&apos;elimina) Elimina, suprimeix</translatorcomment>
+        <translation type="unfinished">Neteja</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="144"/>
         <source>Order</source>
-        <translation>Ordenar</translation>
+        <translatorcomment>(ordena en el cas de donar una ordre) o alinia</translatorcomment>
+        <translation type="unfinished">Endreça</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="147"/>
         <source>Send to back</source>
-        <translation>Enviar al fondo</translation>
+        <translatorcomment>Idem que al GIMP en comptes de envia al fons o al darrera</translatorcomment>
+        <translation type="unfinished">Mou al capdavall</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="148"/>
         <source>Bring to front</source>
-        <translation>Enviar al frente</translation>
+        <translatorcomment>fixar-me si no es confonen amb les dues seguents</translatorcomment>
+        <translation type="unfinished">Mou al capdamunt</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="149"/>
         <source>Send backwards</source>
-        <translation>Enviar al fondo</translation>
+        <translation type="unfinished">Mou avall</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="150"/>
         <source>Brind forwards</source>
-        <translation>Enviar adelante</translation>
+        <translation type="unfinished">Mou amunt</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="156"/>
         <source>Add to library...</source>
-        <translation>Adicionar a biblioteca...</translation>
+        <translation type="unfinished">Afegeix a la biblioteca...</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="314"/>
         <source>Object Selection</source>
-        <translation>Selección de Objetos</translation>
+        <translation type="unfinished">Selecció d&apos;objectes</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="506"/>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="540"/>
         <source>No items selected</source>
-        <translation>No hay items seleccionados</translation>
+        <translation type="unfinished">No hi ha ítems seleccionats</translation>
     </message>
 </context>
 <context>
@@ -1374,17 +1425,17 @@
     <message>
         <location filename="../../../libbase/ktpaintareabase.cpp" line="176"/>
         <source>OpenGL isn&apos;t supported</source>
-        <translation>OpenGL no es soportado</translation>
+        <translation type="unfinished">Sense suport d&apos;OpenGL</translation>
     </message>
     <message>
         <location filename="../../../libbase/ktpaintareabase.cpp" line="334"/>
         <source>Locked!</source>
-        <translation>Bloqueado!</translation>
+        <translation type="unfinished">Bloquejat!</translation>
     </message>
     <message>
         <location filename="../../../libbase/ktpaintareabase.cpp" line="361"/>
         <source>No Layers!</source>
-        <translation>No hay capas!</translation>
+        <translation type="unfinished">No hi ha capes!</translation>
     </message>
 </context>
 <context>
@@ -1392,27 +1443,28 @@
     <message>
         <location filename="../../../libktui/ktpaintareaconfig.cpp" line="68"/>
         <source>Grid color</source>
-        <translation>Color de Malla</translation>
+        <translation type="unfinished">Color de graella</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktpaintareaconfig.cpp" line="74"/>
         <source>Grid separation</source>
-        <translation>Separación de Malla</translation>
+        <translation type="unfinished">Separació de graella</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktpaintareaconfig.cpp" line="83"/>
         <source>Background color</source>
-        <translation>Color de Fondo</translation>
+        <translation type="unfinished">Color de fons</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktpaintareaconfig.cpp" line="89"/>
         <source>Onion skin color</source>
-        <translation>Color de Papel Cebolla</translation>
+        <translatorcomment>preguntar que es aixo...</translatorcomment>
+        <translation type="unfinished">Onion skin color</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktpaintareaconfig.cpp" line="95"/>
         <source>Onion skin background </source>
-        <translation>Fondo de Papel Cebolla </translation>
+        <translation type="unfinished">Onion skin background </translation>
     </message>
 </context>
 <context>
@@ -1420,11 +1472,12 @@
     <message>
         <location filename="../../../components/paintarea/ktpaintareastatus.cpp" line="73"/>
         <source>Rotate</source>
-        <translation>Rotar</translation>
+        <translation type="unfinished">Rota</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintareastatus.cpp" line="92"/>
         <source>Antialiasing</source>
+        <translatorcomment>aixo es un difuminat per les lletres crec, o suavitzat</translatorcomment>
         <translation>Antialiasing</translation>
     </message>
 </context>
@@ -1433,58 +1486,61 @@
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="52"/>
         <source>Pen</source>
-        <translation>Lapiz</translation>
+        <translation type="unfinished">Ploma</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="62"/>
         <source>Thickness</source>
-        <translation>Grosor</translation>
+        <translatorcomment>potser depenent de com GRUIX, Amplada per similitud al GIMP</translatorcomment>
+        <translation type="unfinished">Amplada</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="72"/>
         <source>No pen</source>
-        <translation>Sin lapiz</translation>
+        <translation type="unfinished">Sense ploma</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="73"/>
         <source>Solid</source>
-        <translation>Sólido</translation>
+        <translation type="unfinished">Sòlid</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="74"/>
         <source>Dash</source>
-        <translation>Guión</translation>
+        <translation type="unfinished">Guió</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="75"/>
         <source>Dot</source>
-        <translation>Puntos</translation>
+        <translation type="unfinished">Punts</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="76"/>
         <source>Dash dot</source>
-        <translation>Guiones y puntos</translation>
+        <translation type="unfinished">Guions i punts</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="77"/>
         <source>Dash dot dot</source>
-        <translation>Guión punto punto</translation>
+        <translation type="unfinished">Guió punt punt</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="85"/>
         <source>Flat</source>
-        <translation>Aplanado</translation>
+        <translatorcomment>o pla</translatorcomment>
+        <translation type="unfinished">Aplanat</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="86"/>
         <source>Square</source>
-        <translation>Cuadrado</translation>
+        <translation type="unfinished">Quadrat</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="87"/>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="96"/>
         <source>Round</source>
-        <translation>Redondo</translation>
+        <translatorcomment>o cercle</translatorcomment>
+        <translation type="unfinished">Rodó</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="94"/>
@@ -1494,7 +1550,8 @@
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="95"/>
         <source>Bevel</source>
-        <translation>Angulo recto</translation>
+        <translatorcomment>o bisell (biselat)</translatorcomment>
+        <translation type="unfinished">Angle recte</translation>
     </message>
 </context>
 <context>
@@ -1502,7 +1559,7 @@
     <message>
         <location filename="../../../libktui/ktpreferences.cpp" line="181"/>
         <source>Application KTPreferences</source>
-        <translation>Preferencias de KToon</translation>
+        <translation type="unfinished">Preferències del KToon</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktpreferences.cpp" line="184"/>
@@ -1517,12 +1574,12 @@
     <message>
         <location filename="../../../libktui/ktpreferences.cpp" line="190"/>
         <source>Font</source>
-        <translation>Fuentes</translation>
+        <translation type="unfinished">Font</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktpreferences.cpp" line="193"/>
         <source>Workspace</source>
-        <translation>Area de Trabajo</translation>
+        <translation type="unfinished">Àrea de treball</translation>
     </message>
 </context>
 <context>
@@ -1530,11 +1587,13 @@
     <message>
         <location filename="../../../libktui/ktpreferences.cpp" line="115"/>
         <source>KToon Home</source>
-        <translation>Directorio de Instalación</translation>
+        <translatorcomment>en castella traduit con de instalacio</translatorcomment>
+        <translation type="unfinished">Directori principal</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktpreferences.cpp" line="115"/>
         <source>Cache</source>
+        <translatorcomment>NO SE COM TRADUIR-HO</translatorcomment>
         <translation>Cache</translation>
     </message>
     <message>
@@ -1545,12 +1604,12 @@
     <message>
         <location filename="../../../libktui/ktpreferences.cpp" line="116"/>
         <source>Open last project</source>
-        <translation>Abrir último proyecto</translation>
+        <translation type="unfinished">Obre l&apos;últim projecte</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktpreferences.cpp" line="126"/>
         <source>Auto save (minutes)</source>
-        <translation>Auto guardar (minutos)</translation>
+        <translation type="unfinished">Desa freqüentment (minuts)</translation>
     </message>
 </context>
 <context>
@@ -1566,84 +1625,84 @@
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="106"/>
         <source>Insert frame</source>
-        <translation>Insertar marco</translation>
+        <translation type="unfinished">Inserta marc</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="118"/>
         <source>Remove the frame</source>
-        <translation>Remueve el marco</translation>
+        <translation type="unfinished">Suprimeix el marc</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="131"/>
         <source>Move frame up</source>
-        <translation>Mover marco hacia arriba</translation>
+        <translation type="unfinished">Mou marc cap amunt</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="142"/>
         <source>Move frame down</source>
-        <translation>Mover marco hacia abajo</translation>
+        <translation type="unfinished">Mou marc cap avall</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="153"/>
         <source>Lock frame</source>
-        <translation>Bloquear marco</translation>
+        <translation type="unfinished">Bloqueja marc</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="163"/>
         <source>Insert a layer</source>
-        <translation>Adiciona una capa</translation>
+        <translation type="unfinished">Inserta una capa</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="174"/>
         <source>Remove the layer</source>
-        <translation>Remueve una capa</translation>
+        <translation type="unfinished">Suprimeix una capa</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="186"/>
         <source>Move layer up</source>
-        <translation>Mueve una capa hacia adelante</translation>
+        <translation type="unfinished">Mou una capa cap amunt</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="197"/>
         <source>Move layer down</source>
-        <translation>Mueve una capa hacia atras</translation>
+        <translation type="unfinished">Mou una capa cap avall</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="207"/>
         <source>Lock layer</source>
-        <translation>Bloquea capa</translation>
+        <translation type="unfinished">Bloqueja capa</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="220"/>
         <source>Insert a scene</source>
-        <translation>Adiciona una escena</translation>
+        <translation type="unfinished">Inserta una escena</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="231"/>
         <source>Remove the scene</source>
-        <translation>Remueve una escena</translation>
+        <translation type="unfinished">Suprimeix una escena</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="317"/>
         <source>Do you want to remove this frame?</source>
-        <translation>Desea eliminar este marco?</translation>
+        <translation type="unfinished">Desitja suprimir aquest marc?</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="317"/>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="331"/>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="345"/>
         <source>Remove?</source>
-        <translation>Remover?</translation>
+        <translation type="unfinished">Suprimir?</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="331"/>
         <source>Do you want to remove this layer?</source>
-        <translation>Desea eliminar esta capa?</translation>
+        <translation type="unfinished">Desitja suprimir aquesta capa?</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="345"/>
         <source>Do you want to remove this scene?</source>
-        <translation>Desea remover esta escena?</translation>
+        <translation type="unfinished">Desitja suprimir aquesta escena?</translation>
     </message>
 </context>
 <context>
@@ -1651,7 +1710,7 @@
     <message>
         <location filename="../../../store/ktsaveproject.cpp" line="123"/>
         <source>Project saved in %1!</source>
-        <translation>Proyecto guardado en %1!</translation>
+        <translation type="unfinished">Projecte desat en %1!</translation>
     </message>
 </context>
 <context>
@@ -1664,7 +1723,7 @@
     <message>
         <location filename="../../../store/ktscene.cpp" line="173"/>
         <source>Sound layer %1</source>
-        <translation>Capa de sonido %1</translation>
+        <translation type="unfinished">Capa de so %1</translation>
     </message>
 </context>
 <context>
@@ -1672,7 +1731,7 @@
     <message>
         <location filename="../../../components/exposure/ktscenetabwidget.cpp" line="78"/>
         <source>Layers</source>
-        <translation>Capas</translation>
+        <translation type="unfinished">Capes</translation>
     </message>
 </context>
 <context>
@@ -1680,12 +1739,12 @@
     <message>
         <location filename="../../../components/scenes/ktsceneswidget.cpp" line="66"/>
         <source>Scenes Manager</source>
-        <translation>Administrador de Escenas</translation>
+        <translation type="unfinished">Administrador d&apos;escenes</translation>
     </message>
     <message>
         <location filename="../../../components/scenes/ktsceneswidget.cpp" line="96"/>
         <source>Filter here...</source>
-        <translation>Filtre aquí...</translation>
+        <translation type="unfinished">Filtri aquí...</translation>
     </message>
 </context>
 <context>
@@ -1693,7 +1752,7 @@
     <message>
         <location filename="../../ktsplash.cpp" line="53"/>
         <source>Version </source>
-        <translation>Versión </translation>
+        <translation type="unfinished">Versió </translation>
     </message>
 </context>
 <context>
@@ -1701,27 +1760,27 @@
     <message>
         <location filename="../../../components/library/ktsymboleditor.cpp" line="85"/>
         <source>Symbol editor</source>
-        <translation>Editor de objetos</translation>
+        <translation type="unfinished">Editor d&apos;objectes</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktsymboleditor.cpp" line="95"/>
         <source>Brushes</source>
-        <translation>Brochas</translation>
+        <translation type="unfinished">Pincells</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktsymboleditor.cpp" line="98"/>
         <source>Selection</source>
-        <translation>Selección</translation>
+        <translation type="unfinished">Selecció</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktsymboleditor.cpp" line="101"/>
         <source>Fill</source>
-        <translation>Relleno</translation>
+        <translation type="unfinished">Emplenat</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktsymboleditor.cpp" line="104"/>
         <source>View</source>
-        <translation>Ver</translation>
+        <translation type="unfinished">Visualització</translation>
     </message>
 </context>
 <context>
@@ -1734,7 +1793,7 @@
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="81"/>
         <source>Text</source>
-        <translation>Texto</translation>
+        <translation type="unfinished">Text</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="81"/>
@@ -1744,82 +1803,88 @@
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="81"/>
         <source>Foreground</source>
-        <translation>Foreground</translation>
+        <translatorcomment>jo o posaria fom fons FOREGROUND. Lit Primer pla</translatorcomment>
+        <translation type="unfinished">Primer pla</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="81"/>
         <source>Background</source>
-        <translation>Background</translation>
+        <translatorcomment>lit. Fons.  BACKGROUND</translatorcomment>
+        <translation type="unfinished">Fons</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="82"/>
         <source>Button</source>
-        <translation>Botón</translation>
+        <translation type="unfinished">Botó</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="82"/>
         <source>Button Text</source>
-        <translation>Texto de Botón</translation>
+        <translation type="unfinished">Text de Botó</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="105"/>
         <source>Effects</source>
-        <translation>Efectos</translation>
+        <translation type="unfinished">Efectes</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="109"/>
         <source>Light</source>
-        <translation>Iluminación</translation>
+        <translatorcomment>o iluminacio com posava en castella. Potser lluminositat</translatorcomment>
+        <translation type="unfinished">Llum</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="109"/>
         <source>Midlight</source>
-        <translation>Iluminación media</translation>
+        <translatorcomment>Lluminositat mitja</translatorcomment>
+        <translation type="unfinished">Lluminositat mitja</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="109"/>
         <source>Dark</source>
-        <translation>Oscuridad</translation>
+        <translation type="unfinished">Foscor</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="109"/>
         <source>Mid</source>
-        <translation>Medio</translation>
+        <translation type="unfinished">Mitg</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="131"/>
         <source>Selections</source>
-        <translation>Selecciones</translation>
+        <translation type="unfinished">Seleccions</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="135"/>
         <source>Highlight</source>
-        <translation>Resaltado</translation>
+        <translatorcomment>o llum enlluernador (GIMP) potser. O alta lluminositat</translatorcomment>
+        <translation type="unfinished">Llum alta</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="135"/>
         <source>Highlighted Text</source>
-        <translation>Texto Resaltado</translation>
+        <translatorcomment>CAST- texto resaltado</translatorcomment>
+        <translation type="unfinished">Text enlluernador</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="152"/>
         <source>Text effects</source>
-        <translation>Efectos sobre texto</translation>
+        <translation type="unfinished">Efectes de text</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="155"/>
         <source>Bright Text</source>
-        <translation>Texto brillante</translation>
+        <translation type="unfinished">Text brillant</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="155"/>
         <source>Link</source>
-        <translation>Enlace</translation>
+        <translation type="unfinished">Enllaç</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="155"/>
         <source>Link Visited</source>
-        <translation>Enlace visitado</translation>
+        <translation type="unfinished">Enllaç visitat</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="173"/>
@@ -1830,37 +1895,37 @@
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="177"/>
         <source>Owner</source>
-        <translation>Propietario</translation>
+        <translation type="unfinished">Propietari</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="177"/>
         <source>Date</source>
-        <translation>Fecha</translation>
+        <translation type="unfinished">Data</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="185"/>
         <source>Save schema</source>
-        <translation>Guardar esquema</translation>
+        <translation type="unfinished">Desa esquema</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="192"/>
         <source>Style</source>
-        <translation>Estilo</translation>
+        <translation type="unfinished">Estil</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="196"/>
         <source>Use this colors</source>
-        <translation>Usar estos colores</translation>
+        <translation type="unfinished">Utilitza aquests colors</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="285"/>
         <source>Name</source>
-        <translation>Nombre</translation>
+        <translation type="unfinished">Nom</translation>
     </message>
     <message>
         <location filename="../../../libktui/ktthemeselector.cpp" line="285"/>
         <source>Please choose a theme name</source>
-        <translation>Por favor escoja un nombre para el tema</translation>
+        <translation type="unfinished">Si us plau triï un nom per el tema</translation>
     </message>
 </context>
 <context>
@@ -1868,7 +1933,7 @@
     <message>
         <location filename="../../../components/timeline/kttimeline.cpp" line="72"/>
         <source>Time Line</source>
-        <translation>Línea de tiempo</translation>
+        <translation type="unfinished">Línia de temps</translation>
     </message>
 </context>
 <context>
@@ -1877,7 +1942,7 @@
         <location filename="../../../components/cameras/ktviewcamera.cpp" line="56"/>
         <location filename="../../../components/cameras/ktviewcamera.cpp" line="63"/>
         <source>Render Camera Preview</source>
-        <translation>Vista previa de cámara</translation>
+        <translation type="unfinished">Vista prèvia de càmera</translation>
     </message>
 </context>
 <context>
@@ -1885,32 +1950,33 @@
     <message>
         <location filename="../../../components/colorpalette/ktviewcolorcells.cpp" line="107"/>
         <source>Default Palette</source>
-        <translation>Paleta por omisión</translation>
+        <translation type="unfinished">Paleta per omisió</translation>
     </message>
     <message>
         <location filename="../../../components/colorpalette/ktviewcolorcells.cpp" line="116"/>
         <source>Named Colors</source>
-        <translation>Colores etiquetados</translation>
+        <translation type="unfinished">Colors etiquetats</translation>
     </message>
     <message>
         <location filename="../../../components/colorpalette/ktviewcolorcells.cpp" line="123"/>
         <source>Custom Color Palette</source>
-        <translation>Paleta de colores personalizados</translation>
+        <translatorcomment>si els colors son personalitzats esta be. Si es la paleta hauria d&apos;estar en femeni</translatorcomment>
+        <translation type="unfinished">Paleta de colors personalitzats</translation>
     </message>
     <message>
         <location filename="../../../components/colorpalette/ktviewcolorcells.cpp" line="128"/>
         <source>Custom Gradient Palette</source>
-        <translation>Paleta de gradientes personalizados</translation>
+        <translation type="unfinished">Paleta de gradients personalitzats</translation>
     </message>
     <message>
         <location filename="../../../components/colorpalette/ktviewcolorcells.cpp" line="342"/>
         <source>Add Color</source>
-        <translation>Adicionar color</translation>
+        <translation type="unfinished">Afegeix color</translation>
     </message>
     <message>
         <location filename="../../../components/colorpalette/ktviewcolorcells.cpp" line="349"/>
         <source>Remove Color</source>
-        <translation>Remover color</translation>
+        <translation type="unfinished">Suprimeix color</translation>
     </message>
 </context>
 <context>
@@ -1918,7 +1984,8 @@
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="222"/>
         <source>Show grid</source>
-        <translation>Mostrar malla</translation>
+        <translatorcomment>graella o malla</translatorcomment>
+        <translation type="unfinished">Mostra graella</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="222"/>
@@ -1928,7 +1995,7 @@
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="227"/>
         <source>C&amp;opy</source>
-        <translation>C&amp;opiar</translation>
+        <translation type="unfinished">C&amp;opia</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="227"/>
@@ -1938,12 +2005,12 @@
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="229"/>
         <source>Copies the selection and puts it onto the clipboard</source>
-        <translation>Copia la selección y la pone disponible para pegar</translation>
+        <translation type="unfinished">Copia la selecció al porta-retalls</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="232"/>
         <source>&amp;Paste</source>
-        <translation>&amp;Pegar</translation>
+        <translation type="unfinished">&amp;Enganxa</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="232"/>
@@ -1953,12 +2020,12 @@
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="234"/>
         <source>Pastes the clipboard into the current document</source>
-        <translation>Pega el objeto copiado en el documento actual</translation>
+        <translation type="unfinished">Enganxa al document des del porta-retalls</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="237"/>
         <source>&amp;Cut</source>
-        <translation>&amp;Cut</translation>
+        <translation type="unfinished">&amp;Retalla</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="237"/>
@@ -1968,22 +2035,22 @@
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="239"/>
         <source>Cuts the selected items</source>
-        <translation>Corta los objetos seleccionados</translation>
+        <translation type="unfinished">Retalla els objetes seleccionats</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="241"/>
         <source>Delete</source>
-        <translation>Eliminar</translation>
+        <translation type="unfinished">Suprimeix</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="245"/>
         <source>Deletes the selected object</source>
-        <translation>Elimina el objeto seleccionado</translation>
+        <translation type="unfinished">Suprimeix l&apos;objete seleccionat</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="247"/>
         <source>&amp;Group</source>
-        <translation>&amp;Grupo</translation>
+        <translation type="unfinished">&amp;Grup</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="248"/>
@@ -1993,12 +2060,12 @@
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="251"/>
         <source>Group the selected objects into a single one</source>
-        <translation>Agrupa los objetos seleccionados en uno solo</translation>
+        <translation type="unfinished">Agrupa els objectes seleccionats en només un</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="253"/>
         <source>&amp;Ungroup</source>
-        <translation>&amp;Desagrupar</translation>
+        <translation type="unfinished">&amp;Desagrupa</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="254"/>
@@ -2008,82 +2075,86 @@
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="257"/>
         <source>Ungroups the selected object</source>
-        <translation>Desagrupa el objeto seleccionado</translation>
+        <translation type="unfinished">Desagrupa l&apos;objete seleccionat</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="341"/>
         <source>Draw tools</source>
-        <translation>Herramientas de Dibujo</translation>
+        <translation type="unfinished">Eines de dibuix</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="348"/>
         <source>Brushes</source>
-        <translation>Brochas</translation>
+        <translation type="unfinished">Pinzells</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="356"/>
         <source>Selection</source>
-        <translation>Selección</translation>
+        <translation type="unfinished">Selecció</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="363"/>
         <source>Fill</source>
-        <translation>Relleno</translation>
+        <translation type="unfinished">Emplenat</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="370"/>
         <source>View</source>
-        <translation>Ver</translation>
+        <translation type="unfinished">Visualització</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="405"/>
         <source>Pencil</source>
-        <translation>Lapiz</translation>
+        <translation type="unfinished">Llapis</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="586"/>
         <source>Paint area actions</source>
+        <translatorcomment>aria d&apos;accions de pintura potser?</translatorcomment>
         <translation>Paint area actions</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="611"/>
         <source>Preview Frames</source>
-        <translation>Marcos previos</translation>
+        <translation type="unfinished">Marcs previs</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="618"/>
         <source>Onion Skin</source>
-        <translation>Papel cebolla</translation>
+        <translatorcomment>No </translatorcomment>
+        <translation type="unfinished">Onion Skin</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="624"/>
         <source>Next Frames</source>
-        <translation>Marcos siguientes</translation>
+        <translation type="unfinished">Marcs següents</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="633"/>
         <source>&amp;Tools</source>
-        <translation>Herramien&amp;tas</translation>
+        <translatorcomment>dificil respectar...</translatorcomment>
+        <translation type="unfinished">&amp;Tools (eines)</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="643"/>
         <source>&amp;Order</source>
-        <translation>&amp;Ordenar</translation>
+        <translatorcomment>o endreça o alinia</translatorcomment>
+        <translation type="unfinished">&amp;Ordena</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="650"/>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="unfinished">&amp;Edita</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="670"/>
         <source>&amp;View</source>
-        <translation>&amp;Ver</translation>
+        <translation type="unfinished">&amp;Visualització</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="678"/>
         <source>Filters</source>
-        <translation>Filtros</translation>
+        <translation type="unfinished">Filtres</translation>
     </message>
 </context>
 <context>
@@ -2091,7 +2162,7 @@
     <message>
         <location filename="../../../components/kinas/kinaswidget.cpp" line="41"/>
         <source>KToon Script</source>
-        <translation>Modo Script</translation>
+        <translation type="unfinished">KToon Script</translation>
     </message>
 </context>
 <context>
@@ -2100,12 +2171,12 @@
         <location filename="../../../plugins/tools/polyline/polyline.cpp" line="115"/>
         <location filename="../../../plugins/tools/polyline/polyline.cpp" line="345"/>
         <source>PolyLine</source>
-        <translation>Polilínea</translation>
+        <translation type="unfinished">Polilínia</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/polyline/polyline.cpp" line="341"/>
         <source>Polyline</source>
-        <translation>Polilínea</translation>
+        <translation type="unfinished">Polilínia</translation>
     </message>
 </context>
 <context>
@@ -2113,130 +2184,132 @@
     <message>
         <location filename="../../../net/ktnetprojectmanagerhandler.cpp" line="370"/>
         <source>Notice From</source>
-        <translation>Notificación desde</translation>
+        <translation type="unfinished">Notificació des de</translation>
     </message>
     <message>
         <location filename="../../../net/ktnetprojectmanagerhandler.cpp" line="381"/>
         <source>Wall From</source>
-        <translation>Muro desde</translation>
+        <translation type="unfinished">Mur des de</translation>
     </message>
     <message>
         <location filename="../../crashhandler.cpp" line="66"/>
         <source>Fatal error</source>
-        <translation>Error Fatal</translation>
+        <translation type="unfinished">Error fatal</translation>
     </message>
     <message>
         <location filename="../../crashhandler.cpp" line="67"/>
         <source>%1 is crashing...</source>
-        <translation>%1 se ha bloqueado...</translation>
+        <translatorcomment>o trencat o estavellat</translatorcomment>
+        <translation type="unfinished">%1 s&apos;ha trencat...</translation>
     </message>
     <message>
         <location filename="../../crashhandler.cpp" line="68"/>
         <source>Close</source>
-        <translation>Cerrar</translation>
+        <translation type="unfinished">Tanca</translation>
     </message>
     <message>
         <location filename="../../crashhandler.cpp" line="69"/>
         <source>This is a general failure</source>
-        <translation>Esta es una falla general</translation>
+        <translation type="unfinished">Aquesta és una fallida general</translation>
     </message>
     <message>
         <location filename="../../main.cpp" line="161"/>
         <source>Missing...</source>
-        <translation>Algo falta...</translation>
+        <translation type="unfinished">Quelcom perdut...</translation>
     </message>
     <message>
         <location filename="../../main.cpp" line="162"/>
         <source>You need configure the application</source>
-        <translation>Necesita configurar la aplicación</translation>
+        <translation type="unfinished">Necessita configurar l&apos;aplicació</translation>
     </message>
     <message>
         <location filename="../../main.cpp" line="200"/>
         <source>Initializing...</source>
-        <translation>Inicializando...</translation>
+        <translation type="unfinished">Inicialitzant...</translation>
     </message>
     <message>
         <location filename="../../main.cpp" line="202"/>
         <source>Loading Modules</source>
-        <translation>Cargando Módulos</translation>
+        <translation type="unfinished">Carregant mòduls</translation>
     </message>
     <message>
         <location filename="../../main.cpp" line="205"/>
         <source>Loaded!</source>
-        <translation>Cargado!</translation>
+        <translation type="unfinished">Carregat!</translation>
     </message>
     <message>
         <location filename="../../main.cpp" line="242"/>
         <source>2D Animation Toolkit</source>
-        <translation>Herramienta de Animación en 2D</translation>
+        <translation type="unfinished">Eina d&apos;animació en 2D</translation>
     </message>
     <message>
         <location filename="../../main.cpp" line="243"/>
         <location filename="../../main.cpp" line="250"/>
         <source>Usage: %1 [option]</source>
-        <translation>Uso: %1 [opción]</translation>
+        <translation type="unfinished">Utilització: %1 [opció]</translation>
     </message>
     <message>
         <location filename="../../main.cpp" line="244"/>
         <location filename="../../main.cpp" line="251"/>
         <source>Options: </source>
-        <translation>Opciones: </translation>
+        <translation type="unfinished">Opcions: </translation>
     </message>
     <message>
         <location filename="../../main.cpp" line="246"/>
         <location filename="../../main.cpp" line="253"/>
         <source>		Reconfigure %1</source>
-        <translation>Reconfigurar %1</translation>
+        <translation type="unfinished">Reconfigura %1</translation>
     </message>
     <message>
         <location filename="../../../store/ktprojectcommand.cpp" line="126"/>
         <source>add</source>
-        <translation>add</translation>
+        <translatorcomment>a partir d&apos;aqui sense traduir fins al seguent avis</translatorcomment>
+        <translation type="unfinished">afegeix</translation>
     </message>
     <message>
         <location filename="../../../store/ktprojectcommand.cpp" line="131"/>
         <source>remove</source>
-        <translation>remove</translation>
+        <translation type="unfinished">suprimeix</translation>
     </message>
     <message>
         <location filename="../../../store/ktprojectcommand.cpp" line="136"/>
         <source>move</source>
-        <translation>move</translation>
+        <translation type="unfinished">mou</translation>
     </message>
     <message>
         <location filename="../../../store/ktprojectcommand.cpp" line="141"/>
         <source>lock</source>
-        <translation>lock</translation>
+        <translation type="unfinished">bloqueja</translation>
     </message>
     <message>
         <location filename="../../../store/ktprojectcommand.cpp" line="146"/>
         <source>rename</source>
-        <translation>rename</translation>
+        <translation type="unfinished">torna a anomenar</translation>
     </message>
     <message>
         <location filename="../../../store/ktprojectcommand.cpp" line="151"/>
         <source>select</source>
-        <translation>select</translation>
+        <translation type="unfinished">selecciona</translation>
     </message>
     <message>
         <location filename="../../../store/ktprojectcommand.cpp" line="156"/>
         <source>edit node</source>
-        <translation>edit node</translation>
+        <translation type="unfinished">edita node</translation>
     </message>
     <message>
         <location filename="../../../store/ktprojectcommand.cpp" line="161"/>
         <source>view</source>
-        <translation>view</translation>
+        <translation type="unfinished">visualització</translation>
     </message>
     <message>
         <location filename="../../../store/ktprojectcommand.cpp" line="166"/>
         <source>transform</source>
-        <translation>transform</translation>
+        <translation type="unfinished">transforma</translation>
     </message>
     <message>
         <location filename="../../../store/ktprojectcommand.cpp" line="171"/>
         <source>convert</source>
-        <translation>convert</translation>
+        <translation type="unfinished">converteix</translation>
     </message>
 </context>
 <context>
@@ -2253,12 +2326,12 @@
         <location filename="../../../plugins/tools/select/select.cpp" line="100"/>
         <location filename="../../../plugins/tools/select/select.cpp" line="236"/>
         <source>Select</source>
-        <translation>Select</translation>
+        <translation type="unfinished">Selecciona</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/select/select.cpp" line="231"/>
         <source>Object Selection</source>
-        <translation>Selección de Objetos</translation>
+        <translation type="unfinished">Selecció d&apos;objectes</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/select/select.cpp" line="232"/>
@@ -2271,7 +2344,7 @@
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="94"/>
         <source>Select plugin</source>
-        <translation>Seleccionar plugin</translation>
+        <translation type="unfinished">Selecciona plugin</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="158"/>
@@ -2319,19 +2392,20 @@
         <location filename="../../../components/export/ktexportwidget.cpp" line="193"/>
         <location filename="../../../components/export/ktexportwidget.cpp" line="236"/>
         <source>Gif Image</source>
-        <translation>Imagen Gif</translation>
+        <translation type="unfinished">Imatge Gif</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="198"/>
         <location filename="../../../components/export/ktexportwidget.cpp" line="239"/>
         <source>PNG Image Array</source>
-        <translation>Arreglo de Imagenes PNG</translation>
+        <translatorcomment>contenidor o potser conjunt</translatorcomment>
+        <translation type="unfinished">Contenidor d&apos;imatges PNG</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="203"/>
         <location filename="../../../components/export/ktexportwidget.cpp" line="242"/>
         <source>JPEG Image Array</source>
-        <translation>Arreglo de imagenes JPEG</translation>
+        <translation type="unfinished">Contenidor d&apos;imatges JPEG</translation>
     </message>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="208"/>
@@ -2345,7 +2419,7 @@
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="290"/>
         <source>Select Scenes</source>
-        <translation>Selecciona las escenas</translation>
+        <translation type="unfinished">Selecciona les escenes</translation>
     </message>
 </context>
 <context>
@@ -2353,7 +2427,7 @@
     <message>
         <location filename="../../../libktoon/ktgradientcreator.h" line="211"/>
         <source>radius</source>
-        <translation>radius</translation>
+        <translation type="unfinished">radi</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktgradientcreator.h" line="220"/>
@@ -2366,12 +2440,12 @@
     <message>
         <location filename="../../../plugins/tools/tweener/stepsviewer.cpp" line="52"/>
         <source>Interval</source>
-        <translation>Intervalo</translation>
+        <translation type="unfinished">Interval</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/tweener/stepsviewer.cpp" line="52"/>
         <source>Frames</source>
-        <translation>Marcos</translation>
+        <translation type="unfinished">Marcs</translation>
     </message>
 </context>
 <context>
@@ -2416,7 +2490,7 @@
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="118"/>
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="144"/>
         <source>Zoom</source>
-        <translation>Acercamiento</translation>
+        <translation type="unfinished">Zoom</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="69"/>
@@ -2426,7 +2500,7 @@
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="134"/>
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="190"/>
         <source>Hand</source>
-        <translation>Mano</translation>
+        <translation type="unfinished">Mà</translation>
     </message>
 </context>
 <context>
@@ -2434,22 +2508,22 @@
     <message>
         <location filename="../../../plugins/tools/viewtool/zoomconfigurator.cpp" line="53"/>
         <source>Zoom Mode</source>
-        <translation>Modo de Acercamiento</translation>
+        <translation type="unfinished">Mode de Zoom</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/viewtool/zoomconfigurator.cpp" line="58"/>
         <source>Zoom In</source>
-        <translation>Acercar</translation>
+        <translation type="unfinished">Apropa</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/viewtool/zoomconfigurator.cpp" line="60"/>
         <source>Zoom Out</source>
-        <translation>Alejar</translation>
+        <translation type="unfinished">Allunya</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/viewtool/zoomconfigurator.cpp" line="68"/>
         <source>Scale Factor</source>
-        <translation>Factor de escala</translation>
+        <translation type="unfinished">Factor d&apos;escala</translation>
     </message>
 </context>
 </TS>

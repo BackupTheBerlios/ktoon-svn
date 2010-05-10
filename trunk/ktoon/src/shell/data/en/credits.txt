@@ -33,6 +33,10 @@ Development Documentation
 ----------------------------
 Translators
 
+  Catalan:
+   
+     Edelweiss Garcia i Fuentes
+
   Spanish: 
 
      Gustavo Gonzalez

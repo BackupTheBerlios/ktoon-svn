@@ -57,13 +57,11 @@
 KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
 {
     setWindowTitle(tr("About") + QString(" KToon"));
+    setFixedSize(500, 370);
 
-    QString lang = "";
+    QString lang = "en";
     if (QString(QLocale::system().name()).length() > 1)
-        lang = path + QString(QLocale::system().name()).left(2);
-    else
-        lang = "en";
-
+        lang = QString(QLocale::system().name()).left(2);
 
     Qt::WindowFlags flags = 0;
     flags = Qt::Dialog;
@@ -99,29 +97,25 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
     m_credits->setPalette(pal);
     m_credits->setFont(QFont("verdana", 24));
 
-    // 2: Ack
+    // 2: Sponsors 
 
+    /*
     QLabel *ack = new QLabel;
 
     QImage ackImg(DATA_DIR + "/images/sponsors.png");
     KImageEffect::fade(ackImg,0.2,palette().background().color()); 
 
     ack->setPixmap(QPixmap::fromImage(ackImg));
-
-    addTab(ack, tr("Sponsors"));
-
-    // 4: Toonka Films
-    /*
-    QLabel *toonka = new QLabel;
-    QImage toonkaImg(DATA_DIR + "/images/toonka.png");
-
-    KImageEffect::fade(toonkaImg,0.2,palette().background().color()); 
-
-    toonka->setPixmap(QPixmap::fromImage(toonkaImg));
-    addTab(toonka, "Toonka Films");
     */
 
-    // 5: Laboratoon
+    QTextBrowser *sponsorsText = new QTextBrowser;
+
+    sponsorsText->setSource(SHARE_DIR + "data/help/" + lang + "/sponsors.html");
+    sponsorsText->moveCursor(QTextCursor::Start);
+
+    addTab(sponsorsText, tr("Sponsors"));
+
+    // 3: Laboratoon
 
     QLabel *laboratoon = new QLabel;
 
@@ -129,26 +123,40 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
     KImageEffect::fade(laboratoonImg,0.2,palette().background().color()); 
 
     laboratoon->setPixmap(QPixmap::fromImage(laboratoonImg));
-    addTab(laboratoon, "Laboratoon");
+    addTab(laboratoon, "Labtoon");
 
-    // 6: Licence
+    /*
+    QTextBrowser *labtoonText = new QTextBrowser;
 
-    QTextBrowser *licenceText = new QTextBrowser;
-    //QFile licenceFile(DATA_DIR + "/license.html");
-    QFile licenceFile(SHARE_DIR + "data/help/" + lang + "/license.html");
+    labtoonText->setSource(SHARE_DIR + "data/help/" + lang + "/labtoon_short.html");
+    labtoonText->moveCursor(QTextCursor::Start);
+
+    addTab(labtoonText, tr("Labtoon"));
+    */
+
+
+    // 4: Licence
+
+    QTextBrowser *licenseText = new QTextBrowser;
+
+    /* QFile licenceFile(DATA_DIR + "/license.html");
+    QFile licenseFile(SHARE_DIR + "data/help/" + lang + "/philosophy.html");
     QString line = "";
-    if (licenceFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream stream(&licenceFile);
+    if (licenseFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream stream(&licenseFile);
         while (! stream.atEnd()) {
                line += stream.readLine();
                //licenceText->append(line);
         }
-        licenceFile.close();
+        licenseFile.close();
     }
-    licenceText->setHtml(line);
-    licenceText->moveCursor(QTextCursor::Start);
+    licenseText->setHtml(line);
+    */
 
-    addTab(licenceText, tr("License Agreement"));
+    licenseText->setSource(SHARE_DIR + "data/help/" + lang + "/philosophy.html");
+    licenseText->moveCursor(QTextCursor::Start);
+
+    addTab(licenseText, tr("Our Philosophy and License"));
     setButtonText(Cancel, tr("Close"));
 }
 
