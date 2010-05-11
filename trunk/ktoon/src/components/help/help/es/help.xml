@@ -1,6 +1,8 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <KHelpSystem>
     <Section title="Introducción">
+        <SubSection title="Portada" file="cover.html" />
+        <SubSection title="Nuestra Visión y Licencia" file="philosophy.html" />
         <SubSection title="Animación 2D? Qué es eso?" file="init.html" />
     </Section>
     <Section title="KToon? Qué es eso?">
