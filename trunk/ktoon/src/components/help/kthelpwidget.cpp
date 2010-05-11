@@ -90,7 +90,7 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
                                           QTreeWidgetItem *subitem = new QTreeWidgetItem(item);
                                           subitem->setText(0, element2.attribute("title"));
                                           m_files.insert(subitem, element2.attribute("file"));
-                                          if (element2.attribute("file").compare("init.html") == 0)
+                                          if (element2.attribute("file").compare("cover.html") == 0)
                                               first = subitem;
                                       }
                                   }

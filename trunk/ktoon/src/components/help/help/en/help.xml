@@ -1,6 +1,7 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <KHelpSystem>
     <Section title="Introduction">
+        <SubSection title="Cover" file="cover.html" />
         <SubSection title="Our Philosophy &amp; License" file="philosophy.html" />
         <SubSection title="2D Animation? What's that?" file="init.html" />
     </Section>

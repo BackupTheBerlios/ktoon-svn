@@ -268,7 +268,7 @@ void KTMainWindow::viewNewDocument()
 
         page = new KTHelpBrowser(this);
         page->setDataDirs(QStringList() << m_helper->helpPath());
-        page->setSource(SHARE_DIR + "data/help/" + QString(QLocale::system().name()).left(2) + "/init.html");
+        page->setSource(SHARE_DIR + "data/help/" + QString(QLocale::system().name()).left(2) + "/cover.html");
         addWidget(page, true, All);
 
         exposureView->expandDock(true);

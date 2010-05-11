@@ -57,7 +57,7 @@
 KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
 {
     setWindowTitle(tr("About") + QString(" KToon"));
-    setFixedSize(500, 370);
+    setFixedSize(525, 458);
 
     QString lang = "en";
     if (QString(QLocale::system().name()).length() > 1)
@@ -117,6 +117,7 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
 
     // 3: Laboratoon
 
+    /*
     QLabel *laboratoon = new QLabel;
 
     QImage laboratoonImg(DATA_DIR + "/images/laboratoon.png");
@@ -124,16 +125,14 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
 
     laboratoon->setPixmap(QPixmap::fromImage(laboratoonImg));
     addTab(laboratoon, "Labtoon");
+    */
 
-    /*
     QTextBrowser *labtoonText = new QTextBrowser;
 
     labtoonText->setSource(SHARE_DIR + "data/help/" + lang + "/labtoon_short.html");
     labtoonText->moveCursor(QTextCursor::Start);
 
     addTab(labtoonText, tr("Labtoon"));
-    */
-
 
     // 4: Licence
 
@@ -156,7 +155,7 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
     licenseText->setSource(SHARE_DIR + "data/help/" + lang + "/philosophy.html");
     licenseText->moveCursor(QTextCursor::Start);
 
-    addTab(licenseText, tr("Our Philosophy and License"));
+    addTab(licenseText, tr("License"));
     setButtonText(Cancel, tr("Close"));
 }
 
