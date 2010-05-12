@@ -20,12 +20,12 @@
 
 #include <QApplication>
 
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 #include "core/server.h"
 #include "packagehandler.h"
 
-#include <dcore/dapplicationproperties.h>
-#include <dcore/dconfig.h>
+#include <kcore/kapplicationproperties.h>
+#include <kcore/kconfig.h>
 
 #include "base/logger.h"
 #include "base/settings.h"
@@ -44,7 +44,7 @@ static void cleanup(int);
 
 int main(int argc, char **argv)
 {
-	DDebug::setForceDisableGUI();
+	KDebug::setForceDisableGUI();
 	
 	QApplication app(argc, argv); // FIXME: Use QCoreApplication with Qt 4.3
 	app.setApplicationName("ktoond");
@@ -55,38 +55,38 @@ int main(int argc, char **argv)
 	signal( SIGSEGV, cleanup);
 #endif
 	
-	if ( !DCONFIG->isOk() )
+	if ( !KCONFIG->isOk() )
 	{
-		DCONFIG->beginGroup("Connection");
-		DCONFIG->setValue("host", "127.0.0.1");
-		DCONFIG->setValue("port", "6502");
+		KCONFIG->beginGroup("Connection");
+		KCONFIG->setValue("host", "127.0.0.1");
+		KCONFIG->setValue("port", "6502");
 		
-		DCONFIG->beginGroup("General");
-		DCONFIG->setValue("repository", dAppProp->configDir()+ "/repository");
+		KCONFIG->beginGroup("General");
+		KCONFIG->setValue("repository", kAppProp->configDir()+ "/repository");
 		
 		
-		DCONFIG->sync();
+		KCONFIG->sync();
 	}
 	
-	DCONFIG->beginGroup("Connection");	
-	QString host = DCONFIG->value("host").toString();
-	int port = DCONFIG->value("port").toInt();
+	KCONFIG->beginGroup("Connection");	
+	QString host = KCONFIG->value("host").toString();
+	int port = KCONFIG->value("port").toInt();
 	
 	
-	DCONFIG->beginGroup("General");
-	dAppProp->setCacheDir(DCONFIG->value("repository").toString());
+	KCONFIG->beginGroup("General");
+	kAppProp->setCacheDir(KCONFIG->value("repository").toString());
 	
-	QDir cache(dAppProp->cacheDir());
+	QDir cache(kAppProp->cacheDir());
 	if(!cache.exists ())
 	{
-		cache.mkdir(dAppProp->cacheDir());
+		cache.mkdir(kAppProp->cacheDir());
 	}
 	
-	QString dbdir = dAppProp->configDir()+"/database";
+	QString dbdir = kAppProp->configDir()+"/database";
 	QDir db(dbdir);
 	if( !db.exists() ) db.mkdir(dbdir);
 	Base::Settings::self()->setDatabaseDirPath(dbdir);
-	Base::Settings::self()->setBackupDirPath(dAppProp->configDir()+"/backups");
+	Base::Settings::self()->setBackupDirPath(kAppProp->configDir()+"/backups");
 	
 	Server::TcpServer server;
 	
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 	
 	server.openConnection( host, port );
 	
-	dDebug() << "Running!";
+	kDebug() << "Running!";
 	
 	return app.exec();
 }
@@ -119,7 +119,7 @@ void cleanup(int s)
 
 	finishing = true;
 	
-	dDebug("server") << "Finishing with signal: " << s;
+	kDebug("server") << "Finishing with signal: " << s;
 	
 	QApplication::flush();
 	QApplication::exit(0);

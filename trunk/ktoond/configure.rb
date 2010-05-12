@@ -2,7 +2,7 @@
 
 require 'qonf/configure'
 require 'qonf/info'
-require 'qonf/dlibconfig.rb'
+require 'qonf/komconfig'
 
 def usage
 	puts <<_EOH_
@@ -46,9 +46,9 @@ begin
 	config.addModule("xml")
 	config.addModule("network")
 
-	config.addLib("-ldgui")
-	config.addLib("-ldcore")
-	config.addLib("-ldsound")
+	config.addLib("-lkgui")
+	config.addLib("-lkcore")
+	config.addLib("-lksound")
 	config.addLib("-L#{ktoondir}/lib -lktoon -lstore -lktbase")
 	
 	config.addLib("-L#{RQonf::CONFIG["libdir"]}")

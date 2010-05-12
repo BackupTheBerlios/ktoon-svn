@@ -23,7 +23,7 @@
 #include <QFile>
 #include <QTextStream>
 
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 
 namespace Users {
 
@@ -60,7 +60,7 @@ Database::~Database()
 
 QDomDocument Database::loadDataBase()
 {
-	dDebug() << "loading database from " << d->dbfile;
+	kDebug() << "loading database from " << d->dbfile;
 	QFile file(d->dbfile);
 	QDomDocument document;
 	if( !file.exists() )
@@ -79,7 +79,7 @@ QDomDocument Database::loadDataBase()
 	{
 		if ( !document.setContent(file.readAll()) )
 		{
-			dWarning() << file.fileName() << " is corrupted!";
+			kWarning() << file.fileName() << " is corrupted!";
 		}
 		file.close();
 	}

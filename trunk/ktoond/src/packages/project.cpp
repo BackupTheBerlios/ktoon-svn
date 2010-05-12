@@ -24,7 +24,7 @@
 #include "ktproject.h"
 
 #include <QFile>
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 /*
 <!-- Respuesta a una peticion open valida -->
 <project version="0">

@@ -28,9 +28,9 @@
 #include "right.h"
 #include "database.h"
 
-#include <dcore/dmd5hash.h>
-#include <dcore/ddebug.h>
-#include <dcore/dfortunegenerator.h>
+#include <kcore/kmd5hash.h>
+#include <kcore/kdebug.h>
+#include <kcore/kfortunegenerator.h>
 
 #include "base/package.h"
 #include "base/settings.h"
@@ -84,8 +84,8 @@ bool Manager::auth(const QString &login, const QString &password)
 {
 	if ( User *user = d->parser->user(login) )
 	{
-		dDebug() << "login: " << user->login() << " pass: " << user->password();
-		dDebug() << "comp: " << password;
+		kDebug() << "login: " << user->login() << " pass: " << user->password();
+		kDebug() << "comp: " << password;
 		if( user->password() == password )
 		{
 			return true;
@@ -96,7 +96,7 @@ bool Manager::auth(const QString &login, const QString &password)
 	}
 	else
 	{
-		dWarning() << "ERROR PARSING USER DATABASE";
+		kWarning() << "ERROR PARSING USER DATABASE";
 	}
 	
 	return false;
@@ -154,7 +154,7 @@ void Manager::handlePackage(Base::Package *const pkg)
 				
 				cnn->setUser(user);
 				
-				QString fortune = DFortuneGenerator::self()->generate();
+				QString fortune = KFortuneGenerator::self()->generate();
 				fortune.replace("\n", "<br/>");
 				Packages::Ack ack(QObject::tr("<center><b>Message of the day:</b></center><br/> ")+fortune, cnn->sign());
 				
@@ -183,7 +183,7 @@ void Manager::handlePackage(Base::Package *const pkg)
 		}
 		else
 		{
-			dError() << "ERROR PARSING CONNECT PACKAGE!";
+			kError() << "ERROR PARSING CONNECT PACKAGE!";
 		}
 		
 	}

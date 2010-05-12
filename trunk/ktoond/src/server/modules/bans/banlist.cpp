@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "banlist.h"
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 
 namespace Packages {
 

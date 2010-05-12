@@ -24,7 +24,7 @@
 #include <QTextStream>
 #include <QHash>
 
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 
 namespace Backups {
 
@@ -186,7 +186,7 @@ bool Database::removeEntry(const QString &name, const QDateTime &date)
 			QDomElement e = n.toElement();
 			if(!e.isNull())
 			{
-				dDebug() << e.tagName();
+				kDebug() << e.tagName();
 				
 				if ( e.attribute("date") == dateStr )
 				{

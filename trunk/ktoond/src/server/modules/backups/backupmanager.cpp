@@ -24,7 +24,7 @@
 #include <QFileInfo>
 #include <QDateTime>
 
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 
 #include "core/connection.h"
 #include "core/server.h"
@@ -80,7 +80,7 @@ Manager::~Manager()
 
 bool Manager::makeBackup(const QString &filepath, const QDateTime &date, const QString &name)
 {
-	dDebug() << "Making backup: " << filepath;
+	kDebug() << "Making backup: " << filepath;
 	QFile file(filepath);
 	
 	if( file.exists() )

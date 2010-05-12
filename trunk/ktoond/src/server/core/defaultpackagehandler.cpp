@@ -19,7 +19,7 @@
  ***************************************************************************/
  
 #include "defaultpackagehandler.h"
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 
 namespace Server {
 
@@ -37,9 +37,9 @@ void DefaultPackageHandler::handle(Server::Connection *cnx, const QString &root,
 {
 	Q_UNUSED(cnx);
 	Q_UNUSED(root);
-	dWarning() << "DefaultPackageHandler";
+	kWarning() << "DefaultPackageHandler";
 	
-	dDebug() << package;
+	kDebug() << package;
 	
 }
 

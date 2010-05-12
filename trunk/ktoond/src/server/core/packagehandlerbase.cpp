@@ -19,8 +19,7 @@
  ***************************************************************************/
  
 #include "packagehandlerbase.h"
-#include <dcore/ddebug.h>
-
+#include <kcore/kdebug.h>
 
 #include <QHashIterator>
 #include <QHash>
@@ -32,7 +31,7 @@
 #include "base/logger.h"
 
 
-#include <dcore/dapplicationproperties.h>
+#include <kcore/kapplicationproperties.h>
 
 #include "packages/error.h"
 
@@ -63,7 +62,7 @@ void PackageHandlerBase::handlePackage(Base::Package *const pkg)
 	QString root = pkg->root();
 	QString package = pkg->xml();
 	
-	dWarning("server") << "PACKAGE: " << package;
+	kWarning("server") << "PACKAGE: " << package;
 	
 	TcpServer *server = cnn->server();
 	if(!pkg->accepted())

@@ -20,7 +20,7 @@
 
 #include "right.h"
 
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 
 namespace Users {
 

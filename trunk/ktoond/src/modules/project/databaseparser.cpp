@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "databaseparser.h"
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 #include <QDir>
 
 namespace Parsers {
@@ -57,7 +57,7 @@ bool DatabaseParser::startTag(const QString &tag, const QXmlAttributes &atts)
 		}
 		else if(tag == "file")
 		{
-			QString filename = dAppProp->cacheDir() + "/" + atts.value("name");
+			QString filename = kAppProp->cacheDir() + "/" + atts.value("name");
 			tmpInfo.file = filename;
 			
 			if(filename > m_lastFileName)
@@ -176,7 +176,7 @@ SProject * DatabaseParser::loadProject(const QString& projectName, const QString
 
 void DatabaseParser::gc()
 {
-	D_FUNCINFO;
+	K_FUNCINFO;
 	delete m_project;
 	m_project = 0;
 	m_projectExists = 0;

@@ -22,8 +22,8 @@
 #include <QFileInfo>
 #include <ktsaveproject.h>
 
-#include <dcore/dapplicationproperties.h>
-#include <dcore/ddebug.h>
+#include <kcore/kapplicationproperties.h>
+#include <kcore/kdebug.h>
 
 struct SProject::Private
 {
@@ -36,7 +36,7 @@ struct SProject::Private
 
 SProject::SProject(const QString & filename, QObject *parent) : KTProject(parent), d( new Private() )
 {
-	DINIT;
+	KINIT;
 	d->filename = filename;
 	d->saver = new QTimer(this);
 	d->saver->setInterval( 30000 );
@@ -60,7 +60,7 @@ SProject::~SProject()
 
 bool SProject::save()
 {
-	D_FUNCINFOX("server");
+	K_FUNCINFOX("server");
 	KTSaveProject *saver = new KTSaveProject;
 	SHOW_VAR(d->filename);
 	bool ok = saver->save(d->filename, this);

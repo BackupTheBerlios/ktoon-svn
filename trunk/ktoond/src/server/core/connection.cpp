@@ -22,7 +22,7 @@
 
 #include <QtNetwork>
 
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 
 #include "server.h"
 #include "base/logger.h"
@@ -36,8 +36,8 @@
 
 #include "users/user.h"
 
-#include <dcore/dmd5hash.h>
-#include <dcore/dalgorithm.h>
+#include <kcore/kmd5hash.h>
+#include <kcore/kalgorithm.h>
 
 #include "packages/error.h"
 
@@ -69,7 +69,7 @@ class Connection::Private
 
 Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThread(server), d(new Private(server))
 {
-	DINIT;
+	KINIT;
 	d->client = new Server::Client(this);
 	d->client->setSocketDescriptor(socketDescriptor);
 	d->isValid = true;
@@ -77,7 +77,7 @@ Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThrea
 
 Connection::~Connection()
 {
-	DEND;
+	KEND;
 	delete d;
 }
 
@@ -92,7 +92,7 @@ void Connection::run()
 		
 		QString readed = d->readed.dequeue();
 		
-		dDebug("server") << "Reicieved: " << readed;
+		kDebug("server") << "Reicieved: " << readed;
 		QDomDocument doc;
 		if (doc.setContent(readed.trimmed()) )
 		{
@@ -100,7 +100,7 @@ void Connection::run()
 		}
 		else
 		{
-			dError("server") << "Cannot set document content!";
+			kError("server") << "Cannot set document content!";
 		}
 	}
 	removeConnection();
@@ -129,7 +129,7 @@ void Connection::close()
 
 void Connection::appendTextReaded(const QString &readed)
 {
-	dDebug("server") << "Enqueing: " << readed;
+	kDebug("server") << "Enqueing: " << readed;
 	d->readed.enqueue(readed);
 }
 
@@ -168,7 +168,7 @@ void Connection::sendToClient(QDomDocument &doc, bool sign)
 	if ( sign)
 		signPackage(doc);
 	
-	dDebug() << "sending " << doc.toString();
+	kDebug() << "sending " << doc.toString();
 	
 	d->client->send(doc);
 	
@@ -208,7 +208,7 @@ void Connection::generateSign()
 {
 	if ( d->user )
 	{
-		d->sign = DMD5Hash::hash(d->user->login()+d->user->password()+DAlgorithm::randomString(DAlgorithm::random() % 10));
+		d->sign = KMD5Hash::hash(d->user->login()+d->user->password()+KAlgorithm::randomString(KAlgorithm::random() % 10));
 	}
 }
 

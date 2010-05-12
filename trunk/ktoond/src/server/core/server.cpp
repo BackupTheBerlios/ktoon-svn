@@ -26,7 +26,7 @@
 #include <QQueue>
 #include <QHostAddress>
 
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 
 #include "packagehandlerbase.h"
 #include "defaultpackagehandler.h"
@@ -59,7 +59,7 @@ class TcpServer::Private
 
 TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
 {
-	DINIT;
+	KINIT;
 	d->backupManager = new Backups::Manager;
 	d->observers << d->backupManager;
 	
@@ -78,7 +78,7 @@ TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
 
 TcpServer::~TcpServer()
 {
-	DEND;
+	KEND;
 	
 	Base::Logger::self()->info("Server finished");
 	
@@ -100,13 +100,13 @@ bool TcpServer::openConnection(const QString &host, int port)
 	{
 		if(! listen(QHostAddress(addrs[0]), port) )
 		{
-			dError() << "Can't connect to " << host<<":"<<port<< " error was: " << errorString();
+			kError() << "Can't connect to " << host<<":"<<port<< " error was: " << errorString();
 			return false;
 		}
 	}
 	else
 	{
-		dError() << "Error while try to resolve " << host;
+		kError() << "Error while try to resolve " << host;
 		return false;
 	}
 	return true;
@@ -189,7 +189,7 @@ void TcpServer::sendToAll(const QString &msg)
 
 void TcpServer::sendToAll(const QDomDocument &pkg)
 {
-	D_FUNCINFO;
+	K_FUNCINFO;
 	sendToAll(pkg.toString(0));
 }
 
@@ -203,7 +203,7 @@ void TcpServer::sendToAdmins(const QString &str)
 
 void TcpServer::removeConnection(Server::Connection *cnx)
 {
-	D_FUNCINFO;
+	K_FUNCINFO;
 	d->connections.removeAll(cnx);
 	d->admins.removeAll(cnx);
 	

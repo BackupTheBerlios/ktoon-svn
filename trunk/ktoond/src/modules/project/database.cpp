@@ -24,7 +24,7 @@
 #include <QFile>
 #include <QTextStream>
 
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 
 #include "databaseparser.h"
 
@@ -50,7 +50,7 @@ void Database::setDBFile( const QString& dbfile)
 
 QDomDocument Database::loadDataBase()
 {
-	dDebug() << "loading database: " << m_dbfile;
+	kDebug() << "loading database: " << m_dbfile;
 	QFile file(m_dbfile);
 	QDomDocument document;
 	if( !file.exists() )
@@ -69,7 +69,7 @@ QDomDocument Database::loadDataBase()
 	{
 		if ( !document.setContent(file.readAll()) )
 		{
-			dWarning() << file.fileName() << " is corrupted!";
+			kWarning() << file.fileName() << " is corrupted!";
 		}
 		file.close();
 	}

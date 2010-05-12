@@ -30,14 +30,14 @@
 #include "core/connection.h"
 #include "core/server.h"
 
-#include <dcore/dapplicationproperties.h>
+#include <kcore/kapplicationproperties.h>
 
 #include <QDir>
 #include <QHash>
 
 #include "global.h"
 
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 
 #include "project.h"
 #include "users/user.h"
@@ -120,7 +120,7 @@ bool ProjectCollection::addProject(const QString& name, const QString& author, c
 				return false;
 			}
 			
-			SProject *project = new SProject( dAppProp->cacheDir() +"/"+ d->db->nextFileName());
+			SProject *project = new SProject( kAppProp->cacheDir() +"/"+ d->db->nextFileName());
 			project->setProjectName(name);
 			project->setAuthor(author);
 			project->setDescription(description);
@@ -312,7 +312,7 @@ void ProjectCollection::handlePackage(Base::Package *const pkg)
 			}
 			else
 			{
-				dWarning() << "NO PROJECT NAME!";
+				kWarning() << "NO PROJECT NAME!";
 			}
 		}
 		else
@@ -509,7 +509,7 @@ void ProjectCollection::handlePackage(Base::Package *const pkg)
 
 QStringList ProjectCollection::projects() const
 {
-	QDir dir(dAppProp->cacheDir());
+	QDir dir(kAppProp->cacheDir());
 	return dir.entryList();
 }
 
@@ -533,7 +533,7 @@ bool ProjectCollection::saveProject(const QString & name)
 
 void ProjectCollection::connectionClosed(Server::Connection *cnn)
 {
-	D_FUNCINFO;
+	K_FUNCINFO;
 	QString projectName = cnn->data(Info::ProjectName).toString();
 	
 	d->connections[projectName].removeAll(cnn);
@@ -566,7 +566,7 @@ bool ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QStr
 		}
 		else
 		{
-			dWarning() << "NO PROJECT FOR: " << projectName;
+			kWarning() << "NO PROJECT FOR: " << projectName;
 		}
 	}
 	
@@ -627,12 +627,12 @@ void ProjectCollection::addUser(Server::Connection *cnn, const QString & login, 
 		}
 		else
 		{
-			dDebug() << cnn->user()->login()  + " no es el owner";
+			kDebug() << cnn->user()->login()  + " no es el owner";
 		}
 	}
 	else
 	{
-		dDebug() << "no cargo el proyecto";
+		kDebug() << "no cargo el proyecto";
 	}
 }
 

@@ -22,8 +22,8 @@
 
 #include <QFile>
 
-#include <dcore/dmd5hash.h>
-#include <dcore/ddebug.h>
+#include <kcore/kmd5hash.h>
+#include <kcore/kdebug.h>
 
 #include "base/package.h"
 #include "base/settings.h"
@@ -89,14 +89,14 @@ void Manager::handlePackage(Base::Package* const pkg)
 			data = d->db->findRegisterByEmail(email);
 			d->db->removeRegister(email);
 			
-			dDebug() << data["login"];
+			kDebug() << data["login"];
 			
 			Users::Manager *manager = server->userManager();
 			
 			Users::User user;
 			user.setLogin(data["login"]);
 			user.setName(data["name"]);
-			user.setPassword(DMD5Hash::hash(""));
+			user.setPassword(KMD5Hash::hash(""));
 			manager->addUser(user);
 			
 			server->sendToAdmins(pkg->xml());
