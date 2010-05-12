@@ -21,9 +21,9 @@
 #include "modulewidget.h"
 #include "modulebuttonbar.h"
 
-#include <dgui/dtreelistwidget.h>
-#include <dgui/dtreewidgetsearchline.h>
-#include <dcore/ddebug.h>
+#include <kgui/ktreelistwidget.h>
+#include <kgui/ktreewidgetsearchline.h>
+#include <kcore/kdebug.h>
 
 #include <package.h>
 #include "form.h"

@@ -22,7 +22,7 @@
 
 #include <QFrame>
 #include <QDialogButtonBox>
-#include <dgui/dformvalidator.h>
+#include <kgui/kformvalidator.h>
 
 class QTreeWidgetItem;
 
@@ -32,7 +32,7 @@ namespace Base {
 /**
  * @author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
-class Form : public QFrame, public DFormValidator
+class Form : public QFrame, public KFormValidator
 {
 	Q_OBJECT
 	public:
@@ -63,7 +63,7 @@ class Form : public QFrame, public DFormValidator
 		
 	private:
 		struct Private;
-		Private  * const d;
+		Private  * const k;
 };
 
 }

@@ -20,9 +20,9 @@
 
 #include "modulelistwidget.h"
 
-#include <dgui/dtreelistwidget.h>
-#include <dgui/dtreewidgetsearchline.h>
-#include <dcore/ddebug.h>
+#include <kgui/ktreelistwidget.h>
+#include <kgui/ktreewidgetsearchline.h>
+#include <kcore/kdebug.h>
 
 #include <QToolButton>
 #include <QTreeWidget>
@@ -38,17 +38,17 @@ namespace Base {
 struct ModuleListWidget::Private
 {
 	QTreeWidget *tree;
-	DTreeWidgetSearchLine *search;
+	KTreeWidgetSearchLine *search;
 	ModuleButtonBar *buttonBar;
 	
 	bool filled;
 	bool clearOnUpdate;
 };
 
-ModuleListWidget::ModuleListWidget(ModuleButtonBar::Buttons buttons, QWidget *parent) : ModuleWidget(parent), d(new Private)
+ModuleListWidget::ModuleListWidget(ModuleButtonBar::Buttons buttons, QWidget *parent) : ModuleWidget(parent), k(new Private)
 {
-	d->filled = false;
-	d->clearOnUpdate = true;
+	k->filled = false;
+	k->clearOnUpdate = true;
 	
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setMargin(2);
@@ -61,72 +61,72 @@ ModuleListWidget::ModuleListWidget(ModuleButtonBar::Buttons buttons, QWidget *pa
 	button->setIcon( QIcon(THEME_DIR+"/icons/clear_right.png"));
 	
 	search->addWidget(button);
-	d->tree = new QTreeWidget;
-	d->tree->setSortingEnabled(true);
-	d->tree->setDragEnabled(true);
+	k->tree = new QTreeWidget;
+	k->tree->setSortingEnabled(true);
+	k->tree->setDragEnabled(true);
 	
-	d->tree->setContextMenuPolicy(Qt::CustomContextMenu);
+	k->tree->setContextMenuPolicy(Qt::CustomContextMenu);
 	
-	connect(d->tree, SIGNAL(customContextMenuRequested( const QPoint& )), this, SLOT(showMenu(const QPoint &)));
-	connect(d->tree, SIGNAL(itemActivated( QTreeWidgetItem*, int )), this, SLOT(defaultBehavior(QTreeWidgetItem*, int)));
+	connect(k->tree, SIGNAL(customContextMenuRequested( const QPoint& )), this, SLOT(showMenu(const QPoint &)));
+	connect(k->tree, SIGNAL(itemActivated( QTreeWidgetItem*, int )), this, SLOT(defaultBehavior(QTreeWidgetItem*, int)));
 	
-	d->tree->header()->hide();
+	k->tree->header()->hide();
 	
 	
-	d->search = new DTreeWidgetSearchLine(this,d->tree);
-	search->addWidget( d->search );
-	connect(button, SIGNAL(clicked()), d->search, SLOT(clear()));
+	k->search = new KTreeWidgetSearchLine(this,k->tree);
+	search->addWidget( k->search );
+	connect(button, SIGNAL(clicked()), k->search, SLOT(clear()));
 	
 	layout->addLayout(search);
-	layout->addWidget(d->tree);
+	layout->addWidget(k->tree);
 	
-	d->buttonBar = new Base::ModuleButtonBar(buttons);
-	layout->addWidget(d->buttonBar);
-	connect(d->buttonBar, SIGNAL(buttonClicked( int )), this, SLOT(actionSelected(int)));
+	k->buttonBar = new Base::ModuleButtonBar(buttons);
+	layout->addWidget(k->buttonBar);
+	connect(k->buttonBar, SIGNAL(buttonClicked( int )), this, SLOT(actionSelected(int)));
 }
 
 
 ModuleListWidget::~ModuleListWidget()
 {
-	delete d;
+	delete k;
 }
 
 void ModuleListWidget::setHeaders(const QStringList &headers)
 {
-	d->tree->setHeaderLabels(headers);
-// 	d->tree->header()->setSortIndicatorShown(true);
+	k->tree->setHeaderLabels(headers);
+// 	k->tree->header()->setSortIndicatorShown(true);
 	
-	d->tree->header()->show();
+	k->tree->header()->show();
 }
 
 QTreeWidget *ModuleListWidget::tree() const
 {
-	return d->tree;
+	return k->tree;
 }
 
 QMenu *ModuleListWidget::createMenu()
 {
 	QMenu *menu = new QMenu(this);
 	
-	if ( d->buttonBar->hasButton(ModuleButtonBar::Add) )
+	if ( k->buttonBar->hasButton(ModuleButtonBar::Add) )
 	{
 		QAction *add = menu->addAction(tr("Add"), this, SLOT(selectFromAction()));
 		add->setData(ModuleButtonBar::Add);
 	}
 	
-	if ( d->buttonBar->hasButton(ModuleButtonBar::Del) )
+	if ( k->buttonBar->hasButton(ModuleButtonBar::Del) )
 	{
 		QAction *del = menu->addAction(tr("Delete"), this, SLOT(selectFromAction()));
 		del->setData(ModuleButtonBar::Del);
 	}
 	
-	if ( d->buttonBar->hasButton(ModuleButtonBar::Query) )
+	if ( k->buttonBar->hasButton(ModuleButtonBar::Query) )
 	{
 		QAction *query = menu->addAction(tr("Query"), this, SLOT(selectFromAction()));
 		query->setData(ModuleButtonBar::Query);
 	}
 	
-	if ( d->buttonBar->hasButton(ModuleButtonBar::Modify) )
+	if ( k->buttonBar->hasButton(ModuleButtonBar::Modify) )
 	{
 		QAction *modify = menu->addAction(tr("Modify"), this, SLOT(selectFromAction()));
 		modify->setData(ModuleButtonBar::Modify);
@@ -138,17 +138,17 @@ QMenu *ModuleListWidget::createMenu()
 
 void ModuleListWidget::setClearOnUpdate(bool cou)
 {
-	d->clearOnUpdate = cou;
+	k->clearOnUpdate = cou;
 }
 
 bool ModuleListWidget::clearOnUpdate() const
 {
-	return d->clearOnUpdate;
+	return k->clearOnUpdate;
 }
 
 void ModuleListWidget::addItem(const QStringList &itemData)
 {
-	QTreeWidgetItem *item = new QTreeWidgetItem(d->tree);
+	QTreeWidgetItem *item = new QTreeWidgetItem(k->tree);
 	int col = 0;
 	
 	foreach(QString data, itemData)
@@ -160,7 +160,7 @@ void ModuleListWidget::addItem(const QStringList &itemData)
 
 void ModuleListWidget::actionSelected(int action)
 {
-	QTreeWidgetItem *currentItem = d->tree->currentItem();
+	QTreeWidgetItem *currentItem = k->tree->currentItem();
 	
 	switch(action)
 	{
@@ -213,7 +213,7 @@ void ModuleListWidget::showMenu(const QPoint &pos)
 {
 	QMenu *menu = createMenu();
 	
-	menu->exec( d->tree->mapToGlobal( pos) );
+	menu->exec( k->tree->mapToGlobal( pos) );
 }
 
 void ModuleListWidget::addActionSelected(QTreeWidgetItem *current)
@@ -251,37 +251,37 @@ void ModuleListWidget::custom2ActionSelected(QTreeWidgetItem *current)
 
 void ModuleListWidget::showEvent(QShowEvent *e)
 {
-	if ( !d->filled )
+	if ( !k->filled )
 		update();
 	ModuleWidget::showEvent(e);
 }
 
 void ModuleListWidget::setFilled(bool f)
 {
-	d->filled = f;
+	k->filled = f;
 }
 
 bool ModuleListWidget::filled() const
 {
-	return d->filled;
+	return k->filled;
 }
 
 void ModuleListWidget::update()
 {
-	if( d->clearOnUpdate )
-		d->tree->clear();
+	if( k->clearOnUpdate )
+		k->tree->clear();
 	updateList();
 }
 
 void ModuleListWidget::clear()
 {
-	d->filled = false;
-	d->tree->clear();
+	k->filled = false;
+	k->tree->clear();
 }
 
 ModuleButtonBar *ModuleListWidget::buttonBar() const
 {
-	return d->buttonBar;
+	return k->buttonBar;
 }
 
 void ModuleListWidget::defaultBehavior(QTreeWidgetItem *item, int)

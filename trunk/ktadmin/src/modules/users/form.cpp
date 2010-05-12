@@ -19,8 +19,8 @@
  ***************************************************************************/
  
 #include "form.h"
-#include <dgui/dformfactory.h>
-#include <dcore/ddebug.h>
+#include <kgui/kformfactory.h>
+#include <kcore/kdebug.h>
 
 #include <QLineEdit>
 #include <QVBoxLayout>
@@ -69,14 +69,14 @@ void Form::init()
 	
 	validatesRegExpOf("\\w+", d->login);
 	
-	layout->addLayout(DFormFactory::makeLine(tr("login"), d->login ));
+	layout->addLayout(KFormFactory::makeLine(tr("login"), d->login ));
 	
 	d->password = new QLineEdit;
 	d->password->setEchoMode(QLineEdit::Password);
-	layout->addLayout(DFormFactory::makeLine(tr("password"),  d->password ));
+	layout->addLayout(KFormFactory::makeLine(tr("password"),  d->password ));
 	
 	d->name = new QLineEdit;
-	layout->addLayout(DFormFactory::makeLine(tr("name"), d->name ));
+	layout->addLayout(KFormFactory::makeLine(tr("name"), d->name ));
 	
 	d->permissions = new PermissionsChooser(QStringList() << "project" << "admin");
 	layout->addWidget(d->permissions);

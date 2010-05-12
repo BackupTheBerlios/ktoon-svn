@@ -29,8 +29,8 @@
 
 #include <QDialogButtonBox>
 
-#include <dcore/dconfig.h>
-#include <dgui/dformfactory.h>
+#include <kcore/kconfig.h>
+#include <kgui/kformfactory.h>
 
 class ConnectDialog::Private
 {
@@ -64,7 +64,7 @@ ConnectDialog::ConnectDialog(QWidget *parent) : QDialog(parent), d(new Private()
 	d->port->setMinimum(1024);
 	d->port->setMaximum(65000);
 	
-	QGridLayout *layout = DFormFactory::makeGrid(QStringList() << tr("Login") << tr("Password") << tr("Server") << tr("Port"), QWidgetList() << d->login << d->password << d->server << d->port);
+	QGridLayout *layout = KFormFactory::makeGrid(QStringList() << tr("Login") << tr("Password") << tr("Server") << tr("Port"), QWidgetList() << d->login << d->password << d->server << d->port);
 	
 	d->storePassword = new QCheckBox(tr("Store password"));
 	layout->addWidget(d->storePassword, 5, 1);
@@ -126,35 +126,35 @@ int ConnectDialog::port() const
 
 void ConnectDialog::loadSettings()
 {
-	DCONFIG->beginGroup("Network");
-	d->server->setText(DCONFIG->value("server", "localhost").toString());
-	d->port->setValue(DCONFIG->value("port", 6502).toInt());
-	d->login->setText(DCONFIG->value("login", "").toString());
-	d->password->setText(DCONFIG->value("password", "").toString());
+	KCONFIG->beginGroup("Network");
+	d->server->setText(KCONFIG->value("server", "localhost").toString());
+	d->port->setValue(KCONFIG->value("port", 6502).toInt());
+	d->login->setText(KCONFIG->value("login", "").toString());
+	d->password->setText(KCONFIG->value("password", "").toString());
 	
-	d->storePassword->setChecked(DCONFIG->value("storePassword").toInt());
+	d->storePassword->setChecked(KCONFIG->value("storePassword").toInt());
 }
 
 void ConnectDialog::saveSettings()
 {
-	DCONFIG->beginGroup("Network");
+	KCONFIG->beginGroup("Network");
 	
-	DCONFIG->setValue("server", d->server->text() );
-	DCONFIG->setValue("port", d->port->value());
-	DCONFIG->setValue("login", d->login->text());
+	KCONFIG->setValue("server", d->server->text() );
+	KCONFIG->setValue("port", d->port->value());
+	KCONFIG->setValue("login", d->login->text());
 	
 	if ( d->storePassword->isChecked() )
 	{
-		DCONFIG->setValue("password", d->password->text());
+		KCONFIG->setValue("password", d->password->text());
 	}
 	else
 	{
-		DCONFIG->setValue("password", "");
+		KCONFIG->setValue("password", "");
 	}
 	
-	DCONFIG->setValue("storePassword", d->storePassword->isChecked() ? 1 : 0);
+	KCONFIG->setValue("storePassword", d->storePassword->isChecked() ? 1 : 0);
 	
-	DCONFIG->sync();
+	KCONFIG->sync();
 	
 }
 

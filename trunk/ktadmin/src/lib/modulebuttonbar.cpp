@@ -24,8 +24,8 @@
 #include <QHBoxLayout>
 #include <QButtonGroup>
 
-#include <dcore/dglobal.h>
-#include <dcore/ddebug.h>
+#include <kcore/kglobal.h>
+#include <kcore/kdebug.h>
 
 namespace Base {
 

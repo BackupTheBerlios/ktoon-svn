@@ -82,7 +82,7 @@ class ModuleListWidget : public ModuleWidget
 		
 	private:
 		struct Private;
-		Private *const d;
+		Private *const k;
 };
 
 }

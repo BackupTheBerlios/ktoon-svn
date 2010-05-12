@@ -23,8 +23,8 @@
 #include <QVBoxLayout>
 #include <QTreeWidgetItem>
 
-#include <dgui/dformfactory.h>
-#include <dcore/ddebug.h>
+#include <kgui/kformfactory.h>
+#include <kcore/kdebug.h>
 
 #include "packages/addban.h"
 
@@ -45,7 +45,7 @@ Form::Form(QWidget *parent)
 	d->pattern = new QLineEdit;
 // 	validatesMaskOf("000.000.000.000;_", d->pattern);
 	
-	layout->addLayout(DFormFactory::makeGrid(QStringList() << tr("Pattern"), QWidgetList() << d->pattern));
+	layout->addLayout(KFormFactory::makeGrid(QStringList() << tr("Pattern"), QWidgetList() << d->pattern));
 	
 	setCentralWidget(container);
 	

@@ -40,9 +40,9 @@
 #include "backuplistparser.h"
 #include "addbackupparser.h"
 
-#include <dcore/ddebug.h>
-#include <dcore/dapplicationproperties.h>
-#include <dgui/dosd.h>
+#include <kcore/kdebug.h>
+#include <kcore/kapplicationproperties.h>
+#include <kgui/kosd.h>
 
 namespace Backups {
 
@@ -196,7 +196,7 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 			
 			message += it.key()+"-"+it.value().toString(Qt::ISODate);
 		}
-		DOsd::self()->display(message, DOsd::Info);
+		KOsd::self()->display(message, KOsd::Info);
 	}
 }
 

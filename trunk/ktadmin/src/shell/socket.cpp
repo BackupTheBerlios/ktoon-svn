@@ -20,7 +20,7 @@
 
 #include "socket.h"
 
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 #include "manager.h"
 
 struct Socket::Private 
@@ -41,7 +41,7 @@ Socket::~Socket()
 
 void Socket::readed(const QString &readed)
 {
-	dDebug("net") << "READED: " << readed;
+	kDebug("net") << "READED: " << readed;
 	QDomDocument doc;
 	
 	if ( doc.setContent(readed) )

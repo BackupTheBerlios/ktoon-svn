@@ -26,7 +26,7 @@
 #include <QLabel>
 #include <QButtonGroup>
 
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 #include <cmath>
 #include <QMultiHash>
 

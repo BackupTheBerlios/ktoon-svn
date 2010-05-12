@@ -18,17 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <dgui/dapplication.h>
-#include <dcore/dapplicationproperties.h>
+#include <kgui/kapplication.h>
+#include <kcore/kapplicationproperties.h>
 
 #include "mainwindow.h"
 
 int main(int argc, char **argv)
 {
-	DApplication app(argc, argv);
+	KApplication app(argc, argv);
 	app.setApplicationName("ktadmin");
 	
-	dAppProp->setThemeDir("data/");
+	kAppProp->setThemeDir("data/");
 	
 	MainWindow mw;
 	mw.show();

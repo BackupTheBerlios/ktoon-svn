@@ -24,8 +24,8 @@
 #include <QVBoxLayout>
 #include <QLabel>
 
-#include <dgui/dformfactory.h>
-#include <dcore/ddebug.h>
+#include <kgui/kformfactory.h>
+#include <kcore/kdebug.h>
 
 #include "packages/addproject.h"
 #include "packages/updateproject.h"
@@ -143,11 +143,11 @@ void Form::init()
 	
 	d->name = new QLineEdit();
 	validatesRegExpOf("\\w+", d->name);
-	layout->addLayout(DFormFactory::makeLine(tr("name"), d->name ));
+	layout->addLayout(KFormFactory::makeLine(tr("name"), d->name ));
 	
 	d->author = new QLineEdit(tr("anonymous"));
 	validatesRegExpOf("\\w+", d->author);
-	layout->addLayout(DFormFactory::makeLine(tr("author"), d->author ));
+	layout->addLayout(KFormFactory::makeLine(tr("author"), d->author ));
 	
 	layout->addWidget(new QLabel(tr("description")));
 	d->description = new QTextEdit;

@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "updateuser.h"
-#include <dcore/dmd5hash.h>
+#include <kcore/kmd5hash.h>
 namespace Packages{
 
 struct UpdateUser::Private
@@ -53,7 +53,7 @@ void UpdateUser::setPassword(const QString& password)
 {
 	firstChild().removeChild(d->password);
 	d->password = createElement("password");
-	d->password.appendChild(createTextNode(DMD5Hash::hash(password)));
+	d->password.appendChild(createTextNode(KMD5Hash::hash(password)));
 	firstChild().appendChild(d->password);
 	
 }

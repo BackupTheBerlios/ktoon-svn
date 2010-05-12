@@ -20,7 +20,7 @@
  
 #include "userselector.h"
 
-#include <dcore/ddebug.h>
+#include <kcore/kdebug.h>
 
 #include <QTreeWidget>
 #include <QHBoxLayout>

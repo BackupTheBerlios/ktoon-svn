@@ -26,9 +26,9 @@
 #include <QApplication>
 #include <QToolBar>
 
-#include <dgui/dtoolview.h>
-#include <dcore/ddebug.h>
-#include <dgui/dosd.h>
+#include <kgui/ktoolview.h>
+#include <kcore/kdebug.h>
+#include <kgui/kosd.h>
 
 #include "users/modulewidget.h"
 #include "projects/modulewidget.h"
@@ -55,7 +55,7 @@ struct MainWindow::Private
 
 
 MainWindow::MainWindow(QWidget *parent)
- : DWorkspaceMainWindow(parent), d(new Private)
+ : KWorkspaceMainWindow(parent), d(new Private)
 {
 	setWindowTitle(tr("KToonD Admin"));
 	
@@ -138,7 +138,7 @@ void MainWindow::addWidgetAsWindow(QWidget *w)
 	}
 	else
 	{
-		DOsd::self()->display(tr("Please connect to server"));
+		KOsd::self()->display(tr("Please connect to server"));
 	}
 }
 

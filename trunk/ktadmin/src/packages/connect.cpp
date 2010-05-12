@@ -20,7 +20,7 @@
 
 #include "connect.h"
 
-#include <dcore/dmd5hash.h>
+#include <kcore/kmd5hash.h>
 /*
 <connect version="0" >
         <login>the_login</login>
@@ -42,7 +42,7 @@ Connect::Connect(const QString & login, const QString& passwd)
 	root.appendChild(client);
 	
 	root.appendChild( createElement("login") ).appendChild(createTextNode(login));
-	root.appendChild( createElement("password")).appendChild(createTextNode(DMD5Hash::hash( passwd)));
+	root.appendChild( createElement("password")).appendChild(createTextNode(KMD5Hash::hash( passwd)));
 	
 }
 

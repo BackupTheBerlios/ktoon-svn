@@ -20,7 +20,7 @@
 
 #include "modulewidget.h"
 
-#include <dcore/dapplicationproperties.h>
+#include <kcore/kapplicationproperties.h>
 
 #include <QIcon>
 #include <QTreeWidgetItem>

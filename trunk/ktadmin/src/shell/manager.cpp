@@ -25,8 +25,8 @@
 #include "package.h"
 #include "packageobserver.h"
 
-#include <dcore/ddebug.h>
-#include <dgui/dosd.h>
+#include <kcore/kdebug.h>
+#include <kgui/kosd.h>
 
 #include "packages/connect.h"
 #include "packages/ackparser.h"
@@ -69,7 +69,7 @@ void Manager::enable()
 
 void Manager::disable()
 {
-	DOsd::self()->display(tr("Disconnected!"), DOsd::Warning);
+	KOsd::self()->display(tr("Disconnected!"), KOsd::Warning);
 	d->enabled = false;
 	
 	emit disconnected();
@@ -79,7 +79,7 @@ void Manager::sendPackage(const QString &pkg)
 {
 	if ( d->enabled )
 	{
-		dDebug() << "sending " << pkg;
+		kDebug() << "sending " << pkg;
 		d->socket->send(pkg);
 	}
 }
@@ -108,7 +108,7 @@ bool Manager::tryToHandle(const QString &root, const QString &xml)
 		Packages::AckParser parser;
 		if ( parser.parse(xml) )
 		{
-			DOsd::self()->display(parser.motd());
+			KOsd::self()->display(parser.motd());
 			d->sign = parser.sign();
 			
 			d->enabled = true;
@@ -147,11 +147,11 @@ bool Manager::connectToServer(const QString &server, int port)
 	bool connected =  d->socket->waitForConnected(1000);
 	if( connected )
 	{
-		DOsd::self()->display(tr("Connected!"));
+		KOsd::self()->display(tr("Connected!"));
 	}
 	else
 	{
-		DOsd::self()->display(tr("Cannot connect to server!"), DOsd::Error);
+		KOsd::self()->display(tr("Cannot connect to server!"), KOsd::Error);
 	}
 	
 	return connected;

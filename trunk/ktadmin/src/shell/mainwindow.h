@@ -21,7 +21,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <dgui/dworkspacemainwindow.h>
+#include <kgui/kworkspacemainwindow.h>
 
 namespace Base {
 class ModuleWidget;
@@ -30,7 +30,7 @@ class ModuleWidget;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class MainWindow : public DWorkspaceMainWindow
+class MainWindow : public KWorkspaceMainWindow
 {
 	Q_OBJECT;
 	public:
@@ -50,7 +50,6 @@ class MainWindow : public DWorkspaceMainWindow
 		void addWidgetAsWindow(QWidget *w);
 		void connectToServer();
 		void showWallDialog();
-		
 		
 	private:
 		struct Private;

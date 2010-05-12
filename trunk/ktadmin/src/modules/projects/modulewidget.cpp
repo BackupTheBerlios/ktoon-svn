@@ -20,9 +20,8 @@
 
 #include "modulewidget.h"
 
-#include <dcore/dapplicationproperties.h>
-#include <dcore/ddebug.h>
-
+#include <kcore/kapplicationproperties.h>
+#include <kcore/kdebug.h>
 
 #include <QIcon>
 #include <QTreeWidget>

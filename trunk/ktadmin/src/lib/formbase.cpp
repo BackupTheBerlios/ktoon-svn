@@ -31,7 +31,7 @@
 #include <QTreeWidget>
 #include <QModelIndex>
 
-#include <dgui/dseparator.h>
+#include <kgui/kseparator.h>
 
 namespace Base {
 
@@ -44,39 +44,39 @@ struct Form::Private
 	
 };
 
-Form::Form(const QString &title, QWidget *parent) : QFrame(parent), DFormValidator(this), d(new Private)
+Form::Form(const QString &title, QWidget *parent) : QFrame(parent), KFormValidator(this), k(new Private)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	
 	
-	d->layout = new QVBoxLayout(this);
-	d->layout->setSpacing(2);
-	d->title = new QLabel;
+	k->layout = new QVBoxLayout(this);
+	k->layout->setSpacing(2);
+	k->title = new QLabel;
 	setTitle(title);
 	
-	d->layout->addWidget(d->title);
-	d->layout->addWidget(new DSeparator());
+	k->layout->addWidget(k->title);
+	k->layout->addWidget(new KSeparator());
 	
-	d->center = new QWidget();
-	d->layout->addWidget(d->center);
+	k->center = new QWidget();
+	k->layout->addWidget(k->center);
 	
-	d->layout->addWidget(new DSeparator());
+	k->layout->addWidget(new KSeparator());
 	
-	d->buttons = new QDialogButtonBox();
+	k->buttons = new QDialogButtonBox();
 	
-	QPushButton *ok = d->buttons->addButton(QDialogButtonBox::Ok);
+	QPushButton *ok = k->buttons->addButton(QDialogButtonBox::Ok);
 	connect(ok, SIGNAL(clicked()), this, SLOT(_acceptForm()));
 	
-	QPushButton *cancel = d->buttons->addButton(QDialogButtonBox::Cancel);
+	QPushButton *cancel = k->buttons->addButton(QDialogButtonBox::Cancel);
 	connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
 	
-	QPushButton *reset = d->buttons->addButton(QDialogButtonBox::Reset);
+	QPushButton *reset = k->buttons->addButton(QDialogButtonBox::Reset);
 	connect(reset, SIGNAL(clicked()), this, SLOT(resetForm()));
 	
-	QPushButton *help = d->buttons->addButton(QDialogButtonBox::Help);
+	QPushButton *help = k->buttons->addButton(QDialogButtonBox::Help);
 	connect(help, SIGNAL(clicked()), this, SLOT(showHelp()));
 	
-	d->layout->addWidget(d->buttons);
+	k->layout->addWidget(k->buttons);
 }
 
 Form::~Form()
@@ -87,25 +87,25 @@ Form::~Form()
 
 void Form::setCentralWidget(QWidget *widget)
 {
-	d->center->hide();
-	d->layout->removeWidget ( d->center );
-	d->layout->insertWidget(2, widget);
-	if(d->center)
+	k->center->hide();
+	k->layout->removeWidget ( k->center );
+	k->layout->insertWidget(2, widget);
+	if(k->center)
 	{
-		delete d->center;
+		delete k->center;
 	}
-	d->center = widget;
+	k->center = widget;
 	setForm(widget);
 }
 
 void Form::setButtons(QDialogButtonBox::StandardButtons buttons)
 {
-	d->buttons->setStandardButtons (  buttons );
+	k->buttons->setStandardButtons (  buttons );
 }
 
 void Form::setTitle( const QString &title)
 {
-	d->title->setText("<h3>"+title+"</h3>");
+	k->title->setText("<h3>"+title+"</h3>");
 }
 
 void Form::showHelp()

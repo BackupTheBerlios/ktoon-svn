@@ -20,7 +20,7 @@
  
 #include "adduser.h"
 
-#include <dcore/dmd5hash.h>
+#include <kcore/kmd5hash.h>
 
 namespace Packages {
 
@@ -40,7 +40,7 @@ AddUser::AddUser(const QString& login, const QString& password, const QString&na
 	d->login = createTextNode(login);
 	root.appendChild(createElement("login")).appendChild(d->login);
 	
-	d->password = createTextNode(DMD5Hash::hash(password));
+	d->password = createTextNode(KMD5Hash::hash(password));
 	root.appendChild(createElement("password")).appendChild(d->password);
 	
 	d->name = createTextNode(name);
