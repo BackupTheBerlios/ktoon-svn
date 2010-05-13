@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef PROJECTSDATABASE_H
 #define PROJECTSDATABASE_H
 
@@ -30,44 +31,41 @@ namespace Projects {
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-
-
 class Database
 {
-	public:
-		
-		Database(const QString &dbfile = 0);
-		~Database();
-		
-		bool addProject(const SProject * project);
-		bool updateProject( const SProject * project);
-		bool removeProject(  const SProject * project);
-		
-		void setDBFile( const QString& dbfile);
-		
-		QString nextFileName();
-		
-		struct ProjectInfo
-		{
-			QString name;
-			QString author;
-			QString description;
-			QString file;
-		};
-		
-		QList<Database::ProjectInfo> allProjects();
-		QList<Database::ProjectInfo> userProjects(const QString& user);
-		Database::ProjectInfo projectInfo(const QString &project);
-		
-		bool exists( const QString &projectName );
-		
-		SProject *loadProject(const QString &projectName );
-		
-		
-	private:
-		QDomDocument loadDataBase();
-		QString m_dbfile;
-		QString m_lastFileName;
+    public:
+        
+        Database(const QString &dbfile = 0);
+        ~Database();
+        
+        bool addProject(const SProject * project);
+        bool updateProject(const SProject * project);
+        bool removeProject(const SProject * project);
+        
+        void setDBFile(const QString& dbfile);
+        
+        QString nextFileName();
+        
+        struct ProjectInfo
+        {
+            QString name;
+            QString author;
+            QString description;
+            QString file;
+        };
+        
+        QList<Database::ProjectInfo> allProjects();
+        QList<Database::ProjectInfo> userProjects(const QString& user);
+        Database::ProjectInfo projectInfo(const QString &project);
+        
+        bool exists(const QString &projectName);
+        
+        SProject *loadProject(const QString &projectName);
+        
+    private:
+        QDomDocument loadDataBase();
+        QString m_dbfile;
+        QString m_lastFileName;
 };
 
 }

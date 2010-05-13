@@ -23,7 +23,8 @@
 
 namespace Info
 {
-	enum Keys { ProjectName = 0 };
+    enum Keys { ProjectName = 0 };
 }
+
 #endif
 

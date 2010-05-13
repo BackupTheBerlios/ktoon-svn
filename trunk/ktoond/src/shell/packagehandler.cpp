@@ -22,21 +22,20 @@
 
 class PackageHandler::Private
 {
-	public:
-		Private(){}
-		~Private() {}
+    public:
+        Private(){}
+        ~Private() {}
 };
 
-PackageHandler::PackageHandler() : PackageHandlerBase(), d(new Private)
+PackageHandler::PackageHandler() : PackageHandlerBase(), k(new Private)
 {
 }
 
 PackageHandler::~PackageHandler()
 {
-	delete d;
+    delete k;
 }
 
-void PackageHandler::handle(Server::Connection * , const QString &, const QString & )
+void PackageHandler::handle(Server::Connection * , const QString &, const QString &)
 {
 }
-

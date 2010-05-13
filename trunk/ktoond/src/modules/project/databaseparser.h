@@ -32,45 +32,42 @@ namespace Parsers
 */
 class DatabaseParser : public KTXmlParserBase
 {
-	public:
-		DatabaseParser();
-		~DatabaseParser();
-		
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-		QString lastFileName();
-		
-		QList< Projects::Database::ProjectInfo > userProjects(const QString & login, const QString &db );
-		QList< Projects::Database::ProjectInfo > allProjects(const QString &db );
-		
-		bool exists(const QString & nameProject, const QString &db );
-		
-		SProject *loadProject(const QString &projectName, const QString &db);
-		
-		Projects::Database::ProjectInfo projectInfo(const QString &projectName, const QString &db);
-		
-		void gc();
-		
-	private:
-		// TODO: Poner esto en un struct Private
-		QString m_lastFileName;
-		
-		QString m_condition;
-		bool m_projectExists;
-		QStringList  m_users;
-		
-		bool m_findUserProjects, m_findProject, m_loadProject;
-		QList< Projects::Database::ProjectInfo > m_projectsInfo;
-		
-		SProject *m_project;
-		
-		Projects::Database::ProjectInfo tmpInfo; // ????
-		SProject::UserType m_typeUser;
-		
-		
-		
+    public:
+        DatabaseParser();
+        ~DatabaseParser();
+        
+        virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+        virtual bool endTag(const QString &tag);
+        virtual void text(const QString &text);
+        
+        QString lastFileName();
+        
+        QList< Projects::Database::ProjectInfo > userProjects(const QString & login, const QString &db);
+        QList< Projects::Database::ProjectInfo > allProjects(const QString &db);
+        
+        bool exists(const QString & nameProject, const QString &db);
+        
+        SProject *loadProject(const QString &projectName, const QString &db);
+        
+        Projects::Database::ProjectInfo projectInfo(const QString &projectName, const QString &db);
+        
+        void gc();
+        
+    private:
+        // TODO: Poner esto en un struct Private
+        QString m_lastFileName;
+        
+        QString m_condition;
+        bool m_projectExists;
+        QStringList  m_users;
+        
+        bool m_findUserProjects, m_findProject, m_loadProject;
+        QList< Projects::Database::ProjectInfo > m_projectsInfo;
+        
+        SProject *m_project;
+        
+        Projects::Database::ProjectInfo tmpInfo; // ????
+        SProject::UserType m_typeUser;
 };
 
 }

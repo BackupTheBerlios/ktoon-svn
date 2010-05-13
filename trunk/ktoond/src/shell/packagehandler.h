@@ -21,13 +21,15 @@
 #ifndef HANDLERPACKGES_H
 #define HANDLERPACKGES_H
 
-
 #include <QString>
+
 #include "core/packagehandlerbase.h"
 #include "core/connection.h"
 
-namespace Projects {
-class ProjectCollection; }
+namespace Projects 
+{
+class ProjectCollection; 
+}
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
@@ -35,18 +37,16 @@ class ProjectCollection; }
  */
 class PackageHandler : public Server::PackageHandlerBase
 {
-	public:
-		PackageHandler();
-		~PackageHandler();
-		
-		void handle(Server::Connection *, const QString &root, const QString &package );
-		void connectionClosed(Server::Connection *) {}
-		
-	private:
-		class Private;
-		Private *const d;
+    public:
+        PackageHandler();
+        ~PackageHandler();
+        
+        void handle(Server::Connection *, const QString &root, const QString &package);
+        void connectionClosed(Server::Connection *) {}
+        
+    private:
+        class Private;
+        Private *const k;
 };
 
 #endif
-
-
