@@ -19,27 +19,21 @@
  ***************************************************************************/
  
 #include "packagehandlerbase.h"
+#include "connection.h"
+
 #include <kcore/kdebug.h>
+#include <kcore/kapplicationproperties.h>
 
 #include <QHashIterator>
 #include <QHash>
 
+#include "packages/error.h"
 #include "users/user.h"
-
-#include "connection.h"
 #include "base/settings.h"
 #include "base/logger.h"
-
-
-#include <kcore/kapplicationproperties.h>
-
-#include "packages/error.h"
-
-
+#include "base/package.h"
 #include "bans/banmanager.h"
 #include "backups/backupmanager.h"
-
-#include "base/package.h"
 
 namespace Server {
 
@@ -47,29 +41,26 @@ struct PackageHandlerBase::Private
 {
 };
 
-PackageHandlerBase::PackageHandlerBase() : d(new Private())
+PackageHandlerBase::PackageHandlerBase() : k(new Private())
 {
 }
 
 PackageHandlerBase::~PackageHandlerBase()
 {
-	delete d;
+    delete k;
 }
 
 void PackageHandlerBase::handlePackage(Base::Package *const pkg)
 {
-	Server::Connection *cnn = pkg->source();
-	QString root = pkg->root();
-	QString package = pkg->xml();
-	
-	kWarning("server") << "PACKAGE: " << package;
-	
-	TcpServer *server = cnn->server();
-	if(!pkg->accepted())
-	{
-		handle(cnn, root, package);
-	}
+    Server::Connection *cnn = pkg->source();
+    QString root = pkg->root();
+    QString package = pkg->xml();
+    
+    kWarning("server") << "PACKAGE: " << package;
+    
+    TcpServer *server = cnn->server();
+    if (!pkg->accepted())
+        handle(cnn, root, package);
 }
 
 }
-

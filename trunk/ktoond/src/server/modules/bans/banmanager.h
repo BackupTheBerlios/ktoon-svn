@@ -33,28 +33,25 @@ namespace Bans {
 */
 class Manager : public Base::Observer
 {
-	public:
-		Manager();
-		~Manager();
-		
-		void initialize(const QString &pt);
-		bool isBanned(const QString &pt) const;
-		
-		void failed(const QString &pt);
-		void ban(const QString &pt);
-		void unban(const QString &pt);
-		
-		QStringList allBanned() const;
-		
-		void handlePackage(Base::Package *const pkg);
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        Manager();
+        ~Manager();
+        
+        void initialize(const QString &pt);
+        bool isBanned(const QString &pt) const;
+        
+        void failed(const QString &pt);
+        void ban(const QString &pt);
+        void unban(const QString &pt);
+        
+        QStringList allBanned() const;
+        void handlePackage(Base::Package *const pkg);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }
 
 #endif
-
-

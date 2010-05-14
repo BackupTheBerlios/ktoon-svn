@@ -21,39 +21,31 @@
 #include "addbanparser.h"
 
 namespace Parsers {
-	
-AddBanParser::AddBanParser()
- : KTXmlParserBase()
+    
+AddBanParser::AddBanParser() : KTXmlParserBase()
 {
 }
-
 
 AddBanParser::~AddBanParser()
 {
 }
 
-
 bool AddBanParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if ( tag == "pattern" )
-	{
-		m_pattern = atts.value("value");
-	}
-	return true;
+    if (tag == "pattern")
+        m_pattern = atts.value("value");
+
+    return true;
 }
 
 bool AddBanParser::endTag(const QString &)
 {
-	
-	return true;
+    return true;
 }
 
 QString AddBanParser::pattern() const
 {
-	return m_pattern;
+    return m_pattern;
 }
 
-
 }
-
-

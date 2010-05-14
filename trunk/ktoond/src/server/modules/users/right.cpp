@@ -26,62 +26,53 @@ namespace Users {
 
 struct Right::Private
 {
-	QString module;
-	bool read;
-	bool write;
+    QString module;
+    bool read;
+    bool write;
 };
 
-Right::Right() : d(new Private())
+Right::Right() : k(new Private())
 {
-	d->read = false;
-	d->write = false;
+    k->read = false;
+    k->write = false;
 }
 
-Right::Right(const QString &module, bool read, bool write) : d(new Private)
+Right::Right(const QString &module, bool read, bool write) : k(new Private)
 {
-	d->module = module;
-	d->read = read;
-	d->write = write;
+    k->module = module;
+    k->read = read;
+    k->write = write;
 }
-
 
 Right::~Right()
 {
-	delete d;
+    delete k;
 }
 
 void Right::setRead(bool enable)
 {
-	d->read = enable;
+    k->read = enable;
 }
-
 
 void Right::setWrite(bool enable)
 {
-	d->write = enable;
+    k->write = enable;
 }
-
 
 QString Right::module() const
 {
-	return d->module;
+    return k->module;
 }
 
 bool Right::write() const
 {
-	return d->write;
+    return k->write;
 }
 
 bool Right::read() const
 {
-	return d->read;
+    return k->read;
 }
 
-
-
 }
-
-
-
-
 

@@ -30,14 +30,15 @@ namespace Registers {
 */
 class Manager : public Base::Observer
 {
-	public:
-		Manager();
-		~Manager();
-		
-		virtual void handlePackage(Base::Package* const pkg);
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        Manager();
+        ~Manager();
+        
+        virtual void handlePackage(Base::Package* const pkg);
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

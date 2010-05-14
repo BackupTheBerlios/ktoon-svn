@@ -32,7 +32,7 @@
 class KTProjectRequest;
 
 namespace Users {
-	class User;
+    class User;
 }
 
 namespace Server {
@@ -44,62 +44,58 @@ class TcpServer;
  */
 class Connection : public QThread
 {
-	Q_OBJECT;
+    Q_OBJECT;
 
-	public:
-		Connection(int socketDescriptor, Server::TcpServer *server);
-		~Connection();
-		
-		void run();
-		
-		void appendTextReaded(const QString &readed);
-		
-		void sendToClient(const QString &text) const;
-		void sendToAll(const QString &text);
-		
-		void sendToClient(QDomDocument &doc, bool sign = true);
-		void sendToAll(QDomDocument &doc, bool sign = true);
-		
-		
-		void setData(int key, const QVariant &value);
-		QVariant data(int key) const;
-		
-		Client *client() const;
-		TcpServer *server() const;
-		
-		void setUser(Users::User *user);
-		Users::User *user() const;
-		
-		void generateSign();
-		
-		void signPackage(QDomDocument &doc);
-		
-		QString sign() const;
-		
-		void setValid(bool v);
-		bool isValid() const;
-		
-	public slots:
-		void close();
-		void sendErrorPackageToClient(const QString & message, Packages::Error::Level level);
-		
-	private slots:
-		void removeConnection();
-		
-	signals:
-		void error(QTcpSocket::SocketError socketError);
-		void requestSendToAll(const QString &msg);
-		void connectionClosed( Server::Connection *cnn);
-		void packageReaded(Server::Connection *cnn, const QString& root,const QString & packages  );
-		
-		
-	private:
-		class Private;
-		Private *const d;
+    public:
+        Connection(int socketDescriptor, Server::TcpServer *server);
+        ~Connection();
+        
+        void run();
+        
+        void appendTextReaded(const QString &readed);
+        
+        void sendToClient(const QString &text) const;
+        void sendToAll(const QString &text);
+        
+        void sendToClient(QDomDocument &doc, bool sign = true);
+        void sendToAll(QDomDocument &doc, bool sign = true);
+        
+        void setData(int key, const QVariant &value);
+        QVariant data(int key) const;
+        
+        Client *client() const;
+        TcpServer *server() const;
+        
+        void setUser(Users::User *user);
+        Users::User *user() const;
+        
+        void generateSign();
+        
+        void signPackage(QDomDocument &doc);
+        
+        QString sign() const;
+        
+        void setValid(bool v);
+        bool isValid() const;
+        
+    public slots:
+        void close();
+        void sendErrorPackageToClient(const QString & message, Packages::Error::Level level);
+        
+    private slots:
+        void removeConnection();
+        
+    signals:
+        void error(QTcpSocket::SocketError socketError);
+        void requestSendToAll(const QString &msg);
+        void connectionClosed( Server::Connection *cnn);
+        void packageReaded(Server::Connection *cnn, const QString& root,const QString & packages  );
+        
+    private:
+        class Private;
+        Private *const k;
 };
 
 }
 
 #endif
-
-

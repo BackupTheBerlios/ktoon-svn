@@ -29,13 +29,14 @@
 
 namespace Packages
 {
+
 class Package : public QDomDocument
 {
-	public:
-		Package();
-		
-		~Package();
-
+    public:
+        Package();
+        
+        ~Package();
 };
+
 }
 #endif

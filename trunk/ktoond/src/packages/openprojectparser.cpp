@@ -24,52 +24,40 @@ namespace Parsers {
 
 struct OpenProjectParser::Private
 {
-	QString name;
+    QString name;
 };
 
-OpenProjectParser::OpenProjectParser()
- : KTXmlParserBase(), d( new Private() )
+OpenProjectParser::OpenProjectParser() : KTXmlParserBase(), k(new Private())
 {
 }
-
 
 OpenProjectParser::~OpenProjectParser()
 {
-	delete d;
+    delete k;
 }
-
 
 bool OpenProjectParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if ( root() == "openproject" )
-	{
-		if ( tag == "project")
-		{
-			d->name = atts.value("name");
-		}
-	}
-	
-	
-	return true;
+    if (root() == "openproject") {
+        if (tag == "project")
+            k->name = atts.value("name");
+    }
+    
+    return true;
 }
 
 bool OpenProjectParser::endTag(const QString &)
 {
-	return true;
+    return true;
 }
 
 void OpenProjectParser::text(const QString &)
 {
 }
 
-
 QString OpenProjectParser::name() const
 {
-	return d->name;
+    return k->name;
 }
 
-
-
 }
-
-

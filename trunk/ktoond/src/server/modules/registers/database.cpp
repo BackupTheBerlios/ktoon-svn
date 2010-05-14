@@ -29,153 +29,131 @@ namespace Registers {
 
 struct Database::Private
 {
-	QString fileName;
-	
-	QString emailToFind;
-	QHash<QString, QString> entry;
-	
-	QDomDocument loadDatabase()
-	{
-		QDomDocument doc;
-		
-		QFile f(fileName);
-		if( f.exists() )
-		{
-			if( f.open(QIODevice::ReadOnly | QIODevice::Text) )
-			{
-				doc.setContent(f.readAll());
-			}
-		}
-		
-		return doc;
-	}
-	
-	void save(const QDomDocument &doc)
-	{
-		QFile f(fileName);
-		if( f.open(QIODevice::WriteOnly | QIODevice::Text) )
-		{
-			QTextStream ts(&f);
-			ts << doc.toString(0) << endl;
-		}
-	}
+    QString fileName;
+    
+    QString emailToFind;
+    QHash<QString, QString> entry;
+    
+    QDomDocument loadDatabase()
+    {
+        QDomDocument doc;
+        
+        QFile f(fileName);
+        if (f.exists()) {
+            if (f.open(QIODevice::ReadOnly | QIODevice::Text))
+                doc.setContent(f.readAll());
+        }
+        
+        return doc;
+    }
+    
+    void save(const QDomDocument &doc) 
+    {
+        QFile f(fileName);
+        if (f.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream ts(&f);
+            ts << doc.toString(0) << endl;
+        }
+    }
 };
 
-Database::Database(const QString &dbfile) : d(new Private)
+Database::Database(const QString &dbfile) : k(new Private)
 {
-	d->fileName = dbfile;
+    k->fileName = dbfile;
 }
-
 
 Database::~Database()
 {
-	delete d;
+    delete k;
 }
-
 
 QString Database::fileName() const
 {
-	return d->fileName;
+    return k->fileName;
 }
 
 void Database::removeRegister(const QString &email)
 {
-	QDomDocument db = d->loadDatabase();
-	
-	QDomElement root = db.documentElement();
+    QDomDocument db = k->loadDatabase();
+    
+    QDomElement root = db.documentElement();
 
-	QDomNode reg = root.firstChild();
-	bool ok = false;
-	
-	while(!reg.isNull())
-	{
-		QDomElement e = reg.toElement();
-		if(!e.isNull())
-		{
-			QDomNode data = reg.firstChild();
-			while(!data.isNull())
-			{
-				QDomElement e2 = data.toElement();
-				
-				if(!e2.isNull())
-				{
-					if( e2.tagName() == "email" )
-					{
-						if( e2.attribute("value") == email )
-						{
-							root.removeChild(reg);
-							ok = true;
-							
-							break;
-						}
-					}
-				}
-				data = data.nextSibling();
-			}
-		}
-		
-		if(ok )	break;
-		
-		reg = reg.nextSibling();
-	}
-	
-	if(ok)
-	{
-		d->save(db);
-	}
-	
+    QDomNode reg = root.firstChild();
+    bool ok = false;
+    
+    while (!reg.isNull()) {
+           QDomElement e = reg.toElement();
+           if (!e.isNull()) {
+               QDomNode data = reg.firstChild();
+               while (!data.isNull()) {
+                QDomElement e2 = data.toElement();
+                
+                if (!e2.isNull()) {
+                    if (e2.tagName() == "email") {
+                        if (e2.attribute("value") == email) {
+                            root.removeChild(reg);
+                            ok = true;
+                            
+                            break;
+                        }
+                    }
+                }
+
+                data = data.nextSibling();
+            }
+        }
+        
+        if (ok)    
+            break;
+        
+        reg = reg.nextSibling();
+    }
+    
+    if (ok)
+        k->save(db);
 }
 
 bool Database::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if( tag == "login" )
-	{
-		d->entry["login"] = atts.value("value");
-	}
-	else if ( tag == "name" )
-	{
-		d->entry["name"] = atts.value("value");
-	}
-	else if ( tag == "email" )
-	{
-		d->entry["email"] = atts.value("value");
-	}
-	
-	return true;
+    if (tag == "login") {
+        k->entry["login"] = atts.value("value");
+    } else if (tag == "name") {
+               k->entry["name"] = atts.value("value");
+    } else if (tag == "email") {
+               k->entry["email"] = atts.value("value");
+    }
+    
+    return true;
 }
+
 bool Database::endTag(const QString &tag)
 {
-	if( tag == "register" )
-	{
-		if( d->entry["email"] == d->emailToFind )
-		{
-			setIgnore(true);
-		}
-	}
-	
-	return true;
+    if (tag == "register") {
+        if (k->entry["email"] == k->emailToFind)
+            setIgnore(true);
+    }
+    
+    return true;
 }
+
 void Database::text(const QString &)
 {
 }
 
 QHash<QString, QString> Database::findRegisterByEmail(const QString &email)
 {
-	d->emailToFind = email;
-	QFile f(d->fileName);
-	if( f.exists() )
-	{
-		if( f.open(QIODevice::ReadOnly | QIODevice::Text) )
-		{
-			QByteArray data = f.readAll();
-			f.close();
-			parse(data);
-		}
-	}
-	
-	return d->entry;
+    k->emailToFind = email;
+    QFile f(k->fileName);
+
+    if (f.exists()) {
+        if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QByteArray data = f.readAll();
+            f.close();
+            parse(data);
+        }
+    }
+    
+    return k->entry;
 }
 
 }
-
-

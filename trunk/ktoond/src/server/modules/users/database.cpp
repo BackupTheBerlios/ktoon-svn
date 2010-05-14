@@ -29,154 +29,140 @@ namespace Users {
 
 struct Database::Private
 {
-// 	QDomDocument document;
-	QString dbfile;
+    QString dbfile;
 };
 
-Database::Database(const QString &dbfile) : d(new Private)
+Database::Database(const QString &dbfile) : k(new Private)
 {
-	d->dbfile = dbfile;
-	
-	if( !QFile::exists(d->dbfile))
-	{
-		Users::User user;
-		user.setLogin("admin");
-		user.setName(QObject::tr("System administrator"));
-		user.setPassword("d41d8cd98f00b204e9800998ecf8427e");
-		
-		user.addRight(new Right("admin", true, true));
-		user.addRight(new Right("project", true, true));
-		
-		addUser(user);
-	}
+    k->dbfile = dbfile;
+    
+    if (!QFile::exists(k->dbfile)) {
+        Users::User user;
+        user.setLogin("admin");
+        user.setName(QObject::tr("System administrator"));
+        user.setPassword("d41d8cd98f00b204e9800998ecf8427e");
+        
+        user.addRight(new Right("admin", true, true));
+        user.addRight(new Right("project", true, true));
+        
+        addUser(user);
+    }
 }
 
 
 Database::~Database()
 {
-	delete d;
+    delete k;
 }
-
 
 QDomDocument Database::loadDataBase()
 {
-	kDebug() << "loading database from " << d->dbfile;
-	QFile file(d->dbfile);
-	QDomDocument document;
-	if( !file.exists() )
-	{
-		if ( file.open(QIODevice::WriteOnly | QIODevice::Text) )
-		{
-			QTextStream ts(&file);
-			document.appendChild(document.createElement("projects"));
-			
-			ts << document.toString();
-			file.close();
-		}
-	}
-	
-	if ( file.open(QIODevice::ReadOnly | QIODevice::Text) )
-	{
-		if ( !document.setContent(file.readAll()) )
-		{
-			kWarning() << file.fileName() << " is corrupted!";
-		}
-		file.close();
-	}
-	return document;
+    kDebug() << "loading database from " << k->dbfile;
+    QFile file(k->dbfile);
+    QDomDocument document;
+
+    if (!file.exists()) {
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream ts(&file);
+            document.appendChild(document.createElement("projects"));
+            
+            ts << document.toString();
+            file.close();
+        }
+    }
+    
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (!document.setContent(file.readAll()))
+            kWarning() << file.fileName() << " is corrupted!";
+
+        file.close();
+    }
+
+    return document;
 }
 
 bool Database::addUser(const Users::User &user)
 {
-	if ( user.login().isEmpty() )
-		return false;
-	
-	QDomDocument db = loadDataBase();
-	QDomElement root = db.documentElement();
-	
-	root.appendChild(user.toXml(db));
-	
-	QFile file(d->dbfile);
-	
-	if ( file.open(QIODevice::WriteOnly| QIODevice::Text) )
-	{
-		QTextStream ts(&file);
-		ts << db.toString();
-		file.close();
-		return true;
-	}
-	
-	return false;
+    if (user.login().isEmpty())
+        return false;
+    
+    QDomDocument db = loadDataBase();
+    QDomElement root = db.documentElement();
+    
+    root.appendChild(user.toXml(db));
+    
+    QFile file(k->dbfile);
+    
+    if (file.open(QIODevice::WriteOnly| QIODevice::Text)) {
+        QTextStream ts(&file);
+        ts << db.toString();
+        file.close();
+        return true;
+    }
+    
+    return false;
 }
-
 
 bool Database::updateUser(const Users::User &user)
 {
-	QDomDocument doc = loadDataBase();
-	
-	QDomElement docElem = doc.documentElement();
+    QDomDocument doc = loadDataBase();
+    
+    QDomElement docElem = doc.documentElement();
 
-	QDomNode n = docElem.firstChild();
-	while(!n.isNull())
-	{
-		QDomElement e = n.toElement(); 
-		if(!e.isNull()) 
-		{
-			if(e.attribute("login") == user.login())
-			{
-				docElem.removeChild(n);
-				docElem.appendChild(user.toXml(doc));
-			}
-		}
-		n = n.nextSibling();
-	}
-	
-	QFile file(d->dbfile);
-	
-	if ( file.open(QIODevice::WriteOnly| QIODevice::Text) )
-	{
-		QTextStream ts(&file);
-		ts << doc.toString();
-		file.close();
-		
-		return true;
-	}
-	
-	return false;
+    QDomNode n = docElem.firstChild();
+
+    while (!n.isNull()) {
+           QDomElement e = n.toElement(); 
+           if (!e.isNull()) {
+               if (e.attribute("login") == user.login()) {
+                   docElem.removeChild(n);
+                   docElem.appendChild(user.toXml(doc));
+               }
+           }
+           n = n.nextSibling();
+    }
+    
+    QFile file(k->dbfile);
+    
+    if (file.open(QIODevice::WriteOnly| QIODevice::Text)) {
+        QTextStream ts(&file);
+        ts << doc.toString();
+        file.close();
+        
+        return true;
+    }
+    
+    return false;
 }
 
 bool Database::removeUser(const QString &login)
 {
-	QDomDocument doc = loadDataBase();
-	
-	QDomElement docElem = doc.documentElement();
-	QDomNode n = docElem.firstChild();
-	while(!n.isNull())
-	{
-		QDomElement e = n.toElement(); 
-		if(!e.isNull()) 
-		{
-			if(e.attribute("login") == login)
-			{
-				docElem.removeChild(n);
-			}
-		}
-		n = n.nextSibling();
-	}
-	QFile file(d->dbfile);
-	
-	if ( file.open(QIODevice::WriteOnly| QIODevice::Text) )
-	{
-		QTextStream ts(&file);
-		ts << doc.toString();
-		file.close();
-		return true;
-	}
-	
-	return false;
+    QDomDocument doc = loadDataBase();
+    
+    QDomElement docElem = doc.documentElement();
+    QDomNode n = docElem.firstChild();
+
+    while (!n.isNull()) {
+           QDomElement e = n.toElement(); 
+
+           if (!e.isNull()) {
+               if (e.attribute("login") == login)
+                docElem.removeChild(n);
+           }
+           n = n.nextSibling();
+    }
+
+    QFile file(k->dbfile);
+    
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream ts(&file);
+        ts << doc.toString();
+        file.close();
+
+        return true;
+    }
+    
+    return false;
 }
 
 }
-
-
-

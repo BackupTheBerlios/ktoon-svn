@@ -18,18 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include "projectlist.h"
+
 namespace Packages
 {
 
 ProjectList::ProjectList() : Package()
 {
-	QDomElement root = createElement ( "projectlist" );
-	root.setAttribute ( "version",  "0" );
-	appendChild(root);
+    QDomElement root = createElement("projectlist");
+    root.setAttribute("version",  "0");
+    appendChild(root);
 }
-
 
 ProjectList::~ProjectList()
 {
@@ -37,14 +36,14 @@ ProjectList::~ProjectList()
 
 void ProjectList::addProject(const QString & name, const QString &author, const QString &description )
 {
-	QDomNode root = firstChild ();
-	
-	QDomElement projectE = createElement( "project" );
-	projectE.setAttribute("name", name);
-	projectE.setAttribute("author", author);
-	projectE.setAttribute("description", description);
-	
-	root.appendChild(projectE);
+    QDomNode root = firstChild ();
+    
+    QDomElement projectE = createElement("project");
+    projectE.setAttribute("name", name);
+    projectE.setAttribute("author", author);
+    projectE.setAttribute("description", description);
+    
+    root.appendChild(projectE);
 }
 
 }

@@ -26,30 +26,26 @@ RemoveBanParser::RemoveBanParser()
 {
 }
 
-
 RemoveBanParser::~RemoveBanParser()
 {
 }
 
 bool RemoveBanParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if ( tag == "pattern" )
-	{
-		m_pattern = atts.value("value");
-	}
-	return true;
+    if (tag == "pattern")
+        m_pattern = atts.value("value");
+
+    return true;
 }
 
 bool RemoveBanParser::endTag(const QString &)
 {
-	
-	return true;
+    return true;
 }
 
 QString RemoveBanParser::pattern() const
 {
-	return m_pattern;
+    return m_pattern;
 }
-
 
 }

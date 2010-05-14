@@ -25,57 +25,53 @@ namespace Base {
 
 struct Package::Private
 {
-	Private(const QString &root, const QString &xml, Server::Connection *cnx) : root(root), xml(xml), connection(cnx), accepted(false)
-	{
-	}
-	QString root;
-	QString xml;
-	Server::Connection *connection;
-	
-	bool accepted;
+    Private(const QString &root, const QString &xml, Server::Connection *cnx) : root(root), xml(xml), connection(cnx), accepted(false)
+    {
+    }
+    QString root;
+    QString xml;
+    Server::Connection *connection;
+    
+    bool accepted;
 };
 
-Package::Package(const QString &root, const QString &xml, Server::Connection *cnx) : d(new Private(root, xml, cnx))
+Package::Package(const QString &root, const QString &xml, Server::Connection *cnx) : k(new Private(root, xml, cnx))
 {
 }
 
-
 Package::~Package()
 {
-	delete d;
+    delete k;
 }
 
 QString Package::root() const
 {
-	return d->root;
+    return k->root;
 }
 
 QString Package::xml() const
 {
-	return d->xml;
+    return k->xml;
 }
 
 Server::Connection *Package::source() const
 {
-	return d->connection;
+    return k->connection;
 }
 
 bool Package::accepted() const
 {
-	return d->accepted;
+    return k->accepted;
 }
-
 
 void Package::accept()
 {
-	d->accepted = true;
+    k->accepted = true;
 }
 
 void Package::ignore()
 {
-	d->accepted = false;
+    k->accepted = false;
 }
 
 }
-
-

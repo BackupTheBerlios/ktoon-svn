@@ -18,27 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef PACKAGESPROJECTS_H
 #define PACKAGESPROJECTS_H
 
 #include <package.h>
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
 namespace Packages
 {
+
 class ProjectList : public Package
 {
-	public:
-		ProjectList();
-		~ProjectList();
-		
-		void addProject(const QString & name, const QString &author = QString::null, const QString &description = QString::null);
-		
-	private:
-		
+   public:
+      ProjectList();
+      ~ProjectList();
+      
+      void addProject(const QString & name, const QString &author = QString::null, const QString &description = QString::null);
+      
+   private:
+      
 };
 }
 

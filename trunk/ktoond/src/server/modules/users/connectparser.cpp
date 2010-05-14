@@ -24,78 +24,64 @@ namespace Parsers {
 
 class ConnectParser::Private
 {
-	public:
-		QString login;
-		QString password;
-		int client;
+    public:
+        QString login;
+        QString password;
+        int client;
 };
 
-ConnectParser::ConnectParser() : KTXmlParserBase(), d(new Private)
+ConnectParser::ConnectParser() : KTXmlParserBase(), k(new Private)
 {
-	d->client = 0;
+    k->client = 0;
 }
-
 
 ConnectParser::~ConnectParser()
 {
-	delete d;
+    delete k;
 }
 
 bool ConnectParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if ( root() == "connect" )
-	{
-		if ( tag == "login" )
-		{
-			setReadText(true);
-		}
-		else if ( tag == "password")
-		{
-			setReadText(true);
-		}
-		else if ( tag == "client" )
-		{
-			d->client = atts.value("type").toInt();
-		}
-	}
-	
-	
-	return true;
+    if (root() == "connect") {
+        if (tag == "login") {
+            setReadText(true);
+        } else if (tag == "password") {
+                   setReadText(true);
+        } else if (tag == "client") {
+                   k->client = atts.value("type").toInt();
+        }
+    }
+    
+    return true;
 }
 
 bool ConnectParser::endTag(const QString &)
 {
-	return true;
+    return true;
 }
 
 void ConnectParser::text(const QString &text)
 {
-	if ( currentTag() == "login" )
-	{
-		d->login = text;
-	}
-	else if ( currentTag() == "password")
-	{
-		d->password = text;
-	}
+    if (currentTag() == "login") {
+        k->login = text;
+    } else if (currentTag() == "password") {
+               k->password = text;
+    }
 }
-
 
 QString ConnectParser::login() const
 {
-	return d->login;
+    return k->login;
 }
 
 QString ConnectParser::password() const
 {
-	return d->password;
+    return k->password;
 }
 
 int ConnectParser::client() const
 {
-	return d->client;
+    return k->client;
 }
 
 }
-
-

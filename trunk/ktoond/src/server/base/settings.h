@@ -27,27 +27,28 @@ namespace Base {
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
+
 class Settings
 {
-	protected:
-		Settings();
-		
-	public:
-		~Settings();
-		
-		static Settings *self();
-		
-		void setDatabaseDirPath(const QString &dir);
-		QString databaseDirPath() const;
-		
-		void setBackupDirPath(const QString &dir);
-		QString backupDirPath() const;
-		
-	private:
-		static Settings *s_settings;
-		
-		struct Private;
-		Private *const d;
+    protected:
+        Settings();
+        
+    public:
+        ~Settings();
+        
+        static Settings *self();
+        
+        void setDatabaseDirPath(const QString &dir);
+        QString databaseDirPath() const;
+        
+        void setBackupDirPath(const QString &dir);
+        QString backupDirPath() const;
+        
+    private:
+        static Settings *s_settings;
+        
+        struct Private;
+        Private *const k;
 };
 
 }

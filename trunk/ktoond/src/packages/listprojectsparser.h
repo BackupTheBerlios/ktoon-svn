@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef PARSERSLISTPROJECTSPARSER_H
 #define PARSERSLISTPROJECTSPARSER_H
 
@@ -25,23 +26,23 @@
 namespace Parsers {
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+    @author David Cuadrado <krawek@toonka.com>
 */
+
 class ListProjectsParser : public KTXmlParserBase
 {
-	public:
-		ListProjectsParser();
-		
-		~ListProjectsParser();
-		bool startTag(const QString &tag, const QXmlAttributes &atts);
-		bool endTag(const QString &tag);
-		void text(const QString &msg);
-		
-		bool readAll() const;
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        ListProjectsParser();
+        
+        ~ListProjectsParser();
+        bool startTag(const QString &tag, const QXmlAttributes &atts);
+        bool endTag(const QString &tag);
+        void text(const QString &msg);
+        bool readAll() const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

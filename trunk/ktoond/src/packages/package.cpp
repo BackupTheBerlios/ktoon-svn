@@ -19,17 +19,16 @@
  ***************************************************************************/
 
 #include "package.h"
+
 namespace Packages
 {
 	
-Package::Package()
- : QDomDocument()
+Package::Package() : QDomDocument()
 {
 }
-
 
 Package::~Package()
 {
 }
-}
 
+}

@@ -31,22 +31,20 @@ class Connection;
  * Esta clase representa los clientes del servidor
  * @author David Cuadrado \<krawek@gmail.com\>
 */
+
 class Client : public KTSocketBase
 {
-	Q_OBJECT;
-	public:
-		Client(Server::Connection *connection);
-		virtual ~Client();
-		
-		virtual void readed(const QString &readed);
-		
-	private:
-		Server::Connection *m_connection;
+    Q_OBJECT;
+    public:
+        Client(Server::Connection *connection);
+        virtual ~Client();
+        
+        virtual void readed(const QString &readed);
+        
+    private:
+        Server::Connection *m_connection;
 };
-
 
 }
 
 #endif
-
-

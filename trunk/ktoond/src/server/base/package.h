@@ -24,7 +24,7 @@
 #include <QString>
 
 namespace Server {
-	class Connection;
+    class Connection;
 }
 
 namespace Base {
@@ -34,21 +34,21 @@ namespace Base {
 */
 class Package
 {
-	public:
-		Package(const QString &root, const QString &xml, Server::Connection *cnx);
-		~Package();
-		
-		QString root() const;
-		QString xml() const;
-		Server::Connection *source() const;
-		bool accepted() const;
-		
-		void accept();
-		void ignore();
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        Package(const QString &root, const QString &xml, Server::Connection *cnx);
+        ~Package();
+        
+        QString root() const;
+        QString xml() const;
+        Server::Connection *source() const;
+        bool accepted() const;
+        
+        void accept();
+        void ignore();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

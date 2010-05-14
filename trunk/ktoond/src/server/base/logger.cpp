@@ -27,71 +27,65 @@ namespace Base {
 
 struct Logger::Private
 {
-	QFile file;
+    QFile file;
 };
 
 Logger *Logger::s_self = 0;
 
-Logger::Logger() : d(new Private)
+Logger::Logger() : k(new Private)
 {
-	d->file.setFileName("/tmp/server.log");
+    k->file.setFileName("/tmp/server.log");
 }
-
 
 Logger::~Logger()
 {
-	delete d;
+    delete k;
 }
 
 Logger *Logger::self()
 {
-	if ( ! s_self )
-		s_self = new Logger;
-	
-	return s_self;
+    if (! s_self)
+        s_self = new Logger;
+    
+    return s_self;
 }
 
 void Logger::setLogFile(const QString &logfile)
 {
-	d->file.setFileName(logfile);
+    k->file.setFileName(logfile);
 }
 
 QString Logger::logFile() const
 {
-	return d->file.fileName();
+    return k->file.fileName();
 }
-
 
 void Logger::warn(const QString &log)
 {
-	write(QString(QDateTime::currentDateTime().toString(Qt::ISODate)+ " WARNING:  "+log+"\n").toLocal8Bit());
+    write(QString(QDateTime::currentDateTime().toString(Qt::ISODate) + " WARNING:  " + log + "\n").toLocal8Bit());
 }
 
 void Logger::error(const QString &log)
 {
-	write(QString(QDateTime::currentDateTime().toString(Qt::ISODate)+ " ERROR:  "+log+"\n").toLocal8Bit());
+    write(QString(QDateTime::currentDateTime().toString(Qt::ISODate) + " ERROR:  " + log + "\n").toLocal8Bit());
 }
 
 void Logger::info(const QString &log)
 {
-	write(QString(QDateTime::currentDateTime().toString(Qt::ISODate)+ " INFO:  "+log+"\n").toLocal8Bit());
+    write(QString(QDateTime::currentDateTime().toString(Qt::ISODate) + " INFO:  " + log + "\n").toLocal8Bit());
 }
 
 void Logger::fatal(const QString &log)
 {
-	write(QString(QDateTime::currentDateTime().toString(Qt::ISODate)+ " FATAL:  "+log+"\n").toLocal8Bit());
+    write(QString(QDateTime::currentDateTime().toString(Qt::ISODate) + " FATAL:  " + log + "\n").toLocal8Bit());
 }
 
 void Logger::write(const QByteArray &msg)
 {
-	if ( d->file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
-	{
-		d->file.write(msg.data(), msg.size());
-		d->file.close();
-	}
+    if (k->file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
+        k->file.write(msg.data(), msg.size());
+        k->file.close();
+    }
 }
 
 }
-
-
-

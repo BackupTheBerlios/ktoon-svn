@@ -27,124 +27,118 @@
 
 struct SProject::Private
 {
-	QTimer *saver;
-	QString filename;
-	QMultiHash<UserType, QString> users;
-	
-	int timerId;
+    QTimer *saver;
+    QString filename;
+    QMultiHash<UserType, QString> users;
+    
+    int timerId;
 };
 
-SProject::SProject(const QString & filename, QObject *parent) : KTProject(parent), d( new Private() )
+SProject::SProject(const QString & filename, QObject *parent) : KTProject(parent), k(new Private() )
 {
-	KINIT;
-	d->filename = filename;
-	d->saver = new QTimer(this);
-	d->saver->setInterval( 30000 );
-	d->saver->start();
-	QObject::connect(d->saver, SIGNAL(timeout ()), this, SLOT(save()));
-	d->timerId = startTimer(300000);
+    KINIT;
+    k->filename = filename;
+    k->saver = new QTimer(this);
+    k->saver->setInterval(30000);
+    k->saver->start();
+    QObject::connect(k->saver, SIGNAL(timeout ()), this, SLOT(save()));
+    k->timerId = startTimer(300000);
 }
 
 void SProject::resetTimer()
 {
-	d->saver->stop();
-	d->saver->start();
+    k->saver->stop();
+    k->saver->start();
 }
 
 SProject::~SProject()
 {
-	delete d->saver;
-	killTimer(d->timerId);
-	delete d;
+    delete k->saver;
+    killTimer(k->timerId);
+    delete k;
 }
 
 bool SProject::save()
 {
-	K_FUNCINFOX("server");
-	KTSaveProject *saver = new KTSaveProject;
-	SHOW_VAR(d->filename);
-	bool ok = saver->save(d->filename, this);
-	
-	if(ok)
-	{
-		emit requestSendErrorMessage( QObject::tr( "project saved"), Packages::Error::Info );
-		
-	}
-	else
-	{
-		emit requestSendErrorMessage( QObject::tr( "Error saving project"), Packages::Error::Err );
-	}
-	delete saver;
-	return ok;
+    K_FUNCINFOX("server");
+    KTSaveProject *saver = new KTSaveProject;
+    SHOW_VAR(k->filename);
+    bool ok = saver->save(k->filename, this);
+    
+    if (ok)
+        emit requestSendErrorMessage(QObject::tr("project saved"), Packages::Error::Info);
+    else
+        emit requestSendErrorMessage(QObject::tr("Error saving project"), Packages::Error::Err);
+
+    delete saver;
+
+    return ok;
 }
 
-void SProject::timerEvent ( QTimerEvent *  )
+void SProject::timerEvent(QTimerEvent *)
 {
-	save();
+    save();
 }
 
 QDomElement SProject::infoToXml(QDomDocument &doc) const
 {
-	QDomElement project = doc.createElement("project");
-	
-	project.setAttribute("name", projectName());
-	project.setAttribute("author", author());
-	project.setAttribute("description", description());
-	
-	
-	QDomElement file = doc.createElement("file");
-	
-	QString fileName = projectName();
-	if ( !fileName.endsWith(".ktn") )
-	{
-		fileName += ".ktn";
-	}
-	
-	
-	QFileInfo fi(d->filename);
-	file.setAttribute("name", fi.fileName());
-	
-	project.appendChild(file);
-	QDomElement usersE = doc.createElement("users");
-	project.appendChild(usersE);
-	
-	foreach(UserType key, d->users.uniqueKeys())
-	{
-		foreach(QString login, d->users.values(key))
-		{
-			QDomElement userE = doc.createElement("user");
-			userE.setAttribute("type", key);
-			userE.appendChild(doc.createTextNode(login));
-			usersE.appendChild(userE);
-		}
-	}
-	return project;
+    QDomElement project = doc.createElement("project");
+    
+    project.setAttribute("name", projectName());
+    project.setAttribute("author", author());
+    project.setAttribute("description", description());
+    
+    QDomElement file = doc.createElement("file");
+    
+    QString fileName = projectName();
+
+    if (!fileName.endsWith(".ktn"))
+        fileName += ".ktn";
+    
+    QFileInfo fi(k->filename);
+    file.setAttribute("name", fi.fileName());
+    
+    project.appendChild(file);
+    QDomElement usersE = doc.createElement("users");
+    project.appendChild(usersE);
+    
+    foreach (UserType key, k->users.uniqueKeys()) {
+             foreach (QString login, k->users.values(key)) {
+                      QDomElement userE = doc.createElement("user");
+                      userE.setAttribute("type", key);
+                      userE.appendChild(doc.createTextNode(login));
+                      usersE.appendChild(userE);
+             }
+    }
+
+    return project;
 }
 
-bool SProject::addUser( const QString& login, UserType type )
+bool SProject::addUser(const QString& login, UserType type)
 {
-	if(!d->users.values(type).contains(login))
-	{
-		d->users.insert(type, login);
-		return true;
-	}
-	return false;
+    if (!k->users.values(type).contains(login)) {
+        k->users.insert(type, login);
+        return true;
+    }
+
+    return false;
 }
 
-void SProject::setUsers( const QMultiHash<SProject::UserType, QString> & users)
+void SProject::setUsers(const QMultiHash<SProject::UserType, QString> & users)
 {
-	d->users = users;
+    k->users = users;
 }
 
 QString SProject::fileName()
 {
-	return d->filename;
+    return k->filename;
 }
 
 bool SProject::isOwner(const Users::User* user)
 {
-	SHOW_VAR(d->users.count());
-	SHOW_VAR(d->users.values(Owner));
-	return d->users.values(Owner).contains(user->login());
+    SHOW_VAR(k->users.count());
+    SHOW_VAR(k->users.values(Owner));
+
+    return k->users.values(Owner).contains(user->login());
 }
 

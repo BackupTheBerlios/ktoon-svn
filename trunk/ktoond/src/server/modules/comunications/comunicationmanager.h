@@ -24,21 +24,22 @@
 #include <base/observer.h>
 
 namespace Base {
-	class Package;
+    class Package;
 }
 
 namespace Comunications {
+
 /**
  * @author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
 
 class Manager : public Base::Observer
 {
-	public:
-		Manager();
-		~Manager();
-		
-		void handlePackage(Base::Package *const pkg);
+    public:
+        Manager();
+        ~Manager();
+        
+        void handlePackage(Base::Package *const pkg);
 };
 
 }

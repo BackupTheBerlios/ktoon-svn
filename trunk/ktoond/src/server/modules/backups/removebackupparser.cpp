@@ -20,55 +20,48 @@
 
 #include "removebackupparser.h"
 
-
 namespace Parsers {
 
 struct RemoveBackupParser::Private
 {
-	QString currentDate;
-	QHash<QString, QDateTime> entries;
+    QString currentDate;
+    QHash<QString, QDateTime> entries;
 };
 
-RemoveBackupParser::RemoveBackupParser()
- : KTXmlParserBase(), d(new Private)
+RemoveBackupParser::RemoveBackupParser() : KTXmlParserBase(), k(new Private)
 {
 }
 
-
 RemoveBackupParser::~RemoveBackupParser()
 {
-	delete d;
+    delete k;
 }
 
 bool RemoveBackupParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if( tag == "removebackup" )
-	{
-		d->entries.clear();
-	}
-	else if( tag == "entry" )
-	{
-		d->currentDate = atts.value("date");
-		setReadText(true);
-	}
-	
-	return true;
+    if (tag == "removebackup") {
+        k->entries.clear();
+    } else if (tag == "entry") {
+               k->currentDate = atts.value("date");
+               setReadText(true);
+    }
+    
+    return true;
 }
 
 bool RemoveBackupParser::endTag(const QString &)
 {
-	return true;
+    return true;
 }
 
 void RemoveBackupParser::text(const QString &msg)
 {
-	d->entries[msg] = QDateTime::fromString(d->currentDate, Qt::ISODate);
+    k->entries[msg] = QDateTime::fromString(k->currentDate, Qt::ISODate);
 }
 
 QHash<QString, QDateTime > RemoveBackupParser::entries() const
 {
-	return d->entries;
+    return k->entries;
 }
-
 
 }

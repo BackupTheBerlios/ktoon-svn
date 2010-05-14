@@ -30,19 +30,19 @@ namespace Parsers {
 */
 class OpenProjectParser : public KTXmlParserBase
 {
-	public:
-		OpenProjectParser();
-		~OpenProjectParser();
-		
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-		QString name() const;
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        OpenProjectParser();
+        ~OpenProjectParser();
+        
+        virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+        virtual bool endTag(const QString &tag);
+        virtual void text(const QString &text);
+        
+        QString name() const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

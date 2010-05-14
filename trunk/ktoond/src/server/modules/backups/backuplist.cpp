@@ -24,13 +24,9 @@ namespace Packages {
 
 BackupList::BackupList() : QDomDocument()
 {
-	QDomElement root = createElement("backuplist");
-	
-	
-	
-	appendChild(root);
+    QDomElement root = createElement("backuplist");
+    appendChild(root);
 }
-
 
 BackupList::~BackupList()
 {
@@ -38,21 +34,16 @@ BackupList::~BackupList()
 
 void BackupList::addEntry(const QString &name, const QStringList &backups)
 {
-	QDomElement entry = createElement("entry");
-	entry.setAttribute("name", name);
-	
-	foreach(QString bk, backups)
-	{
-		QDomElement backup = createElement("backup");
-		
-		backup.setAttribute("date", bk);
-		
-		entry.appendChild(backup);
-	}
-	
-	documentElement().appendChild(entry);
+    QDomElement entry = createElement("entry");
+    entry.setAttribute("name", name);
+    
+    foreach (QString bk, backups) {
+             QDomElement backup = createElement("backup");
+             backup.setAttribute("date", bk);
+             entry.appendChild(backup);
+    }
+    
+    documentElement().appendChild(entry);
 }
 
 }
-
-

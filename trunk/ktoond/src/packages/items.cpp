@@ -17,59 +17,55 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "items.h"
 #include <QStringList>
+
 /*
-<!-- Respuesta a una peticion <list> -->
+<!-- Answer to request <list> -->
 <items version="0">
-        <item>proyecto1.ktn</item>
-        <item>proyecto2.ktn</item>
-        <item>proyecto3.ktn</item>
-        <item>proyecto4.ktn</item>
+        <item>project1.ktn</item>
+        <item>project2.ktn</item>
+        <item>project3.ktn</item>
+        <item>project4.ktn</item>
 </items>
 */
 
-
 namespace Packages
 {
-	
+    
 Items::Items()
  : Package()
 {
-	m_root = createElement ( "items" );
-	m_root.setAttribute ( "version",  "0" );
-	appendChild(m_root);
+    m_root = createElement("items");
+    m_root.setAttribute("version", "0");
+    appendChild(m_root);
 }
-
 
 Items::~Items()
 {
-	
+    
 }
 
-
-void Items::addItem(const QString& item )
+void Items::addItem(const QString& item)
 {
-	m_root.appendChild(createElement("item")).appendChild( createTextNode ( item ));
+    m_root.appendChild(createElement("item")).appendChild(createTextNode(item));
 }
 
 void Items::addItems(const QStringList& items)
 {
-	foreach(const QString item, items)
-	{
-		addItem( item );
-	}
+    foreach (const QString item, items)
+             addItem(item);
 }
 
 void Items::setItems( const QStringList& items)
 {
-	removeChild (m_root);
-	m_root = createElement ( "items" );
-	m_root.setAttribute ( "version",  "0" );
-	appendChild(m_root);
-	
-	addItems(items);
+    removeChild (m_root);
+    m_root = createElement("items");
+    m_root.setAttribute("version",  "0");
+    appendChild(m_root);
+    
+    addItems(items);
 }
 
 }
-

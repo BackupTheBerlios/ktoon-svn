@@ -18,12 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef SERVEROBSERVER_H
 #define SERVEROBSERVER_H
 
 namespace Server {
-	class Connection;
+    class Connection;
 }
 
 namespace Base {
@@ -33,18 +32,17 @@ class Package;
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
+
 class Observer
 {
-	public:
-		Observer();
-		virtual ~Observer();
-		
-		virtual void handlePackage(Package *const pkg) = 0;
-		virtual void connectionClosed(Server::Connection *const cnx);
+    public:
+        Observer();
+        virtual ~Observer();
+        
+        virtual void handlePackage(Package *const pkg) = 0;
+        virtual void connectionClosed(Server::Connection *const cnx);
 };
 
 }
 
 #endif
-
-

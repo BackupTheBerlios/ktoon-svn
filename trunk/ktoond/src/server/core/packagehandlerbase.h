@@ -26,26 +26,27 @@
 */
 
 #include <QDomDocument>
+
 #include "base/observer.h"
 #include "server.h"
 
 namespace Server {
+
 class Connection;
 
 class PackageHandlerBase : public Base::Observer
 {
-	public:
-		PackageHandlerBase();
-		
-		virtual ~PackageHandlerBase();
-		void handlePackage(Base::Package *const pkg);
-		
-		virtual void handle(Server::Connection *client, const QString &root, const QString &package ) = 0;
-		virtual void connectionClosed(Server::Connection *client) = 0;
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        PackageHandlerBase();
+        
+        virtual ~PackageHandlerBase();
+        void handlePackage(Base::Package *const pkg);
+        virtual void handle(Server::Connection *client, const QString &root, const QString &package ) = 0;
+        virtual void connectionClosed(Server::Connection *client) = 0;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

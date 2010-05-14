@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef PACKAGESPROJECT_H
 #define PACKAGESPROJECT_H
 
@@ -30,18 +29,20 @@
 
 namespace Packages
 {
+
 class Project : public Package
 {
-	public:
-		Project(const QString & projectPath);
-		~Project();
-		void setProject(const QString & projectPath);
-		bool isValid();
-		
-	private:
-		struct Private;
-		Private *const d;
-		
+    public:
+        Project(const QString & projectPath);
+        ~Project();
+        void setProject(const QString & projectPath);
+        bool isValid();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
+
 }
+
 #endif

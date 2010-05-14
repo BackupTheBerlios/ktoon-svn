@@ -25,29 +25,25 @@ namespace Server {
 
 DefaultPackageHandler::DefaultPackageHandler() : PackageHandlerBase()
 {
-	
+    
 }
-
 
 DefaultPackageHandler::~DefaultPackageHandler()
 {
 }
 
-void DefaultPackageHandler::handle(Server::Connection *cnx, const QString &root, const QString &package )
+void DefaultPackageHandler::handle(Server::Connection *cnx, const QString &root, const QString &package)
 {
-	Q_UNUSED(cnx);
-	Q_UNUSED(root);
-	kWarning() << "DefaultPackageHandler";
-	
-	kDebug() << package;
-	
+    Q_UNUSED(cnx);
+    Q_UNUSED(root);
+    kWarning() << "DefaultPackageHandler";
+    
+    kDebug() << package;
+    
 }
-
 
 void DefaultPackageHandler::connectionClosed(Server::Connection *client)
 {
-	
 }
 
 }
-

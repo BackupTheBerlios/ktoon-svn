@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef PACKAGESREMOVEBAN_H
 #define PACKAGESREMOVEBAN_H
 
@@ -27,20 +28,21 @@ namespace Parsers {
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
+
 class RemoveBanParser : public KTXmlParserBase
 {
-	public:
-		RemoveBanParser();
-		~RemoveBanParser();
-		
-		bool startTag(const QString &tag, const QXmlAttributes &atts);
-		bool endTag(const QString &tag);
-		void text(const QString &) {}
-		
-		QString pattern() const;
-		
-	private:
-		QString m_pattern;
+    public:
+        RemoveBanParser();
+        ~RemoveBanParser();
+        
+        bool startTag(const QString &tag, const QXmlAttributes &atts);
+        bool endTag(const QString &tag);
+        void text(const QString &) {}
+        
+        QString pattern() const;
+        
+    private:
+        QString m_pattern;
 
 };
 

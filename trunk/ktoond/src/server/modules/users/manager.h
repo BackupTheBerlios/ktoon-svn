@@ -26,7 +26,7 @@
 #include "base/observer.h"
 
 namespace Base {
-	class Package;
+    class Package;
 }
 
 namespace Users {
@@ -37,28 +37,26 @@ class User;
 */
 class Manager : public Base::Observer
 {
-	public:
-		explicit Manager();
-		~Manager();
-		
-		bool auth(const QString &login, const QString &password);
-		User *user(const QString &login);
-		
-		bool addUser( const User & user );
-		bool updateUser( const User & user );
-		bool removeUser(const QString &login);
-		
-		QList<User*> listUsers();
-		
-		void handlePackage(Base::Package *const pkg);
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        explicit Manager();
+        ~Manager();
+        
+        bool auth(const QString &login, const QString &password);
+        User *user(const QString &login);
+        
+        bool addUser(const User & user);
+        bool updateUser(const User & user);
+        bool removeUser(const QString &login);
+        
+        QList<User*> listUsers();
+        
+        void handlePackage(Base::Package *const pkg);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }
 
 #endif
-
-

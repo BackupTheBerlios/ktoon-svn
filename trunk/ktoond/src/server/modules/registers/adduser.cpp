@@ -22,21 +22,18 @@
 
 namespace Packages {
 
-AddUser::AddUser(const QString &login, const QString &name)
- : QDomDocument()
+AddUser::AddUser(const QString &login, const QString &name) : QDomDocument()
 {
-	QDomElement root = createElement("adduser");
-	
-	root.appendChild(createElement("login") ).appendChild(createTextNode(login));
-	root.appendChild(createElement("name") ).appendChild(createTextNode(name));
-	
-	appendChild(root);
+    QDomElement root = createElement("adduser");
+    
+    root.appendChild(createElement("login")).appendChild(createTextNode(login));
+    root.appendChild(createElement("name")).appendChild(createTextNode(name));
+    
+    appendChild(root);
 }
-
 
 AddUser::~AddUser()
 {
 }
-
 
 }

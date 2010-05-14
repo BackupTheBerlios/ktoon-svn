@@ -17,57 +17,53 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "listprojectsparser.h"
 
 namespace Parsers {
 
 struct ListProjectsParser::Private
 {
-	bool readAll;
+    bool readAll;
 };
 
-ListProjectsParser::ListProjectsParser()
- : KTXmlParserBase(), d(new Private)
+ListProjectsParser::ListProjectsParser() : KTXmlParserBase(), k(new Private)
 {
-}
 
+}
 
 ListProjectsParser::~ListProjectsParser()
 {
-	delete d;
+    delete k;
 }
 
 bool ListProjectsParser::startTag(const QString &tag, const QXmlAttributes &)
 {
-	if( tag == "listprojects")
-	{
-		d->readAll = false;
-	}
-	else if( tag == "option" )
-	{
-		setReadText(true);
-	}
-	
-	return true;
+    if (tag == "listprojects") {
+        k->readAll = false;
+    } else if (tag == "option") {
+        setReadText(true);
+    }
+    
+    return true;
 }
+
 bool ListProjectsParser::endTag(const QString &)
 {
-	return true;
+    return true;
 }
+
 void ListProjectsParser::text(const QString &text)
 {
-	if ( currentTag() == "option" )
-	{
-		if ( text == "all" )
-		{
-			d->readAll = true;
-		}
-	}
+    if (currentTag() == "option") {
+        if (text == "all")
+            k->readAll = true;
+    }
 }
 
 bool ListProjectsParser::readAll() const
 {
-	return d->readAll;
+    return k->readAll;
 }
 
 }

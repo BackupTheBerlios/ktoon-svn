@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef PACKAGESBACKUPLIST_H
 #define PACKAGESBACKUPLIST_H
 
@@ -27,15 +28,15 @@
 namespace Packages {
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+    @author David Cuadrado <krawek@toonka.com>
 */
 class BackupList : public QDomDocument
 {
-	public:
-		BackupList();
-		~BackupList();
-		
-		void addEntry(const QString &name, const QStringList &backups);
+    public:
+        BackupList();
+        ~BackupList();
+        
+        void addEntry(const QString &name, const QStringList &backups);
 };
 
 }

@@ -31,21 +31,21 @@ namespace Parsers {
 
 class ConnectParser : public KTXmlParserBase
 {
-	public:
-		ConnectParser();
-		~ConnectParser();
-		
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-		QString login() const;
-		QString password() const;
-		int client() const;
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        ConnectParser();
+        ~ConnectParser();
+        
+        virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+        virtual bool endTag(const QString &tag);
+        virtual void text(const QString &text);
+        
+        QString login() const;
+        QString password() const;
+        int client() const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

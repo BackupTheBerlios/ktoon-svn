@@ -23,22 +23,22 @@
 #include <QDomDocument>
 #include "users/right.h"
 
-
 namespace Packages {
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
+
 class Ack : public QDomDocument
 {
-	public:
-		Ack(const QString &motd, const QString &sign);
-		~Ack();
-		
-		void addPermission(const Users::Right *right);
-		
-	private:
-		QDomElement m_perms;
+    public:
+        Ack(const QString &motd, const QString &sign);
+        ~Ack();
+        
+        void addPermission(const Users::Right *right);
+        
+    private:
+        QDomElement m_perms;
 };
 
 }

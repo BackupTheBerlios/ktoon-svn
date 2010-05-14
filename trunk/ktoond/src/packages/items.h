@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef ITEMS_H
 #define ITEMS_H
 
@@ -28,20 +29,24 @@
 
 namespace Packages
 {
+
 class Items : public Package
 {
-	public:
-		Items();
-		~Items();
-		
-		void appendItem(const QStringList& );
-		
-		void addItem(const QString& );
-		void addItems(const QStringList& );
-		void setItems(const QStringList& );
-		
-	private:
-		QDomElement m_root;
+    public:
+        Items();
+        ~Items();
+        
+        void appendItem(const QStringList&);
+
+        void addItem(const QString&);
+        void addItems(const QStringList&);
+
+        void setItems(const QStringList&);
+        
+    private:
+        QDomElement m_root;
 };
+
 }
+
 #endif

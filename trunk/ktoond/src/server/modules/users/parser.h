@@ -32,22 +32,22 @@ class User;
 */
 class Parser : public KTXmlParserBase
 {
-	public:
-		Parser(const QString &dbfile);
-		~Parser();
-		
-		bool startTag(const QString& tag, const QXmlAttributes& atts);
-		bool endTag(const QString& tag);
-		
-		void text ( const QString & ch );
-		
-	public:
-		User *user(const QString &login);
-		QList<User *> listUsers();
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        Parser(const QString &dbfile);
+        ~Parser();
+        
+        bool startTag(const QString& tag, const QXmlAttributes& atts);
+        bool endTag(const QString& tag);
+        
+        void text(const QString & ch);
+        
+    public:
+        User *user(const QString &login);
+        QList<User *> listUsers();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

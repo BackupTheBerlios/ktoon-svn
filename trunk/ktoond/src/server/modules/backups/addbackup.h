@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef PACKAGESADDBACKUP_H
 #define PACKAGESADDBACKUP_H
 
@@ -26,15 +27,16 @@
 namespace Packages {
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+    @author David Cuadrado <krawek@toonka.com>
 */
+
 class AddBackup : public QDomDocument
 {
-	public:
-		AddBackup();
-		~AddBackup();
-		
-		void addEntry(const QString &name, const QDateTime &date);
+    public:
+        AddBackup();
+        ~AddBackup();
+        
+        void addEntry(const QString &name, const QDateTime &date);
 };
 
 }

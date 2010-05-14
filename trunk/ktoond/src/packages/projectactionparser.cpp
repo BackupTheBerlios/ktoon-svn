@@ -24,18 +24,16 @@ namespace Parsers {
 
 struct ProjectActionParser::Private
 {
-	QString name;
-	QString author;
-	QString description;
-	QMultiHash<int, QString> users;
-	int type;
+    QString name;
+    QString author;
+    QString description;
+    QMultiHash<int, QString> users;
+    int type;
 };
 
-ProjectActionParser::ProjectActionParser() : KTXmlParserBase(), d(new Private())
+ProjectActionParser::ProjectActionParser() : KTXmlParserBase(), k(new Private())
 {
-	
 }
-
 
 ProjectActionParser::~ProjectActionParser()
 {
@@ -43,66 +41,57 @@ ProjectActionParser::~ProjectActionParser()
 
 bool ProjectActionParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if(root() == "addproject" || root() == "removeproject" || root() == "updateproject" || root() == "queryproject")
-	{
-		if(tag == "name" || tag == "author" || tag == "description")
-		{
-			setReadText(true);
-		}
-		else if(tag == "user")
-		{
-			d->type = atts.value("type").toInt();
-			setReadText(true);
-		}
-	}
-	return true;
+    if (root() == "addproject" || root() == "removeproject" || 
+        root() == "updateproject" || root() == "queryproject") {
+
+        if (tag == "name" || tag == "author" || tag == "description") {
+            setReadText(true);
+        } else if (tag == "user") {
+                   k->type = atts.value("type").toInt();
+                   setReadText(true);
+        }
+
+    }
+
+    return true;
 }
 
 bool ProjectActionParser::endTag(const QString &)
 {
-	return true;
+    return true;
 }
 
 void ProjectActionParser::text(const QString &text)
 {
-	if(currentTag() == "user")
-	{
-		d->users.insert(d->type, text);
-	}
-	else if( currentTag() == "name" )
-	{
-		d->name = text;
-	}
-	else if( currentTag() == "author" )
-	{
-		d->author = text;
-	}
-	else if( currentTag() == "description" )
-	{
-		d->description = text;
-	}
+    if (currentTag() == "user") {
+        k->users.insert(k->type, text);
+    } else if (currentTag() == "name") {
+               k->name = text;
+    } else if (currentTag() == "author") {
+               k->author = text;
+    } else if (currentTag() == "description") {
+               k->description = text;
+    }
 }
 
 QString ProjectActionParser::name()
 {
-	return d->name;
+    return k->name;
 }
 
 QString ProjectActionParser::author()
 {
-	return d->author;
+    return k->author;
 }
 
 QString ProjectActionParser::description()
 {
-	return d->description;
+    return k->description;
 }
 
 QMultiHash<int, QString> ProjectActionParser::users()
 {
-	return d->users;
+    return k->users;
 }
-
-
 
 }

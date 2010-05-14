@@ -18,15 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <kcore/kdebug.h>
 
 #include "project.h"
 #include "ktsaveproject.h"
 #include "ktproject.h"
 
 #include <QFile>
-#include <kcore/kdebug.h>
+
 /*
-<!-- Respuesta a una peticion open valida -->
+<!-- Answer to valid open request -->
 <project version="0">
         <data>
                 <![CDATA[KTN encoded with Base64]]>
@@ -36,21 +37,21 @@
 
 namespace Packages
 {
+
 struct Project::Private
 {
-	QDomElement root;
-	QDomElement data;
-	bool isValid;
+    QDomElement root;
+    QDomElement data;
+    bool isValid;
 };
 
-Project::Project(const QString & projectPath): Package(), d(new Private)
+Project::Project(const QString & projectPath): Package(), k(new Private)
 {
-	d->root = createElement ( "project" );
-	d->root.setAttribute ( "version",  "0" );
-	appendChild(d->root);
-	setProject(projectPath);
+    k->root = createElement("project");
+    k->root.setAttribute("version", "0");
+    appendChild(k->root);
+    setProject(projectPath);
 }
-
 
 Project::~Project()
 {
@@ -58,25 +59,25 @@ Project::~Project()
 
 void Project::setProject(const QString & projectPath)
 {
-	QFile file(projectPath);
-	KTSaveProject loader;
-	KTProject *project = new KTProject;
-	d->isValid = loader.load(projectPath, project );
-	if(d->isValid)
-	{
-		file.open(QIODevice::ReadOnly);
-		QByteArray data = file.readAll().toBase64();
-		
-		removeChild(d->data);
-		d->data = createElement("data");
-		d->data.appendChild(createCDATASection ( data ));
-		d->root.appendChild(d->data);
-	}
+    QFile file(projectPath);
+    KTSaveProject loader;
+    KTProject *project = new KTProject;
+    k->isValid = loader.load(projectPath, project);
+
+    if (k->isValid) {
+        file.open(QIODevice::ReadOnly);
+        QByteArray data = file.readAll().toBase64();
+        
+        removeChild(k->data);
+        k->data = createElement("data");
+        k->data.appendChild(createCDATASection(data));
+        k->root.appendChild(k->data);
+    }
 }
 
 bool Project::isValid()
 {
-	return d->isValid;
+    return k->isValid;
 }
 
 }

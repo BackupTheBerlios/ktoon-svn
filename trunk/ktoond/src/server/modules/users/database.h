@@ -32,20 +32,19 @@ namespace Users {
 
 class Database
 {
-	public:
-		explicit Database(const QString &dbfile);
-		~Database();
-		bool addUser(const Users::User &user);
-		bool updateUser(const Users::User &user);
-		bool removeUser(const QString &login);
-		
-		
-	private:
-		QDomDocument loadDataBase();
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        explicit Database(const QString &dbfile);
+        ~Database();
+        bool addUser(const Users::User &user);
+        bool updateUser(const Users::User &user);
+        bool removeUser(const QString &login);
+        
+    private:
+        QDomDocument loadDataBase();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

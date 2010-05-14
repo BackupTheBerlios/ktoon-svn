@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef PARSERSREMOVEBACKUPPARSER_H
 #define PARSERSREMOVEBACKUPPARSER_H
 
@@ -29,21 +30,22 @@ namespace Parsers {
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
+
 class RemoveBackupParser : public KTXmlParserBase
 {
-	public:
-		RemoveBackupParser();
-		~RemoveBackupParser();
-		
-		bool startTag(const QString &tag, const QXmlAttributes &atts);
-		bool endTag(const QString &tag);
-		void text(const QString &msg);
-		
-		QHash<QString, QDateTime > entries() const;
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        RemoveBackupParser();
+        ~RemoveBackupParser();
+        
+        bool startTag(const QString &tag, const QXmlAttributes &atts);
+        bool endTag(const QString &tag);
+        void text(const QString &msg);
+        
+        QHash<QString, QDateTime > entries() const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

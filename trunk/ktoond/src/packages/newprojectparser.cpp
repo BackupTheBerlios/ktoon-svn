@@ -17,87 +17,71 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "newprojectparser.h"
 
 namespace Parsers {
 
 struct NewProjectParser::Private
 {
-	QString author;
-	QString name;
-	QString description;
+    QString author;
+    QString name;
+    QString description;
 };
 
-NewProjectParser::NewProjectParser()
- : KTXmlParserBase(), d( new Private())
+NewProjectParser::NewProjectParser() : KTXmlParserBase(), k(new Private())
 {
 }
-
 
 NewProjectParser::~NewProjectParser()
 {
-	delete d;
+    delete k;
 }
-
-
-
 
 bool NewProjectParser::startTag(const QString &tag, const QXmlAttributes &)
 {
-	if ( root() == "newproject" )
-	{
-		if ( tag == "author" )
-		{
-			setReadText(true);
-		}
-		else if ( tag == "name")
-		{
-			setReadText(true);
-		}
-		else if (tag == "description")
-		{
-			setReadText(true);
-		}
-	}
-	
-	
-	return true;
+    if (root() == "newproject") {
+        if (tag == "author") {
+            setReadText(true);
+        } else if (tag == "name") {
+            setReadText(true);
+        } else if (tag == "description") {
+            setReadText(true);
+        }
+    }
+    
+    return true;
 }
 
 bool NewProjectParser::endTag(const QString &)
 {
-	return true;
+    return true;
 }
 
 void NewProjectParser::text(const QString &text)
 {
-	if ( currentTag() == "name" )
-	{
-		d->name = text;
-	}
-	else if ( currentTag() == "author")
-	{
-		d->author = text;
-	}
-	else if (currentTag() == "description")
-	{
-		d->description = text;
-	}
+    if (currentTag() == "name") {
+        k->name = text;
+    } else if (currentTag() == "author") {
+        k->author = text;
+    } else if (currentTag() == "description") {
+        k->description = text;
+    }
 }
 
 QString NewProjectParser::author() const
 {
-	return d->author;
+    return k->author;
 }
 
 QString NewProjectParser::name() const
 {
-	return d->name;
+    return k->name;
 }
 
 QString NewProjectParser::description() const
 {
-	return d->description;
+    return k->description;
 }
 
 }

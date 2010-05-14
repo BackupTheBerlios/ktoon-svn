@@ -30,32 +30,25 @@ namespace Users {
 */
 class Right
 {
-	public:
-		explicit Right();
-		Right(const QString &module, bool read, bool write);
-		~Right();
-		
-		void setRead(bool enable);
-		void setWrite(bool enable);
-		
-		QString module() const;
-		bool write() const;
-		bool read() const;
-		
-		Q_DISABLE_COPY(Right);
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        explicit Right();
+        Right(const QString &module, bool read, bool write);
+        ~Right();
+        
+        void setRead(bool enable);
+        void setWrite(bool enable);
+        
+        QString module() const;
+        bool write() const;
+        bool read() const;
+        
+        Q_DISABLE_COPY(Right);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
-
 
 }
 
 #endif
-
-
-
-
-
-

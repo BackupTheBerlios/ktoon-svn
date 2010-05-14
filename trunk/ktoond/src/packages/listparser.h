@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef PARSERSLISTPARSER_H
 #define PARSERSLISTPARSER_H
 
@@ -30,26 +31,25 @@ namespace Parsers {
 
 class ListParser: public KTXmlParserBase
 {
-	public:
-		ListParser();
-		
-		virtual ~ListParser();
-		
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-		bool isRegexp();
-		bool isCaseSensitive();
-		QString pattern();
-		int type();
-		
-		
-	private:
-		struct Private;
-		Private *const d;
-		
-
+    public:
+        ListParser();
+        
+        virtual ~ListParser();
+        
+        virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+        virtual bool endTag(const QString &tag);
+        virtual void text(const QString &text);
+        
+        bool isRegexp();
+        bool isCaseSensitive();
+        QString pattern();
+        int type();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
+
 }
+
 #endif

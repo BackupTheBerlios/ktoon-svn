@@ -31,22 +31,22 @@ namespace Parsers {
 */
 class ProjectActionParser : public KTXmlParserBase
 {
-	public:
-		ProjectActionParser();
-		~ProjectActionParser();
-		
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-		QString name();
-		QString author();
-		QString description();
-		QMultiHash<int, QString> users();
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        ProjectActionParser();
+        ~ProjectActionParser();
+        
+        virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+        virtual bool endTag(const QString &tag);
+        virtual void text(const QString &text);
+        
+        QString name();
+        QString author();
+        QString description();
+        QMultiHash<int, QString> users();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

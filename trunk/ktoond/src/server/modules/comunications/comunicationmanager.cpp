@@ -35,12 +35,10 @@
 #include "users/user.h"
 
 namespace Comunications {
-	
-Manager::Manager()
- : Base::Observer()
+    
+Manager::Manager() : Base::Observer()
 {
 }
-
 
 Manager::~Manager()
 {
@@ -48,39 +46,39 @@ Manager::~Manager()
 
 void Manager::handlePackage(Base::Package *const pkg)
 {
-	
-	Server::Connection *cnn = pkg->source();
-	Server::TcpServer *server = cnn->server();
-	
-	if ( pkg->root() == "chat" )
-	{
-		QDomDocument doc;
-		doc.setContent(pkg->xml());
-		
-		QDomElement element = doc.firstChild().firstChildElement("message");
-		element.setAttribute("from", cnn->user()->login());
-		cnn->sendToAll(doc);
-		pkg->accept();
-	}
-	else if ( pkg->root() == "notice" )
-	{
-		QDomDocument doc;
-		doc.setContent(pkg->xml());
-		
-		QDomElement element = doc.firstChild().firstChildElement("message");
-		element.setAttribute("from", cnn->user()->login());
-		cnn->sendToAll(doc);//TODO: enviar a todos los clientes del proyecto
-		pkg->accept();
-	}
-	else if ( pkg->root() == "wall" )
-	{
-		QDomDocument doc;
-		doc.setContent(pkg->xml());
-		QDomElement element = doc.firstChild().firstChildElement("message");
-		element.setAttribute("from", cnn->user()->login());
-		cnn->sendToAll(doc);
-		pkg->accept();
-	}
+    Server::Connection *cnn = pkg->source();
+    Server::TcpServer *server = cnn->server();
+    
+    if (pkg->root() == "chat") {
+
+        QDomDocument doc;
+        doc.setContent(pkg->xml());
+        
+        QDomElement element = doc.firstChild().firstChildElement("message");
+        element.setAttribute("from", cnn->user()->login());
+        cnn->sendToAll(doc);
+        pkg->accept();
+
+    } else if (pkg->root() == "notice") {
+
+        QDomDocument doc;
+        doc.setContent(pkg->xml());
+        
+        QDomElement element = doc.firstChild().firstChildElement("message");
+        element.setAttribute("from", cnn->user()->login());
+        cnn->sendToAll(doc);//TODO: enviar a todos los clientes del proyecto
+        pkg->accept();
+
+    } else if (pkg->root() == "wall") {
+
+        QDomDocument doc;
+        doc.setContent(pkg->xml());
+        QDomElement element = doc.firstChild().firstChildElement("message");
+        element.setAttribute("from", cnn->user()->login());
+        cnn->sendToAll(doc);
+        pkg->accept();
+
+    }
 }
 
 }

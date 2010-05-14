@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef PARSERSIMPORTPROJECTPARSER_H
 #define PARSERSIMPORTPROJECTPARSER_H
 
@@ -32,18 +31,19 @@ namespace Parsers {
 
 class ImportProjectParser : public KTXmlParserBase
 {
-	public:
-		ImportProjectParser();
-		~ImportProjectParser();
-		
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-		QByteArray data() const;
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        ImportProjectParser();
+        ~ImportProjectParser();
+        
+        virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+        virtual bool endTag(const QString &tag);
+        virtual void text(const QString &text);
+        
+        QByteArray data() const;
+
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

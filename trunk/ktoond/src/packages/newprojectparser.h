@@ -26,26 +26,26 @@
 namespace Parsers {
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+   @author David Cuadrado <krawek@toonka.com>
 */
 class NewProjectParser : public KTXmlParserBase
 {
-	public:
-		NewProjectParser();
-		~NewProjectParser();
-		
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-	public:
-		QString author() const;
-		QString name() const;
-		QString description() const;
-		
-	private:
-		struct Private;
-		Private *const d;
+   public:
+      NewProjectParser();
+      ~NewProjectParser();
+      
+      virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+      virtual bool endTag(const QString &tag);
+      virtual void text(const QString &text);
+      
+   public:
+      QString author() const;
+      QString name() const;
+      QString description() const;
+      
+   private:
+      struct Private;
+      Private *const k;
 };
 
 }

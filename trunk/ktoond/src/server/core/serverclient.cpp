@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include "serverclient.h"
-
 #include "connection.h"
 
 #include <QDataStream>
@@ -39,10 +38,7 @@ Client::~Client()
 
 void Client::readed(const QString &readed)
 {
-	m_connection->appendTextReaded(readed);
+    m_connection->appendTextReaded(readed);
 }
 
-
 }
-
-

@@ -22,47 +22,44 @@
 #define SPROJECT_H
 
 #include <ktproject.h>
-#include <QTimer>
 #include "packages/error.h"
-#include <QMultiHash>
 #include "users/user.h"
 
-
-// namespace Projects {
+#include <QTimer>
+#include <QMultiHash>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
  */
 class SProject : public KTProject
 {
-	Q_OBJECT;
-	
-	public:
-		enum UserType{Owner = 0, Desiger};
-		SProject(const QString & filename, QObject *parent = 0);
-		~SProject();
-		void resetTimer();
-		QDomElement infoToXml(QDomDocument &doc) const;
-		
-		bool addUser( const QString& login, UserType type );
-		void setUsers( const QMultiHash<SProject::UserType, QString> & users);
-		QString fileName();
-		
-		bool isOwner(const Users::User* user);
-		
-		
-	private:
-		struct Private;
-		Private *const d;
-	
-	public slots:
-		bool save();
-		
-	signals:
-		void requestSendErrorMessage(const QString &message, Packages::Error::Level level);
-		
-	protected:
-		void timerEvent(QTimerEvent * event );
+    Q_OBJECT;
+    
+    public:
+        enum UserType{Owner = 0, Desiger};
+        SProject(const QString & filename, QObject *parent = 0);
+        ~SProject();
+        void resetTimer();
+        QDomElement infoToXml(QDomDocument &doc) const;
+        
+        bool addUser(const QString& login, UserType type);
+        void setUsers(const QMultiHash<SProject::UserType, QString> & users);
+        QString fileName();
+        
+        bool isOwner(const Users::User* user);
+        
+    private:
+        struct Private;
+        Private *const k;
+    
+    public slots:
+        bool save();
+        
+    signals:
+        void requestSendErrorMessage(const QString &message, Packages::Error::Level level);
+        
+    protected:
+        void timerEvent(QTimerEvent * event);
 };
 
 #endif

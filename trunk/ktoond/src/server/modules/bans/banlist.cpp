@@ -23,14 +23,12 @@
 
 namespace Packages {
 
-BanList::BanList()
- : QDomDocument()
+BanList::BanList() : QDomDocument()
 {
-	QDomElement root = createElement("banlist");
-	
-	appendChild(root);
+    QDomElement root = createElement("banlist");
+    
+    appendChild(root);
 }
-
 
 BanList::~BanList()
 {
@@ -38,14 +36,12 @@ BanList::~BanList()
 
 void BanList::setBans(const QStringList &bans)
 {
-	foreach(QString ban, bans)
-	{
-		QDomElement be = createElement("entry");
-		be.setAttribute("value", ban);
-		
-		documentElement().appendChild(be);
-	}
+    foreach (QString ban, bans) {
+             QDomElement be = createElement("entry");
+             be.setAttribute("value", ban);
+        
+             documentElement().appendChild(be);
+    }
 }
-
 
 }

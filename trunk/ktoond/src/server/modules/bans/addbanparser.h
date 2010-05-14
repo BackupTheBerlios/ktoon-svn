@@ -26,22 +26,23 @@
 namespace Parsers {
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+    @author David Cuadrado <krawek@toonka.com>
 */
+
 class AddBanParser : public KTXmlParserBase
 {
-	public:
-		AddBanParser();
-		~AddBanParser();
-		
-		bool startTag(const QString &tag, const QXmlAttributes &atts);
-		bool endTag(const QString &tag);
-		void text(const QString &) {};
-		
-		QString pattern() const;
-		
-	private:
-		QString m_pattern;
+    public:
+        AddBanParser();
+        ~AddBanParser();
+        
+        bool startTag(const QString &tag, const QXmlAttributes &atts);
+        bool endTag(const QString &tag);
+        void text(const QString &) {};
+
+        QString pattern() const;
+        
+    private:
+        QString m_pattern;
 };
 
 }

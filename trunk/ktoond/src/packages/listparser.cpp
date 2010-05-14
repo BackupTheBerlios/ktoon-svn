@@ -18,21 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "listparser.h"
+
 namespace Parsers {
 
 struct ListParser::Private
 {
-	QString pattern;
-	int type;
-	bool caseSensitive;
-	bool regexp;
+    QString pattern;
+    int type;
+    bool caseSensitive;
+    bool regexp;
 };
 
 
-ListParser::ListParser(): KTXmlParserBase(), d( new Private())
+ListParser::ListParser(): KTXmlParserBase(), k(new Private())
 {
 }
-
 
 ListParser::~ListParser()
 {
@@ -40,57 +40,50 @@ ListParser::~ListParser()
 
 bool ListParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if ( root() == "list" )
-	{
-		if ( tag == "options" )
-		{
-			d->pattern = atts.value("pattern");
-			d->type = atts.value("type").toInt();
-		}
-		else if( tag == "caseSensitive" )
-		{
-			d->caseSensitive = bool(atts.value("enabled").toInt());
-		}
-		else if( tag == "regexp")
-		{
-			d->regexp = bool(atts.value("enabled").toInt());
-		}
-	}
-	return true;
+    if (root() == "list") {
+        if (tag == "options") {
+            k->pattern = atts.value("pattern");
+            k->type = atts.value("type").toInt();
+        } else if (tag == "caseSensitive") {
+            k->caseSensitive = bool(atts.value("enabled").toInt());
+        } else if (tag == "regexp") {
+            k->regexp = bool(atts.value("enabled").toInt());
+        }
+    }
+
+    return true;
 }
 
 bool ListParser::endTag(const QString &tag)
 {
-	Q_UNUSED(tag);
-	return true;
-	
+    Q_UNUSED(tag);
+
+    return true;
 }
 
 void ListParser::text(const QString &text)
 {
-	Q_UNUSED(text);
-	
+    Q_UNUSED(text);
 }
 
 bool ListParser::isRegexp()
 {
-	return d->regexp;
+    return k->regexp;
 }
 
 bool ListParser::isCaseSensitive()
 {
-	return d->caseSensitive;
+    return k->caseSensitive;
 }
 
 QString ListParser::pattern()
 {
-	return d->pattern;
+    return k->pattern;
 }
 
 int ListParser::type()
 {
-	return d->type;
+    return k->type;
 }
 
 }
-

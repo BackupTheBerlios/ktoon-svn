@@ -20,46 +20,42 @@
 
 #include "ack.h"
 
-
 namespace Packages {
 
 Ack::Ack(const QString &motd, const QString &sign) : QDomDocument()
 {
-	QDomElement root = createElement("ack");
-	root.setAttribute("version", 0);
-	QDomElement motde = createElement("motd");
-	QDomText motdetext = createTextNode(motd);
-	motde.appendChild(motdetext);
-	
-	QDomElement signe = createElement("sign");
-	QDomText singetext = createTextNode(sign);
-	signe.appendChild(singetext);
-	
-	root.appendChild(motde);
-	root.appendChild(signe);
-	
-	m_perms = createElement("permissions");
-	root.appendChild(m_perms);
-	
-	appendChild(root);
+    QDomElement root = createElement("ack");
+    root.setAttribute("version", 0);
+    QDomElement motde = createElement("motd");
+    QDomText motdetext = createTextNode(motd);
+    motde.appendChild(motdetext);
+    
+    QDomElement signe = createElement("sign");
+    QDomText singetext = createTextNode(sign);
+    signe.appendChild(singetext);
+    
+    root.appendChild(motde);
+    root.appendChild(signe);
+    
+    m_perms = createElement("permissions");
+    root.appendChild(m_perms);
+    
+    appendChild(root);
 }
-
 
 Ack::~Ack()
 {
 }
 
-
 void Ack::addPermission(const Users::Right *right)
 {
-	QDomElement righte = createElement("perm");
-	righte.setAttribute("module", right->module());
-	righte.setAttribute("read", right->read());
-	righte.setAttribute("write", right->write());
-	
-	m_perms.appendChild(righte);
+    QDomElement righte = createElement("perm");
+    righte.setAttribute("module", right->module());
+    righte.setAttribute("read", right->read());
+    righte.setAttribute("write", right->write());
+    
+    m_perms.appendChild(righte);
 }
 
 }
-
 

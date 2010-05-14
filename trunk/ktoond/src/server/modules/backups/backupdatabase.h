@@ -33,29 +33,29 @@ namespace Backups {
 */
 class Database : public KTXmlParserBase
 {
-	public:
-		struct Entry
-		{
-			QString file;
-			QDateTime date;
-			QString origin;
-		};
-		
-		Database(const QString &file);
-		~Database();
-		
-		bool startTag(const QString &tag, const QXmlAttributes &atts);
-		bool endTag(const QString &tag);
-		void text(const QString &msg);
-		
-		bool addEntry(const QString &origFile, const QString &filename, const QString &name, const QDateTime &date);
-		bool removeEntry(const QString &name, const QDateTime &date);
-		
-		QHash<QString, QList<Entry> > entries();
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        struct Entry
+        {
+            QString file;
+            QDateTime date;
+            QString origin;
+        };
+        
+        Database(const QString &file);
+        ~Database();
+        
+        bool startTag(const QString &tag, const QXmlAttributes &atts);
+        bool endTag(const QString &tag);
+        void text(const QString &msg);
+        
+        bool addEntry(const QString &origFile, const QString &filename, const QString &name, const QDateTime &date);
+        bool removeEntry(const QString &name, const QDateTime &date);
+        
+        QHash<QString, QList<Entry> > entries();
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

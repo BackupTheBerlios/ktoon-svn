@@ -39,7 +39,7 @@ class Connection;
 }
 
 namespace Users {
-	class User;
+    class User;
 }
 namespace Projects {
 
@@ -48,45 +48,42 @@ namespace Projects {
 */
 class ProjectCollection : public Base::Observer
 {
-	public:
-		ProjectCollection();
-		~ProjectCollection();
-		
-		void createProject(Server::Connection *cnn, const QString& author);
-		
-		bool addProject(const QString& name, const QString& author, const QString& description, const QMultiHash<int, QString> & users );
-		bool removeProject( Server::Connection *cnn, const QString& name );
-		
-		bool updateProject( Server::Connection *cnn, const QString& name, const QString& author, const QString& description, const QMultiHash<int, QString> & users );
-		
-		SProject *project(const QString &name);
-		
-		bool openProject(Server::Connection *cnn);
-		void importProject(Server::Connection *cnn, const QByteArray& data);
-		
-		bool handleProjectRequest(Server::Connection *cnn, const QString strRequest);
-		QStringList projects() const;
-		
-		
-		void handlePackage(Base::Package *const pkg);
-		
-		void listAllProjects(Server::Connection *cnn);
-		void listUserProjects(Server::Connection *cnn);
-		
-		
-		void closeProject(const QString & name);
-		bool saveProject(const QString & name);
-		void addUser(Server::Connection *cnn, const QString & login, SProject::UserType type  );
-		
-		Database::ProjectInfo projectInfo(const QString &projectName);
-		
-		void connectionClosed(Server::Connection *cnn);
-		void sendToProjectMembers(Server::Connection *cnn, QDomDocument &doc);
-		
-	private:
-		struct Private;
-		Private *const d;
-		
+    public:
+        ProjectCollection();
+        ~ProjectCollection();
+        
+        void createProject(Server::Connection *cnn, const QString& author);
+        
+        bool addProject(const QString& name, const QString& author, const QString& description, const QMultiHash<int, QString> & users);
+        bool removeProject(Server::Connection *cnn, const QString& name);
+        
+        bool updateProject(Server::Connection *cnn, const QString& name, const QString& author, const QString& description, const QMultiHash<int, QString> & users);
+        
+        SProject *project(const QString &name);
+        
+        bool openProject(Server::Connection *cnn);
+        void importProject(Server::Connection *cnn, const QByteArray& data);
+        
+        bool handleProjectRequest(Server::Connection *cnn, const QString strRequest);
+        QStringList projects() const;
+        
+        void handlePackage(Base::Package *const pkg);
+        
+        void listAllProjects(Server::Connection *cnn);
+        void listUserProjects(Server::Connection *cnn);
+        
+        void closeProject(const QString & name);
+        bool saveProject(const QString & name);
+        void addUser(Server::Connection *cnn, const QString & login, SProject::UserType type);
+        
+        Database::ProjectInfo projectInfo(const QString &projectName);
+        
+        void connectionClosed(Server::Connection *cnn);
+        void sendToProjectMembers(Server::Connection *cnn, QDomDocument &doc);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

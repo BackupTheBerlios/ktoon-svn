@@ -37,27 +37,25 @@ namespace Backups {
 */
 class Manager : public Base::Observer
 {
-	public:
-		Manager();
-		~Manager();
-		
-		bool makeBackup(const QString &filepath, const QDateTime &date, const QString &name);
-		bool removeBackup(const QString &name, const QDateTime &date);
-		bool restoreBackup(const QString &name, const QDateTime &date);
-		
-		QHash<QString, QList<Backups::Database::Entry> > entries();
-		
-		void handlePackage(Base::Package *const pkg);
-		
-		QDateTime date(const QString &name);
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        Manager();
+        ~Manager();
+        
+        bool makeBackup(const QString &filepath, const QDateTime &date, const QString &name);
+        bool removeBackup(const QString &name, const QDateTime &date);
+        bool restoreBackup(const QString &name, const QDateTime &date);
+        
+        QHash<QString, QList<Backups::Database::Entry> > entries();
+        
+        void handlePackage(Base::Package *const pkg);
+        
+        QDateTime date(const QString &name);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }
 
 #endif
-
-

@@ -31,22 +31,22 @@ namespace Registers {
 */
 class Database : public KTXmlParserBase
 {
-	public:
-		Database(const QString &dbfile);
-		~Database();
-		
-		QString fileName() const;
-		void removeRegister(const QString &email);
-		
-		bool startTag(const QString &tag, const QXmlAttributes &atts);
-		bool endTag(const QString &tag);
-		void text(const QString &msg);
-		
-		QHash<QString, QString> findRegisterByEmail(const QString &email);
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        Database(const QString &dbfile);
+        ~Database();
+        
+        QString fileName() const;
+        void removeRegister(const QString &email);
+        
+        bool startTag(const QString &tag, const QXmlAttributes &atts);
+        bool endTag(const QString &tag);
+        void text(const QString &msg);
+        
+        QHash<QString, QString> findRegisterByEmail(const QString &email);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

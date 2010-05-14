@@ -26,99 +26,79 @@
 namespace Users {
 
 struct Parser::Private {
-	QString dbfile;
-	QList<User *> users;
+    QString dbfile;
+    QList<User *> users;
 };
 
-Parser::Parser(const QString &dbfile) : KTXmlParserBase(), d(new Private)
+Parser::Parser(const QString &dbfile) : KTXmlParserBase(), k(new Private)
 {
-	if ( !QFile::exists(dbfile) )
-	{
-		qWarning() << "Cannot read users database from: " << dbfile;
-	}
-	
-	d->dbfile = dbfile;
+    if (!QFile::exists(dbfile))
+        qWarning() << "Cannot read users database from: " << dbfile;
+    
+    k->dbfile = dbfile;
 }
-
 
 Parser::~Parser()
 {
-	delete d;
+    delete k;
 }
 
 bool Parser::startTag(const QString& tag, const QXmlAttributes& atts)
 {
-	if ( tag == "user" )
-	{
-		User *u = new User;
-		d->users << u;
-	}
-	else if( tag == "login" || tag == "password" || tag == "name")
-	{
-		setReadText(true);
-	}
-	else if ( tag == "perm" )
-	{
-		Right *right = new Right(atts.value("module"), atts.value("read").toInt(), atts.value("write").toInt());
-		d->users.last()->addRight(right);
-	}
-	
-	return true;
+    if (tag == "user") {
+        User *u = new User;
+        k->users << u;
+    } else if (tag == "login" || tag == "password" || tag == "name") {
+               setReadText(true);
+    } else if (tag == "perm") {
+               Right *right = new Right(atts.value("module"), atts.value("read").toInt(), atts.value("write").toInt());
+               k->users.last()->addRight(right);
+    }
+    
+    return true;
 }
-
 
 bool Parser::endTag(const QString& /*tag*/)
 {
-	
-	return true;
+    return true;
 }
 
-
-void Parser::text(const QString & text )
+void Parser::text(const QString & text)
 {
-	if(currentTag() == "login")
-	{
-		d->users.last()->setLogin(text);
-	}
-	else if(currentTag() == "password")
-	{
-		d->users.last()->setPassword(text);
-	}
-	else if(currentTag() == "name")
-	{
-		d->users.last()->setName(text);
-	}
+    if (currentTag() == "login") {
+        k->users.last()->setLogin(text);
+    } else if (currentTag() == "password") {
+        k->users.last()->setPassword(text);
+    } else if (currentTag() == "name") {
+        k->users.last()->setName(text);
+    }
 }
-
 
 User *Parser::user(const QString &login)
 {
-	QFile file(d->dbfile);
-	
-	if ( parse(&file) )
-	{
-		foreach(User * user, d->users)
-		{
-			if(user->login() == login)
-			{
-				d->users.clear();
-				return user;
-			}
-		}
-	}
-	return 0;
+    QFile file(k->dbfile);
+    
+    if (parse(&file)) {
+        foreach (User * user, k->users) {
+                 if (user->login() == login) {
+                     k->users.clear();
+                     return user;
+                 }
+        }
+    }
+
+    return 0;
 }
 
 QList<User *> Parser::listUsers()
 {
-	d->users.clear();
-	QFile file(d->dbfile);
-	if ( parse(&file) )
-		return d->users;
-	return QList<User *>();
-	
+    k->users.clear();
+
+    QFile file(k->dbfile);
+    if (parse(&file))
+        return k->users;
+
+    return QList<User *>();
 }
 
 }
-
-

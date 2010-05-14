@@ -27,16 +27,13 @@ Observer::Observer()
 {
 }
 
-
 Observer::~Observer()
 {
 }
 
 void Observer::connectionClosed(Server::Connection *const cnx)
 {
-	Q_UNUSED(cnx);
+    Q_UNUSED(cnx);
 }
 
 }
-
-

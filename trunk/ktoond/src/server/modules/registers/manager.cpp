@@ -25,85 +25,74 @@
 #include <kcore/kmd5hash.h>
 #include <kcore/kdebug.h>
 
+#include "actionregisteruserparser.h"
+#include "database.h"
+#include "adduser.h"
+
 #include "base/package.h"
 #include "base/settings.h"
 
 #include "core/connection.h"
 #include "core/server.h"
 
-#include "actionregisteruserparser.h"
-#include "database.h"
-
 #include "users/manager.h"
 #include "users/user.h"
-
-#include "adduser.h"
-
 
 namespace Registers {
 
 struct Manager::Private
 {
-	Database *db;
+    Database *db;
 };
 
-Manager::Manager() : Base::Observer(),d( new Private)
+Manager::Manager() : Base::Observer(),k(new Private)
 {
-	d->db = new Database(Base::Settings::self()->databaseDirPath() + "/petitions.xml");
+    k->db = new Database(Base::Settings::self()->databaseDirPath() + "/petitions.xml");
 }
-
 
 Manager::~Manager()
 {
-	delete d->db;
-	delete d;
+    delete k->db;
+    delete k;
 }
-
 
 void Manager::handlePackage(Base::Package* const pkg)
 {
-	Server::TcpServer *server = pkg->source()->server();
-	
-	if( pkg->root() == "listregisters" )
-	{
-		QString fname = d->db->fileName();
-		
-		QFile f(fname);
-		if( f.exists() )
-		{
-			if( f.open(QIODevice::ReadOnly | QIODevice::Text) )
-			{
-				pkg->source()->sendToClient(f.readAll());
-			}
-		}
-	}
-	else if ( pkg->root() == "registeruser" )
-	{
-		Parsers::ActionRegisterUserParser parser;
-		
-		if( parser.parse(pkg->xml()))
-		{
-			QHash<QString, QString> data = parser.data();
-			QString email = data["email"];
-			
-			data = d->db->findRegisterByEmail(email);
-			d->db->removeRegister(email);
-			
-			kDebug() << data["login"];
-			
-			Users::Manager *manager = server->userManager();
-			
-			Users::User user;
-			user.setLogin(data["login"]);
-			user.setName(data["name"]);
-			user.setPassword(KMD5Hash::hash(""));
-			manager->addUser(user);
-			
-			server->sendToAdmins(pkg->xml());
-			Packages::AddUser adduser(data["login"], data["name"]);
-			server->sendToAdmins(adduser.toString());
-		}
-	}
+    Server::TcpServer *server = pkg->source()->server();
+    
+    if (pkg->root() == "listregisters") {
+        QString fname = k->db->fileName();
+        
+        QFile f(fname);
+        if (f.exists()) {
+            if (f.open(QIODevice::ReadOnly | QIODevice::Text))
+                pkg->source()->sendToClient(f.readAll());
+        }
+    } else if (pkg->root() == "registeruser") {
+               Parsers::ActionRegisterUserParser parser;
+        
+               if (parser.parse(pkg->xml())) {
+                   QHash<QString, QString> data = parser.data();
+                   QString email = data["email"];
+            
+                   data = k->db->findRegisterByEmail(email);
+                   k->db->removeRegister(email);
+            
+                   kDebug() << data["login"];
+            
+                   Users::Manager *manager = server->userManager();
+            
+                   Users::User user;
+                   user.setLogin(data["login"]);
+                   user.setName(data["name"]);
+                   user.setPassword(KMD5Hash::hash(""));
+                   manager->addUser(user);
+            
+                   server->sendToAdmins(pkg->xml());
+                   Packages::AddUser adduser(data["login"], data["name"]);
+                   server->sendToAdmins(adduser.toString());
+               }
+    }
 }
 
 }

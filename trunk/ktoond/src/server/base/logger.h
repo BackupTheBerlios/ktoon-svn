@@ -29,31 +29,30 @@ namespace Base {
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
+
 class Logger
 {
-	protected:
-		Logger();
-		
-	public:
-		~Logger();
-		
-		static Logger *self();
-		
-		
-		void setLogFile(const QString &logfile);
-		QString logFile() const;
-		void warn(const QString &log);
-		void error(const QString &err);
-		void info(const QString &inf);
-		void fatal(const QString &fatal);
-		
-	protected:
-		void write(const QByteArray &msg);
-		
-	private:
-		static Logger *s_self;
-		struct Private;
-		Private *const d;
+    protected:
+        Logger();
+        
+    public:
+        ~Logger();
+        static Logger *self();
+        
+        void setLogFile(const QString &logfile);
+        QString logFile() const;
+        void warn(const QString &log);
+        void error(const QString &err);
+        void info(const QString &inf);
+        void fatal(const QString &fatal);
+        
+    protected:
+        void write(const QByteArray &msg);
+        
+    private:
+        static Logger *s_self;
+        struct Private;
+        Private *const k;
 };
 
 }

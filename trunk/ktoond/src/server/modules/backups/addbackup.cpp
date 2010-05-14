@@ -22,13 +22,11 @@
 
 namespace Packages {
 
-AddBackup::AddBackup()
- : QDomDocument()
+AddBackup::AddBackup() : QDomDocument()
 {
-	QDomElement root = createElement("addbackup");
-	appendChild(root);
+    QDomElement root = createElement("addbackup");
+    appendChild(root);
 }
-
 
 AddBackup::~AddBackup()
 {
@@ -36,14 +34,13 @@ AddBackup::~AddBackup()
 
 void AddBackup::addEntry(const QString &name, const QDateTime &date)
 {
-	QDomElement entry = createElement("entry");
-	entry.setAttribute("date", date.toString(Qt::ISODate));
-	
-	
-	QDomText text = createTextNode(name);
-	entry.appendChild(text);
-	
-	documentElement().appendChild(entry);
+    QDomElement entry = createElement("entry");
+    entry.setAttribute("date", date.toString(Qt::ISODate));
+    
+    QDomText text = createTextNode(name);
+    entry.appendChild(text);
+    
+    documentElement().appendChild(entry);
 }
 
 }

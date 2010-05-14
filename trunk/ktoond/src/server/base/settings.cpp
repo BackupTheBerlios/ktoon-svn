@@ -26,47 +26,45 @@ Settings *Settings::s_settings = 0;
 
 struct Settings::Private 
 {
-	QString databaseDirPath;
-	QString backupDirPath;
+    QString databaseDirPath;
+    QString backupDirPath;
 };
 
-Settings::Settings() : d(new Private())
+Settings::Settings() : k(new Private())
 {
 }
 
-
 Settings::~Settings()
 {
-	delete d;
+    delete k;
 }
 
 Settings *Settings::self()
 {
-	if( ! s_settings )
-		s_settings = new Settings();
-	
-	return s_settings;
+    if (! s_settings)
+        s_settings = new Settings();
+    
+    return s_settings;
 }
-
 
 void Settings::setDatabaseDirPath(const QString &dbdir)
 {
-	d->databaseDirPath = dbdir;
+    k->databaseDirPath = dbdir;
 }
 
 QString Settings::databaseDirPath() const
 {
-	return d->databaseDirPath;
+    return k->databaseDirPath;
 }
 
 void Settings::setBackupDirPath(const QString &dir)
 {
-	d->backupDirPath = dir;
+    k->backupDirPath = dir;
 }
 
 QString Settings::backupDirPath() const
 {
-	return d->backupDirPath;
+    return k->backupDirPath;
 }
 
 }

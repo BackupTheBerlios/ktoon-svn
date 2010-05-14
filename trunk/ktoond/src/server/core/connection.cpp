@@ -23,213 +23,201 @@
 #include <QtNetwork>
 
 #include <kcore/kdebug.h>
+#include <kcore/kmd5hash.h>
+#include <kcore/kalgorithm.h>
 
 #include "server.h"
 #include "base/logger.h"
 
 #include "ktrequestparser.h"
 #include "ktcompress.h"
-
 #include "ktprojectrequest.h"
 #include "ktprojectresponse.h"
 #include "ktrequestparser.h"
 
 #include "users/user.h"
-
-#include <kcore/kmd5hash.h>
-#include <kcore/kalgorithm.h>
-
 #include "packages/error.h"
-
 
 namespace Server {
 
 class Connection::Private
 {
-	public:
-		Private(TcpServer *server) : server(server), user(0)
-		{
-		}
-		
-		~Private()
-		{
-			delete client;
-			delete user;
-		}
-		
-		Server::Client *client;
-		Server::TcpServer *server;
-		bool isValid;
-		QQueue<QString> readed;
-		QHash<int, QVariant> datas;
-		QString sign;
-		
-		Users::User *user;
+    public:
+        Private(TcpServer *server) : server(server), user(0)
+        {
+        }
+        
+        ~Private()
+        {
+            delete client;
+            delete user;
+        }
+        
+        Server::Client *client;
+        Server::TcpServer *server;
+        bool isValid;
+        QQueue<QString> readed;
+        QHash<int, QVariant> datas;
+        QString sign;
+        
+        Users::User *user;
 };
 
-Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThread(server), d(new Private(server))
+Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThread(server), k(new Private(server))
 {
-	KINIT;
-	d->client = new Server::Client(this);
-	d->client->setSocketDescriptor(socketDescriptor);
-	d->isValid = true;
+    KINIT;
+    k->client = new Server::Client(this);
+    k->client->setSocketDescriptor(socketDescriptor);
+    k->isValid = true;
 }
 
 Connection::~Connection()
 {
-	KEND;
-	delete d;
+    KEND;
+    delete k;
 }
 
 void Connection::run()
 {
-	while(d->client->state() != QAbstractSocket::UnconnectedState)
-	{
-		if ( d->readed.isEmpty() || !d->isValid ) continue;
-		
-		if( !d->user )
-			d->isValid = false;
-		
-		QString readed = d->readed.dequeue();
-		
-		kDebug("server") << "Reicieved: " << readed;
-		QDomDocument doc;
-		if (doc.setContent(readed.trimmed()) )
-		{
-			emit packageReaded(this, doc.documentElement().tagName(), readed);
-		}
-		else
-		{
-			kError("server") << "Cannot set document content!";
-		}
-	}
-	removeConnection();
-}
+    while (k->client->state() != QAbstractSocket::UnconnectedState) {
+        
+           if (k->readed.isEmpty() || !k->isValid) 
+               continue;
+        
+           if (!k->user)
+               k->isValid = false;
+        
+           QString readed = k->readed.dequeue();
+        
+           kDebug("server") << "Reicieved: " << readed;
+           QDomDocument doc;
 
+           if (doc.setContent(readed.trimmed()))
+               emit packageReaded(this, doc.documentElement().tagName(), readed);
+           else
+               kError("server") << "Cannot set document content!";
+    }
+
+    removeConnection();
+}
 
 void Connection::removeConnection()
 {
-	emit connectionClosed(this);
+    emit connectionClosed(this);
 }
 
 void Connection::close()
 {
-	d->isValid = false;
-	
-	d->readed.clear();
-	if ( d->client->state() != QAbstractSocket::UnconnectedState )
-	{
-		d->client->flush();
-		
-		d->client->disconnectFromHost();
-		d->client->waitForDisconnected();
-		d->client->close();
-	}
+    k->isValid = false;
+    
+    k->readed.clear();
+
+    if (k->client->state() != QAbstractSocket::UnconnectedState) {
+        k->client->flush();
+        
+        k->client->disconnectFromHost();
+        k->client->waitForDisconnected();
+        k->client->close();
+    }
 }
 
 void Connection::appendTextReaded(const QString &readed)
 {
-	kDebug("server") << "Enqueing: " << readed;
-	d->readed.enqueue(readed);
+    kDebug("server") << "Enqueing: " << readed;
+    k->readed.enqueue(readed);
 }
 
 void Connection::sendToClient(const QString &text) const
 {
-	d->client->send(text);
+    k->client->send(text);
 }
 
 void Connection::setData(int key, const QVariant &value)
 {
-	d->datas.insert(key, value);
+    k->datas.insert(key, value);
 }
 
 QVariant Connection::data(int key) const
 {
-	return d->datas[key];
+    return k->datas[key];
 }
 
 Client *Connection::client() const
 {
-	return d->client;
+    return k->client;
 }
 
 TcpServer *Connection::server() const
 {
-	return d->server;
+    return k->server;
 }
 
 void Connection::sendToAll(const QString &text)
 {
-	emit requestSendToAll(text);
+    emit requestSendToAll(text);
 }
 
 void Connection::sendToClient(QDomDocument &doc, bool sign)
 {
-	if ( sign)
-		signPackage(doc);
-	
-	kDebug() << "sending " << doc.toString();
-	
-	d->client->send(doc);
-	
+    if (sign)
+        signPackage(doc);
+    
+    kDebug() << "sending " << doc.toString();
+    
+    k->client->send(doc);
 }
 
 void Connection::sendToAll(QDomDocument &doc, bool sign)
 {
-	if( sign )
-		signPackage(doc);
-	emit requestSendToAll(doc.toString(0));
+    if (sign)
+        signPackage(doc);
+
+    emit requestSendToAll(doc.toString(0));
 }
 
 void Connection::signPackage(QDomDocument &doc)
 {
-	doc.documentElement().setAttribute("sign", d->sign);
+    doc.documentElement().setAttribute("sign", k->sign);
 }
 
 QString Connection::sign() const
 {
-	return d->sign;
+    return k->sign;
 }
 
 void Connection::setUser(Users::User *user)
 {
-	d->user = user;
-	generateSign();
-	
-	d->isValid = true;
+    k->user = user;
+    generateSign();
+    
+    k->isValid = true;
 }
 
 Users::User *Connection::user() const
 {
-	return d->user;
+    return k->user;
 }
 
 void Connection::generateSign()
 {
-	if ( d->user )
-	{
-		d->sign = KMD5Hash::hash(d->user->login()+d->user->password()+KAlgorithm::randomString(KAlgorithm::random() % 10));
-	}
+    if (k->user)
+        k->sign = KMD5Hash::hash(k->user->login() + k->user->password() + KAlgorithm::randomString(KAlgorithm::random() % 10));
 }
-
 
 void Connection::sendErrorPackageToClient(const QString & message, Packages::Error::Level level)
 {
-	Packages::Error error(message, level);
-	sendToClient(error);
+    Packages::Error error(message, level);
+    sendToClient(error);
 }
 
 void Connection::setValid(bool v)
 {
-	d->isValid = v;
+    k->isValid = v;
 }
 
 bool Connection::isValid() const
 {
-	return d->isValid;
+    return k->isValid;
 }
 
 }
-
-
-

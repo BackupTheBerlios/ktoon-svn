@@ -24,48 +24,41 @@ namespace Parsers {
 
 struct ImportProjectParser::Private
 {
-	QByteArray data;
+    QByteArray data;
 };
 
-
 ImportProjectParser::ImportProjectParser()
-	: KTXmlParserBase(), d(new Private())
+    : KTXmlParserBase(), k(new Private())
 {
 }
-
 
 ImportProjectParser::~ImportProjectParser()
 {
 }
 
-
 bool ImportProjectParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if(root() == "importproject")
-	{
-		if(tag == "data")
-		{
-			setReadText(true);
-		}
-	}
-	return true;
+    if (root() == "importproject") {
+        if (tag == "data")
+            setReadText(true);
+    }
+
+    return true;
 }
 
 bool ImportProjectParser::endTag(const QString &tag)
 {
-	return true;
+    return true;
 }
 
 void ImportProjectParser::text(const QString &text)
 {
-	d->data = QByteArray::fromBase64(text.toLocal8Bit());;
+    k->data = QByteArray::fromBase64(text.toLocal8Bit());;
 }
-
 
 QByteArray ImportProjectParser::data() const
 {
-	return d->data;
-	
+    return k->data;
 }
 
 }

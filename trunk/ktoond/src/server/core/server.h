@@ -25,8 +25,6 @@
 #include <QTcpServer>
 #include <QDomDocument>
 
-// #include "ktprojectrequest.h"
-
 namespace Server {
 class Connection;
 class Client;
@@ -34,19 +32,19 @@ class PackageHandlerBase;
 }
 
 namespace Base {
-	class Observer;
+    class Observer;
 }
 
 namespace Backups {
-	class Manager;
+    class Manager;
 }
 
 namespace Bans {
-	class Manager;
+    class Manager;
 }
 
 namespace Users {
-	class Manager;
+    class Manager;
 }
 
 namespace Server {
@@ -57,42 +55,40 @@ namespace Server {
  */
 class TcpServer : public QTcpServer
 {
-	Q_OBJECT;
-	
-	public:
-		TcpServer(QObject *parent = 0);
-		~TcpServer();
-		void sendToAll(const QDomDocument &pkg);
-		bool openConnection(const QString &host, int port);
-		
-		void sendToAdmins(const QString &str);
-		
-		void addAdmin(Server::Connection *cnx);
-		Backups::Manager *backupManager() const;
-		Bans::Manager *banManager() const;
-		Users::Manager *userManager() const;
-		
-		void addObserver(Base::Observer *observer);
-		bool removeObserver(Base::Observer *observer);
-		
-	public slots:
-		void sendToAll(const QString &msg);
-		void removeConnection(Server::Connection *cnx);
-		void handlePackage( Server::Connection *client, const QString &root, const QString & packages  );
-	
-	private:
-		void handle(Server::Connection *cnx);
-		
-	protected:
-		void incomingConnection(int socketDescriptor);
-		
-	private:
-		class Private;
-		Private * const d;
+    Q_OBJECT;
+    
+    public:
+        TcpServer(QObject *parent = 0);
+        ~TcpServer();
+        void sendToAll(const QDomDocument &pkg);
+        bool openConnection(const QString &host, int port);
+        
+        void sendToAdmins(const QString &str);
+        
+        void addAdmin(Server::Connection *cnx);
+        Backups::Manager *backupManager() const;
+        Bans::Manager *banManager() const;
+        Users::Manager *userManager() const;
+        
+        void addObserver(Base::Observer *observer);
+        bool removeObserver(Base::Observer *observer);
+        
+    public slots:
+        void sendToAll(const QString &msg);
+        void removeConnection(Server::Connection *cnx);
+        void handlePackage( Server::Connection *client, const QString &root, const QString & packages  );
+    
+    private:
+        void handle(Server::Connection *cnx);
+        
+    protected:
+        void incomingConnection(int socketDescriptor);
+        
+    private:
+        class Private;
+        Private * const k;
 };
 
 }
 
 #endif
-
-

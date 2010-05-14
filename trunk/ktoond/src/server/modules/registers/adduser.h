@@ -25,13 +25,13 @@
 namespace Packages {
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+    @author David Cuadrado <krawek@toonka.com>
 */
 class AddUser : public QDomDocument
 {
-	public:
-		AddUser(const QString &login, const QString &name);
-		~AddUser();
+    public:
+        AddUser(const QString &login, const QString &name);
+        ~AddUser();
 
 };
 

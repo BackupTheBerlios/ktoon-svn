@@ -28,13 +28,14 @@ namespace Packages {
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
+
 class BanList : public QDomDocument
 {
-	public:
-		BanList();
-		~BanList();
-		
-		void setBans(const QStringList &bans);
+    public:
+        BanList();
+        ~BanList();
+        
+        void setBans(const QStringList &bans);
 };
 
 }

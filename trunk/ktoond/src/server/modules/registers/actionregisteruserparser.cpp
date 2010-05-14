@@ -24,54 +24,46 @@ namespace Parsers {
 
 struct ActionRegisterUserParser::Private
 {
-	QHash<QString, QString> data;
+    QHash<QString, QString> data;
 };
 
-ActionRegisterUserParser::ActionRegisterUserParser()
- : KTXmlParserBase(), d( new Private )
+ActionRegisterUserParser::ActionRegisterUserParser() : KTXmlParserBase(), k(new Private)
 {
 }
 
-
 ActionRegisterUserParser::~ActionRegisterUserParser()
 {
-	delete d;
+    delete k;
 }
 
 bool ActionRegisterUserParser::startTag(const QString &tag, const QXmlAttributes &)
 {
-	if( tag == "login" )
-	{
-		setReadText(true);
-	}
-	else if ( tag == "email" )
-	{
-		setReadText(true);
-	}
-	
-	return true;
+    if (tag == "login") {
+        setReadText(true);
+    } else if (tag == "email") {
+        setReadText(true);
+    }
+    
+    return true;
 }
 
 bool ActionRegisterUserParser::endTag(const QString &)
 {
-	return true;
+    return true;
 }
 
 void ActionRegisterUserParser::text(const QString &text)
 {
-	if (currentTag() == "login" )
-	{
-		d->data["login"] = text;
-	}
-	else if( currentTag() == "email" )
-	{
-		d->data["email"] = text;
-	}
+    if (currentTag() == "login") {
+        k->data["login"] = text;
+    } else if (currentTag() == "email") {
+               k->data["email"] = text;
+    }
 }
 
 QHash<QString, QString> ActionRegisterUserParser::data() const
 {
-	return d->data;
+    return k->data;
 }
 
 }
