@@ -26,20 +26,21 @@
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
+
 namespace Packages {
 
 class Error : public QDomDocument
 {
-	public:
-		enum Level{ None = -1, Info, Warning, Err, Fatal };
-		Error(const QString &message, Level level );
-		~Error();
-		void setMessage(const QString &message);
-		void setLevel(int level);
-		
-	private:
-		QDomElement m_message;
-		QDomText m_text;
+    public:
+        enum Level{ None = -1, Info, Warning, Err, Fatal};
+        Error(const QString &message, Level level );
+        ~Error();
+        void setMessage(const QString &message);
+        void setLevel(int level);
+        
+    private:
+        QDomElement m_message;
+        QDomText m_text;
 };
 
 }

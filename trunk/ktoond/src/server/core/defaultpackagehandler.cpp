@@ -44,6 +44,7 @@ void DefaultPackageHandler::handle(Server::Connection *cnx, const QString &root,
 
 void DefaultPackageHandler::connectionClosed(Server::Connection *client)
 {
+    Q_UNUSED(client);
 }
 
 }

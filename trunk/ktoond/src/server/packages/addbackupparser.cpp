@@ -17,54 +17,49 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "addbackupparser.h"
-
-
 
 namespace Parsers {
 
 struct AddBackupParser::Private
 {
-	QStringList backups;
+    QStringList backups;
 };
 
-AddBackupParser::AddBackupParser()
- : KTXmlParserBase(), d(new Private)
+AddBackupParser::AddBackupParser() : KTXmlParserBase(), k(new Private)
 {
 }
 
-
 AddBackupParser::~AddBackupParser()
 {
-	delete d;
+    delete k;
 }
 
 bool AddBackupParser::startTag(const QString &tag, const QXmlAttributes &)
 {
-	if( tag == "addbackup" )
-	{
-		d->backups.clear();
-	}
-	else if( tag == "entry" )
-	{
-		setReadText(true);
-	}
-	return true;
+    if (tag == "addbackup") {
+        k->backups.clear();
+    } else if (tag == "entry") {
+        setReadText(true);
+    }
+
+    return true;
 }
+
 bool AddBackupParser::endTag(const QString &)
 {
-	return true;
+    return true;
 }
+
 void AddBackupParser::text(const QString &msg)
 {
-	d->backups << msg;
+    k->backups << msg;
 }
 
 QStringList AddBackupParser::backups() const
 {
-	return d->backups;
+    return k->backups;
 }
 
 }
-
-

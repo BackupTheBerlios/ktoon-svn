@@ -25,7 +25,7 @@
 
 namespace Users
 {
-	class User;
+    class User;
 }
 
 namespace Packages{
@@ -33,14 +33,16 @@ namespace Packages{
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
  */
+
 class UserList : public QDomDocument
 {
-	public:
-		UserList();
-		~UserList();
-		
-		void addUser(const Users::User *user);
-
+    public:
+        UserList();
+        ~UserList();
+        
+        void addUser(const Users::User *user);
 };
+
 }
+
 #endif

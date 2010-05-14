@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef PARSERSADDBACKUPPARSER_H
 #define PARSERSADDBACKUPPARSER_H
 
@@ -28,21 +29,22 @@ namespace Parsers {
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
+
 class AddBackupParser : public KTXmlParserBase
 {
-	public:
-		AddBackupParser();
-		~AddBackupParser();
-		
-		bool startTag(const QString &tag, const QXmlAttributes &atts);
-		bool endTag(const QString &tag);
-		void text(const QString &msg);
-		
-		QStringList backups() const;
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        AddBackupParser();
+        ~AddBackupParser();
+        
+        bool startTag(const QString &tag, const QXmlAttributes &atts);
+        bool endTag(const QString &tag);
+        void text(const QString &msg);
+        
+        QStringList backups() const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

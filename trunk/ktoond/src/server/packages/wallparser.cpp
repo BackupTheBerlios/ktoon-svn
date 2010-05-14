@@ -23,14 +23,12 @@ namespace Parsers {
 
 struct WallParser::Private
 {
-	QString message;
+    QString message;
 };
 
-WallParser::WallParser()
- : KTXmlParserBase(), d( new Private())
+WallParser::WallParser() : KTXmlParserBase(), k(new Private())
 {
 }
-
 
 WallParser::~WallParser()
 {
@@ -38,21 +36,17 @@ WallParser::~WallParser()
 
 bool WallParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if ( root() == "wall" )
-	{
-		if ( tag == "message" )
-		{
-			d->message = atts.value("text");
-		}
-	}
-	
-	
-	return true;
+    if (root() == "wall") {
+        if (tag == "message")
+            k->message = atts.value("text");
+    }
+    
+    return true;
 }
 
 bool WallParser::endTag(const QString &)
 {
-	return true;
+    return true;
 }
 
 void WallParser::text(const QString &)
@@ -61,8 +55,7 @@ void WallParser::text(const QString &)
 
 QString WallParser::message() const
 {
-	return d->message;
+    return k->message;
 }
-
 
 }

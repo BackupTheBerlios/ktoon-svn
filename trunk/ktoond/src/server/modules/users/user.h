@@ -33,38 +33,37 @@ namespace Users {
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
-*/
+ */
+
 class User
 {
-	public:
-		explicit User();
-		~User();
-		
-		void setName(const QString &name);
-		void setLogin(const QString &login);
-		void setPassword(const QString &password);
-		
-		QString name() const;
-		QString login() const;
-		QString password() const;
-		
-		bool canReadOn(const QString &module);
-		bool canWriteOn(const QString &module);
-		
-		void addRight(Right *right);
-		QList<Right *> rights() const;
-		
-		QDomElement toXml(QDomDocument &doc, bool password = true) const;
-		
-		bool operator==(const User& user);
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        explicit User();
+        ~User();
+        
+        void setName(const QString &name);
+        void setLogin(const QString &login);
+        void setPassword(const QString &password);
+        
+        QString name() const;
+        QString login() const;
+        QString password() const;
+        
+        bool canReadOn(const QString &module);
+        bool canWriteOn(const QString &module);
+        
+        void addRight(Right *right);
+        QList<Right *> rights() const;
+        
+        QDomElement toXml(QDomDocument &doc, bool password = true) const;
+        
+        bool operator==(const User& user);
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }
 
 #endif
-
-

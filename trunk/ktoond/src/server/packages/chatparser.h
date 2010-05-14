@@ -25,24 +25,25 @@
 namespace Parsers {
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+    @author David Cuadrado <krawek@toonka.com>
 */
+
 class ChatParser : public KTXmlParserBase
 {
-	public:
-		ChatParser();
-		~ChatParser();
-		
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-	public:
-		QString message() const;
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        ChatParser();
+        ~ChatParser();
+        
+        virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+        virtual bool endTag(const QString &tag);
+        virtual void text(const QString &text);
+        
+    public:
+        QString message() const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

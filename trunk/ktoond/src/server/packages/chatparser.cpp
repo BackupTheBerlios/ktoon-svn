@@ -24,39 +24,31 @@ namespace Parsers {
 
 struct ChatParser::Private
 {
-	QString message;
+    QString message;
 };
 
-ChatParser::ChatParser()
- : KTXmlParserBase(), d(new Private())
+ChatParser::ChatParser() : KTXmlParserBase(), k(new Private())
 {
 }
-
 
 ChatParser::~ChatParser()
 {
-	delete d;
+    delete k;
 }
-
-
 
 bool ChatParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if ( root() == "chat" )
-	{
-		if ( tag == "message" )
-		{
-			d->message = atts.value("text");
-		}
-	}
-	
-	
-	return true;
+    if (root() == "chat") {
+        if (tag == "message")
+            k->message = atts.value("text");
+    }
+    
+    return true;
 }
 
 bool ChatParser::endTag(const QString &)
 {
-	return true;
+    return true;
 }
 
 void ChatParser::text(const QString &)
@@ -65,8 +57,7 @@ void ChatParser::text(const QString &)
 
 QString ChatParser::message() const
 {
-	return d->message;
+    return k->message;
 }
-
 
 }

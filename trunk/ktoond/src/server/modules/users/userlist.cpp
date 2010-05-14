@@ -25,23 +25,21 @@ namespace Packages{
 
 UserList::UserList(): QDomDocument()
 {
-	QDomElement root = createElement("userlist");
-	root.setAttribute("version", 0);
-	appendChild(root);
+    QDomElement root = createElement("userlist");
+    root.setAttribute("version", 0);
+    appendChild(root);
 }
-
 
 UserList::~UserList()
 {
 }
 
-
 void UserList::addUser(const Users::User *user)
 {
-	QDomElement userE = createElement("user");
-	userE.setAttribute("login",  user->login());
-	userE.setAttribute("name",  user->name());
-	firstChild().appendChild(userE);
+    QDomElement userE = createElement("user");
+    userE.setAttribute("login", user->login());
+    userE.setAttribute("name", user->name());
+    firstChild().appendChild(userE);
 }
 
 }

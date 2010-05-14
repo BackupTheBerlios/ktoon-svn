@@ -38,6 +38,8 @@ ImportProjectParser::~ImportProjectParser()
 
 bool ImportProjectParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
+    Q_UNUSED(atts); 
+
     if (root() == "importproject") {
         if (tag == "data")
             setReadText(true);
@@ -48,6 +50,8 @@ bool ImportProjectParser::startTag(const QString &tag, const QXmlAttributes &att
 
 bool ImportProjectParser::endTag(const QString &tag)
 {
+    Q_UNUSED(tag);
+
     return true;
 }
 

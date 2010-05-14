@@ -1,12 +1,10 @@
 
-* No borrar proyectos +
-* El dueno del proyecto debera seleccionar personas que pueden abrir un proyecto +
-* En lo posible loguear la actividad de un usuario sobre el proyecto +
-* Implementar una blacklist +
-* Hacer backups del proyecto +
-* Permitir observadores de proyectos +
+* Do not remove projects +
+* The project's owner must chose which users can open his project +
+* Log the user actions in every project +
+* Implemment blacklist support +
+* Backup projects support +
+* Allow watch-only users on projects +
 
-
-* manejar desconexiones
-* peticion de desconexion
-
+* Handle disconnect actions
+* Disconnect request

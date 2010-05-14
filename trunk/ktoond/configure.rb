@@ -9,9 +9,9 @@ def usage
    Use: ./configure [options]
     options:
         --help, -h:                          Show this message
-        --prefix=[prefix], -prefix [prefix]: Sets prefix
+        --prefix=[prefix], -prefix [prefix]: Set prefix
         --with-debug:                        Enable debug
-        --with-ktoondir=[ktoon dir]          Use KToon dir
+        --with-ktoon-dir=[ktoon home]        Set KTooN home  
 _EOH_
     exit 0
 end
@@ -24,7 +24,7 @@ begin
         usage()
     end
     
-    ktoondir = conf.argumentValue("with-ktoondir")
+    ktoondir = conf.argumentValue("with-ktoon-dir")
     
     if ktoondir.to_s.empty?
         ktoondir = ENV["KTOON_HOME"]

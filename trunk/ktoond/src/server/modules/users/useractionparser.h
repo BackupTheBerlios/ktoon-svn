@@ -24,7 +24,7 @@
 #include <ktxmlparserbase.h>
 
 namespace Users {
-	class User;
+    class User;
 }
 
 namespace Parsers {
@@ -34,20 +34,19 @@ namespace Parsers {
 */
 class UserActionParser : public KTXmlParserBase
 {
-	public:
-		UserActionParser();
-		~UserActionParser();
-		
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-		Users::User user() const;
-		
-	private:
-		struct Private;
-		Private * const d;
-
+    public:
+        UserActionParser();
+        ~UserActionParser();
+        
+        virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+        virtual bool endTag(const QString &tag);
+        virtual void text(const QString &text);
+        
+        Users::User user() const;
+        
+    private:
+        struct Private;
+        Private * const k;
 };
 
 }

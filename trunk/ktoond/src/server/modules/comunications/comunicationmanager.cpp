@@ -47,7 +47,7 @@ Manager::~Manager()
 void Manager::handlePackage(Base::Package *const pkg)
 {
     Server::Connection *cnn = pkg->source();
-    Server::TcpServer *server = cnn->server();
+    // Server::TcpServer *server = cnn->server();
     
     if (pkg->root() == "chat") {
 

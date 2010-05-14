@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef PARSERSWALLPARSER_H
 #define PARSERSWALLPARSER_H
 
@@ -25,24 +26,25 @@
 namespace Parsers {
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
-*/
+    @author David Cuadrado <krawek@toonka.com>
+ */
+
 class WallParser : public KTXmlParserBase
 {
-	public:
-		WallParser();
-		~WallParser();
-		
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-	public:
-		QString message() const;
-		
-	private:
-		struct Private;
-		Private *const d;
+    public:
+        WallParser();
+        ~WallParser();
+        
+        virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+        virtual bool endTag(const QString &tag);
+        virtual void text(const QString &text);
+        
+    public:
+        QString message() const;
+        
+    private:
+        struct Private;
+        Private *const k;
 };
 
 }

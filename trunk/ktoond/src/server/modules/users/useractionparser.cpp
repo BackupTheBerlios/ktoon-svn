@@ -26,72 +26,57 @@ namespace Parsers {
 
 struct UserActionParser::Private
 {
-	Users::User user;
+    Users::User user;
 };
 
-UserActionParser::UserActionParser() : KTXmlParserBase(), d(new Private)
+UserActionParser::UserActionParser() : KTXmlParserBase(), k(new Private)
 {
 }
-
 
 UserActionParser::~UserActionParser()
 {
 }
 
-
 bool UserActionParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if(root() == "adduser" || root() == "removeuser" || root() == "updateuser" || root() == "queryuser")
-	{
-		if(tag == "login")
-		{
-			setReadText(true);
-		}
-		else if(tag == "password")
-		{
-			setReadText(true);
-		}
-		else if(tag == "name")
-		{
-			setReadText(true);
-		}
-		else if(tag == "perm")
-		{
-			Users::Right *right = new Users::Right(atts.value("module"),
-			bool(atts.value("read").toInt()),
-			bool(atts.value("write").toInt()));
-			
-			d->user.addRight(right);
-		}
-		
-	}
-	return true;
+    if (root() == "adduser" || root() == "removeuser" || root() == "updateuser" || root() == "queryuser") {
+        if (tag == "login") {
+            setReadText(true);
+        } else if(tag == "password") {
+            setReadText(true);
+        } else if(tag == "name") {
+            setReadText(true);
+        } else if(tag == "perm") {
+            Users::Right *right = new Users::Right(atts.value("module"),
+            bool(atts.value("read").toInt()),
+            bool(atts.value("write").toInt()));
+            
+            k->user.addRight(right);
+        }
+    }
+
+    return true;
 }
 
 bool UserActionParser::endTag(const QString &)
 {
-	return true;
+    return true;
 }
 
 void UserActionParser::text(const QString &text)
 {
-	if(currentTag() == "login")
-	{
-		d->user.setLogin(text);
-	}
-	else if(currentTag() == "password")
-	{
-		d->user.setPassword(text);
-	}
-	else if(currentTag() == "name")
-	{
-		d->user.setName(text);
-	}
+    if (currentTag() == "login") {
+        k->user.setLogin(text);
+    } else if(currentTag() == "password") {
+        k->user.setPassword(text);
+    } else if(currentTag() == "name") {
+        k->user.setName(text);
+    }
 }
 
 Users::User UserActionParser::user() const
 {
-	return d->user;
+    return k->user;
 }
 
 }

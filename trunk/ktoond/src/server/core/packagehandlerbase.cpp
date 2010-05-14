@@ -58,7 +58,8 @@ void PackageHandlerBase::handlePackage(Base::Package *const pkg)
     
     kWarning("server") << "PACKAGE: " << package;
     
-    TcpServer *server = cnn->server();
+    // TcpServer *server = cnn->server();
+
     if (!pkg->accepted())
         handle(cnn, root, package);
 }

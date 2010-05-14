@@ -28,123 +28,111 @@ namespace Users {
 
 struct User::Private
 {
-	QString name;
-	QString login;
-	QString password;
-	
-	QList<Right *> rights;
+    QString name;
+    QString login;
+    QString password;
+    
+    QList<Right *> rights;
 };
 
-User::User() : d(new Private)
+User::User() : k(new Private)
 {
 }
 
-
 User::~User()
 {
-	qDeleteAll(d->rights);
-	delete d;
+    qDeleteAll(k->rights);
+    delete k;
 }
 
 void User::setName(const QString &name)
 {
-	d->name = name;
+    k->name = name;
 }
 
 void User::setLogin(const QString &login)
 {
-	d->login = login;
+    k->login = login;
 }
 
 void User::setPassword(const QString &password)
 {
-	d->password = password;
+    k->password = password;
 }
-
 
 QString User::name() const
 {
-	return d->name;
+    return k->name;
 }
 
 QString User::login() const
 {
-	return d->login;
+    return k->login;
 }
 
 QString User::password() const
 {
-	return d->password;
+    return k->password;
 }
 
 bool User::canReadOn(const QString &module)
 {
-	foreach(Right *right, d->rights)
-	{
-		if ( right->module() == module )
-		{
-			return right->read();
-		}
-	}
-	
-	return false;
+    foreach (Right *right, k->rights) {
+             if (right->module() == module)
+                 return right->read();
+    }
+    
+    return false;
 }
 
 bool User::canWriteOn(const QString &module)
 {
-	foreach(Right *right, d->rights)
-	{
-		if ( right->module() == module )
-		{
-			return right->write();
-		}
-	}
-	
-	return false;
+    foreach (Right *right, k->rights) {
+             if (right->module() == module)
+        	 return right->write();
+    }
+    
+    return false;
 }
 
 void User::addRight(Right *right)
 {
-	d->rights << right;
+    k->rights << right;
 }
 
 QList<Right *> User::rights() const
 {
-	return d->rights;
+    return k->rights;
 }
 
-QDomElement User::toXml(QDomDocument &doc, bool password ) const
+QDomElement User::toXml(QDomDocument &doc, bool password) const
 {
-	QDomElement userE = doc.createElement("user");
-	
-	userE.appendChild(  doc.createElement("login") ).appendChild( doc.createTextNode(d->login));
-	userE.appendChild(  doc.createElement("name" ) ).appendChild( doc.createTextNode(d->name));
-	
-	if(password)
-	{
-		userE.appendChild(  doc.createElement("password" ) ).appendChild( doc.createTextNode(d->password));
-	}
-	
-	QDomElement permissionsE = doc.createElement("permissions");
-	userE.appendChild(permissionsE);
-	foreach(Right *right, d->rights)
-	{
-		QDomElement perm = doc.createElement("perm");
-		perm.setAttribute("module", right->module());
-		perm.setAttribute("read", right->read());
-		perm.setAttribute("write", right->write());
-		
-		permissionsE.appendChild(perm);
-	}
-	return userE;
-}
+    QDomElement userE = doc.createElement("user");
+    
+    userE.appendChild(doc.createElement("login")).appendChild( doc.createTextNode(k->login));
+    userE.appendChild(doc.createElement("name")).appendChild( doc.createTextNode(k->name));
+    
+    if (password)
+        userE.appendChild(doc.createElement("password")).appendChild(doc.createTextNode(k->password));
+    
+    QDomElement permissionsE = doc.createElement("permissions");
+    userE.appendChild(permissionsE);
 
+    foreach (Right *right, k->rights) {
+             QDomElement perm = doc.createElement("perm");
+             perm.setAttribute("module", right->module());
+             perm.setAttribute("read", right->read());
+             perm.setAttribute("write", right->write());
+        
+             permissionsE.appendChild(perm);
+    }
+
+    return userE;
+}
 
 bool User::operator==(const User& user)
 {
-	return (d->login == user.d->login) && (d->password == user.d->password) && (d->name == user.d->name);
+    return (k->login == user.k->login) && (k->password == user.k->password) && (k->name == user.k->name);
 }
 
 }
-
-

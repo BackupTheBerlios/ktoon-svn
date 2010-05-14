@@ -17,19 +17,19 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "noticeparser.h"
 
 namespace Parsers {
 
 struct NoticeParser::Private
 {
-	QString message;
+    QString message;
 };
 
-NoticeParser::NoticeParser() : KTXmlParserBase(), d(new Private())
+NoticeParser::NoticeParser() : KTXmlParserBase(), k(new Private())
 {
 }
-
 
 NoticeParser::~NoticeParser()
 {
@@ -37,21 +37,17 @@ NoticeParser::~NoticeParser()
 
 bool NoticeParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if ( root() == "notice" )
-	{
-		if ( tag == "message" )
-		{
-			d->message = atts.value("text");
-		}
-	}
-	
-	
-	return true;
+    if (root() == "notice") {
+        if (tag == "message")
+            k->message = atts.value("text");
+    }
+    
+    return true;
 }
 
 bool NoticeParser::endTag(const QString &)
 {
-	return true;
+    return true;
 }
 
 void NoticeParser::text(const QString &)
@@ -60,8 +56,7 @@ void NoticeParser::text(const QString &)
 
 QString NoticeParser::message() const
 {
-	return d->message;
+    return k->message;
 }
-
 
 }

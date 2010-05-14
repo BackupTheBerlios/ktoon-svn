@@ -21,34 +21,32 @@
 #include "error.h"
 namespace Packages
 {
-	
+    
 Error::Error(const QString &message, Level level)
-	: QDomDocument()
+    : QDomDocument()
 {
-	QDomElement root = createElement ( "error" );
-	root.setAttribute ( "version",  "0" );
-	appendChild(root);
-	
-	m_message = createElement("message");
-	root.appendChild(m_message);
-	m_message.appendChild( createTextNode(message) );
-	m_message.setAttribute("level", level );
+    QDomElement root = createElement ("error");
+    root.setAttribute("version", "0");
+    appendChild(root);
+    
+    m_message = createElement("message");
+    root.appendChild(m_message);
+    m_message.appendChild(createTextNode(message));
+    m_message.setAttribute("level", level);
 }
-
 
 Error::~Error()
 {
 }
 
-
 void Error::setMessage(const QString &message)
 {
-	m_text.setData(message);
+    m_text.setData(message);
 }
 
 void Error::setLevel(int level)
 {
-	m_message.setAttribute("level", level );
+    m_message.setAttribute("level", level);
 }
 
 }
