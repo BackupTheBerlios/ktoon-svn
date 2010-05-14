@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export KTOON_HOME=/usr/local/ktoon
 export LD_LIBRARY_PATH=$KTOON_HOME/lib:$LD_LIBRARY_PATH
 export QT_NO_GLIB=1
 
