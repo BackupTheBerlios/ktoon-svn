@@ -14,8 +14,9 @@ body {
 }
 
 .subtitle {
+     margin-left:10px;
      color:#000000;
-     text-align:center;
+     text-align:left;
      text-decoration:none;
      font-family:"Times New Roman", Times, serif;
      font-style:normal;
@@ -31,6 +32,30 @@ body {
      text-decoration:none;
      font-family:"Times New Roman", Times, serif;
      font-style:normal;
+     font-size:14px;
+     font-weight:normal;
+}
+
+.item {
+     margin-left:0px;
+     margin-right:10px;
+     color:#000000;
+     text-align:justify;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:14px;
+     font-weight:normal;
+}
+
+.code {
+     margin-left:10px;
+     margin-right:10px;
+     color:#000000;
+     text-align:justify;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:italic;
      font-size:14px;
      font-weight:normal;
 }
