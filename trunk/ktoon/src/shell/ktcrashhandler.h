@@ -29,32 +29,67 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
+#ifndef KTCRASHHANDLER_H
+#define KTCRASHHANDLER_H
 
-#ifndef CRASHWIDGET_H
-#define CRASHWIDGET_H
-
-#include <QDialog>
+#include <QString>
+#include <QMap>
+#include <QColor>
+#include <QPair>
 #include <QImage>
-#include <QVBoxLayout>
+#include <csignal>
 
-#include <QTabWidget>
+class KTCrashHandler;
 
-class CrashWidget : public QDialog
+#ifdef Q_OS_UNIX
+
+class KTCrashHandler
 {
-    Q_OBJECT
-    public:
-        CrashWidget (int sig);
-        ~CrashWidget ();
-        void addBacktracePage(const QString &execInfo, const QString &backtrace);
+    protected:
+        KTCrashHandler();
 
-    public slots:
+    public:
+        ~KTCrashHandler();
+        void setConfig(const QString &filePath);
+        void setTrapper(void (*trapper)(int));
+        static KTCrashHandler *instance();
+        static void init();
+
+    public:
+        void setProgram(const QString &prog);
+        QString program() const;
+        void setImagePath(const QString &imagePath);
+        QString imagePath() const;
+
+        QString title() const;
+        QString message() const;
+        QColor messageColor() const;
+        QString buttonText() const;
+        QString defaultText() const;
+        QString defaultImage() const;
+        QString signalText(int signal);
+        QString signalImage(int signal);
+        bool containsSignalEntry(int signal);
 
     private:
-        QVBoxLayout *m_layout;
-        QImage m_image;
-        int m_sig;
+        struct CrashHandlerConfig {
+               QString title;
+               QString message;
+               QColor  messageColor;
+               QString buttonText;
+               QString defaultText;
+               QString defaultImage;
+               QMap<int, QPair<QString, QString> > signalEntry;
+        } m_config;
 
-        QTabWidget *m_tabber;
+        static KTCrashHandler *m_instance; // Singleton
+        QString m_program;
+        QString m_imagePath;
+        bool m_verbose;
 };
+
+#define CHANDLER KTCrashHandler::instance()
+
+#endif // Q_OS_UNIX
 
 #endif

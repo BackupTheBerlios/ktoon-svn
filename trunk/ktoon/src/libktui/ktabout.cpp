@@ -85,7 +85,7 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
     QImage credits = QImage(DATA_DIR + "/images/credits.png");
 
     KImageEffect::fade(credits,0.25, palette().background().color());
-  
+
     m_credits = new KAnimWidget(QPixmap::fromImage(credits), creditsText);
     addTab(m_credits, tr("Credits"));
 
@@ -97,16 +97,8 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
 
     // 2: Sponsors 
 
-    /*
-    QLabel *ack = new QLabel;
-
-    QImage ackImg(DATA_DIR + "/images/sponsors.png");
-    KImageEffect::fade(ackImg,0.2,palette().background().color()); 
-
-    ack->setPixmap(QPixmap::fromImage(ackImg));
-    */
-
     QTextBrowser *sponsorsText = new QTextBrowser;
+    sponsorsText->setOpenExternalLinks(true);
 
     sponsorsText->setSource(SHARE_DIR + "data/help/" + lang + "/sponsors.html");
     sponsorsText->moveCursor(QTextCursor::Start);
@@ -115,17 +107,8 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
 
     // 3: Laboratoon
 
-    /*
-    QLabel *laboratoon = new QLabel;
-
-    QImage laboratoonImg(DATA_DIR + "/images/laboratoon.png");
-    KImageEffect::fade(laboratoonImg,0.2,palette().background().color()); 
-
-    laboratoon->setPixmap(QPixmap::fromImage(laboratoonImg));
-    addTab(laboratoon, "Labtoon");
-    */
-
     QTextBrowser *labtoonText = new QTextBrowser;
+    labtoonText->setOpenExternalLinks(true);
 
     labtoonText->setSource(SHARE_DIR + "data/help/" + lang + "/labtoon_short.html");
     labtoonText->moveCursor(QTextCursor::Start);
@@ -135,6 +118,7 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
     // 4: Licence
 
     QTextBrowser *licenseText = new QTextBrowser;
+    licenseText->setOpenExternalLinks(true);
 
     /* QFile licenceFile(DATA_DIR + "/license.html");
     QFile licenseFile(SHARE_DIR + "data/help/" + lang + "/philosophy.html");
@@ -153,7 +137,7 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
     licenseText->setSource(SHARE_DIR + "data/help/" + lang + "/philosophy.html");
     licenseText->moveCursor(QTextCursor::Start);
 
-    addTab(licenseText, tr("License"));
+    addTab(licenseText, tr("License Agreement"));
     setButtonText(Cancel, tr("Close"));
 }
 

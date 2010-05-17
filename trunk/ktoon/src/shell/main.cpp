@@ -50,7 +50,7 @@
 #include <ksound/kaudioplayer.h>
 
 #ifdef Q_OS_UNIX
-#include "crashhandler.h"
+#include "ktcrashhandler.h"
 #endif
 
 #ifdef ENABLE_KTOONSTYLE
@@ -106,7 +106,7 @@ int main(int argc, char ** argv)
 
 #ifdef Q_OS_UNIX
     // Initializing the crash handler, very useful to catch bugs
-    CrashHandler::init();
+    KTCrashHandler::init();
 #endif
 
     // Setting the gui style for the interface

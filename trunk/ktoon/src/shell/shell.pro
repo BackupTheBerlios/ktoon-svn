@@ -24,8 +24,8 @@ HEADERS += ktmainwindow.h \
            ktstatusbar.h \
            ktnewproject.h \
            ktsplash.h \
-           crashhandler.h \
-           crashwidget.h \
+           ktcrashhandler.h \
+           ktcrashwidget.h \
            ktapplication.h \
            configwizard.h \
            ktlocalprojectmanagerhandler.h
@@ -34,8 +34,8 @@ SOURCES += main.cpp \
            ktstatusbar.cpp \
            ktnewproject.cpp \
            ktsplash.cpp \
-           crashhandler.cpp \
-           crashwidget.cpp \
+           ktcrashhandler.cpp \
+           ktcrashwidget.cpp \
            ktapplication.cpp \
            configwizard.cpp \
            ktmainwindow_gui.cpp \

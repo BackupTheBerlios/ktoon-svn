@@ -48,16 +48,16 @@ extern "C"
 #include <stdio.h>
 }
 
-#include "crashhandler.h"
-#include "crashwidget.h"
+#include "ktcrashhandler.h"
+#include "ktcrashwidget.h"
 #include <kcore/kdebug.h>
 #include <kcore/kglobal.h>
 
-CrashHandler *CrashHandler::m_instance = 0;
+KTCrashHandler *KTCrashHandler::m_instance = 0;
 
 void crashTrapper(int sig);
 
-CrashHandler::CrashHandler() : m_verbose(false)
+KTCrashHandler::KTCrashHandler() : m_verbose(false)
 {
     m_program = QCoreApplication::applicationName();
     setTrapper(crashTrapper);
@@ -68,25 +68,25 @@ CrashHandler::CrashHandler() : m_verbose(false)
     m_config.defaultText = QObject::tr("This is a general failure");
 }
 
-CrashHandler::~CrashHandler()
+KTCrashHandler::~KTCrashHandler()
 {
     if (m_instance) 
         delete m_instance;
 }
 
-CrashHandler *CrashHandler::instance()
+KTCrashHandler *KTCrashHandler::instance()
 {
     init();
     return m_instance;
 }
-			
-void CrashHandler::init()
+            
+void KTCrashHandler::init()
 {
     if (m_instance == 0)
-        m_instance = new CrashHandler();	
+        m_instance = new KTCrashHandler();
 }
 
-void CrashHandler::setTrapper (void (*trapper)(int))
+void KTCrashHandler::setTrapper (void (*trapper)(int))
 {
 #ifdef Q_OS_UNIX
     if (!trapper)
@@ -107,37 +107,37 @@ void CrashHandler::setTrapper (void (*trapper)(int))
 #endif
 }
 
-QString CrashHandler::program() const
+QString KTCrashHandler::program() const
 {
     return m_program;
 }
 
-void CrashHandler::setProgram(const QString &prog)
+void KTCrashHandler::setProgram(const QString &prog)
 {
     m_program = prog;
 }
 
-void CrashHandler::setImagePath(const QString &imagePath)
+void KTCrashHandler::setImagePath(const QString &imagePath)
 {
     m_imagePath = imagePath;
 }
 
-QString CrashHandler::imagePath() const
+QString KTCrashHandler::imagePath() const
 {
     return m_imagePath;
 }
 
-QString CrashHandler::title() const
+QString KTCrashHandler::title() const
 {
     return m_config.title;
 }
 
-QString CrashHandler::message() const
+QString KTCrashHandler::message() const
 {
     return m_config.message;
 }
 
-QColor CrashHandler::messageColor() const
+QColor KTCrashHandler::messageColor() const
 {
     if (m_config.messageColor.isValid())
         return m_config.messageColor;
@@ -145,37 +145,37 @@ QColor CrashHandler::messageColor() const
     return QApplication::palette().color(QPalette::Text);
 }
 
-QString CrashHandler::buttonText() const
+QString KTCrashHandler::buttonText() const
 {
     return m_config.buttonText;
 }
 
-QString CrashHandler::defaultText() const
+QString KTCrashHandler::defaultText() const
 {
     return m_config.defaultText;
 }
 
-QString CrashHandler::defaultImage() const
+QString KTCrashHandler::defaultImage() const
 {
     return m_imagePath + "/" + m_config.defaultImage;
 }
 
-QString CrashHandler::signalText(int signal)
+QString KTCrashHandler::signalText(int signal)
 {
     return m_config.signalEntry[signal].first;
 }
 
-QString CrashHandler::signalImage(int signal)
+QString KTCrashHandler::signalImage(int signal)
 {
     return m_imagePath + "/" + m_config.signalEntry[signal].second;
 }
 
-bool CrashHandler::containsSignalEntry(int signal)
+bool KTCrashHandler::containsSignalEntry(int signal)
 {
     return m_config.signalEntry.contains(signal);
 }
 
-void CrashHandler::setConfig(const QString &filePath)
+void KTCrashHandler::setConfig(const QString &filePath)
 {
 #ifdef K_DEBUG
        K_FUNCINFO;
@@ -192,7 +192,7 @@ void CrashHandler::setConfig(const QString &filePath)
         return;
     }
     file.close();
-	
+    
     QDomElement docElem = doc.documentElement();
 
     if (docElem.tagName() == "CrashHandler") {
@@ -301,7 +301,7 @@ void crashTrapper (int sig)
         execInfo = runCommand("file " + HOME_DIR + "bin/ktoon.bin");
 
         // Widget
-        CrashWidget widget(sig);
+        KTCrashWidget widget(sig);
         widget.addBacktracePage(execInfo, bt);
         widget.exec();
 

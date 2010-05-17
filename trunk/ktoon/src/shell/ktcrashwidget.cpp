@@ -40,8 +40,8 @@
 #include <QtDebug>
 #include <QProcess>
 
-#include "crashwidget.h"
-#include "crashhandler.h"
+#include "ktcrashwidget.h"
+#include "ktcrashhandler.h"
 
 #include <kcore/kconfig.h>
 #include <kcore/kdebug.h>
@@ -78,9 +78,9 @@ void TextArea::setSource(const QUrl &name)
     }
 }
 
-#include "crashwidget.moc"
+#include "ktcrashwidget.moc"
 
-CrashWidget::CrashWidget (int sig) : QDialog(0), m_sig(sig)
+KTCrashWidget::KTCrashWidget (int sig) : QDialog(0), m_sig(sig)
 {
     setModal(true);
 
@@ -126,11 +126,11 @@ CrashWidget::CrashWidget (int sig) : QDialog(0), m_sig(sig)
     setLayout(m_layout);
 }
 
-CrashWidget::~CrashWidget()
+KTCrashWidget::~KTCrashWidget()
 {
 }
 
-void CrashWidget::addBacktracePage(const QString &execInfo, const QString &backtrace)
+void KTCrashWidget::addBacktracePage(const QString &execInfo, const QString &backtrace)
 {
     #ifdef K_DEBUG
         K_FUNCINFO << execInfo << " " << backtrace;

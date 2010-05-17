@@ -1,4 +1,5 @@
-KToon
+KToon - 2D Animation Toolkit
+http://www.ktoon.net
 
 Version 0.9a [ Code Name: Phoenix ]
 

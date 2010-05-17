@@ -32,6 +32,8 @@
 #ifndef KTABOUT_H
 #define KTABOUT_H
 
+#include <QTextBrowser>
+
 #include <qlabel.h>
 #include <qpixmap.h>
 
