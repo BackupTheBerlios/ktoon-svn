@@ -195,8 +195,6 @@ bool Tweener::isComplete() const
 
 void Tweener::setupActions()
 {
-    kFatal() << "Tweener::setupActions() -> init!";
-
     KAction *translater = new KAction(QPixmap(THEME_DIR + "icons/tweener.png"), 
                                       tr("Motion Tween"), this);
 

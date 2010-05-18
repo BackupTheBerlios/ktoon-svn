@@ -3,7 +3,7 @@
     <Section title="Introduction">
         <SubSection title="Cover" file="cover.html" />
         <SubSection title="Our Philosophy &amp; License" file="philosophy.html" />
-        <SubSection title="2D Animation? What's that?" file="init.html" />
+        <SubSection title="Animation for Dummies" file="init.html" />
     </Section>
     <Section title="KToon? What's it?">
         <SubSection title="Main Components" file="components.html" />

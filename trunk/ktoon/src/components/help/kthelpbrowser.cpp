@@ -49,6 +49,7 @@ KTHelpBrowser::KTHelpBrowser(QWidget *parent) : QWidget(parent)
     layout->addWidget(m_separator);
 
     m_pageArea = new QTextBrowser(m_separator);
+    m_pageArea->setOpenExternalLinks(true);
 
     m_document = new QTextDocument(m_pageArea);
 

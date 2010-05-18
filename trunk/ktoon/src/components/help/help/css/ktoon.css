@@ -107,26 +107,36 @@ body {
      font-weight:bold;
 }
 
-a:link 
-{
-text-decoration: none;
-color:#000000;
+a:link {
+     text-decoration:underline;
+     color:#000000;
+     font-weight:bold;
 }
 
-a:visited 
-{
-text-decoration: none;
-color:#000000;
+a:visited {
+     text-decoration:underline;
+     color:#000000;
+     font-weight:bold;
 }
 
-a:active 
-{
-text-decoration: none;
-color:#000000;
+a:active {
+     text-decoration:underline;
+     color:#000000;
+     font-weight:bold;
 }
 
-a:hover 
-{
-text-decoration: underline;
-color:#000000;
+a:hover {
+     text-decoration:underline;
+     color:#000000;
+     font-weight:bold;
+}
+
+.big_title {
+     color:#000000;
+     text-align:center;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:36px;
+     font-weight:bold;
 }

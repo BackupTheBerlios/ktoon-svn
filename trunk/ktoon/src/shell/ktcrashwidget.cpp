@@ -60,6 +60,7 @@ class TextArea : public QTextBrowser
 
 TextArea::TextArea()
 {
+    setOpenExternalLinks(true);
 }
 
 TextArea::~ TextArea()

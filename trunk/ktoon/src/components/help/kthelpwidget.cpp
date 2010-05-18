@@ -59,8 +59,8 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
     contentsListView->setHeaderLabels(QStringList() << tr(""));
     contentsListView->header()->hide();
 
-    connect(contentsListView, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, 
-                              SLOT(tryToLoadPage(QTreeWidgetItem *, int)));
+    //connect(contentsListView, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, 
+    //                          SLOT(tryToLoadPage(QTreeWidgetItem *, int)));
 
     addChild(contentsListView);
 
@@ -79,7 +79,7 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
                        if (element.tagName() == "Section") {
                            QTreeWidgetItem *item = new QTreeWidgetItem(contentsListView);
                            item->setText(0, element.attribute("title"));
-
+                           m_files.insert(item, element.attribute("file"));
                            QDomNode subSection = element.firstChild();
                            while (! subSection.isNull()) {
                                   QDomElement element2 = subSection.toElement();
@@ -110,13 +110,16 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
     contentsListView->expandAll();
     if (first)
         contentsListView->setCurrentItem(first);
+
+    connect(contentsListView, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), this,
+                              SLOT(tryToLoadPage(QTreeWidgetItem *, QTreeWidgetItem *)));
 }
 
 KTHelpWidget::~KTHelpWidget()
 {
 }
 
-void KTHelpWidget::tryToLoadPage(QTreeWidgetItem *item, int)
+void KTHelpWidget::tryToLoadPage(QTreeWidgetItem *item, QTreeWidgetItem *preview)
 {
     if (item) {
         QString fileName = m_files[item];

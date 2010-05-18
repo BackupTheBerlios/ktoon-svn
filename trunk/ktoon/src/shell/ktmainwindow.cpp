@@ -867,10 +867,6 @@ void KTMainWindow::messageToStatus(const QString &msg)
 
 void KTMainWindow::showHelpPage(const QString &filePath)
 {
-    #ifdef K_DEBUG
-       K_FUNCINFO;
-    #endif
-
     page->setSource(filePath);
 }
 

@@ -54,7 +54,7 @@ class KTHelpWidget : public KTModuleWidgetBase
         QString helpPath() const;
 
     private slots:
-        void tryToLoadPage(QTreeWidgetItem *, int);
+        void tryToLoadPage(QTreeWidgetItem *, QTreeWidgetItem *);
         void loadPage(const QString &path);
 
     signals:
