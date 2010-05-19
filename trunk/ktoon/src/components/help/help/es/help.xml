@@ -5,7 +5,7 @@
         <SubSection title="Nuestra Visión y Licencia" file="philosophy.html" />
         <SubSection title="Animación para Dummies" file="init.html" />
     </Section>
-    <Section title="KToon? Qué es eso?" file="chapter1.html">
+    <Section title="KTooN? Qué es eso?" file="chapter1.html">
         <SubSection title="Componentes Principales" file="components.html" />
         <SubSection title="Modo de Ilustración" file="illustration.html" />
         <SubSection title="Modo de Animación" file="animation.html" />
