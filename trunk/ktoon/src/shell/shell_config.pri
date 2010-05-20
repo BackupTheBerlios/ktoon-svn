@@ -13,6 +13,7 @@ EXPOSURE_DIR = ../../src/components/exposure
 TIMELINE_DIR = ../../src/components/timeline 
 LIBRARY_DIR = ../../src/components/library
 SCENES_DIR = ../../src/components/scenes 
+TWITTER_DIR = ../../src/components/twitter
 LIBUI_DIR = ../../src/libktui
 STORE_DIR = ../../src/store 
 LIBKTOON_DIR = ../../src/libktoon 
@@ -33,6 +34,7 @@ include($$EXPOSURE_DIR/exposure.pri)
 include($$TIMELINE_DIR/timeline.pri)
 include($$LIBRARY_DIR/library.pri)
 include($$SCENES_DIR/scenes.pri)
+include($$TWITTER_DIR/twitter.pri)
 include($$LIBUI_DIR/libktui.pri)
 include($$STORE_DIR/store.pri)
 include($$LIBKTOON_DIR/libktoon.pri)

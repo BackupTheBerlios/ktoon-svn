@@ -48,6 +48,7 @@
 #include "ktpluginmanager.h"
 #include "ktprojectcommand.h"
 #include "ktlocalprojectmanagerhandler.h"
+#include <ktwitter.h>
 
 // #ifdef USE_NET
 #include "ktnetprojectmanagerhandler.h"
@@ -100,11 +101,16 @@ class SleeperThread : public QThread
 
 KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) : 
               KTabbedMainWindow(), m_projectManager(0), m_viewDoc(0), m_animationSpace(0), 
-              m_viewChat(0), m_exposureSheet(0), m_scenes(0), isSaveDialogOpen(false)
+              m_viewChat(0), m_exposureSheet(0), m_scenes(0), isSaveDialogOpen(false), internetOn(false)
 {
     #ifdef K_DEBUG
        KINIT;
     #endif
+
+    // Downloading ktoon_net Twitter status
+    KTwitter *ktwitter = new KTwitter();
+    connect(ktwitter, SIGNAL(internetIsOn()),
+            this, SLOT(internetEnabled()));
 
     // Loading audio player plugin
     KAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: Move this to the settings 
@@ -269,9 +275,11 @@ void KTMainWindow::viewNewDocument()
         page->setSource(SHARE_DIR + "data/help/" + QString(QLocale::system().name()).left(2) + "/cover.html");
         addWidget(page, true, All);
 
-        twitter = new KTwitterWidget(this); 
-        twitter->setSource("/tmp/twitter.html");
-        addWidget(twitter, true, All);
+        if (internetOn) {
+            twitter = new KTwitterWidget(this); 
+            twitter->setSource("/tmp/twitter.html");
+            addWidget(twitter, true, All);
+        }
 
         exposureView->expandDock(true);
         connect(m_viewDoc, SIGNAL(autoSave()), this, SLOT(callSave()));
@@ -1107,4 +1115,10 @@ void KTMainWindow::callSave()
 {
     if (m_projectManager->isModified())
         saveProject();
+}
+
+void KTMainWindow::internetEnabled()
+{
+    kFatal() << "Habemus Internet!";
+    internetOn = true;
 }

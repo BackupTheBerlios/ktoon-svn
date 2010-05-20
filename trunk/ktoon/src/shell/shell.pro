@@ -57,6 +57,7 @@ linux-g{
   ../../src/components/timeline/libtimeline.a \
   ../../src/components/library/liblibrary.a \
   ../../src/components/colorpalette/libcolorpalette.a \
-  ../../src/components/scenes/libscenes.a
+  ../../src/components/scenes/libscenes.a \
+  ../../src/components/twitter/libtwitter.a
 }
 

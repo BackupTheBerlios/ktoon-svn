@@ -21,6 +21,9 @@ class KTwitter : public QWidget
         void slotReadyRead();
         void slotError(QNetworkReply::NetworkError error);
 
+    signals:
+        void internetIsOn();
+
     private:
         void formatStatus(const QString &input);
 

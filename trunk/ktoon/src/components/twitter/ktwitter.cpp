@@ -55,10 +55,10 @@ void KTwitter::closeRequest(QNetworkReply *reply)
     if (answer.length() > 0) {
         if (answer.compare("<ok>true</ok>") == 0) {
             k->linkOn = true;
+            emit internetIsOn();
             downloadNews();
         } else {
             formatStatus(answer);
-            QCoreApplication::quit();
         }
     } else {
         k->linkOn = false;
@@ -164,11 +164,11 @@ void KTwitter::formatStatus(const QString &input)
                               n1 = n1.nextSibling();
                        }
 
-                       output += "<p class=\"status\">\n";
-                       output += "[ " + date + " ]";
-                       output += " <b>KTooN:</b> ";
+                       output += "       <p class=\"status\">\n";
+                       output += "       <div class=\"date\">[ " + date + " ]</div><br/>\n";
+                       output += "       <b>KTooN:</b> ";
                        output += text;
-                       output += "<p/>\n";
+                       output += "       <p/>\n";
                    }
                }
 
@@ -176,19 +176,53 @@ void KTwitter::formatStatus(const QString &input)
         }
      }
 
-     output += "</body>\n</html>\n";
-
      QString html = "";
 
-     html += "<html><body>\n";
-
-     html += "NAME: " + name + "<br/>\n";
-     html += "DESC: " + description + "<br/>\n";
-     html += "URL: " + website + "<br/>\n";
-     html += "FOLLOWERS: " + followers + "<br/>\n";
-     html += "IMAGE: " + image + "<br/>\n";
+     html += "<html>\n";
+     html += "<head>\n";
+     html += "<link rel=\"stylesheet\" type=\"text/css\" href=\"ktoon.css\" />\n";
+     html += "</head>\n";
+     html += "<body class=\"license\">\n";
+     html += " <table class=\"twitter_base\">\n";
+     html += "  <tr>\n";
+     html += "  <td class=\"twitter_status\">\n";
+     html += "    <table class=\"status_table\">\n";
+     html += "     <tr>\n";
+     html += "     <td>\n";
+     html += "      &nbsp;&nbsp;\n";
+     html += "      <img class=\"twitter_logo\" src=\"/tmp/ktoon_net.png\" alt=\"ktoon_net\"/>\n";
+     html += "      <font class=\"twitter_headline\" >&nbsp;&nbsp;ktoon_net</font>\n";
+     html += "      <br/>\n";
+     html += "     </td>\n";
+     html += "     </tr>\n";
+     html += "     <tr>\n";
+     html += "     <td>\n";
 
      html += output;
-  
-     qDebug() << html;
+
+     html += "     </td>\n";
+     html += "     </tr>\n";
+     html += "    </table>\n";
+     html += "  </td>\n";
+     html += "  <td class=\"twitter_desc\">\n";
+     html += "    <table class=\"desc_table\">\n";
+     html += "     <tr><td>\n";
+     html += "          <b>Name:</b> " + name + "<br/>\n";
+     html += "          <b>Bio:</b> " + description + "<br/>\n";
+     html += "          <b>Web:</b> " +  website + "<br/>\n";
+     html += "          <b>Followers:</b> " + followers + "<br/>\n";
+     html += "          <b>Image:</b> " + image + "<br/>\n";
+     html += "     </td></tr>\n";
+     html += "     </table>\n";
+     html += "  </td>\n";
+     html += "  </tr>\n";
+     html += "</table>\n";
+     html += "</body>\n";
+     html += "</html>";
+
+     QFile file("/tmp/twitter.html");
+     file.open(QIODevice::WriteOnly);
+     QByteArray array = html.toUtf8();
+     file.write(array, qstrlen(array));
+     file.close();
 }

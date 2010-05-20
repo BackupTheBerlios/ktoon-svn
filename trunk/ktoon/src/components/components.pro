@@ -14,8 +14,9 @@ SUBDIRS += scenes \
            kinas \
            pen \
            paintarea \
+           twitter \
            cameras 
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs
-QT += qt3support xml opengl
+QT += qt3support xml opengl network

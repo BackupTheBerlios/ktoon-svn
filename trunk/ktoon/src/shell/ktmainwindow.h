@@ -152,6 +152,7 @@ class KTMainWindow : public KTabbedMainWindow
 
     public slots:
           void openProject(const QString &path);
+          void internetEnabled();
 
     private slots:
           void viewNewDocument();
@@ -236,6 +237,7 @@ class KTMainWindow : public KTabbedMainWindow
           KToolView *exportView;
           KTViewCamera *viewCamera;
           bool isSaveDialogOpen; 
+          bool internetOn;
           int lastTab;
 
     signals:
