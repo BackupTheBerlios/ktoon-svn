@@ -269,6 +269,10 @@ void KTMainWindow::viewNewDocument()
         page->setSource(SHARE_DIR + "data/help/" + QString(QLocale::system().name()).left(2) + "/cover.html");
         addWidget(page, true, All);
 
+        twitter = new KTwitterWidget(this); 
+        twitter->setSource("/tmp/twitter.html");
+        addWidget(twitter, true, All);
+
         exposureView->expandDock(true);
         connect(m_viewDoc, SIGNAL(autoSave()), this, SLOT(callSave()));
 
@@ -1044,7 +1048,7 @@ void KTMainWindow::addPage(QWidget *widget)
 
 void KTMainWindow::updateCurrentTab(int index)
 {
-    if (index == 1) {
+    if (index == 1) {  // Animation mode 
 
         if (lastTab == 2)
             helpView->expandDock(false);
@@ -1053,7 +1057,7 @@ void KTMainWindow::updateCurrentTab(int index)
 
     } else {
 
-        if (index == 0) {
+        if (index == 0) { // Illustration mode
             if (lastTab == 1)
                 viewCamera->doStop();
 
@@ -1073,8 +1077,13 @@ void KTMainWindow::updateCurrentTab(int index)
             m_viewDoc->updatePaintArea();
             lastTab = 0;
         } else {
-            helpView->expandDock(true);
-            lastTab = 2;
+            if (index == 2) { // Help mode
+                helpView->expandDock(true);
+                lastTab = 2;
+            } else if (index == 3) { // News mode
+                helpView->expandDock(false);
+                lastTab = 3;   
+            }
         }
     }
 }

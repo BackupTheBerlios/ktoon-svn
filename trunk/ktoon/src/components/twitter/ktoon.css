@@ -1,0 +1,216 @@
+body {
+     background-color:#ffffff;
+}
+
+.license {
+     background-image:url('./images/bg1.png');
+}
+
+.sponsors {
+     background-color:#ffffff;
+     background-image:url('./images/sponsors.png');
+     background-repeat:no-repeat;
+     background-position:center center;
+}
+
+.labtoon {
+     background-color:#ffffff;
+     background-image:url('./images/labtoon.png');
+     background-repeat:no-repeat;
+     background-position:left top;
+}
+
+.title {
+     margin-left:10px;
+     color:#000000;
+     text-align:left;
+     text-decoration:underline;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:16px;
+     font-weight:bold;
+}
+
+.subtitle {
+     margin-left:9px;
+     color:#000000;
+     text-align:left;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:16px;
+     font-weight:bold;
+}
+
+.paragraph {
+     margin-left:10px;
+     margin-right:10px;
+     color:#000000;
+     text-align:justify;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:14px;
+     font-weight:normal;
+}
+
+.item {
+     margin-left:0px;
+     margin-right:10px;
+     color:#000000;
+     text-align:justify;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:14px;
+     font-weight:normal;
+}
+
+.code {
+     margin-left:10px;
+     margin-right:10px;
+     color:#000000;
+     text-align:justify;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:italic;
+     font-size:14px;
+     font-weight:normal;
+}
+
+.frame {
+     width:405px;
+     border-style:solid;
+     border-width:1px;
+     border-color:#cccccc;
+}
+
+.table {
+     width:400px;
+     background-color:#ffffff;
+}
+
+.line {
+     width:400px;
+     margin-left:auto;
+     margin-right:auto;
+}
+
+.url {
+     width:200px;
+     color:#000000;
+     text-align:center;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:14px;
+     font-weight:bold;
+}
+
+a:link {
+     text-decoration:underline;
+     color:#000000;
+     font-weight:bold;
+}
+
+a:visited {
+     text-decoration:underline;
+     color:#000000;
+     font-weight:bold;
+}
+
+a:active {
+     text-decoration:underline;
+     color:#000000;
+     font-weight:bold;
+}
+
+a:hover {
+     text-decoration:underline;
+     color:#000000;
+     font-weight:bold;
+}
+
+.big_title {
+     color:#000000;
+     text-align:center;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:36px;
+     font-weight:bold;
+}
+
+.status_table {
+     background-color:#ffffff;
+     margin-left:10px;
+     margin-right:10px;
+     margin-top:10px;
+     margin-bottom:10px;
+}
+
+.twitter_status {
+     background-color:#ffffff;
+}
+
+.desc_table {
+     margin-left:10px;
+     margin-right:10px;
+     margin-top:10px;
+
+     background-color:#ddeef6;
+
+     color:#000000;
+     text-align:left;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:13px;
+     font-weight:normal;
+}
+
+.twitter_desc {
+     background-color:#ddeef6;
+}
+
+.twitter_base {
+     margin-top:10px;
+     margin-bottom:10px;
+     margin-left:100px;
+     margin-right:100px;
+}
+
+.date {
+     margin-left:10px;
+     color:#000000;
+     text-align:left;
+     text-decoration:none;
+     font-family:"Times New Roman", Times, serif;
+     font-style:normal;
+     font-size:11px;
+     font-weight:normal;
+}
+
+.twitter_headline {
+     color:#000000;
+     text-align:left;
+     text-decoration:none;
+     font-family:"Arial", Times, serif;
+     font-style:normal;
+     font-size:26px;
+     font-weight:bold;
+}
+
+.twitter_logo {
+     vertical-align:middle;
+}
+
+.twitter_header {
+     border-style:solid;
+     border-width:5px;
+     border-color:#ff0000;
+}
+
+     
+}
+

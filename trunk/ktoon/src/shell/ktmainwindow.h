@@ -57,6 +57,7 @@
 #include "ktviewcamera.h"
 #include "kthelpwidget.h"
 #include "kthelpbrowser.h"
+#include "ktwitterwidget.h"
 #include "ktexportwidget.h"
 
 #include "ktviewdocument.h"
@@ -221,6 +222,7 @@ class KTMainWindow : public KTabbedMainWindow
           KTTimeLine *m_timeLine;
           KTHelpWidget *m_helper;
           KTHelpBrowser *page;
+          KTwitterWidget *twitter;
           KTLibraryWidget *m_libraryWidget;
           KTColorPalette *m_colorPalette;
           KTPenWidget *m_penWidget;
