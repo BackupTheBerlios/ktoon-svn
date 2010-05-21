@@ -48,7 +48,6 @@
 #include "ktpluginmanager.h"
 #include "ktprojectcommand.h"
 #include "ktlocalprojectmanagerhandler.h"
-#include <ktwitter.h>
 
 // #ifdef USE_NET
 #include "ktnetprojectmanagerhandler.h"
@@ -106,11 +105,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
     #ifdef K_DEBUG
        KINIT;
     #endif
-
-    // Downloading ktoon_net Twitter status
-    KTwitter *ktwitter = new KTwitter();
-    connect(ktwitter, SIGNAL(internetIsOn()),
-            this, SLOT(internetEnabled()));
 
     // Loading audio player plugin
     KAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: Move this to the settings 
@@ -275,9 +269,12 @@ void KTMainWindow::viewNewDocument()
         page->setSource(SHARE_DIR + "data/help/" + QString(QLocale::system().name()).left(2) + "/cover.html");
         addWidget(page, true, All);
 
-        if (internetOn) {
+        QString twitterPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";
+
+        if (QFile::exists(twitterPath)) {
+            internetOn = true;
             twitter = new KTwitterWidget(this); 
-            twitter->setSource("/tmp/twitter.html");
+            twitter->setSource(twitterPath);
             addWidget(twitter, true, All);
         }
 
@@ -1012,6 +1009,12 @@ void KTMainWindow::closeEvent(QCloseEvent *event)
         return;
     }
 
+    QString twitter = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";
+    if (QFile::exists(twitter)) {
+        QFile file(twitter);
+        file.remove();
+    }
+
     KCONFIG->beginGroup("General");
     KCONFIG->setValue("LastProject", lastProject);
     KCONFIG->setValue("Recents", m_recentProjects);
@@ -1117,8 +1120,3 @@ void KTMainWindow::callSave()
         saveProject();
 }
 
-void KTMainWindow::internetEnabled()
-{
-    kFatal() << "Habemus Internet!";
-    internetOn = true;
-}

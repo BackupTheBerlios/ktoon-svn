@@ -15,6 +15,7 @@ class KTwitter : public QWidget
     public:
         KTwitter(QWidget *parent=0);
         ~KTwitter();
+        void start();
         void downloadNews();
 
     private slots:
@@ -30,6 +31,7 @@ class KTwitter : public QWidget
         static QString TWITTER_HOST;
         static QString IS_TWITTER_UP_URL;
         static QString USER_TIMELINE_URL;
+        static QString BROWSER_FINGERPRINT;
 
         struct Private;
         Private *const k;

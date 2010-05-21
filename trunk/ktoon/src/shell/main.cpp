@@ -32,6 +32,7 @@
 #include <ktapplication.h>
 #include "ktsplash.h"
 #include "ktmainwindow.h"
+#include <ktwitter.h>
 
 #include <qfile.h>
 #include <qtextstream.h>
@@ -109,6 +110,11 @@ int main(int argc, char ** argv)
     KTCrashHandler::init();
 #endif
 
+    // Downloading ktoon_net Twitter status
+    KTwitter *ktwitter = new KTwitter();
+    ktwitter->start();
+
+    // SQA: KTooN gui styles must be re-factored 
     // Setting the gui style for the interface
 #ifdef ENABLE_KTOONSTYLE
     QApplication::setStyle(new KWaitStyle());
@@ -213,7 +219,7 @@ int main(int argc, char ** argv)
     #ifdef K_DEBUG
            kWarning() << "Loading plugins from: " << SHARE_DIR << " + plugins";
     #endif
-    QApplication::addLibraryPath (SHARE_DIR + "plugins");
+    QApplication::addLibraryPath(SHARE_DIR + "plugins");
 
     // Loading visual components required for the Crash Handler
     #ifdef Q_OS_UNIX

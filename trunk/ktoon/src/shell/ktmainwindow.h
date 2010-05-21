@@ -152,7 +152,7 @@ class KTMainWindow : public KTabbedMainWindow
 
     public slots:
           void openProject(const QString &path);
-          void internetEnabled();
+          // void internetEnabled();
 
     private slots:
           void viewNewDocument();
