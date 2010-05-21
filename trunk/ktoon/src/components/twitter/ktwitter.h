@@ -5,6 +5,8 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
+#include <QFile>
+#include <QByteArray>
 
 class KTwitter : public QWidget
 {
@@ -13,19 +15,17 @@ class KTwitter : public QWidget
     public:
         KTwitter(QWidget *parent=0);
         ~KTwitter();
-        bool isNetAvailable();
         void downloadNews();
 
     private slots:
         void closeRequest(QNetworkReply *reply);
-        void slotReadyRead();
         void slotError(QNetworkReply::NetworkError error);
 
     signals:
         void internetIsOn();
 
     private:
-        void formatStatus(const QString &input);
+        void formatStatus(QByteArray array);
 
         static QString TWITTER_HOST;
         static QString IS_TWITTER_UP_URL;

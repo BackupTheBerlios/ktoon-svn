@@ -2,11 +2,11 @@
 #include <QtNetwork>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QFile>
 #include <QDomDocument>
 #include <QEventLoop>
 
 #include "ktwitter.h"
+#include <kcore/kdebug.h>
 
 QString KTwitter::TWITTER_HOST = QString("http://twitter.com");
 QString KTwitter::IS_TWITTER_UP_URL = QString("/help/test.xml");
@@ -14,7 +14,6 @@ QString KTwitter::USER_TIMELINE_URL = QString("/statuses/user_timeline/ktoon_net
 
 struct KTwitter::Private
 {
-    bool linkOn;
     QNetworkAccessManager *manager;
     QNetworkRequest request;
     QNetworkReply *reply;
@@ -32,7 +31,6 @@ KTwitter::KTwitter(QWidget *parent) : QWidget(parent), k(new Private)
     k->request.setRawHeader("User-Agent", "KTooN_Browser 1.0");
 
     k->reply = k->manager->get(k->request);
-    connect(k->reply, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
     connect(k->reply, SIGNAL(error(QNetworkReply::NetworkError)),
             this, SLOT(slotError(QNetworkReply::NetworkError)));
 }
@@ -50,54 +48,43 @@ void KTwitter::downloadNews(){
 
 void KTwitter::closeRequest(QNetworkReply *reply)
 {
-    QString answer(reply->readAll());
+    QByteArray array = reply->readAll();
+    QString answer(array);
 
     if (answer.length() > 0) {
         if (answer.compare("<ok>true</ok>") == 0) {
-            k->linkOn = true;
             emit internetIsOn();
             downloadNews();
         } else {
-            formatStatus(answer);
+            formatStatus(array);
         }
-    } else {
-        k->linkOn = false;
-    }
-}
-
-bool KTwitter::isNetAvailable()
-{
-    return k->linkOn;
-}
-
-void KTwitter::slotReadyRead()
-{
+    } 
 }
 
 void KTwitter::slotError(QNetworkReply::NetworkError error)
 {
     switch (error) {
     case QNetworkReply::HostNotFoundError :
-         qWarning("Host not found");
+         qWarning("Network Error: Host not found");
          break;
     case QNetworkReply::TimeoutError :
-         qWarning("Time out!");
+         qWarning("Network Error: Time out!");
          break;
     case QNetworkReply::ConnectionRefusedError :
-         qWarning("Connection Refused!");
+         qWarning("Network Error: Connection Refused!");
          break;
     case QNetworkReply::ContentNotFoundError :
-         qWarning("Content not found!");
+         qWarning("Network Error: Content not found!");
          break;
     case QNetworkReply::UnknownNetworkError :
-         qWarning("Unknown Network error!");
+         qWarning("Network Error: Unknown Network error!");
          break;
     default:
          break;
     }
 }
 
-void KTwitter::formatStatus(const QString &input)
+void KTwitter::formatStatus(QByteArray array)
 {
     QString output = "";
     QString name = "";
@@ -108,7 +95,8 @@ void KTwitter::formatStatus(const QString &input)
 
     QDomDocument doc;
 
-    if (doc.setContent(input)) {
+    if (doc.setContent(array)) {
+
         QDomElement root = doc.documentElement();
         QDomNode n = root.firstChild();
         int counter = 0;
@@ -133,6 +121,16 @@ void KTwitter::formatStatus(const QString &input)
                                   } else {
                                       if (e1.tagName() == "text") {
                                           text = e1.text();
+                                          int init = text.indexOf("http://");
+                                          if (init >= 0) {
+                                              int end = text.indexOf(" ", init);
+                                              if (end < 0)
+                                                  end = text.length();
+                                              QString www = text.mid(init, end-init);
+                                              QString link = "<a href=\"" + www + "\">";
+                                              text.insert(end, "</a>");
+                                              text.insert(init, link);
+                                          }
                                       } else {
                                           if (counter == 0) {
                                               if (e1.tagName() == "user") {
@@ -147,7 +145,9 @@ void KTwitter::formatStatus(const QString &input)
                                                              } else if (e2.tagName() == "profile_image_url") {
                                                                         image = e2.text();
                                                              } else if (e2.tagName() == "url") {
-                                                                        website = e2.text(); 
+                                                                        website = "<a href=\"" + e2.text() + "\">";
+                                                                        website += e2.text(); 
+                                                                        website += "</a>";
                                                              } else if (e2.tagName() == "followers_count") {
                                                                         followers = e2.text();
                                                              }
@@ -167,7 +167,7 @@ void KTwitter::formatStatus(const QString &input)
                        output += "       <p class=\"status\">\n";
                        output += "       <div class=\"date\">[ " + date + " ]</div><br/>\n";
                        output += "       <b>KTooN:</b> ";
-                       output += text;
+                       output += text + "\n";
                        output += "       <p/>\n";
                    }
                }
@@ -180,7 +180,8 @@ void KTwitter::formatStatus(const QString &input)
 
      html += "<html>\n";
      html += "<head>\n";
-     html += "<link rel=\"stylesheet\" type=\"text/css\" href=\"ktoon.css\" />\n";
+     html += "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html;charset=utf-8\">\n";
+     html += "<link rel=\"stylesheet\" type=\"text/css\" href=\"/usr/local/ktoon/share/data/help/css/ktoon.css\" />\n";
      html += "</head>\n";
      html += "<body class=\"license\">\n";
      html += " <table class=\"twitter_base\">\n";
@@ -211,7 +212,7 @@ void KTwitter::formatStatus(const QString &input)
      html += "          <b>Bio:</b> " + description + "<br/>\n";
      html += "          <b>Web:</b> " +  website + "<br/>\n";
      html += "          <b>Followers:</b> " + followers + "<br/>\n";
-     html += "          <b>Image:</b> " + image + "<br/>\n";
+     // html += "          <b>Image:</b> " + image + "<br/>\n";
      html += "     </td></tr>\n";
      html += "     </table>\n";
      html += "  </td>\n";
@@ -222,7 +223,8 @@ void KTwitter::formatStatus(const QString &input)
 
      QFile file("/tmp/twitter.html");
      file.open(QIODevice::WriteOnly);
-     QByteArray array = html.toUtf8();
-     file.write(array, qstrlen(array));
+     QByteArray data = html.toUtf8();
+     file.write(data, qstrlen(data));
      file.close();
+
 }
