@@ -72,10 +72,10 @@ void DefaultSettings::save(KMainWindow *w)
 
     foreach (KButtonBar *bar, buttonBars.values()) {
              settings.beginGroup(bar->windowTitle());
-             settings.setValue("exclusive", bar->isExclusive() );
+             settings.setValue("exclusive", bar->isExclusive());
              settings.endGroup();
              settings.beginGroup(bar->windowTitle());
-             settings.setValue("autohide", bar->autohide() );
+             settings.setValue("autohide", bar->autohide());
              settings.endGroup();
 
              foreach (KToolView *view, toolViews[bar]) {

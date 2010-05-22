@@ -46,13 +46,14 @@ class K_IDEAL_EXPORT KTabbedMainWindow : public KMainWindow
              Drawing = 0x01,
              Animation = 0x02,
              Help = 0x04,
-             All = Drawing | Animation | Help
+             News = 0x08,
+             All = Drawing | Animation | Help | News
         };
 
         KTabbedMainWindow(QWidget *parent = 0);
         ~KTabbedMainWindow();
 
-        void addWidget(QWidget *widget, bool persistant = false, int perspective = DefaultPerspective);
+        void addWidget(QWidget *widget, bool persistant = true, int perspective = All);
         void removeWidget(QWidget *widget, bool force = false);
         void setTabWidget(QTabWidget *w);
         QTabWidget *tabWidget() const;

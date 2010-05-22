@@ -26,7 +26,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #include "kmainwindowfactory.h"
 
 #include <ktabbedmainwindow.h>
@@ -66,6 +65,8 @@ EventFilter::~EventFilter()
 
 bool EventFilter::eventFilter(QObject *obj, QEvent *event)
 {
+    Q_UNUSED(obj);
+
     if (event->type() == QEvent::Close) {
         m_mainWindow->close();
         return true;
@@ -120,7 +121,7 @@ KMainWindow *KMainWindowFactory::create(QMainWindow *other)
         } else {
             mainWindow = new KMainWindow;
             central->setParent(mainWindow);
-            mainWindow->setCentralWidget( central );
+            mainWindow->setCentralWidget(central);
         }
     }
 
