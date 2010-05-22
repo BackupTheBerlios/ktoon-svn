@@ -189,7 +189,7 @@ void KTwitter::formatStatus(QByteArray array)
      html += "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + QString::fromLocal8Bit(::getenv("KTOON_SHARE")) \
              + "/data/help/css/ktoon.css\" />\n";
      html += "</head>\n";
-     html += "<body class=\"license\">\n";
+     html += "<body class=\"ktoon_background1\">\n";
      html += " <table class=\"twitter_base\">\n";
      html += "  <tr>\n";
      html += "  <td class=\"twitter_status\">\n";
@@ -242,6 +242,6 @@ void KTwitter::formatStatus(QByteArray array)
 
      delete k->reply;
      delete k->manager;
-
-     kFatal() << "Twitter issue is done!";
+ 
+     emit pageReady();
 }

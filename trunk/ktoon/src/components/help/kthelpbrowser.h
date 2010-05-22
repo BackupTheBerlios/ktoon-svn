@@ -35,6 +35,7 @@
 #include <QSplitter>
 #include <QTextBrowser>
 #include <QTextDocument>
+#include <QKeyEvent> 
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -51,7 +52,11 @@ class KTHelpBrowser : public QWidget
         void setSource(const QString &filePath);
         void setDataDirs(const QStringList &dirs);
 
+    protected:
+        void keyPressEvent(QKeyEvent * event);
+
     private:
+        void reload();
         QSplitter *m_separator;
         QTextBrowser *m_pageArea;
         QTextDocument *m_document;

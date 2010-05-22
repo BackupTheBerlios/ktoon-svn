@@ -92,7 +92,8 @@ class KTMainWindow : public KTabbedMainWindow
              Drawing = 0x01,
              Animation = 0x02,
              Help = 0x04,
-             All = Drawing | Animation | Help
+             News = 0x08,
+             All = Drawing | Animation | Help | News
         };
 
         KTMainWindow(KTSplash *splash = 0, int parameters = 1);

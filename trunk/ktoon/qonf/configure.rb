@@ -170,6 +170,26 @@ class Configure
                    f << newfile
         }
 
+        newmakefile = ""
+        File.open("src/components/help/help/css/ktoon.ini", "r") { |f|
+                  lines = f.readlines
+                  index = 0
+                  while index < lines.size
+                        line = lines[index]
+                        if line.include? "KTOON_SHARE" then
+                           newmakefile += "#{line.gsub(/\$\(KTOON_SHARE\)/, @options['sharedir'])}"
+                        else
+                           newmakefile += line
+                        end
+                        
+                        index += 1
+                  end
+        }
+
+        File.open("src/components/help/help/css/ktoon.css", "w") { |f|
+             f << newmakefile
+        }
+
     end
 end
 end # module

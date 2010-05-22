@@ -23,7 +23,7 @@ class KTwitter : public QWidget
         void slotError(QNetworkReply::NetworkError error);
 
     signals:
-        void internetIsOn();
+        void pageReady();
 
     private:
         void formatStatus(QByteArray array);

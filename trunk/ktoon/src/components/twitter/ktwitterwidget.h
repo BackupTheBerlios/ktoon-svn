@@ -60,6 +60,8 @@ class KTwitterWidget : public QWidget
         void keyPressEvent(QKeyEvent * event); 
 
     private:
+        void downLoadNews();
+
         QSplitter *m_separator;
         QTextBrowser *m_pageArea;
         QTextDocument *m_document;

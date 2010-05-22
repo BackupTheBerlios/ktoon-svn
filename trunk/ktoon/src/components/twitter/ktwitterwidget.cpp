@@ -30,6 +30,8 @@
  ***************************************************************************/
 
 #include "ktwitterwidget.h"
+#include "ktwitter.h"
+
 #include <kcore/kglobal.h>
 #include <kcore/kdebug.h>
 
@@ -44,7 +46,7 @@
 KTwitterWidget::KTwitterWidget(QWidget *parent) : QWidget(parent)
 {
     setWindowTitle(tr("News!"));
-    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/twitter_mode.png")));
+    setWindowIcon(QIcon(QPixmap(THEME_DIR + "icons/news_mode.png")));
 
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(15);
@@ -77,9 +79,17 @@ void KTwitterWidget::keyPressEvent(QKeyEvent * event) {
     switch (event->key()) {
             case (Qt::Key_R):
                   if (event->modifiers() == Qt::ControlModifier)
-                      reload();
+                      downLoadNews();
             break;
     }
+}
+
+void KTwitterWidget::downLoadNews()
+{
+    // Downloading ktoon_net Twitter status
+    KTwitter *ktwitter = new KTwitter();
+    connect(ktwitter, SIGNAL(pageReady()), this, SLOT(reload()));
+    ktwitter->start();
 }
 
 void KTwitterWidget::reload()

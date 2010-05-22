@@ -2,20 +2,33 @@ body {
      background-color:#ffffff;
 }
 
-.license {
+.ktoon_background1 {
      background-image:url('/usr/local/ktoon/share/data/help/images/bg1.png');
 }
 
-.sponsors {
-     background-color:#ffffff;
-     background-image:url('./images/sponsors.png');
-     background-repeat:no-repeat;
-     background-position:center center;
+.ktoon_background2 {
+     background-image:url('/usr/local/ktoon/share/data/help/images/bg2.png');
+}
+
+.ktoon_background3 {
+     background-image:url('/usr/local/ktoon/share/data/help/images/bg3.png');
+}
+
+.ktoon_background4 {
+     background-image:url('/usr/local/ktoon/share/data/help/images/bg4.png');
+}
+
+.ktoon_background5 {
+     background-image:url('/usr/local/ktoon/share/data/help/images/bg5.png');
+}
+
+.ktoon_background6 {
+     background-image:url('/usr/local/ktoon/share/data/help/images/bg6.png');
 }
 
 .labtoon {
      background-color:#ffffff;
-     background-image:url('./images/labtoon.png');
+     background-image:url('/usr/local/ktoon/share/data/help/images/labtoon.png');
      background-repeat:no-repeat;
      background-position:left top;
 }

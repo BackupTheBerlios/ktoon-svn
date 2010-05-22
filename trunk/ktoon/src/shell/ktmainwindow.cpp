@@ -245,7 +245,7 @@ void KTMainWindow::viewNewDocument()
         //m_viewDoc->setWindowTitle(tr("Illustration: %1").arg(title));
         m_viewDoc->setWindowTitle(tr("Illustration"));
 
-        addWidget(m_viewDoc, true, All);
+        addWidget(m_viewDoc);
 
         connectToDisplays(m_viewDoc);
         ui4project(m_viewDoc);
@@ -262,12 +262,12 @@ void KTMainWindow::viewNewDocument()
         m_animationSpace = new KTAnimationspace(viewCamera);
         m_animationSpace->setWindowIcon(QIcon(THEME_DIR + "icons/animation_mode.png"));
         m_animationSpace->setWindowTitle(tr("Animation"));
-        addWidget(m_animationSpace, true, All);
+        addWidget(m_animationSpace);
 
         page = new KTHelpBrowser(this);
         page->setDataDirs(QStringList() << m_helper->helpPath());
         page->setSource(SHARE_DIR + "data/help/" + QString(QLocale::system().name()).left(2) + "/cover.html");
-        addWidget(page, true, All);
+        addWidget(page);
 
         QString twitterPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";
 
@@ -275,7 +275,7 @@ void KTMainWindow::viewNewDocument()
             internetOn = true;
             twitter = new KTwitterWidget(this); 
             twitter->setSource(twitterPath);
-            addWidget(twitter, true, All);
+            addWidget(twitter);
         }
 
         exposureView->expandDock(true);

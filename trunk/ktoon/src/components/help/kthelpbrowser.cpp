@@ -31,10 +31,12 @@
 
 #include "kthelpbrowser.h"
 #include <kcore/kglobal.h>
+#include <kcore/kdebug.h>
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QIcon>
+#include <QMouseEvent>
 
 // Help Browser
 
@@ -73,4 +75,20 @@ void KTHelpBrowser::setSource(const QString &filePath)
 void KTHelpBrowser::setDataDirs(const QStringList &dirs)
 {
     m_pageArea->setSearchPaths(dirs);
+}
+
+// SQA: These methods are just temporary for developing reasons
+
+void KTHelpBrowser::keyPressEvent(QKeyEvent * event) {
+    switch (event->key()) {
+            case (Qt::Key_R):
+                  if (event->modifiers() == Qt::ControlModifier)
+                      reload();
+            break;
+    }
+}
+
+void KTHelpBrowser::reload()
+{
+    m_pageArea->reload();
 }

@@ -298,12 +298,19 @@ void KTMainWindow::setupMenu()
     animationPerspective->setData(Animation);
     group->addAction(animationPerspective);
 
-   // Adding Option Animation
+   // Adding Option Help 
     QAction *helpPerspective = new QAction(tr("Help"), this);
     helpPerspective->setIcon(QPixmap(THEME_DIR + "icons/help_mode.png"));
     helpPerspective->setShortcut(QKeySequence(Qt::Key_F11));
     helpPerspective->setData(Help);
     group->addAction(helpPerspective);
+
+   // Adding Option News 
+    QAction *newsPerspective = new QAction(tr("News"), this);
+    newsPerspective->setIcon(QPixmap(THEME_DIR + "icons/news_mode.png"));
+    newsPerspective->setShortcut(QKeySequence(Qt::Key_F12));
+    newsPerspective->setData(News);
+    group->addAction(newsPerspective);
 
     m_viewMenu->addActions(group->actions());
     connect(group, SIGNAL(triggered(QAction *)), this, SLOT(changePerspective(QAction *)));
@@ -612,11 +619,14 @@ void KTMainWindow::changePerspective(QAction *a)
 {
     int perspective = a->data().toInt();
 
-    if (perspective < 3) {
+    // Illustration or Animation perspective
+    if (perspective == Drawing || perspective == Animation) {
         setCurrentTab(perspective - 1);
     } else { 
-        // Help perspective
-        setCurrentTab(2);
+        if (perspective == Help) // Help perspective 
+            setCurrentTab(2);
+        else if (perspective == News) // News perspective
+                 setCurrentTab(3);
     }
 
     a->setChecked(true);
