@@ -58,7 +58,7 @@ class Configure
         Info.info << "Checking for Qt >= " << minqtversion << "... "
 
         if @qmake.findQMake(minqtversion, true)
-           print "[ OK ]\n"
+           print "[ \033[92mOK\033[0m ]\n"
         else
            print "[FAILED]\n"
            raise QonfException.new("Invalid Qt version.\n   Please, upgrade to #{minqtversion} or higher (Visit: http://www.trolltech.com)")

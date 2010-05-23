@@ -48,8 +48,8 @@ class K_GUI_EXPORT KTipDialog : public QDialog
 {
     Q_OBJECT;
     public:
-        KTipDialog(const QString &file, QWidget *parent = 0);
-        KTipDialog(KTipDatabase *database, QWidget *parent = 0);
+        KTipDialog(QStringList &labels, const QString &file, QWidget *parent = 0);
+        KTipDialog(QStringList &labels, KTipDatabase *database, QWidget *parent = 0);
         ~KTipDialog();
         
     private:
@@ -65,6 +65,7 @@ class K_GUI_EXPORT KTipDialog : public QDialog
         QTextBrowser *m_textArea;
         QCheckBox *m_showOnStart;
         KTipDatabase *m_database;
+        QStringList tags;
 };
 
 #endif

@@ -40,21 +40,22 @@
 #include <QDomDocument>
 #include <QFile>
 
-KTipDialog::KTipDialog(const QString &file, QWidget *parent) : QDialog(parent)
+KTipDialog::KTipDialog(QStringList &labels, const QString &file, QWidget *parent) : QDialog(parent)
 {
+    tags = labels;
     m_database = new KTipDatabase(file);
     setupGUI();
 }
 
-KTipDialog::KTipDialog(KTipDatabase *database, QWidget *parent) : QDialog(parent), m_database(database)
+KTipDialog::KTipDialog(QStringList &labels, KTipDatabase *database, QWidget *parent) : QDialog(parent), m_database(database)
 {
+    tags = labels;
     setupGUI();
-    
 }
 
 void KTipDialog::setupGUI()
 {
-    setWindowTitle(tr("Tip of day"));
+    setWindowTitle(tags.at(0));
     setWindowIcon(QPixmap(THEME_DIR + "icons/today_tip.png"));
     
     int h,s,v;
@@ -72,9 +73,9 @@ void KTipDialog::setupGUI()
     format.setBorder(5);
     m_textArea->document()->rootFrame()->setFrameFormat(format);
     
-    m_textArea->setWordWrapMode( QTextOption::WrapAtWordBoundaryOrAnywhere );
+    m_textArea->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
     m_textArea->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
-    m_textArea->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    m_textArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         
     QPalette pal = m_textArea->palette();
     pal.setBrush(QPalette::Base, baseColor);
@@ -86,21 +87,21 @@ void KTipDialog::setupGUI()
     
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     
-    m_showOnStart = new QCheckBox(tr("Show on start"));
+    m_showOnStart = new QCheckBox(tags.at(1));
     buttonLayout->addWidget(m_showOnStart);
     connect(m_showOnStart, SIGNAL(clicked()), this, SLOT(setShowOnStart()));
     
     buttonLayout->addStretch(1);
     
-    QPushButton *prevTip = new QPushButton(tr("Previous tip"));
+    QPushButton *prevTip = new QPushButton(tags.at(2));
     buttonLayout->addWidget(prevTip);
     connect(prevTip, SIGNAL(clicked()), this, SLOT(showPrevTip()));
     
-    QPushButton *nextTip = new QPushButton(tr("Next tip"));
+    QPushButton *nextTip = new QPushButton(tags.at(3));
     buttonLayout->addWidget(nextTip);
     connect(nextTip, SIGNAL(clicked()), this, SLOT(showNextTip()));
     
-    QPushButton *close = new QPushButton(tr("Close"));
+    QPushButton *close = new QPushButton(tags.at(4));
     buttonLayout->addWidget(close);
     connect(close, SIGNAL(clicked()), this, SLOT(accept()));
     
