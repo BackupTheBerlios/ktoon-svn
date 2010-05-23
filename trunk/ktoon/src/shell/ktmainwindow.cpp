@@ -347,8 +347,11 @@ bool KTMainWindow::closeProject()
         msgBox.setIcon(QMessageBox::Question);
         msgBox.setText(tr("The document has been modified."));
         msgBox.setInformativeText(tr("Do you want to save the project?"));
-        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Save);
+
+        msgBox.addButton(QString(tr("Save")), QMessageBox::AcceptRole);
+        msgBox.addButton(QString(tr("Discard")), QMessageBox::NoRole);
+        msgBox.addButton(QString(tr("Cancel")), QMessageBox::DestructiveRole);
+
         msgBox.show();
         msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2 , 
                     (int) (desktop.screenGeometry().height() - msgBox.height())/2);
@@ -356,13 +359,13 @@ bool KTMainWindow::closeProject()
         int ret = msgBox.exec();
 
         switch (ret) {
-            case QMessageBox::Save:
+            case QMessageBox::AcceptRole:
                  saveProject();
                  break;
-            case QMessageBox::Discard:
-                 break;
-            case QMessageBox::Cancel:
+            case QMessageBox::DestructiveRole:
                  return false;
+                 break;
+            case QMessageBox::NoRole:
                  break;
         }
 
@@ -771,7 +774,10 @@ void KTMainWindow::aboutKToon()
 */
 void KTMainWindow::showTipDialog()
 {
-    KTipDialog *tipDialog = new KTipDialog(DATA_DIR + "tips", this);
+    QStringList labels;
+    labels << tr("Tip of the day") << tr("Show on start") << tr("Previous tip") << tr("Next tip") << tr("Close");
+
+    KTipDialog *tipDialog = new KTipDialog(labels, DATA_DIR + "tips", this);
     tipDialog->show();
 
     QDesktopWidget desktop;

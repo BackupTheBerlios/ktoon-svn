@@ -1,7 +1,7 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <KHelpSystem>
+    <Section title="Portada" file="cover.html" />
     <Section title="Introducción" file="chapter0.html">
-        <SubSection title="Portada" file="cover.html" />
         <SubSection title="Nuestra Visión y Licencia" file="philosophy.html" />
         <SubSection title="Animación para Dummies" file="init.html" />
     </Section>

@@ -905,6 +905,21 @@
         <translation>Deseas guardar el proyecto?</translation>
     </message>
     <message>
+        <location filename="../../ktmainwindow.cpp" line="351"/>
+        <source>Save</source>
+        <translation>Guardar cambios</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow.cpp" line="352"/>
+        <source>Discard</source>
+        <translation>Descartar</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow.cpp" line="353"/>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
         <location filename="../../ktmainwindow.cpp" line="518"/>
         <location filename="../../ktmainwindow.cpp" line="644"/>
         <source>Import project package</source>
@@ -934,6 +949,31 @@
         <location filename="../../ktmainwindow.cpp" line="680"/>
         <source>Preferences Dialog Opened</source>
         <translation>Dialogo de preferencias abierto</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow.cpp" line="778"/>
+        <source>Tip of the day</source>
+        <translation type="unfinished">Consejo del día</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow.cpp" line="778"/>
+        <source>Show on start</source>
+        <translation>Mostrar al inicio</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow.cpp" line="778"/>
+        <source>Previous tip</source>
+        <translation>Anterior</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow.cpp" line="778"/>
+        <source>Next tip</source>
+        <translation>Siguiente</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow.cpp" line="778"/>
+        <source>Close</source>
+        <translation>Cerrar</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="740"/>
@@ -1174,11 +1214,6 @@
         <location filename="../../ktmainwindow_gui.cpp" line="469"/>
         <source>About KToon</source>
         <translation>Acerca de KToon</translation>
-    </message>
-    <message>
-        <location filename="../../ktmainwindow_gui.cpp" line="470"/>
-        <source>Tip of day</source>
-        <translation>Consejo del día</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="527"/>

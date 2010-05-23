@@ -454,7 +454,7 @@ void KTMainWindow::setupSettingsActions()
 void KTMainWindow::setupHelpActions()
 {
     new KAction(QPixmap(THEME_DIR + "icons/about.png"), tr("About KToon"), QKeySequence(), this, SLOT(aboutKToon()), m_actionManager, "about ktoon");
-    new KAction(QPixmap(THEME_DIR + "icons/today_tip.png"), tr("Tip of day"), QKeySequence(), this, SLOT(showTipDialog()), m_actionManager, "tipofday");
+    new KAction(QPixmap(THEME_DIR + "icons/today_tip.png"), tr("Tip of the day"), QKeySequence(), this, SLOT(showTipDialog()), m_actionManager, "tipofday");
 }
 
 /**

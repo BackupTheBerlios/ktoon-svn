@@ -74,22 +74,28 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
             QDomNode section = root.firstChild();
 
             while (!section.isNull()) {
+
                    QDomElement element = section.toElement();
+
                    if (!element.isNull()) {
                        if (element.tagName() == "Section") {
+
                            QTreeWidgetItem *item = new QTreeWidgetItem(contentsListView);
                            item->setText(0, element.attribute("title"));
                            m_files.insert(item, element.attribute("file"));
+
+                           if (element.attribute("file").compare("cover.html") == 0)
+                               first = item;
+
                            QDomNode subSection = element.firstChild();
                            while (! subSection.isNull()) {
+
                                   QDomElement element2 = subSection.toElement();
                                   if (!element2.isNull()) {
                                       if (element2.tagName() == "SubSection") {
                                           QTreeWidgetItem *subitem = new QTreeWidgetItem(item);
                                           subitem->setText(0, element2.attribute("title"));
                                           m_files.insert(subitem, element2.attribute("file"));
-                                          if (element2.attribute("file").compare("cover.html") == 0)
-                                              first = subitem;
                                       }
                                   }
                                   subSection = subSection.nextSibling();
@@ -121,6 +127,8 @@ KTHelpWidget::~KTHelpWidget()
 
 void KTHelpWidget::tryToLoadPage(QTreeWidgetItem *item, QTreeWidgetItem *preview)
 {
+    Q_UNUSED(preview);
+
     if (item) {
         QString fileName = m_files[item];
         if (! fileName.isNull())

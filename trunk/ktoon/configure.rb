@@ -55,7 +55,7 @@ _EOH_
         else
            config.addDefine("K_NODEBUG")
            config.addOption("silent")
-           print "[ OFF ]\n"
+           print "[ \033[92mOFF\033[0m ]\n"
         end
     
     unix = config.addScope("unix")
