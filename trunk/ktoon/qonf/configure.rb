@@ -42,7 +42,7 @@ class Configure
                 Info.info << "Checking for Qt >= " << minqtversion << "... "
 
                 if @qmake.findQMake(minqtversion, true)
-                        print "[ OK ]\n"
+                        print "[ \033[92mOK\033[0m ]\n"
                 else
                         print "[FAILED]\n"
                         raise QonfException.new("Invalid Qt version.\n   Please, upgrade to #{minqtversion} or higher (Visit: http://www.trolltech.com)")
@@ -66,7 +66,7 @@ class Configure
         Info.info << "Creating makefiles..." << $endl
         @qmake.run("", true)
         
-        Info.info << "Updating makefiles..." << $endl
+        Info.info << "Updating makefiles and source code..." << $endl
         
         @makefiles = Makefile::findMakefiles(Dir.getwd)
         

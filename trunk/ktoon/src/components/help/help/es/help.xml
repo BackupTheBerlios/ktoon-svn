@@ -12,6 +12,7 @@
         <SubSection title="Modo de Ayuda" file="help.html" />
     </Section>
     <Section title="Hagamos un ejemplo!" file="chapter2.html">
+        <SubSection title="Iniciemos un proyecto" file="new.html" />
         <SubSection title="Hora de dibujar" file="drawing.html" />
         <SubSection title="Adicionemos nuevos marcos" file="adding_frames.html" />
         <SubSection title="Veamos cómo está quedando" file="preview_time.html" />

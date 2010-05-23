@@ -99,7 +99,7 @@ class SleeperThread : public QThread
 */
 
 KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) : 
-              KTabbedMainWindow(), m_projectManager(0), m_viewDoc(0), m_animationSpace(0), 
+              KTabbedMainWindow(), m_projectManager(0), drawingTab(0), animationTab(0), 
               m_viewChat(0), m_exposureSheet(0), m_scenes(0), isSaveDialogOpen(false), internetOn(false)
 {
     #ifdef K_DEBUG
@@ -239,19 +239,19 @@ void KTMainWindow::viewNewDocument()
         // messageToStatus(tr("Opening a new paint area..."));
         KOsd::self()->display(tr("Opening a new document..."));
 
-        m_viewDoc = new KTViewDocument(m_projectManager->project());
-        connectToDisplays(m_viewDoc);
+        drawingTab = new KTViewDocument(m_projectManager->project());
+        connectToDisplays(drawingTab);
 
-        //m_viewDoc->setWindowTitle(tr("Illustration: %1").arg(title));
-        m_viewDoc->setWindowTitle(tr("Illustration"));
+        //drawingTab->setWindowTitle(tr("Illustration: %1").arg(title));
+        drawingTab->setWindowTitle(tr("Illustration"));
 
-        addWidget(m_viewDoc);
+        addWidget(drawingTab);
 
-        connectToDisplays(m_viewDoc);
-        ui4project(m_viewDoc);
-        ui4localRequest(m_viewDoc);
+        connectToDisplays(drawingTab);
+        ui4project(drawingTab);
+        ui4localRequest(drawingTab);
       
-        m_viewDoc->setAntialiasing(true);
+        drawingTab->setAntialiasing(true);
 
         // KTViewCamera *
         viewCamera = new KTViewCamera(m_projectManager->project());
@@ -259,27 +259,27 @@ void KTMainWindow::viewNewDocument()
 
         connect(this, SIGNAL(tabHasChanged(int)), this, SLOT(updateCurrentTab(int)));
 
-        m_animationSpace = new KTAnimationspace(viewCamera);
-        m_animationSpace->setWindowIcon(QIcon(THEME_DIR + "icons/animation_mode.png"));
-        m_animationSpace->setWindowTitle(tr("Animation"));
-        addWidget(m_animationSpace);
+        animationTab = new KTAnimationspace(viewCamera);
+        animationTab->setWindowIcon(QIcon(THEME_DIR + "icons/animation_mode.png"));
+        animationTab->setWindowTitle(tr("Animation"));
+        addWidget(animationTab);
 
-        page = new KTHelpBrowser(this);
-        page->setDataDirs(QStringList() << m_helper->helpPath());
-        page->setSource(SHARE_DIR + "data/help/" + QString(QLocale::system().name()).left(2) + "/cover.html");
-        addWidget(page);
+        helpTab = new KTHelpBrowser(this);
+        helpTab->setDataDirs(QStringList() << m_helper->helpPath());
+        helpTab->setSource(SHARE_DIR + "data/help/" + QString(QLocale::system().name()).left(2) + "/cover.html");
+        addWidget(helpTab);
 
         QString twitterPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";
 
         if (QFile::exists(twitterPath)) {
             internetOn = true;
-            twitter = new KTwitterWidget(this); 
-            twitter->setSource(twitterPath);
-            addWidget(twitter);
+            newsTab = new KTwitterWidget(this); 
+            newsTab->setSource(twitterPath);
+            addWidget(newsTab);
         }
 
         exposureView->expandDock(true);
-        connect(m_viewDoc, SIGNAL(autoSave()), this, SLOT(callSave()));
+        connect(drawingTab, SIGNAL(autoSave()), this, SLOT(callSave()));
 
         m_projectManager->undoModified();
 
@@ -392,33 +392,44 @@ bool KTMainWindow::closeProject()
     //enableToolViews(false);
     setMenuItemsContext(false);
 
-    if (m_viewDoc)
-        m_viewDoc->closeArea();
+    if (drawingTab)
+        drawingTab->closeArea();
 
     if (lastTab == 0) {
-        removeWidget(page, true);
-        removeWidget(m_animationSpace, true);
-        removeWidget(m_viewDoc, true);
+        removeWidget(newsTab, true);
+        removeWidget(helpTab, true);
+        removeWidget(animationTab, true);
+        removeWidget(drawingTab, true);
     } else {
       if (lastTab == 1) {
-        removeWidget(page, true);
-        removeWidget(m_viewDoc, true);
-        removeWidget(m_animationSpace, true);
-      } else {
-        removeWidget(m_viewDoc, true);
-        removeWidget(m_animationSpace, true);   
-        removeWidget(page, true);
+          removeWidget(newsTab, true);
+          removeWidget(helpTab, true);
+          removeWidget(drawingTab, true);
+          removeWidget(animationTab, true);
+      } else if (lastTab == 2) {
+                 removeWidget(drawingTab, true);
+                 removeWidget(animationTab, true);   
+                 removeWidget(newsTab, true);
+                 removeWidget(helpTab, true);
+      } else if (lastTab == 3) {
+                 removeWidget(drawingTab, true);
+                 removeWidget(animationTab, true);
+                 removeWidget(helpTab, true);
+                 removeWidget(newsTab, true);
       }
     }
 
-    delete page;
-    page = 0;
+    delete newsTab;
+    newsTab = 0;
 
-    delete m_animationSpace;
-    m_animationSpace = 0;
+    delete helpTab;
+    helpTab = 0;
 
-    delete m_viewDoc;
-    m_viewDoc = 0;
+    delete animationTab;
+    animationTab = 0;
+
+    delete drawingTab;
+    drawingTab = 0;
 	
     m_projectManager->closeProject();
 
@@ -591,7 +602,7 @@ void KTMainWindow::openProject(const QString &path)
 
     if (closeProject()) {
         setUpdatesEnabled(false);
-        tabWidget()->setCurrentWidget(m_viewDoc);
+        tabWidget()->setCurrentWidget(drawingTab);
 
         if (m_projectManager->loadProject(path)) {
             if (QDir::isRelativePath(path)) {
@@ -611,7 +622,7 @@ void KTMainWindow::openProject(const QString &path)
             response.setSceneIndex(0);
             response.setLayerIndex(0);
             response.setFrameIndex(0);
-            m_viewDoc->handleProjectResponse(&response);
+            drawingTab->handleProjectResponse(&response);
             m_exposureSheet->handleProjectResponse(&response);
             m_timeLine->handleProjectResponse(&response);
             */
@@ -720,7 +731,7 @@ void KTMainWindow::preferences()
     m_statusBar->setStatus(tr("Preferences Dialog Opened"));
     KTPreferences *preferences = new KTPreferences(this);
 
-    connect(preferences, SIGNAL(timerChanged()), m_viewDoc, SLOT(updateTimer()));
+    connect(preferences, SIGNAL(timerChanged()), drawingTab, SLOT(updateTimer()));
 
     preferences->show();
 
@@ -876,7 +887,7 @@ void KTMainWindow::messageToStatus(const QString &msg)
 
 void KTMainWindow::showHelpPage(const QString &filePath)
 {
-    page->setSource(filePath);
+    helpTab->setSource(filePath);
 }
 
 /**
@@ -985,7 +996,7 @@ void KTMainWindow::openRecentProject()
 
 void KTMainWindow::showAnimationMenu(const QPoint &p)
 {
-    QMenu *menu = new QMenu(tr("Animation"), m_animationSpace);
+    QMenu *menu = new QMenu(tr("Animation"), animationTab);
     menu->addAction(tr("New camera"), this, SLOT(newViewCamera()));
     menu->exec(p);
     delete menu;
@@ -1009,9 +1020,9 @@ void KTMainWindow::closeEvent(QCloseEvent *event)
         return;
     }
 
-    QString twitter = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";
-    if (QFile::exists(twitter)) {
-        QFile file(twitter);
+    QString newsPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";
+    if (QFile::exists(newsPath)) {
+        QFile file(newsPath);
         file.remove();
     }
 
@@ -1033,10 +1044,10 @@ void KTMainWindow::closeEvent(QCloseEvent *event)
 
 void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 {
-    if (!m_viewDoc) 
+    if (!drawingTab) 
         return;
 
-    KTPaintAreaCommand *command = m_viewDoc->createCommand(event);
+    KTPaintAreaCommand *command = drawingTab->createCommand(event);
 
     if (command) 
         m_projectManager->undoHistory()->push(command);
@@ -1085,7 +1096,7 @@ void KTMainWindow::updateCurrentTab(int index)
             if (lastTab == 2)
                 helpView->expandDock(false);
 
-            m_viewDoc->updatePaintArea();
+            drawingTab->updatePaintArea();
             lastTab = 0;
         } else {
             if (index == 2) { // Help mode

@@ -86,7 +86,7 @@ class Test
             config.addModule(mod)
         }
         
-        print "[ OK ]\n"
+        print "[ \033[92mOK\033[0m ]\n"
         
         return true
     end

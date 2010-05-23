@@ -114,7 +114,7 @@
     <name>CrashWidget</name>
     <message>
         <location filename="../../crashwidget.cpp" line="122"/>
-        <source>What's happening?</source>
+        <source>What&apos;s happening?</source>
         <translation>Qué sucede?</translation>
     </message>
     <message>
@@ -2450,6 +2450,42 @@
         <location filename="../../../plugins/tools/viewtool/zoomconfigurator.cpp" line="68"/>
         <source>Scale Factor</source>
         <translation>Factor de escala</translation>
+    </message>
+</context>
+<context>
+    <name>KTwitterWidget</name>
+    <message>
+        <location filename="../../../components/twitter/ktwitterwidget.cpp" line="48"/>
+        <source>News!</source>
+        <translation>Noticias!</translation>
+    </message>
+</context>
+<context>
+    <name>KTwitter</name>
+    <message>
+        <location filename="../../../components/twitter/ktwitter.cpp" line="208"/>
+        <source>This is what&apos;s happening</source>
+        <translation>Esto es lo que está sucediendo</translation>
+    </message>
+    <message>
+        <location filename="../../../components/twitter/ktwitter.cpp" line="223"/>
+        <source>Name</source>
+        <translation>Nombre</translation>
+    </message>
+    <message>
+        <location filename="../../../components/twitter/ktwitter.cpp" line="224"/>
+        <source>Description</source>
+        <translation>Descripción</translation>
+    </message>
+    <message>
+        <location filename="../../../components/twitter/ktwitter.cpp" line="225"/>
+        <source>Website</source>
+        <translation>Sitio Web</translation>
+    </message>
+    <message>
+        <location filename="../../../components/twitter/ktwitter.cpp" line="226"/>
+        <source>Followers</source>
+        <translation>Seguidores</translation>
     </message>
 </context>
 </TS>

@@ -205,7 +205,7 @@ void KTwitter::formatStatus(QByteArray array)
      html += "     </tr>\n";
      html += "     <tr>\n";
      html += "     <td>\n";
-     html += "     <b>" + tr("This is what's happening:") + "</b>\n";
+     html += "     <b>" + tr("This is what's happening") + ":</b>\n";
      html += "     </td>\n";
      html += "     </tr>\n";
      html += "     <tr>\n";
@@ -220,10 +220,10 @@ void KTwitter::formatStatus(QByteArray array)
      html += "  <td class=\"twitter_desc\">\n";
      html += "    <table class=\"desc_table\">\n";
      html += "     <tr><td>\n";
-     html += "          <b>Name:</b> " + name + "<br/>\n";
-     html += "          <b>Bio:</b> " + description + "<br/>\n";
-     html += "          <b>Web:</b> " +  website + "<br/>\n";
-     html += "          <b>Followers:</b> " + followers + "<br/>\n";
+     html += "          <b>" + tr("Name") + ":</b> " + name + "<br/>\n";
+     html += "          <b>" + tr("Description") + ":</b> " + description + "<br/>\n";
+     html += "          <b>" + tr("Website") + ":</b> " +  website + "<br/>\n";
+     html += "          <b>" + tr("Followers") + ":</b> " + followers + "<br/>\n";
      html += "     </td></tr>\n";
      html += "     </table>\n";
      html += "  </td>\n";

@@ -51,7 +51,7 @@ _EOH_
 
         if conf.hasArgument?("with-debug")
            config.addDefine("K_DEBUG")
-           print "[ ON ]\n"
+           print "[ \033[92mON\033[0m ]\n"
         else
            config.addDefine("K_NODEBUG")
            config.addOption("silent")

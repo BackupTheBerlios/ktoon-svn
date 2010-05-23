@@ -197,8 +197,10 @@ class KTMainWindow : public KTabbedMainWindow
           QString m_fileName;
 
     private:
-          KTViewDocument *m_viewDoc;
-          KTAnimationspace *m_animationSpace;
+          KTViewDocument *drawingTab;
+          KTAnimationspace *animationTab;
+          KTHelpBrowser *helpTab;
+          KTwitterWidget *newsTab;
           KTStatusBar *m_statusBar;
           KActionManager *m_actionManager;
           QMenu *m_fileMenu;
@@ -223,8 +225,6 @@ class KTMainWindow : public KTabbedMainWindow
           KTScenesWidget *m_scenes;
           KTTimeLine *m_timeLine;
           KTHelpWidget *m_helper;
-          KTHelpBrowser *page;
-          KTwitterWidget *twitter;
           KTLibraryWidget *m_libraryWidget;
           KTColorPalette *m_colorPalette;
           KTPenWidget *m_penWidget;
