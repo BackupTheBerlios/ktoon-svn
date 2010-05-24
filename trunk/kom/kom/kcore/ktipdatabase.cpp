@@ -26,7 +26,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #include "ktipdatabase.h"
 
 #include "kalgorithm.h"
@@ -42,7 +41,7 @@ struct KTipDatabase::Private
     int currentTipIndex;
 };
 
-KTipDatabase::KTipDatabase(const QString &file) : k(new Private)
+KTipDatabase::KTipDatabase(const QString &file, QWidget *parent) : QWidget(parent), k(new Private)
 {
     loadTips(file);
     
@@ -109,7 +108,16 @@ void KTipDatabase::loadTips(const QString &filePath)
         if(!e.isNull()) {
             if (e.tagName() == "tip") {
                 KTip tip;
-                tip.text = e.text();
+                tip.text = "<html>\n";
+                tip.text += "<head>\n";
+                tip.text += "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html;charset=utf-8\">\n";
+                tip.text += "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + QString::fromLocal8Bit(::getenv("KTOON_SHARE")) + "/data/help/css/ktoon.css\" />\n";
+
+                tip.text += "</head>\n";
+                tip.text += "<body class=\"tip_background\">\n";
+                tip.text += e.text();
+                tip.text += "\n</body>\n";
+                tip.text += "</html>";
                 k->tips << tip;
             }
         }

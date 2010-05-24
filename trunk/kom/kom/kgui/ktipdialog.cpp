@@ -43,7 +43,7 @@
 KTipDialog::KTipDialog(QStringList &labels, const QString &file, QWidget *parent) : QDialog(parent)
 {
     tags = labels;
-    m_database = new KTipDatabase(file);
+    m_database = new KTipDatabase(file, parent);
     setupGUI();
 }
 
@@ -66,23 +66,27 @@ void KTipDialog::setupGUI()
     
     QVBoxLayout *layout = new QVBoxLayout(this);
     
-    m_textArea = new QTextBrowser;
-    
-    QTextFrameFormat format = m_textArea->document()->rootFrame()->frameFormat();
+    textBrowser = new QTextBrowser;
+
+    /* 
+    QTextFrameFormat format = textBrowser->document()->rootFrame()->frameFormat();
     format.setMargin(15);
     format.setBorder(5);
-    m_textArea->document()->rootFrame()->setFrameFormat(format);
+    textBrowser->document()->rootFrame()->setFrameFormat(format);
+    */
     
-    m_textArea->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-    m_textArea->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
-    m_textArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        
-    QPalette pal = m_textArea->palette();
+    textBrowser->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+    textBrowser->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
+    textBrowser->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    textBrowser->setOpenExternalLinks(true);
+    
+    /*    
+    QPalette pal = textBrowser->palette();
     pal.setBrush(QPalette::Base, baseColor);
+    textBrowser->setPalette(pal);
+    */
     
-    m_textArea->setPalette(pal);
-    
-    layout->addWidget(m_textArea);
+    layout->addWidget(textBrowser);
     layout->addWidget(new KSeparator);
     
     QHBoxLayout *buttonLayout = new QHBoxLayout;
@@ -123,14 +127,14 @@ void KTipDialog::showPrevTip()
 {
     m_database->prevTip();
     KTip tip = m_database->tip();
-    m_textArea->setHtml(tip.text);
+    textBrowser->setHtml(tip.text);
 }
 
 void KTipDialog::showNextTip()
 {
     m_database->nextTip();
     KTip tip = m_database->tip();
-    m_textArea->setHtml(tip.text);
+    textBrowser->setHtml(tip.text);
 }
 
 void KTipDialog::setShowOnStart()

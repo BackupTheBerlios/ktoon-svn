@@ -62,7 +62,7 @@ class K_GUI_EXPORT KTipDialog : public QDialog
         void setShowOnStart();
         
     private:
-        QTextBrowser *m_textArea;
+        QTextBrowser *textBrowser;
         QCheckBox *m_showOnStart;
         KTipDatabase *m_database;
         QStringList tags;

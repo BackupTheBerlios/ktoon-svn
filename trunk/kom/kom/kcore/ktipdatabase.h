@@ -26,10 +26,10 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #ifndef KTIPDATABASE_H
 #define KTIPDATABASE_H
 
+#include <QWidget>
 #include <QString>
 #include <QList>
 #include "kcore/kglobal.h"
@@ -61,10 +61,10 @@ struct KTip
  * @author David Cuadrado \<krawek@gmail.com\>
  */
 
-class K_CORE_EXPORT KTipDatabase
+class K_CORE_EXPORT KTipDatabase : public QWidget
 {
     public:
-        KTipDatabase(const QString &file);
+        KTipDatabase(const QString &file, QWidget *parent=0);
         ~KTipDatabase();
         KTip tip() const;
         void nextTip();
