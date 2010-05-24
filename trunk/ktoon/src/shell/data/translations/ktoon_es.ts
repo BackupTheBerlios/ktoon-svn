@@ -2192,8 +2192,8 @@
     </message>
     <message>
         <location filename="../../main.cpp" line="202"/>
-        <source>Loading Modules...</source>
-        <translation>Cargando Módulos</translation>
+        <source>Loading modules...</source>
+        <translation>Cargando módulos</translation>
     </message>
     <message>
         <location filename="../../main.cpp" line="205"/>

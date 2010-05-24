@@ -240,7 +240,7 @@ void KTwitter::formatStatus(QByteArray array)
      file.write(data, qstrlen(data));
      file.close();
 
-     // FIXME: This class doesn't close its network request / refactoring required  
+     // FIXME: This class doesn't close its network request correctly / refactoring required  
      // delete k->reply;
      // delete k->manager;
 
