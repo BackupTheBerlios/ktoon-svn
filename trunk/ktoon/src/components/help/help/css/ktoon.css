@@ -26,6 +26,10 @@ body {
      background-image:url('/usr/local/ktoon/share/data/help/images/bg6.png');
 }
 
+.tip_background {
+     background-image:url('/usr/local/ktoon/share/data/help/images/tip_bg.png');
+}
+
 .labtoon {
      background-color:#ffffff;
      background-image:url('/usr/local/ktoon/share/data/help/images/labtoon.png');

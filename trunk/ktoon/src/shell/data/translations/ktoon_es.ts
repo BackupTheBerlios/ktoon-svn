@@ -2192,7 +2192,7 @@
     </message>
     <message>
         <location filename="../../main.cpp" line="202"/>
-        <source>Loading Modules</source>
+        <source>Loading Modules...</source>
         <translation>Cargando Módulos</translation>
     </message>
     <message>

@@ -777,7 +777,7 @@ void KTMainWindow::showTipDialog()
     QStringList labels;
     labels << tr("Tip of the day") << tr("Show on start") << tr("Previous tip") << tr("Next tip") << tr("Close");
 
-    KTipDialog *tipDialog = new KTipDialog(labels, DATA_DIR + "tips", this);
+    KTipDialog *tipDialog = new KTipDialog(labels, DATA_DIR + "tips.xml", this);
     tipDialog->show();
 
     QDesktopWidget desktop;
