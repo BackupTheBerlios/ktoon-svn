@@ -192,7 +192,7 @@ void KTCrashHandler::setConfig(const QString &filePath)
         return;
     }
     file.close();
-    
+
     QDomElement docElem = doc.documentElement();
 
     if (docElem.tagName() == "CrashHandler") {

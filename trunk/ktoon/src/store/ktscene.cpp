@@ -130,7 +130,7 @@ void KTScene::setLayers(const Layers &layers)
 
 KTLayer *KTScene::createLayer(int position, bool loaded)
 {
-    Q_CHECK_PTR(layers);
+    // Q_CHECK_PTR(k->layers);
 
     if (position < 0 || position > k->layers.count()) {
         #ifdef K_DEBUG
@@ -180,7 +180,7 @@ KTSoundLayer *KTScene::createSoundLayer(int position, bool loaded)
 
 bool KTScene::removeLayer(int position)
 {
-    Q_CHECK_PTR(layers);
+    // Q_CHECK_PTR(layers);
 
     KTLayer *layer = this->layer(position);
 

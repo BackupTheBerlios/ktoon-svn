@@ -231,7 +231,7 @@ void KTwitter::formatStatus(QByteArray array)
      html += "</table>\n";
      html += "</body>\n";
      html += "</html>";
-  
+
      QString twitterPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";
      QFile file(twitterPath);
      file.open(QIODevice::WriteOnly);
@@ -240,8 +240,9 @@ void KTwitter::formatStatus(QByteArray array)
      file.write(data, qstrlen(data));
      file.close();
 
-     delete k->reply;
-     delete k->manager;
- 
+     // FIXME: This class doesn't close its network request / refactoring required  
+     // delete k->reply;
+     // delete k->manager;
+
      emit pageReady();
 }

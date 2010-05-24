@@ -41,10 +41,8 @@ SOURCES += ktgraphicalgorithm.cpp \
            ktxmlparserbase.cpp \
            ktproxyitem.cpp
 
-KLIB_DIR = "../../src/klib"
-
-include($$KLIB_DIR/klib.pri)
-
+#KLIB_DIR = "../../src/klib"
+#include($$KLIB_DIR/klib.pri)
 
 QUAZIP_DIR = "../../3rdparty/quazip/"
 

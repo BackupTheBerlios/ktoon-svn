@@ -29,8 +29,10 @@ SOURCES += ktexportpluginobject.cpp \
            ktgraphicsscene.cpp \
            ktguideline.cpp \
            ktanimationrenderer.cpp
-KLIB_DIR = ../../src/klib
-include($$KLIB_DIR/klib.pri)
+
+#KLIB_DIR = ../../src/klib
+#include($$KLIB_DIR/klib.pri)
+
 QUAZIP_DIR = ../../3rdparty/quazip/
 include($$QUAZIP_DIR/quazip.pri)
 LIBKTOON_DIR = ../../src/libktoon

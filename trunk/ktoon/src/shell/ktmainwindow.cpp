@@ -173,6 +173,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
         KCONFIG->setValue("OpenLastProject", openLast);
         KCONFIG->setValue("AutoSave", 2);
     }
+
 }
 
 /**

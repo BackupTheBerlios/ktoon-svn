@@ -21,10 +21,12 @@ SOURCES += ktthemeselector.cpp \
            ktpaintareaconfig.cpp 
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon
-KLIB_DIR = ../../src/klib
 include($$STORE_DIR/store.pri)
 include($$LIBKTOON_DIR/libktoon.pri)
-include($$KLIB_DIR/klib.pri)
+
+#KLIB_DIR = ../../src/klib
+#include($$KLIB_DIR/klib.pri)
+
 TARGET = ktui
 CONFIG += static
 include(../../ktconfig.pri)

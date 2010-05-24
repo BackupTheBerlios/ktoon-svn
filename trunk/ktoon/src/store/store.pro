@@ -93,12 +93,10 @@ SOURCES += ktlayer.cpp \
 STORE_DIR = ../../src/store
 
 LIBKTOON_DIR = ../../src/libktoon
-
-KLIB_DIR = ../../src/klib
-
 include($$LIBKTOON_DIR/libktoon.pri)
 
-include($$KLIB_DIR/klib.pri)
+#KLIB_DIR = ../../src/klib
+#include($$KLIB_DIR/klib.pri)
 
 CONFIG += dll
 
