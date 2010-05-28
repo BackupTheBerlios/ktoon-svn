@@ -243,7 +243,6 @@ void KTMainWindow::viewNewDocument()
         drawingTab = new KTViewDocument(m_projectManager->project());
         connectToDisplays(drawingTab);
 
-        //drawingTab->setWindowTitle(tr("Illustration: %1").arg(title));
         drawingTab->setWindowTitle(tr("Illustration"));
 
         addWidget(drawingTab);
@@ -400,26 +399,30 @@ bool KTMainWindow::closeProject()
         drawingTab->closeArea();
 
     if (lastTab == 0) {
-        removeWidget(newsTab, true);
+        if (internetOn)
+            removeWidget(newsTab, true);
         removeWidget(helpTab, true);
         removeWidget(animationTab, true);
         removeWidget(drawingTab, true);
     } else {
       if (lastTab == 1) {
-          removeWidget(newsTab, true);
+          if (internetOn)
+              removeWidget(newsTab, true);
           removeWidget(helpTab, true);
           removeWidget(drawingTab, true);
           removeWidget(animationTab, true);
       } else if (lastTab == 2) {
                  removeWidget(drawingTab, true);
                  removeWidget(animationTab, true);   
-                 removeWidget(newsTab, true);
+                 if (internetOn)
+                     removeWidget(newsTab, true);
                  removeWidget(helpTab, true);
       } else if (lastTab == 3) {
                  removeWidget(drawingTab, true);
                  removeWidget(animationTab, true);
                  removeWidget(helpTab, true);
-                 removeWidget(newsTab, true);
+                 if (internetOn)
+                     removeWidget(newsTab, true);
       }
     }
 

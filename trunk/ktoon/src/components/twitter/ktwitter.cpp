@@ -19,6 +19,9 @@ struct KTwitter::Private
     QNetworkAccessManager *manager;
     QNetworkRequest request;
     QNetworkReply *reply;
+    QString version;
+    QString revision;
+    QString date;
 };
 
 KTwitter::KTwitter(QWidget *parent) : QWidget(parent), k(new Private)
@@ -102,22 +105,18 @@ void KTwitter::checkSoftwareUpdates(QByteArray array)
 
         QDomElement root = doc.documentElement();
         QDomNode n = root.firstChild();
-        int counter = 0;
 
         while (!n.isNull()) {
                QDomElement e = n.toElement();
                if (!e.isNull()) {
                    if (e.tagName() == "branch") {
-                       QString data = e.text();
-                       kFatal() << "BRANCH: " << data;
+                       k->version = e.text();
                    }
                    if (e.tagName() == "rev") {
-                       QString data = e.text();
-                       kFatal() << "REVISION: " << data;
+                       k->revision = e.text();
                    }
                    if (e.tagName() == "date") {
-                       QString data = e.text();
-                       kFatal() << "DATE: " << data;
+                       k->date = e.text();
                    }
                }
                n = n.nextSibling();
@@ -237,6 +236,11 @@ void KTwitter::formatStatus(QByteArray array)
              + "/data/help/images/twitter01.png\" alt=\"ktoon_net\"/>\n";
      html += "      <font class=\"twitter_headline\" >&nbsp;&nbsp;ktoon_net</font>\n";
      html += "      <br/>\n";
+     html += "     </td>\n";
+     html += "     </tr>\n";
+     html += "     <tr>\n";
+     html += "     <td class=\"ktoon_version\">\n";
+     html += "       <center>Latest version: <b>NUMBER GOES HERE!</b></center>\n";
      html += "     </td>\n";
      html += "     </tr>\n";
      html += "     <tr>\n";
