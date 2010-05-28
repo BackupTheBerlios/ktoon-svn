@@ -11,6 +11,7 @@
 QString KTwitter::TWITTER_HOST = QString("http://twitter.com");
 QString KTwitter::IS_TWITTER_UP_URL = QString("/help/test.xml");
 QString KTwitter::USER_TIMELINE_URL = QString("/statuses/user_timeline/ktoon_net.xml");
+QString KTwitter::KTOON_VERSION_URL = QString("http://www.ktoon.net/updates/current_version.xml");
 QString KTwitter::BROWSER_FINGERPRINT = QString("KTooN_Browser 1.0");
 
 struct KTwitter::Private
@@ -44,9 +45,8 @@ KTwitter::~KTwitter(){
     delete k;
 }
 
-void KTwitter::downloadNews(){
-
-    k->request.setUrl(QUrl(TWITTER_HOST +  USER_TIMELINE_URL));
+void KTwitter::requestFile(QString target){
+    k->request.setUrl(QUrl(target));
     k->request.setRawHeader("User-Agent", BROWSER_FINGERPRINT.toAscii());
     k->reply = k->manager->get(k->request);
 }
@@ -57,12 +57,17 @@ void KTwitter::closeRequest(QNetworkReply *reply)
     QString answer(array);
 
     if (answer.length() > 0) {
-
-        if (answer.compare("<ok>true</ok>") == 0)
-            downloadNews();
-        else
-            formatStatus(array);
-
+        if (answer.compare("<ok>true</ok>") == 0) {
+            kFatal() << "Calling out: " << KTOON_VERSION_URL;
+            requestFile(KTOON_VERSION_URL);
+        } else {
+            if (answer.contains("branch", Qt::CaseSensitive)) {
+                checkSoftwareUpdates(array);
+                requestFile(TWITTER_HOST +  USER_TIMELINE_URL);
+            } else {
+                formatStatus(array);
+            }
+        }
     } 
 }
 
@@ -86,6 +91,37 @@ void KTwitter::slotError(QNetworkReply::NetworkError error)
             break;
             default:
             break;
+    }
+}
+
+void KTwitter::checkSoftwareUpdates(QByteArray array)
+{
+    QDomDocument doc;
+
+    if (doc.setContent(array)) {
+
+        QDomElement root = doc.documentElement();
+        QDomNode n = root.firstChild();
+        int counter = 0;
+
+        while (!n.isNull()) {
+               QDomElement e = n.toElement();
+               if (!e.isNull()) {
+                   if (e.tagName() == "branch") {
+                       QString data = e.text();
+                       kFatal() << "BRANCH: " << data;
+                   }
+                   if (e.tagName() == "rev") {
+                       QString data = e.text();
+                       kFatal() << "REVISION: " << data;
+                   }
+                   if (e.tagName() == "date") {
+                       QString data = e.text();
+                       kFatal() << "DATE: " << data;
+                   }
+               }
+               n = n.nextSibling();
+        }
     }
 }
 

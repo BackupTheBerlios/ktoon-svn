@@ -44,19 +44,19 @@
 
 //------------------ CONSTRUCTOR -----------------
 
-KTSplash::KTSplash() : QSplashScreen(0), m_counter(0)
+KTSplash::KTSplash() : QSplashScreen(0), counter(0)
 {
     flag = true;
 
     QImage image(THEME_DIR + "images/splash.png");
     setPixmap(QPixmap::fromImage(image));
-    m_version = tr("Version ") + kAppProp->version();
+    version = tr("Version ") + kAppProp->version();
 
-    m_state = 0;
+    state = 0;
 
-    m_pos[0] = 108;
-    m_pos[1] = 119;
-    m_pos[2] = 130;
+    pos[0] = 10;
+    pos[1] = 21;
+    pos[2] = 32;
 }
 
 KTSplash::~KTSplash()
@@ -66,19 +66,19 @@ KTSplash::~KTSplash()
 void KTSplash::animate()
 {
     repaint();
-    m_state++;
+    state++;
 }
 
 void KTSplash::setMessage(const QString &msg)
 {
     QSplashScreen::showMessage(msg, Qt::AlignTop, palette().text().color());
-    m_message = msg;
+    message = msg;
     QString number;
-    number = number.setNum(m_counter);
+    number = number.setNum(counter);
     QString path = THEME_DIR + "images/splash" + number + ".png";
     QImage image(path);
     setPixmap(QPixmap::fromImage(image));
-    m_counter++;
+    counter++;
 
     animate();
 
@@ -96,9 +96,9 @@ void KTSplash::drawContents(QPainter * painter)
     painter->setRenderHints(QPainter::Antialiasing);
     painter->setPen(Qt::NoPen);
     painter->setBrush(QColor(230, 230, 230));
-    painter->drawEllipse(106, 272, 9, 9);
-    painter->drawEllipse(117, 272, 9, 9);
-    painter->drawEllipse(128, 272, 9, 9);
+    painter->drawEllipse(8, 275, 9, 9);
+    painter->drawEllipse(19, 275, 9, 9);
+    painter->drawEllipse(30, 275, 9, 9);
 
     QColor fill = palette().background().color();
     fill.setAlpha(0);
@@ -106,11 +106,11 @@ void KTSplash::drawContents(QPainter * painter)
     painter->fillRect(rect(), fill);
     painter->save();
 
-    if (m_state < 3) {
+    if (state < 3) {
         painter->setBrush(QColor(120,200,120));
-        painter->drawEllipse(m_pos[m_state], 274, 5, 5);
+        painter->drawEllipse(pos[state], 277, 5, 5);
     } else {
-        m_state = 0;
+        state = 0;
     }
 
     painter->restore();
@@ -122,16 +122,16 @@ void KTSplash::drawContents(QPainter * painter)
 
     QFont forig = painter->font();
     painter->setFont(QFont("helvetica", 10, QFont::Normal, false));
-    painter->drawText(r, Qt::AlignRight, m_version);
+    painter->drawText(r, Qt::AlignRight, version);
 
     painter->setFont(forig);
 
     // Draw message at given position, limited to 43 chars
     // If message is too long, string is truncated
-    if (m_message.length() > 40) 
-        m_message.truncate(39); 
+    if (message.length() > 40) 
+        message.truncate(39); 
 
-    //m_message += "...";
-    painter->setFont(QFont("helvetica", 8, 10, false));
-    painter->drawText(146, 280, m_message);
+    //message += "...";
+    painter->setFont(QFont("helvetica", 7, 10, false));
+    painter->drawText(46, 283, message);
 }

@@ -23,7 +23,7 @@ _EOH_
     end
 
     conf.setTestDir("configure.tests")
-    conf.verifyQtVersion("4.5.0")
+    conf.verifyQtVersion("4.6.2")
     conf.createTests
     
     config = RQonf::Config.new
