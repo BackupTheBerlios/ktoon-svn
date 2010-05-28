@@ -693,13 +693,26 @@ bool KMainWindow::event(QEvent *e)
         KButtonBar *bar = 0;
 
         if (pos.x() <= m_buttonBars[Qt::LeftToolBarArea]->pos().x() + 3 ) { // Left
+
             bar = m_buttonBars[Qt::LeftToolBarArea];
-        } else if (pos.y() <= m_buttonBars[Qt::TopToolBarArea]->pos().y() + 3 && m_buttonBars[Qt::TopToolBarArea]->pos().y() <= pos.y()) {
+
+        } else if (pos.y() <= m_buttonBars[Qt::TopToolBarArea]->pos().y() + 3 
+                   && m_buttonBars[Qt::TopToolBarArea]->pos().y() <= pos.y()) {
+
             bar = m_buttonBars[Qt::TopToolBarArea];
-        } else if (pos.x() >= m_buttonBars[Qt::RightToolBarArea]->pos().x() + m_buttonBars[Qt::RightToolBarArea]->width() - 3 ) {
+
+        } else if (pos.x() >= m_buttonBars[Qt::RightToolBarArea]->pos().x() + 
+                   m_buttonBars[Qt::RightToolBarArea]->width() - 3 ) {
+
             bar = m_buttonBars[Qt::RightToolBarArea];
-        } else if (pos.y() >= m_buttonBars[Qt::BottomToolBarArea]->pos().y() +  m_buttonBars[Qt::BottomToolBarArea]->height() - 3 && m_buttonBars[Qt::BottomToolBarArea]->pos().y()+m_buttonBars[Qt::BottomToolBarArea]->height() > pos.y()) {
+
+        } else if (pos.y() >= m_buttonBars[Qt::BottomToolBarArea]->pos().y() +  
+                   m_buttonBars[Qt::BottomToolBarArea]->height() - 3 
+                   && m_buttonBars[Qt::BottomToolBarArea]->pos().y() + 
+                   m_buttonBars[Qt::BottomToolBarArea]->height() > pos.y()) {
+
             bar = m_buttonBars[Qt::BottomToolBarArea];
+
         }
 
         if (bar) {
