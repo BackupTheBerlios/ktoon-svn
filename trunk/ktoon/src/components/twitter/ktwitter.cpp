@@ -285,6 +285,12 @@ void KTwitter::formatStatus(QByteArray array)
      html += "          <b>" + tr("Followers") + ":</b> " + followers + "<br/>\n";
      html += "     </td></tr>\n";
      html += "     </table>\n";
+     html += "    <table class=\"twitter_slang\">\n";
+     html += "     <tr><td>\n";
+     html += "          Bla bla bla bla<br/>\n";
+     html += "          Bla bla bla bla<br/>\n";
+     html += "     </td></tr>\n";
+     html += "     </table>\n";
      html += "  </td>\n";
      html += "  </tr>\n";
      html += "</table>\n";
