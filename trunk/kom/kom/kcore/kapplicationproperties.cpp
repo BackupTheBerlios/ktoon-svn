@@ -26,7 +26,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #include "kapplicationproperties.h"
 
 #include <QDir>
@@ -43,6 +42,8 @@ struct KApplicationProperties::Private
     QString dataDir;
     QString themeDir;
     QString version;
+    QString codeName;
+    QString revision;
     QString cacheDir;
 };
 
@@ -83,6 +84,16 @@ void KApplicationProperties::setCacheDir(const QString &v)
 void KApplicationProperties::setVersion(const QString &v)
 {
     k->version = v;
+}
+
+void KApplicationProperties::setCodeName(const QString &v)
+{
+    k->codeName = v;
+}
+
+void KApplicationProperties::setRevision(const QString &v)
+{
+    k->revision = v;
 }
 
 QString KApplicationProperties::shareDir() const
@@ -132,6 +143,16 @@ QString KApplicationProperties::cacheDir() const
 QString KApplicationProperties::version() const
 {
     return k->version;
+}
+
+QString KApplicationProperties::codeName() const
+{
+    return k->codeName;
+}
+
+QString KApplicationProperties::revision() const
+{
+    return k->revision;
 }
 
 KApplicationProperties *KApplicationProperties::instance()

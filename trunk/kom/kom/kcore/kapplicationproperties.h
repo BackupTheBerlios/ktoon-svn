@@ -49,6 +49,8 @@ class K_CORE_EXPORT KApplicationProperties
         void setThemeDir(const QString &v);
         void setCacheDir(const QString &v);
         void setVersion(const QString &v);
+        void setCodeName(const QString &v);
+        void setRevision(const QString &v);
 
         virtual QString shareDir() const;
         virtual QString dataDir() const;
@@ -57,6 +59,8 @@ class K_CORE_EXPORT KApplicationProperties
         virtual QString configDir() const;
         virtual QString cacheDir() const;
         virtual QString version() const;
+        virtual QString codeName() const;
+        virtual QString revision() const;
 
         static KApplicationProperties *instance();
 		
