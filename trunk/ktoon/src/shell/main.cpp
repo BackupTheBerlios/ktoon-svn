@@ -62,9 +62,6 @@
 
 #ifndef CONFIG_H
 #define CONFIG_H
-#define HAVE_LIBGIF
-//#define VERSION 0.9a+Phoenix
-//#define VERSION_STR "0.9a+Phoenix"
 #endif
 
 #ifndef HAVE_SOUND
@@ -109,6 +106,11 @@ int main(int argc, char ** argv)
     // Initializing the crash handler, very useful to catch bugs
     KTCrashHandler::init();
 #endif
+
+    // Setting the current version for KToon
+    kAppProp->setVersion(VERSION);
+    kAppProp->setCodeName(CODE_NAME);
+    kAppProp->setRevision(REVISION);
 
     // Downloading ktoon_net Twitter status
     KTwitter *ktwitter = new KTwitter();
@@ -177,9 +179,6 @@ int main(int argc, char ** argv)
        kAppProp->setHomeDir(KCONFIG->value("Home").toString());
        application.createCache(KCONFIG->value("Cache").toString());
     }
-
-    // Setting the current version for KToon
-    kAppProp->setVersion(VERSION_STR);
 
     // Time to apply the theme for the application GUI
     QString themefile = KCONFIG->value("ThemeFile").toString();

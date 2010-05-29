@@ -21,15 +21,21 @@ struct KTwitter::Private
     QNetworkReply *reply;
     QString version;
     QString revision;
-    QString date;
+    QString codeName;
+    bool update;
 };
 
 KTwitter::KTwitter(QWidget *parent) : QWidget(parent), k(new Private)
 {
+    k->update = false;
 }
 
 void KTwitter::start()
 {
+    kFatal() << "VERSION: " << kAppProp->version();
+    kFatal() << "CODE NAME: " << kAppProp->codeName();
+    kFatal() << "REVISION: " << kAppProp->revision();
+
     QString url = TWITTER_HOST + IS_TWITTER_UP_URL;
 
     k->manager = new QNetworkAccessManager(this);
@@ -111,12 +117,14 @@ void KTwitter::checkSoftwareUpdates(QByteArray array)
                if (!e.isNull()) {
                    if (e.tagName() == "branch") {
                        k->version = e.text();
-                   }
-                   if (e.tagName() == "rev") {
+                       if (k->version.compare(kAppProp->version())!=0)
+                           k->update = true;
+                   } else if (e.tagName() == "rev") {
                        k->revision = e.text();
-                   }
-                   if (e.tagName() == "date") {
-                       k->date = e.text();
+                       if (k->revision.compare(kAppProp->revision())!=0)
+                           k->update = true;
+                   } else if (e.tagName() == "codeName") {
+                       k->codeName = e.text();
                    }
                }
                n = n.nextSibling();
@@ -157,7 +165,7 @@ void KTwitter::formatStatus(QByteArray array)
                                       QStringList list1 = data.split(" ");
                                       for (int i=0; i<3; i++)
                                            date += list1.at(i) + " ";
-                                      date += list1.at(3);
+                                           date += list1.at(3);
                                   } else {
                                       if (e1.tagName() == "text") {
                                           text = e1.text();
@@ -239,8 +247,19 @@ void KTwitter::formatStatus(QByteArray array)
      html += "     </td>\n";
      html += "     </tr>\n";
      html += "     <tr>\n";
-     html += "     <td class=\"ktoon_version\">\n";
-     html += "       <center>Latest version: <b>NUMBER GOES HERE!</b></center>\n";
+
+     QString css = "ktoon_version";  
+     if (k->update)
+         css = "ktoon_update"; 
+
+     html += "     <td class=\"" + css + "\">\n";
+     html += "       <center>" + tr("Latest version") + ": <b>" + k->version + "</b> &nbsp;&nbsp;&nbsp;" + tr("Revision") + ": <b>" + k->revision + "</b> &nbsp;&nbsp;&nbsp;" + tr("Code Name") + ": <b>" + k->codeName + "</b>";
+
+     if (k->update)
+         html += "&nbsp;&nbsp;&nbsp;<b>[</b> <a href=\"http://www.ktoon.net\">" + tr("Update here!") + "</a>  <b>]</b>"; 
+
+     html += "</center>\n";
+
      html += "     </td>\n";
      html += "     </tr>\n";
      html += "     <tr>\n";

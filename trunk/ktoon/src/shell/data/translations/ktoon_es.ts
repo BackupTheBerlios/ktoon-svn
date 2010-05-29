@@ -2498,7 +2498,27 @@
 <context>
     <name>KTwitter</name>
     <message>
-        <location filename="../../../components/twitter/ktwitter.cpp" line="208"/>
+        <location filename="../../../components/twitter/ktwitter.cpp" line="243"/>
+        <source>Latest version</source>
+        <translation>Última versión</translation>
+    </message>
+    <message>
+        <location filename="../../../components/twitter/ktwitter.cpp" line="243"/>
+        <source>Revision</source>
+        <translation>Revisión</translation>
+    </message>
+    <message>
+        <location filename="../../../components/twitter/ktwitter.cpp" line="243"/>
+        <source>Code Name</source>
+        <translation>Nombre código</translation>
+    </message>
+    <message>
+        <location filename="../../../components/twitter/ktwitter.cpp" line="252"/>
+        <source>Update here!</source>
+        <translation>Actualiza aquí!</translation>
+    </message>
+    <message>
+        <location filename="../../../components/twitter/ktwitter.cpp" line="260"/>
         <source>This is what&apos;s happening</source>
         <translation>Esto es lo que está sucediendo</translation>
     </message>

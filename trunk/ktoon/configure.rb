@@ -44,8 +44,9 @@ _EOH_
     config.addLib("-L#{RQonf::CONFIG["libdir"]}")
     config.addIncludePath(RQonf::CONFIG["includepath"])
     
-    config.addDefine("VERSION=0.9a")
-    config.addDefine('VERSION_STR=\\\\\"0.9a+Phoenix\\\\\"')
+    config.addDefine('VERSION=\\\\\"0.9a\\\\\"')
+    config.addDefine('CODE_NAME=\\\\\"Phoenix\\\\\"')
+    config.addDefine('REVISION=\\\\\"1480\\\\\"')
 
         Info.info << "Debug support... "
 

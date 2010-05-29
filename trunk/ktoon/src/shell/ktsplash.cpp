@@ -50,7 +50,7 @@ KTSplash::KTSplash() : QSplashScreen(0), counter(0)
 
     QImage image(THEME_DIR + "images/splash.png");
     setPixmap(QPixmap::fromImage(image));
-    version = tr("Version ") + kAppProp->version();
+    version = tr("Version ") + kAppProp->version() + "+" + kAppProp->codeName();
 
     state = 0;
 
@@ -118,7 +118,7 @@ void KTSplash::drawContents(QPainter * painter)
 
     // Draw version number
     QRect r = rect();
-    r.setRect(r.x() + 23, r.y() + 5, r.width() - 30, r.height() - 30);
+    r.setRect(r.x() + 24, r.y() + 5, r.width() - 30, r.height() - 30);
 
     QFont forig = painter->font();
     painter->setFont(QFont("helvetica", 10, QFont::Normal, false));
