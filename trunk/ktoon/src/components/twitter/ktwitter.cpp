@@ -22,6 +22,9 @@ struct KTwitter::Private
     QString version;
     QString revision;
     QString codeName;
+    QString word;
+    QString reference;
+    QString meaning;
     bool update;
 };
 
@@ -32,10 +35,7 @@ KTwitter::KTwitter(QWidget *parent) : QWidget(parent), k(new Private)
 
 void KTwitter::start()
 {
-    kFatal() << "VERSION: " << kAppProp->version();
-    kFatal() << "CODE NAME: " << kAppProp->codeName();
-    kFatal() << "REVISION: " << kAppProp->revision();
-
+    loadTwitterMeaning();
     QString url = TWITTER_HOST + IS_TWITTER_UP_URL;
 
     k->manager = new QNetworkAccessManager(this);
@@ -67,7 +67,6 @@ void KTwitter::closeRequest(QNetworkReply *reply)
 
     if (answer.length() > 0) {
         if (answer.compare("<ok>true</ok>") == 0) {
-            kFatal() << "Calling out: " << KTOON_VERSION_URL;
             requestFile(KTOON_VERSION_URL);
         } else {
             if (answer.contains("branch", Qt::CaseSensitive)) {
@@ -226,11 +225,12 @@ void KTwitter::formatStatus(QByteArray array)
 
      QString html = "";
 
+     html += "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n";
      html += "<html>\n";
      html += "<head>\n";
-     html += "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html;charset=utf-8\">\n";
+     html += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n";
      html += "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + QString::fromLocal8Bit(::getenv("KTOON_SHARE")) \
-             + "/data/help/css/ktoon.css\" />\n";
+             + "/data/help/css/ktoon.css\">\n";
      html += "</head>\n";
      html += "<body class=\"ktoon_background1\">\n";
      html += " <table class=\"twitter_base\">\n";
@@ -287,8 +287,11 @@ void KTwitter::formatStatus(QByteArray array)
      html += "     </table>\n";
      html += "    <table class=\"twitter_slang\">\n";
      html += "     <tr><td>\n";
-     html += "          Bla bla bla bla<br/>\n";
-     html += "          Bla bla bla bla<br/>\n";
+     html += "         <p class=\"twitter_slang_td\">\n";
+      html += "         &nbsp;<br/>\n";
+     html += "          <b>" + k->word + "&nbsp;&nbsp;" + tr("ref.") + " " + k->reference + "</b><br/>\n";
+     html += "          " + k->meaning + "<br/>\n";
+     html += "         </p>";
      html += "     </td></tr>\n";
      html += "     </table>\n";
      html += "  </td>\n";
@@ -310,4 +313,37 @@ void KTwitter::formatStatus(QByteArray array)
      // delete k->manager;
 
      emit pageReady();
+}
+
+void KTwitter::loadTwitterMeaning()
+{
+    QDomDocument doc;
+    QString twitterFile = DATA_DIR + "twitter.xml";
+    QFile file(twitterFile);
+
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+
+    if (!doc.setContent(&file)) {
+        file.close();
+        return;
+    }
+    file.close();
+
+    QDomElement docElem = doc.documentElement();
+    QDomNode n = docElem.firstChild();
+
+    while (!n.isNull()) {
+           QDomElement e = n.toElement();
+           if (!e.isNull()) {
+               if (e.tagName() == "word")
+                   k->word = e.text();
+               else if (e.tagName() == "ref")
+                   k->reference = e.text();
+               else if (e.tagName() == "meaning")
+                   k->meaning = e.text();
+           }
+           n = n.nextSibling();
+    }
+
 }

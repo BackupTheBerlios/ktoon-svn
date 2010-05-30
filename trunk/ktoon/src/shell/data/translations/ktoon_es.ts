@@ -2542,5 +2542,10 @@
         <source>Followers</source>
         <translation>Seguidores</translation>
     </message>
+    <message>
+        <location filename="../../../components/twitter/ktwitter.cpp" line="292"/>
+        <source>ref.</source>
+        <translation>ref.</translation>
+    </message>
 </context>
 </TS>

@@ -100,7 +100,14 @@ int main(int argc, char ** argv)
 {
     KTApplication application(argc, argv);
 
-    qsrand(::time(0));
+    // If help es required as argument from command line, show the options console help
+    if (application.isArg("help") || application.isArg("h")) {
+        usage();
+        application.exit(0);
+        return 0;
+    }
+
+    // qsrand(::time(0));
 
 #ifdef Q_OS_UNIX
     // Initializing the crash handler, very useful to catch bugs
@@ -111,6 +118,35 @@ int main(int argc, char ** argv)
     kAppProp->setVersion(VERSION);
     kAppProp->setCodeName(CODE_NAME);
     kAppProp->setRevision(REVISION);
+
+    // Time to define global variables for KToon
+    KCONFIG->beginGroup("General");
+
+    if (! KCONFIG->isOk()) {
+        KCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("KTOON_HOME")));
+        KCONFIG->setValue("Cache", QDir::tempPath());
+    }
+
+    kAppProp->setHomeDir(KCONFIG->value("Home").toString());
+    kAppProp->setShareDir(QString::fromLocal8Bit(::getenv("KTOON_SHARE")));
+
+    QString locale = QString(QLocale::system().name()).left(2);
+
+    if (locale.length() < 2)
+        locale = "en";
+
+    kAppProp->setDataDir(SHARE_DIR + "data/" + locale + "/");
+    kAppProp->setThemeDir(SHARE_DIR + "themes/default" + "/");
+
+    /*
+    kDebug() << "HOME_DIR: " << HOME_DIR;
+    kDebug() << "SHARE_DIR: " << SHARE_DIR;
+    kDebug() << "DATA_DIR: " << DATA_DIR;
+    kDebug() << "THEME_DIR: " << THEME_DIR;
+    */
+
+    // Setting the repository directory (where the projects are saved)
+    application.createCache(KCONFIG->value("Cache").toString());
 
     // Downloading ktoon_net Twitter status
     KTwitter *ktwitter = new KTwitter();
@@ -124,48 +160,12 @@ int main(int argc, char ** argv)
     QApplication::setStyle(new QPlastiqueStyle());
 #endif
 
-    // If help es required as argument from command line, show the options console help
-    if (application.isArg("help") || application.isArg("h")) {
-        usage();
-        application.exit(0);
-        return 0;
-    }
-
-    // Time to define global variables for KToon
-    KCONFIG->beginGroup("General");
-
-   if (! KCONFIG->isOk()) {
-       KCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("KTOON_HOME")));
-       KCONFIG->setValue("Cache", QDir::tempPath());
-   }
-
-   kAppProp->setHomeDir(KCONFIG->value("Home").toString());
-   kAppProp->setShareDir(QString::fromLocal8Bit(::getenv("KTOON_SHARE")));
-
-   QString locale = QString(QLocale::system().name()).left(2);
-
-   if (locale.length() < 2)
-       locale = "en";
-
-   kAppProp->setDataDir(SHARE_DIR + "data/" + locale + "/");
-   kAppProp->setThemeDir(SHARE_DIR + "themes/default" + "/");
-
-   /*
-   kDebug() << "HOME_DIR: " << HOME_DIR;
-   kDebug() << "SHARE_DIR: " << SHARE_DIR;
-   kDebug() << "DATA_DIR: " << DATA_DIR;
-   kDebug() << "THEME_DIR: " << THEME_DIR;
-   */
-
-   // Setting the repository directory (where the projects are saved)
-   application.createCache(KCONFIG->value("Cache").toString());
-
-   // If user asked for reconfigure KToon or if this is the first time the application is launched
-   if (kAppProp->homeDir().isEmpty() || application.isArg("r") || application.isArg("reconfigure")) {
-       // Launching the basic configuration dialog
-       if (! application.firstRun()) {
-           // If dialog is canceled or KToon can not be configured, kill the whole application
-           #ifdef K_DEBUG
+    // If user asked for reconfigure KToon or if this is the first time the application is launched
+    if (kAppProp->homeDir().isEmpty() || application.isArg("r") || application.isArg("reconfigure")) {
+        // Launching the basic configuration dialog
+        if (! application.firstRun()) {
+            // If dialog is canceled or KToon can not be configured, kill the whole application
+            #ifdef K_DEBUG
                   kFatal () << "********************* You need configure the application" << endl;
            #endif
 
@@ -173,11 +173,11 @@ int main(int argc, char ** argv)
                                  QObject::tr("You need configure the application"));
            application.exit(-1);
            return -1;
-       }
+        }
 
-       // Setting the new global variables for KToon
-       kAppProp->setHomeDir(KCONFIG->value("Home").toString());
-       application.createCache(KCONFIG->value("Cache").toString());
+        // Setting the new global variables for KToon
+        kAppProp->setHomeDir(KCONFIG->value("Home").toString());
+        application.createCache(KCONFIG->value("Cache").toString());
     }
 
     // Time to apply the theme for the application GUI

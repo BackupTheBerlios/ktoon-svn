@@ -28,6 +28,7 @@ class KTwitter : public QWidget
         void requestFile(QString target);
         void checkSoftwareUpdates(QByteArray array);
         void formatStatus(QByteArray array);
+        void loadTwitterMeaning();
 
         static QString TWITTER_HOST;
         static QString IS_TWITTER_UP_URL;
