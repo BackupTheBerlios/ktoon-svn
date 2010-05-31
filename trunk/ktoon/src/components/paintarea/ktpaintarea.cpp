@@ -509,12 +509,20 @@ void KTPaintArea::cutItems()
 
 void KTPaintArea::setNextFramesOnionSkinCount(int n)
 {
+    #ifdef K_DEBUG
+       K_FUNCINFO;
+    #endif
+
     if (KTGraphicsScene* currentScene = graphicsScene())
-        currentScene->setNextOnionSkinCount( n );
+        currentScene->setNextOnionSkinCount(n);
 }
 
 void KTPaintArea::setPreviousFramesOnionSkinCount(int n)
 {
+    #ifdef K_DEBUG
+       K_FUNCINFO;
+    #endif
+
     if (KTGraphicsScene* currentScene = graphicsScene())
         currentScene->setPreviousOnionSkinCount(n);
 }

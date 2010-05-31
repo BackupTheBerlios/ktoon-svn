@@ -59,7 +59,7 @@ class KTOON_EXPORT KTGraphicsScene : public QGraphicsScene
         void setCurrentScene(KTScene *scene);
         void drawCurrentPhotogram();
         
-        void drawItems(QPainter *painter, int numItems, QGraphicsItem *items[], const QStyleOptionGraphicsItem options[], QWidget *widget);
+        // void drawItems(QPainter *painter, int numItems, QGraphicsItem *items[], const QStyleOptionGraphicsItem options[], QWidget *widget);
         
         void drawPhotogram(int photogram);
         void addFrame(KTFrame *frame, double opacity = 1.0);
@@ -109,7 +109,6 @@ class KTOON_EXPORT KTGraphicsScene : public QGraphicsScene
         virtual void dropEvent(QGraphicsSceneDragDropEvent * event);
         
         virtual bool event(QEvent *e);
-        
         
     private:
         struct Private;

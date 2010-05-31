@@ -146,9 +146,14 @@ void KTGraphicsScene::drawCurrentPhotogram()
     drawPhotogram(k->framePosition.frame);
 }
 
+/*
 void KTGraphicsScene::drawItems(QPainter *painter, int numItems, QGraphicsItem *items[], 
                                 const QStyleOptionGraphicsItem options[], QWidget *widget)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     for (int i = 0; i < numItems; ++i) {
          QGraphicsItem *item = items[i];
          painter->save();
@@ -163,9 +168,14 @@ void KTGraphicsScene::drawItems(QPainter *painter, int numItems, QGraphicsItem *
          painter->restore();
     }
 }
+*/
 
 void KTGraphicsScene::drawPhotogram(int photogram)
 {
+    #ifdef K_DEBUG
+       K_FUNCINFO;
+    #endif
+
     Q_CHECK_PTR(k->scene);
 
     if (photogram < 0 || !k->scene) 
@@ -183,26 +193,30 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
              if (layer) {
                  if (layer->isVisible()) {
-                     if (k->onionSkin.previous > 0) {
+                     if (k->onionSkin.previous > 0 && photogram > 0) {
                          double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.previous);
                          double opacity = 0.5;
 
                          for (int frameIndex = photogram-1; frameIndex > photogram-k->onionSkin.previous-1; frameIndex--) {
                               KTFrame * frame = layer->frame(frameIndex);
-                              if (frame)
+                              if (frame) {
+                                  kFatal() << "PAINTING BEFORE - OPACITY: " << opacity;
+                                  kFatal() << "OPACITY FACTOR: " << opacityFactor;
                                   addFrame(frame, opacity);
+                              }
                               opacity -= opacityFactor;
                          }
                      }
 
-                     if (k->onionSkin.next > 0) {
+                     if (k->onionSkin.next > 0 && layer->framesNumber() > photogram+1) {
                          double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.next);
                          double opacity = 0.5;
 
                          for (int frameIndex = photogram+1; frameIndex < photogram+k->onionSkin.next+1; frameIndex++) {
                               KTFrame * frame = layer->frame(frameIndex);
-                              if (frame)
+                              if (frame) {
                                   addFrame(frame, opacity);
+                              }
                               opacity -= opacityFactor;
                          }
                      }
@@ -243,6 +257,8 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
     if (k->tool)
         k->tool->updateScene(this);
+
+    kFatal() << "HEY! *** Tracing KTGraphicsScene::drawPhotogram()"; 
 }
 
 void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
@@ -324,6 +340,10 @@ void KTGraphicsScene::setNextOnionSkinCount(int n)
 
 void KTGraphicsScene::setPreviousOnionSkinCount(int n)
 {
+    #ifdef K_DEBUG
+       K_FUNCINFO;
+    #endif
+
     k->onionSkin.previous = n;
     drawCurrentPhotogram();
 }
