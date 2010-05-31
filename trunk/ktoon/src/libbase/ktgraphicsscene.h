@@ -109,7 +109,7 @@ class KTOON_EXPORT KTGraphicsScene : public QGraphicsScene
         virtual void dropEvent(QGraphicsSceneDragDropEvent * event);
         
         virtual bool event(QEvent *e);
-        
+
     private:
         struct Private;
         Private *const k;

@@ -293,6 +293,7 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
             if (frame) {
                 int factor = k->objectCounter + (k->layerCounter)*100; 
                 k->objectCounter++;
+                item->setOpacity(opacity);
                 item->setZValue(factor);
                 addItem(item);
             }
