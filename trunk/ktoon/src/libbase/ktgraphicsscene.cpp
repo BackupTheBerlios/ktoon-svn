@@ -146,30 +146,6 @@ void KTGraphicsScene::drawCurrentPhotogram()
     drawPhotogram(k->framePosition.frame);
 }
 
-/*
-void KTGraphicsScene::drawItems(QPainter *painter, int numItems, QGraphicsItem *items[], 
-                                const QStyleOptionGraphicsItem options[], QWidget *widget)
-{
-    #ifdef K_DEBUG
-           K_FUNCINFO;
-    #endif
-
-    for (int i = 0; i < numItems; ++i) {
-         QGraphicsItem *item = items[i];
-         painter->save();
-
-         //painter->setMatrix(item->sceneMatrix(), true);
-         painter->setTransform(item->sceneTransform(), true);
-
-         if (k->onionSkin.opacityMap.contains(item))
-             painter->setOpacity(k->onionSkin.opacityMap[item]);
-
-         item->paint(painter, &options[i], widget);
-         painter->restore();
-    }
-}
-*/
-
 void KTGraphicsScene::drawPhotogram(int photogram)
 {
     #ifdef K_DEBUG
@@ -199,11 +175,9 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                          for (int frameIndex = photogram-1; frameIndex > photogram-k->onionSkin.previous-1; frameIndex--) {
                               KTFrame * frame = layer->frame(frameIndex);
-                              if (frame) {
-                                  kFatal() << "PAINTING BEFORE - OPACITY: " << opacity;
-                                  kFatal() << "OPACITY FACTOR: " << opacityFactor;
+                              if (frame)
                                   addFrame(frame, opacity);
-                              }
+
                               opacity -= opacityFactor;
                          }
                      }
@@ -257,8 +231,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
     if (k->tool)
         k->tool->updateScene(this);
-
-    kFatal() << "HEY! *** Tracing KTGraphicsScene::drawPhotogram()"; 
 }
 
 void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
@@ -295,6 +267,7 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
                 k->objectCounter++;
                 item->setOpacity(opacity);
                 item->setZValue(factor);
+                kFatal() << "Z FACTOR: " << factor;
                 addItem(item);
             }
         }
