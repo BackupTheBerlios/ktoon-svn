@@ -43,24 +43,24 @@
 struct KControlNode::Private
 {
     int index;
-    QGraphicsItem * parent;
-    KControlNode *nodeParent;
-    KControlNode *left;
-    KControlNode *right;
-    bool notChange;
+    QGraphicsItem *graphicParent;
+    KControlNode *centralNode;
+    KControlNode *leftNode;
+    KControlNode *rightNode;
+    bool unchanged;
     KNodeGroup *nodeGroup;
     QGraphicsScene *scene;
 };
 
-KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos, QGraphicsItem * parent,  
+KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos, QGraphicsItem * graphicParent,  
                            QGraphicsScene * scene) : QGraphicsItem(0, scene), k(new Private)
 {
     k->index  = index;
-    k->parent = 0;
-    k->left = 0;
-    k->right = 0;
-    k->nodeParent = 0;
-    k->notChange = true;
+    k->graphicParent = 0;
+    k->leftNode = 0;
+    k->rightNode = 0;
+    k->centralNode = 0;
+    k->unchanged = true;
     k->nodeGroup = nodeGroup;
     k->scene = scene;
     
@@ -69,8 +69,9 @@ KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos
     setFlag(ItemIsMovable, true);
     
     setPos(pos);
+    // FIXME: The Zvalue for nodes must be relative to the QGraphicsItem variable
     setZValue(1000);
-    changeParent(parent);
+    setGraphicParent(graphicParent);
 }
 
 KControlNode::~KControlNode()
@@ -81,27 +82,29 @@ void KControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 {
     Q_UNUSED(w);
     
-    bool antialiasing =  painter->renderHints() & QPainter::Antialiasing;
-    
-    painter->setRenderHint(QPainter::Antialiasing, false);
+    // FIXME: Check Antialiasing management for this painter
+    // bool antialiasing = painter->renderHints() & QPainter::Antialiasing;
+    // painter->setRenderHint(QPainter::Antialiasing, antialiasing);
     
     QColor c;
     
     if (option->state & QStyle::State_Sunken || option->state & QStyle::State_Selected) {
+
         painter->save();
         painter->setPen(QPen(Qt::gray));
         painter->restore();
         
-        if (QAbstractGraphicsShapeItem *it = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(k->parent)) {
+        if (QAbstractGraphicsShapeItem *it = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(k->graphicParent)) {
             QColor nc = it->pen().brush().color();
             c = QColor(nc.red()+180 % 255, nc.green()+180 % 255, nc.blue()+180 % 255);
         } else {
             c = QColor("green");
         }
-        
         c.setAlpha(150);
+
     } else {
-        if (QAbstractGraphicsShapeItem *it = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(k->parent)) {
+
+        if (QAbstractGraphicsShapeItem *it = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(k->graphicParent)) {
            QColor nc = it->pen().brush().color();
            c = QColor(nc.red()+254 % 255, nc.green()+254 % 255, nc.blue()+254 % 255);
         } else {
@@ -111,15 +114,14 @@ void KControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
         c.setAlpha(150);
     }
     
-    
-    if (k->nodeParent)
+    if (k->centralNode)
         c.setRed(100);
 
     painter->setBrush(c);
     paintLinesToChilds(painter);
     
     painter->drawRoundRect(boundingRect());
-    painter->setRenderHint(QPainter::Antialiasing, antialiasing);
+    // painter->setRenderHint(QPainter::Antialiasing, antialiasing);
 }
 
 void KControlNode::paintLinesToChilds(QPainter * painter)
@@ -130,14 +132,14 @@ void KControlNode::paintLinesToChilds(QPainter * painter)
     painter->setPen(QPen(QColor(0x8080FF)));
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    if (k->right) {
-        if (k->right->isVisible())
-            painter->drawLine(inverted.map(pos()), inverted.map(k->right->pos()));
+    if (k->rightNode) {
+        if (k->rightNode->isVisible())
+            painter->drawLine(inverted.map(pos()), inverted.map(k->rightNode->pos()));
     }
 
-    if (k->left) {
-        if (k->left->isVisible())
-            painter->drawLine(inverted.map(pos()), inverted.map(k->left->pos()));
+    if (k->leftNode) {
+        if (k->leftNode->isVisible())
+            painter->drawLine(inverted.map(pos()), inverted.map(k->leftNode->pos()));
     }
     
     painter->restore();
@@ -148,14 +150,14 @@ QRectF KControlNode::boundingRect() const
     QSizeF size(8 , 8);
     QRectF r(QPointF(-size.width()/2, -size.height()/2), size);
 
-    if (k->right) {
-        if (k->right->isVisible())
-            r.unite(k->right->boundingRect());
+    if (k->rightNode) {
+        if (k->rightNode->isVisible())
+            r.unite(k->rightNode->boundingRect());
     }
 
-    if (k->left) {
-        if (k->left->isVisible())
-           r.unite(k->left->boundingRect());
+    if (k->leftNode) {
+        if (k->leftNode->isVisible())
+           r.unite(k->leftNode->boundingRect());
     }
 
     return r;
@@ -166,28 +168,32 @@ QVariant KControlNode::itemChange(GraphicsItemChange change, const QVariant &val
     kFatal() << "1 KControlNode::itemChange -> Just starting!";
 
     if (change == QGraphicsItem::ItemPositionChange) {
-        if (!k->notChange) {
-            if (qgraphicsitem_cast<QGraphicsPathItem*>(k->parent)) {
+        if (!k->unchanged) {
+            if (qgraphicsitem_cast<QGraphicsPathItem*>(k->graphicParent)) {
 
                 kFatal() << "2 KControlNode::itemChange -> ItemPositionChange";
 
                 QPointF diff = value.toPointF() - pos();
-                if (k->left)
-                    k->left->moveBy(diff.x(), diff.y());
+                if (k->leftNode)
+                    k->leftNode->moveBy(diff.x(), diff.y());
 
-                if (k->right)
-                    k->right->moveBy(diff.x(), diff.y());
+                if (k->rightNode)
+                    k->rightNode->moveBy(diff.x(), diff.y());
 
-                QPointF scenePos = k->parent->mapFromScene(value.toPointF());
+                QPointF scenePos = k->graphicParent->mapFromScene(value.toPointF());
 
-                if (k->nodeGroup)
+                if (k->nodeGroup) {
                     k->nodeGroup->moveElementTo(k->index, scenePos);
-                else
+                    kFatal() << "2A KControlNode::itemChange -> Moving point!!!";
+                } else {
                     kFatal() << "3 KControlNode::itemChange -> No k->nodeGroup";
+                }
+           } else {
+                kFatal() << "3A KControlNode::itemChange -> cast for QGraphicsPathItem has failed!";
            }
         } else {
-           k->notChange = false;
-           kFatal() << "4 KControlNode::itemChange -> notChange = false";
+           k->unchanged = false;
+           kFatal() << "4 KControlNode::itemChange -> no Change";
         }
     } else if (change == QGraphicsItem::ItemSelectedChange) {
 
@@ -195,23 +201,23 @@ QVariant KControlNode::itemChange(GraphicsItemChange change, const QVariant &val
 
                if (value.toBool()) {
                    kFatal() << "6 KControlNode::itemChange -> value = true";
-                   k->parent->setSelected(true);
+                   k->graphicParent->setSelected(true);
                    setVisibleChilds(true);
                } else {
 
                    kFatal() << "7 KControlNode::itemChange -> value = false";
-                   if (k->left) {
-                       if (k->left->isSelected())
-                           k->left->setVisible(true);
+                   if (k->leftNode) {
+                       if (k->leftNode->isSelected())
+                           k->leftNode->setVisible(true);
                        else
-                           k->left->setVisible(false);
+                           k->leftNode->setVisible(false);
                    }
 
-                   if (k->right) {
-                       if (k->right->isSelected())
-                           k->right->setVisible(true);
+                   if (k->rightNode) {
+                       if (k->rightNode->isSelected())
+                           k->rightNode->setVisible(true);
                        else
-                           k->right->setVisible(false);
+                           k->rightNode->setVisible(false);
                    }
                    update();
                }
@@ -224,19 +230,19 @@ QVariant KControlNode::itemChange(GraphicsItemChange change, const QVariant &val
 
 void KControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (k->nodeParent) {
+    if (k->centralNode) {
 
         setSelected(true);
-        k->nodeParent->setSelected(true);
+        k->centralNode->setSelected(true);
 
-        if (k->nodeParent->left()) {
-            if (k->nodeParent->left() != this)
-                k->nodeParent->left()->setSelected(false);
+        if (k->centralNode->left()) {
+            if (k->centralNode->left() != this)
+                k->centralNode->left()->setSelected(false);
         }
 
-        if (k->nodeParent->right()) {
-            if (k->nodeParent->right() != this)
-                k->nodeParent->right()->setSelected(false);
+        if (k->centralNode->right()) {
+            if (k->centralNode->right() != this)
+                k->centralNode->right()->setSelected(false);
         }
 
     } else {
@@ -245,7 +251,7 @@ void KControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     QGraphicsItem::mousePressEvent(event);
     
-    k->parent->setSelected(true);
+    k->graphicParent->setSelected(true);
     setVisibleChilds(true);
     
     event->accept();
@@ -268,7 +274,7 @@ void KControlNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
     foreach (QGraphicsItem *item, scene()->selectedItems()) {
              if (qgraphicsitem_cast<KControlNode*>(item)) {
                  // TODO: Change this ugly if
-                 if (k->nodeParent) { 
+                 if (k->centralNode) { 
                      kFatal() << "KControlNode::mouseMoveEvent -> there's node parent";
                  } else {
                      if (item != this)
@@ -287,62 +293,62 @@ void KControlNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 void KControlNode::setLeft(KControlNode *left)
 {
-    if (k->left)
-        delete k->left;
+    if (k->leftNode)
+        delete k->leftNode;
 
-    k->left = left;
-    k->left->setVisible(false);
-    k->left->setNodeParent(this);
-    k->left->setZValue(zValue()+1);
+    k->leftNode = left;
+    k->leftNode->setVisible(false);
+    k->leftNode->setCentralNode(this);
+    k->leftNode->setZValue(zValue()+1);
 }
 
 void KControlNode::setRight(KControlNode *right)
 {
     if (right)
-        delete k->right;
+        delete k->rightNode;
 
-    k->right = right;
-    k->right->setVisible(false);
-    k->right->setNodeParent(this);
-    k->right->setZValue(zValue()+2);
+    k->rightNode = right;
+    k->rightNode->setVisible(false);
+    k->rightNode->setCentralNode(this);
+    k->rightNode->setZValue(zValue()+2);
 }
 
-void KControlNode::setNodeParent(KControlNode *nodeParent)
+void KControlNode::setCentralNode(KControlNode *centralNode)
 {
-    k->nodeParent = nodeParent;
+    k->centralNode = centralNode;
 }
 
 void KControlNode::setVisibleChilds(bool visible)
 {
-    if (k->left)
-        k->left->setVisible(visible);
+    if (k->leftNode)
+        k->leftNode->setVisible(visible);
 
-    if (k->right)
-        k->right->setVisible(visible);
+    if (k->rightNode)
+        k->rightNode->setVisible(visible);
 }
 
 void KControlNode::setSeletedChilds(bool select)
 {
-    if (k->left)
-        k->left->setSelected(select);
+    if (k->leftNode)
+        k->leftNode->setSelected(select);
 
-    if (k->right)
-        k->right->setSelected(select);
+    if (k->rightNode)
+        k->rightNode->setSelected(select);
 }
 
 KControlNode *KControlNode::left()
 {
-    return k->left;
+    return k->leftNode;
 }
 
 KControlNode *KControlNode::right()
 {
-    return k->right;
+    return k->rightNode;
 }
 
-KControlNode *KControlNode::nodeParent()
+KControlNode *KControlNode::centralNode()
 {
-    return k->nodeParent;
+    return k->centralNode;
 }
 
 int KControlNode::index() const
@@ -350,17 +356,17 @@ int KControlNode::index() const
     return k->index;
 }
 
-void KControlNode::changeParent(QGraphicsItem *newParent)
+void KControlNode::setGraphicParent(QGraphicsItem *newParent)
 {
-    k->parent = newParent;
+    k->graphicParent = newParent;
 }
 
 QGraphicsItem * KControlNode::parentI()
 {
-    return k->parent;
+    return k->graphicParent;
 }
 
-void KControlNode::setNotChange(bool notChange)
+void KControlNode::setNotChange(bool unchanged)
 {
-    k->notChange = notChange;
+    k->unchanged = unchanged;
 }

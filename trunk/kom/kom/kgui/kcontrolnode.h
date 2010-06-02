@@ -45,7 +45,7 @@ class KControlNode : public QObject, public QGraphicsItem
     public:
         
         KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos = QPoint(0,0),  
-                     QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
+                     QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
         
         ~KControlNode();
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
@@ -56,15 +56,15 @@ class KControlNode : public QObject, public QGraphicsItem
         
         void setLeft(KControlNode *left);
         void setRight(KControlNode *right);
-        void setNodeParent(KControlNode *nodeParent);
+        void setCentralNode(KControlNode *centralNode);
         int index() const;
         
-        void changeParent(QGraphicsItem * newParent);
+        void setGraphicParent(QGraphicsItem * newParent);
         QGraphicsItem *parentI();
         
         KControlNode *left();
         KControlNode *right();
-        KControlNode *nodeParent();
+        KControlNode *centralNode();
         
         void setNotChange(bool notChange);
         

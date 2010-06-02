@@ -94,7 +94,7 @@ void KNodeGroup::setParentItem(QGraphicsItem *newParent)
     k->parentItem = newParent;
     foreach (KControlNode *node, k->nodes) {
              if (node)
-                 node->changeParent(newParent);
+                 node->setGraphicParent(newParent);
     }
 }
 
@@ -108,8 +108,10 @@ void KNodeGroup::moveElementTo(int index, const QPointF& pos)
     qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->setPath(path);
     
     if (k->changedNodes.contains(index)) {
+        kFatal() << "KNodeGroup::moveElementTo <- Updating node position!";
         (*k->changedNodes.find(index)) = pos;
     } else {
+        kFatal() << "KNodeGroup::moveElementTo <- Inserting node!";
         k->changedNodes.insert(index, pos);
         emit itemChanged(k->parentItem);
     }
