@@ -100,6 +100,8 @@ void KNodeGroup::setParentItem(QGraphicsItem *newParent)
 
 void KNodeGroup::moveElementTo(int index, const QPointF& pos)
 {
+    kFatal() << "KNodeGroup::moveElementTo <- Tracing a little dot!";  
+
     QPainterPath path = qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path();
     path.setElementPositionAt(index,pos.x(), pos.y());
     QPainterPath::Element e = path.elementAt(0);
