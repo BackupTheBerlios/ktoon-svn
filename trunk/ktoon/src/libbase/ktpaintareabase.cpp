@@ -308,19 +308,11 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 
     painter->setRenderHint(QPainter::Antialiasing, hasAntialiasing);
     painter->restore();
-
-    kFatal() << "HEY! *** Tracing KTPaintAreaBase::drawBackground()";
 }
 
 void KTPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
 {
     KTScene *currentScene = k->scene->scene();
-
-    /*
-    kFatal() << "";
-    kFatal() << "KTPaintAreaBase::drawForeground - LAYERS TOTAL: " << currentScene->layersTotal();
-    kFatal() << "";
-    */
 
     if (!currentScene) {
         drawPadLock(painter, rect, tr("No Scene!"));
@@ -334,8 +326,6 @@ void KTPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
             drawPadLock(painter, rect, tr("No Layers!"));
         }
     }
-
-    kFatal() << "HEY! *** Tracing KTPaintAreaBase::drawForeground()";
 }
 
 void KTPaintAreaBase::drawPadLock(QPainter *painter, const QRectF &rect, QString text)

@@ -1071,6 +1071,11 @@
         <translation>Ilustración</translation>
     </message>
     <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="309"/>
+        <source>News</source>
+        <translation>Noticias</translation>
+    </message>
+    <message>
         <location filename="../../ktmainwindow_gui.cpp" line="322"/>
         <source>Help</source>
         <translation>Ayuda</translation>

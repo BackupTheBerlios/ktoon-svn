@@ -319,7 +319,9 @@ void PolyLine::endItem()
 
 void PolyLine::nodeChanged()
 {
-    K_FUNCINFO;
+    #ifdef K_DEBUG
+       K_FUNCINFO;
+    #endif
 
     if (k->nodegroup) {
         // SHOW_VAR(!d->nodegroup->changedNodes().isEmpty());
@@ -335,8 +337,14 @@ void PolyLine::nodeChanged()
 
                 k->nodegroup->restoreItem();
                 emit requested(&event);
+            } else {
+                kFatal() << "ERROR: position == -1 && No nodegroup parent item";
             }
+        } else {
+            kFatal() << "ERROR: There are no changedNodes!";
         }
+    } else {
+        kFatal() << "ERROR: There's no nodegroup!";
     }
 }
 

@@ -267,7 +267,6 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
                 k->objectCounter++;
                 item->setOpacity(opacity);
                 item->setZValue(factor);
-                kFatal() << "Z FACTOR: " << factor;
                 addItem(item);
             }
         }
