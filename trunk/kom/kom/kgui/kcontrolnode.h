@@ -60,13 +60,13 @@ class KControlNode : public QObject, public QGraphicsItem
         int index() const;
         
         void setGraphicParent(QGraphicsItem * newParent);
-        QGraphicsItem *parentI();
+        QGraphicsItem *graphicParent();
         
         KControlNode *left();
         KControlNode *right();
         KControlNode *centralNode();
         
-        void setNotChange(bool notChange);
+        void hasChanged(bool notChange);
         
     protected:
         QVariant itemChange(GraphicsItemChange change, const QVariant &value);
@@ -75,10 +75,10 @@ class KControlNode : public QObject, public QGraphicsItem
         void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
      
     private:
-        void paintLinesToChilds(QPainter * painter);
+        void paintLinesToChildNodes(QPainter * painter);
         
     public slots:
-        void setVisibleChilds(bool visible);
+        void showChildNodes(bool visible);
         void setSeletedChilds(bool select);
         
     signals:

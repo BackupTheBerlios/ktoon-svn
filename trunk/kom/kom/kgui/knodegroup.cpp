@@ -74,7 +74,7 @@ void KNodeGroup::syncNodes(const QPainterPath & path)
 
     foreach (KControlNode *node, k->nodes) {
              if (node) {
-                 node->setNotChange(true);
+                 node->hasChanged(true);
                  node->setPos(path.elementAt(node->index()));
              }
     }

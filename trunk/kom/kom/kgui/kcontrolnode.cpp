@@ -52,8 +52,8 @@ struct KControlNode::Private
     QGraphicsScene *scene;
 };
 
-KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos, QGraphicsItem * graphicParent,  
-                           QGraphicsScene * scene) : QGraphicsItem(0, scene), k(new Private)
+KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos, QGraphicsItem *graphicParent,  
+                           QGraphicsScene *scene) : QGraphicsItem(0, scene), k(new Private)
 {
     k->index  = index;
     k->graphicParent = 0;
@@ -118,13 +118,13 @@ void KControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
         c.setRed(100);
 
     painter->setBrush(c);
-    paintLinesToChilds(painter);
+    paintLinesToChildNodes(painter);
     
     painter->drawRoundRect(boundingRect());
     // painter->setRenderHint(QPainter::Antialiasing, antialiasing);
 }
 
-void KControlNode::paintLinesToChilds(QPainter * painter)
+void KControlNode::paintLinesToChildNodes(QPainter * painter)
 {
     QMatrix inverted = sceneMatrix().inverted();
     painter->save();
@@ -148,24 +148,24 @@ void KControlNode::paintLinesToChilds(QPainter * painter)
 QRectF KControlNode::boundingRect() const
 {
     QSizeF size(8 , 8);
-    QRectF r(QPointF(-size.width()/2, -size.height()/2), size);
+    QRectF rect(QPointF(-size.width()/2, -size.height()/2), size);
 
     if (k->rightNode) {
         if (k->rightNode->isVisible())
-            r.unite(k->rightNode->boundingRect());
+            rect.unite(k->rightNode->boundingRect());
     }
 
     if (k->leftNode) {
         if (k->leftNode->isVisible())
-           r.unite(k->leftNode->boundingRect());
+           rect.unite(k->leftNode->boundingRect());
     }
 
-    return r;
+    return rect;
 }
 
 QVariant KControlNode::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    kFatal() << "1 KControlNode::itemChange -> Just starting!";
+    kFatal() << "1 KControlNode::itemChange -> GraphicsItemChange : " << change;
 
     if (change == QGraphicsItem::ItemPositionChange) {
         if (!k->unchanged) {
@@ -202,7 +202,7 @@ QVariant KControlNode::itemChange(GraphicsItemChange change, const QVariant &val
                if (value.toBool()) {
                    kFatal() << "6 KControlNode::itemChange -> value = true";
                    k->graphicParent->setSelected(true);
-                   setVisibleChilds(true);
+                   showChildNodes(true);
                } else {
 
                    kFatal() << "7 KControlNode::itemChange -> value = false";
@@ -252,7 +252,7 @@ void KControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mousePressEvent(event);
     
     k->graphicParent->setSelected(true);
-    setVisibleChilds(true);
+    showChildNodes(true);
     
     event->accept();
 }
@@ -275,12 +275,21 @@ void KControlNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
              if (qgraphicsitem_cast<KControlNode*>(item)) {
                  // TODO: Change this ugly if
                  if (k->centralNode) { 
-                     kFatal() << "KControlNode::mouseMoveEvent -> there's node parent";
+                     kFatal() << "KControlNode::mouseMoveEvent -> It's node parent";
                  } else {
-                     if (item != this)
+                     if (item != this) {
                          item->moveBy(event->pos().x(), event->pos().y());
-                     else
-                         kFatal() << "KControlNode::mouseMoveEvent -> Item IS this!";
+                     } else {
+                         kFatal() << "KControlNode::mouseMoveEvent -> Item IS this! - Index: " << k->index;
+                         /* 
+                         QPointF scenePos = k->graphicParent->mapFromScene(event->pos());
+                         if (k->nodeGroup) {
+                             k->nodeGroup->moveElementTo(k->index, scenePos);
+                         } else {
+                             kFatal() << "KControlNode::mouseMoveEvent -> No k->nodeGroup";
+                         }
+                         */
+                     }
                  }
              } else {
                  kFatal() << "KControlNode::mouseMoveEvent -> no control node ";
@@ -318,7 +327,7 @@ void KControlNode::setCentralNode(KControlNode *centralNode)
     k->centralNode = centralNode;
 }
 
-void KControlNode::setVisibleChilds(bool visible)
+void KControlNode::showChildNodes(bool visible)
 {
     if (k->leftNode)
         k->leftNode->setVisible(visible);
@@ -361,12 +370,12 @@ void KControlNode::setGraphicParent(QGraphicsItem *newParent)
     k->graphicParent = newParent;
 }
 
-QGraphicsItem * KControlNode::parentI()
+QGraphicsItem * KControlNode::graphicParent()
 {
     return k->graphicParent;
 }
 
-void KControlNode::setNotChange(bool unchanged)
+void KControlNode::hasChanged(bool unchanged)
 {
     k->unchanged = unchanged;
 }
