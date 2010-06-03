@@ -78,9 +78,9 @@ PolyLine::PolyLine(): k(new Private)
     k->item = 0;
     
     k->line1 = new QGraphicsLineItem(0,0,0,0);
-    k->line1->setPen ( QPen(Qt::red) );
+    k->line1->setPen(QPen(Qt::red));
     k->line2 = new QGraphicsLineItem(0,0,0,0);
-    k->line2->setPen ( QPen(Qt::green) );
+    k->line2->setPen(QPen(Qt::green));
     
     setupActions();
 }
@@ -338,13 +338,13 @@ void PolyLine::nodeChanged()
                 k->nodegroup->restoreItem();
                 emit requested(&event);
             } else {
-                kFatal() << "ERROR: position == -1 && No nodegroup parent item";
+                kFatal() << "PolyLine::nodeChanged() -> ERROR: position == -1 && No nodegroup parent item";
             }
         } else {
-            kFatal() << "ERROR: There are no changedNodes!";
+            kFatal() << "PolyLine::nodeChanged() -> ERROR: There are no changedNodes!";
         }
     } else {
-        kFatal() << "ERROR: There's no nodegroup!";
+        kFatal() << "PolyLine::nodeChanged() -> ERROR: There's no nodegroup!";
     }
 }
 
