@@ -27,7 +27,6 @@
  ***************************************************************************/
 
 #include "knodegroup.h"
-
 #include <kcore/kdebug.h>
 
 #include <QGraphicsPathItem>
@@ -100,18 +99,14 @@ void KNodeGroup::setParentItem(QGraphicsItem *newParent)
 
 void KNodeGroup::moveElementTo(int index, const QPointF& pos)
 {
-    kFatal() << "KNodeGroup::moveElementTo <- Tracing a little dot!";  
-
     QPainterPath path = qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->path();
     path.setElementPositionAt(index,pos.x(), pos.y());
     QPainterPath::Element e = path.elementAt(0);
     qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)->setPath(path);
     
     if (k->changedNodes.contains(index)) {
-        kFatal() << "KNodeGroup::moveElementTo <- Updating node position!";
         (*k->changedNodes.find(index)) = pos;
     } else {
-        kFatal() << "KNodeGroup::moveElementTo <- Inserting node!";
         k->changedNodes.insert(index, pos);
         emit itemChanged(k->parentItem);
     }
@@ -137,9 +132,8 @@ void KNodeGroup::show()
 {
     foreach (KControlNode *node, k->nodes) {
              if (qgraphicsitem_cast<QGraphicsPathItem *>(k->parentItem)) {
-                 if (!node->scene()) {
+                 if (!node->scene())
                      k->scene->addItem(node);
-                 }
              }
     }
 }
@@ -239,7 +233,7 @@ void KNodeGroup::emitNodeClicked()
 void KNodeGroup::expandAllNodes()
 {
     foreach (KControlNode *node, k->nodes)
-             node->setVisibleChilds(true);
+             node->showChildNodes(true);
 }
 
 bool KNodeGroup::isSelected()

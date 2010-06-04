@@ -52,8 +52,9 @@ struct KControlNode::Private
     QGraphicsScene *scene;
 };
 
-KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos, QGraphicsItem *graphicParent,  
-                           QGraphicsScene *scene) : QGraphicsItem(0, scene), k(new Private)
+KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos, 
+                           QGraphicsItem *graphicParent, QGraphicsScene *scene) : 
+                           QGraphicsItem(0, scene), k(new Private)
 {
     k->index  = index;
     k->graphicParent = 0;
@@ -67,6 +68,7 @@ KControlNode::KControlNode(int index, KNodeGroup *nodeGroup, const QPointF & pos
     QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor));
     setFlag(ItemIsSelectable, true);
     setFlag(ItemIsMovable, true);
+    setFlag(ItemSendsGeometryChanges, true);
     
     setPos(pos);
     // FIXME: The Zvalue for nodes must be relative to the QGraphicsItem variable
@@ -165,13 +167,9 @@ QRectF KControlNode::boundingRect() const
 
 QVariant KControlNode::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    kFatal() << "1 KControlNode::itemChange -> GraphicsItemChange : " << change;
-
     if (change == QGraphicsItem::ItemPositionChange) {
         if (!k->unchanged) {
             if (qgraphicsitem_cast<QGraphicsPathItem*>(k->graphicParent)) {
-
-                kFatal() << "2 KControlNode::itemChange -> ItemPositionChange";
 
                 QPointF diff = value.toPointF() - pos();
                 if (k->leftNode)
@@ -182,30 +180,18 @@ QVariant KControlNode::itemChange(GraphicsItemChange change, const QVariant &val
 
                 QPointF scenePos = k->graphicParent->mapFromScene(value.toPointF());
 
-                if (k->nodeGroup) {
+                if (k->nodeGroup)
                     k->nodeGroup->moveElementTo(k->index, scenePos);
-                    kFatal() << "2A KControlNode::itemChange -> Moving point!!!";
-                } else {
-                    kFatal() << "3 KControlNode::itemChange -> No k->nodeGroup";
-                }
-           } else {
-                kFatal() << "3A KControlNode::itemChange -> cast for QGraphicsPathItem has failed!";
-           }
+           } 
         } else {
            k->unchanged = false;
-           kFatal() << "4 KControlNode::itemChange -> no Change";
         }
     } else if (change == QGraphicsItem::ItemSelectedChange) {
 
-               kFatal() << "5 KControlNode::itemChange -> ItemSelectedChange";
-
                if (value.toBool()) {
-                   kFatal() << "6 KControlNode::itemChange -> value = true";
                    k->graphicParent->setSelected(true);
                    showChildNodes(true);
                } else {
-
-                   kFatal() << "7 KControlNode::itemChange -> value = false";
                    if (k->leftNode) {
                        if (k->leftNode->isSelected())
                            k->leftNode->setVisible(true);
@@ -222,8 +208,6 @@ QVariant KControlNode::itemChange(GraphicsItemChange change, const QVariant &val
                    update();
                }
     }
-
-    kFatal() << "8 KControlNode::itemChange -> Done";
 
     return QGraphicsItem::itemChange(change, value);
 }
@@ -259,41 +243,22 @@ void KControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void KControlNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    kFatal() << "KControlNode::mouseReleaseEvent -> CALLING INFANTRY!";
-
     k->nodeGroup->emitNodeClicked();
 
-    // TODO: Why this instruction makes the system crash in Qt 4.5? 
-    QGraphicsItem::mouseReleaseEvent(event);
+    // Fixme: Why this instruction makes the system crash in Qt 4.5? 
+    // QGraphicsItem::mouseReleaseEvent(event);
 }
 
 void KControlNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
-    kFatal() << "KControlNode::mouseMoveEvent -> Moving node!";
-
     foreach (QGraphicsItem *item, scene()->selectedItems()) {
              if (qgraphicsitem_cast<KControlNode*>(item)) {
-                 // TODO: Change this ugly if
-                 if (k->centralNode) { 
-                     kFatal() << "KControlNode::mouseMoveEvent -> It's node parent";
-                 } else {
+                 if (!k->centralNode) { 
                      if (item != this) {
                          item->moveBy(event->pos().x(), event->pos().y());
-                     } else {
-                         kFatal() << "KControlNode::mouseMoveEvent -> Item IS this! - Index: " << k->index;
-                         /* 
-                         QPointF scenePos = k->graphicParent->mapFromScene(event->pos());
-                         if (k->nodeGroup) {
-                             k->nodeGroup->moveElementTo(k->index, scenePos);
-                         } else {
-                             kFatal() << "KControlNode::mouseMoveEvent -> No k->nodeGroup";
-                         }
-                         */
-                     }
+                     } 
                  }
-             } else {
-                 kFatal() << "KControlNode::mouseMoveEvent -> no control node ";
-             }
+             } 
     }
 
     setPos(event->scenePos());
