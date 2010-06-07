@@ -453,6 +453,9 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                     k->tool->begin();
                     k->isDrawing = true;
                     k->tool->press(k->inputInformation, k->brushManager, this);
+                } else {
+                    if (event->buttons() == Qt::RightButton && k->tool->currentTool().compare(tr("Zoom")) == 0)
+                        k->tool->press(k->inputInformation, k->brushManager, this);
                 }
             } 
         }

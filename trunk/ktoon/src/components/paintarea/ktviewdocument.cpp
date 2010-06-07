@@ -382,7 +382,7 @@ void KTViewDocument::selectTool()
     if (action) {
         KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
         k->currentTool = tool; 
-        QString toolStr = action->text();
+        QString toolStr = tr("%1").arg(action->text());
         k->paintArea->setCurrentTool(toolStr);
         kDebug() << "*** Brush: " << toolStr;
         int minWidth = 0;

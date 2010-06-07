@@ -84,24 +84,34 @@ void ViewTool::setupActions()
 
 void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    Q_UNUSED(brushManager);
+
     kFatal() << "Pressing! pressing pressing! : " << input->button();
 
-    Q_UNUSED(brushManager);
     m_rect = new QGraphicsRectItem(QRectF(input->pos(), QSize(0,0)));
     m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
     scene->addItem(m_rect);
 
     foreach (QGraphicsView * view, scene->views()) {
              if (currentTool() == tr("Zoom")) {
-                 if (!m_configurator->zoomIn()) {
+                 if (input->button() == Qt::LeftButton) {
                      QPointF point1(view->mapToScene(QPoint(0,0)));
                      QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
-                     int width = point2.x() - point1.x();
-                     if (width < 888)
-                         //view->scale(1/1.5, 1/1.5);
-                         view->scale(m_configurator->getFactor(), m_configurator->getFactor());
-                     if (width > 50)
-                         stop = false;
+                     view->scale(1.2, 1.2);
+                 } else {
+                     if (input->button() == Qt::RightButton) {
+                         QPointF point1(view->mapToScene(QPoint(0,0)));
+                         QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
+                         view->scale(0.8, 0.8);
+                         /*
+                          int width = point2.x() - point1.x();
+                          if (width < 888)
+                              //view->scale(1/1.5, 1/1.5);
+                              view->scale(m_configurator->getFactor(), m_configurator->getFactor());
+                          if (width > 50)
+                              stop = false;
+                         */
+                     }
                  }
              }
     }
@@ -122,8 +132,25 @@ void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
     if (currentTool() == tr("Zoom")) {
         if (m_configurator->zoomIn()) {
             if (!stop) {
+
+                int xMouse = input->pos().x();
+                int yMouse = input->pos().y();
                 QRectF rect = m_rect->rect();
-                rect.setBottomRight(input->pos());
+                int xInit = m_rect->pos().x(); 
+                int yInit = m_rect->pos().y();
+
+                if (xMouse >= xInit) {
+                    if (yMouse >= yInit)
+                        rect.setBottomRight(input->pos()); 
+                    else
+                        rect.setTopRight(input->pos());
+                } else {
+                    if (yMouse >= yInit)
+                        rect.setBottomLeft(input->pos());
+                    else
+                        rect.setTopLeft(input->pos());
+                }
+
                 m_rect->setRect(rect);
                 rect = rect.normalized(); 
 
