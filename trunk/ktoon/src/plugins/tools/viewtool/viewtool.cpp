@@ -70,17 +70,22 @@ QStringList ViewTool::keys() const
 void ViewTool::setupActions()
 {
     KAction *action1 = new KAction(QIcon(THEME_DIR + "icons/magnifying.png"), tr("Zoom"), this);
-    action1->setShortcut(QKeySequence(tr("")));
+    action1->setShortcut(QKeySequence(tr("z")));
     action1->setCursor(QCursor(THEME_DIR + "cursors/magnifying.png"));
     
     m_actions.insert(tr("Zoom"), action1);
     
     KAction *action2 = new KAction(QIcon(THEME_DIR + "icons/hand.png"), tr("Hand"), this);
+    action2->setShortcut(QKeySequence(tr("h")));
+    action2->setCursor(QCursor(THEME_DIR + "cursors/hand.png"));
+
     m_actions.insert(tr("Hand"), action2);
 }
 
 void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    kFatal() << "Pressing! pressing pressing! : " << input->button();
+
     Q_UNUSED(brushManager);
     m_rect = new QGraphicsRectItem(QRectF(input->pos(), QSize(0,0)));
     m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
@@ -105,6 +110,7 @@ void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
+
     foreach (QGraphicsView * view, scene->views()) {
              if (currentTool() == tr("Zoom")) {
                  view->setDragMode(QGraphicsView::NoDrag);
@@ -114,11 +120,10 @@ void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
     }
     
     if (currentTool() == tr("Zoom")) {
-
         if (m_configurator->zoomIn()) {
             if (!stop) {
                 QRectF rect = m_rect->rect();
-                rect.setBottomLeft(input->pos());
+                rect.setBottomRight(input->pos());
                 m_rect->setRect(rect);
                 rect = rect.normalized(); 
 
@@ -131,7 +136,7 @@ void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
 
     } else if (currentTool() == tr("Hand")) {
         m_scene = scene;
-    }
+    } 
 }
 
 void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)

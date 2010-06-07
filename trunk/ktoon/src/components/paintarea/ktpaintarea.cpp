@@ -127,56 +127,60 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
            K_FUNCINFO;
     #endif
 
-    if (event->buttons() == Qt::RightButton) {
+    kFatal() << "CurrentTool: " << k->currentTool;
 
-        if (QGraphicsItem *item = scene()->itemAt(mapToScene(event->pos()))) {
-            item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-            item->setSelected(true);
-        }
+    if (k->currentTool.compare(tr("Object Selection")) == 0) {
 
-        QMenu *menu = new QMenu(tr("Drawing area"));
-        menu->addAction(kApp->findGlobalAction("undo"));
-        menu->addAction(kApp->findGlobalAction("redo"));
-        menu->addSeparator();
+        if (event->buttons() == Qt::RightButton) {
 
-        QAction *cut = menu->addAction(tr("Cut"), this, SLOT(cutItems()));
-        QAction *copy = menu->addAction(tr("Copy"), this, SLOT(copyItems()));
-        QAction *paste = menu->addAction(tr("Paste"), this, SLOT(pasteItems()));
-        QAction *del = menu->addAction(tr("Delete"), this, SLOT(deleteItems()));
+            if (QGraphicsItem *item = scene()->itemAt(mapToScene(event->pos()))) {
+                item->setFlag(QGraphicsItem::ItemIsSelectable, true);
+                item->setSelected(true);
+            }
 
-        menu->addSeparator();
-        QMenu *order = new QMenu(tr("Order"));
-
-        connect(order, SIGNAL(triggered(QAction*)), this, SLOT(requestMoveSelectedItems(QAction*)));
-        order->addAction(tr("Send to back"))->setData(MoveBack);
-        order->addAction(tr("Bring to front"))->setData(MoveFront);
-        order->addAction(tr("Send backwards"))->setData(MoveBackwards);
-        order->addAction(tr("Brind forwards"))->setData(MoveForwards);
-
-        menu->addMenu(order);
-        menu->addSeparator();
-
-        // Code commented temporary while SQA is done
-        QAction *addItem = menu->addAction(tr("Add to library..."), this, SLOT(addSelectedItemsToLibrary()));
-        menu->addSeparator();
-
-        if (scene()->selectedItems().isEmpty()) {
-            del->setEnabled(false);
-            cut->setEnabled(false);
-            copy->setEnabled(false);
-            addItem->setEnabled(false);
-        }
-
-        if (k->copiesXml.isEmpty())
-            paste->setEnabled(false);
-
-        if (QMenu *toolMenu = graphicsScene()->currentTool()->menu()) {
+            QMenu *menu = new QMenu(tr("Drawing area"));
+            menu->addAction(kApp->findGlobalAction("undo"));
+            menu->addAction(kApp->findGlobalAction("redo"));
             menu->addSeparator();
-            menu->addMenu(toolMenu);
+
+            QAction *cut = menu->addAction(tr("Cut"), this, SLOT(cutItems()));
+            QAction *copy = menu->addAction(tr("Copy"), this, SLOT(copyItems()));
+            QAction *paste = menu->addAction(tr("Paste"), this, SLOT(pasteItems()));
+            QAction *del = menu->addAction(tr("Delete"), this, SLOT(deleteItems()));
+
+            menu->addSeparator();
+            QMenu *order = new QMenu(tr("Order"));
+
+            connect(order, SIGNAL(triggered(QAction*)), this, SLOT(requestMoveSelectedItems(QAction*)));
+            order->addAction(tr("Send to back"))->setData(MoveBack);
+            order->addAction(tr("Bring to front"))->setData(MoveFront);
+            order->addAction(tr("Send backwards"))->setData(MoveBackwards);
+            order->addAction(tr("Brind forwards"))->setData(MoveForwards);
+
+            menu->addMenu(order);
+            menu->addSeparator();
+
+            // Code commented temporary while SQA is done
+            QAction *addItem = menu->addAction(tr("Add to library..."), this, SLOT(addSelectedItemsToLibrary()));
+            menu->addSeparator();
+
+            if (scene()->selectedItems().isEmpty()) {
+                del->setEnabled(false);
+                cut->setEnabled(false);
+                copy->setEnabled(false);
+                addItem->setEnabled(false);
+            }
+
+            if (k->copiesXml.isEmpty())
+                paste->setEnabled(false);
+
+            if (QMenu *toolMenu = graphicsScene()->currentTool()->menu()) {
+                menu->addSeparator();
+                menu->addMenu(toolMenu);
+            }
+
+            menu->exec(event->globalPos());
         }
-
-        menu->exec(event->globalPos());
-
     } else {
         KTPaintAreaBase::mousePressEvent(event);
     }

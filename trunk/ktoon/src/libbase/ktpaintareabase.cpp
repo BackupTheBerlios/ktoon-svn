@@ -115,6 +115,7 @@ KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), k(ne
     centerDrawingArea();
     setUseOpenGL(false);
     setInteractive(true);
+    setMouseTracking(true); 
 
     restoreState();
 }
@@ -364,11 +365,11 @@ bool KTPaintAreaBase::canPaint() const
         KTFrame *frame = k->scene->currentFrame();
 
         if (frame) {
-            kFatal() << "SORRY, THE PROBLEM IS THE FRAME";
+            kFatal() << "KTPaintAreaBase::canPaint() : SORRY, THE PROBLEM IS THE FRAME";
             return !frame->isLocked();
         }
     } else {
-        kFatal() << "SORRY, THERE'S NO SCENE";
+        kFatal() << "KTPaintAreaBase::canPaint() : SORRY, THERE'S NO SCENE";
     }
 
     return false;

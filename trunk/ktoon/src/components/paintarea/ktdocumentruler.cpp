@@ -30,6 +30,7 @@
  ***************************************************************************/
 
 #include "ktdocumentruler.h"
+#include <kcore/kdebug.h>
 
 #include <iostream>
 using namespace std;
