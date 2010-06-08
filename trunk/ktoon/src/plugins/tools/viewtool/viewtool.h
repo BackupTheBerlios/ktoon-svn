@@ -75,7 +75,6 @@ class ViewTool: public KTToolPlugin
         QGraphicsRectItem *m_rect;
         KTGraphicsScene *m_scene;
         ZoomConfigurator *m_configurator;
-        bool stop;
 };
 
 #endif

@@ -256,7 +256,7 @@ void KTwitter::formatStatus(QByteArray array)
      html += "       <center>" + tr("Latest version") + ": <b>" + k->version + "</b> &nbsp;&nbsp;&nbsp;" + tr("Revision") + ": <b>" + k->revision + "</b> &nbsp;&nbsp;&nbsp;" + tr("Code Name") + ": <b>" + k->codeName + "</b>";
 
      if (k->update)
-         html += "&nbsp;&nbsp;&nbsp;<b>[</b> <a href=\"http://www.ktoon.net\">" + tr("Update here!") + "</a>  <b>]</b>"; 
+         html += "<br/><b>[</b> <a href=\"http://www.ktoon.net\">" + tr("Update here!") + "</a>  <b>]</b>"; 
 
      html += "</center>\n";
 

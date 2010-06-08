@@ -127,8 +127,6 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
            K_FUNCINFO;
     #endif
 
-    kFatal() << "CurrentTool: " << k->currentTool;
-
     if (k->currentTool.compare(tr("Object Selection")) == 0) {
 
         if (event->buttons() == Qt::RightButton) {

@@ -83,7 +83,7 @@ void KTToolPlugin::end()
     kDebug("tools") << "End: " << k->currentTool;
 }
 
-void KTToolPlugin::itemResponse( const KTItemResponse *event)
+void KTToolPlugin::itemResponse(const KTItemResponse *event)
 {
     Q_UNUSED(event);
 }

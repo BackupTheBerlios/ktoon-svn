@@ -456,7 +456,7 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                     k->tool->press(k->inputInformation, k->brushManager, this);
                 } else {
                     // TODO: To find the way to enhance this condition only for zoom tool
-                    if (event->buttons() == Qt::RightButton && k->tool->toolType() == KTToolPlugin::View)
+                    if (k->tool->toolType() == KTToolPlugin::View)
                         k->tool->press(k->inputInformation, k->brushManager, this);
                 }
             } 
@@ -491,6 +491,10 @@ void KTGraphicsScene::mouseReleased(QGraphicsSceneMouseEvent *event)
     if (k->tool && k->isDrawing) {
         k->tool->release(k->inputInformation, k->brushManager, this);
         k->tool->end();
+    } else {
+        // TODO: To find the way to enhance this condition only for zoom tool
+           if (k->tool->toolType() == KTToolPlugin::View) 
+               k->tool->release(k->inputInformation, k->brushManager, this);
     }
 
     k->isDrawing = false;

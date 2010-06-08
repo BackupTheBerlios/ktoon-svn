@@ -53,7 +53,6 @@ ViewTool::ViewTool() : m_rect(0), m_scene(0), m_configurator(0)
 {
     KINIT;
 
-    // stop = false;
     setupActions();
 }
 
@@ -85,32 +84,6 @@ void ViewTool::setupActions()
 void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
-
-    kFatal() << "Pressing! pressing pressing! : " << input->button();
-
-    if (currentTool() == tr("Zoom")) {
-
-        m_rect = new QGraphicsRectItem(QRectF(input->pos(), QSize(0,0)));
-        m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
-        //scene->addItem(m_rect);
-
-        foreach (QGraphicsView * view, scene->views()) {
-                 if (input->button() == Qt::LeftButton) {
-                     //QPointF point1(view->mapToScene(QPoint(0,0)));
-                     //QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
-                     view->centerOn(input->pos());
-                     view->scale(1 + m_configurator->getFactor(), 1 + m_configurator->getFactor()); 
-                 } else {
-                     if (input->button() == Qt::RightButton) {
-                         //QPointF point1(view->mapToScene(QPoint(0,0)));
-                         //QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
-                         view->centerOn(input->pos());
-                         view->scale(1 - m_configurator->getFactor(), 1 - m_configurator->getFactor());
-                     }
-                 }
-        }
-
-    }
 }
 
 void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -123,6 +96,9 @@ void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
              else if (currentTool() == tr("Hand"))
                       view->setDragMode(QGraphicsView::ScrollHandDrag);
     }
+
+    /*
+    SQA: Check this code and try to make rect-selection-zoom work
     
     if (currentTool() == tr("Zoom")) {
 
@@ -158,11 +134,27 @@ void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
     } else if (currentTool() == tr("Hand")) {
                m_scene = scene;
     } 
+
+    */
 }
 
 void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
+
+    if (currentTool() == tr("Zoom")) { 
+        foreach (QGraphicsView * view, scene->views()) {
+                 if (input->button() == Qt::LeftButton) {
+                     view->centerOn(input->pos());
+                     view->scale(1 + m_configurator->getFactor(), 1 + m_configurator->getFactor());
+                 } else {
+                     if (input->button() == Qt::RightButton) {
+                         view->centerOn(input->pos());
+                         view->scale(1 - m_configurator->getFactor(), 1 - m_configurator->getFactor());
+                     } 
+                 }
+        }
+    }
 
    /*  
     if (input->button() == Qt::LeftButton) {
