@@ -1,0 +1,39 @@
+Mental Note: I promise to enhance this manual soon! :P
+(well... ok, someday!)
+
+Dependencies for Ubuntu
+=======================
+- Open a terminal and type:
+  % sudo apt-get install build-essential
+  % sudo apt-get install subversion
+  % sudo apt-get install ruby
+  % sudo apt-get install libgstreamer0.10-dev 
+  % sudo apt-get install libaspell-dev 
+  % sudo apt-get install libavcodec-dev libavformat-dev 
+  % sudo apt-get install libqt4-gui qt4-qmake qt4-dev-tools
+
+Note: If you are not using Ubuntu, check for the equivalent
+      packages for your Linux distro
+
+Get the source and compile
+==========================
+- Firstly, the core library:
+  % svn checkout svn://svn.berlios.de/ktoon/trunk/kom
+  % cd kom
+  % ./configure --prefix=/usr
+  % make
+  % sudo make install
+
+- Secondly, the application:   
+  % svn checkout svn://svn.berlios.de/ktoon/trunk/ktoon 
+  % cd ktoon
+  % ./configure --prefix=/usr/local/ktoon
+  % make
+  % sudo make install
+  % sudo cp launcher/ktoon /usr/local/ktoon/bin
+
+Animation time!
+===============
+- Execute:
+  % /usr/local/ktoon/bin/ktoon &
+  
