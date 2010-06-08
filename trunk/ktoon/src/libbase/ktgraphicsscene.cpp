@@ -97,6 +97,7 @@ KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
     #endif
 
     setItemIndexMethod(QGraphicsScene::NoIndex);
+
     //setCurrentFrame(-1, -1);
     setCurrentFrame(0, 0);
 
@@ -454,7 +455,8 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                     k->isDrawing = true;
                     k->tool->press(k->inputInformation, k->brushManager, this);
                 } else {
-                    if (event->buttons() == Qt::RightButton && k->tool->currentTool().compare(tr("Zoom")) == 0)
+                    // TODO: To find the way to enhance this condition only for zoom tool
+                    if (event->buttons() == Qt::RightButton && k->tool->toolType() == KTToolPlugin::View)
                         k->tool->press(k->inputInformation, k->brushManager, this);
                 }
             } 
@@ -516,6 +518,9 @@ void KTGraphicsScene::keyPressEvent(QKeyEvent *event)
     QGraphicsScene::keyPressEvent(event);
 }
 
+/*
+
+// TODO: Check this code, not sure whether it does something or it is helping :S
 
 void KTGraphicsScene::dragEnterEvent(QGraphicsSceneDragDropEvent * event)
 {
@@ -535,6 +540,7 @@ void KTGraphicsScene::dragEnterEvent(QGraphicsSceneDragDropEvent * event)
         k->lines << line;
 }
 
+// TODO: Check this code, not sure whether it does something or it is helping :S
 
 void  KTGraphicsScene::dragLeaveEvent(QGraphicsSceneDragDropEvent * event)
 {
@@ -544,11 +550,15 @@ void  KTGraphicsScene::dragLeaveEvent(QGraphicsSceneDragDropEvent * event)
     delete k->lines.takeLast();
 }
 
+// TODO: Check this code, not sure whether it does something or it is helping :S
+
 void KTGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent * event)
 {
     if (!k->lines.isEmpty())
         k->lines.last()->setPos(event->scenePos());
 }
+
+// TODO: Check this code, not sure whether it does something or it is helping :S
 
 void KTGraphicsScene::dropEvent(QGraphicsSceneDragDropEvent * event)
 {
@@ -561,6 +571,8 @@ void KTGraphicsScene::dropEvent(QGraphicsSceneDragDropEvent * event)
         }
     }
 }
+
+*/
 
 bool KTGraphicsScene::event(QEvent *e)
 {

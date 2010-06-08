@@ -49,7 +49,7 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
 {
     setWindowTitle(tr("Pen"));
 
-    KCONFIG->beginGroup("Pen Parameters");
+    KCONFIG->beginGroup("PenParameters");
     int thicknessValue = KCONFIG->value("thickness", -1).toInt();
 
     // kFatal() << "KTPenWidget::KTPenWidget: " << thicknessValue;
@@ -113,7 +113,7 @@ void KTPenWidget::setThickness(int value)
     if (value > 0) {
         k->pen.setWidth(value);
 
-        KCONFIG->beginGroup("Pen Parameters");
+        KCONFIG->beginGroup("PenParameters");
         KCONFIG->setValue("thickness", value);
 
         emitPenChanged();

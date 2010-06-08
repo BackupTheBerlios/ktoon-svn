@@ -49,19 +49,19 @@ class ZoomConfigurator : public QWidget
     public:
         ZoomConfigurator(QWidget *parent = 0);
         ~ZoomConfigurator();
-        bool zoomIn();
+        //bool zoomIn();
         double getFactor() const;
 
     protected:
         void resizeEvent(QResizeEvent *);
 
-    private slots:
+    /* private slots:
         void setZoomIn();
-        void setZoomOut();
+        void setZoomOut(); */
 
     private:
-        QRadioButton *in;
-        QRadioButton *out;
+        //QRadioButton *in;
+        //QRadioButton *out;
         QDoubleSpinBox *factor;
         QLabel *scale;
 };

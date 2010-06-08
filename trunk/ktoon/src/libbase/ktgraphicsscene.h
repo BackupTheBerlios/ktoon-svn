@@ -100,11 +100,13 @@ class KTOON_EXPORT KTGraphicsScene : public QGraphicsScene
         virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         virtual void keyPressEvent(QKeyEvent *keyEvent);
-        
+       
+        /* 
         virtual void dragLeaveEvent(QGraphicsSceneDragDropEvent * event);
         virtual void dragEnterEvent(QGraphicsSceneDragDropEvent * event);
         virtual void dragMoveEvent(QGraphicsSceneDragDropEvent * event);
         virtual void dropEvent(QGraphicsSceneDragDropEvent * event);
+        */
         
         virtual bool event(QEvent *e);
 

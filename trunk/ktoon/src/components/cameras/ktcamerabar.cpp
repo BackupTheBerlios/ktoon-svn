@@ -44,7 +44,7 @@ KTCameraBar::KTCameraBar(QWidget *parent)
 
     setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
     setMidLineWidth(2);
-    setLineWidth (1);
+    setLineWidth(1);
 
     QBoxLayout *m_mainLayout = new QBoxLayout(QBoxLayout::LeftToRight, parent);
     m_mainLayout->addStretch(1);

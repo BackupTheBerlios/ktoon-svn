@@ -46,8 +46,12 @@ KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QStatusB
     setSizeGripEnabled(false);
 
     QFrame *sceneInfo = new QFrame;
+    sceneInfo->setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
+    sceneInfo->setMidLineWidth(2);
+    sceneInfo->setLineWidth(1);
+
     m_sceneInfoLayout = new QHBoxLayout(sceneInfo);
-    m_sceneInfoLayout->setMargin(0);
+    //m_sceneInfoLayout->setMargin(3);
 
     QFont font = this->font();
     font.setPointSize(6);

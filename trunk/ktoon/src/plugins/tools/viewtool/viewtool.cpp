@@ -53,7 +53,7 @@ ViewTool::ViewTool() : m_rect(0), m_scene(0), m_configurator(0)
 {
     KINIT;
 
-    stop = false;
+    // stop = false;
     setupActions();
 }
 
@@ -69,17 +69,17 @@ QStringList ViewTool::keys() const
 
 void ViewTool::setupActions()
 {
-    KAction *action1 = new KAction(QIcon(THEME_DIR + "icons/magnifying.png"), tr("Zoom"), this);
-    action1->setShortcut(QKeySequence(tr("z")));
-    action1->setCursor(QCursor(THEME_DIR + "cursors/magnifying.png"));
+    KAction *zoomAction = new KAction(QIcon(THEME_DIR + "icons/magnifying.png"), tr("Zoom"), this);
+    zoomAction->setShortcut(QKeySequence(tr("z")));
+    zoomAction->setCursor(QCursor(THEME_DIR + "cursors/magnifying.png"));
     
-    m_actions.insert(tr("Zoom"), action1);
+    m_actions.insert(tr("Zoom"), zoomAction);
     
-    KAction *action2 = new KAction(QIcon(THEME_DIR + "icons/hand.png"), tr("Hand"), this);
-    action2->setShortcut(QKeySequence(tr("h")));
-    action2->setCursor(QCursor(THEME_DIR + "cursors/hand.png"));
+    KAction *handAction = new KAction(QIcon(THEME_DIR + "icons/hand.png"), tr("Hand"), this);
+    handAction->setShortcut(QKeySequence(tr("h")));
+    handAction->setCursor(QCursor(THEME_DIR + "cursors/hand.png"));
 
-    m_actions.insert(tr("Hand"), action2);
+    m_actions.insert(tr("Hand"), handAction);
 }
 
 void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -88,32 +88,28 @@ void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 
     kFatal() << "Pressing! pressing pressing! : " << input->button();
 
-    m_rect = new QGraphicsRectItem(QRectF(input->pos(), QSize(0,0)));
-    m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
-    scene->addItem(m_rect);
+    if (currentTool() == tr("Zoom")) {
 
-    foreach (QGraphicsView * view, scene->views()) {
-             if (currentTool() == tr("Zoom")) {
+        m_rect = new QGraphicsRectItem(QRectF(input->pos(), QSize(0,0)));
+        m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
+        //scene->addItem(m_rect);
+
+        foreach (QGraphicsView * view, scene->views()) {
                  if (input->button() == Qt::LeftButton) {
-                     QPointF point1(view->mapToScene(QPoint(0,0)));
-                     QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
-                     view->scale(1.2, 1.2);
+                     //QPointF point1(view->mapToScene(QPoint(0,0)));
+                     //QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
+                     view->centerOn(input->pos());
+                     view->scale(1 + m_configurator->getFactor(), 1 + m_configurator->getFactor()); 
                  } else {
                      if (input->button() == Qt::RightButton) {
-                         QPointF point1(view->mapToScene(QPoint(0,0)));
-                         QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
-                         view->scale(0.8, 0.8);
-                         /*
-                          int width = point2.x() - point1.x();
-                          if (width < 888)
-                              //view->scale(1/1.5, 1/1.5);
-                              view->scale(m_configurator->getFactor(), m_configurator->getFactor());
-                          if (width > 50)
-                              stop = false;
-                         */
+                         //QPointF point1(view->mapToScene(QPoint(0,0)));
+                         //QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
+                         view->centerOn(input->pos());
+                         view->scale(1 - m_configurator->getFactor(), 1 - m_configurator->getFactor());
                      }
                  }
-             }
+        }
+
     }
 }
 
@@ -122,75 +118,70 @@ void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
     Q_UNUSED(brushManager);
 
     foreach (QGraphicsView * view, scene->views()) {
-             if (currentTool() == tr("Zoom")) {
+             if (currentTool() == tr("Zoom"))
                  view->setDragMode(QGraphicsView::NoDrag);
-             } else if (currentTool() == tr("Hand")) {
-                        view->setDragMode(QGraphicsView::ScrollHandDrag);
-             }
+             else if (currentTool() == tr("Hand"))
+                      view->setDragMode(QGraphicsView::ScrollHandDrag);
     }
     
     if (currentTool() == tr("Zoom")) {
-        if (m_configurator->zoomIn()) {
-            if (!stop) {
 
-                int xMouse = input->pos().x();
-                int yMouse = input->pos().y();
-                QRectF rect = m_rect->rect();
-                int xInit = m_rect->pos().x(); 
-                int yInit = m_rect->pos().y();
+        if (input->button() == Qt::LeftButton) {
+            int xMouse = input->pos().x();
+            int yMouse = input->pos().y();
 
-                if (xMouse >= xInit) {
-                    if (yMouse >= yInit)
-                        rect.setBottomRight(input->pos()); 
-                    else
-                        rect.setTopRight(input->pos());
-                } else {
-                    if (yMouse >= yInit)
-                        rect.setBottomLeft(input->pos());
-                    else
-                        rect.setTopLeft(input->pos());
-                }
+            QRectF rect = m_rect->rect();
+            int xInit = m_rect->pos().x(); 
+            int yInit = m_rect->pos().y();
 
-                m_rect->setRect(rect);
-                rect = rect.normalized(); 
-
-                if (rect.height() > 10 && rect.width() > 10)
-                    m_rect->setPen(QPen(Qt::gray, 0.5, Qt::SolidLine));
+            if (xMouse >= xInit) {
+                if (yMouse >= yInit)
+                    rect.setBottomRight(input->pos()); 
                 else
-                    m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
+                    rect.setTopRight(input->pos());
+            } else {
+                if (yMouse >= yInit)
+                    rect.setBottomLeft(input->pos());
+                else
+                    rect.setTopLeft(input->pos());
             }
-        } 
+
+            m_rect->setRect(rect);
+            rect = rect.normalized(); 
+
+            if (rect.height() > 10 && rect.width() > 10)
+                m_rect->setPen(QPen(Qt::gray, 0.5, Qt::SolidLine));
+            else
+                m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
+        }
 
     } else if (currentTool() == tr("Hand")) {
-        m_scene = scene;
+               m_scene = scene;
     } 
 }
 
 void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     Q_UNUSED(brushManager);
+
+   /*  
+    if (input->button() == Qt::LeftButton) {
     
-    foreach (QGraphicsView * view, scene->views()) {
-             if (currentTool() == tr("Zoom")) {
-                 if (m_configurator->zoomIn()) {
-                     if (!stop) {
-                         QRectF rect = m_rect->rect();
-                         if (input->button() == Qt::LeftButton) {
-                             if (rect.normalized().height() > 10 && rect.normalized().width() > 10) {
-                                 view->fitInView(rect, Qt::KeepAspectRatio);
-                                 QPointF point1(view->mapToScene(QPoint(0,0)));
-                                 QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
-                                 int width = point2.x() - point1.x(); 
-                                 if (width < 50)
-                                     stop = true;
-                             }
-                         } 
+        foreach (QGraphicsView *view, scene->views()) {
+                 if (currentTool() == tr("Zoom")) {
+                     QRectF rect = m_rect->rect();
+                     if (rect.normalized().height() > 10 && rect.normalized().width() > 10) {
+                         view->fitInView(rect, Qt::KeepAspectRatio);
+                         //QPointF point1(view->mapToScene(QPoint(0,0)));
+                         //QPointF point2(view->mapToScene(QPoint(view->width(),view->height())));
                      }
-                 } 
-             }
-             delete m_rect;
-             m_rect = 0;
+                 }
+         }
+         delete m_rect;
+         m_rect = 0;
+
     }
+    */
 }
 
 QMap<QString, KAction *> ViewTool::actions() const
@@ -228,8 +219,8 @@ void ViewTool::aboutToChangeTool()
 void ViewTool::saveConfig()
 {
     if (m_configurator) {
-        KCONFIG->beginGroup("Zoom tool");
-        KCONFIG->setValue("zoomoutfactor", m_configurator->getFactor());
+        KCONFIG->beginGroup("ZoomTool");
+        KCONFIG->setValue("zoomFactor", m_configurator->getFactor());
     }
 }
 

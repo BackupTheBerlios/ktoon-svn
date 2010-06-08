@@ -48,6 +48,8 @@ ZoomConfigurator::ZoomConfigurator(QWidget *parent) :QWidget(parent)
     QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
+
+    /*
     QLabel *label = new QLabel(tr("Zoom Mode"));
     label->setAlignment(Qt::AlignHCenter); 
     layout->addWidget(label);
@@ -62,6 +64,7 @@ ZoomConfigurator::ZoomConfigurator(QWidget *parent) :QWidget(parent)
 
     layout->addWidget(in);
     layout->addWidget(out);
+    */
 
     scale = new QLabel(tr("Scale Factor"));
     scale->setAlignment(Qt::AlignHCenter);
@@ -76,13 +79,13 @@ ZoomConfigurator::ZoomConfigurator(QWidget *parent) :QWidget(parent)
     factor->setMaximum(0.9);
     layout->addWidget(factor);
 
-    factor->setEnabled(false);
+    //factor->setEnabled(false);
 
     mainLayout->addLayout(layout);
     mainLayout->addStretch(2);
 
-    KCONFIG->beginGroup("Zoom tool");
-    double value = KCONFIG->value("zoomoutfactor", -1).toDouble();
+    KCONFIG->beginGroup("ZoomTool");
+    double value = KCONFIG->value("zoomFactor", -1).toDouble();
 
     if (value > 0) 
         factor->setValue(value);
@@ -100,6 +103,7 @@ void ZoomConfigurator::resizeEvent(QResizeEvent *)
     resize(minimumSizeHint());
 }
 
+/*
 void ZoomConfigurator::setZoomIn()
 {
     if (out->isChecked())
@@ -122,6 +126,7 @@ bool ZoomConfigurator::zoomIn()
 {
     return in->isChecked();
 }
+*/
 
 double ZoomConfigurator::getFactor() const
 {

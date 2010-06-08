@@ -46,7 +46,7 @@ _EOH_
     
     config.addDefine('VERSION=\\\\\"0.9a\\\\\"')
     config.addDefine('CODE_NAME=\\\\\"Phoenix\\\\\"')
-    config.addDefine('REVISION=\\\\\"1480\\\\\"')
+    config.addDefine('REVISION=\\\\\"1499\\\\\"')
 
         Info.info << "Debug support... "
 
