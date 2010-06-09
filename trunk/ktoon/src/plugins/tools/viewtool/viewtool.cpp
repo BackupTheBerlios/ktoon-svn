@@ -83,11 +83,21 @@ void ViewTool::setupActions()
 
 void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    Q_UNUSED(input);
     Q_UNUSED(brushManager);
+    Q_UNUSED(scene);
+
+    if (currentTool() == tr("Zoom") && input->keyModifiers() == Qt::ControlModifier) {
+        kFatal() << "PRESS WINDOW!!! 1";
+        m_rect = new QGraphicsRectItem(QRectF(input->pos(), QSize(0,0)));
+        m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
+        scene->addItem(m_rect);
+    }
 }
 
 void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+    Q_UNUSED(input);
     Q_UNUSED(brushManager);
 
     foreach (QGraphicsView * view, scene->views()) {
@@ -95,6 +105,28 @@ void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
                  view->setDragMode(QGraphicsView::NoDrag);
              else if (currentTool() == tr("Hand"))
                       view->setDragMode(QGraphicsView::ScrollHandDrag);
+    }
+
+    if (currentTool() == tr("Hand")) {
+        m_scene = scene;
+    } else if (currentTool() == tr("Zoom") && input->keyModifiers() == Qt::ControlModifier && m_rect) {
+               // && (input->button() == Qt::LeftButton) 
+               //&& input->keyModifiers() == Qt::ControlModifier) {
+
+            kFatal() << "PRESS WINDOW!!! 2";
+
+            int xMouse = input->pos().x();
+            int yMouse = input->pos().y();
+
+            QRectF rect = m_rect->rect();
+            rect.setBottomRight(input->pos());
+            m_rect->setRect(rect);
+            rect = rect.normalized();
+
+            if (rect.height() > 10 && rect.width() > 10)
+                m_rect->setPen(QPen(Qt::gray, 0.5, Qt::SolidLine));
+            else
+                m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
     }
 
     /*
@@ -143,16 +175,29 @@ void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
     Q_UNUSED(brushManager);
 
     if (currentTool() == tr("Zoom")) { 
-        foreach (QGraphicsView * view, scene->views()) {
-                 if (input->button() == Qt::LeftButton) {
-                     view->centerOn(input->pos());
-                     view->scale(1 + m_configurator->getFactor(), 1 + m_configurator->getFactor());
-                 } else {
-                     if (input->button() == Qt::RightButton) {
+        if (input->button() == Qt::LeftButton && input->keyModifiers() == Qt::ControlModifier) {    
+            kFatal() << "PRESS WINDOW!!! N";
+            foreach (QGraphicsView * view, scene->views()) {
+                     QRectF rect = m_rect->rect();
+                     view->fitInView(rect, Qt::KeepAspectRatio);
+            }
+        } else {
+            foreach (QGraphicsView * view, scene->views()) {
+                     if (input->button() == Qt::LeftButton) {
                          view->centerOn(input->pos());
-                         view->scale(1 - m_configurator->getFactor(), 1 - m_configurator->getFactor());
+                         view->scale(1 + m_configurator->getFactor(), 1 + m_configurator->getFactor());
+                     } else {
+                         if (input->button() == Qt::RightButton) {
+                             view->centerOn(input->pos());
+                             view->scale(1 - m_configurator->getFactor(), 1 - m_configurator->getFactor());
+                         }
                      } 
-                 }
+            }
+        }
+
+        if (m_rect) {
+            delete m_rect;
+            m_rect = 0;
         }
     }
 
