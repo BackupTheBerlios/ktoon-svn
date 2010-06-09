@@ -73,9 +73,14 @@ void KTwitter::closeRequest(QNetworkReply *reply)
                 checkSoftwareUpdates(array);
                 requestFile(TWITTER_HOST +  USER_TIMELINE_URL);
             } else {
-                formatStatus(array);
+                if (answer.contains("status", Qt::CaseSensitive))
+                    formatStatus(array);
+                else
+                    qWarning("KTwitter::closeRequest : Invalid data!");
             }
         }
+    } else {
+        kFatal() << "KTwitter::closeRequest -> NO NETWORK? :S";
     } 
 }
 
@@ -95,9 +100,8 @@ void KTwitter::slotError(QNetworkReply::NetworkError error)
                  qWarning("Network Error: Content not found!");
             break;
             case QNetworkReply::UnknownNetworkError :
-                 qWarning("Network Error: Unknown Network error!");
-            break;
             default:
+                 qWarning("Network Error: Unknown Network error!");
             break;
     }
 }

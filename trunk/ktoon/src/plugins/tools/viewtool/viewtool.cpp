@@ -88,7 +88,6 @@ void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
     Q_UNUSED(scene);
 
     if (currentTool() == tr("Zoom") && input->keyModifiers() == Qt::ControlModifier) {
-        kFatal() << "PRESS WINDOW!!! 1";
         m_rect = new QGraphicsRectItem(QRectF(input->pos(), QSize(0,0)));
         m_rect->setPen(QPen(Qt::red, 1, Qt::SolidLine));
         scene->addItem(m_rect);
@@ -110,16 +109,26 @@ void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
     if (currentTool() == tr("Hand")) {
         m_scene = scene;
     } else if (currentTool() == tr("Zoom") && input->keyModifiers() == Qt::ControlModifier && m_rect) {
-               // && (input->button() == Qt::LeftButton) 
-               //&& input->keyModifiers() == Qt::ControlModifier) {
-
-            kFatal() << "PRESS WINDOW!!! 2";
 
             int xMouse = input->pos().x();
             int yMouse = input->pos().y();
+            int xInit = m_rect->pos().x();
+            int yInit = m_rect->pos().y();
 
             QRectF rect = m_rect->rect();
-            rect.setBottomRight(input->pos());
+
+            if (xMouse >= xInit) {
+                if (yMouse >= yInit)
+                    rect.setBottomRight(input->pos());
+                else
+                    rect.setTopRight(input->pos());
+            } else {
+                if (yMouse >= yInit)
+                    rect.setBottomLeft(input->pos());
+                else
+                    rect.setTopLeft(input->pos());
+            }
+
             m_rect->setRect(rect);
             rect = rect.normalized();
 
@@ -176,7 +185,6 @@ void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 
     if (currentTool() == tr("Zoom")) { 
         if (input->button() == Qt::LeftButton && input->keyModifiers() == Qt::ControlModifier) {    
-            kFatal() << "PRESS WINDOW!!! N";
             foreach (QGraphicsView * view, scene->views()) {
                      QRectF rect = m_rect->rect();
                      view->fitInView(rect, Qt::KeepAspectRatio);
