@@ -270,13 +270,13 @@ void KTMainWindow::setupMenu()
     m_windowMenu->addAction(m_actionManager->find("show palette"));
     m_windowMenu->addAction(m_actionManager->find("show pen"));
     m_windowMenu->addAction(m_actionManager->find("show library"));
-    m_actionManager->enable("show library", false);
+    // m_actionManager->enable("show library", false);
     m_windowMenu->addAction(m_actionManager->find("show timeline"));
-    m_actionManager->enable("show timeline", false);
+    // m_actionManager->enable("show timeline", false);
     m_windowMenu->addAction(m_actionManager->find("show scenes"));
     m_windowMenu->addAction(m_actionManager->find("show exposure"));
     m_windowMenu->addAction(m_actionManager->find("show help"));
-    m_actionManager->enable("show help", false);
+    // m_actionManager->enable("show help", false);
     m_windowMenu->addSeparator();
 
     // Setup perspective menu
@@ -287,6 +287,7 @@ void KTMainWindow::setupMenu()
     // Adding Option Drawing
     QAction *drawingPerspective = new QAction(tr("Drawing"), this);
     drawingPerspective->setIcon(QPixmap(THEME_DIR + "icons/illustration_mode.png")); 
+    drawingPerspective->setIconVisibleInMenu(true);
     drawingPerspective->setShortcut(QKeySequence(Qt::Key_F9));
     drawingPerspective->setData(Drawing);
     group->addAction(drawingPerspective);
@@ -294,6 +295,7 @@ void KTMainWindow::setupMenu()
     // Adding Option Animation
     QAction *animationPerspective = new QAction(tr("Animation"), this);
     animationPerspective->setIcon(QPixmap(THEME_DIR + "icons/animation_mode.png"));
+    animationPerspective->setIconVisibleInMenu(true);
     animationPerspective->setShortcut(QKeySequence(Qt::Key_F10));
     animationPerspective->setData(Animation);
     group->addAction(animationPerspective);
@@ -301,6 +303,7 @@ void KTMainWindow::setupMenu()
    // Adding Option Help 
     QAction *helpPerspective = new QAction(tr("Help"), this);
     helpPerspective->setIcon(QPixmap(THEME_DIR + "icons/help_mode.png"));
+    helpPerspective->setIconVisibleInMenu(true);
     helpPerspective->setShortcut(QKeySequence(Qt::Key_F11));
     helpPerspective->setData(Help);
     group->addAction(helpPerspective);
@@ -308,6 +311,7 @@ void KTMainWindow::setupMenu()
    // Adding Option News 
     QAction *newsPerspective = new QAction(tr("News"), this);
     newsPerspective->setIcon(QPixmap(THEME_DIR + "icons/news_mode.png"));
+    newsPerspective->setIconVisibleInMenu(true);
     newsPerspective->setShortcut(QKeySequence(Qt::Key_F12));
     newsPerspective->setData(News);
     group->addAction(newsPerspective);
@@ -543,6 +547,7 @@ void KTMainWindow::updateOpenRecentMenu(QMenu *menu, QStringList recents)
              if (!recent.isEmpty() && m_recentProjects.indexOf(recent) == -1) {
                  m_recentProjects << recent;
                  action[i] = new QAction(QPixmap(THEME_DIR + "icons/new.png"), recent, this); 
+                 action[i]->setIconVisibleInMenu(true);
                  menu->addAction(action[i]);
                  connect(action[i], SIGNAL(triggered()), this, SLOT(openRecentProject()));
                  i++;
@@ -641,13 +646,14 @@ void KTMainWindow::setUndoRedoActions()
 {
     // Setting undo/redo actions
     QAction *undo = m_projectManager->undoHistory()->createUndoAction(this, tr("Undo"));
+    undo->setIcon(QPixmap(THEME_DIR + "icons/undo.png"));
+    undo->setIconVisibleInMenu(true);
     undo->setShortcut(QKeySequence(QKeySequence::Undo));
 
     QAction *redo =  m_projectManager->undoHistory()->createRedoAction(this);
-    redo->setShortcut(QKeySequence(QKeySequence::Redo));
-
-    undo->setIcon(QPixmap(THEME_DIR + "icons/undo.png"));
     redo->setIcon(QPixmap(THEME_DIR + "icons/redo.png"));
+    redo->setIconVisibleInMenu(true);
+    redo->setShortcut(QKeySequence(QKeySequence::Redo));
 
     kApp->insertGlobalAction(undo, "undo");
     kApp->insertGlobalAction(redo, "redo");

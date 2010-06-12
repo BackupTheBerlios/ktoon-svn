@@ -307,6 +307,8 @@ void KTViewDocument::loadPlugins()
                   #endif
 
                   KAction *act = tool->actions()[*it];
+                  act->setIconVisibleInMenu(true);
+
                   if (act) {
                       connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
                       act->setParent(plugin);
