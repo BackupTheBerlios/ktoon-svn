@@ -26,7 +26,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #include "kaction.h"
 #include "kactionmanager.h"
 
@@ -51,6 +50,7 @@ KAction::KAction(const QIcon & icon, const QString & text, QObject * parent, con
 KAction::KAction(const QIcon & icon, QObject *parent, const QString &id) : QAction(parent)
 {
     setIcon(icon);
+
     if (KActionManager *m = dynamic_cast<KActionManager *>(parent))
         initWithManager(m , id);
 }
@@ -95,6 +95,8 @@ KAction::~KAction()
 
 void KAction::initWithManager(KActionManager * parent, const QString &id)
 {
+    setIconVisibleInMenu(true);
+
     if (!id.isEmpty())
         parent->insert(this, id);
 }
