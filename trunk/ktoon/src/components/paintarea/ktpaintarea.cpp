@@ -179,9 +179,9 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
 
             menu->exec(event->globalPos());
         }
-    } else {
-        KTPaintAreaBase::mousePressEvent(event);
-    }
+    } 
+
+    KTPaintAreaBase::mousePressEvent(event);
 }
 
 void KTPaintArea::frameResponse(KTFrameResponse *event)

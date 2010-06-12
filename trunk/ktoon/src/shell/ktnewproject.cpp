@@ -118,11 +118,13 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private
 
     k->netOptions->setVisible(false);
 
+    /*
     QCheckBox *activeNetOptions = new QCheckBox( tr("Create a network project") );
     layout->addWidget(activeNetOptions, 3, 1);
     activeNetOptions->setEnabled(false);
 
     connect(activeNetOptions, SIGNAL(toggled( bool )), this, SLOT(activateNetOptions(bool)));
+    */
 }
 
 KTNewProject::~KTNewProject()

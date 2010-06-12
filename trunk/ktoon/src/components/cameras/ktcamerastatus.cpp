@@ -41,63 +41,67 @@
 #include <QCheckBox>
 #include <QSpinBox>
 
-KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QStatusBar(parent)
+KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QFrame(parent)
 {
-    setSizeGripEnabled(false);
+    #ifdef K_DEBUG
+           KINIT;
+    #endif
 
-    QFrame *sceneInfo = new QFrame;
-    sceneInfo->setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
-    sceneInfo->setMidLineWidth(2);
-    sceneInfo->setLineWidth(1);
+    setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
+    setMidLineWidth(2);
+    setLineWidth(1);
 
-    m_sceneInfoLayout = new QHBoxLayout(sceneInfo);
-    //m_sceneInfoLayout->setMargin(3);
+    QBoxLayout *m_sceneInfoLayout = new QBoxLayout(QBoxLayout::LeftToRight, parent);
+    m_sceneInfoLayout->addStretch(1);
+
+    m_sceneInfoLayout->setSpacing(0);
+    m_sceneInfoLayout->setMargin(3);
 
     QFont font = this->font();
     font.setPointSize(6);
 
-    m_sceneName = new QLabel;
-    m_sceneName->setFont(font);
+    sceneName = new QLabel;
+    sceneName->setFont(font);
 
     QLabel *sceneNameText = new QLabel("<B>" + tr("Scene name") + ":</B> ");
     sceneNameText->setFont(font);
 
     m_sceneInfoLayout->addWidget(sceneNameText,1);
-    m_sceneInfoLayout->addWidget(m_sceneName,1);
+    m_sceneInfoLayout->addWidget(sceneName,1);
 
     m_sceneInfoLayout->addSpacing(20);
 
-    QLabel *framesTotal = new QLabel("<B>" + tr("Frames total") + ":</B> ");
+    QLabel *label = new QLabel("<B>" + tr("Frames total") + ":</B> ");
+    label->setFont(font);
+
+    framesTotal = new QLabel;
     framesTotal->setFont(font);
 
-    m_total = new QLabel;
-    m_total->setFont(font);
-
+    m_sceneInfoLayout->addWidget(label, 1);
     m_sceneInfoLayout->addWidget(framesTotal, 1);
-    m_sceneInfoLayout->addWidget(m_total, 1);
 
     m_sceneInfoLayout->addSpacing(20);
 
     QLabel *fpsText = new QLabel("<B>" + tr("FPS") + ":</B> ");
     fpsText->setFont(font);
 
-    m_fps = new QSpinBox;
-    m_fps->setMinimum(1);
+    fps = new QSpinBox;
+    fps->setMinimum(1);
 
-    m_fps->setFont(font);
-    connect(m_fps, SIGNAL(valueChanged(int)), camera, SLOT(setFPS(int)));
+    fps->setFont(font);
+    connect(fps, SIGNAL(valueChanged(int)), camera, SLOT(setFPS(int)));
 
     m_sceneInfoLayout->addWidget(fpsText,1);
-    m_sceneInfoLayout->addWidget(m_fps,1);
+    m_sceneInfoLayout->addWidget(fps,1);
 
     m_sceneInfoLayout->addSpacing(20);
 
-    m_loop = new QCheckBox();
+    loopBox = new QCheckBox();
     QPixmap pix(THEME_DIR + "icons/loop.png");
-    m_loop->setToolTip(tr("Loop"));
-    m_loop->setIcon(pix); 
-    connect(m_loop, SIGNAL(clicked()), camera, SLOT(setLoop()));
-    m_sceneInfoLayout->addWidget(m_loop,1);
+    loopBox->setToolTip(tr("Loop"));
+    loopBox->setIcon(pix); 
+    connect(loopBox, SIGNAL(clicked()), camera, SLOT(setLoop()));
+    m_sceneInfoLayout->addWidget(loopBox,1);
 
     m_sceneInfoLayout->addSpacing(20);
 
@@ -107,43 +111,37 @@ KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QStatusB
     connect(exportButton, SIGNAL(pressed()), camera, SLOT(exportDialog()));
     m_sceneInfoLayout->addWidget(exportButton,1);
 
-    addPermanentWidget(sceneInfo,2);
-    sceneInfo->show();
+    setLayout(m_sceneInfoLayout);
 }
 
 KTCameraStatus::~KTCameraStatus()
 {
+    #ifdef K_DEBUG
+           KINIT;
+    #endif
 }
 
-void KTCameraStatus::setFPS(int fps)
+void KTCameraStatus::setFPS(int frames)
 {
-    m_fps->setValue(fps);
+    fps->setValue(frames);
 }
 
 int KTCameraStatus::getFPS()
 {
-    m_fps->value();
+    return fps->value();
 }
 
 void KTCameraStatus::setSceneName(const QString &name)
 {
-    m_sceneName->setText(name);
+    sceneName->setText(name);
 }
 
-void KTCameraStatus::setFramesTotal(const QString &total)
+void KTCameraStatus::setFramesTotal(const QString &frames)
 {
-    m_total->setText(total);
-}
-
-void KTCameraStatus::addWidget(QWidget *widget, int stretch)
-{
-    QFont font = widget->font();
-    font.setPointSize(6);
-    widget->setFont(font);
-    m_sceneInfoLayout->addWidget(widget, stretch, Qt::AlignCenter);
+    framesTotal->setText(frames);
 }
 
 bool KTCameraStatus::loop()
 {
-    return m_loop->isChecked();
+    return loopBox->isChecked();
 }

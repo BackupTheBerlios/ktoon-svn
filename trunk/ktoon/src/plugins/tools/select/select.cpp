@@ -102,7 +102,7 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 {
     K_FUNCINFOX("tools");
     Q_UNUSED(brushManager);
-    Q_UNUSED(scene);
+    // Q_UNUSED(scene);
 
     if (k->changedManager)
         k->changedManager = 0;
@@ -149,9 +149,9 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     // K_FUNCINFOX("tools");
-    Q_UNUSED(input);
+    // Q_UNUSED(input);
     Q_UNUSED(brushManager);
-    Q_UNUSED(scene);
+    // Q_UNUSED(scene);
 
     if (k->changedManager) {
         k->changedManager->toggleAction();
@@ -165,7 +165,7 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
     K_FUNCINFOX("tools") << scene->selectedItems().count();
-    
+
     Q_UNUSED(input);
     Q_UNUSED(brushManager);
     

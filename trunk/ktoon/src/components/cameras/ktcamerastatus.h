@@ -32,7 +32,7 @@
 #ifndef KTCAMERASTATUS_H
 #define KTCAMERASTATUS_H
 
-#include <QStatusBar>
+#include <QFrame>
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QCheckBox>
@@ -42,7 +42,7 @@
 
 class KTViewCamera;
 
-class KTCameraStatus : public QStatusBar
+class KTCameraStatus : public QFrame
 {
     Q_OBJECT
 
@@ -50,19 +50,17 @@ class KTCameraStatus : public QStatusBar
         KTCameraStatus(KTViewCamera *camera = 0, QWidget *parent = 0);
         ~KTCameraStatus();
 
-        void setFPS(int fps);
+        void setFPS(int frames);
         int getFPS();
         void setSceneName(const QString &name);
-        void setFramesTotal(const QString &total);
-        void addWidget(QWidget *widget, int stretch = 0);
+        void setFramesTotal(const QString &frames);
         bool loop();
 
     private:
-        QSpinBox *m_fps;
-        QLabel *m_sceneName;
-        QLabel *m_total;
-        QHBoxLayout *m_sceneInfoLayout;
-        QCheckBox *m_loop;
+        QSpinBox *fps;
+        QLabel *sceneName;
+        QLabel *framesTotal;
+        QCheckBox *loopBox;
 };
 
 #endif

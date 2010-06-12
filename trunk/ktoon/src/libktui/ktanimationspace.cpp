@@ -46,6 +46,8 @@
 
 KTAnimationspace::KTAnimationspace(QWidget *internal, QWidget *parent) : QMainWindow(parent)
 {
+    // TODO: Try a nice dark color for this window
+    // setStyleSheet("QMainWindow { background-color: #d0d0d0; }");
     QWidget *widget = new QWidget();
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, widget);
     layout->addWidget(internal, 0, Qt::AlignCenter);
