@@ -1472,8 +1472,8 @@
     <name>KTPenWidget</name>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="52"/>
-        <source>Pen</source>
-        <translation>Lapiz</translation>
+        <source>Brush</source>
+        <translation>Brocha</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="62"/>
