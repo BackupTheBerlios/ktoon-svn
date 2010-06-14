@@ -23,7 +23,7 @@
     <Section title="Recursos Adicionales" file="chapter3.html">
         <SubSection title="Enlaces interesantes" file="links.html" />
     </Section>
-    <Section title="Eres desarrollador?" file="chapter4.html">
+    <Section title="Quieres ayudarnos?" file="chapter4.html">
         <SubSection title="C&#243;mo colaborar!" file="how_to_help.html" />
         <SubSection title="Ayuda con traducciones" file="translations.html" />
     </Section>

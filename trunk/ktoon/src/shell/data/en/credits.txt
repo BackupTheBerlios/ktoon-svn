@@ -44,6 +44,10 @@ Translators
 
      David A. Cuadrado
 
+  Portuguese:
+
+     Alyne Castro
+
 ----------------------------
 Iconographic Design
 

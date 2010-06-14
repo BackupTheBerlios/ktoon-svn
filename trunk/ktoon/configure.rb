@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 
-# TODO: This script must detect if every command line given is right
+# TODO: This script must detect if every command line given is valid 
 #       Currently, it just try to check if some of them are included or not
 
 require 'qonf/configure'
