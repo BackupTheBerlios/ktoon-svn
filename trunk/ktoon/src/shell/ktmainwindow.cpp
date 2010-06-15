@@ -276,7 +276,7 @@ void KTMainWindow::viewNewDocument()
             newsTab = new KTwitterWidget(this); 
             newsTab->setSource(twitterPath);
             addWidget(newsTab);
-        }
+        } 
 
         exposureView->expandDock(true);
         connect(drawingTab, SIGNAL(autoSave()), this, SLOT(callSave()));
@@ -399,8 +399,10 @@ bool KTMainWindow::closeProject()
         drawingTab->closeArea();
 
     if (lastTab == 0) {
-        if (internetOn)
+        if (internetOn) {
+            kFatal() << "REMOVING 1";
             removeWidget(newsTab, true);
+        }
         removeWidget(helpTab, true);
         removeWidget(animationTab, true);
         removeWidget(drawingTab, true);
@@ -426,8 +428,10 @@ bool KTMainWindow::closeProject()
       }
     }
 
-    delete newsTab;
-    newsTab = 0;
+    if (internetOn) { 
+        delete newsTab;
+        newsTab = 0;
+    }
 
     delete helpTab;
     helpTab = 0;
@@ -437,7 +441,7 @@ bool KTMainWindow::closeProject()
 
     delete drawingTab;
     drawingTab = 0;
-	
+
     m_projectManager->closeProject();
 
     // Cleaning widgets

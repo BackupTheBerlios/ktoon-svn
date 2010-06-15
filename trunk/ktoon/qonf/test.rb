@@ -41,7 +41,13 @@ class Test
         if File.exists?(dir)
             if File.stat(dir).directory?
                 Dir.chdir(dir)
-                @qmake.run( "'INCLUDEPATH += #{parser.includes.join(" ")}' 'LIBS += #{parser.libs.join(" ")}'" ,true)
+
+                extralib = ""
+                if RUBY_PLATFORM == "x86_64-linux"
+                   extralib = "-L/usr/lib64"
+                end
+
+                @qmake.run( "'INCLUDEPATH += #{parser.includes.join(" ")}' 'LIBS += #{extralib} #{parser.libs.join(" ")}'" ,true)
                 if not @qmake.compile
                     Dir.chdir(cwd)
                     

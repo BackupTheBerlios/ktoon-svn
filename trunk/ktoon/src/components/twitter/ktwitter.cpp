@@ -73,7 +73,7 @@ void KTwitter::closeRequest(QNetworkReply *reply)
                 checkSoftwareUpdates(array);
                 requestFile(TWITTER_HOST +  USER_TIMELINE_URL);
             } else {
-                if (answer.contains("status", Qt::CaseSensitive))
+                if (answer.contains("status", Qt::CaseSensitive) && (!answer.contains("Twitter is over capacity") && !answer.contains("whale_error.gif") && !answer.contains("503 Error")))
                     formatStatus(array);
                 else
                     qWarning("KTwitter::closeRequest : Invalid data!");
