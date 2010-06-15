@@ -22,12 +22,18 @@ _EOH_
      exit 0
 end
 
+if RUBY_PLATFORM == "x86_64-linux"
+    libdir = "#{conf.destdir}/lib64"
+else
+    libdir = "#{conf.destdir}/lib"
+end
+
 File.open("qonf/komconfig.rb", "w") { |file|
     file << %@
 module RQonf
     CONFIG = {}
     CONFIG["prefix"] = "#{conf.destdir}"
-    CONFIG["libdir"] = "#{conf.destdir}/lib"
+    CONFIG["libdir"] = "#{libdir}"
     CONFIG["includepath"] = "#{conf.destdir}/include"
 end
 @
