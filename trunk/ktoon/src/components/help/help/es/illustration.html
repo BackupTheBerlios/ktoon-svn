@@ -23,6 +23,9 @@ En el modulo anterior, dimos un vistazo a los componentes mas generales de la in
 
 <p class="paragraph">
 <b>Area de Trabajo</b>
+<br/>
+El area de trabajo es nuestro lienzo. El espacio con el que contamos para realizar las ilustraciones de cada uno de los marcos de nuestra animacion. Cuenta con dos reglas guias en el borde superior y en el izquierdo. En el centro, cuenta con una forma rectangular que simboliza las dimensiones del marco.<br/>
+Tip: Aquello que no dibujes dentro del marco, no aparecera en la animacion. 
 </p>
 <center>
 <img src="./images/work_area.png"/>
@@ -33,6 +36,9 @@ En el modulo anterior, dimos un vistazo a los componentes mas generales de la in
 
 <p class="paragraph">
 <b>Panel Superior de Funciones de Edici&oacute;n</b>
+<br/>
+Ubicado en la parte superior izquierda, sobre el area de trabajo, este panel ofrece todas las funcionalidades basicas de edicion usuales al momento de trabajar sobre una ilustracion: hacer, deshacer, copiar, pegar, cortar, eliminar, agrupar y desagrupar.<br/>    
+Adicionalmente, ofrece dos opciones complementarias muy utiles: una malla guia para el ilustrador, que puede activarse o desactivarse a voluntad, y el control del papel cebolla, funcionalidad que nos permite convertir el marco actual en semi-transparente, con el fin de ver los dibujos que tenemos tanto en marcos anteriores, como en marcos posteriores. En la seccion "Hagamos un ejemplo!" profundizaremos en el uso de esta ultima opcion. 
 </p>
 <center>
 <img src="./images/edition_panel.png"/>
@@ -43,13 +49,22 @@ En el modulo anterior, dimos un vistazo a los componentes mas generales de la in
 
 <p class="paragraph">
 <b>Panel de Herramientas</b>
-</p>
+<br/>
+Este panel, se encuentra ubicado al borde izquierdo del area de trabajo y nos provee de todas las herramientas necesarias para dibujar y realizar operaciones especiales sobre nuestra ilustracion. Cada recurso se encuentra agrupado segun su naturaleza en los siguientes sub-menus: 
+<ul>
+<li> Menu de Trazo: Este menu incluye opciones como lapiz, borrador, rectangulo, elipse, linea, polilinea, texto y la futura funcionalidad Tweening.</li>
+<li> Menu de Seleccion: Este menu incluye la opcion de seleccion de nodos, la cual permite modificar la forma y trayectoria de una figura a partir de nodos de edicion y la opcion de seleccion de objetos, la cual permite mover, rotar o escalar cualquier figura que se seleccione desde el area de trabajo.</li> 
+<li> Menu de Relleno: Este menu incluye las herarmientas de relleno de borde y relleno de interiores sobre los objetos seleccionados, a partir del color que se encuentre seleccionado en la paleta de colores.</li>
+<li> Menu de Vista: Este menu agrupa la opcion de Lupa, para acercar o alejar la vista del marco que se encuentra en edicion y la herramienta de arrastre (mejor conocida como la mano), que sirve para desplazar el punto de vista de un marco cuando este se encuentra ampliado</li>
+</ul>
 <center>
 <img src="./images/toolbox.png"/>
 <p class="paragraph">
 <b>Fig #1.</b> Panel de Herramientas 
 </p>
 </center>
+</p>
+
 
 <p class="paragraph">
 <b>Barra Lateral Izquierda</b>
@@ -57,16 +72,28 @@ En el modulo anterior, dimos un vistazo a los componentes mas generales de la in
 
 <p class="paragraph">
 <b>Paleta de Colores</b>
+<br/>
+Como su nombre lo indica, este es el panel en donde seleccionamos el color con el que queremos trazar, independiente de la figura o forma que estemos trabajando. Es importante tener en cuenta que mientras no modifiquemos el color actual, absolutamente todo lo que dibujemos conservara ese mismo color, hasta que seleccionemos uno diferente.
 </p>
 <center>
-<img src="./images/color_palette.png"/>
-<p class="paragraph">
-<b>Fig #1.</b> Paleta de Colores
-</p>
+     <img src="./images/color_palette.png"/>
+     <p class="paragraph">
+        <b>Fig #1.</b> Paleta de Colores
+     </p>
 </center>
-
+<p class="paragraph">
+<b>Tip:</b> Ten en cuenta que ademas de utilizar colores homogeneos, tambien puedes utilizar gradientes, es decir, conjuntos de colores que se mezclan de manera progresiva sobre una misma figura, como en el siguiente ejemplo, en donde el gradiente comienza en un verde luminoso y termina en negro:
+</p>
+<center>
+     <img src="./images/gradient.png"/>
+     <p class="paragraph">
+        <b>Fig #1.</b> Ejemplo de Gradiente 
+     </p>
+</center>
 <p class="paragraph">
 <b>Propiedades de Brocha</b>
+<br/>
+La brocha en nuestro contexto, es el tipo de herramienta que usas para dibujar. Si quieres, puedes pensar en la brocha como el tipo de punta que le vas a poner a tu lapiz. Este panel nos permite modificar caracteristicas de la brocha, como su grosor, el tipo de bordes para los extremos de los trazos y la continuidad de la linea (puedes realizar trazos punteados, si lo deseas).
 </p>
 <center>
 <img src="./images/brush_properties.png"/>
@@ -77,6 +104,8 @@ En el modulo anterior, dimos un vistazo a los componentes mas generales de la in
 
 <p class="paragraph">
 <b>Librer&iacute;a de Objetos</b>
+<br/>
+La funcion de este componente, es permitirnos almacenar todas las figuras e imagenes que hacen parte de tu proyecto y que quieres volver a utilizar una y otra vez en los diferentes marcos de tu animacion. 
 </p>
 <center>
 <img src="./images/library.png"/>
