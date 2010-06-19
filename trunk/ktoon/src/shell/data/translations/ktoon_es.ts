@@ -754,7 +754,7 @@
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="308"/>
         <source>Choose the images directory...</source>
-        <translation>Escoge el directorio de imagenes...</translation>
+        <translation>Escoge el directorio de imágenes...</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="329"/>
@@ -764,7 +764,7 @@
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="324"/>
         <source>%1 images will be loaded.</source>
-        <translation>%1 imagenes serán cargadas.</translation>
+        <translation>%1 imágenes serán cargadas.</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="326"/>
@@ -779,7 +779,7 @@
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="332"/>
         <source>Do you want to continue?</source>
-        <translation>Desea continuar?</translation>
+        <translation>Deseas continuar?</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="341"/>
@@ -1028,7 +1028,7 @@
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="96"/>
         <source>Bitmap Array</source>
-        <translation>Arreglo de Imagenes</translation>
+        <translation>Arreglo de Imágenes</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="210"/>
