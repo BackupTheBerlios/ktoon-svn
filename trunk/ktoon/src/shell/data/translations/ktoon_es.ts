@@ -1472,8 +1472,8 @@
     <name>KTPenWidget</name>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="52"/>
-        <source>Brush</source>
-        <translation>Brocha</translation>
+        <source>Brush Properties</source>
+        <translation>Propiedades de Brocha</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="62"/>

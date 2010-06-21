@@ -47,7 +47,7 @@ struct KTPenWidget::Private
 
 KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Private)
 {
-    setWindowTitle(tr("Brush"));
+    setWindowTitle(tr("Brush Properties"));
 
     KCONFIG->beginGroup("PenParameters");
     int thicknessValue = KCONFIG->value("thickness", -1).toInt();
