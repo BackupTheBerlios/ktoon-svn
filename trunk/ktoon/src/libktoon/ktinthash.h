@@ -144,10 +144,17 @@ bool KTIntHash<T>::contains(int pos)
 template<typename T>
 void KTIntHash<T>::moveVisual(int from, int to)
 {
-    if (containsVisual(from) && containsVisual(to)) {
+    qDebug("KTIntHash::moveVisual FROM: %d", from);
+    qDebug("KTIntHash::moveVisual TO: %d", to);
+
+    //if (containsVisual(from) && containsVisual(to)) {
+
+    // if (containsVisual(from)) {
         int val = k->visualIndices.takeAt(from);
         k->visualIndices.insert(to, val);
-    }
+    // } else {
+    //    qDebug("KTIntHash::moveVisual -> SOMETHING IS WRONG!");
+    //}
 }
 
 template<typename T>

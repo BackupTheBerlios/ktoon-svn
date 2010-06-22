@@ -124,7 +124,6 @@ bool KTCommandExecutor::removeFrame(KTFrameResponse *response)
     return false;
 }
 
-
 bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
 {
     int scenePos = response->sceneIndex();
@@ -139,20 +138,19 @@ bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
     KTLayer *layer = scene->layer(layerPos);
     
     if (layer) {
-        if (! layer->moveFrame(position, newPosition)) {
-            #ifdef K_DEBUG
-                kWarning() << "Failed moving frame";
-            #endif
-            return false;
-        } else {
+        if (layer->moveFrame(position, newPosition)) {
             emit responsed(response);
             return true;
+        } else {
+            #ifdef K_DEBUG
+                   kWarning() << "Failed moving frame";
+            #endif
+            return false;
         }
     }
     
     return false;
 }
-
 
 bool KTCommandExecutor::lockFrame(KTFrameResponse *response)
 {
