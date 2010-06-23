@@ -198,11 +198,12 @@ void KTExposureSheet::applyAction(int action)
                      kFatal() << "LAST INDEX: " << lastFrame;
 
                      if (lastFrame == 1) { // Just two frames in the layer 
+                         kFatal() << "CASE #1 <- 2 FRAMES";
                          KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(),
                                                   layer, 1,
                                                   KTProjectRequest::Move, 2);
                          emit requestTriggered(&event);
-                         insertFrame(layer, target);
+                         //insertFrame(layer, target);
                      }
 
                      /*
