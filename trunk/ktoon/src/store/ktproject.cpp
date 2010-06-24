@@ -230,7 +230,7 @@ bool KTProject::removeScene(int position)
     KTScene *toRemove = scene(position);
 
     if (toRemove) {
-        k->scenes.removeVisual(position);
+        k->scenes.removeObject(position);
         delete toRemove;
         toRemove = 0;
         k->sceneCounter--;
@@ -251,7 +251,7 @@ bool KTProject::moveScene(int position, int newPosition)
         return false;
     }
 
-    k->scenes.moveVisual(position, newPosition);
+    k->scenes.moveObject(position, newPosition);
 
     return true;
 }
@@ -269,18 +269,20 @@ KTScene *KTProject::scene(int position) const
         return 0;
     }
 
-    return k->scenes.visualValue(position);
+    return k->scenes.value(position);
 }
 
 int KTProject::visualIndexOf(KTScene *scene) const
 {
-    return k->scenes.visualIndex(scene);
+    return k->scenes.objectIndex(scene);
 }
 
+/*
 int KTProject::logicalIndexOf(KTScene *scene) const
 {
     return k->scenes.logicalIndex(scene);
 }
+*/
 
 void KTProject::fromXml(const QString &xml)
 {

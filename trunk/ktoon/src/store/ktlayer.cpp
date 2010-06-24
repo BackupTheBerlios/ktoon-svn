@@ -127,7 +127,7 @@ KTFrame *KTLayer::createFrame(int position, bool loaded)
     k->frames.insert(position, frame);
 
     if (loaded)
-        KTProjectLoader::createFrame(scene()->visualIndex(), visualIndex(), position, frame->frameName(), project());
+        KTProjectLoader::createFrame(scene()->objectIndex(), objectIndex(), position, frame->frameName(), project());
 
     return frame;
 }
@@ -137,7 +137,7 @@ bool KTLayer::removeFrame(int position)
     KTFrame *toRemove = frame(position);
 
     if (toRemove) {
-        k->frames.removeVisual(position);
+        k->frames.removeObject(position);
         toRemove->setRepeat(toRemove->repeat()-1);
 
         if (toRemove->repeat() < 1)
@@ -158,7 +158,7 @@ bool KTLayer::moveFrame(int from, int to)
 
     kFatal() << "KTLayer::moveFrame -> Moving frame from " << from << " to " << to;
 
-    k->frames.moveVisual(from, to);
+    k->frames.moveObject(from, to);
 
     return true;
 }
@@ -192,7 +192,7 @@ KTFrame *KTLayer::frame(int position) const
         return 0;
     }
 
-    return k->frames.visualValue(position);
+    return k->frames.value(position);
 }
 
 
@@ -239,8 +239,8 @@ QDomElement KTLayer::toXml(QDomDocument &doc) const
     root.setAttribute("name", k->name);
     doc.appendChild(root);
 
-    foreach (KTFrame *frame, k->frames.visualValues())
-             root.appendChild( frame->toXml(doc) );
+    foreach (KTFrame *frame, k->frames.values())
+             root.appendChild(frame->toXml(doc));
 
     return root;
 }
@@ -255,22 +255,26 @@ KTProject *KTLayer::project() const
     return scene()->project();
 }
 
+/*
 int KTLayer::logicalIndexOf(KTFrame *frame) const
 {
     return k->frames.logicalIndex(frame);
 }
+*/
 
 int KTLayer::visualIndexOf(KTFrame *frame) const
 {
-    return k->frames.visualIndex(frame);
+    return k->frames.objectIndex(frame);
 }
 
+/*
 int KTLayer::logicalIndex() const
 {
     return scene()->logicalIndexOf(const_cast<KTLayer *>(this));
 }
+*/
 
-int KTLayer::visualIndex() const
+int KTLayer::objectIndex() const
 {
     return scene()->visualIndexOf(const_cast<KTLayer *>(this));
 }

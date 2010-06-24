@@ -85,7 +85,7 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
         KTScene *scene(int position) const;
 
         int visualIndexOf(KTScene *scene) const;
-        int logicalIndexOf(KTScene *scene) const;
+        //int logicalIndexOf(KTScene *scene) const;
 
         Scenes scenes() const;
 

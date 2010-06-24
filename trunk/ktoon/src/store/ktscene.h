@@ -123,10 +123,10 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
           */
         bool moveLayer(int from, int to);
 
-        int logicalIndex() const;
-        int visualIndex() const;
+        //int logicalIndex() const;
+        int objectIndex() const;
         int visualIndexOf(KTLayer *layer) const;
-        int logicalIndexOf(KTLayer *layer) const;
+        //int logicalIndexOf(KTLayer *layer) const;
 
         KTProject *project() const;
         void addTweeningObject(KTGraphicObject *object);

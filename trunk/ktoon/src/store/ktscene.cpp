@@ -173,7 +173,7 @@ KTSoundLayer *KTScene::createSoundLayer(int position, bool loaded)
     k->soundLayers.insert(position, layer);
 
     if (loaded)
-        KTProjectLoader::createSoundLayer(visualIndex(), position, layer->layerName(), project());
+        KTProjectLoader::createSoundLayer(objectIndex(), position, layer->layerName(), project());
 
     return layer;
 }
@@ -226,7 +226,7 @@ KTLayer *KTScene::layer(int position) const
         return 0;
     }
 
-    return k->layers.visualValue(position);
+    return k->layers.value(position);
 }
 
 KTSoundLayer *KTScene::soundLayer(int position) const
@@ -238,7 +238,7 @@ KTSoundLayer *KTScene::soundLayer(int position) const
         return 0;
     }
 
-    return k->soundLayers.visualValue(position);
+    return k->soundLayers.value(position);
 }
 
 void KTScene::fromXml(const QString &xml)
@@ -295,10 +295,10 @@ QDomElement KTScene::toXml(QDomDocument &doc) const
     QDomElement root = doc.createElement("scene");
     root.setAttribute("name", k->name);
 
-    foreach (KTLayer *layer, k->layers.visualValues())
+    foreach (KTLayer *layer, k->layers.values())
              root.appendChild(layer->toXml(doc));
 
-    foreach (KTSoundLayer *sound, k->soundLayers.visualValues())
+    foreach (KTSoundLayer *sound, k->soundLayers.values())
              root.appendChild(sound->toXml(doc));
 
     return root;
@@ -317,6 +317,7 @@ bool KTScene::moveLayer(int from, int to)
     return true;
 }
 
+/*
 int KTScene::logicalIndex() const
 {
     if (KTProject *project = dynamic_cast<KTProject *>(parent()))
@@ -324,8 +325,9 @@ int KTScene::logicalIndex() const
 	
     return -1;
 }
+*/
 
-int KTScene::visualIndex() const
+int KTScene::objectIndex() const
 {
     if (KTProject *project = dynamic_cast<KTProject *>(parent()))
         return project->visualIndexOf(const_cast<KTScene *>(this));
@@ -335,13 +337,15 @@ int KTScene::visualIndex() const
 
 int KTScene::visualIndexOf(KTLayer *layer) const
 {
-    return k->layers.visualIndex(layer);
+    return k->layers.objectIndex(layer);
 }
 
+/*
 int KTScene::logicalIndexOf(KTLayer *layer) const
 {
     return k->layers.logicalIndex(layer);
 }
+*/
 
 KTProject *KTScene::project() const
 {

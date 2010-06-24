@@ -119,11 +119,11 @@ class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
         KTScene *scene() const;
         KTProject *project() const;
         
-        int logicalIndexOf(KTFrame *frame) const;
+        //int logicalIndexOf(KTFrame *frame) const;
         int visualIndexOf(KTFrame *frame) const;
         
-        int logicalIndex() const;
-        int visualIndex() const;
+        //int logicalIndex() const;
+        int objectIndex() const;
 
         int framesNumber() const;
 

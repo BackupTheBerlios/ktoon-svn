@@ -303,7 +303,7 @@ int KTGraphicsScene::currentSceneIndex() const
     if (!k->scene)
         return -1;
 
-    return k->scene->visualIndex();
+    return k->scene->objectIndex();
 }
 
 void KTGraphicsScene::setNextOnionSkinCount(int n)

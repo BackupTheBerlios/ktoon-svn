@@ -83,7 +83,7 @@ bool KTSaveProject::save(const QString &fileName, const KTProject *project)
     // Save scenes
     {
      int index = 0;
-     foreach (KTScene *scene, project->scenes().visualValues()) {
+     foreach (KTScene *scene, project->scenes().values()) {
               QDomDocument doc;
               doc.appendChild(scene->toXml(doc));
 
