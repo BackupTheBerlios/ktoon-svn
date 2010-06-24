@@ -163,6 +163,18 @@ bool KTLayer::moveFrame(int from, int to)
     return true;
 }
 
+bool KTLayer::exchangeFrame(int from, int to)
+{
+    if (from < 0 || from >= k->frames.count() || to < 0 || to > k->frames.count())
+        return false;
+
+    kFatal() << "KTLayer::moveFrame -> Moving frame from " << from << " to " << to;
+
+    k->frames.exchangeObject(from, to);
+
+    return true;
+}
+
 bool KTLayer::expandFrame(int position, int size)
 {
     if (position < 0 || position >= k->frames.count())

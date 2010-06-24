@@ -196,11 +196,11 @@ bool KTScene::removeLayer(int position)
             }
         }
 
-        QList<int> indices = this->layers().visualIndices();
+        QList<int> indexList = this->layers().indexes();
         int size = this->layersTotal();
-        for (int i = 0; i < size; i++) {
-             KTLayer *layer = this->layer(indices.at(i));
-        }
+
+        for (int i = 0; i < size; i++) 
+             KTLayer *layer = this->layer(indexList.at(i));
 
         delete layer;
 

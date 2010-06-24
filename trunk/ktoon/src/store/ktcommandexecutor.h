@@ -78,6 +78,7 @@ class KTCommandExecutor : public QObject
         bool moveScene(KTSceneResponse *response);
         bool moveLayer(KTLayerResponse *response);
         bool moveFrame(KTFrameResponse *response);
+        bool exchangeFrame(KTFrameResponse *response);
         
         bool lockScene(KTSceneResponse *response);
         bool lockLayer(KTLayerResponse *response);

@@ -80,44 +80,48 @@ class STORE_EXPORT KTProjectRequest
              */
             Remove = -Add,
             /**
+             * Intercambia del valor entre dos posiciones 
+             */
+            Exchange = 2,
+            /**
              * Mueve una parte, el tipo de data es un entero que significa la nueva posicion
              */
-            Move = 2,
+            Move = 3,
             /**
              * Bloquea una parte, el tipo de data es booleano.
              */
-            Lock = 3,
+            Lock = 4,
             /**
              * Renombra una parte, el tipo de data es una cadena de texto.
              */
-            Rename = 4,
+            Rename = 5,
             /**
              * Selecciona una parte, el tipo de data es nulo
              */
-            Select = 5,
+            Select = 6,
             /**
              * Cambia la visibilidad
              */
-            View = 6,
+            View = 7,
             
-            Group = 7,
+            Group = 8,
             Ungroup = -Group,
             
             // Items
-            Transform = 8,
-            Convert = 9,
-            EditNodes = 10,
-            AddSymbolToProject = 11,
-            Tweening = 12,
+            Transform = 9,
+            Convert = 10,
+            EditNodes = 11,
+            AddSymbolToProject = 12,
+            Tweening = 13,
             
             // frames
-            Update = 13,
-            Expand = 14,
-            Copy = 15,
-            Paste = 16,
+            Update = 14,
+            Expand = 15,
+            Copy = 16,
+            Paste = 17,
             
             // scenes
-            GetInfo = 17
+            GetInfo = 18
         };
         
         enum Part

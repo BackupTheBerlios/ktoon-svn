@@ -45,14 +45,13 @@ class KTIntHash
         KTIntHash(const KTIntHash<T> &other);
         ~KTIntHash();
         
-        //void removeVisual(int pos);
         void removeObject(int pos);
         void remove(int pos);
         void moveObject(int from, int to);
+        void exchangeObject(int from, int to);
         bool containsObject(int pos);
         
         int objectIndex(T val);
-        //int logicalIndex(T val);
         
         T value(int pos);
         T takeObject(int pos);
@@ -79,10 +78,9 @@ class KTIntHash
         void expandValue(int index);
         
         T operator[](int index) const;
-        //QList<T> visualValues() const;
         QList<T> values() const;
         
-        QList<int> visualIndices() const;
+        QList<int> indexes() const;
         
         bool isEmpty();
         
@@ -136,14 +134,23 @@ bool KTIntHash<T>::contains(int pos)
 template<typename T>
 void KTIntHash<T>::moveObject(int from, int to)
 {
-    qDebug("******** Hello world!!!");
-    qDebug("KTIntHash::moveVisual FROM: %d", from);
-    qDebug("KTIntHash::moveVisual TO: %d", to);
+    if (containsObject(from) && containsObject(to)) {
+        T fromValue = k->dataHash.value(from);
+        T toValue = k->dataHash.value(to);
+        this->insert(to, fromValue);
+        this->insert(from, toValue);
+    }
+}
 
-    T value = k->dataHash.value(from);
-    this->insert(to, value);
-
-    qDebug("KTIntHash::moveVisual SIZE: %d", k->dataHash.size());
+template<typename T>
+void KTIntHash<T>::exchangeObject(int from, int to)
+{
+    if (containsObject(from) && containsObject(to)) {
+        T fromValue = k->dataHash.value(from);
+        T toValue = k->dataHash.value(to);
+        this->insert(to, fromValue);
+        this->insert(from, toValue);
+    }
 }
 
 template<typename T>
@@ -160,14 +167,6 @@ KTIntHash<T> &KTIntHash<T>::operator=(const KTIntHash<T> &other)
     
     return *this;
 }
-
-/*
-template<typename T>
-int KTIntHash<T>::logicalIndex(T val)
-{
-    return k->dataHash.key(val);
-}
-*/
 
 template<typename T>
 int KTIntHash<T>::objectIndex(T val)
@@ -240,19 +239,6 @@ T KTIntHash<T>::operator[](int index) const
     return k->dataHash.value(index);
 }
 
-/*
-template<typename T>
-QList<T> KTIntHash<T>::visualValues() const
-{
-    QList<T> visualValues;
-    
-    foreach (int pos, k->dataHash.keys())
-             visualValues << k->dataHash.value(pos);
-
-    return visualValues;
-}
-*/
-
 template<typename T>
 QList<T> KTIntHash<T>::values() const
 {
@@ -260,7 +246,7 @@ QList<T> KTIntHash<T>::values() const
 }
 
 template<typename T>
-QList<int> KTIntHash<T>::visualIndices() const
+QList<int> KTIntHash<T>::indexes() const
 {
     return k->dataHash.keys();
 }

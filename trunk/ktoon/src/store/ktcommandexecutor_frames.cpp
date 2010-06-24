@@ -152,6 +152,34 @@ bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
     return false;
 }
 
+bool KTCommandExecutor::exchangeFrame(KTFrameResponse *response)
+{
+    int scenePos = response->sceneIndex();
+    int layerPos = response->layerIndex();
+    int position = response->frameIndex();
+    int newPosition = response->arg().toInt();
+    KTScene *scene = m_project->scene(scenePos);
+   
+    if (!scene)
+        return false;
+   
+    KTLayer *layer = scene->layer(layerPos);
+   
+    if (layer) {
+        if (layer->exchangeFrame(position, newPosition)) {
+            emit responsed(response);
+            return true;
+        } else {
+            #ifdef K_DEBUG
+                   kWarning() << "Failed moving frame";
+            #endif
+            return false;
+        }
+    }
+   
+    return false;
+}
+
 bool KTCommandExecutor::lockFrame(KTFrameResponse *response)
 {
     int scenePos = response->sceneIndex();

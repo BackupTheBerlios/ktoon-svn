@@ -237,7 +237,7 @@ void KTExposureSheet::applyAction(int action)
                {
                  KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
                                           k->currentTable->currentLayer(), k->currentTable->currentFrame(),
-                                          KTProjectRequest::Move, k->currentTable->currentFrame()-1);
+                                          KTProjectRequest::Exchange, k->currentTable->currentFrame()-1);
                  emit requestTriggered(&event);
                }
                break;
@@ -245,7 +245,7 @@ void KTExposureSheet::applyAction(int action)
                {
                  KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
                                           k->currentTable->currentLayer(), k->currentTable->currentFrame(),
-                                          KTProjectRequest::Move, k->currentTable->currentFrame()+1);
+                                          KTProjectRequest::Exchange, k->currentTable->currentFrame()+1);
                  emit requestTriggered(&event);
                }
                break;
@@ -519,6 +519,12 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 case KTProjectRequest::Remove:
                  {
                      scene->removeFrame(e->layerIndex(), e->frameIndex());
+                 }
+                break;
+                case KTProjectRequest::Exchange:
+                 {
+                     scene->moveFrame(e->layerIndex(), e->frameIndex(), e->layerIndex(), e->arg().toInt(),
+                                      e->external());
                  }
                 break;
                 case KTProjectRequest::Move:
