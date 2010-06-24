@@ -197,14 +197,22 @@ void KTExposureSheet::applyAction(int action)
                      kFatal() << "TARGET INDEX: " << target;
                      kFatal() << "LAST INDEX: " << lastFrame;
 
-                     if (lastFrame == 1) { // Just two frames in the layer 
-                         kFatal() << "CASE #1 <- 2 FRAMES";
-                         KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(),
-                                                  layer, 1,
-                                                  KTProjectRequest::Move, 2);
-                         emit requestTriggered(&event);
-                         //insertFrame(layer, target);
+                     insertFrame(layer, k->currentTable->framesTotal());
+
+                     KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(),
+                                              k->currentTable->currentLayer(), lastFrame,
+                                              KTProjectRequest::Move, lastFrame + 1);
+                     emit requestTriggered(&event);
+
+                     /*
+                     for (int index=lastFrame; index > k->currentTable->currentFrame(); index--) {
+                          kFatal() << "Moving frame from " << index << " to " << index+1;
+                          KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(),
+                                                   k->currentTable->currentLayer(), index,
+                                                   KTProjectRequest::Move, index + 1);
+                          emit requestTriggered(&event);
                      }
+                     */
 
                      /*
                      for (int index=border; index+1 > k->currentTable->currentFrame(); index--) {
@@ -433,7 +441,7 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
            break;
            case KTProjectRequest::Rename:
             {
-                renameScene (e->sceneIndex(), e->arg().toString());
+                renameScene(e->sceneIndex(), e->arg().toString());
             }
            break;
            case KTProjectRequest::Select:
@@ -446,45 +454,45 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
 
 void KTExposureSheet::layerResponse(KTLayerResponse *e)
 {
-    KTExposureTable *scene = k->scenes->getTable(e->sceneIndex());
+    KTExposureTable *table = k->scenes->getTable(e->sceneIndex());
 
-    if (scene) {
+    if (table) {
         switch (e->action()) {
                 case KTProjectRequest::Add:
                  {
-                     scene->insertLayer(e->layerIndex(), e->arg().toString());
+                     table->insertLayer(e->layerIndex(), e->arg().toString());
                  }
                 break;
                 case KTProjectRequest::Remove:
                  {
-                     scene->removeLayer(e->layerIndex());
+                     table->removeLayer(e->layerIndex());
                  }
                 break;
                 case KTProjectRequest::Move:
                  {
-                     scene->moveLayer(e->layerIndex(), e->arg().toInt());
+                     table->moveLayer(e->layerIndex(), e->arg().toInt());
                  }
                 break;
                 case KTProjectRequest::Rename:
                  {
-                     scene->setLayerName(e->layerIndex(), e->arg().toString());
+                     table->setLayerName(e->layerIndex(), e->arg().toString());
                  }
                 break;
                 case KTProjectRequest::Lock:
                  {
-                     scene->setLockLayer(e->layerIndex(), e->arg().toBool());
+                     table->setLockLayer(e->layerIndex(), e->arg().toBool());
                  }
                 break;
                 case KTProjectRequest::Select:
                  {
                      setScene(e->sceneIndex());
-                     scene->blockSignals(true);
-                     scene->selectFrame(e->layerIndex(), 0);
-                     scene->blockSignals(false);
+                     table->blockSignals(true);
+                     table->selectFrame(e->layerIndex(), 0);
+                     table->blockSignals(false);
                  }
                 case KTProjectRequest::View:
                  {
-                     scene->setVisibilityChanged(e->layerIndex(), e->arg().toBool());
+                     table->setVisibilityChanged(e->layerIndex(), e->arg().toBool());
                  }
                 break;
                 default:
@@ -502,77 +510,77 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
            K_FUNCINFO;
     #endif
 
-    KTExposureTable *scene = k->scenes->getTable(e->sceneIndex());
+    KTExposureTable *table = k->scenes->getTable(e->sceneIndex());
 
-    if (scene) {
+    if (table) {
         switch (e->action()) {
                 case KTProjectRequest::Add:
                  {
-                     scene->setUseFrame(e->layerIndex(), e->frameIndex(), e->arg().toString(), e->external());
+                     table->insertFrame(e->layerIndex(), e->frameIndex(), e->arg().toString(), e->external());
 
                      if (e->layerIndex() == 0 && e->frameIndex() == 0) {
                          setScene(e->sceneIndex());
-                         scene->selectFrame(e->layerIndex(), e->frameIndex());
+                         table->selectFrame(e->layerIndex(), e->frameIndex());
                      }
                  }
                 break;
                 case KTProjectRequest::Remove:
                  {
-                     scene->removeFrame(e->layerIndex(), e->frameIndex());
+                     table->removeFrame(e->layerIndex(), e->frameIndex());
                  }
                 break;
                 case KTProjectRequest::Exchange:
                  {
-                     scene->moveFrame(e->layerIndex(), e->frameIndex(), e->layerIndex(), e->arg().toInt(),
-                                      e->external());
+                     table->exchangeFrame(e->layerIndex(), e->frameIndex(), e->layerIndex(), e->arg().toInt(),
+                                          e->external());
                  }
                 break;
                 case KTProjectRequest::Move:
                  {
-                     scene->moveFrame(e->layerIndex(), e->frameIndex(), e->layerIndex(), e->arg().toInt(), 
-                                      e->external());
+                     // table->exchangeFrame(e->layerIndex(), e->frameIndex(), e->layerIndex(), e->arg().toInt(), 
+                     //                      e->external());
                  }
                 break;
                 case KTProjectRequest::Lock:
                  {
-                     scene->setLockFrame(e->layerIndex(), e->frameIndex(),  e->arg().toBool());
+                     table->setLockFrame(e->layerIndex(), e->frameIndex(),  e->arg().toBool());
                  }
                 break;
                 case KTProjectRequest::Rename:
                  {
-                     scene->setFrameName(e->layerIndex(), e->frameIndex(), e->arg().toString());
+                     table->setFrameName(e->layerIndex(), e->frameIndex(), e->arg().toString());
                  }
                 break;
                 case KTProjectRequest::Select:
                  {
                      //setScene(e->sceneIndex());
-                     scene->blockSignals(true);
+                     table->blockSignals(true);
                      setScene(e->sceneIndex());
-                     scene->selectFrame(e->layerIndex(), e->frameIndex());
-                     scene->blockSignals(false);
+                     table->selectFrame(e->layerIndex(), e->frameIndex());
+                     table->blockSignals(false);
                  }
                 break;
                 case KTProjectRequest::Expand:
                  {
                      for(int i = 0; i < e->arg().toInt(); i++)
-                         scene->setUseFrame(e->layerIndex(), e->frameIndex()+i+1, 
-                                            scene->frameName(e->layerIndex(), e->frameIndex()), 
+                         table->insertFrame(e->layerIndex(), e->frameIndex()+i+1, 
+                                            table->frameName(e->layerIndex(), e->frameIndex()), 
                                             e->external());
                  }
                 break;
                 case KTProjectRequest::Copy:
                  {
-                     k->nameCopyFrame = scene->frameName(e->layerIndex(), e->frameIndex());
+                     k->nameCopyFrame = table->frameName(e->layerIndex(), e->frameIndex());
                  }
                 break;
                 case KTProjectRequest::Paste:
                  {
-                     if (e->frameIndex() >= scene->usedFrames(e->layerIndex())) {
+                     if (e->frameIndex() >= table->usedFrames(e->layerIndex())) {
                          if (e->mode() == KTProjectResponse::Undo) {
                              if (e->arg().toString().isEmpty())
-                                 scene->removeFrame(e->layerIndex(), e->frameIndex());
+                                 table->removeFrame(e->layerIndex(), e->frameIndex());
                          } else {
-                                 scene->setUseFrame(e->layerIndex(), e->frameIndex(), 
+                                 table->insertFrame(e->layerIndex(), e->frameIndex(), 
                                                      k->nameCopyFrame + "- copy", e->external());
                          }
                      }

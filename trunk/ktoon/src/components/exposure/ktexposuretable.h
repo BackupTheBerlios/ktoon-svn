@@ -61,10 +61,10 @@ class KTExposureTable : public QTableWidget
         int currentLayer() const;
         int currentFrame() const;
         void insertLayer(int index, const QString & name);
-        void setUseFrame(int indexLayer, int indexFrame, const QString & name, bool external);
+        void insertFrame(int indexLayer, int indexFrame, const QString & name, bool external);
         void removeLayer(int indexLayer);
         void removeFrame(int indexLayer, int indexFrame);
-        void moveFrame(int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external);
+        void exchangeFrame(int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external);
         void moveLayer(int oldPosLayer, int newPosLayer);
 
         void setLockFrame(int indexLayer, int indexFrame, bool locked);

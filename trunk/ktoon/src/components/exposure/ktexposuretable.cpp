@@ -318,9 +318,9 @@ void KTExposureTable::insertLayer(int index, const QString & name)
     k->header->insertLayer(index, name);
 }
 
-void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString & name, bool external)
+void KTExposureTable::insertFrame(int indexLayer, int indexFrame, const QString & name, bool external)
 {
-    QTableWidgetItem * frame = new QTableWidgetItem;
+    QTableWidgetItem *frame = new QTableWidgetItem;
     frame->setBackgroundColor(QColor(0xe6e6e6));
     frame->setFont(QFont("Arial", 7, QFont::Normal, false));
     frame->setSizeHint(QSize(65, 10));
@@ -335,7 +335,7 @@ void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString 
     setItem(k->header->lastFrame(logicalIndex)-1, logicalIndex, frame);
 
     for (int i = k->header->lastFrame(logicalIndex)-1; i > indexFrame; i--)
-         moveFrame(indexLayer, i , indexLayer, i-1, external);
+         exchangeFrame(indexLayer, i , indexLayer, i-1, external);
 
     if (k->header->lastFrame(logicalIndex) == rowCount())
         setRowCount(k->header->lastFrame(logicalIndex) + 50);
@@ -395,8 +395,10 @@ void KTExposureTable::removeFrame(int indexLayer, int indexFrame)
     setUpdatesEnabled(true);
 }
 
-void KTExposureTable::moveFrame(int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external)
+void KTExposureTable::exchangeFrame(int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external)
 {
+    kFatal() << "KTExposureTable::moveFrame <- exchanging 2 frames";
+
     QTableWidgetItem * oldItem  = takeItem(oldPosFrame, oldPosLayer);
     QTableWidgetItem * newItem  = takeItem(newPosFrame, newPosLayer);
 
