@@ -51,6 +51,8 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
     int layerPosition = response->layerIndex();
     int position = response->frameIndex();
     QString name = response->arg().toString();
+
+    kFatal() << "KTCommandExecutor::createFrame -> Index: " << position;
     
     QString state = response->state();
     
@@ -131,6 +133,8 @@ bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
     int position = response->frameIndex();
     int newPosition = response->arg().toInt();
     KTScene *scene = m_project->scene(scenePos);
+
+    kFatal() << "KTCommandExecutor::moveFrame <- Moving frame from " << position << " to " << newPosition;
     
     if (!scene)
         return false;
@@ -255,6 +259,8 @@ bool KTCommandExecutor::selectFrame(KTFrameResponse *response)
     int layerPos = response->layerIndex();
     int position = response->frameIndex();
     // bool prioritary = response->arg().toBool();
+
+    kFatal() << "KTCommandExecutor::selectFrame -> Index: " << position;
     
     KTScene *scene = m_project->scene(scenePos);
     

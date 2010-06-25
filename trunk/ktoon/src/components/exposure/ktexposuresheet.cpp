@@ -198,13 +198,7 @@ void KTExposureSheet::applyAction(int action)
                      kFatal() << "LAST INDEX: " << lastFrame;
 
                      insertFrame(layer, k->currentTable->framesTotal());
-
-                     KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(),
-                                              k->currentTable->currentLayer(), lastFrame,
-                                              KTProjectRequest::Move, lastFrame + 1);
-                     emit requestTriggered(&event);
-
-                     /*
+                     
                      for (int index=lastFrame; index > k->currentTable->currentFrame(); index--) {
                           kFatal() << "Moving frame from " << index << " to " << index+1;
                           KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(),
@@ -212,7 +206,6 @@ void KTExposureSheet::applyAction(int action)
                                                    KTProjectRequest::Move, index + 1);
                           emit requestTriggered(&event);
                      }
-                     */
 
                      /*
                      for (int index=border; index+1 > k->currentTable->currentFrame(); index--) {

@@ -134,11 +134,13 @@ bool KTIntHash<T>::contains(int pos)
 template<typename T>
 void KTIntHash<T>::moveObject(int from, int to)
 {
-    qDebug("KTIntHash<T>::moveObject -> Tracing");
+    qDebug("KTIntHash<T>::moveObject -> Tracing : %d - %d", from, to);
 
     if (containsObject(from) && containsObject(to)) {
-        T fromValue = k->dataHash.take(from);
-        this->insert(to, fromValue);
+        T fromValue = k->dataHash.value(from);
+        qDebug("KTIntHash<T>::moveObject -> Inserting value at %d", to);
+        k->dataHash.insert(to, fromValue);
+        //this->insert(to, fromValue);
     } else {
         qDebug("KTIntHash<T>::moveObject -> NO MOVE! %d - %d", from, to);
     }
@@ -197,6 +199,8 @@ T KTIntHash<T>::takeObject(int pos)
 template<typename T>
 void KTIntHash<T>::insert(int pos, T value)
 {
+    qDebug("KTIntHash<T>::insert -> Inserting pos: %d", pos);
+
     if (k->dataHash.contains(pos))
         qDebug("######   OVERRIDING!! %d", pos);
     else
@@ -226,6 +230,7 @@ void KTIntHash<T>::remove(int pos)
 template<typename T>
 void KTIntHash<T>::add(T value)
 {
+    qDebug("KTIntHash<T>::add -> Adding pos: %d", k->counter);
     this->insert(k->counter, value);
 }
 

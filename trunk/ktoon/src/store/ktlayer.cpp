@@ -153,10 +153,13 @@ bool KTLayer::removeFrame(int position)
 
 bool KTLayer::moveFrame(int from, int to)
 {
+    kFatal() << "KTLayer::moveFrame -> Tracing...";
+    kFatal() << "KTLayer::moveFrame -> Moving frame from " << from << " to " << to;
+
     if (from < 0 || from >= k->frames.count() || to < 0 || to > k->frames.count())
         return false;
 
-    kFatal() << "KTLayer::moveFrame -> Moving frame from " << from << " to " << to;
+    kFatal() << "KTLayer::moveFrame -> Passing by!";
 
     k->frames.moveObject(from, to);
 
