@@ -123,7 +123,7 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
     
     QList<QGraphicsItem *> selectedObjects = scene->selectedItems();
     
-    if (scene->currentFrame()->visualIndexOf(scene->mouseGrabberItem()) != -1)
+    if (scene->currentFrame()->indexOf(scene->mouseGrabberItem()) != -1)
         selectedObjects << scene->mouseGrabberItem();
 
     foreach (QGraphicsItem *item, selectedObjects) {
@@ -198,7 +198,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                      QDomDocument doc;
                      doc.appendChild(KTSerializer::properties(manager->parentItem(), doc));
                 
-                     int position  = scene->currentFrame()->visualIndexOf(manager->parentItem());
+                     int position  = scene->currentFrame()->indexOf(manager->parentItem());
 
                      if (position != -1) {
                          // Restore matrix

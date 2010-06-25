@@ -151,6 +151,21 @@ bool KTLayer::removeFrame(int position)
     return false;
 }
 
+bool KTLayer::resetFrame(int position)
+{
+    KTFrame *toReset = frame(position);
+
+    if (toReset) {
+        QString label = toReset->frameName() ;
+        KTFrame *frame = new KTFrame(this); 
+        frame->setFrameName(label);
+        k->frames.insert(position, frame);
+        return true;
+    }
+
+    return false;
+}
+
 bool KTLayer::moveFrame(int from, int to)
 {
     kFatal() << "KTLayer::moveFrame -> Tracing...";

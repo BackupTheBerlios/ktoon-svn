@@ -80,7 +80,7 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
                 QGraphicsItem *item = frame->createItem(position, xml);
                 if (item) {
                     emit responsed(response);
-                    response->setItemIndex( frame->visualIndexOf(item));
+                    response->setItemIndex(frame->indexOf(item));
                 }
             } else {
                 #ifdef K_DEBUG
@@ -195,7 +195,7 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
             if (frame) {
                 QString::const_iterator itr = strList.constBegin();
                 QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
-                response->setItemIndex( frame->visualIndexOf( frame->createItemGroupAt( position, positions)));
+                response->setItemIndex(frame->indexOf(frame->createItemGroupAt(position, positions)));
                 
                 emit responsed(response);
                 return true;
@@ -227,11 +227,11 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
                 QString strItems = "";
                 QList<QGraphicsItem *> items = frame->destroyItemGroup(position);
                 foreach (QGraphicsItem *item, items) {
-                         if (frame->visualIndexOf(item) != -1) {
+                         if (frame->indexOf(item) != -1) {
                              if (strItems.isEmpty()) {
-                                 strItems +="("+ QString::number(frame->visualIndexOf(item)) ;
+                                 strItems += "("+ QString::number(frame->indexOf(item));
                              } else {
-                                 strItems += " , "+ QString::number(frame->visualIndexOf(item));
+                                 strItems += " , "+ QString::number(frame->indexOf(item));
                              }
                          }
                 }

@@ -68,6 +68,7 @@ class KTCommandExecutor : public QObject
         bool removeScene(KTSceneResponse *response);
         bool removeLayer(KTLayerResponse *response);
         bool removeFrame(KTFrameResponse *response);
+        bool resetFrame(KTFrameResponse *response);
         
         bool removeItem(KTItemResponse *response);
         bool moveItem(KTItemResponse *response);

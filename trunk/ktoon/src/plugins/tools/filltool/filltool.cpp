@@ -181,7 +181,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
         {
             if (QAbstractGraphicsShapeItem *shape = 
                             qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(clickedItem)) {
-                int position  = scene->currentFrame()->visualIndexOf(shape);
+                int position  = scene->currentFrame()->indexOf(shape);
                 
                 if (position >= 0) {
                     if (currentTool() == tr("Fill")) {

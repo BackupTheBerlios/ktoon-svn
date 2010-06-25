@@ -190,48 +190,48 @@ void KTExposureSheet::applyAction(int action)
                                insertFrame(layer, frame);
                      }
                  } else {
+                     int scene = k->scenes->currentIndex();
                      int target = k->currentTable->currentFrame() + 1;
                      int lastFrame = k->currentTable->framesTotal() - 1;
                      int layer = k->currentTable->currentLayer();
 
-                     kFatal() << "TARGET INDEX: " << target;
-                     kFatal() << "LAST INDEX: " << lastFrame;
-
                      insertFrame(layer, k->currentTable->framesTotal());
                      
                      for (int index=lastFrame; index > k->currentTable->currentFrame(); index--) {
-                          kFatal() << "Moving frame from " << index << " to " << index+1;
-                          KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(),
-                                                   k->currentTable->currentLayer(), index,
+                          KTProjectRequest event = KTRequestBuilder::createFrameRequest(scene,
+                                                   layer, index,
                                                    KTProjectRequest::Move, index + 1);
                           emit requestTriggered(&event);
                      }
 
-                     /*
-                     for (int index=border; index+1 > k->currentTable->currentFrame(); index--) {
-                          KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(),
-                                                   k->currentTable->currentLayer(), index,
-                                                   KTProjectRequest::Move, index+1);
-                          emit requestTriggered(&event);
-                     }
-                     */
+                     KTProjectRequest event = KTRequestBuilder::createFrameRequest(scene,
+                                              layer, target,
+                                              KTProjectRequest::Reset);
+                     emit requestTriggered(&event);
 
-                     //for (int layer=0; layer < k->currentTable->layersTotal(); layer++)
-                     //     insertFrame(layer, row);
-
-                     //insertFrame(k->currentTable->currentLayer(), row);
-
-                     //if (k->currentTable->layersTotal() > 1)
-                     //    selectFrame(k->currentTable->currentLayer(), row);           
+                     selectFrame(layer, target);
                  }
                }
                break;
             case KTProjectActionBar::RemoveFrame:
                {
-                 KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
-                                          k->currentTable->currentLayer(), k->currentTable->currentFrame(),
-                                          KTProjectRequest::Remove);
-                 emit requestTriggered(&event);
+                 int lastFrame = k->currentTable->framesTotal() - 1;
+                 int target = k->currentTable->currentFrame();
+                 int layer = k->currentTable->currentLayer();
+
+                 kFatal() << "lastFrame: " << lastFrame << " - target: " << target;
+
+                 // SQA: Take care about the first frame case and paint a message on the workspace 
+                 if (target == lastFrame) {
+                     KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
+                                              k->currentTable->currentLayer(), k->currentTable->currentFrame(),
+                                              KTProjectRequest::Remove);
+                     emit requestTriggered(&event);
+                     if (target > 0)
+                         selectFrame(layer, target-1);
+                 } else {
+                     // When the item deleted is not the last one
+                 }
                }
                break;
             case KTProjectActionBar::MoveFrameUp:

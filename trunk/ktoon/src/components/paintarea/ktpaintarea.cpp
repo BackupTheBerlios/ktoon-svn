@@ -371,7 +371,7 @@ void KTPaintArea::deleteItems()
                      KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                               currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
                                               currentScene->currentFrameIndex(), 
-                                              currentScene->currentFrame()->visualIndexOf(item),
+                                              currentScene->currentFrame()->indexOf(item),
                                               KTProjectRequest::Remove);
                      emit requestTriggered(&event);
             }
@@ -391,13 +391,13 @@ void KTPaintArea::groupItems()
 
         if (currentScene) {
             foreach (QGraphicsItem *item, selected) {
-                     if (currentScene->currentFrame()->visualIndexOf(item) != -1) {
+                     if (currentScene->currentFrame()->indexOf(item) != -1) {
                          if (strItems.isEmpty()) {
-                             strItems +="("+ QString::number(currentScene->currentFrame()->visualIndexOf(item));
-                             firstItem = currentScene->currentFrame()->visualIndexOf(item);
+                             strItems +="("+ QString::number(currentScene->currentFrame()->indexOf(item));
+                             firstItem = currentScene->currentFrame()->indexOf(item);
                          } else {
                              strItems += " , " + 
-                             QString::number(currentScene->currentFrame()->visualIndexOf(item));
+                             QString::number(currentScene->currentFrame()->indexOf(item));
                          }
                      }
             }
@@ -425,7 +425,7 @@ void KTPaintArea::ungroupItems()
                                               currentScene->currentSceneIndex(), 
                                               currentScene->currentLayerIndex(), 
                                               currentScene->currentFrameIndex(), 
-                                              currentScene->currentFrame()->visualIndexOf(item),
+                                              currentScene->currentFrame()->indexOf(item),
                                               KTProjectRequest::Ungroup);
                      emit requestTriggered(&event);
             }
@@ -582,7 +582,7 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
     QList<int> positions;
     foreach (QGraphicsItem *item, selected) {
              int newPos = 0;
-             int  value = currentFrame->visualIndexOf(item);
+             int  value = currentFrame->indexOf(item);
              bool ok;
              int moveType = action->data().toInt(&ok);
 
@@ -603,6 +603,7 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
                          default: 
                               return;
                  }
+
                  KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
                                           currentScene->currentLayerIndex(), currentScene->currentFrameIndex(),
                                           value, KTProjectRequest::Move, newPos);

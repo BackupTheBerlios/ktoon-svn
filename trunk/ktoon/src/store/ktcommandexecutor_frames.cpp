@@ -126,6 +126,37 @@ bool KTCommandExecutor::removeFrame(KTFrameResponse *response)
     return false;
 }
 
+bool KTCommandExecutor::resetFrame(KTFrameResponse *response)
+{
+    int scenePos = response->sceneIndex();
+    int layerPos = response->layerIndex();
+    int position = response->frameIndex();
+   
+    KTScene *scene = m_project->scene(scenePos);
+   
+    if (scene) {
+        KTLayer *layer = scene->layer(layerPos);
+        if (layer) {
+            KTFrame *frame = layer->frame(position);
+            if (frame) {
+                /*
+                QDomDocument doc;
+                doc.appendChild(frame->toXml(doc));
+                response->setArg(frame->frameName());
+                */
+                if (layer->resetFrame(position)) {
+                    //response->setState(doc.toString(0));
+                    emit responsed(response);
+
+                    return true;
+                }
+            }
+        }
+    }
+   
+    return false;
+}
+
 bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
 {
     int scenePos = response->sceneIndex();

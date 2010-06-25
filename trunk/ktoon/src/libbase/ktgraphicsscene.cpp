@@ -213,7 +213,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
     if (valid) {
         foreach (KTGraphicObject *object, k->scene->tweeningObjects()) {
                  if (object->frame()->layer()->isVisible()) {
-                     int origin = object->frame()->visualIndex();
+                     int origin = object->frame()->index();
 
                      if (KTItemTweener *tweener = object->tweener()) {
                          tweener->setStep(0);

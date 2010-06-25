@@ -204,7 +204,7 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
         
         emit requested(&request);
     } else if (!k->nodegroup->isSelected()) {
-               int position  = scene->currentFrame()->visualIndexOf(k->item);
+               int position = scene->currentFrame()->indexOf(k->item);
         
                if (position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(k->nodegroup->parentItem())) {
                    doc.appendChild(qgraphicsitem_cast<KTPathItem *>(k->nodegroup->parentItem())->toXml(doc));
@@ -327,7 +327,7 @@ void PolyLine::nodeChanged()
         // SHOW_VAR(!d->nodegroup->changedNodes().isEmpty());
         if (!k->nodegroup->changedNodes().isEmpty()) {
             QDomDocument doc;
-            int position = k->scene->currentFrame()->visualIndexOf(k->nodegroup->parentItem());
+            int position = k->scene->currentFrame()->indexOf(k->nodegroup->parentItem());
             if (position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(k->nodegroup->parentItem())) {
                 doc.appendChild(qgraphicsitem_cast<KTPathItem *>(k->nodegroup->parentItem())->toXml(doc));
                 

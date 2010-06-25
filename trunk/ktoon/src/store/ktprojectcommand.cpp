@@ -302,6 +302,11 @@ void KTProjectCommand::frameCommand()
                  k->executor->removeFrame(response);
             }
             break;
+            case KTProjectRequest::Reset:
+            {
+                 k->executor->resetFrame(response);
+            }
+            break;
             case KTProjectRequest::Exchange:
             {
                  k->executor->exchangeFrame(response);

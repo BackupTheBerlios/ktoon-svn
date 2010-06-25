@@ -111,12 +111,12 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
        KTScene *scene() const;
        KTProject *project() const;
        
-       int visualIndexOf(KTGraphicObject *object) const;
+       int indexOf(KTGraphicObject *object) const;
        //int logicalIndexOf(KTGraphicObject *object) const;
-       int visualIndexOf(QGraphicsItem *item) const;
+       int indexOf(QGraphicsItem *item) const;
        //int logicalIndexOf(QGraphicsItem *item) const;
        
-       int visualIndex() const;
+       int index() const;
        //int logicalIndex() const;
        
        void setRepeat(int repeat);

@@ -59,7 +59,7 @@ class STORE_EXPORT KTProjectRequestArgument
         QString toString();
         
     private:
-        QString m_value;
+		QString m_value;
 };
 
 /**
@@ -80,48 +80,52 @@ class STORE_EXPORT KTProjectRequest
              */
             Remove = -Add,
             /**
+             * Reinicia los valores de un objeto
+             */
+            Reset = 2,
+            /**
              * Intercambia del valor entre dos posiciones 
              */
-            Exchange = 2,
+            Exchange = 3,
             /**
              * Mueve una parte, el tipo de data es un entero que significa la nueva posicion
              */
-            Move = 3,
+            Move = 4,
             /**
              * Bloquea una parte, el tipo de data es booleano.
              */
-            Lock = 4,
+            Lock = 5,
             /**
              * Renombra una parte, el tipo de data es una cadena de texto.
              */
-            Rename = 5,
+            Rename = 6,
             /**
              * Selecciona una parte, el tipo de data es nulo
              */
-            Select = 6,
+            Select = 7,
             /**
              * Cambia la visibilidad
              */
-            View = 7,
+            View = 8,
             
-            Group = 8,
+            Group = 9,
             Ungroup = -Group,
             
             // Items
-            Transform = 9,
-            Convert = 10,
-            EditNodes = 11,
-            AddSymbolToProject = 12,
-            Tweening = 13,
+            Transform = 10,
+            Convert = 11,
+            EditNodes = 12,
+            AddSymbolToProject = 13,
+            Tweening = 14,
             
             // frames
-            Update = 14,
-            Expand = 15,
-            Copy = 16,
-            Paste = 17,
+            Update = 15,
+            Expand = 16,
+            Copy = 17,
+            Paste = 18,
             
             // scenes
-            GetInfo = 18
+            GetInfo = 19
         };
         
         enum Part

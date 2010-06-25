@@ -310,7 +310,7 @@ void Tweener::applyTweener()
                                             k->scene->currentSceneIndex(),
                                             k->scene->currentLayerIndex(),
                                             k->scene->currentFrameIndex(),
-                                            k->scene->currentFrame()->visualIndexOf(item),
+                                            k->scene->currentFrame()->indexOf(item),
                                             KTProjectRequest::Tweening, 
                                             k->configurator->steps(k->scene->currentFrameIndex(), route));
                  emit requested(&request);
@@ -323,8 +323,8 @@ void Tweener::applyTweener()
 
                      for (int i = start; i < total; i++) {
                           KTProjectRequest requestFrame = KTRequestBuilder::createFrameRequest(k->scene->currentSceneIndex(), 
-                                                                            k->scene->currentLayerIndex(), 
-                                                                            i, KTProjectRequest::Add);
+                                                          k->scene->currentLayerIndex(), 
+                                                          i, KTProjectRequest::Add);
                           emit requested(&requestFrame);
                      }
                  }

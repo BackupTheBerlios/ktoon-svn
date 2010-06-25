@@ -308,7 +308,7 @@ QGraphicsItem *KTFrame::createItem(int position, const QString &xml, bool loaded
         insertItem(position, item);
 
     if (loaded)
-        KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), visualIndex(), position, xml, project());
+        KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, xml, project());
 
     return item;
 }
@@ -341,7 +341,7 @@ QGraphicsItem *KTFrame::item(int position) const
     return 0;
 }
 
-int KTFrame::visualIndexOf(KTGraphicObject *object) const
+int KTFrame::indexOf(KTGraphicObject *object) const
 {
     return k->graphics.objectIndex(object);
 }
@@ -353,7 +353,7 @@ int KTFrame::logicalIndexOf(KTGraphicObject *object) const
 }
 */
 
-int KTFrame::visualIndexOf(QGraphicsItem *item) const
+int KTFrame::indexOf(QGraphicsItem *item) const
 {
     foreach (KTGraphicObject *object, k->graphics.values()) {
              if (object->item() == item)
@@ -390,7 +390,7 @@ int KTFrame::repeat() const
     return k->repeat;
 }
 
-int KTFrame::visualIndex() const
+int KTFrame::index() const
 {
     //return layer()->logicalIndexOf(const_cast<KTFrame *>(this));
 

@@ -301,7 +301,7 @@ void KTViewColorCells::addCurrentColor()
 
     if (palette) {
         if (palette->isReadOnly() || (k->currentColor.gradient()  && palette->type() == KTCellsColor::Color)
-            || k->currentColor.color().isValid() && palette->type() == KTCellsColor::Gradient) {
+            || (k->currentColor.color().isValid() && palette->type() == KTCellsColor::Gradient)) {
             if (15 <= k->currentColor.style() && k->currentColor.style() < 18) {
                 palette = k->customGradientPalette;
                 k->chooserPalette->setCurrentIndex( k->chooserPalette->findText ( k->customGradientPalette->name()));

@@ -166,5 +166,5 @@ int KTGraphicObject::logicalIndex() const
 
 int KTGraphicObject::objectIndex() const
 {
-    return k->frame->visualIndexOf(const_cast<KTGraphicObject *>(this));
+    return k->frame->indexOf(const_cast<KTGraphicObject *>(this));
 }
