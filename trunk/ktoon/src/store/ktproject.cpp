@@ -251,7 +251,7 @@ bool KTProject::moveScene(int position, int newPosition)
         return false;
     }
 
-    k->scenes.moveObject(position, newPosition);
+    k->scenes.copyObject(position, newPosition);
 
     return true;
 }

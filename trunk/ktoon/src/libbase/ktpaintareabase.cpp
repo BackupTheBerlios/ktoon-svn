@@ -319,9 +319,15 @@ void KTPaintAreaBase::drawForeground(QPainter *painter, const QRectF &rect)
         drawPadLock(painter, rect, tr("No Scene!"));
     } else {
         if (currentScene->layersTotal() > 0) {
-            if (KTFrame *frame = k->scene->currentFrame()) {
-                if (frame->isLocked())
-                    drawPadLock(painter, rect, tr("Locked!"));
+            if (currentScene->framesTotal() > 0) {
+                if (KTFrame *frame = k->scene->currentFrame()) {
+                    if (frame) {
+                        if (frame->isLocked())
+                            drawPadLock(painter, rect, tr("Locked!"));
+                    } 
+                }
+            } else {
+                drawPadLock(painter, rect, tr("No Frames!"));
             } 
         } else {
             drawPadLock(painter, rect, tr("No Layers!"));

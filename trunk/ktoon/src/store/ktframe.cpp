@@ -260,14 +260,14 @@ bool KTFrame::moveItem(int currentPosition, int newPosition)
              double tmp = k->graphics.value(i)->item()->zValue();
              k->graphics.value(i)->item()->setZValue(k->graphics.value(i+1)->item()->zValue());
              k->graphics.value(i+1)->item()->setZValue(tmp);
-             k->graphics.moveObject(i, i+1);
+             k->graphics.copyObject(i, i+1);
         }
     } else {
              for (int i = currentPosition; i > newPosition; i--) {
                   double tmp = k->graphics.value(i)->item()->zValue();
                   k->graphics.value(i)->item()->setZValue(k->graphics.value(i-1)->item()->zValue());
                   k->graphics.value(i-1)->item()->setZValue(tmp);
-                  k->graphics.moveObject(i, i-1);
+                  k->graphics.copyObject(i, i-1);
              }
     }
 
@@ -311,6 +311,11 @@ QGraphicsItem *KTFrame::createItem(int position, const QString &xml, bool loaded
         KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, xml, project());
 
     return item;
+}
+
+void KTFrame::setGraphics(GraphicObjects objects)
+{
+    k->graphics = objects;
 }
 
 GraphicObjects KTFrame::graphics() const

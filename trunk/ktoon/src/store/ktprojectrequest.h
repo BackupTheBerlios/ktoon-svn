@@ -123,9 +123,9 @@ class STORE_EXPORT KTProjectRequest
             Expand = 16,
             Copy = 17,
             Paste = 18,
-            
+
             // scenes
-            GetInfo = 19
+            GetInfo = 19 
         };
         
         enum Part

@@ -52,26 +52,20 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
     int position = response->frameIndex();
     QString name = response->arg().toString();
 
-    kFatal() << "KTCommandExecutor::createFrame -> Index: " << position;
-    
     QString state = response->state();
     
     KTScene *scene = m_project->scene(scenePosition);
     
-    if (!scene) {
-        // kFatal() << "KTCommandExecutor::createFrame -> No scene! :S - ScenePosition: " << scenePosition;
+    if (!scene) 
         return false;
-    }
     
     KTLayer *layer = scene->layer(layerPosition);
     
     if (layer) {
         KTFrame *frame = layer->createFrame(position);
         
-        if (!frame) {
-            // kFatal() << "KTCommandExecutor::createFrame -> No frame! :S - FramePosition: " << position;
+        if (!frame)
             return false;
-        }
         
         if (!name.isEmpty()) {
             #ifdef K_DEBUG
@@ -165,8 +159,6 @@ bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
     int newPosition = response->arg().toInt();
     KTScene *scene = m_project->scene(scenePos);
 
-    kFatal() << "KTCommandExecutor::moveFrame <- Moving frame from " << position << " to " << newPosition;
-    
     if (!scene)
         return false;
     
@@ -291,8 +283,6 @@ bool KTCommandExecutor::selectFrame(KTFrameResponse *response)
     int position = response->frameIndex();
     // bool prioritary = response->arg().toBool();
 
-    kFatal() << "KTCommandExecutor::selectFrame -> Index: " << position;
-    
     KTScene *scene = m_project->scene(scenePos);
     
     if (!scene)
@@ -368,9 +358,12 @@ bool KTCommandExecutor::expandFrame(KTFrameResponse *response)
     return false;
 }
 
-
-bool KTCommandExecutor::pasteFrame( KTFrameResponse *response)
+bool KTCommandExecutor::pasteFrame(KTFrameResponse *response)
 {
+    #ifdef K_DEBUG
+           K_FUNCINFO;
+    #endif
+
     int scenePos = response->sceneIndex();
     int layerPos = response->layerIndex();
     int position = response->frameIndex();

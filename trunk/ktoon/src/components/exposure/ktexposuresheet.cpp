@@ -191,9 +191,9 @@ void KTExposureSheet::applyAction(int action)
                      }
                  } else {
                      int scene = k->scenes->currentIndex();
+                     int layer = k->currentTable->currentLayer();
                      int target = k->currentTable->currentFrame() + 1;
                      int lastFrame = k->currentTable->framesTotal() - 1;
-                     int layer = k->currentTable->currentLayer();
 
                      insertFrame(layer, k->currentTable->framesTotal());
                      
@@ -215,22 +215,34 @@ void KTExposureSheet::applyAction(int action)
                break;
             case KTProjectActionBar::RemoveFrame:
                {
+                 int scene = k->scenes->currentIndex();
+                 int layer = k->currentTable->currentLayer();
                  int lastFrame = k->currentTable->framesTotal() - 1;
                  int target = k->currentTable->currentFrame();
-                 int layer = k->currentTable->currentLayer();
-
-                 kFatal() << "lastFrame: " << lastFrame << " - target: " << target;
 
                  // SQA: Take care about the first frame case and paint a message on the workspace 
                  if (target == lastFrame) {
-                     KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
-                                              k->currentTable->currentLayer(), k->currentTable->currentFrame(),
+                     KTProjectRequest event = KTRequestBuilder::createFrameRequest(scene, 
+                                              layer, target,
                                               KTProjectRequest::Remove);
                      emit requestTriggered(&event);
                      if (target > 0)
                          selectFrame(layer, target-1);
+                     else
+                         k->currentTable->clearSelection();
                  } else {
                      // When the item deleted is not the last one
+                     for (int index=target+1; index <= lastFrame; index++) {
+                          KTProjectRequest event = KTRequestBuilder::createFrameRequest(scene,
+                                                   layer, index,
+                                                   KTProjectRequest::Move, index - 1);
+                          emit requestTriggered(&event);
+                     }
+
+                     selectFrame(layer, target);
+
+                     KTProjectRequest request = KTRequestBuilder::createFrameRequest(scene, layer, lastFrame, KTProjectRequest::Remove);
+                     emit requestTriggered(&request);
                  }
                }
                break;

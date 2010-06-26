@@ -140,8 +140,12 @@ bool KTLayer::removeFrame(int position)
         k->frames.removeObject(position);
         toRemove->setRepeat(toRemove->repeat()-1);
 
-        if (toRemove->repeat() < 1)
+        /*
+        if (toRemove->repeat() < 1) {
+            kFatal() << "KTLayer::removeFrame -> Deleting pointer!";
             delete toRemove;
+        }
+        */
 
         k->framesCount--;
 
@@ -168,15 +172,10 @@ bool KTLayer::resetFrame(int position)
 
 bool KTLayer::moveFrame(int from, int to)
 {
-    kFatal() << "KTLayer::moveFrame -> Tracing...";
-    kFatal() << "KTLayer::moveFrame -> Moving frame from " << from << " to " << to;
-
     if (from < 0 || from >= k->frames.count() || to < 0 || to > k->frames.count())
         return false;
 
-    kFatal() << "KTLayer::moveFrame -> Passing by!";
-
-    k->frames.moveObject(from, to);
+    k->frames.copyObject(from, to);
 
     return true;
 }
@@ -185,8 +184,6 @@ bool KTLayer::exchangeFrame(int from, int to)
 {
     if (from < 0 || from >= k->frames.count() || to < 0 || to > k->frames.count())
         return false;
-
-    kFatal() << "KTLayer::moveFrame -> Moving frame from " << from << " to " << to;
 
     k->frames.exchangeObject(from, to);
 
@@ -217,7 +214,7 @@ KTFrame *KTLayer::frame(int position) const
 {
     if (position < 0 || position >= k->frames.count()) {
         #ifdef K_DEBUG
-               K_FUNCINFO << " FATAL ERROR: index out of bound (KTLayer)";
+               K_FUNCINFO << " FATAL ERROR: index out of bound (KTLayer) : " << position;
         #endif
         return 0;
     }

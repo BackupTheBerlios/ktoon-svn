@@ -364,7 +364,6 @@ void KTProjectCommand::layerCommand()
             break;
             case KTProjectRequest::Remove:
             {
-                 kFatal() << "KTProjectCommand::layerCommand() - Remove";
                  k->executor->removeLayer(response);
             }
             break;

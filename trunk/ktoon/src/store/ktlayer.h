@@ -107,11 +107,13 @@ class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
         bool isVisible() const;
         
         KTFrame *createFrame(int position, bool loaded = false);
+
         bool removeFrame(int position);
 
         bool resetFrame(int position);
         
         bool moveFrame(int from, int to);
+
         bool exchangeFrame(int from, int to);
         
         bool expandFrame(int position, int size);

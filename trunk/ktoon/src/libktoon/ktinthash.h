@@ -47,7 +47,7 @@ class KTIntHash
         
         void removeObject(int pos);
         void remove(int pos);
-        void moveObject(int from, int to);
+        void copyObject(int from, int to);
         void exchangeObject(int from, int to);
         bool containsObject(int pos);
         
@@ -133,7 +133,7 @@ bool KTIntHash<T>::contains(int pos)
 }
 
 template<typename T>
-void KTIntHash<T>::moveObject(int from, int to)
+void KTIntHash<T>::copyObject(int from, int to)
 {
     if (containsObject(from) && containsObject(to)) {
         T fromValue = this->value(from);

@@ -190,32 +190,45 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
            K_FUNCINFO;
     #endif
 
-    if (graphicsScene()->isDrawing()) 
+    if (graphicsScene()->isDrawing()) {
         return;
+    } 
 
     switch (event->action()) {
             case KTProjectRequest::Paste:
             case KTProjectRequest::Select: 
                  { 
-                 KTGraphicsScene *sscene = graphicsScene();
-                 if (!sscene->scene()) 
-                     return;
+                    KTGraphicsScene *sscene = graphicsScene();
+                    if (!sscene->scene()) 
+                        return;
 
-                 setUpdatesEnabled(true);
+                    setUpdatesEnabled(true);
 
-                 setCurrentScene(event->sceneIndex());
-                 sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
-                 sscene->drawPhotogram(event->frameIndex());
+                    setCurrentScene(event->sceneIndex());
+                    sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
+                    sscene->drawPhotogram(event->frameIndex());
                  }
                  break;
 
             case KTProjectRequest::Lock:
                  {
-                 KTGraphicsScene *sscene = graphicsScene();
-                 if (!sscene->scene()) 
-                     return;
-                 if (sscene->currentFrameIndex() == event->frameIndex())
-                     viewport()->update();
+                    KTGraphicsScene *sscene = graphicsScene();
+                    if (!sscene->scene()) 
+                        return;
+                    if (sscene->currentFrameIndex() == event->frameIndex())
+                        viewport()->update();
+                 }
+                 break;
+            
+            case KTProjectRequest::Remove:
+                 {
+                    if (event->frameIndex() == 0) {
+                        KTGraphicsScene *sscene = graphicsScene();
+                        if (!sscene->scene())
+                            return;
+                        sscene->clean();
+                        viewport()->update();
+                    }
                  }
                  break;
 
