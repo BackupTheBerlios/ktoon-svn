@@ -193,6 +193,7 @@ void KTwitter::formatStatus(QByteArray array)
                                                                  name = e2.text(); 
                                                              } else if (e2.tagName() == "description") {
                                                                         description = e2.text();
+                                                                        description.replace("-", "<br/>-");
                                                              } else if (e2.tagName() == "profile_image_url") {
                                                                         image = e2.text();
                                                              } else if (e2.tagName() == "url") {
