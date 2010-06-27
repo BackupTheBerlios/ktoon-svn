@@ -278,17 +278,11 @@ void KMainWindow::enableToolViews(bool flag)
              while (it != views.end()) {
                     KToolView *v = *it;
 
-                    // Temporary code while Library, Help and Time Line are fixed
-                    /*
-                    if (v->getObjectID().compare("KToolView-Scenes Manager")==0
-                        || v->getObjectID().compare("KToolView-Time Line")==0  
-                        || v->getObjectID().compare("KToolView-Help")==0 
-                        || v->getObjectID().compare("KToolView-Camera")==0)
+                    // SQA: Temporary code while Time Line/Library components are fixed
+                    if (v->getObjectID().compare("KToolView-Time Line")==0 || v->getObjectID().compare("KToolView-Library")==0)
                         v->enableButton(false);
                     else
-                    */
-
-                    v->enableButton(flag);
+                        v->enableButton(flag);
 
                     ++it;
              }
@@ -542,22 +536,16 @@ void KMainWindow::setCurrentPerspective(int workspace)
 
                       if (view->perspective() & workspace) {
 
-                          // Temporary code while Library, Help and Time Line are fixed
-                          //if (view->getObjectID().compare("KToolView-Library")==0
-                          //    || view->getObjectID().compare("KToolView-Time Line")==0
-
-                          /*
+                          // SQA: Temporary code while Library and Time Line components are fixed
                           if (view->getObjectID().compare("KToolView-Time Line")==0
-                              || view->getObjectID().compare("KToolView-Help")==0
-                              || view->getObjectID().compare("KToolView-Camera")==0) {
+                              || view->getObjectID().compare("KToolView-Library")==0) {
                               bar->enable(view->button());
                               view->enableButton(false);
                           } else {
                               bar->enable(view->button());
                           } 
-                          */
 
-                          bar->enable(view->button());
+                          // bar->enable(view->button());
  
                           //if (view->getObjectID().compare("KToolView-Help")!=0 && (workspace != 4) 
                           if (view->button()->isChecked() && (workspace != 4) && view->getObjectID().compare("KToolView-Help")!=0) {
