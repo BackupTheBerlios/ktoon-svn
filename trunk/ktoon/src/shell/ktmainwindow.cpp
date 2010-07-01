@@ -115,7 +115,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash, int parameters) :
     setStatusBar(m_statusBar);
 
     // Naming the main frame...
-    setWindowTitle(tr("KToon: 2D Animation Toolkit"));
+    setWindowTitle(tr("KTooN: 2D Animation Toolkit"));
     setWindowIcon(QIcon(THEME_DIR + "icons/about.png"));
 
     // Defining the render type for the drawings

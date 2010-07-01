@@ -106,7 +106,7 @@ void KTViewCamera::showSceneInfo(const KTScene *scene)
 
 void KTViewCamera::setLoop()
 {
-    m_animationArea->setLoop(m_status->loop());
+    m_animationArea->setLoop(m_status->isLooping());
 }
 
 QSize KTViewCamera::sizeHint() const

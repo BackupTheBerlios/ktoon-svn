@@ -108,7 +108,7 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
     mainLayout->addStretch(2);
 
     KCONFIG->beginGroup("BrushTool");
-    double smoothness = KCONFIG->value("smoothness", -1).toDouble();
+    double smoothness = KCONFIG->value("Smoothness", -1).toDouble();
 
     if (smoothness > 0) 
         m_exactness->setValue(smoothness);

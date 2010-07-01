@@ -206,7 +206,7 @@ void Brush::saveConfig()
 {
     if (m_configurator) {
         KCONFIG->beginGroup("BrushTool");
-        KCONFIG->setValue("smoothness", m_configurator->exactness());
+        KCONFIG->setValue("Smoothness", m_configurator->exactness());
     }
 }
 

@@ -527,9 +527,18 @@ void KTViewDocument::createToolBar()
 
     k->barGrid->addSeparator();
 
+    KCONFIG->beginGroup("OnionParameters");
+    int preview = KCONFIG->value("PreviewFrames", -1).toInt();
+    int next = KCONFIG->value("NextFrames", -1).toInt();
+
     QSpinBox *prevOnionSkinSpin = new QSpinBox(this);
     prevOnionSkinSpin->setToolTip(tr("Preview Frames"));
     connect(prevOnionSkinSpin, SIGNAL(valueChanged(int)), this, SLOT(setPreviousOnionSkin(int)));
+
+    if (preview > 0)
+        prevOnionSkinSpin->setValue(preview);
+    else
+        prevOnionSkinSpin->setValue(1);
 
     k->barGrid->addWidget(prevOnionSkinSpin);
 
@@ -543,6 +552,11 @@ void KTViewDocument::createToolBar()
     QSpinBox *nextOnionSkinSpin = new QSpinBox(this);
     nextOnionSkinSpin->setToolTip(tr("Next Frames"));
     connect(nextOnionSkinSpin, SIGNAL(valueChanged (int)), this, SLOT(setNextOnionSkin(int)));
+
+    if (next > 0)
+        nextOnionSkinSpin->setValue(next);
+    else
+        nextOnionSkinSpin->setValue(1);
 
     k->barGrid->addWidget(nextOnionSkinSpin);
 }
@@ -625,14 +639,20 @@ void KTViewDocument::setCursor(const QCursor &)
  */
 }
 
-void KTViewDocument::setPreviousOnionSkin(int n)
+void KTViewDocument::setPreviousOnionSkin(int level)
 {
-    k->paintArea->setPreviousFramesOnionSkinCount(n);
+    KCONFIG->beginGroup("OnionParameters");
+    KCONFIG->setValue("PreviewFrames", level);
+
+    k->paintArea->setPreviousFramesOnionSkinCount(level);
 }
 
-void KTViewDocument::setNextOnionSkin(int n)
+void KTViewDocument::setNextOnionSkin(int level)
 {
-    k->paintArea->setNextFramesOnionSkinCount(n);
+    KCONFIG->beginGroup("OnionParameters");
+    KCONFIG->setValue("NextFrames", level);
+
+    k->paintArea->setNextFramesOnionSkinCount(level);
 }
 
 void KTViewDocument::toggleShowGrid()

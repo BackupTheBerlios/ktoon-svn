@@ -343,7 +343,7 @@ void KTExposureTable::insertFrame(int indexLayer, int indexFrame, const QString 
 
 void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
 {
-    int logicalIndex = k->header->logicalIndex (indexLayer);
+    int logicalIndex = k->header->logicalIndex(indexLayer);
     QTableWidgetItem * frame = item(indexFrame, logicalIndex);
 
     if (frame) {
@@ -351,7 +351,8 @@ void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
             if (locked)
                 frame->setBackgroundColor(Qt::red);
             else
-                frame->setBackgroundColor(Qt::lightGray);
+                frame->setBackgroundColor(QColor(0xe6e6e6));
+                //frame->setBackgroundColor(Qt::lightGray);
 
             frame->setData(IsLocked, locked);
         }

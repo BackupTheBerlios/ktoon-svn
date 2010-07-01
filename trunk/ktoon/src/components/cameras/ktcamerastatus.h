@@ -54,13 +54,14 @@ class KTCameraStatus : public QFrame
         int getFPS();
         void setSceneName(const QString &name);
         void setFramesTotal(const QString &frames);
-        bool loop();
+        bool isLooping();
 
     private:
         QSpinBox *fps;
         QLabel *sceneName;
         QLabel *framesTotal;
         QCheckBox *loopBox;
+        bool loop;
 };
 
 #endif

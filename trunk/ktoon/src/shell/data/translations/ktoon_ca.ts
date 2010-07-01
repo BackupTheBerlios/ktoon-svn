@@ -885,9 +885,9 @@
     <name>KTMainWindow</name>
     <message>
         <location filename="../../ktmainwindow.cpp" line="115"/>
-        <source>KToon: 2D Animation Toolkit</source>
+        <source>KTooN: 2D Animation Toolkit</source>
         <translatorcomment>millor d&apos;animacio que per a la animacio</translatorcomment>
-        <translation type="unfinished">KToon: Eina d&apos;animació en 2D</translation>
+        <translation type="unfinished">KTooN: Eina d&apos;animació en 2D</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="124"/>

@@ -50,7 +50,7 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
     setWindowTitle(tr("Brush Properties"));
 
     KCONFIG->beginGroup("PenParameters");
-    int thicknessValue = KCONFIG->value("thickness", -1).toInt();
+    int thicknessValue = KCONFIG->value("Thickness", -1).toInt();
 
     // kFatal() << "KTPenWidget::KTPenWidget: " << thicknessValue;
 
@@ -114,7 +114,7 @@ void KTPenWidget::setThickness(int value)
         k->pen.setWidth(value);
 
         KCONFIG->beginGroup("PenParameters");
-        KCONFIG->setValue("thickness", value);
+        KCONFIG->setValue("Thickness", value);
 
         emitPenChanged();
     }
@@ -122,7 +122,7 @@ void KTPenWidget::setThickness(int value)
 
 void KTPenWidget::setStyle(int s)
 {
-    k->pen.setStyle( Qt::PenStyle(k->style->itemData(s).toInt()));
+    k->pen.setStyle(Qt::PenStyle(k->style->itemData(s).toInt()));
     emitPenChanged();
 }
 

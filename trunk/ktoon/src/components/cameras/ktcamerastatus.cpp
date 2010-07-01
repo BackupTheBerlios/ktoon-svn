@@ -31,7 +31,10 @@
 
 #include "ktcamerastatus.h"
 #include "ktexportwidget.h"
+
 #include <kcore/kdebug.h>
+#include <kcore/kconfig.h>
+
 #include <kgui/kseparator.h>
 
 #include <QStatusBar>
@@ -101,6 +104,12 @@ KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QFrame(p
     loopBox->setToolTip(tr("Loop"));
     loopBox->setIcon(pix); 
     connect(loopBox, SIGNAL(clicked()), camera, SLOT(setLoop()));
+
+    KCONFIG->beginGroup("AnimationParameters");
+    loop = KCONFIG->value("Loop").toBool();
+    if (loop)
+        loopBox->setChecked(true);
+
     m_sceneInfoLayout->addWidget(loopBox,1);
 
     m_sceneInfoLayout->addSpacing(20);
@@ -141,7 +150,11 @@ void KTCameraStatus::setFramesTotal(const QString &frames)
     framesTotal->setText(frames);
 }
 
-bool KTCameraStatus::loop()
+bool KTCameraStatus::isLooping()
 {
-    return loopBox->isChecked();
+    loop = loopBox->isChecked();
+    KCONFIG->beginGroup("AnimationParameters");
+    KCONFIG->setValue("Loop", loop);
+
+    return loop;
 }

@@ -583,8 +583,8 @@
     </message>
     <message>
         <location filename="../../../components/exposure/ktexposuresheet.cpp" line="100"/>
-        <source>Lock frame</source>
-        <translation>Bloquear marco</translation>
+        <source>Lock/Unlock frame</source>
+        <translation>Bloquear/Desbloquear marco</translation>
     </message>
     <message>
         <location filename="../../../components/exposure/ktexposuresheet.cpp" line="102"/>
@@ -849,8 +849,8 @@
     <name>KTMainWindow</name>
     <message>
         <location filename="../../ktmainwindow.cpp" line="115"/>
-        <source>KToon: 2D Animation Toolkit</source>
-        <translation>KToon: Herramienta para animación en 2D</translation>
+        <source>KTooN: 2D Animation Toolkit</source>
+        <translation>KTooN: Herramienta para animación en 2D</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="124"/>

@@ -96,13 +96,13 @@ void KTExposureSheet::createMenu()
     //k->menu->addAction(tr("Remove layer"))->setData(KTProjectActionBar::RemoveLayer);
     k->menu->addAction(tr("Insert frame"))->setData(KTProjectActionBar::InsertFrame);
     k->menu->addAction(tr("Remove frame"))->setData(KTProjectActionBar::RemoveFrame);
-    k->menu->addAction(tr("Lock frame"))->setData(KTProjectActionBar::LockFrame);
+    k->menu->addAction(tr("Lock/Unlock frame"))->setData(KTProjectActionBar::LockFrame);
 
     k->menu->addAction(tr("Copy frame"), this, SLOT(emitRequestCopyCurrentFrame()));
     k->menu->addAction(tr("Paste in frame"), this, SLOT(emitRequestPasteInCurrentFrame()));
     k->menu->addAction(tr("Expand frame"), this, SLOT(emitRequestExpandCurrentFrame()));
 
-    connect(k->menu,  SIGNAL(triggered(QAction *)), this, SLOT(actionTiggered(QAction*)));
+    connect(k->menu, SIGNAL(triggered(QAction *)), this, SLOT(actionTiggered(QAction*)));
 }
 
 void KTExposureSheet::addScene(int index, const QString &name)
@@ -267,7 +267,7 @@ void KTExposureSheet::applyAction(int action)
                  bool locked = k->currentTable->frameIsLocked(k->currentTable->currentColumn(), 
                                k->currentTable->currentFrame());
 
-                 KTProjectRequest event = KTRequestBuilder::createFrameRequest (k->scenes->currentIndex(), 
+                 KTProjectRequest event = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
                                           k->currentTable->currentLayer(), k->currentTable->currentFrame(),
                                           KTProjectRequest::Lock, !locked);
                                           emit requestTriggered(&event);
