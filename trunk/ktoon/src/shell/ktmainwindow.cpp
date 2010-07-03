@@ -284,7 +284,7 @@ void KTMainWindow::viewNewDocument()
         m_projectManager->undoModified();
 
         KCONFIG->beginGroup("PenParameters");
-        int thicknessValue = KCONFIG->value("thickness", -1).toInt();
+        int thicknessValue = KCONFIG->value("Thickness", -1).toInt();
         m_penWidget->setThickness(thicknessValue);
     }
 }
@@ -477,6 +477,8 @@ bool KTMainWindow::closeProject()
 
     setUpdatesEnabled(true);
 
+    setWindowTitle(tr("KTooN: 2D Animation Toolkit"));
+
     return true;
 }
 
@@ -564,6 +566,7 @@ bool KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
         m_projectManager->setHandler(new KTLocalProjectManagerHandler);
         m_projectManager->setParams(params);
         m_isNetworkProject = false;
+        setWindowTitle(params->projectName() + " - " + tr("KTooN: 2D Animation Toolkit"));
 
         return true;
     }
@@ -627,15 +630,13 @@ void KTMainWindow::openProject(const QString &path)
         tabWidget()->setCurrentWidget(drawingTab);
 
         if (m_projectManager->loadProject(path)) {
-            if (QDir::isRelativePath(path)) {
+            if (QDir::isRelativePath(path))
                 m_fileName = QDir::currentPath() + "/" + path;
-                kFatal() << "Tracing path 1: " << m_fileName;
-            } else {
+            else
                 m_fileName = path;
-                kFatal() << "Tracing path 2: " << m_fileName;
-            }
 
-            //viewNewDocument(m_projectManager->project()->projectName());
+            setWindowTitle(m_projectManager->project()->projectName() + " - " + tr("KTooN: 2D Animation Toolkit"));
+
             viewNewDocument();
 			
             // SQA: Apparently this code is not required

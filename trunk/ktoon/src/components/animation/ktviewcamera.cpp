@@ -85,6 +85,7 @@ KTViewCamera::KTViewCamera(KTProject *work, QWidget *parent) : QFrame(parent)
         m_status->setSceneName(scene->sceneName());
 
     m_status->setFPS(project->fps());
+    setLoop();
 
     layout->addWidget(m_status, 0, Qt::AlignCenter|Qt::AlignTop);
 

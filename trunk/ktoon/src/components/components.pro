@@ -15,7 +15,7 @@ SUBDIRS += scenes \
            pen \
            paintarea \
            twitter \
-           cameras 
+           animation 
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs

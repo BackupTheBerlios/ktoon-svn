@@ -2,7 +2,7 @@
 QT += xml opengl svg
 
 COLORPALETTE_DIR = ../../src/components/colorpalette
-CAMERAS_DIR = ../../src/components/cameras
+ANIMATION_DIR = ../../src/components/animation
 PAINTAREA_DIR = ../../src/components/paintarea
 PEN_DIR = ../../src/components/pen
 KINAS_DIR = ../../src/components/kinas 
@@ -24,7 +24,7 @@ NET_DIR = ../../src/net
 
 include($$COLORPALETTE_DIR/colorpalette.pri)
 include($$PAINTAREA_DIR/paintarea.pri)
-include($$CAMERAS_DIR/cameras.pri)
+include($$ANIMATION_DIR/animation.pri)
 include($$PEN_DIR/pen.pri)
 include($$KINAS_DIR/kinas.pri)
 include($$HELP_DIR/help.pri)
