@@ -3,7 +3,7 @@
     <Section title="Portada" file="cover.html" />
     <Section title="Introducci&#243;n" file="chapter0.html">
         <SubSection title="Nuestra Visi&#243;n y Licencia" file="philosophy.html" />
-        <SubSection title="Animaci&#243;n para Dummies" file="init.html" />
+        <SubSection title="Animaci&#243;n para Principiantes" file="init.html" />
     </Section>
     <Section title="KTooN? Qu&#233; es eso?" file="chapter1.html">
         <SubSection title="Componentes Principales" file="components.html" />
