@@ -34,9 +34,11 @@
 
 #include <ksound/kaudioengineiface.h>
 
+/*
 #ifdef HAVE_GST10
 #include <gst/gst.h>
 #endif
+*/
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
