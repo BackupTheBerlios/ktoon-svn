@@ -339,7 +339,7 @@ bool KTCommandExecutor::expandFrame(KTFrameResponse *response)
     int scenePos = response->sceneIndex();
     int layerPos = response->layerIndex();
     int position = response->frameIndex();
-    int copies = response->arg().toInt();
+    int times = response->arg().toInt();
     
     KTScene *scene = m_project->scene(scenePos);
     
@@ -349,7 +349,7 @@ bool KTCommandExecutor::expandFrame(KTFrameResponse *response)
     KTLayer *layer = scene->layer(layerPos);
     
     if (layer) {
-        if (layer->expandFrame(position, 1)) {
+        if (layer->expandFrame(position, times)) {
             emit responsed(response);
 
             return true;

@@ -76,7 +76,7 @@ class KTIntHash
         void insert(int pos, T value);
         void add(T value);
         
-        void expandValue(int index);
+        void expandValue(int index, int times);
         
         T operator[](int index) const;
         QList<T> values() const;
@@ -227,10 +227,12 @@ void KTIntHash<T>::add(T value)
 }
 
 template<typename T>
-void KTIntHash<T>::expandValue(int index)
+void KTIntHash<T>::expandValue(int index, int times)
 {
-    T value = this->takeObject(index);
-    k->dataHash.insert(index + 1, value);
+    int limit = index + times;
+    T value = this->value(index);
+    for (int i=index+1; i<=limit; i++)
+         k->dataHash.insert(i, value);
 }
 
 template<typename T>

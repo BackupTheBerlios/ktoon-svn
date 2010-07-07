@@ -198,11 +198,11 @@ bool KTLayer::expandFrame(int position, int size)
     KTFrame *toExpand = frame(position);
 
     if (toExpand) {
-        for (int i = 0; i < size; i++) {
-             k->frames.expandValue(position);
+        //for (int i = 0; i < size; i++) {
+        k->frames.expandValue(position, size);
              // k->frames.insert(position+i+1, toExpand);
-        }
-        toExpand->setRepeat(toExpand->repeat()+size);
+        //}
+        // toExpand->setRepeat(toExpand->repeat()+size);
         return true;
     }
 
