@@ -598,8 +598,23 @@
     </message>
     <message>
         <location filename="../../../components/exposure/ktexposuresheet.cpp" line="104"/>
-        <source>Expand frame</source>
-        <translation>Expandir marco</translation>
+        <source>Expand</source>
+        <translation>Expandir</translation>
+    </message>
+    <message>
+        <location filename="../../../components/exposure/ktexposuresheet.cpp" line="104"/>
+        <source>1 frame</source>
+        <translation>1 marco</translation>
+    </message>
+    <message>
+        <location filename="../../../components/exposure/ktexposuresheet.cpp" line="104"/>
+        <source>5 frames</source>
+        <translation>5 marcos</translation>
+    </message>
+    <message>
+        <location filename="../../../components/exposure/ktexposuresheet.cpp" line="104"/>
+        <source>10 frames</source>
+        <translation>10 marcos</translation>
     </message>
 </context>
 <context>

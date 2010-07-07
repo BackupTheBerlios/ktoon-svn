@@ -101,7 +101,10 @@ void KTExposureSheet::createMenu()
     k->menu->addAction(tr("Copy frame"), this, SLOT(emitRequestCopyCurrentFrame()));
     k->menu->addAction(tr("Paste in frame"), this, SLOT(emitRequestPasteInCurrentFrame()));
     QMenu *expandMenu = new QMenu(tr("Expand"));
-    expandMenu->addAction(tr("1 frame"), this, SLOT(emitRequestExpandCurrentFrame()));
+    expandMenu->addAction(tr("1 frame"), this, SLOT(emitRequestExpandCurrentFrame(1)));
+    expandMenu->addAction(tr("5 frames"), this, SLOT(emitRequestExpandCurrentFrame(5)));
+    expandMenu->addAction(tr("10 frames"), this, SLOT(emitRequestExpandCurrentFrame(6)));
+    
     k->menu->addMenu(expandMenu);
     connect(k->menu, SIGNAL(triggered(QAction *)), this, SLOT(actionTiggered(QAction*)));
 }
@@ -332,7 +335,7 @@ void KTExposureSheet::emitRequestPasteInCurrentFrame()
     }
 }
 
-void KTExposureSheet::emitRequestExpandCurrentFrame()
+void KTExposureSheet::emitRequestExpandCurrentFrame(int n)
 {
     #ifdef K_DEBUG
            K_FUNCINFOX("exposure");
@@ -341,7 +344,7 @@ void KTExposureSheet::emitRequestExpandCurrentFrame()
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
                                                  k->currentTable->currentLayer(), 
                                                  k->currentTable->currentFrame(), 
-                                                 KTProjectRequest::Expand, 1);
+                                                 KTProjectRequest::Expand, n);
     emit requestTriggered(&request);
 }
 
