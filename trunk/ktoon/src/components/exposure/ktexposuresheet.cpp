@@ -100,8 +100,9 @@ void KTExposureSheet::createMenu()
 
     k->menu->addAction(tr("Copy frame"), this, SLOT(emitRequestCopyCurrentFrame()));
     k->menu->addAction(tr("Paste in frame"), this, SLOT(emitRequestPasteInCurrentFrame()));
-    k->menu->addAction(tr("Expand frame"), this, SLOT(emitRequestExpandCurrentFrame()));
-
+    QMenu *expandMenu = new QMenu(tr("Expand"));
+    expandMenu->addAction(tr("1 frame"), this, SLOT(emitRequestExpandCurrentFrame()));
+    k->menu->addMenu(expandMenu);
     connect(k->menu, SIGNAL(triggered(QAction *)), this, SLOT(actionTiggered(QAction*)));
 }
 
