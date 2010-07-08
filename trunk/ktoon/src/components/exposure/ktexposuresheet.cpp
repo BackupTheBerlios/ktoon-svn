@@ -101,12 +101,13 @@ void KTExposureSheet::createMenu()
     k->menu->addAction(tr("Copy frame"), this, SLOT(emitRequestCopyCurrentFrame()));
     k->menu->addAction(tr("Paste in frame"), this, SLOT(emitRequestPasteInCurrentFrame()));
     QMenu *expandMenu = new QMenu(tr("Expand"));
-    expandMenu->addAction(tr("1 frame"), this, SLOT(emitRequestExpandCurrentFrame(1)));
-    expandMenu->addAction(tr("5 frames"), this, SLOT(emitRequestExpandCurrentFrame(5)));
-    expandMenu->addAction(tr("10 frames"), this, SLOT(emitRequestExpandCurrentFrame(6)));
+    expandMenu->addAction(tr("1 frame"), this, SLOT(emitRequestExpandCurrentFrame()));
+    expandMenu->addAction(tr("5 frames"), this, SLOT(emitRequestExpandCurrentFrame()));
+    expandMenu->addAction(tr("10 frames"), this, SLOT(emitRequestExpandCurrentFrame()));
     
     k->menu->addMenu(expandMenu);
-    connect(k->menu, SIGNAL(triggered(QAction *)), this, SLOT(actionTiggered(QAction*)));
+    connect(k->menu, SIGNAL(triggered(QAction *)), this, SLOT(actionTriggered(QAction*)));
+    connect(expandMenu, SIGNAL(triggered(QAction *)), this, SLOT(actionTriggered(QAction*)));
 }
 
 void KTExposureSheet::addScene(int index, const QString &name)
@@ -335,7 +336,7 @@ void KTExposureSheet::emitRequestPasteInCurrentFrame()
     }
 }
 
-void KTExposureSheet::emitRequestExpandCurrentFrame(int n)
+void KTExposureSheet::emitRequestExpandCurrentFrame()
 {
     #ifdef K_DEBUG
            K_FUNCINFOX("exposure");
@@ -344,7 +345,7 @@ void KTExposureSheet::emitRequestExpandCurrentFrame(int n)
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
                                                  k->currentTable->currentLayer(), 
                                                  k->currentTable->currentFrame(), 
-                                                 KTProjectRequest::Expand, n);
+                                                 KTProjectRequest::Expand, 5);
     emit requestTriggered(&request);
 }
 
@@ -396,12 +397,16 @@ void KTExposureSheet::moveLayer(int oldIndex, int newIndex)
     emit requestTriggered(&event);
 }
 
-void KTExposureSheet::actionTiggered(QAction *action)
+void KTExposureSheet::actionTriggered(QAction *action)
 {
     bool ok;
     int id = action->data().toInt(&ok);
+    kFatal() << "KTExposureSheet::actionTriggered -> Executing action: " << id;
+
     if (ok)
         applyAction(id);
+    else
+        kFatal() << "KTExposureSheet::actionTriggered -> No action :(";
 }
 
 void KTExposureSheet::closeAllScenes()
@@ -571,6 +576,9 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 break;
                 case KTProjectRequest::Expand:
                  {
+                     kFatal() << "KTExposureSheet::frameResponse - Expand! -> Just Tracing!";
+                     kFatal() << "KTExposureSheet::frameResponse - Starting point: -> " << e->frameIndex();
+                     kFatal() << "KTExposureSheet::frameResponse - Range: -> " << e->arg().toInt();
                      for(int i = 0; i < e->arg().toInt(); i++)
                          table->insertFrame(e->layerIndex(), e->frameIndex()+i+1, 
                                             table->frameName(e->layerIndex(), e->frameIndex()), 

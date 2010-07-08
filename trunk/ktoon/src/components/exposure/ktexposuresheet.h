@@ -82,14 +82,14 @@ class KTExposureSheet : public KTModuleWidgetBase
         void emitRequestChangeScene(int index);
         void emitRequestCopyCurrentFrame();
         void emitRequestPasteInCurrentFrame();
-        void emitRequestExpandCurrentFrame(int n);
+        void emitRequestExpandCurrentFrame();
 		
         void insertFrame(int indexLayer, int indexFrame);
         void renameFrame(int indexLayer, int indexFrame, const QString & name);
         void selectFrame(int indexLayer, int indexFrame);
         void renameLayer(int indexLayer, const QString & name);
         void moveLayer(int oldIndex, int newIndex);
-        void actionTiggered(QAction *action);
+        void actionTriggered(QAction *action);
 };
 
 #endif
