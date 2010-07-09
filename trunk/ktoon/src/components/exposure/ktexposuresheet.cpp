@@ -107,7 +107,7 @@ void KTExposureSheet::createMenu()
     
     k->menu->addMenu(expandMenu);
     connect(k->menu, SIGNAL(triggered(QAction *)), this, SLOT(actionTriggered(QAction*)));
-    connect(expandMenu, SIGNAL(triggered(QAction *)), this, SLOT(actionTriggered(QAction*)));
+    //connect(expandMenu, SIGNAL(triggered(QAction *)), this, SLOT(actionTriggered(QAction*)));
 }
 
 void KTExposureSheet::addScene(int index, const QString &name)
@@ -338,6 +338,8 @@ void KTExposureSheet::emitRequestPasteInCurrentFrame()
 
 void KTExposureSheet::emitRequestExpandCurrentFrame()
 {
+    kFatal() << "KTExposureSheet::emitRequestExpandCurrentFrame -> Following the white rabbit!";
+
     #ifdef K_DEBUG
            K_FUNCINFOX("exposure");
     #endif
@@ -401,12 +403,14 @@ void KTExposureSheet::actionTriggered(QAction *action)
 {
     bool ok;
     int id = action->data().toInt(&ok);
-    kFatal() << "KTExposureSheet::actionTriggered -> Executing action: " << id;
+    kFatal() << "KTExposureSheet::actionTriggered -> Executing action: " << id << " - Text: " << action->text();
 
-    if (ok)
+    if (ok) {
         applyAction(id);
-    else
-        kFatal() << "KTExposureSheet::actionTriggered -> No action :(";
+    } else {
+        if (action->text().compare(tr("1 frame")) == 0)
+            kFatal() << "Expanding 1 frame";
+    }
 }
 
 void KTExposureSheet::closeAllScenes()
