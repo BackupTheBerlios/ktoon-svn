@@ -64,6 +64,7 @@ class KTExposureSheet : public KTModuleWidgetBase
         struct Private;
         Private * const k;
         void createMenu();
+        void emitRequestExpandCurrentFrame(int n);
 
     protected:
         virtual void sceneResponse(KTSceneResponse *e);
@@ -82,7 +83,9 @@ class KTExposureSheet : public KTModuleWidgetBase
         void emitRequestChangeScene(int index);
         void emitRequestCopyCurrentFrame();
         void emitRequestPasteInCurrentFrame();
-        void emitRequestExpandCurrentFrame();
+        void expandCurrentFrameOnce();
+        void expandCurrentFrameFive();
+        void expandCurrentFrameTen();
 		
         void insertFrame(int indexLayer, int indexFrame);
         void renameFrame(int indexLayer, int indexFrame, const QString & name);

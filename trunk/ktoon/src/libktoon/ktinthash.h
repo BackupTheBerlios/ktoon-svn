@@ -231,6 +231,7 @@ void KTIntHash<T>::expandValue(int index, int times)
 {
     int limit = index + times;
     T value = this->value(index);
+
     for (int i=index+1; i<=limit; i++)
          k->dataHash.insert(i, value);
 }

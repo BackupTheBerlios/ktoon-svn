@@ -101,9 +101,9 @@ void KTExposureSheet::createMenu()
     k->menu->addAction(tr("Copy frame"), this, SLOT(emitRequestCopyCurrentFrame()));
     k->menu->addAction(tr("Paste in frame"), this, SLOT(emitRequestPasteInCurrentFrame()));
     QMenu *expandMenu = new QMenu(tr("Expand"));
-    expandMenu->addAction(tr("1 frame"), this, SLOT(emitRequestExpandCurrentFrame()));
-    expandMenu->addAction(tr("5 frames"), this, SLOT(emitRequestExpandCurrentFrame()));
-    expandMenu->addAction(tr("10 frames"), this, SLOT(emitRequestExpandCurrentFrame()));
+    expandMenu->addAction(tr("1 frame"), this, SLOT(expandCurrentFrameOnce()));
+    expandMenu->addAction(tr("5 frames"), this, SLOT(expandCurrentFrameFive()));
+    expandMenu->addAction(tr("10 frames"), this, SLOT(expandCurrentFrameTen()));
     
     k->menu->addMenu(expandMenu);
     connect(k->menu, SIGNAL(triggered(QAction *)), this, SLOT(actionTriggered(QAction*)));
@@ -336,20 +336,33 @@ void KTExposureSheet::emitRequestPasteInCurrentFrame()
     }
 }
 
-void KTExposureSheet::emitRequestExpandCurrentFrame()
+void KTExposureSheet::emitRequestExpandCurrentFrame(int n)
 {
-    kFatal() << "KTExposureSheet::emitRequestExpandCurrentFrame -> Following the white rabbit!";
-
-    #ifdef K_DEBUG
-           K_FUNCINFOX("exposure");
-    #endif
-
-    KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
-                                                 k->currentTable->currentLayer(), 
-                                                 k->currentTable->currentFrame(), 
-                                                 KTProjectRequest::Expand, 5);
+    KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(),
+                                                 k->currentTable->currentLayer(),
+                                                 k->currentTable->currentFrame(),
+                                                 KTProjectRequest::Expand, n);
     emit requestTriggered(&request);
 }
+
+void KTExposureSheet::expandCurrentFrameOnce()
+{
+    kFatal() << "KTExposureSheet::emitRequestExpandCurrentFrame -> Following the white rabbit! -> 1";
+    emitRequestExpandCurrentFrame(1);
+}
+
+void KTExposureSheet::expandCurrentFrameFive()
+{
+    kFatal() << "KTExposureSheet::emitRequestExpandCurrentFrame -> Following the white rabbit! -> 5";
+    emitRequestExpandCurrentFrame(5);
+}
+
+void KTExposureSheet::expandCurrentFrameTen()
+{
+    kFatal() << "KTExposureSheet::emitRequestExpandCurrentFrame -> Following the white rabbit! -> 10";
+    emitRequestExpandCurrentFrame(10);
+}
+
 
 void KTExposureSheet::insertFrame(int indexLayer, int indexFrame)
 {
@@ -403,14 +416,9 @@ void KTExposureSheet::actionTriggered(QAction *action)
 {
     bool ok;
     int id = action->data().toInt(&ok);
-    kFatal() << "KTExposureSheet::actionTriggered -> Executing action: " << id << " - Text: " << action->text();
 
-    if (ok) {
+    if (ok)
         applyAction(id);
-    } else {
-        if (action->text().compare(tr("1 frame")) == 0)
-            kFatal() << "Expanding 1 frame";
-    }
 }
 
 void KTExposureSheet::closeAllScenes()
