@@ -11,6 +11,7 @@ Dependencies for Ubuntu
   % sudo apt-get install libaspell-dev 
   % sudo apt-get install libavcodec-dev libavformat-dev 
   % sudo apt-get install libqt4-gui qt4-qmake qt4-dev-tools
+  % sudo apt-get install zlib1g-dev
 
 Note: If you are not using Ubuntu, check for the equivalent
       packages for your Linux distro

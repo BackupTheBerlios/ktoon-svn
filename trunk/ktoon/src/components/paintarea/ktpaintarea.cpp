@@ -198,6 +198,8 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
             case KTProjectRequest::Paste:
             case KTProjectRequest::Select: 
                  { 
+                    kFatal() << "KTPaintArea::frameResponse -> Selecting a frame!";
+
                     KTGraphicsScene *sscene = graphicsScene();
                     if (!sscene->scene()) 
                         return;

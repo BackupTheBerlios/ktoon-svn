@@ -167,42 +167,60 @@ void KTGraphicsScene::drawPhotogram(int photogram)
     for (int i=0; i < k->scene->layersTotal(); i++) {
 
              KTLayer *layer = k->scene->layer(i);
+             KTFrame *mainFrame = layer->frame(photogram);
+             QString currentFrame = "";
 
-             if (layer) {
-                 if (layer->isVisible()) {
-                     if (k->onionSkin.previous > 0 && photogram > 0) {
-                         double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.previous);
-                         double opacity = 0.5;
+             if (mainFrame) {
+                 currentFrame = mainFrame->frameName();
 
-                         for (int frameIndex = photogram-1; frameIndex > photogram-k->onionSkin.previous-1; frameIndex--) {
-                              KTFrame * frame = layer->frame(frameIndex);
-                              if (frame)
-                                  addFrame(frame, opacity);
+                 if (layer) {
+                     if (layer->isVisible()) {
+                         kFatal() << "KTGraphicsScene::drawPhotogram -> k->onionSkin.previous: " << k->onionSkin.previous << " - photogram: " << photogram;
+                         if (k->onionSkin.previous > 0 && photogram > 0) {
+                             double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.previous);
+                             double opacity = 0.5;
 
-                              opacity -= opacityFactor;
+                             int limit = photogram - k->onionSkin.previous;
+                             if (limit < 0) 
+                                 limit = 0;
+
+                             for (int frameIndex = photogram-1; frameIndex >= limit; frameIndex--) {
+                                  KTFrame * frame = layer->frame(frameIndex);
+                                  QString previousFrame = frame->frameName();
+                                  if (frame && previousFrame.compare(currentFrame) != 0)
+                                      addFrame(frame, opacity);
+
+                                  opacity -= opacityFactor;
+                             }
                          }
-                     }
 
-                     if (k->onionSkin.next > 0 && layer->framesNumber() > photogram+1) {
-                         double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.next);
-                         double opacity = 0.5;
+                         if (k->onionSkin.next > 0 && layer->framesNumber() > photogram+1) {
+                             double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.next);
+                             double opacity = 0.5;
 
-                         for (int frameIndex = photogram+1; frameIndex < photogram+k->onionSkin.next+1; frameIndex++) {
-                              KTFrame * frame = layer->frame(frameIndex);
-                              if (frame) {
-                                  addFrame(frame, opacity);
-                              }
-                              opacity -= opacityFactor;
+                             int limit = photogram + k->onionSkin.next;
+                             if (limit > layer->frames().count()) 
+                                 limit = layer->frames().count();
+
+                             for (int frameIndex = photogram+1; frameIndex < limit; frameIndex++) {
+                                  KTFrame * frame = layer->frame(frameIndex);
+                                  QString nextFrame = frame->frameName();
+                                  if (frame && nextFrame.compare(currentFrame) != 0)
+                                      addFrame(frame, opacity);
+
+                                  opacity -= opacityFactor;
+                             }
                          }
-                     }
 
-                     // TODO: Crashpoint when layers are deleted 
-                     KTFrame *frame = layer->frame(photogram);
+                         // TODO: Crashpoint when layers are deleted 
+                         kFatal() << "KTGraphicsScene::drawPhotogram - Index: " << photogram;
+                         //KTFrame *frame = layer->frame(photogram);
 
-                     if (frame) {
+                         //if (frame) {
                          valid = true;
                          k->layerCounter = i;
-                         addFrame(frame);
+                         addFrame(mainFrame);
+                         //}
                      }
                  }
              }
@@ -277,6 +295,8 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 
 void KTGraphicsScene::clean()
 {
+    kFatal() << "KTGraphicsScene::clean() -> Cleaning the mess!";
+
     k->onionSkin.opacityMap.clear();
 
     foreach (QGraphicsItem *item, items()) {
