@@ -1,39 +1,75 @@
-Mental Note: I promise to enhance this manual soon! :P
-(well... ok, someday!)
+Note: Just for now, the KTooN project is only available for Unix systems. 
+We hope to port it to many other platforms in the future. Meanwhile, the 
+best way to try it is from any GNU/Linux distro (and FreeBSD or Unix-alike 
+systems).
 
-Dependencies for Ubuntu
-=======================
-- Open a terminal and type:
-  % sudo apt-get install build-essential
-  % sudo apt-get install subversion
-  % sudo apt-get install ruby
-  % sudo apt-get install libgstreamer0.10-dev 
-  % sudo apt-get install libaspell-dev 
-  % sudo apt-get install libavcodec-dev libavformat-dev 
-  % sudo apt-get install libqt4-gui qt4-qmake qt4-dev-tools
+1. Dependencies
 
-Note: If you are not using Ubuntu, check for the equivalent
-      packages for your Linux distro
+The compilation process of any software project requires a set of special 
+tools previously installed in your system. Usually, they are called 
+"dependencies".
 
-Get the source and compile
-==========================
-- Firstly, the core library:
-  % svn checkout svn://svn.berlios.de/ktoon/trunk/kom
-  % cd kom
-  % ./configure --prefix=/usr
-  % make
-  % sudo make install
+In this case, before you start to compile KTooN, you have to ensure you 
+already got the next list of dependencies installed in your computer:
 
-- Secondly, the application:   
-  % svn checkout svn://svn.berlios.de/ktoon/trunk/ktoon 
-  % cd ktoon
-  % ./configure --prefix=/usr/local/ktoon
-  % make
-  % sudo make install
-  % sudo cp launcher/ktoon /usr/local/ktoon/bin
+    * build-essential: All the C/C++ free compilers, libraries and utilities
+      required to create a binary from any Unix-alike C/C++ source code (gcc,
+      g++, cpp, make, etc)
+    * Qt 4.6.2: The full development toolkit used to create KTooN. Remember 
+      to use the version 4.6.2, including development tools and libraries 
+      (preview versions don't work at all).
+    * ruby: A script language used to do the configuration process previous 
+      to the compilation
+    * libaspell-dev: A library to support spell revisions
+    * libavcodec-dev: A subcomponent of the project ffmpeg, to deal with 
+      video manipulation
+    * libavformat-dev: A subcomponent of the project ffmpeg, to deal with 
+      video manipulation
+    * zlib-dev: A file-compression library
 
-Animation time!
-===============
+For Ubuntu users (version 10.04) with some experience using the console, 
+these are the commands they should run to install KTooN dependencies:
+
+- Open a terminal (from Aplications -> Accesories) and type:
+   % sudo apt-get install build-essential    [Press enter]
+   % sudo apt-get install ruby    [Press enter]
+   % sudo apt-get install libaspell-dev    [Press enter]
+   % sudo apt-get install libavcodec-dev libavformat-dev    [Press enter]
+   % sudo apt-get install libqt4-gui qt4-qmake qt4-dev-tools    [Press enter]
+   % sudo apt-get install zlib1g-dev    [Press enter]
+
+Note: If you are not using Ubuntu, check for the equivalent packages for your
+Linux distro
+
+2. Get the source and compile
+
+- Firstly, get KOM, the KTooN GUI framework from our Download section
+  (http://www.ktoon.net/portal/download_counter). Then, run these commands:
+   % tar xvfz kom-0.9a-revXXXX.tar.gz    [Press enter]
+   % cd kom-0.9a-revXXX    [Press enter]
+   % ./configure --prefix=/usr    [Press enter]
+   % make    [Press enter]
+   % sudo make install    [Press enter]
+
+- Secondly, get the KTooN core application from our Download section
+  (http://www.ktoon.net/portal/download_counter). Then, 
+  run these commands:
+   % tar xvfz ktoon-0.9a-revXXXX.tar.gz    [Press enter]
+   % cd ktoon-0.9a-revXXX    [Press enter]
+   % ./configure --prefix=/usr/local/ktoon    [Press enter]
+   % make    [Press enter]
+   % sudo make install    [Press enter]
+
+3. Animation time!
+
 - Execute:
-  % /usr/local/ktoon/bin/ktoon &
-  
+   % /usr/local/ktoon/bin/ktoon &    [Press enter]
+
+Or look for the launcher from Applications -> Graphics -> KTooN
+
+And enjoy KTooN!
+
+Note: Whether you find any error in this how-to or you want to share your own
+installation notes with us, feel free to send us your documents.
+
+Additional info: http://www.ktoon.net
