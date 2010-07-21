@@ -1,0 +1,71 @@
+KToon - 2D Animation Toolkit
+http://www.ktoon.net
+
+Version 0.9a [ Code Name: Phoenix ]
+
+Developers
+
+  Gustavo Gonzalez
+  <xtingray@ktoon.net>
+
+Version <= 0.9
+
+Developers
+
+  David A. Cuadrado
+
+  Jorge H. Cuadrado
+
+Version <= 0.7
+
+Developers
+
+  Simena Dinas
+
+  Fernando Jose Roldan Correa
+
+----------------------------
+Development Documentation
+
+  David A. Cuadrado
+
+  Jorge H. Cuadrado
+
+----------------------------
+Translators
+
+  Catalan:
+   
+     Edelweiss Garcia i Fuentes
+
+  Spanish: 
+
+     Gustavo Gonzalez
+
+     David A. Cuadrado
+
+  Portuguese:
+
+     Alyne Castro
+
+----------------------------
+Iconographic Design
+
+  Rodrigo Correa
+  <contacto@tracking3020.com>
+
+----------------------------
+Many thanks to 
+
+  Markus Bongard for his unconditional 
+  collaboration on this project 
+
+----------------------------
+LabToon
+www.labtoon.org
+2010
+
+
+"Dream as if you'll live forever, 
+ live as if you'll die today"
+                       James Dean
