@@ -318,9 +318,10 @@ void KTViewDocument::loadPlugins()
                                  {
                                    // Temporary code - SQA Issue
                                    QString toolStr = act->text();
-                                   // if (toolStr.compare(tr("Motion Tween")) == 0 || toolStr.compare(tr("Polyline")) == 0) {
-                                   //    act->setDisabled(true); 
-                                   // }
+                                   QString test = tr("Eraser");
+                                   kFatal() << "PAPAYO: " << toolStr << " : " << test;
+                                   if (toolStr.compare(tr("Motion Tween")) == 0 || toolStr.compare(tr("Eraser")) == 0)
+                                       act->setDisabled(true); 
 
                                    if (toolStr.compare(tr("Pencil")) == 0)
                                        //k->firstAction = act;

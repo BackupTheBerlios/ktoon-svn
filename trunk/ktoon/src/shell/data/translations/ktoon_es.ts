@@ -132,10 +132,9 @@
 <context>
     <name>EraserTool</name>
     <message>
-        <location filename="../../../plugins/tools/erasertool/erasertool.cpp" line="70"/>
-        <location filename="../../../plugins/tools/erasertool/erasertool.cpp" line="75"/>
-        <location filename="../../../plugins/tools/erasertool/erasertool.cpp" line="79"/>
-        <location filename="../../../plugins/tools/erasertool/erasertool.cpp" line="100"/>
+        <location filename="../../../plugins/tools/erasertool/erasertool.cpp" line="68"/>
+        <location filename="../../../plugins/tools/erasertool/erasertool.cpp" line="73"/>
+        <location filename="../../../plugins/tools/erasertool/erasertool.cpp" line="98"/>
         <source>Eraser</source>
         <translation>Borrador</translation>
     </message>
@@ -2134,6 +2133,11 @@
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="670"/>
         <source>&amp;View</source>
         <translation>&amp;Ver</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktviewdocument.cpp" line="323"/>
+        <source>Eraser</source>
+        <translation>Borrador</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="678"/>
