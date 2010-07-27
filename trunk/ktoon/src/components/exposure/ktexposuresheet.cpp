@@ -104,6 +104,7 @@ void KTExposureSheet::createMenu()
     expandMenu->addAction(tr("1 frame"), this, SLOT(expandCurrentFrameOnce()));
     expandMenu->addAction(tr("5 frames"), this, SLOT(expandCurrentFrameFive()));
     expandMenu->addAction(tr("10 frames"), this, SLOT(expandCurrentFrameTen()));
+    expandMenu->setDisabled(true);
     
     k->menu->addMenu(expandMenu);
     connect(k->menu, SIGNAL(triggered(QAction *)), this, SLOT(actionTriggered(QAction*)));
@@ -370,6 +371,8 @@ void KTExposureSheet::insertFrame(int indexLayer, int indexFrame)
            K_FUNCINFO;
     #endif
 
+    kFatal() << "KTExposureSheet::insertFrame - frame: " << indexFrame;
+
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
                                                  indexLayer, indexFrame, KTProjectRequest::Add);
     emit requestTriggered(&request);
@@ -384,11 +387,10 @@ void KTExposureSheet::renameFrame(int indexLayer, int indexFrame, const QString 
 
 void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 {
+    kFatal() << "KTExposureSheet::selectFrame - Layer: " << indexLayer << " / Frame: " << indexFrame;
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex() , indexLayer, 
                                                  indexFrame, KTProjectRequest::Select, "1");
     emit requestTriggered(&request);
-
-    //emit localRequestTriggered(&request);
 }
 
 void KTExposureSheet::changeVisibilityLayer(int visualIndexLayer, bool visibility)

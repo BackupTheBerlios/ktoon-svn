@@ -276,6 +276,7 @@ bool KTFrame::moveItem(int currentPosition, int newPosition)
 
 bool KTFrame::removeGraphicAt(int position)
 {
+    kFatal() << "KTFrame::removeGraphicAt - index: " << position << " - totalItems: " << k->graphics.count();
     if (position < 0 || position >= k->graphics.count())
         return false;
 
@@ -292,6 +293,8 @@ bool KTFrame::removeGraphicAt(int position)
         this->scene()->removeTweeningObject(object);
 
         return true;
+    } else {
+        kFatal() << "KTFrame::removeGraphicAt - Item NOT FOUND"; 
     }
 
     return false;
@@ -325,9 +328,11 @@ GraphicObjects KTFrame::graphics() const
 
 KTGraphicObject *KTFrame::graphic(int position) const
 {
-    if (position < 0 || position >= k->graphics.count()) {
+    //if (position < 0 || position >= k->graphics.count()) {
+
+    if (position < 0) {
         #ifdef K_DEBUG
-               K_FUNCINFO << " FATAL ERROR: index out of bound (KTFrame->graphic())" << position;
+               K_FUNCINFO << " FATAL ERROR: index out of bound [KTFrame->graphic()] - index: " << position << " - total items: " << k->graphics.count();
         #endif
 
         return 0;
@@ -338,10 +343,13 @@ KTGraphicObject *KTFrame::graphic(int position) const
 
 QGraphicsItem *KTFrame::item(int position) const
 {
+    kFatal() << "KTFrame::item -> index: " << position;
     KTGraphicObject *object = graphic(position);
 
     if (object)
         return object->item();
+    else
+        kFatal() << "KTFrame::item -> Item NOT FOUND";
 
     return 0;
 }

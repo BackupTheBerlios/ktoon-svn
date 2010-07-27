@@ -319,12 +319,10 @@ void KTViewDocument::loadPlugins()
                                    // Temporary code - SQA Issue
                                    QString toolStr = act->text();
                                    QString test = tr("Eraser");
-                                   kFatal() << "PAPAYO: " << toolStr << " : " << test;
                                    if (toolStr.compare(tr("Motion Tween")) == 0 || toolStr.compare(tr("Eraser")) == 0)
                                        act->setDisabled(true); 
 
                                    if (toolStr.compare(tr("Pencil")) == 0)
-                                       //k->firstAction = act;
                                        act->trigger();
 
                                    k->brushesMenu->addAction(act);

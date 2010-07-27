@@ -144,6 +144,12 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 
 void KTGraphicsScene::drawCurrentPhotogram()
 {
+    KTLayer *layer = k->scene->layer(k->framePosition.layer);
+    int frames = layer->framesNumber();
+
+    if (k->framePosition.frame >= frames)
+        k->framePosition.frame = frames - 1;
+
     drawPhotogram(k->framePosition.frame);
 }
 
@@ -167,7 +173,9 @@ void KTGraphicsScene::drawPhotogram(int photogram)
     for (int i=0; i < k->scene->layersTotal(); i++) {
 
              KTLayer *layer = k->scene->layer(i);
+
              KTFrame *mainFrame = layer->frame(photogram);
+
              QString currentFrame = "";
 
              if (mainFrame) {
@@ -184,12 +192,15 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                              if (limit < 0) 
                                  limit = 0;
 
+                             QString frameBehind = ""; 
                              for (int frameIndex = photogram-1; frameIndex >= limit; frameIndex--) {
                                   KTFrame * frame = layer->frame(frameIndex);
                                   QString previousFrame = frame->frameName();
-                                  if (frame && previousFrame.compare(currentFrame) != 0)
+                                  if (frame && previousFrame.compare(currentFrame) != 0 
+                                      && frameBehind.compare(previousFrame) != 0)
                                       addFrame(frame, opacity);
 
+                                  frameBehind = previousFrame;
                                   opacity -= opacityFactor;
                              }
                          }
@@ -202,12 +213,15 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                              if (limit > layer->frames().count()) 
                                  limit = layer->frames().count();
 
+                             QString frameLater = "";
                              for (int frameIndex = photogram+1; frameIndex < limit; frameIndex++) {
                                   KTFrame * frame = layer->frame(frameIndex);
                                   QString nextFrame = frame->frameName();
-                                  if (frame && nextFrame.compare(currentFrame) != 0)
+                                  if (frame && nextFrame.compare(currentFrame) != 0 
+                                      && frameLater.compare(nextFrame) != 0)
                                       addFrame(frame, opacity);
-
+                      
+                                  frameLater = nextFrame;
                                   opacity -= opacityFactor;
                              }
                          }
@@ -257,6 +271,7 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
     if (frame) {
 
         k->objectCounter = 0;
+        // TODO: This for must be re-written
         for (int i=0; i < frame->count(); i++) {
              KTGraphicObject *object = frame->graphic(i);
              addGraphicObject(object, opacity);

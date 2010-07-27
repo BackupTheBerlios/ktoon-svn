@@ -109,6 +109,8 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
+
+    kFatal() << "KTCommandExecutor::removeItem - itemIndex: " << response->itemIndex();
     
     KTScene *scene = m_project->scene(scenePosition);
     
@@ -117,14 +119,16 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
         if (layer) {
             KTFrame *frame = layer->frame(framePosition);
             if (frame) {
-                QGraphicsItem *item = frame->item( response->itemIndex() );
+                QGraphicsItem *item = frame->item(response->itemIndex());
                 if (KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item)) {
                     QDomDocument orig;
                     orig.appendChild(itemSerializable->toXml(orig));
                     
                     response->setArg(orig.toString());
                     frame->removeGraphicAt(response->itemIndex());
+                    kFatal() << "KTCommandExecutor::removeItem - Deletion successful";
                 } else {
+                    kFatal() << "KTCommandExecutor::removeItem - Deletion fail :(";
                     return false;
                 }
                 

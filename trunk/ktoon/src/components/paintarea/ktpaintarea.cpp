@@ -79,6 +79,7 @@ struct KTPaintArea::Private
     int currentSceneIndex;
     QStringList copiesXml;
     QString currentTool; 
+    bool lastItem;
 };
 
 // KTPaintArea::KTPaintArea(const KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
@@ -89,6 +90,7 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase
 
     k->project = project;
     k->currentSceneIndex = 0;
+    k->lastItem = false;
 
     setCurrentScene(0);
 
@@ -198,7 +200,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
             case KTProjectRequest::Paste:
             case KTProjectRequest::Select: 
                  { 
-                    kFatal() << "KTPaintArea::frameResponse -> Selecting a frame!";
+                    kFatal() << "KTPaintArea::frameResponse -> Selecting a frame! : " << event->frameIndex();
 
                     KTGraphicsScene *sscene = graphicsScene();
                     if (!sscene->scene()) 
@@ -321,18 +323,21 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
                case KTProjectRequest::Transform:
                     viewport()->update();
                     break;
+               case KTProjectRequest::Remove:
+                    kFatal() << "KTPaintArea::itemResponse - REMOVING!";
+                    if (k->lastItem) {
+                        kFatal() << "KTPaintArea::itemResponse - Cleaning everything!";
+                        graphicsScene()->drawCurrentPhotogram();
+                        viewport()->update(scene()->sceneRect().toRect());
+                        k->lastItem = false;
+                    }
+                    break;
                default:
                     graphicsScene()->drawCurrentPhotogram();
                     viewport()->update(scene()->sceneRect().toRect());
                     break;
         }
-    } else {
-        /*
-        kFatal() << "Updating Paint Area!!! OOOOOO_OOOOOOOO";
-        graphicsScene()->drawCurrentPhotogram();
-        viewport()->update(scene()->sceneRect().toRect());
-        */
-    }
+    } 
 
     graphicsScene()->itemResponse(event);
 }
@@ -374,21 +379,29 @@ bool KTPaintArea::canPaint() const
 
 void KTPaintArea::deleteItems()
 {
+    kFatal() << "KTPaintArea::deleteItems()";
+
     // K_FUNCINFO;
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
     if (!selected.empty()) {
-        QString strItems= "";
         KTGraphicsScene* currentScene = graphicsScene();
 
         if (currentScene) {
+            int counter = 0;
+            int total = selected.count();
             foreach (QGraphicsItem *item, selected) {
+                     kFatal() << "KTPaintArea::deleteItems() - deleting object with index: " << currentScene->currentFrame()->indexOf(item);
+                     if (counter == total-1) 
+                         k->lastItem = true;
+
                      KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                               currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
                                               currentScene->currentFrameIndex(), 
                                               currentScene->currentFrame()->indexOf(item),
                                               KTProjectRequest::Remove);
                      emit requestTriggered(&event);
+                     counter++;
             }
         }
     }

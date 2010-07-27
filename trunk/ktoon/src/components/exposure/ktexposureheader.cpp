@@ -96,15 +96,17 @@ void KTExposureHeader::setVisibilityChanged(int logicalndex, bool visibility)
 
 void KTExposureHeader::showEditorName(int section)
 {
-    QFont font("Arial", 8, QFont::Normal, false);
-    m_editor->setFont(font);
+    if (section >= 0) {
+        QFont font("Arial", 8, QFont::Normal, false);
+        m_editor->setFont(font);
 
-    int x = sectionViewportPosition(section);
-    m_editor->setGeometry(x, 0, sectionSize(section), height());
-    m_sectionEdited = section;
-    m_editor->setText(m_layers[section].title);
-    m_editor->show();
-    m_editor->setFocus();
+        int x = sectionViewportPosition(section);
+        m_editor->setGeometry(x, 0, sectionSize(section), height());
+        m_sectionEdited = section;
+        m_editor->setText(m_layers[section].title);
+        m_editor->show();
+        m_editor->setFocus();
+    }
 }
 
 void KTExposureHeader::hideEditorName()
