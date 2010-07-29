@@ -5,6 +5,7 @@
 TEMPLATE = app
 CONFIG -= moc
 INCLUDEPATH += .
+DEFINES += __STDC_CONSTANT_MACROS
 
 LIBS += -lavformat -lavcodec
 # Input

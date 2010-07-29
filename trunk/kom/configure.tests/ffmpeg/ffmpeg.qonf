@@ -10,6 +10,7 @@
 		<libs>
 			<lib path="-lavcodec" />
 			<lib path="-lavformat" />
+                        <lib path="-lavutil" />
 		</libs>
 	</provide>
 	<solution>
