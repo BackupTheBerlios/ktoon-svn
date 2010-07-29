@@ -265,7 +265,7 @@ void Select::aboutToChangeTool()
 void Select::itemResponse(const KTItemResponse *event)
 {
     K_FUNCINFOX("tools");
-    
+
     QGraphicsItem *item = 0;
     KTScene *scene = 0;
     KTLayer *layer = 0;
@@ -281,14 +281,18 @@ void Select::itemResponse(const KTItemResponse *event)
 
             if (layer) {
                 frame = layer->frame(event->frameIndex());
-                if (frame)
+                if (frame && frame->count()>0) {
                     item = frame->item(event->itemIndex());
+                } else {
+                    return;
+                }
             }
         }
     } else {
         #ifdef K_DEBUG
                kFatal() << "Project does not exist";
         #endif
+        return;
     }
     
     switch (event->action()) {

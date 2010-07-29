@@ -18,7 +18,6 @@ class QMake
 
     # This method check if the current version of Qt is valid for KToon compilation    
     def findQMake(minqtversion, verbose)
-        close_stderr
         qtversion = ""
         paths = [ "qmake", "qmake-qt4", "qmake4" ]
         minver = minqtversion.split(".")

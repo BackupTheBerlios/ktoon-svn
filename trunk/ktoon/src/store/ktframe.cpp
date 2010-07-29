@@ -276,8 +276,8 @@ bool KTFrame::moveItem(int currentPosition, int newPosition)
 
 bool KTFrame::removeGraphicAt(int position)
 {
-    kFatal() << "KTFrame::removeGraphicAt - index: " << position << " - totalItems: " << k->graphics.count();
-    if (position < 0 || position >= k->graphics.count())
+    //if (position < 0 || position >= k->graphics.count())
+    if (position < 0)
         return false;
 
     KTGraphicObject *object = k->graphics.takeObject(position);
@@ -293,8 +293,6 @@ bool KTFrame::removeGraphicAt(int position)
         this->scene()->removeTweeningObject(object);
 
         return true;
-    } else {
-        kFatal() << "KTFrame::removeGraphicAt - Item NOT FOUND"; 
     }
 
     return false;
@@ -336,20 +334,17 @@ KTGraphicObject *KTFrame::graphic(int position) const
         #endif
 
         return 0;
-    }
+    } 
 
     return k->graphics.value(position);
 }
 
 QGraphicsItem *KTFrame::item(int position) const
 {
-    kFatal() << "KTFrame::item -> index: " << position;
     KTGraphicObject *object = graphic(position);
 
     if (object)
         return object->item();
-    else
-        kFatal() << "KTFrame::item -> Item NOT FOUND";
 
     return 0;
 }

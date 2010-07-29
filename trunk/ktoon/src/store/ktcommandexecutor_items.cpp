@@ -110,8 +110,6 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
 
-    kFatal() << "KTCommandExecutor::removeItem - itemIndex: " << response->itemIndex();
-    
     KTScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
@@ -123,12 +121,9 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
                 if (KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item)) {
                     QDomDocument orig;
                     orig.appendChild(itemSerializable->toXml(orig));
-                    
                     response->setArg(orig.toString());
                     frame->removeGraphicAt(response->itemIndex());
-                    kFatal() << "KTCommandExecutor::removeItem - Deletion successful";
                 } else {
-                    kFatal() << "KTCommandExecutor::removeItem - Deletion fail :(";
                     return false;
                 }
                 

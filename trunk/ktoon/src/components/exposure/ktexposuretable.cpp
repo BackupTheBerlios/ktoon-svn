@@ -284,7 +284,6 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
 
 void KTExposureTable::selectFrame(int indexLayer, int indexFrame)
 {
-    kFatal() << "KTExposureTable::selectFrame - indexFrame: " << indexFrame;
     setCurrentCell(indexFrame, k->header->logicalIndex(indexLayer));
 }
 
@@ -321,8 +320,6 @@ void KTExposureTable::insertLayer(int index, const QString & name)
 
 void KTExposureTable::insertFrame(int indexLayer, int indexFrame, const QString & name, bool external)
 {
-    kFatal() << "KTExposureTable::insertFrame - name: " <<  name; 
-  
     QTableWidgetItem *frame = new QTableWidgetItem;
     frame->setBackgroundColor(QColor(0xe6e6e6));
     frame->setFont(QFont("Arial", 7, QFont::Normal, false));
@@ -401,8 +398,6 @@ void KTExposureTable::removeFrame(int indexLayer, int indexFrame)
 
 void KTExposureTable::exchangeFrame(int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame, bool external)
 {
-    kFatal() << "KTExposureTable::moveFrame <- exchanging 2 frames";
-
     QTableWidgetItem * oldItem  = takeItem(oldPosFrame, oldPosLayer);
     QTableWidgetItem * newItem  = takeItem(newPosFrame, newPosLayer);
 
@@ -421,7 +416,6 @@ void KTExposureTable::moveLayer(int oldPosLayer, int newPosLayer)
 
 void KTExposureTable::emitRequestSetUsedFrame(int indexFrame, int indexLayer)
 {
-    kFatal() << "KTExposureTable::emitRequestSetUsedFrame : " << indexFrame;
     int layer = k->header->visualIndex(indexLayer);
     int lastFrame = k->header->lastFrame(indexLayer); 
 

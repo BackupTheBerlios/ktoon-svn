@@ -49,7 +49,6 @@ class KTIntHash
         void remove(int pos);
         void copyObject(int from, int to);
         void exchangeObject(int from, int to);
-        bool containsObject(int pos);
         
         int objectIndex(T val);
         
@@ -122,7 +121,7 @@ KTIntHash<T>::~KTIntHash()
 template<typename T>
 void KTIntHash<T>::removeObject(int pos)
 {
-    if (containsObject(pos))
+    if (contains(pos))
         k->dataHash.remove(pos);
 }
 
@@ -135,7 +134,7 @@ bool KTIntHash<T>::contains(int pos)
 template<typename T>
 void KTIntHash<T>::copyObject(int from, int to)
 {
-    if (containsObject(from) && containsObject(to)) {
+    if (contains(from) && contains(to)) {
         T fromValue = this->value(from);
         this->insert(to, fromValue);
     } 
@@ -144,18 +143,12 @@ void KTIntHash<T>::copyObject(int from, int to)
 template<typename T>
 void KTIntHash<T>::exchangeObject(int from, int to)
 {
-    if (containsObject(from) && containsObject(to)) {
+    if (contains(from) && contains(to)) {
         T fromValue = this->value(from);
         T toValue = this->value(to);
         this->insert(to, fromValue);
         this->insert(from, toValue);
     }
-}
-
-template<typename T>
-bool KTIntHash<T>::containsObject(int pos)
-{
-    return pos >= 0 && pos < k->dataHash.size();
 }
 
 template<typename T>
@@ -176,7 +169,7 @@ int KTIntHash<T>::objectIndex(T val)
 template<typename T>
 T KTIntHash<T>::value(int pos)
 {
-    if (containsObject(pos))
+    if (contains(pos)) 
         return k->dataHash.value(pos);
     
     return k->dataHash.value(-1);
@@ -185,7 +178,7 @@ T KTIntHash<T>::value(int pos)
 template<typename T>
 T KTIntHash<T>::takeObject(int pos)
 {
-    if (containsObject(pos))
+    if (contains(pos))
         return k->dataHash.take(pos);
     
     return k->dataHash.take(-1);
@@ -205,7 +198,7 @@ void KTIntHash<T>::insert(int pos, T value)
 template<typename T>
 void KTIntHash<T>::remove(int pos)
 {
-    if (containsObject(pos)) {
+    if (contains(pos)) {
         if (pos == count()-1) {
             k->dataHash.remove(pos);
             k->counter--;

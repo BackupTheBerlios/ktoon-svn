@@ -200,8 +200,6 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
             case KTProjectRequest::Paste:
             case KTProjectRequest::Select: 
                  { 
-                    kFatal() << "KTPaintArea::frameResponse -> Selecting a frame! : " << event->frameIndex();
-
                     KTGraphicsScene *sscene = graphicsScene();
                     if (!sscene->scene()) 
                         return;
@@ -264,7 +262,6 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
         viewport()->update(scene()->sceneRect().toRect());
     } else {
         if (event->action() == KTProjectRequest::Remove) {
-            // kFatal() << "KTPaintArea::layerResponse <- KTProjectRequest::Remove : " << event->layerIndex();
 
             KTGraphicsScene *sscene = graphicsScene();
             if (!sscene->scene())
@@ -289,12 +286,10 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 
     switch(event->action()) {
            case KTProjectRequest::Select:
-                kFatal() << "KTPaintArea::sceneResponse <- KTProjectRequest::Select : " << event->sceneIndex();
                 if (event->sceneIndex() >= 0)
                     setCurrentScene(event->sceneIndex());
                 break;
            case KTProjectRequest::Remove:
-                kFatal() << "KTPaintArea::sceneResponse <- KTProjectRequest::Remove : " << k->currentSceneIndex << " - " << event->sceneIndex();
                 if (k->currentSceneIndex > 0) {
                     setCurrentScene(k->currentSceneIndex);
                 } else {
@@ -324,9 +319,7 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
                     viewport()->update();
                     break;
                case KTProjectRequest::Remove:
-                    kFatal() << "KTPaintArea::itemResponse - REMOVING!";
                     if (k->lastItem) {
-                        kFatal() << "KTPaintArea::itemResponse - Cleaning everything!";
                         graphicsScene()->drawCurrentPhotogram();
                         viewport()->update(scene()->sceneRect().toRect());
                         k->lastItem = false;
@@ -379,8 +372,6 @@ bool KTPaintArea::canPaint() const
 
 void KTPaintArea::deleteItems()
 {
-    kFatal() << "KTPaintArea::deleteItems()";
-
     // K_FUNCINFO;
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
@@ -391,7 +382,6 @@ void KTPaintArea::deleteItems()
             int counter = 0;
             int total = selected.count();
             foreach (QGraphicsItem *item, selected) {
-                     kFatal() << "KTPaintArea::deleteItems() - deleting object with index: " << currentScene->currentFrame()->indexOf(item);
                      if (counter == total-1) 
                          k->lastItem = true;
 

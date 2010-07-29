@@ -183,7 +183,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
                  if (layer) {
                      if (layer->isVisible()) {
-                         kFatal() << "KTGraphicsScene::drawPhotogram -> k->onionSkin.previous: " << k->onionSkin.previous << " - photogram: " << photogram;
                          if (k->onionSkin.previous > 0 && photogram > 0) {
                              double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.previous);
                              double opacity = 0.5;
@@ -227,7 +226,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                          }
 
                          // TODO: Crashpoint when layers are deleted 
-                         kFatal() << "KTGraphicsScene::drawPhotogram - Index: " << photogram;
                          //KTFrame *frame = layer->frame(photogram);
 
                          //if (frame) {
@@ -241,7 +239,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
     }
 
     // Drawing tweening objects
-    
+
     if (valid) {
         foreach (KTGraphicObject *object, k->scene->tweeningObjects()) {
                  if (object->frame()->layer()->isVisible()) {
@@ -269,7 +267,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
 {
     if (frame) {
-
         k->objectCounter = 0;
         // TODO: This for must be re-written
         for (int i=0; i < frame->count(); i++) {
@@ -305,13 +302,11 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
             }
         }
 
-    }
+    } 
 }
 
 void KTGraphicsScene::clean()
 {
-    kFatal() << "KTGraphicsScene::clean() -> Cleaning the mess!";
-
     k->onionSkin.opacityMap.clear();
 
     foreach (QGraphicsItem *item, items()) {
