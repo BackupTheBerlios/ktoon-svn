@@ -28,110 +28,60 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
+#ifndef CONTOURSELECTION_H
+#define CONTOURSELECTION_H
 
-#include "zoomconfigurator.h"
-#include <QBoxLayout>
-#include <QRadioButton>
-#include <QButtonGroup>
-#include <QLabel>
+#include <QObject>
+#include <kttoolplugin.h>
+#include <QSpinBox>
 
-#include <kgui/kimagebutton.h>
-#include <kgui/kseparator.h>
+#include "ktpathitem.h"
 
-#include <kcore/kglobal.h>
-#include <kcore/kdebug.h>
-#include <kcore/kconfig.h>
+#include <kgui/kcontrolnode.h>
+#include <kgui/knodegroup.h>
 
-ZoomConfigurator::ZoomConfigurator(QWidget *parent) :QWidget(parent)
+class KControlNode;
+class KTItemResponse;
+class KTGraphicsScene;
+
+/**
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ */
+
+class ContourSelection : public KTToolPlugin
 {
-    KINIT;
-    QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    Q_OBJECT;
+    
+    public:
+        ContourSelection();
+        virtual ~ContourSelection();
+        
+        virtual void init(KTGraphicsScene *scene);
+        virtual QStringList keys() const;
+        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+        
+        virtual QMap<QString, KAction *>actions() const;
+        
+        int toolType() const;
+        
+        virtual QWidget *configurator();
+        
+        void aboutToChangeScene(KTGraphicsScene *scene);
+        virtual void aboutToChangeTool();
+        
+        virtual void itemResponse(const KTItemResponse *event);
+        virtual void keyPressEvent(QKeyEvent *event);
+        virtual void saveConfig();
+        
+    private:
+        void setupActions();
+        
+    private:
+        struct Private;
+        Private *const k;
+};
 
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
-
-    /*
-    QLabel *label = new QLabel(tr("Zoom Mode"));
-    label->setAlignment(Qt::AlignHCenter); 
-    layout->addWidget(label);
-    layout->addWidget(new KSeparator(Qt::Horizontal));
-
-    in = new QRadioButton(tr("Zoom In"), this);
-    in->setChecked(true); 
-    out = new QRadioButton(tr("Zoom Out"), this);
-
-    connect(in, SIGNAL(clicked()), SLOT(setZoomIn()));
-    connect(out, SIGNAL(clicked()), SLOT(setZoomOut()));
-
-    layout->addWidget(in);
-    layout->addWidget(out);
-    */
-
-    scale = new QLabel(tr("Scale Factor"));
-    scale->setAlignment(Qt::AlignHCenter);
-    layout->addWidget(scale);
-
-    factor = new QDoubleSpinBox();
-
-    //factor->setValue(0.5);
-    factor->setDecimals(1);
-    factor->setSingleStep(0.1);
-    factor->setMinimum(0.1);
-    factor->setMaximum(0.9);
-    layout->addWidget(factor);
-
-    //factor->setEnabled(false);
-
-    mainLayout->addLayout(layout);
-    mainLayout->addStretch(2);
-
-    KCONFIG->beginGroup("ZoomTool");
-    double value = KCONFIG->value("zoomFactor", -1).toDouble();
-
-    if (value > 0) 
-        factor->setValue(value);
-    else 
-        factor->setValue(0.5);
-}
-
-ZoomConfigurator::~ZoomConfigurator()
-{
-    KEND;
-}
-
-void ZoomConfigurator::resizeEvent(QResizeEvent *)
-{
-    resize(minimumSizeHint()); 
-    //kFatal() << "ZoomConfigurator::resizeEvent - Resizing!!!";
-    //resize(130, maximumHeight());
-}
-
-/*
-void ZoomConfigurator::setZoomIn()
-{
-    if (out->isChecked())
-        out->setChecked(false);
-
-    if (factor->isEnabled())
-        factor->setEnabled(false);
-}
-
-void ZoomConfigurator::setZoomOut()
-{
-    if (in->isChecked())
-        in->setChecked(false);
-
-    if (!factor->isEnabled()) 
-        factor->setEnabled(true);
-}
-
-bool ZoomConfigurator::zoomIn()
-{
-    return in->isChecked();
-}
-*/
-
-double ZoomConfigurator::getFactor() const
-{
-    return factor->value();
-}
+#endif
 

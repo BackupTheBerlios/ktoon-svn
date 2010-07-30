@@ -90,8 +90,10 @@ void KTConfigurationArea::setConfigurator(QWidget *w, int minWidth)
     if (!w || old == w) 
         return;
 
+    /*
     if (old)
         old->hide();
+    */
 
     // FIXME: When you close a project and open a new one, the tools configuration area
     //        crash the whole application in this point
@@ -271,7 +273,8 @@ void KTConfigurationArea::hideConfigurator()
 
         for (int i = 0; i < 2; ++i) 
              qApp->processEvents();
-             shrink();
+
+        shrink();
 
         if (!k->toolTipShowed) {
 			QToolTip::showText (k->mousePos, tr("Cursor here for expand"), this );

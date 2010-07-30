@@ -348,19 +348,16 @@ void KTExposureSheet::emitRequestExpandCurrentFrame(int n)
 
 void KTExposureSheet::expandCurrentFrameOnce()
 {
-    kFatal() << "KTExposureSheet::emitRequestExpandCurrentFrame -> Following the white rabbit! -> 1";
     emitRequestExpandCurrentFrame(1);
 }
 
 void KTExposureSheet::expandCurrentFrameFive()
 {
-    kFatal() << "KTExposureSheet::emitRequestExpandCurrentFrame -> Following the white rabbit! -> 5";
     emitRequestExpandCurrentFrame(5);
 }
 
 void KTExposureSheet::expandCurrentFrameTen()
 {
-    kFatal() << "KTExposureSheet::emitRequestExpandCurrentFrame -> Following the white rabbit! -> 10";
     emitRequestExpandCurrentFrame(10);
 }
 
@@ -370,8 +367,6 @@ void KTExposureSheet::insertFrame(int indexLayer, int indexFrame)
     #ifdef K_DEBUG
            K_FUNCINFO;
     #endif
-
-    kFatal() << "KTExposureSheet::insertFrame - frame: " << indexFrame;
 
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex(), 
                                                  indexLayer, indexFrame, KTProjectRequest::Add);
@@ -387,7 +382,6 @@ void KTExposureSheet::renameFrame(int indexLayer, int indexFrame, const QString 
 
 void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 {
-    kFatal() << "KTExposureSheet::selectFrame - Layer: " << indexLayer << " / Frame: " << indexFrame;
     KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->scenes->currentIndex() , indexLayer, 
                                                  indexFrame, KTProjectRequest::Select, "1");
     emit requestTriggered(&request);

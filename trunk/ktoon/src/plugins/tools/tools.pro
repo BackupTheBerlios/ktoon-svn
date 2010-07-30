@@ -3,16 +3,16 @@
 # Subdir relative project main directory: ./src/plugins/tools
 # Target is a subdirs project 
 
-SUBDIRS += brush \
-           select \
-           contourselection \
-           text \
+SUBDIRS += penciltool \
+           selecttool \
+           contourselectiontool \
+           texttool \
            geometrictool \
            viewtool \
            filltool \
            erasertool  \
-           polyline \
-           tweener
+           polylinetool \
+           tweenertool
 KDEV_QTVER = 4
 CONFIG += release \
 warn_on

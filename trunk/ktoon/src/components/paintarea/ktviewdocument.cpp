@@ -152,9 +152,9 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
 
     setupDrawActions();
 
-    k->configurationArea = new KTConfigurationArea(this);
-    addDockWidget(Qt::RightDockWidgetArea, k->configurationArea);
-    k->configurationArea->close();
+    //k->configurationArea = new KTConfigurationArea(this);
+    //addDockWidget(Qt::RightDockWidgetArea, k->configurationArea);
+    //k->configurationArea->close();
     
     createToolBar();
     createTools();
@@ -306,41 +306,41 @@ void KTViewDocument::loadPlugins()
                          kDebug("plugins") << "*** Tool Loaded: " << *it;
                   #endif
 
-                  KAction *act = tool->actions()[*it];
-                  act->setIconVisibleInMenu(true);
+                  KAction *action = tool->actions()[*it];
+                  action->setIconVisibleInMenu(true);
 
-                  if (act) {
-                      connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
-                      act->setParent(plugin);
+                  if (action) {
+                      connect(action, SIGNAL(triggered()), this, SLOT(selectTool()));
+                      action->setParent(plugin);
 
                       switch (tool->toolType()) {
                               case KTToolInterface::Brush:
                                  {
                                    // Temporary code - SQA Issue
-                                   QString toolStr = act->text();
+                                   QString toolStr = action->text();
                                    QString test = tr("Eraser");
                                    if (toolStr.compare(tr("Motion Tween")) == 0 || toolStr.compare(tr("Eraser")) == 0)
-                                       act->setDisabled(true); 
+                                       action->setDisabled(true); 
 
                                    if (toolStr.compare(tr("Pencil")) == 0)
-                                       act->trigger();
+                                       action->trigger();
 
-                                   k->brushesMenu->addAction(act);
+                                   k->brushesMenu->addAction(action);
                                  }
                                  break;
                               case KTToolInterface::Selection:
                                  {
-                                   k->selectionMenu->addAction(act);
+                                   k->selectionMenu->addAction(action);
                                  }
                                  break;
                               case KTToolInterface::Fill:
                                  {
-                                   k->fillMenu->addAction(act);
+                                   k->fillMenu->addAction(action);
                                  }
                                  break;
                                case KTToolInterface::View:
                                  {
-                                   k->viewToolMenu->addAction(act);
+                                   k->viewToolMenu->addAction(action);
                                  }
                                  break;
                                default:
@@ -375,8 +375,12 @@ void KTViewDocument::selectTool()
            K_FUNCINFO;
     #endif
 
-    if (k->currentTool)
+    if (k->currentTool) {
         k->currentTool->saveConfig();
+        QWidget *toolConfigurator = k->currentTool->configurator();
+        if (toolConfigurator)
+            k->configurationArea->close();
+    }
 
     KAction *action = qobject_cast<KAction *>(sender());
 
@@ -428,16 +432,17 @@ void KTViewDocument::selectTool()
                      k->viewToolMenu->setActiveAction(action);
                      if (!action->icon().isNull())
                          k->viewToolMenu->menuAction()->setIcon(action->icon());
-                     if (toolStr.compare(tr("Zoom"))==0) {
-                         minWidth = 120;
-                     }
+                     if (toolStr.compare(tr("Zoom"))==0)
+                         minWidth = 130;
                      break;
         }
 
         QWidget *toolConfigurator = tool->configurator();
 
         if (toolConfigurator) {
+            k->configurationArea = new KTConfigurationArea(this);
             k->configurationArea->setConfigurator(toolConfigurator, minWidth);
+            addDockWidget(Qt::RightDockWidgetArea, k->configurationArea);
             toolConfigurator->show();
             if (!k->configurationArea->isVisible())
                 k->configurationArea->show();

@@ -2144,6 +2144,11 @@
         <source>Filters</source>
         <translation>Filtros</translation>
     </message>
+    <message>
+        <location filename="../../../components/paintarea/ktviewdocument.cpp" line="435"/>
+        <source>Zoom</source>
+        <translation>Acercamiento</translation>
+    </message>
 </context>
 <context>
     <name>KinasWidget</name>
