@@ -143,10 +143,10 @@ void KTPaintArea::mousePressEvent(QMouseEvent *event)
             menu->addAction(kApp->findGlobalAction("redo"));
             menu->addSeparator();
 
-            QAction *cut = menu->addAction(tr("Cut"), this, SLOT(cutItems()));
-            QAction *copy = menu->addAction(tr("Copy"), this, SLOT(copyItems()));
-            QAction *paste = menu->addAction(tr("Paste"), this, SLOT(pasteItems()));
-            QAction *del = menu->addAction(tr("Delete"), this, SLOT(deleteItems()));
+            QAction *cut = menu->addAction(tr("Cut"), this, SLOT(cutItems()), QKeySequence(tr("Ctrl+X")));
+            QAction *copy = menu->addAction(tr("Copy"), this, SLOT(copyItems()), QKeySequence(tr("Ctrl+C")));
+            QAction *paste = menu->addAction(tr("Paste"), this, SLOT(pasteItems()), QKeySequence(tr("Ctrl+V")));
+            QAction *del = menu->addAction(tr("Delete"), this, SLOT(deleteItems()), QKeySequence(Qt::Key_Delete));
 
             menu->addSeparator();
             QMenu *order = new QMenu(tr("Order"));
@@ -348,6 +348,7 @@ void KTPaintArea::libraryResponse(KTLibraryResponse *request)
     switch (request->action()) {
 
             case KTProjectRequest::AddSymbolToProject:
+                 kFatal() << "KTPaintArea::libraryResponse - Following the white rabbit!";
                  graphicsScene()->drawCurrentPhotogram();
                  viewport()->update(scene()->sceneRect().toRect());
 
@@ -457,6 +458,8 @@ void KTPaintArea::copyItems()
            K_FUNCINFOX("paintarea");
     #endif
 
+    kFatal() << "KTPaintArea::copyItems() -> YEAH!";
+
     k->copiesXml.clear();
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
@@ -506,9 +509,12 @@ void KTPaintArea::pasteItems()
            K_FUNCINFOX("paintarea");
     #endif
 
+    kFatal() << "KTPaintArea::pasteItems() -> OH YEAH! - count: " << k->copiesXml.count();
+
     KTGraphicsScene* currentScene = graphicsScene();
 
     foreach (QString xml, k->copiesXml) {
+             kFatal() << "KTPaintArea::pasteItems() -> Adding one object!";
              KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
                                       currentScene->currentLayerIndex(), 
                                       currentScene->currentFrameIndex(), 

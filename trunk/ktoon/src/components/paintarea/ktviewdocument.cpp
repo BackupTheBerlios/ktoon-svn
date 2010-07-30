@@ -223,7 +223,7 @@ void KTViewDocument::setupDrawActions()
 
     KAction *copy = new KAction(QPixmap(THEME_DIR + "icons/copy.png"), 
                                 tr("C&opy"), QKeySequence(tr("Ctrl+C")),
-                                 k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
+                                k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
     copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
 
     KAction *paste = new KAction(QPixmap(THEME_DIR + "icons/paste.png"), 

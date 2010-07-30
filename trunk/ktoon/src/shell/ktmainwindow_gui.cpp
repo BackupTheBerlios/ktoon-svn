@@ -94,8 +94,17 @@ void KTMainWindow::createGUI()
     new KAction(QPixmap(THEME_DIR + "icons/bitmap_array.png"), tr("Bitmap Array"), QKeySequence(), m_libraryWidget, SLOT(importBitmapArray()),
                 m_actionManager, "importbitmaparray");
 
+    new KAction(QPixmap(THEME_DIR + "icons/bitmap.png"), tr("SVG File"), QKeySequence(), m_libraryWidget, SLOT(importSvg()),
+                m_actionManager, "importsvg");
+
+    new KAction(QPixmap(THEME_DIR + "icons/bitmap_array.png"), tr("SVG Array"), QKeySequence(), m_libraryWidget, SLOT(importSvgArray()),
+                m_actionManager, "importsvgarray");
+
     //new KAction(QPixmap(), tr("Audio File..."), QKeySequence(), m_libraryWidget, SLOT(importSound()),
     //            m_actionManager, "importaudiofile");
+
+    m_actionManager->enable("importsvg", false);
+    m_actionManager->enable("importsvgarray", false);
 
     ui4project(m_libraryWidget);
     ui4localRequest(m_libraryWidget);
@@ -257,6 +266,8 @@ void KTMainWindow::setupMenu()
     // Adding Options import bitmap and import audio file
     m_insertMenu->addAction(m_actionManager->find("importbitmap"));
     m_insertMenu->addAction(m_actionManager->find("importbitmaparray"));
+    m_insertMenu->addAction(m_actionManager->find("importsvg"));
+    m_insertMenu->addAction(m_actionManager->find("importsvgarray"));
 
     //m_insertMenu->addAction(m_actionManager->find("importaudiofile"));
 

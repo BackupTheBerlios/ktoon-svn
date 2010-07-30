@@ -1045,6 +1045,16 @@
         <translation>Arreglo de Imágenes</translation>
     </message>
     <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="97"/>
+        <source>SVG File</source>
+        <translation>Archivo SVG</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="100"/>
+        <source>SVG Array</source>
+        <translation>Arreglo de Archivos SVG</translation>
+    </message>
+    <message>
         <location filename="../../ktmainwindow_gui.cpp" line="210"/>
         <source>&amp;File</source>
         <translation>&amp;Archivo</translation>
@@ -1372,9 +1382,19 @@
         <translation>Copiar</translation>
     </message>
     <message>
+        <location filename="../../../components/paintarea/ktpaintarea.cpp" line="139"/>
+        <source>Ctrl+C</source>
+        <translation>Ctrl+C</translation>
+    </message>
+    <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="140"/>
         <source>Paste</source>
         <translation>Pegar</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktpaintarea.cpp" line="140"/>
+        <source>Ctrl+V</source>
+        <translation>Ctrl+V</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktpaintarea.cpp" line="141"/>

@@ -437,6 +437,9 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                        sound->fromSymbol(object->symbolName());
                      }
                 break;
+                default:
+                       kFatal() << "KTProject::addSymbolToProject() -> Unknown Object Type"; 
+                break;
         }
         return true;
     }

@@ -300,6 +300,32 @@ void KTLibraryWidget::importBitmap()
     }
 }
 
+void KTLibraryWidget::importSvg()
+{
+    QString svg = QFileDialog::getOpenFileName (this, tr("Import a SVG file..."), QDir::homePath(),
+                                                  tr("Vectorial") + " (*.svg)");
+    if (svg.isEmpty())
+        return;
+
+    QFile f(svg);
+    QFileInfo fileInfo(f);
+
+    QString symName = fileInfo.baseName();
+
+    kFatal() << "FILE: " << symName;
+
+    if (f.open(QIODevice::ReadOnly)) {
+        QByteArray data = f.readAll();
+        f.close();
+
+        KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
+                                                     KTLibraryObject::Svg, data);
+        emit requestTriggered(&request);
+    } else {
+        KOsd::self()->display(tr("Cannot open file: %1").arg(svg));
+    }
+}
+
 void KTLibraryWidget::importBitmapArray()
 {
     QDesktopWidget desktop;
@@ -442,9 +468,13 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 {
     RETURN_IF_NOT_LIBRARY;
 
+    kFatal() << "KTLibraryWidget::libraryResponse : " <<  response->action();
+
     switch (response->action()) {
             case KTProjectRequest::Add:
               {
+                 kFatal() << "KTLibraryWidget::libraryResponse : Adding something :P";     
+
                  QString key = response->arg().toString();
                  KTLibraryObject *obj = k->library->findObject(key);
 
@@ -461,17 +491,27 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                                  previewItem(item, 1);
                                }
                             break;
-                            case KTLibraryObject::Sound:
-                               {
-                                 item->setIcon(0, QIcon(THEME_DIR + "icons/sound_object.png"));
-                               }
-                            break;
                             case KTLibraryObject::Image:
                                {
+                                 kFatal() << "KTLibraryWidget::libraryResponse : Image object!";
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/bitmap.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item, 1);
                                  emitSelectedComponent();
+                               }
+                            break;
+                            case KTLibraryObject::Svg:
+                               {
+                                 kFatal() << "KTLibraryWidget::libraryResponse : SVG object!";
+                                 item->setIcon(0, QIcon(THEME_DIR + "icons/bitmap.png"));
+                                 k->libraryTree->setCurrentItem(item);
+                                 previewItem(item, 1);
+                                 emitSelectedComponent();
+                               }
+                            break;
+                            case KTLibraryObject::Sound:
+                               {
+                                 item->setIcon(0, QIcon(THEME_DIR + "icons/sound_object.png"));
                                }
                             break;
                      }
