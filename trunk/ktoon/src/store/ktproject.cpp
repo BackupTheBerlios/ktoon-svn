@@ -427,6 +427,7 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                 case KTLibraryObject::Svg:
                 case KTLibraryObject::Item:
                      {
+                       kFatal() << "KTProject::addSymbolToProject() -> Tracing svg file...";
                        KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
                        target->addItem(libraryItem);
                      }
@@ -438,7 +439,9 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                      }
                 break;
                 default:
+                     #ifdef K_DEBUG
                        kFatal() << "KTProject::addSymbolToProject() -> Unknown Object Type"; 
+                     #endif
                 break;
         }
         return true;

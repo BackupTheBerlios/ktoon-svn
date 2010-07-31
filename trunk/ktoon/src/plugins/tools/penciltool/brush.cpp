@@ -172,7 +172,7 @@ void Brush::smoothPath(QPainterPath &path, double smoothness, int from, int to)
 void Brush::setupActions()
 {
     KAction *pencil = new KAction(QPixmap(THEME_DIR + "icons/pencil.png"), tr("Pencil"), this);
-    pencil->setShortcut(QKeySequence(tr("Ctrl+B")) );
+    pencil->setShortcut(QKeySequence(tr("P")) );
 
     QPixmap pix(THEME_DIR + "cursors/pencil.png");
     pencil->setCursor(QCursor(pix, 0, pix.height()));

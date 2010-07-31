@@ -306,7 +306,10 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
                 }
                 break;
            default: 
-                kFatal() << "KTPaintArea::sceneResponse <- KTProjectRequest::Default";
+                #ifdef K_DEBUG
+                       kFatal() << "KTPaintArea::sceneResponse <- KTProjectRequest::Default";
+                #endif
+
                 break;
     }
 }
@@ -348,7 +351,6 @@ void KTPaintArea::libraryResponse(KTLibraryResponse *request)
     switch (request->action()) {
 
             case KTProjectRequest::AddSymbolToProject:
-                 kFatal() << "KTPaintArea::libraryResponse - Following the white rabbit!";
                  graphicsScene()->drawCurrentPhotogram();
                  viewport()->update(scene()->sceneRect().toRect());
 
@@ -458,8 +460,6 @@ void KTPaintArea::copyItems()
            K_FUNCINFOX("paintarea");
     #endif
 
-    kFatal() << "KTPaintArea::copyItems() -> YEAH!";
-
     k->copiesXml.clear();
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
@@ -509,12 +509,9 @@ void KTPaintArea::pasteItems()
            K_FUNCINFOX("paintarea");
     #endif
 
-    kFatal() << "KTPaintArea::pasteItems() -> OH YEAH! - count: " << k->copiesXml.count();
-
     KTGraphicsScene* currentScene = graphicsScene();
 
     foreach (QString xml, k->copiesXml) {
-             kFatal() << "KTPaintArea::pasteItems() -> Adding one object!";
              KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
                                       currentScene->currentLayerIndex(), 
                                       currentScene->currentFrameIndex(), 

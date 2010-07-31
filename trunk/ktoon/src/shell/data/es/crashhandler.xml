@@ -2,5 +2,5 @@
 	<Title text="Fatal error" />
 	<Message text="Querido Animador:" color="red" />
 	<Button text="Cerrar" />
-	<Default text="KTooN se ha cerrado inesperadamente debido a una infame falla de programación! Estamos terriblemente apenados contigo :(&lt;br&gt;&lt;br&gt;Pero, no todo está perdido! Puedes potencialmente ayudarnos a mejorar el programa.&lt;br&gt;Por favor, realiza un reporte del error en &lt;a href=http://ktoon.net/bugs/ &gt;http://ktoon.net/bugs/&lt;/a&gt; para que nosotros podamos repararlo pronto. &lt;br&gt;&lt;br&gt;Muchas gracias,&lt;br&gt;&lt;br&gt;--El &lt;i&gt;apenado&lt;/i&gt; equipo de desarrollo :S" image="crash.png" />
+	<Default text="KTooN se ha cerrado inesperadamente debido a una infame falla de programación! Estamos terriblemente apenados contigo :(&lt;br&gt;&lt;br&gt;Pero, no todo está perdido! Puedes potencialmente ayudarnos a mejorar el programa.&lt;br&gt;Por favor, realiza un reporte del error en &lt;a href=http://www.ktoon.net/portal/project/issues?projects=&status=Open&priorities=All&categories=bug &gt;http://ktoon.net/&lt;/a&gt; para que nosotros podamos repararlo pronto. &lt;br&gt;&lt;br&gt;Muchas gracias,&lt;br&gt;&lt;br&gt;--El &lt;i&gt;apenado&lt;/i&gt; equipo de desarrollo :S" image="crash.png" />
 </CrashHandler>

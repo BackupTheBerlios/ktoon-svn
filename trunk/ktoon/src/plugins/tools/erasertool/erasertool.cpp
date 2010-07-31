@@ -71,7 +71,7 @@ QStringList EraserTool::keys() const
 void EraserTool::setupActions()
 {
     KAction *action1 = new KAction(QIcon(THEME_DIR + "icons/eraser.png"), tr("Eraser"), this);
-    // action1->setShortcut(QKeySequence(tr("Ctrl+F")));
+    action1->setShortcut(QKeySequence(tr("E")));
     action1->setCursor(QCursor(THEME_DIR + "cursors/eraser.png"));
     
     m_actions.insert(tr("Eraser"), action1);

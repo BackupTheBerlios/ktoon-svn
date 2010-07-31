@@ -72,6 +72,7 @@
 #include <QDesktopServices>
 #include <QDesktopWidget>
 #include <QThread>
+#include <QClipboard>
 
 /**
  * This class defines the main window application.
@@ -189,6 +190,10 @@ KTMainWindow::~KTMainWindow()
     #ifdef K_DEBUG
        KEND;
     #endif
+
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->clear(QClipboard::Clipboard);
+
     delete KTPluginManager::instance();
     delete KOsd::self();
 }

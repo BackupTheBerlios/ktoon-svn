@@ -12,8 +12,8 @@
     </message>
     <message>
         <location filename="../../../plugins/tools/brush/brush.cpp" line="186"/>
-        <source>Ctrl+B</source>
-        <translation>Ctrl+B</translation>
+        <source>P</source>
+        <translation>P</translation>
     </message>
 </context>
 <context>
@@ -106,8 +106,8 @@
     </message>
     <message>
         <location filename="../../../plugins/tools/contourselection/contourselection.cpp" line="268"/>
-        <source>Ctrl+M</source>
-        <translation>Ctrl+M</translation>
+        <source>N</source>
+        <translation>N</translation>
     </message>
 </context>
 <context>
@@ -137,6 +137,11 @@
         <location filename="../../../plugins/tools/erasertool/erasertool.cpp" line="98"/>
         <source>Eraser</source>
         <translation>Borrador</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/erasertool/erasertool.cpp" line="98"/>
+        <source>E</source>
+        <translation>E</translation>
     </message>
 </context>
 <context>
@@ -238,33 +243,24 @@
 <context>
     <name>FillTool</name>
     <message>
-        <location filename="../../../plugins/tools/filltool/filltool.cpp" line="84"/>
-        <location filename="../../../plugins/tools/filltool/filltool.cpp" line="89"/>
-        <location filename="../../../plugins/tools/filltool/filltool.cpp" line="93"/>
         <location filename="../../../plugins/tools/filltool/filltool.cpp" line="189"/>
-        <source>Fill</source>
-        <translation>Fill</translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/tools/filltool/filltool.cpp" line="84"/>
-        <location filename="../../../plugins/tools/filltool/filltool.cpp" line="95"/>
-        <location filename="../../../plugins/tools/filltool/filltool.cpp" line="99"/>
-        <location filename="../../../plugins/tools/filltool/filltool.cpp" line="113"/>
-        <source>Shape fill</source>
-        <translation>Shape fill</translation>
-    </message>
-    <message>
-        <location filename="../../../plugins/tools/filltool/filltool.cpp" line="84"/>
-        <location filename="../../../plugins/tools/filltool/filltool.cpp" line="101"/>
-        <location filename="../../../plugins/tools/filltool/filltool.cpp" line="105"/>
-        <location filename="../../../plugins/tools/filltool/filltool.cpp" line="191"/>
-        <source>Contour fill</source>
-        <translation>Contour fill</translation>
+        <source>Internal fill</source>
+        <translation>Relleno Interno</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/filltool/filltool.cpp" line="90"/>
-        <source>Ctrl+F</source>
-        <translation>Ctrl+F</translation>
+        <source>I</source>
+        <translation>I</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/filltool/filltool.cpp" line="191"/>
+        <source>Contour fill</source>
+        <translation>Relleno de Contorno</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/filltool/filltool.cpp" line="90"/>
+        <source>B</source>
+        <translation>B</translation>
     </message>
 </context>
 <context>
@@ -298,18 +294,18 @@
     </message>
     <message>
         <location filename="../../../plugins/tools/geometrictool/geometrictool.cpp" line="80"/>
-        <source>Ctrl+R</source>
-        <translation>Ctrl+R</translation>
+        <source>R</source>
+        <translation>R</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/geometrictool/geometrictool.cpp" line="86"/>
-        <source>Ctrl+E</source>
-        <translation>Ctrl+E</translation>
+        <source>E</source>
+        <translation>E</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/geometrictool/geometrictool.cpp" line="92"/>
-        <source>Ctrl+L</source>
-        <translation>Ctrl+L</translation>
+        <source>L</source>
+        <translation>L</translation>
     </message>
 </context>
 <context>
@@ -967,7 +963,12 @@
     <message>
         <location filename="../../ktmainwindow.cpp" line="778"/>
         <source>Tip of the day</source>
-        <translation type="unfinished">Consejo del día</translation>
+        <translation>Consejo del día</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="429"/>
+        <source>Ctrl+T</source>
+        <translation>Ctrl+T</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="778"/>
@@ -1040,9 +1041,19 @@
         <translation>Imagen</translation>
     </message>
     <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="93"/>
+        <source>Alt+B</source>
+        <translation>Alt+B</translation>
+    </message>
+    <message>
         <location filename="../../ktmainwindow_gui.cpp" line="96"/>
         <source>Bitmap Array</source>
         <translation>Arreglo de Imágenes</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="93"/>
+        <source>Alt+Shift+B</source>
+        <translation>Alt+Shift+B</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="97"/>
@@ -1050,9 +1061,19 @@
         <translation>Archivo SVG</translation>
     </message>
     <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="93"/>
+        <source>Alt+S</source>
+        <translation>Alt+S</translation>
+    </message>
+    <message>
         <location filename="../../ktmainwindow_gui.cpp" line="100"/>
         <source>SVG Array</source>
         <translation>Arreglo de Archivos SVG</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="93"/>
+        <source>Alt+Shift+S</source>
+        <translation>Alt+Shift+S</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="210"/>
@@ -1115,6 +1136,11 @@
         <translation>Nuevo proyecto</translation>
     </message>
     <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="386"/>
+        <source>Ctrl+N</source>
+        <translation>Ctrl+N</translation>
+    </message>
+    <message>
         <location filename="../../ktmainwindow_gui.cpp" line="383"/>
         <source>Open new project</source>
         <translation>Abrir nuevo proyecto</translation>
@@ -1165,6 +1191,11 @@
         <translation>Guardar proyecto &amp;como...</translation>
     </message>
     <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="400"/>
+        <source>Ctrl+Shift+S</source>
+        <translation>Ctrl+Shift+S</translation>
+    </message>
+    <message>
         <location filename="../../ktmainwindow_gui.cpp" line="406"/>
         <source>Open dialog box to save current project in any location</source>
         <translation>Abrir dialogo para guardar proyecto actual en cualquier ruta</translation>
@@ -1190,6 +1221,11 @@
         <translation>&amp;Importar paletas de Gimp</translation>
     </message>
     <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="410"/>
+        <source>Ctrl+G</source>
+        <translation>Ctrl+G</translation>
+    </message>
+    <message>
         <location filename="../../ktmainwindow_gui.cpp" line="419"/>
         <source>Import palettes</source>
         <translation>Importar paletas</translation>
@@ -1198,6 +1234,11 @@
         <location filename="../../ktmainwindow_gui.cpp" line="423"/>
         <source>&amp;Export Project</source>
         <translation>&amp;Exportar proyecto</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="410"/>
+        <source>Ctrl+R</source>
+        <translation>Ctrl+R</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="425"/>
@@ -1235,6 +1276,11 @@
         <translation>Pr&amp;eferencias...</translation>
     </message>
     <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="429"/>
+        <source>Ctrl+P</source>
+        <translation>Ctrl+P</translation>
+    </message>
+    <message>
         <location filename="../../ktmainwindow_gui.cpp" line="455"/>
         <source>Opens the preferences dialog box</source>
         <translation>Abre el dialogo de preferencias</translation>
@@ -1245,6 +1291,11 @@
         <translation>Acerca de KToon</translation>
     </message>
     <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="429"/>
+        <source>Ctrl+K</source>
+        <translation>Ctrl+K</translation>
+    </message>
+    <message>
         <location filename="../../ktmainwindow_gui.cpp" line="527"/>
         <source>Bar Actions</source>
         <translation>Bar Actions</translation>
@@ -1253,6 +1304,21 @@
         <location filename="../../ktmainwindow_gui.cpp" line="656"/>
         <source>Undo</source>
         <translation>Deshacer</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="429"/>
+        <source>Ctrl+Z</source>
+        <translation>Ctrl+Z</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="656"/>
+        <source>Redo</source>
+        <translation>Rehacer</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="429"/>
+        <source>Ctrl+Y</source>
+        <translation>Ctrl+Y</translation>
     </message>
 </context>
 <context>
@@ -1996,13 +2062,13 @@
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="222"/>
-        <source>Ctrl+L</source>
-        <translation>Ctrl+L</translation>
+        <source>#</source>
+        <translation>#</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="227"/>
-        <source>C&amp;opy</source>
-        <translation>C&amp;opiar</translation>
+        <source>Copy</source>
+        <translation>Copiar</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="227"/>
@@ -2016,13 +2082,13 @@
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="232"/>
-        <source>&amp;Paste</source>
-        <translation>&amp;Pegar</translation>
+        <source>Paste</source>
+        <translation>Pegar</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="232"/>
         <source>Ctrl+V</source>
-        <translation>Ctrl-V</translation>
+        <translation>Ctrl+V</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="234"/>
@@ -2191,6 +2257,11 @@
         <source>Polyline</source>
         <translation>Polilínea</translation>
     </message>
+    <message>
+        <location filename="../../../plugins/tools/polyline/polyline.cpp" line="341"/>
+        <source>S</source>
+        <translation>S</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -2346,8 +2417,8 @@
     </message>
     <message>
         <location filename="../../../plugins/tools/select/select.cpp" line="232"/>
-        <source>Ctrl+N</source>
-        <translation>Ctrl+N</translation>
+        <source>O</source>
+        <translation>O</translation>
     </message>
 </context>
 <context>
@@ -2477,8 +2548,8 @@
     </message>
     <message>
         <location filename="../../../plugins/tools/text/texttool.cpp" line="161"/>
-        <source>Ctrl+T</source>
-        <translation>Ctrl+T</translation>
+        <source>T</source>
+        <translation>T</translation>
     </message>
 </context>
 <context>
@@ -2487,6 +2558,11 @@
         <location filename="../../../plugins/tools/tweener/tweener.cpp" line="186"/>
         <source>Motion Tween</source>
         <translation>Motion Tween</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/tweener/tweener.cpp" line="186"/>
+        <source>W</source>
+        <translation>W</translation>
     </message>
 </context>
 <context>
@@ -2503,6 +2579,11 @@
         <translation>Acercamiento</translation>
     </message>
     <message>
+        <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="144"/>
+        <source>Z</source>
+        <translation>Z</translation>
+    </message>
+    <message>
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="69"/>
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="80"/>
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="81"/>
@@ -2511,6 +2592,11 @@
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="190"/>
         <source>Hand</source>
         <translation>Mano</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="144"/>
+        <source>H</source>
+        <translation>H</translation>
     </message>
 </context>
 <context>

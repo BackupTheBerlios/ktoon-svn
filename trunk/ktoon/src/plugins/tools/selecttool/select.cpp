@@ -83,12 +83,18 @@ void Select::init(KTGraphicsScene *scene)
     qDeleteAll(k->nodeManagers);
     k->nodeManagers.clear();
     k->changedManager = 0;
+
+    //kFatal() << "Select::init - Just starting!";
     
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, scene->items()) {
-                      if (!qgraphicsitem_cast<Node *>(item))
+                      if (!qgraphicsitem_cast<Node *>(item)) { 
+                          kFatal() << "Select::init - flag movable enabled";
                           item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                      } else {
+                          kFatal() << "Select::init - object is not selectable";
+                      }
              }
     }
 }
@@ -227,7 +233,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 void Select::setupActions()
 {
     KAction *select = new KAction(QPixmap(THEME_DIR + "icons/selection.png"), tr("Object Selection"), this);
-    select->setShortcut(QKeySequence(tr("Ctrl+N")));
+    select->setShortcut(QKeySequence(tr("O")));
 
     //select->setCursor(QCursor(THEME_DIR + "cursors/contour.png"));
 
@@ -320,7 +326,7 @@ void Select::itemResponse(const KTItemResponse *event)
             break;
             default:
             {
-                 kFatal() << "SELECT ID: " << event->action();
+                 kFatal() << "Select::itemResponse - event->action unknown: " << event->action();
                  syncNodes();
             }
             break;

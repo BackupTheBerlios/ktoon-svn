@@ -197,8 +197,8 @@ void Tweener::setupActions()
 {
     KAction *translater = new KAction(QPixmap(THEME_DIR + "icons/tweener.png"), 
                                       tr("Motion Tween"), this);
-
     translater->setCursor(QCursor(THEME_DIR + "cursors/tweener.png"));
+    translater->setShortcut(QKeySequence(tr("W")));
 
     k->actions.insert("Tweener", translater);
 }

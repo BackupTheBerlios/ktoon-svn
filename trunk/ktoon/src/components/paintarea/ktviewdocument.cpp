@@ -217,22 +217,22 @@ void KTViewDocument::showPos(const QPointF &p)
 void KTViewDocument::setupDrawActions()
 {
     KAction *showGrid = new KAction(QPixmap(THEME_DIR + "icons/subgrid.png"), 
-                                    tr("Show grid"), QKeySequence(tr("Ctrl+L")),
+                                    tr("Show grid"), QKeySequence(tr("#")),
                                     this, SLOT(toggleShowGrid()), k->actionManager, "show_grid");
     showGrid->setCheckable(true);
 
     KAction *copy = new KAction(QPixmap(THEME_DIR + "icons/copy.png"), 
-                                tr("C&opy"), QKeySequence(tr("Ctrl+C")),
+                                tr("Copy"), QKeySequence(tr("Ctrl+C")),
                                 k->paintArea, SLOT(copyItems()), k->actionManager, "copy");
     copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
 
     KAction *paste = new KAction(QPixmap(THEME_DIR + "icons/paste.png"), 
-                                 tr("&Paste"), QKeySequence(tr("Ctrl+V")),
+                                 tr("Paste"), QKeySequence(tr("Ctrl+V")),
                                  k->paintArea, SLOT(pasteItems()), k->actionManager, "paste");
     paste->setStatusTip(tr("Pastes the clipboard into the current document"));
 
     KAction *cut = new KAction(QPixmap(THEME_DIR + "icons/cut.png"), 
-                               tr("&Cut"), QKeySequence(tr("Ctrl+X")),
+                               tr("Cut"), QKeySequence(tr("Ctrl+X")),
                                k->paintArea, SLOT(cutItems()),k->actionManager, "cut");
     cut->setStatusTip(tr("Cuts the selected items"));
 
@@ -563,58 +563,6 @@ void KTViewDocument::createToolBar()
         nextOnionSkinSpin->setValue(1);
 
     k->barGrid->addWidget(nextOnionSkinSpin);
-}
-
-void KTViewDocument::createMenu()
-{
-     //tools menu
-     k->toolsMenu = new QMenu(tr("&Tools"), this);
-     menuBar()->addMenu(k->toolsMenu);
-     k->toolsMenu->addAction(k->brushesMenu->menuAction());
-     k->toolsMenu->addAction(k->selectionMenu->menuAction());
-     k->toolsMenu->addAction(k->fillMenu->menuAction());
-     k->toolsMenu->addSeparator();
-     k->toolsMenu->addAction(k->actionManager->find("group"));
-     k->toolsMenu->addAction(k->actionManager->find("ungroup"));
-     k->toolsMenu->addSeparator();
-    
-     k->orderMenu = new QMenu(tr("&Order"), this);
-     k->orderMenu->addAction(k->actionManager->find("bringToFront"));
-     k->orderMenu->addAction(k->actionManager->find("sendToBack"));
-     k->orderMenu->addAction(k->actionManager->find("oneStepForward"));
-     k->orderMenu->addAction(k->actionManager->find("oneStepBackward"));
-     k->toolsMenu->addAction(k->orderMenu->menuAction());
-
-     k->editMenu = new QMenu(tr("&Edit"), this);
-     menuBar()->addMenu(k->editMenu);
-
-     k->editMenu->addAction(k->actionManager->find("undo"));
-     k->editMenu->addAction(k->actionManager->find("redo"));
-     k->editMenu->addSeparator();
-
-     k->editMenu->addAction(k->actionManager->find("cut"));
-     k->editMenu->addAction(k->actionManager->find("copy"));
-     k->editMenu->addAction(k->actionManager->find("paste"));
-     k->editMenu->addAction(k->actionManager->find("delete"));
-
-     k->editMenu->addSeparator();
-     k->editMenu->addAction(k->actionManager->find("selectAll"));
-     k->editMenu->addSeparator();
-     // k->editMenu->addAction(d->actionManager->find("localflipv"));
-     // k->editMenu->addAction(d->actionManager->find("localfliph"));
-     // k->editMenu->addSeparator();
-     k->editMenu->addAction(k->actionManager->find("properties"));
-
-     k->viewMenu = new QMenu(tr("&View"), this);
-     k->viewMenu->addActions(k->viewPreviousGroup->actions());
-     k->viewMenu->addSeparator();
-     k->viewMenu->addActions(k->viewNextGroup->actions());
-     menuBar()->addMenu(k->viewMenu);
-
-     //Filters
-
-     k->filterMenu = new QMenu(tr("Filters"), this);
-     menuBar()->addMenu(k->filterMenu);
 }
 
 void KTViewDocument::closeArea()

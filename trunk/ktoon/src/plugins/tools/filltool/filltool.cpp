@@ -79,27 +79,24 @@ void FillTool::init(KTGraphicsScene *scene)
 
 QStringList FillTool::keys() const
 {
-    return QStringList() << tr("Fill") << tr("Shape fill") << tr("Contour fill");
+    return QStringList() << tr("Internal fill") << tr("Contour fill");
 }
 
 void FillTool::setupActions()
 {
-    KAction *action1 = new KAction(QIcon(THEME_DIR + "icons/fillcolor.png"), tr("Fill"), this);
-    action1->setShortcut(QKeySequence(tr("Ctrl+F")));
+    KAction *action1 = new KAction(QIcon(THEME_DIR + "icons/fillcolor.png"), tr("Internal fill"), this);
+    action1->setShortcut(QKeySequence(tr("I")));
     action1->setCursor(QCursor(THEME_DIR + "cursors/paint.png"));
+    m_actions.insert(tr("Internal fill"), action1);
     
-    m_actions.insert(tr("Fill"), action1);
-    
-    KAction *action2 = new KAction(QIcon(THEME_DIR + "icons/fillcolor.png"), tr("Shape fill"), this);
+    //KAction *action2 = new KAction(QIcon(THEME_DIR + "icons/fillcolor.png"), tr("Shape fill"), this);
     // action2->setShortcut(QKeySequence(tr("Ctrl+F")));
-    action2->setCursor(QCursor(THEME_DIR + "cursors/paint.png"));
-    
-    m_actions.insert(tr("Shape fill"), action2);
+    //action2->setCursor(QCursor(THEME_DIR + "cursors/paint.png"));
+    //m_actions.insert(tr("Shape fill"), action2);
     
     KAction *action3 = new KAction(QIcon(THEME_DIR + "icons/contour.png"), tr("Contour fill"), this);
-    // action3->setShortcut( QKeySequence(tr("Ctrl+F")) );
+    action3->setShortcut(QKeySequence(tr("B")));
     action3->setCursor(QCursor(THEME_DIR + "cursors/contour_fill.png"));
-    
     m_actions.insert(tr("Contour fill"), action3);
 }
 

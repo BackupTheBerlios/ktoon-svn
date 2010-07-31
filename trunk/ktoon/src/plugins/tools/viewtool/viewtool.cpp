@@ -69,13 +69,13 @@ QStringList ViewTool::keys() const
 void ViewTool::setupActions()
 {
     KAction *zoomAction = new KAction(QIcon(THEME_DIR + "icons/magnifying.png"), tr("Zoom"), this);
-    zoomAction->setShortcut(QKeySequence(tr("z")));
+    zoomAction->setShortcut(QKeySequence(tr("Z")));
     zoomAction->setCursor(QCursor(THEME_DIR + "cursors/magnifying.png"));
     
     m_actions.insert(tr("Zoom"), zoomAction);
     
     KAction *handAction = new KAction(QIcon(THEME_DIR + "icons/hand.png"), tr("Hand"), this);
-    handAction->setShortcut(QKeySequence(tr("h")));
+    handAction->setShortcut(QKeySequence(tr("H")));
     handAction->setCursor(QCursor(THEME_DIR + "cursors/hand.png"));
 
     m_actions.insert(tr("Hand"), handAction);

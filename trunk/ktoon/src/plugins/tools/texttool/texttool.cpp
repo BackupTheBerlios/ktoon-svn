@@ -157,7 +157,7 @@ void TextTool::aboutToChangeScene(KTGraphicsScene *scene)
 void TextTool::setupActions()
 {
     KAction *pencil = new KAction(QIcon(THEME_DIR + "icons/text.png"), tr("Text"), this);
-    pencil->setShortcut(QKeySequence(tr("Ctrl+T")));
+    pencil->setShortcut(QKeySequence(tr("T")));
     pencil->setCursor(QCursor(THEME_DIR + "cursors/text.png"));
 
     m_actions.insert(tr("Text"), pencil);
