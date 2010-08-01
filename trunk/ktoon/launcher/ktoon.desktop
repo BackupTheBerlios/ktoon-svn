@@ -1,8 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=KToon: 2D Animation Toolkit
-Name[es]=KToon: Herramienta de Animación 2D
-Name[pt]=KToon: Ferramenta de animação 2D
+Name=KTooN: 2D Animation Toolkit
+Name[es]=KTooN: Herramienta de Animación 2D
+Name[pt]=KTooN: Ferramenta de animação 2D
+Name[ru]=Редактор векторной анимации KTooN
 Exec=/usr/local/ktoon/bin/ktoon
 Icon=ktoon.png
 Type=Application
@@ -11,4 +12,5 @@ Categories=Application;Graphics;2DGraphics;RasterGraphics;
 Comment=2D Animation Toolkit
 Comment[es]=Herramienta para Animación 2D
 Comment[pt]=Ferramenta de animação 2D
+Comment[ru]=Создание двухмерной векторной анимации
 Terminal=false

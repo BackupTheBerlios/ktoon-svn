@@ -58,13 +58,11 @@ class QMake
                 
                     if flag 
                         @path = path
-                        open_stderr
                         break    
                     end
                 end
             end
         }
-        open_stderr
 
         if verbose 
             print "(Found: #{qtversion}) "

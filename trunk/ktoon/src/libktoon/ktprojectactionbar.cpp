@@ -103,6 +103,7 @@ void KTProjectActionBar::setup(Actions actions)
    if (actions & InsertLayer) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/add_layer.png"), size);
         button->setToolTip(tr("Insert a layer"));
+        button->setShortcut(QKeySequence(tr("F5")));
         //button->setEnabled(false);
 
         k->actions.addButton(button, InsertLayer);
@@ -114,6 +115,7 @@ void KTProjectActionBar::setup(Actions actions)
     if (actions & RemoveLayer) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/remove_layer.png"), size);
         button->setToolTip(tr("Remove the layer"));
+        button->setShortcut(QKeySequence(tr("F6")));
         //button->setEnabled(false);
 
         k->actions.addButton(button, RemoveLayer);
@@ -124,8 +126,8 @@ void KTProjectActionBar::setup(Actions actions)
 
     if (actions & MoveLayerUp) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_layer_up.png"), size);
-
         button->setToolTip(tr("Move layer up"));
+        button->setShortcut(QKeySequence(tr("F9")));
 
         k->actions.addButton(button, MoveLayerUp);
 
@@ -135,8 +137,8 @@ void KTProjectActionBar::setup(Actions actions)
     
     if (actions & MoveLayerDown) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_layer_down.png" ), size);
-
         button->setToolTip(tr("Move layer down"));
+        button->setShortcut(QKeySequence(tr("F10")));
 
         k->actions.addButton(button, MoveLayerDown);
 
@@ -157,20 +159,17 @@ void KTProjectActionBar::setup(Actions actions)
         k->actions.addButton(button, InsertFrame);
         
         k->buttonLayout->addWidget(button);
-        
         button->setAnimated(k->isAnimated);
     }
     
     if (actions & RemoveFrame) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/remove_frame.png"), size);
         button->setToolTip(tr("Remove the frame"));
+        button->setShortcut(QKeySequence(Qt::Key_Minus));
         
         k->actions.addButton(button, RemoveFrame);
         
-        button->setShortcut(QKeySequence(Qt::Key_Minus));
-        
         k->buttonLayout->addWidget(button);
-        
         button->setAnimated(k->isAnimated);
     }
      
@@ -182,13 +181,13 @@ void KTProjectActionBar::setup(Actions actions)
             if (k->container.compare("TimeLine") == 0)
                 button = new KImageButton(QIcon(THEME_DIR + "icons/move_frame_backward.png"), size);
         }
-
+        
         button->setToolTip(tr("Move frame up"));
+        button->setShortcut(QKeySequence(tr("F9")));
 
         k->actions.addButton(button, MoveFrameUp);
         
         k->buttonLayout->addWidget(button);
-        
         button->setAnimated(k->isAnimated);
     }
     
@@ -203,17 +202,18 @@ void KTProjectActionBar::setup(Actions actions)
         }
  
         button->setToolTip(tr("Move frame down"));
+        button->setShortcut(QKeySequence(tr("F10")));
         
         k->actions.addButton(button, MoveFrameDown);
         
         k->buttonLayout->addWidget(button);
-        
         button->setAnimated(k->isAnimated);
     }
     
     if (actions & LockFrame) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/padlock.png"), size);
         button->setToolTip(tr("Lock frame"));
+        button->setShortcut(QKeySequence(tr("F11")));
         
         k->actions.addButton(button, LockFrame);
         
@@ -233,7 +233,6 @@ void KTProjectActionBar::setup(Actions actions)
 
     if (actions & InsertScene) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/add_scene.png"), size);  // TODO
-        
         button->setToolTip(tr("Insert a scene"));
         
         k->actions.addButton(button, InsertScene);
@@ -244,8 +243,8 @@ void KTProjectActionBar::setup(Actions actions)
      
     if (actions & RemoveScene) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/remove_scene.png"), size);  // TODO
-        
         button->setToolTip(tr("Remove the scene"));
+
         k->actions.addButton(button, RemoveScene);
         
         k->buttonLayout->addWidget(button);
@@ -254,7 +253,6 @@ void KTProjectActionBar::setup(Actions actions)
 
     if (actions & MoveSceneUp) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_scene_up.png"), size);
-        
         button->setToolTip(tr("Move scene up"));
         
         k->actions.addButton(button, MoveSceneUp);
@@ -265,7 +263,6 @@ void KTProjectActionBar::setup(Actions actions)
      
     if (actions & MoveSceneDown) {
         KImageButton *button = new KImageButton(QIcon(THEME_DIR + "icons/move_scene_down.png"), size);
-        
         button->setToolTip( tr("Move scene down"));
         
         k->actions.addButton(button, MoveSceneDown);

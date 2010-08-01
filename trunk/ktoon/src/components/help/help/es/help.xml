@@ -22,6 +22,7 @@
     </Section>
     <Section title="Recursos Adicionales" file="chapter3.html">
         <SubSection title="Enlaces interesantes" file="links.html" />
+        <SubSection title="Accesos directos" file="shortcuts.html" />
     </Section>
     <Section title="Quieres ayudarnos?" file="chapter4.html">
         <SubSection title="C&#243;mo colaborar!" file="how_to_help.html" />

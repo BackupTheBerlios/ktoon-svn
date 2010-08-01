@@ -62,7 +62,9 @@ void KTMainWindow::createGUI()
     // Adding the color palette to the left side of the interface 
 
     m_colorPalette = new KTColorPalette;
-    colorView = addToolView(m_colorPalette, Qt::LeftDockWidgetArea, Drawing, "Color Palette");
+    colorView = addToolView(m_colorPalette, Qt::LeftDockWidgetArea, Drawing, "Color Palette", QKeySequence(tr("Shift+P")));
+    //colorView->setShortcut(QKeySequence(tr("Shift+P")));
+
     m_actionManager->insert(colorView->toggleViewAction(), "show palette");
     addToPerspective(colorView->toggleViewAction(), Drawing);
 
@@ -72,7 +74,7 @@ void KTMainWindow::createGUI()
     // Adding the pen parameters widget to the left side of the interface 
 
     m_penWidget = new KTPenWidget;
-    penView = addToolView(m_penWidget, Qt::LeftDockWidgetArea, Drawing, "Pen");
+    penView = addToolView(m_penWidget, Qt::LeftDockWidgetArea, Drawing, "Pen", QKeySequence(tr("Shift+B")));
     m_actionManager->insert(penView->toggleViewAction(), "show pen");
     addToPerspective(penView->toggleViewAction(), Drawing);
 
@@ -83,7 +85,7 @@ void KTMainWindow::createGUI()
 
     m_libraryWidget = new KTLibraryWidget();
     m_libraryWidget->setLibrary(m_projectManager->project()->library());
-    libraryView = addToolView(m_libraryWidget, Qt::LeftDockWidgetArea, Drawing, "Library");
+    libraryView = addToolView(m_libraryWidget, Qt::LeftDockWidgetArea, Drawing, "Library", QKeySequence(tr("Shift+L")));
     m_actionManager->insert(libraryView->toggleViewAction(), "show library");
     addToPerspective(libraryView->toggleViewAction(), Drawing);
     connectToDisplays(m_libraryWidget);
@@ -113,7 +115,7 @@ void KTMainWindow::createGUI()
     // Adding the scenes widget to the right side of the interface
 
     m_scenes = new KTScenesWidget;
-    scenesView = addToolView(m_scenes, Qt::RightDockWidgetArea, Drawing, "Scenes Manager");
+    scenesView = addToolView(m_scenes, Qt::RightDockWidgetArea, Drawing, "Scenes Manager", QKeySequence(tr("Shift+S")));
     m_actionManager->insert(scenesView->toggleViewAction(), "show scenes");
     addToPerspective(scenesView->toggleViewAction(), Drawing);
 
@@ -123,7 +125,7 @@ void KTMainWindow::createGUI()
 
     // Adding the exposure sheet to the right side of the interface
     m_exposureSheet = new KTExposureSheet;
-    exposureView = addToolView(m_exposureSheet, Qt::RightDockWidgetArea, Drawing, "Exposure Sheet");
+    exposureView = addToolView(m_exposureSheet, Qt::RightDockWidgetArea, Drawing, "Exposure Sheet", QKeySequence(tr("Shift+E")));
     m_actionManager->insert(exposureView->toggleViewAction(), "show exposure");
     addToPerspective(exposureView->toggleViewAction(), Drawing);
 
@@ -134,7 +136,7 @@ void KTMainWindow::createGUI()
     // Adding the help widget to the right side of the interface
 
     m_helper = new KTHelpWidget(SHARE_DIR + "data/help/");
-    helpView = addToolView(m_helper, Qt::RightDockWidgetArea, All, "Help");
+    helpView = addToolView(m_helper, Qt::RightDockWidgetArea, All, "Help", QKeySequence(tr("Shift+H")));
     m_actionManager->insert(helpView->toggleViewAction(), "show help");
     addToPerspective(helpView->toggleViewAction(), All);
 
@@ -150,7 +152,7 @@ void KTMainWindow::createGUI()
     // Adding the time line widget to the bottom side of the interface
     m_timeLine = new KTTimeLine;
     m_timeLine->setLibrary(m_projectManager->project()->library());
-    timeView = addToolView(m_timeLine, Qt::BottomDockWidgetArea, Drawing, "Time Line");
+    timeView = addToolView(m_timeLine, Qt::BottomDockWidgetArea, Drawing, "Time Line", QKeySequence(tr("Shift+T")));
     m_actionManager->insert(timeView->toggleViewAction(), "show timeline");
     addToPerspective(timeView->toggleViewAction(), Drawing);
 
@@ -159,11 +161,12 @@ void KTMainWindow::createGUI()
     connectToDisplays(m_timeLine);
 
     // Adding the script editor to the bottom side, if kinas was enabled
-
+    /*
 #ifdef ENABLE_KINAS
     KinasWidget *m_scriptEditor = new KinasWidget;
-    addToolView(m_scriptEditor, Qt::BottomDockWidgetArea, Drawing, "KToon Script");
+    addToolView(m_scriptEditor, Qt::BottomDockWidgetArea, Drawing, "KToon Script", QKeySequence(tr("Shift+K"));
 #endif
+    */
 
     enableToolViews(false);
 }

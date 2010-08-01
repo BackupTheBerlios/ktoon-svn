@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'textconfigurator.h'
 **
-** Created: Fri Jul 30 14:29:15 2010
+** Created: Sat Jul 31 15:25:49 2010
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.2)
 **
 ** WARNING! All changes made in this file will be lost!

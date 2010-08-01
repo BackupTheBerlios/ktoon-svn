@@ -1037,6 +1037,11 @@
     </message>
     <message>
         <location filename="../../ktmainwindow_gui.cpp" line="93"/>
+        <source>Shift+P</source>
+        <translation>Shift+P</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow_gui.cpp" line="93"/>
         <source>Bitmap</source>
         <translation>Imagen</translation>
     </message>
@@ -1719,9 +1724,19 @@
         <translation>Mover marco hacia arriba</translation>
     </message>
     <message>
+        <location filename="../../../libktoon/ktprojectactionbar.cpp" line="163"/>
+        <source>F9</source>
+        <translation>F9</translation>
+    </message>
+    <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="142"/>
         <source>Move frame down</source>
         <translation>Mover marco hacia abajo</translation>
+    </message>
+    <message>
+        <location filename="../../../libktoon/ktprojectactionbar.cpp" line="163"/>
+        <source>F10</source>
+        <translation>F10</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="153"/>
@@ -1730,13 +1745,28 @@
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="163"/>
+        <source>F11</source>
+        <translation>F11</translation>
+    </message>
+    <message>
+        <location filename="../../../libktoon/ktprojectactionbar.cpp" line="163"/>
         <source>Insert a layer</source>
         <translation>Adiciona una capa</translation>
+    </message>
+    <message>
+        <location filename="../../../libktoon/ktprojectactionbar.cpp" line="163"/>
+        <source>F5</source>
+        <translation>F5</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="174"/>
         <source>Remove the layer</source>
         <translation>Remueve una capa</translation>
+    </message>
+    <message>
+        <location filename="../../../libktoon/ktprojectactionbar.cpp" line="163"/>
+        <source>F6</source>
+        <translation>F6</translation>
     </message>
     <message>
         <location filename="../../../libktoon/ktprojectactionbar.cpp" line="186"/>

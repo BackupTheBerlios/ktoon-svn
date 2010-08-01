@@ -271,3 +271,28 @@ a:hover {
      font-size:11px;
      font-weight:normal;
 }
+
+.shortcut_table {
+     padding:10px;
+     border:2px solid #000000;
+}
+
+.shortcut_subtitle {
+     padding:3px;
+     text-align:center;
+     text-decoration:none;
+     font-family:"Arial", Times, serif;
+     font-style:normal;
+     font-size:12px;
+     font-weight:bold;
+}
+
+.shortcut_record {
+     padding:3px;
+     text-align:center;
+     text-decoration:none;
+     font-family:"Arial", Times, serif;
+     font-style:normal;
+     font-size:10px;
+     font-weight:normal;
+}
