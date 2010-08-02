@@ -243,7 +243,7 @@ void KTMainWindow::viewNewDocument()
         setUndoRedoActions();
 
         // messageToStatus(tr("Opening a new paint area..."));
-        KOsd::self()->display(tr("Opening a new document..."));
+        KOsd::self()->display(tr("Information"), tr("Opening a new document..."));
 
         drawingTab = new KTViewDocument(m_projectManager->project());
         connectToDisplays(drawingTab);
@@ -674,10 +674,10 @@ void KTMainWindow::openProject(const QString &path)
             setUpdatesEnabled(true);
 
             // Showing a info message in a bubble
-            KOsd::self()->display(tr("Project %1 opened!").arg(m_projectManager->project()->projectName()));
+            KOsd::self()->display(tr("Information"), tr("Project %1 opened!").arg(m_projectManager->project()->projectName()));
         } else {
                  setUpdatesEnabled(true);
-                 KOsd::self()->display( tr("Cannot open project!"), KOsd::Error );
+                 KOsd::self()->display(tr("Error"), tr("Cannot open project!"), KOsd::Error);
         }
     }
 }
@@ -953,14 +953,14 @@ void KTMainWindow::saveAs()
     QDir directory(path);
     if (!directory.exists()) {
         //QMessageBox::critical(this, tr("Error!"), tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), QMessageBox::Ok);
-        KOsd::self()->display(tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), KOsd::Error);
+        KOsd::self()->display(tr("Error"), tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), KOsd::Error);
         return;
     } else {
         QFile file(directory.filePath(name));
         if (!file.open(QIODevice::ReadWrite)) {
             file.remove();
             //QMessageBox::critical(this, tr("Error!"), tr("You have no permission to create this file. Please, choose another path."), QMessageBox::Ok);
-            KOsd::self()->display(tr("You have no permission to create this file. Please, choose another path."), KOsd::Error);
+            KOsd::self()->display(tr("Error"), tr("You have no permission to create this file. Please, choose another path."), KOsd::Error);
             return;
         }
         file.remove();
@@ -992,9 +992,9 @@ void KTMainWindow::saveProject()
     }
 
     if (m_projectManager->saveProject(m_fileName)) 
-        KOsd::self()->display(tr("Project %1 saved").arg(m_projectManager->project()->projectName()), KOsd::Info);
+        KOsd::self()->display(tr("Information"), tr("Project %1 saved").arg(m_projectManager->project()->projectName()));
     else
-        KOsd::self()->display(tr("Cannot save the project!"), KOsd::Error );
+        KOsd::self()->display(tr("Error"), tr("Cannot save the project!"), KOsd::Error);
 
     if (isSaveDialogOpen)
         isSaveDialogOpen = false;

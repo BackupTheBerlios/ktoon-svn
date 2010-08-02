@@ -91,7 +91,7 @@ void ContourSelection::init(KTGraphicsScene *scene)
 
 QStringList ContourSelection::keys() const
 {
-    return QStringList() << tr("ContourSelection") ;
+    return QStringList() << tr("Contour Selection") ;
 }
 
 void ContourSelection::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
@@ -272,7 +272,7 @@ void ContourSelection::setupActions()
     select->setShortcut(QKeySequence(tr("N")));
     // select->setCursor(QCursor(THEME_DIR + "cursors/contour.png"));
 
-    k->actions.insert(tr("ContourSelection"), select);
+    k->actions.insert(tr("Contour Selection"), select);
 }
 
 QMap<QString, KAction *> ContourSelection::actions() const

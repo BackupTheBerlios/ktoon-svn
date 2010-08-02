@@ -559,7 +559,7 @@ void KTPaintArea::addSelectedItemsToLibrary()
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
     if (selected.isEmpty()) {
-        KOsd::self()->display(tr("No items selected"), KOsd::Error);
+        KOsd::self()->display(tr("Error"), tr("No items selected"), KOsd::Error);
         return;
     }
 
@@ -593,7 +593,7 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
     if (selected.isEmpty()) {
-        KOsd::self()->display(tr("No items selected"), KOsd::Error);
+        KOsd::self()->display(tr("Error"), tr("No items selected"), KOsd::Error);
         return;
     }
 	

@@ -621,7 +621,7 @@ void ExportTo::exportIt()
         path = m_filePath->text();
 
         if (name.length() == 0) {
-            KOsd::self()->display(tr("Images name prefix can't be empty! Please, type a prefix."), KOsd::Error);
+            KOsd::self()->display(tr("Error"), tr("Images name prefix can't be empty! Please, type a prefix."), KOsd::Error);
             return;
         }
     
@@ -634,14 +634,14 @@ void ExportTo::exportIt()
     QDir directory(path);
     if (!directory.exists()) {
         //QMessageBox::critical(this, tr("Error!"), tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), QMessageBox::Ok);
-        KOsd::self()->display(tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), KOsd::Error);
+        KOsd::self()->display(tr("Error"), tr("Directory \"" + path.toLocal8Bit() + "\" does not exist! Please, choose another path."), KOsd::Error);
         return;
     } else {
         QFile file(directory.filePath(name));
         if (!file.open(QIODevice::ReadWrite)) {
             file.remove();
             //QMessageBox::critical(this, tr("Error!"), tr("You have no permission to create this file. Please, choose another path."), QMessageBox::Ok);
-            KOsd::self()->display(tr("You have no permission to create this file. Please, choose another path."), KOsd::Error);
+            KOsd::self()->display(tr("Error"), tr("You have no permission to create this file. Please, choose another path."), KOsd::Error);
             return;
         }
         file.remove();
@@ -664,12 +664,12 @@ void ExportTo::exportIt()
                                                      QSize((int)m_size->x(),(int)m_size->y()), 
                                                      m_fps->value());
     } else {
-        KOsd::self()->display(tr("Format problem. KToon Internal error."), KOsd::Error);
+        KOsd::self()->display(tr("Error"), tr("Format problem. KToon Internal error."), KOsd::Error);
     }
 
     if (done) {
         QString message = "File " + name + " was saved successful";
-        KOsd::self()->display(tr(message.toLocal8Bit()), KOsd::Info);
+        KOsd::self()->display(tr("Information"), tr(message.toLocal8Bit()));
         emit isDone();
     } else {
         const char *msg = m_currentExporter->getExceptionMsg();

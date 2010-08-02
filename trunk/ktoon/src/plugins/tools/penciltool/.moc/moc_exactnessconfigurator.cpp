@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'exactnessconfigurator.h'
 **
-** Created: Sat Jul 31 15:25:34 2010
+** Created: Sun Aug 1 20:40:50 2010
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.2)
 **
 ** WARNING! All changes made in this file will be lost!

@@ -294,6 +294,8 @@ void KTViewDocument::createTools()
 
 void KTViewDocument::loadPlugins()
 {
+    QList<KAction*> brushTools;
+
     foreach (QObject *plugin, KTPluginManager::instance()->tools()) {
 
              KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
@@ -318,14 +320,36 @@ void KTViewDocument::loadPlugins()
                                  {
                                    // Temporary code - SQA Issue
                                    QString toolStr = action->text();
-                                   QString test = tr("Eraser");
-                                   if (toolStr.compare(tr("Motion Tween")) == 0 || toolStr.compare(tr("Eraser")) == 0)
-                                       action->setDisabled(true); 
+                                   kFatal() <<  "";
 
                                    if (toolStr.compare(tr("Pencil")) == 0)
-                                       action->trigger();
+                                       brushTools.insert(0, action);
 
-                                   k->brushesMenu->addAction(action);
+                                   if (toolStr.compare(tr("Eraser")) == 0) {
+                                       action->setDisabled(true);
+                                       brushTools.insert(1, action);
+                                   }
+
+                                   if (toolStr.compare(tr("Polyline")) == 0)
+                                       brushTools.insert(2, action);
+
+                                   if (toolStr.compare(tr("Line")) == 0)
+                                       brushTools.insert(3, action);
+
+                                   if (toolStr.compare(tr("Rectangle")) == 0)
+                                       brushTools.insert(4, action);
+
+                                   if (toolStr.compare(tr("Ellipse")) == 0)
+                                       brushTools.insert(5, action);
+
+                                   if (toolStr.compare(tr("Text")) == 0)
+                                       brushTools.insert(6, action);
+
+                                   if (toolStr.compare(tr("Motion Tween")) == 0) {
+                                       action->setDisabled(true);
+                                       brushTools.insert(7, action);
+                                   }
+
                                  }
                                  break;
                               case KTToolInterface::Selection:
@@ -348,7 +372,10 @@ void KTViewDocument::loadPlugins()
                       }
                   }
              }
-    }
+    } // end foreach
+
+    for (int i = 0; i < brushTools.size(); ++i) 
+         k->brushesMenu->addAction(brushTools.at(i));
 
     foreach (QObject *plugin, KTPluginManager::instance()->filters()) {
              AFilterInterface *filter = qobject_cast<AFilterInterface *>(plugin);
@@ -367,6 +394,10 @@ void KTViewDocument::loadPlugins()
                   }
              }
     }
+
+    KAction *pencil = brushTools.at(0);
+    pencil->trigger();
+    brushTools.clear();
 }
 
 void KTViewDocument::selectTool()
@@ -389,7 +420,6 @@ void KTViewDocument::selectTool()
         k->currentTool = tool; 
         QString toolStr = tr("%1").arg(action->text());
         k->paintArea->setCurrentTool(toolStr);
-        kDebug() << "*** Brush: " << toolStr;
         int minWidth = 0;
 
         switch (tool->toolType()) {

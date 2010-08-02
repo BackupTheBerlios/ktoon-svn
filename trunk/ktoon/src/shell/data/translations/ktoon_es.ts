@@ -96,8 +96,8 @@
     <message>
         <location filename="../../../plugins/tools/contourselection/contourselection.cpp" line="96"/>
         <location filename="../../../plugins/tools/contourselection/contourselection.cpp" line="271"/>
-        <source>ContourSelection</source>
-        <translation>ContourSelection</translation>
+        <source>Contour Selection</source>
+        <translation>Selección de Contorno</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/contourselection/contourselection.cpp" line="267"/>
@@ -414,6 +414,16 @@
         <location filename="../../../components/cameras/ktcamerastatus.cpp" line="95"/>
         <source>Loop</source>
         <translation>Repetir</translation>
+    </message>
+    <message>
+        <location filename="../../../components/cameras/ktcamerastatus.cpp" line="95"/>
+        <source>Ctrl+L</source>
+        <translation>Ctrl+L</translation>
+    </message>
+    <message>
+        <location filename="../../../components/cameras/ktcamerastatus.cpp" line="95"/>
+        <source>Export</source>
+        <translation>Exportar</translation>
     </message>
 </context>
 <context>
@@ -818,8 +828,8 @@
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="403"/>
-        <source>Import an audio file...</source>
-        <translation>Importar un archivo de sonido...</translation>
+        <source>Import audio file...</source>
+        <translation>Importar archivo de sonido...</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="404"/>
@@ -881,6 +891,11 @@
         <location filename="../../ktmainwindow.cpp" line="134"/>
         <source>Creating GUI...</source>
         <translation>Creando GUI...</translation>
+    </message>
+    <message>
+        <location filename="../../ktmainwindow.cpp" line="134"/>
+        <source>Information</source>
+        <translation>Información</translation>
     </message>
     <message>
         <location filename="../../ktmainwindow.cpp" line="225"/>
@@ -2209,6 +2224,26 @@
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="405"/>
         <source>Pencil</source>
         <translation>Lapiz</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktviewdocument.cpp" line="405"/>
+        <source>Polyline</source>
+        <translation>Polilínea</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktviewdocument.cpp" line="405"/>
+        <source>Line</source>
+        <translation>Línea</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktviewdocument.cpp" line="405"/>
+        <source>Rectangle</source>
+        <translation>Rectángulo</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktviewdocument.cpp" line="405"/>
+        <source>Ellipse</source>
+        <translation>Elipse</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="586"/>

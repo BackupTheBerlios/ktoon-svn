@@ -34,8 +34,9 @@
 
 #include "ktserializer.h"
 
-#include <QGraphicsPixmapItem>
+/* #include <QGraphicsPixmapItem> */
 #include <QGraphicsTextItem>
+#include <QGraphicsSvgItem>
 
 #include <kcore/kdebug.h>
 
@@ -91,13 +92,19 @@ void KTGraphicLibraryItem::setObject(KTLibraryObject *object)
 	switch(object->type())
 	{
 		case KTLibraryObject::Item:
-		case KTLibraryObject::Svg:
-		case KTLibraryObject::Image:
 		case KTLibraryObject::Text:
+                case KTLibraryObject::Image:
 		{
-			setItem( qvariant_cast<QGraphicsItem *>(object->data()) );
+			setItem(qvariant_cast<QGraphicsItem *>(object->data()));
 		}
 		break;
+                case KTLibraryObject::Svg:
+                {
+                        kFatal() << "KTGraphicLibraryItem::setObject SVG item: Following the white rabbit!";
+                        setItem(qvariant_cast<QGraphicsItem *>(object->data()));
+                }
+                break;
+
 		default: break;
 	}
 }

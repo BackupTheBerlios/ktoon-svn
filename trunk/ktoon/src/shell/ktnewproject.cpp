@@ -201,7 +201,7 @@ bool KTNewProject::useNetwork() const
 void KTNewProject::ok()
 {
     if (k->projectName->text().isEmpty()) {
-        KOsd::self()->display(tr("Please fill the project name field"), KOsd::Error);
+        KOsd::self()->display(tr("Error"), tr("Please fill the project name field"), KOsd::Error);
         return;
     }
     KTabDialog::ok();

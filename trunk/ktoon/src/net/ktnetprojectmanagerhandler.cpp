@@ -280,12 +280,12 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                KTAckParser parser;
                if (parser.parse(package)) {
                    k->sign = parser.sign();
-                   KOsd::self()->display(parser.motd(), KOsd::Info);
+                   KOsd::self()->display(tr("Information"), parser.motd());
                }
     } else if (root == "error") {
                KTErrorParser parser;
                if (parser.parse(package))
-                   KOsd::self()->display(parser.error().message, KOsd::Level(parser.error().level));
+                   KOsd::self()->display(tr("Error"), parser.error().message, KOsd::Level(parser.error().level));
     } else if (root == "project") {
                KTProjectParser parser;
                if (parser.parse(package)) {
@@ -328,14 +328,14 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
                KTComunicationParser parser;
                if (parser.parse(package)) {
                    QString message = QObject::tr("Notice From") + ": "+ parser.login() + "\n" + parser.message();
-                   KOsd::self()->display(message);
+                   KOsd::self()->display(tr("Notice"), message);
                    k->notices->addMessage(parser.login(), parser.message());
                }
     } else if (root == "wall") {
                KTComunicationParser parser;
                if (parser.parse(package)) {
                    QString message = QObject::tr("Wall From") + ": "+ parser.login() + "\n" + parser.message();
-                   KOsd::self()->display(message);
+                   KOsd::self()->display(tr("Information"), message);
                }
     } else {
       #ifdef K_DEBUG

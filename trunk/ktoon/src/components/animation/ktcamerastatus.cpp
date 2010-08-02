@@ -103,6 +103,7 @@ KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QFrame(p
     QPixmap pix(THEME_DIR + "icons/loop.png");
     loopBox->setToolTip(tr("Loop"));
     loopBox->setIcon(pix); 
+    loopBox->setShortcut(QKeySequence(tr("Ctrl+L")));
     connect(loopBox, SIGNAL(clicked()), camera, SLOT(setLoop()));
 
     KCONFIG->beginGroup("AnimationParameters");
@@ -114,7 +115,7 @@ KTCameraStatus::KTCameraStatus(KTViewCamera *camera, QWidget *parent) : QFrame(p
 
     m_sceneInfoLayout->addSpacing(20);
 
-    QPushButton *exportButton = new QPushButton("Export");
+    QPushButton *exportButton = new QPushButton(tr("Export"));
     exportButton->setIcon(QIcon(THEME_DIR + "icons/export.png"));
     exportButton->setFont(font);
     connect(exportButton, SIGNAL(pressed()), camera, SLOT(exportDialog()));

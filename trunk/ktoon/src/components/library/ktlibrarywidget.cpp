@@ -296,7 +296,7 @@ void KTLibraryWidget::importBitmap()
                                                      KTLibraryObject::Image, data);
         emit requestTriggered(&request);
     } else {
-        KOsd::self()->display(tr("Cannot open file: %1").arg(image));
+        KOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(image), KOsd::Error);
     }
 }
 
@@ -322,7 +322,7 @@ void KTLibraryWidget::importSvg()
                                                      KTLibraryObject::Svg, data);
         emit requestTriggered(&request);
     } else {
-        KOsd::self()->display(tr("Cannot open file: %1").arg(svg));
+        KOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(svg), KOsd::Error);
     }
 }
 
@@ -435,13 +435,13 @@ void KTLibraryWidget::importBitmapArray()
 
         }
     } else {
-        KOsd::self()->display(tr("No image files were found.<br/>Please, try another directory"), KOsd::Error);
+        KOsd::self()->display(tr("Error"), tr("No image files were found.<br/>Please, try another directory"), KOsd::Error);
     }
 }
 
 void KTLibraryWidget::importSound()
 {
-    QString sound = QFileDialog::getOpenFileName(this, tr("Import an audio file..."), QDir::homePath(),
+    QString sound = QFileDialog::getOpenFileName(this, tr("Import audio file..."), QDir::homePath(),
                                                  tr("Sound file") + " (*.ogg *.wav *.mp3)");
 
     if (sound.isEmpty()) 
@@ -459,7 +459,7 @@ void KTLibraryWidget::importSound()
                                                      KTLibraryObject::Sound, data);
         emit requestTriggered(&request);
     } else {
-        KOsd::self()->display(tr("Cannot open file: %1").arg(sound));
+        KOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(sound), KOsd::Error);
     }
 }
 
