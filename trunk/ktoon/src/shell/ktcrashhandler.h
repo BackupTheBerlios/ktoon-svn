@@ -64,7 +64,8 @@ class KTCrashHandler
         QString title() const;
         QString message() const;
         QColor messageColor() const;
-        QString buttonText() const;
+        QString closeButtonLabel() const;
+        QString launchButtonLabel() const;
         QString defaultText() const;
         QString defaultImage() const;
         QString signalText(int signal);
@@ -76,7 +77,8 @@ class KTCrashHandler
                QString title;
                QString message;
                QColor  messageColor;
-               QString buttonText;
+               QString closeButton;
+               QString launchButton;
                QString defaultText;
                QString defaultImage;
                QMap<int, QPair<QString, QString> > signalEntry;

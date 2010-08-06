@@ -39,6 +39,7 @@
 #include <QTextBrowser>
 #include <QtDebug>
 #include <QProcess>
+#include <signal.h>
 
 #include "ktcrashwidget.h"
 #include "ktcrashhandler.h"
@@ -46,6 +47,7 @@
 #include <kcore/kconfig.h>
 #include <kcore/kdebug.h>
 
+#include <unistd.h>
 
 class TextArea : public QTextBrowser
 {
@@ -81,7 +83,7 @@ void TextArea::setSource(const QUrl &name)
 
 #include "ktcrashwidget.moc"
 
-KTCrashWidget::KTCrashWidget (int sig) : QDialog(0), m_sig(sig)
+KTCrashWidget::KTCrashWidget(int sig) : QDialog(0), m_sig(sig)
 {
     setModal(true);
 
@@ -120,8 +122,12 @@ KTCrashWidget::KTCrashWidget (int sig) : QDialog(0), m_sig(sig)
 
     m_tabber->addTab(page1, tr("What's happening?"));
 
-    QPushButton *end = new QPushButton(CHANDLER->buttonText(),this);
-    connect(end,SIGNAL(clicked()),SLOT(accept()));
+    QPushButton *launch = new QPushButton(CHANDLER->launchButtonLabel(),this);
+    connect(launch, SIGNAL(clicked()), SLOT(restart()));
+    m_layout->addWidget(launch);
+
+    QPushButton *end = new QPushButton(CHANDLER->closeButtonLabel(),this);
+    connect(end, SIGNAL(clicked()), SLOT(accept()));
     m_layout->addWidget(end);
 
     setLayout(m_layout);
@@ -129,6 +135,11 @@ KTCrashWidget::KTCrashWidget (int sig) : QDialog(0), m_sig(sig)
 
 KTCrashWidget::~KTCrashWidget()
 {
+}
+
+void KTCrashWidget::setPid(int pid)
+{
+    m_pid = pid;
 }
 
 void KTCrashWidget::addBacktracePage(const QString &execInfo, const QString &backtrace)
@@ -153,4 +164,11 @@ void KTCrashWidget::addBacktracePage(const QString &execInfo, const QString &bac
     layout->addWidget(btInfo);
 
     m_tabber->addTab(btPage, tr("Backtrace"));
+}
+
+void KTCrashWidget::restart()
+{
+   // Restarting KTooN
+   system("/usr/local/ktoon/bin/ktoon &");
+   kill(m_pid, 9);
 }

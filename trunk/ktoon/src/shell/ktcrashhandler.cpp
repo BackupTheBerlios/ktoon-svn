@@ -64,7 +64,8 @@ KTCrashHandler::KTCrashHandler() : m_verbose(false)
 
     m_config.title = QObject::tr("Fatal error");
     m_config.message = QObject::tr("%1 is crashing...").arg(m_program);
-    m_config.buttonText = QObject::tr("Close");
+    m_config.closeButton = QObject::tr("Close");
+    m_config.launchButton = QObject::tr("Re-launch KTooN");
     m_config.defaultText = QObject::tr("This is a general failure");
 }
 
@@ -145,9 +146,14 @@ QColor KTCrashHandler::messageColor() const
     return QApplication::palette().color(QPalette::Text);
 }
 
-QString KTCrashHandler::buttonText() const
+QString KTCrashHandler::closeButtonLabel() const
 {
-    return m_config.buttonText;
+    return m_config.closeButton;
+}
+
+QString KTCrashHandler::launchButtonLabel() const
+{
+    return m_config.launchButton;
 }
 
 QString KTCrashHandler::defaultText() const
@@ -205,8 +211,8 @@ void KTCrashHandler::setConfig(const QString &filePath)
                    } else if (e.tagName() == "Message") {
                               m_config.message = e.attribute("text");
                               m_config.messageColor = QColor(e.attribute("color"));
-                   } else if (e.tagName() == "Button") {
-                              m_config.buttonText = e.attribute("text");
+                   } else if (e.tagName() == "CloseButton") {
+                              m_config.closeButton = e.attribute("text");
                    } else if (e.tagName() == "Default") {
                               m_config.defaultText = "<p align=\"justify\">" + e.attribute("text") + "</p>";
                               m_config.defaultImage = e.attribute("image");
@@ -244,7 +250,7 @@ static QString runCommand(const QString &command)
     return result;
 }
 
-void crashTrapper (int sig)
+void crashTrapper(int sig)
 {
 
 #ifdef K_DEBUG
@@ -272,11 +278,12 @@ void crashTrapper (int sig)
     char *argv[] = { CHANDLER->program().toUtf8().data(), 0 };
     application = new QApplication(argc, argv);
 
+    /*
     QString locale = QString(QLocale::system().name()).left(2);
-
     QTranslator *translator = new QTranslator;
     translator->load(SHARE_DIR + "data/translations/" + "ktoon_" + locale + ".qm");
     application->installTranslator(translator);
+    */
 
     const pid_t pid = ::fork();
 
@@ -302,6 +309,7 @@ void crashTrapper (int sig)
 
         // Widget
         KTCrashWidget widget(sig);
+        widget.setPid(::getpid());
         widget.addBacktracePage(execInfo, bt);
         widget.exec();
 

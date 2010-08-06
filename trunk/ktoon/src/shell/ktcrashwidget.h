@@ -44,14 +44,17 @@ class KTCrashWidget : public QDialog
     public:
         KTCrashWidget(int sig);
         ~KTCrashWidget();
+        void setPid(int pid);
         void addBacktracePage(const QString &execInfo, const QString &backtrace);
 
-    public slots:
+    private slots:
+        void restart();
 
     private:
         QVBoxLayout *m_layout;
         QImage m_image;
         int m_sig;
+        int m_pid;
 
         QTabWidget *m_tabber;
 };
