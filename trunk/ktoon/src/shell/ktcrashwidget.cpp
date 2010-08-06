@@ -127,7 +127,7 @@ KTCrashWidget::KTCrashWidget(int sig) : QDialog(0), m_sig(sig)
     m_layout->addWidget(launch);
 
     QPushButton *end = new QPushButton(CHANDLER->closeButtonLabel(),this);
-    connect(end, SIGNAL(clicked()), SLOT(accept()));
+    connect(end, SIGNAL(clicked()), SLOT(exit()));
     m_layout->addWidget(end);
 
     setLayout(m_layout);
@@ -169,6 +169,13 @@ void KTCrashWidget::addBacktracePage(const QString &execInfo, const QString &bac
 void KTCrashWidget::restart()
 {
    // Restarting KTooN
-   system("/usr/local/ktoon/bin/ktoon &");
+   system("/usr/local/ktoon/bin/ktoon &"); // Vamos aqui!!!
    kill(m_pid, 9);
 }
+
+void KTCrashWidget::exit()
+{
+   // Restarting KTooN
+   kill(m_pid, 9);
+}
+

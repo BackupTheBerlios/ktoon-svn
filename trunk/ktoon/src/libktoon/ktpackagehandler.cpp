@@ -150,6 +150,8 @@ QString KTPackageHandler::stripRepositoryFromPath(QString path)
 
 bool KTPackageHandler::importPackage(const QString &packagePath)
 {
+    kFatal() << "KTPackageHandler::importPackage - Importing file: " << packagePath;
+
     QuaZip zip(packagePath);
     
     if (!zip.open(QuaZip::mdUnzip)) {
@@ -157,7 +159,7 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
         return false;
     }
 
-    zip.setFileNameCodec("IBM866"); // ###: ?
+    zip.setFileNameCodec("IBM866"); // SQA: What is it? 
     
     QuaZipFile file(&zip);
     QFile out;
@@ -191,15 +193,25 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
                return false;
            }
         
-           createPath(name);
-           out.setFileName(name);
-        
-           if (! out.open(QIODevice::WriteOnly))
-               kError() << "Error while open file: " << out.fileName() << ", error was: " << out.errorString();
-        
-           while (file.getChar(&c)) out.putChar(c);
+           if (createPath(name)) {
 
-           out.close();
+               out.setFileName(name);
+        
+               if (! out.open(QIODevice::WriteOnly)) {
+                   kError() << "KTPackageHandler::importPackage() - Error while open file: " << out.fileName(); 
+                   kError() << "KTPackageHandler::importPackage() - Error Description: " << out.errorString();
+                   kError() << "KTPackageHandler::importPackage() - Error type: " << out.error(); 
+                   return false;
+               }
+        
+               while (file.getChar(&c)) 
+                      out.putChar(c);
+
+               out.close();
+           } else {
+               kError() << "KTPackageHandler::importPackage() - Error creating path: " << name; 
+               return false;
+           }
 
            if (file.getZipError()!=UNZ_OK) {
                kError() << "Error while open package " << file.getZipError();
@@ -235,9 +247,24 @@ bool KTPackageHandler::createPath(const QString &filePath)
 {
     QFileInfo info(filePath);
     QDir path = info.dir();
+    QString target = path.path();
     
-    if (!path.exists())
-        return path.mkpath(path.path());
+    if (!path.exists()) {
+        return path.mkpath(target);
+    } else {
+        return true;
+        kError() << "KTPackageHandler::createPath - Path: " << filePath << " already exists";
+        bool flag = path.rmpath(target);
+        if (flag) {
+            bool flag2 = path.mkpath(target);
+            if (flag2)
+                return true;
+            else
+                kError() << "KTPackageHandler::createPath - Can't create "; 
+        } else {
+            kError() << "KTPackageHandler::createPath - Can't delete dir: " << target;
+        }
+    }
     
     return false;
 }

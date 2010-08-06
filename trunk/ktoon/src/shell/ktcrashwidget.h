@@ -49,6 +49,7 @@ class KTCrashWidget : public QDialog
 
     private slots:
         void restart();
+        void exit();
 
     private:
         QVBoxLayout *m_layout;
