@@ -32,6 +32,7 @@
 #include "ktgraphicsscene.h"
 
 #include <QGraphicsItem>
+#include <QSvgRenderer>
 #include <QGraphicsView>
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
@@ -49,6 +50,8 @@
 #include "ktbrushmanager.h"
 #include "ktframe.h"
 #include "ktitemtweener.h"
+#include "ktgraphiclibraryitem.h"
+#include "ktsvgitem.h"
 
 #include "ktprojectresponse.h"
 
@@ -83,7 +86,6 @@ struct KTGraphicsScene::Private
     bool isDrawing;
     KTBrushManager *brushManager;
     KTInputDeviceInformation *inputInformation;
-    //int zLayerCounter;
     int layerCounter;
     int objectCounter;
 
@@ -98,14 +100,12 @@ KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), k(new Private)
 
     setItemIndexMethod(QGraphicsScene::NoIndex);
 
-    //setCurrentFrame(-1, -1);
     setCurrentFrame(0, 0);
 
     k->onionSkin.next = 0;
     k->onionSkin.previous = 0;
     k->tool = 0;
     k->isDrawing = false;
-    //k->zLayerCounter = 0;
 
     setBackgroundBrush(Qt::gray);
 
@@ -172,70 +172,67 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 
     for (int i=0; i < k->scene->layersTotal(); i++) {
 
-             KTLayer *layer = k->scene->layer(i);
+         KTLayer *layer = k->scene->layer(i);
 
-             KTFrame *mainFrame = layer->frame(photogram);
+         KTFrame *mainFrame = layer->frame(photogram);
 
-             QString currentFrame = "";
+         QString currentFrame = "";
 
-             if (mainFrame) {
-                 currentFrame = mainFrame->frameName();
+         if (mainFrame) {
+             currentFrame = mainFrame->frameName();
 
-                 if (layer) {
-                     if (layer->isVisible()) {
-                         if (k->onionSkin.previous > 0 && photogram > 0) {
-                             double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.previous);
-                             double opacity = 0.5;
+             if (layer) {
+                 if (layer->isVisible()) {
+                     if (k->onionSkin.previous > 0 && photogram > 0) {
+                         double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.previous);
+                         double opacity = 0.5;
 
-                             int limit = photogram - k->onionSkin.previous;
-                             if (limit < 0) 
-                                 limit = 0;
+                         int limit = photogram - k->onionSkin.previous;
+                         if (limit < 0) 
+                             limit = 0;
 
-                             QString frameBehind = ""; 
-                             for (int frameIndex = photogram-1; frameIndex >= limit; frameIndex--) {
-                                  KTFrame * frame = layer->frame(frameIndex);
-                                  QString previousFrame = frame->frameName();
-                                  if (frame && previousFrame.compare(currentFrame) != 0 
-                                      && frameBehind.compare(previousFrame) != 0)
-                                      addFrame(frame, opacity);
+                         QString frameBehind = ""; 
+                         for (int frameIndex = photogram-1; frameIndex >= limit; frameIndex--) {
+                              KTFrame * frame = layer->frame(frameIndex);
+                              QString previousFrame = frame->frameName();
+                              if (frame && previousFrame.compare(currentFrame) != 0 
+                                        && frameBehind.compare(previousFrame) != 0)
+                                  addFrame(frame, opacity);
 
-                                  frameBehind = previousFrame;
-                                  opacity -= opacityFactor;
-                             }
+                              frameBehind = previousFrame;
+                              opacity -= opacityFactor;
                          }
-
-                         if (k->onionSkin.next > 0 && layer->framesNumber() > photogram+1) {
-                             double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.next);
-                             double opacity = 0.5;
-
-                             int limit = photogram + k->onionSkin.next;
-                             if (limit > layer->frames().count()) 
-                                 limit = layer->frames().count();
-
-                             QString frameLater = "";
-                             for (int frameIndex = photogram+1; frameIndex < limit; frameIndex++) {
-                                  KTFrame * frame = layer->frame(frameIndex);
-                                  QString nextFrame = frame->frameName();
-                                  if (frame && nextFrame.compare(currentFrame) != 0 
-                                      && frameLater.compare(nextFrame) != 0)
-                                      addFrame(frame, opacity);
-                      
-                                  frameLater = nextFrame;
-                                  opacity -= opacityFactor;
-                             }
-                         }
-
-                         // TODO: Crashpoint when layers are deleted 
-                         //KTFrame *frame = layer->frame(photogram);
-
-                         //if (frame) {
-                         valid = true;
-                         k->layerCounter = i;
-                         addFrame(mainFrame);
-                         //}
                      }
+
+                     if (k->onionSkin.next > 0 && layer->framesNumber() > photogram+1) {
+                         double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), k->onionSkin.next);
+                         double opacity = 0.5;
+
+                         int limit = photogram + k->onionSkin.next;
+                         if (limit > layer->frames().count()) 
+                             limit = layer->frames().count();
+
+                         QString frameLater = "";
+                         for (int frameIndex = photogram+1; frameIndex < limit; frameIndex++) {
+                              KTFrame * frame = layer->frame(frameIndex);
+                              QString nextFrame = frame->frameName();
+                              if (frame && nextFrame.compare(currentFrame) != 0 
+                                        && frameLater.compare(nextFrame) != 0)
+                                  addFrame(frame, opacity);
+                      
+                              frameLater = nextFrame;
+                              opacity -= opacityFactor;
+                         }
+                     }
+
+                     // TODO: Crashpoint when layers are deleted 
+
+                     valid = true;
+                     k->layerCounter = i;
+                     addFrame(mainFrame);
                  }
              }
+         }
     }
 
     // Drawing tweening objects
@@ -279,30 +276,61 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
 
 void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 {
-    QGraphicsItem *item = object->item();
+    if (object->objectName().endsWith("svg", Qt::CaseInsensitive)) {
 
-    k->onionSkin.opacityMap.insert(item, opacity);
+        QGraphicsItem *element = object->item();
+        KTGraphicLibraryItem *graphic = qgraphicsitem_cast<KTGraphicLibraryItem *>(element);
 
-    if (KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item))
-        group->recoverChilds();
+        if (graphic) {
+            QFile file(graphic->svgContent());
+            QString maybe(file.fileName());
+            KTSvgItem *svgItem = new KTSvgItem(maybe);
 
-    if (! qgraphicsitem_cast<KTItemGroup *>(item->parentItem())) {
+            if (svgItem) {
 
-        item->setSelected(false);
-        KTLayer *layer = k->scene->layer(k->framePosition.layer);
+                k->onionSkin.opacityMap.insert(svgItem, opacity);
+                svgItem->setSelected(false);
 
-        if (layer) {
-            KTFrame *frame = layer->frame(k->framePosition.frame);
-            if (frame) {
-                int factor = k->objectCounter + (k->layerCounter)*1000; 
-                k->objectCounter++;
-                item->setOpacity(opacity);
-                item->setZValue(factor);
-                addItem(item);
-            }
-        }
+                KTLayer *layer = k->scene->layer(k->framePosition.layer);
 
-    } 
+                if (layer) {
+                    KTFrame *frame = layer->frame(k->framePosition.frame);
+                    if (frame) {
+                        int factor = k->objectCounter + (k->layerCounter)*1000;
+                        k->objectCounter++;
+                        svgItem->setOpacity(opacity);
+                        svgItem->setZValue(factor);
+                        addItem(svgItem);
+                    } 
+                } 
+            } 
+        } 
+
+    } else { 
+
+      QGraphicsItem *item = object->item();
+      k->onionSkin.opacityMap.insert(item, opacity);
+
+      if (KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item))
+          group->recoverChilds();
+
+      if (! qgraphicsitem_cast<KTItemGroup *>(item->parentItem())) {
+
+          item->setSelected(false);
+          KTLayer *layer = k->scene->layer(k->framePosition.layer);
+
+          if (layer) {
+              KTFrame *frame = layer->frame(k->framePosition.frame);
+              if (frame) {
+                  int factor = k->objectCounter + (k->layerCounter)*1000; 
+                  k->objectCounter++;
+                  item->setOpacity(opacity);
+                  item->setZValue(factor);
+                  addItem(item);
+              }
+          }
+      } 
+    }
 }
 
 void KTGraphicsScene::clean()
@@ -466,12 +494,6 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     k->inputInformation->updateFromMouseEvent(event);
     k->isDrawing = false;
 
-    /* Trashy stuff - ignore it
-     if (event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier))) {
-        // FIX ME: uggly if
-     } else if (k->tool) {
-    */
-
     if ((event->buttons() != Qt::LeftButton) || (event->modifiers () != (Qt::ShiftModifier | Qt::ControlModifier))) {
         if (k->tool) {      
             if (k->tool->toolType() == KTToolPlugin::Brush && event->isAccepted())
@@ -485,7 +507,7 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                     k->isDrawing = true;
                     k->tool->press(k->inputInformation, k->brushManager, this);
                 } else {
-                    // TODO: To find the way to enhance this condition only for zoom tool
+                    // TODO: Find the way to enhance this condition only for zoom tool
                     if (k->tool->toolType() == KTToolPlugin::View)
                         k->tool->press(k->inputInformation, k->brushManager, this);
                 }
@@ -554,7 +576,7 @@ void KTGraphicsScene::keyPressEvent(QKeyEvent *event)
 
 /*
 
-// TODO: Check this code, not sure whether it does something or it is helping :S
+// TODO: Check this code, not sure whether it does something or it's handy :S
 
 void KTGraphicsScene::dragEnterEvent(QGraphicsSceneDragDropEvent * event)
 {

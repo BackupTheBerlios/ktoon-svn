@@ -79,7 +79,7 @@ KTGraphicObject::~KTGraphicObject()
     delete k;
 }
 
-void KTGraphicObject::fromXml(const QString &xml )
+void KTGraphicObject::fromXml(const QString &xml)
 {
 }
 
@@ -98,8 +98,10 @@ QDomElement KTGraphicObject::toXml(QDomDocument &doc) const
 
 void KTGraphicObject::setItem(QGraphicsItem *item)
 {
-    k->item = item;
-    initItemData();
+    if (item) {
+        k->item = item;
+        initItemData();
+    } 
 }
 
 QGraphicsItem *KTGraphicObject::item() const

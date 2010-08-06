@@ -336,8 +336,6 @@ bool KTCommandExecutor::setFrameVisibility(KTFrameResponse *response)
 
 bool KTCommandExecutor::expandFrame(KTFrameResponse *response)
 {
-    kFatal() << "KTCommandExecutor::expandFrame -> Just Tracing!";
-
     int scenePos = response->sceneIndex();
     int layerPos = response->layerIndex();
     int position = response->frameIndex();

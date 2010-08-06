@@ -45,6 +45,8 @@
 #include <QProgressDialog>
 #include <QDesktopWidget>
 #include <QBuffer>
+#include <QGraphicsSvgItem>
+#include <QSvgRenderer>
 
 #include <ktrequestbuilder.h>
 
@@ -177,29 +179,40 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
     RETURN_IF_NOT_LIBRARY;
 
     if (item) {
+
         KTLibraryObject *object = k->library->findObject(item->text(1));
 
         if (!object) {
             #ifdef K_DEBUG
                    kDebug("library") << "Cannot find the object";
+                   kFatal() << "KTLibraryWidget::previewItem - Cannot find the object";
             #endif
             return;
         }
 
         switch (object->type()) {
                 case KTLibraryObject::Svg:
+                   {
+                     QString svgContent = qvariant_cast<QString>(object->data());
+                     if (svgContent.length() > 0) {
+                         QByteArray stream = svgContent.toLocal8Bit();
+                         QGraphicsSvgItem *svg = new QGraphicsSvgItem;
+                         svg->renderer()->load(stream);
+                         k->display->render(static_cast<QGraphicsItem *>(svg));
+                     } 
+                   }
+                   break;
                 case KTLibraryObject::Image:
                 case KTLibraryObject::Item:
                    {
                      if (object->data().canConvert<QGraphicsItem *>()) {
                          k->display->render(qvariant_cast<QGraphicsItem *>(object->data()));
-
-                         /* test
+                         /* SQA: Just a test
                          KTSymbolEditor *editor = new KTSymbolEditor;
                          editor->setSymbol(object);
                          emit postPage(editor);
                          */    
-                     }
+                     } 
                    }
                    break;
                 case KTLibraryObject::Sound:
@@ -253,7 +266,8 @@ void KTLibraryWidget::renameObject(QTreeWidgetItem* item)
 {
     Q_UNUSED(item);
 
-/*
+    // SQA: Check this code
+    /*
     if ( item ) {
          KTGraphicComponent *graphic = k->graphics[item];
 
@@ -271,22 +285,22 @@ void KTLibraryWidget::renameObject(QTreeWidgetItem* item)
              }
          }
     }
-*/
+    */
 }
 
 void KTLibraryWidget::importBitmap()
 {
     QString image = QFileDialog::getOpenFileName (this, tr("Import an image..."), QDir::homePath(),  
-                                                  tr("Images") + " (*.png *.xpm *.jpg)");
+                                                  tr("Images") + " (*.png *.xpm *.jpg *.gif)");
     if (image.isEmpty()) 
         return;
 
     QFile f(image);
     QFileInfo fileInfo(f);
 
-    QString symName = fileInfo.baseName();
+    QString symName = fileInfo.fileName();
 
-    kFatal() << "FILE: " << symName;
+    kFatal() << "KTLibraryWidget::importBitmap() - Importing file: " << symName;
 
     if (f.open(QIODevice::ReadOnly)) {
         QByteArray data = f.readAll();
@@ -310,9 +324,7 @@ void KTLibraryWidget::importSvg()
     QFile f(svg);
     QFileInfo fileInfo(f);
 
-    QString symName = fileInfo.baseName();
-
-    kFatal() << "FILE: " << symName;
+    QString symName = fileInfo.fileName();
 
     if (f.open(QIODevice::ReadOnly)) {
         QByteArray data = f.readAll();
@@ -439,6 +451,11 @@ void KTLibraryWidget::importBitmapArray()
     }
 }
 
+void KTLibraryWidget::importSvgArray() 
+{
+    // SQA: To do!
+}
+
 void KTLibraryWidget::importSound()
 {
     QString sound = QFileDialog::getOpenFileName(this, tr("Import audio file..."), QDir::homePath(),
@@ -468,13 +485,9 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 {
     RETURN_IF_NOT_LIBRARY;
 
-    kFatal() << "KTLibraryWidget::libraryResponse : " <<  response->action();
-
     switch (response->action()) {
             case KTProjectRequest::Add:
               {
-                 kFatal() << "KTLibraryWidget::libraryResponse : Adding something :P";     
-
                  QString key = response->arg().toString();
                  KTLibraryObject *obj = k->library->findObject(key);
 
@@ -493,7 +506,6 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                             break;
                             case KTLibraryObject::Image:
                                {
-                                 kFatal() << "KTLibraryWidget::libraryResponse : Image object!";
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/bitmap.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item, 1);
@@ -502,7 +514,6 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                             break;
                             case KTLibraryObject::Svg:
                                {
-                                 kFatal() << "KTLibraryWidget::libraryResponse : SVG object!";
                                  item->setIcon(0, QIcon(THEME_DIR + "icons/bitmap.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item, 1);
@@ -553,7 +564,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 
             case KTProjectRequest::AddSymbolToProject:
                  #ifdef K_DEBUG
-                        kFatal() << "*** KTLibraryWidget::libraryResponse -> No action taken";
+                        kFatal() << "*** KTLibraryWidget::libraryResponse -> AddSymbolToProject : No action taken";
                  #endif
             break;
   

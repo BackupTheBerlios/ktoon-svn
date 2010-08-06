@@ -36,6 +36,8 @@
 #include "ktprojectresponse.h"
 #include <QDebug>
 
+#include <kcore/kdebug.h>
+
 bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 {
     if (m_project->createSymbol(response->symbolType(), response->arg().toString(), response->data())) {
@@ -43,7 +45,7 @@ bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 
         return true;
     } else {
-
+        kFatal() << "KTCommandExecutor::createSymbol() - FAILED!"; 
     }
     
     return false;
@@ -52,16 +54,12 @@ bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 
 bool KTCommandExecutor::removeSymbol(KTLibraryResponse *response)
 {
-    qDebug() << "KTCommandExecutor::removeSymbol(KTLibraryResponse *response)";
-    
     if (m_project->removeSymbol(response->arg().toString())) {
         emit responsed(response);
         
         return true;
-    }
-    else
-    {
-
+    } else {
+       
     }
     
     return false;
@@ -73,6 +71,8 @@ bool KTCommandExecutor::addSymbolToProject(KTLibraryResponse *response)
         emit responsed(response);
 
         return true;
+    } else {
+        kFatal() << "KTCommandExecutor::addSymbolToProject - FAILED!";
     }
     
     return false;

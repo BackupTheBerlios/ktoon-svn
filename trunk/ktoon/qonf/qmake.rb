@@ -21,19 +21,18 @@ class QMake
         qtversion = ""
         paths = [ "qmake", "qmake-qt4", "qmake4" ]
         minver = minqtversion.split(".")
-        flag = true
+        valid = true
 
         paths.each { |path|
             begin
                 version = []
                 sites = []
                 distance = 0
-
-                                IO.popen("whereis #{path}") { |result|
-                                        sites = result.readlines.join("").split(":")
-                    word = sites[1].chop
-                    distance = word.length
-                                }
+                IO.popen("whereis #{path}") { |result|
+                          sites = result.readlines.join("").split(":")
+                          word = sites[1].chop
+                          distance = word.length
+                }
 
                 if distance > 0
                     IO.popen("#{path} -query QT_VERSION") { |prc|
@@ -46,17 +45,33 @@ class QMake
                     next if $? != 0
 
                     version.size.times { |i|
-                        if version.size < i and minver.size >= 2
-                            break
+                        if i = 0
+                           if version[i] < minver[i]
+                              valid = false 
+                              break
+                           end
                         end
-                    
-                        if version[i] < minver[i]
-                            flag = false
-                            break
-                        end 
+
+                        if i = 1
+                           if version[i] < minver[i]
+                              valid = false
+                              break
+                           else
+                              if version[i] > minver[i]
+                                 break
+                              end
+                           end
+                        end
+
+                        if i = 2
+                           if version[i] < minver[i]
+                              valid = false
+                              break
+                           end
+                        end
                     }
                 
-                    if flag 
+                    if valid  
                         @path = path
                         break    
                     end
@@ -68,7 +83,7 @@ class QMake
             print "(Found: #{qtversion}) "
         end
 
-        return flag
+        return valid
     end
 
     def query(var)

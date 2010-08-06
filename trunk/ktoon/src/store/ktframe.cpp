@@ -177,12 +177,12 @@ QDomElement KTFrame::toXml(QDomDocument &doc) const
     return root;
 }
 
-void KTFrame::addItem(QGraphicsItem *item)
+void KTFrame::addItem(QString &id, QGraphicsItem *item)
 {
-    insertItem(k->graphics.count(), item);
+    insertItem(k->graphics.count(), id, item);
 }
 
-void KTFrame::insertItem(int position, QGraphicsItem *item)
+void KTFrame::insertItem(int position, QString &id, QGraphicsItem *item)
 {
     if (k->graphics.contains(position-1)) {
         if (QGraphicsItem *lastItem = k->graphics.value(position-1)->item())
@@ -190,6 +190,7 @@ void KTFrame::insertItem(int position, QGraphicsItem *item)
     }
 
     KTGraphicObject *object = new KTGraphicObject(item, this);
+    object->setObjectName(id);
     k->graphics.insert(position, object);
 }
 
@@ -201,7 +202,7 @@ QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group)
 
     qSort(group.begin(), group.end());
 
-    KTItemGroup *g = new KTItemGroup(0);
+    KTItemGroup *itemGroup = new KTItemGroup(0);
     int count = 0;
 
     foreach (qreal p, group) {
@@ -210,14 +211,17 @@ QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group)
              KTGraphicObject *object = this->graphic(pos);
              object->setItem(0);
              removeGraphicAt(pos);
-             g->addToGroup(item);
+             itemGroup->addToGroup(item);
              delete object;
              count++;
     }
 
-    insertItem(position, g);
+    QGraphicsItem *block = qgraphicsitem_cast<QGraphicsItem *>(itemGroup);
 
-    return g;
+    QString id("group_item");
+    insertItem(position, id, block);
+
+    return itemGroup;
 }
 
 QList<QGraphicsItem *> KTFrame::destroyItemGroup(int position)
@@ -229,7 +233,8 @@ QList<QGraphicsItem *> KTFrame::destroyItemGroup(int position)
         items = group->childs();
         foreach (QGraphicsItem *child, group->childs()) {
                  group->removeFromGroup(child);
-                 addItem(child);
+                 QString id("item");
+                 addItem(id, child);
         }
     }
 
@@ -303,15 +308,17 @@ QGraphicsItem *KTFrame::createItem(int position, const QString &xml, bool loaded
     KTItemFactory itemFactory;
     itemFactory.setLibrary(project()->library());
 
-    QGraphicsItem *item = itemFactory.create(xml);
+    QGraphicsItem *graphicItem = itemFactory.create(xml);
 
-    if (item)
-        insertItem(position, item);
+    if (graphicItem) {
+        QString id("item");
+        insertItem(position, id, graphicItem);
+    }
 
     if (loaded)
         KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, xml, project());
 
-    return item;
+    return graphicItem;
 }
 
 void KTFrame::setGraphics(GraphicObjects objects)

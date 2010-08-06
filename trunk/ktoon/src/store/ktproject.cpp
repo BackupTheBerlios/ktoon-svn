@@ -45,9 +45,6 @@
 
 #include <QDir>
 #include <QGraphicsView>
-#include <QGraphicsSvgItem>
-#include <QSvgRenderer>
-
 
 struct KTProject::Private
 {
@@ -391,7 +388,7 @@ bool KTProject::createSymbol(int type, const QString &name, const QByteArray &da
 {
     if (!k->isOpen) 
         return false;
-    
+
     return k->library->createSymbol(KTLibraryObject::Type(type), name, data) != 0;
 }
 
@@ -403,33 +400,45 @@ bool KTProject::removeSymbol(const QString &name)
 bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int layerIndex, int frameIndex)
 {
     KTLibraryObject *object = k->library->findObject(name);
-    KTFrame *target = 0;
+    KTFrame *frame = 0;
 
     KTScene *scene = this->scene(sceneIndex);
 
     if (scene) {
         KTLayer *layer = scene->layer(layerIndex);
         if (layer)
-            target = layer->frame(frameIndex);
+            frame = layer->frame(frameIndex);
     }
 
-    if (object && target) {
+    if (object && frame) {
         switch (object->type()) {
                 case KTLibraryObject::Image:
                      {
-                       kFatal() << "KTProject::addSymbolToProject() -> Tracing images...";
                        KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
-                       libraryItem->moveBy(115, 80);
-                       target->addItem(libraryItem);
+                       libraryItem->moveBy(100, 100);
+                       QString id(libraryItem->symbolName());
+                       frame->addItem(id, libraryItem);
                      }
                 break;
                 case KTLibraryObject::Text:
+                     {
+                       KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
+                       QString id(libraryItem->symbolName());
+                       frame->addItem(id, libraryItem);
+                     }
+                break;
                 case KTLibraryObject::Svg:
+                     {
+                       KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
+                       QString id(libraryItem->symbolName());
+                       frame->addItem(id, libraryItem);
+                     }
+                break;
                 case KTLibraryObject::Item:
                      {
-                       kFatal() << "KTProject::addSymbolToProject() -> Tracing svg file...";
                        KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
-                       target->addItem(libraryItem);
+                       QString id(libraryItem->symbolName());
+                       frame->addItem(id, libraryItem);
                      }
                 break;
                 case KTLibraryObject::Sound:
@@ -444,6 +453,7 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                      #endif
                 break;
         }
+
         return true;
     }
 

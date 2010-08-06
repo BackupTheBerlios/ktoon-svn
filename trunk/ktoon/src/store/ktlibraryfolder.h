@@ -63,7 +63,7 @@ class STORE_EXPORT KTLibraryFolder : public QObject, public KTAbstractSerializab
         
         KTLibraryObject *createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, bool loaded = false);
         
-        virtual bool addObject(KTLibraryObject *object, const QString &id);
+        virtual bool addObject(KTLibraryObject *object); //, const QString &id);
         virtual bool removeObject(const QString &id);
         
         virtual void addFolder(KTLibraryFolder *folder);

@@ -85,6 +85,7 @@ void KTMainWindow::createGUI()
 
     m_libraryWidget = new KTLibraryWidget();
     m_libraryWidget->setLibrary(m_projectManager->project()->library());
+
     libraryView = addToolView(m_libraryWidget, Qt::LeftDockWidgetArea, Drawing, "Library", QKeySequence(tr("Shift+L")));
     m_actionManager->insert(libraryView->toggleViewAction(), "show library");
     addToPerspective(libraryView->toggleViewAction(), Drawing);

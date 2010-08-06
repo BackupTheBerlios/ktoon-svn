@@ -34,8 +34,6 @@
 #include "ktitemfactory.h"
 #include "ktpixmapitem.h"
 
-#include <QGraphicsSvgItem>
-#include <QSvgRenderer>
 #include <QTemporaryFile>
 #include <QDir>
 
@@ -196,7 +194,7 @@ bool KTLibraryObject::loadData(const QByteArray &data)
             {
                  KTItemFactory factory;
                  QGraphicsItem *item = factory.create(QString::fromLocal8Bit(data));
-                 setData( QVariant::fromValue(item));
+                 setData(QVariant::fromValue(item));
             }
             break;
             case KTLibraryObject::Image:
@@ -210,28 +208,27 @@ bool KTLibraryObject::loadData(const QByteArray &data)
                  setData(QVariant::fromValue(static_cast<QGraphicsItem *>(item)));
             }
             break;
-            case KTLibraryObject::Sound:
-            {
-                 QTemporaryFile soundFile(QDir::tempPath() + "/ktoon_sound_file_XXXXXX");
-                 soundFile.setAutoRemove(false);
-            
-                 if (soundFile.open()) {
-                     soundFile.write(data);
-                     setData(soundFile.fileName());
-                     soundFile.close();
-                 }
-            }
-            break;
             case KTLibraryObject::Svg:
             {
-                 QGraphicsSvgItem *svg = new QGraphicsSvgItem;
-                 svg->renderer()->load(data);
-                 setData(QVariant::fromValue(static_cast<QGraphicsItem*>(svg)));
+                 QString item(data);
+                 setData(QVariant::fromValue(item));
             }
             break;
             case KTLibraryObject::Text:
             {
                  setData(QString::fromLocal8Bit(data));
+            }
+            break;
+            case KTLibraryObject::Sound:
+            {
+                 QTemporaryFile soundFile(QDir::tempPath() + "/ktoon_sound_file_XXXXXX");
+                 soundFile.setAutoRemove(false);
+
+                 if (soundFile.open()) {
+                     soundFile.write(data);
+                     setData(soundFile.fileName());
+                     soundFile.close();
+                 }
             }
             break;
             default:
@@ -264,6 +261,12 @@ bool KTLibraryObject::loadDataFromPath(const QString &dataDir)
             break;
             case KTLibraryObject::Svg:
             {
+                 k->dataPath = dataDir + "/svg/" + k->dataPath;
+
+                 QFile f(k->dataPath);
+
+                 if (f.open(QIODevice::ReadOnly))
+                     loadData(f.readAll());
             }
             break;
             default: 
@@ -285,9 +288,10 @@ void KTLibraryObject::saveData(const QString &dataDir)
                      QDir dir;
                      dir.mkpath(saved);
                  }
-            
-                 QFile::copy(QString(k->data.toString()), saved + k->symbolName);
-                 QFile::remove(QString(k->data.toString()));
+           
+                 // SQA: Sound support 
+                 // QFile::copy(QString(k->data.toString()), saved + k->symbolName);
+                 // QFile::remove(QString(k->data.toString()));
             
                  k->dataPath = saved + k->symbolName;
                  k->data = "";
@@ -295,6 +299,22 @@ void KTLibraryObject::saveData(const QString &dataDir)
             break;
             case KTLibraryObject::Svg:
             {
+                 QString saved = dataDir + "/svg/";
+
+                 if (! QFile::exists(saved)) {
+                     QDir dir;
+                     dir.mkpath(saved);
+                 }
+
+                 QFile file(saved + k->symbolName);
+                 if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+                     return;
+
+                 QTextStream out(&file);
+                 out << qvariant_cast<QString>(k->data);
+
+                 k->dataPath = saved + k->symbolName;
+                 k->data = "";
             }
             break;
             case KTLibraryObject::Image:
@@ -306,7 +326,7 @@ void KTLibraryObject::saveData(const QString &dataDir)
                      dir.mkpath(dest);
                  }
             
-                 qgraphicsitem_cast<KTPixmapItem *>(qvariant_cast<QGraphicsItem *>(k->data))->pixmap().save(dest + k->symbolName, "PNG");
+                 (qgraphicsitem_cast<KTPixmapItem *> (qvariant_cast<QGraphicsItem *>(k->data)))->pixmap().save(dest + k->symbolName, "PNG");
           
                  k->dataPath = dest + k->symbolName;
             }

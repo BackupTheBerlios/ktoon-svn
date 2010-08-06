@@ -47,7 +47,8 @@ HEADERS += ktlayer.h \
            ktgraphiclibraryitem.h \
            ktitemtweener.h \
            kttweenerstep.h \
-           ktsoundlayer.h
+           ktsoundlayer.h \
+           ktsvgitem.h
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -89,7 +90,9 @@ SOURCES += ktlayer.cpp \
            ktgraphiclibraryitem.cpp \
            ktitemtweener.cpp \
            kttweenerstep.cpp \
-           ktsoundlayer.cpp
+           ktsoundlayer.cpp \
+           ktsvgitem.cpp
+
 STORE_DIR = ../../src/store
 
 LIBKTOON_DIR = ../../src/libktoon

@@ -60,7 +60,7 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
     #ifdef K_DEBUG
         K_FUNCINFOX("items");
     #endif
-    
+
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();

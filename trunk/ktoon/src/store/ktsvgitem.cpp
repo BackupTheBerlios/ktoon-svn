@@ -29,41 +29,46 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTGRAPHICLIBRARYITEM_H
-#define KTGRAPHICLIBRARYITEM_H
+#include "ktsvgitem.h"
+#include <QSvgRenderer>
 
-#include <ktproxyitem.h>
-#include <ktabstractserializable.h>
-
-#include <ktglobal_store.h>
-
-class KTLibraryObject;
-
-/**
- * @author David Cuadrado \<krawek@gmail.com\>
-*/
-class STORE_EXPORT KTGraphicLibraryItem : public KTProxyItem, public KTAbstractSerializable
+KTSvgItem::KTSvgItem(QGraphicsItem * parent)
+    : QGraphicsSvgItem(parent)
 {
-    public:
-        KTGraphicLibraryItem();
-        KTGraphicLibraryItem(KTLibraryObject *object);
-        ~KTGraphicLibraryItem();
-        
-        QDomElement toXml(QDomDocument &doc) const;
-        void fromXml(const QString &xml);
-        
-        void setSymbolName(const QString &name);
-        QString symbolName() const;
-        
-        void setObject(KTLibraryObject *object);
+}
 
-        void setSvgContent(const QString &path);
-        QString svgContent();
-        
-    private:
-        struct Private;
-        Private *const k;
+KTSvgItem::KTSvgItem(QString &path)
+    : QGraphicsSvgItem(path)
+{
+}
 
-};
+KTSvgItem::~KTSvgItem()
+{
+}
 
-#endif
+void KTSvgItem::setContent(QString &xml)
+{
+    data = xml;
+}
+
+QString KTSvgItem::content() 
+{
+    return data;
+}
+
+void KTSvgItem::rendering()
+{
+    QByteArray stream = data.toLocal8Bit(); 
+    renderer()->load(stream);
+}
+
+void KTSvgItem::fromXml(const QString &xml)
+{
+}
+
+QDomElement KTSvgItem::toXml(QDomDocument &doc) const
+{
+    QDomElement root = doc.createElement("svg");
+    
+    return root;
+}

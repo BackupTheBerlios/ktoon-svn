@@ -82,7 +82,7 @@ KTNewProject::KTNewProject(QWidget *parent) : KTabDialog(parent), k( new Private
     layout->addWidget(k->authorName, 1, 1);
 
     k->size = new KXYSpinBox(tr("Dimension"), container);
-    k->size->setMaximum(1000);
+    k->size->setMaximum(5000);
     //k->size->setModifyTogether(true);;
 
     k->size->setX(520);

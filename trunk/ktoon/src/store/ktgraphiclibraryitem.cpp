@@ -31,19 +31,17 @@
 
 #include "ktgraphiclibraryitem.h"
 #include "ktlibraryobject.h"
-
 #include "ktserializer.h"
 
-/* #include <QGraphicsPixmapItem> */
 #include <QGraphicsTextItem>
-#include <QGraphicsSvgItem>
 
 #include <kcore/kdebug.h>
 
 struct KTGraphicLibraryItem::Private
 {
-	QString symbolName;
-	QList<QGraphicsItem *> items;
+    QString symbolName;
+    QString svgContent;
+    QList<QGraphicsItem *> items;
 };
 
 KTGraphicLibraryItem::KTGraphicLibraryItem() : KTProxyItem(), k(new Private)
@@ -52,71 +50,78 @@ KTGraphicLibraryItem::KTGraphicLibraryItem() : KTProxyItem(), k(new Private)
 
 KTGraphicLibraryItem::KTGraphicLibraryItem(KTLibraryObject *object) : KTProxyItem(), k(new Private)
 {
-	setObject(object);
+    setObject(object);
 }
 
 KTGraphicLibraryItem::~KTGraphicLibraryItem()
 {
-	qDeleteAll(k->items);
-	delete k;
+    qDeleteAll(k->items);
+    delete k;
 }
 
 QDomElement KTGraphicLibraryItem::toXml(QDomDocument &doc) const
 {
-	QDomElement library = doc.createElement("symbol");
-	library.setAttribute("id", k->symbolName);
-	library.appendChild( KTSerializer::properties( this, doc));
-	
-	return library;
+    QDomElement library = doc.createElement("symbol");
+    library.setAttribute("id", k->symbolName);
+    library.appendChild(KTSerializer::properties( this, doc));
+    
+    return library;
 }
 
 void KTGraphicLibraryItem::fromXml(const QString &xml)
 {
+    Q_UNUSED(xml);
 }
 
 void KTGraphicLibraryItem::setObject(KTLibraryObject *object)
 {
-	if( !object)
-	{
-		#ifdef K_DEBUG
-			kWarning("library") << "Setting null library object";
-		#endif
-		return;
-	}
-	
-	#ifdef K_DEBUG
-		K_FUNCINFOX("library") << object->symbolName();
-	#endif
-	
-	k->symbolName = object->symbolName();
-	switch(object->type())
-	{
-		case KTLibraryObject::Item:
-		case KTLibraryObject::Text:
-                case KTLibraryObject::Image:
-		{
-			setItem(qvariant_cast<QGraphicsItem *>(object->data()));
-		}
-		break;
-                case KTLibraryObject::Svg:
-                {
-                        kFatal() << "KTGraphicLibraryItem::setObject SVG item: Following the white rabbit!";
-                        setItem(qvariant_cast<QGraphicsItem *>(object->data()));
-                }
-                break;
+    if (!object) {
+        #ifdef K_DEBUG
+            kWarning("library") << "Setting null library object";
+        #endif
+        return;
+    }
+    
+    #ifdef K_DEBUG
+        K_FUNCINFOX("library") << object->symbolName();
+    #endif
 
-		default: break;
-	}
+    k->symbolName = object->symbolName();
+    switch(object->type())
+    {
+        case KTLibraryObject::Item:
+        case KTLibraryObject::Text:
+        case KTLibraryObject::Image:
+        {
+             setItem(qvariant_cast<QGraphicsItem *>(object->data()));
+        }
+        break;
+        case KTLibraryObject::Svg:
+        {
+             setSvgContent(object->dataPath());
+        }
+        break;
+        default: 
+        break;
+    }
 }
 
 void KTGraphicLibraryItem::setSymbolName(const QString &name)
 {
-	k->symbolName = name;
+    k->symbolName = name;
 }
 
 QString KTGraphicLibraryItem::symbolName() const
 {
-	return k->symbolName;
+    return k->symbolName;
 }
 
+void KTGraphicLibraryItem::setSvgContent(const QString &path)
+{
+    k->svgContent = path;
+}
 
+QString KTGraphicLibraryItem::svgContent()
+{
+   return k->svgContent;
+}

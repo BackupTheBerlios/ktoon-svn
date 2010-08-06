@@ -29,41 +29,31 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTGRAPHICLIBRARYITEM_H
-#define KTGRAPHICLIBRARYITEM_H
+#ifndef KTSVGITEM_H
+#define KTSVGITEM_H
 
-#include <ktproxyitem.h>
-#include <ktabstractserializable.h>
-
-#include <ktglobal_store.h>
-
-class KTLibraryObject;
+#include <QGraphicsSvgItem>
+#include "ktabstractserializable.h"
+#include "ktglobal_store.h"
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class STORE_EXPORT KTGraphicLibraryItem : public KTProxyItem, public KTAbstractSerializable
+
+class STORE_EXPORT KTSvgItem : public QGraphicsSvgItem, public KTAbstractSerializable
 {
     public:
-        KTGraphicLibraryItem();
-        KTGraphicLibraryItem(KTLibraryObject *object);
-        ~KTGraphicLibraryItem();
-        
-        QDomElement toXml(QDomDocument &doc) const;
-        void fromXml(const QString &xml);
-        
-        void setSymbolName(const QString &name);
-        QString symbolName() const;
-        
-        void setObject(KTLibraryObject *object);
+        KTSvgItem(QGraphicsItem * parent = 0);
+        KTSvgItem(QString &path);
+        ~KTSvgItem();
+        void setContent(QString &xml);
+        QString content();
+        void rendering();
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc) const;
 
-        void setSvgContent(const QString &path);
-        QString svgContent();
-        
     private:
-        struct Private;
-        Private *const k;
-
+        QString data;
 };
 
 #endif

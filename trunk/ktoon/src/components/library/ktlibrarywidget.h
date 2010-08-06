@@ -73,6 +73,7 @@ class KTLibraryWidget : public KTModuleWidgetBase
         void importBitmap();
         void importSvg();
         void importBitmapArray();
+        void importSvgArray();
         void importSound();
 
     signals:

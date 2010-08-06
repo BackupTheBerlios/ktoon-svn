@@ -59,15 +59,22 @@ KTLibraryFolder::~KTLibraryFolder()
 
 KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, bool loaded)
 {
+    kFatal() << "KTLibraryFolder::createSymbol - Creating a KTLibraryObject object! Data size: " << data.size();
+
     KTLibraryObject *object = new KTLibraryObject(this);
+    object->setSymbolName(name);
+    object->setParent(this);
     object->setType(type);
     
     if (!object->loadData(data)) {
+        kFatal() << "KTLibraryFolder::createSymbol - Object NOT loaded!";
         delete object;
         return 0;
+    } else {
+        kFatal() << "KTLibraryFolder::createSymbol - Object loaded successful!";
     }
     
-    bool ret = addObject(object, name);
+    bool ret = addObject(object);
     object->saveData(k->project->dataDir());
     
     if (loaded && ret)
@@ -76,12 +83,18 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
     return object;
 }
 
-bool KTLibraryFolder::addObject(KTLibraryObject *object, const QString &id)
+bool KTLibraryFolder::addObject(KTLibraryObject *object) //, const QString &id)
 {
-    if (!k->objects.contains(id)) {
-        k->objects.insert(id, object);
-        object->setSymbolName(id);
-        object->setParent(this);
+    if (!k->objects.contains(object->symbolName())) {
+        k->objects.insert(object->symbolName(), object);
+        kFatal() << "KTLibraryFolder::addObject - Adding KTLibraryObject in to the Library! : " << object->symbolName() << " - Total: " << objectsCount();
+
+        QGraphicsItem *test = qvariant_cast<QGraphicsItem *>(object->data());
+
+        if (test)
+            kFatal() << "KTLibraryFolder::addObject - Data is NOT NULL - Object id: " << object->symbolName();
+        else
+            kFatal() << "KTLibraryFolder::addObject - Data is NULL - Object id: " << object->symbolName();
 
         return true;
     }
@@ -106,7 +119,7 @@ bool KTLibraryFolder::moveObject(const QString &id, KTLibraryFolder *folder)
     if (k->objects.contains(id)) {
         KTLibraryObject *object = k->objects[id];
         removeObject(id);
-        folder->addObject( object, id);
+        folder->addObject(object);
         
         return true;
     }
@@ -126,9 +139,13 @@ QString KTLibraryFolder::id() const
 
 KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
 {
+    kFatal() << "KTLibraryFolder::findObject -> Looking for: " << id;
+
     foreach (QString oid, k->objects.keys()) {
-             if (oid == id)
+             if (oid == id) {
+                 kFatal() << "KTLibraryFolder::findObject -> FOUND!";
                  return k->objects[oid];
+             }
     }
     
     foreach (KTLibraryFolder *folder, k->folders) {
@@ -191,7 +208,7 @@ void KTLibraryFolder::fromXml(const QString &xml )
                    object->fromXml(objectDocument.toString(0));
                    object->loadDataFromPath(k->project->dataDir());
                 
-                   addObject(object, object->symbolName());
+                   addObject(object);
                 
                    QDomElement objectData = objectDocument.documentElement().firstChild().toElement();
                 
