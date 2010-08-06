@@ -64,14 +64,16 @@ KOsd::~KOsd()
     delete m_timer;
 }
 
-void KOsd::display(const QString &message, Level level, int ms)
+void KOsd::display(const QString &title, const QString &message, Level level, int ms)
 {
     if (message.isEmpty()) 
         return;
 
     QString htmlMessage = message;
-
     htmlMessage.replace('\n', "<br/>");
+    QString tail = title + "</b></font><br><font style=\"font-size:12px\">" + htmlMessage + "</font>";
+
+    //htmlMessage.replace('\n', "<br/>");
 
     QBrush background = palette().background();
     QBrush foreground = palette().foreground();
@@ -84,7 +86,7 @@ void KOsd::display(const QString &message, Level level, int ms)
                      QString logo = THEME_DIR + "icons/info_message.png";
                      background = QColor(0xc1e2fb);
                      m_document->setHtml("<img src=\"" + logo + "\"><font style=\"font-size:12px;\"><b>&nbsp;&nbsp;" \
-                                         + tr("Information") + "</b></font><br><font style=\"font-size:12px\">" + htmlMessage + "</font>");
+                                         + tail);
                    }
                    break;
                 case Warning:
@@ -92,7 +94,7 @@ void KOsd::display(const QString &message, Level level, int ms)
                      QString logo = THEME_DIR + "icons/warning_message.png";
                      background = QColor(0xf77100);
                      m_document->setHtml("<img src=\"" + logo + "\"><font style=\"font-size:12px;\"><b>&nbsp;&nbsp;" \
-                                         + tr("Attention") + "</b></font><br><font style=\"font-size:12px\">" + htmlMessage + "</font>");
+                                         + tail);
                    }
                    break;
                 case Error:
@@ -100,7 +102,7 @@ void KOsd::display(const QString &message, Level level, int ms)
                      QString logo = THEME_DIR + "icons/error_message.png";
                      background = Qt::red;
                      m_document->setHtml("<img src=\"" + logo + "\"><font style=\"font-size:12px;\"><b>&nbsp;&nbsp;" \
-                                         + tr("Error") + "</b></font><br><font style=\"font-size:12px\">" + htmlMessage + "</font>");
+                                         + tail);
                    }
                    break;
                 case Fatal:
@@ -108,7 +110,7 @@ void KOsd::display(const QString &message, Level level, int ms)
                      QString logo = THEME_DIR + "icons/fatal_message.png";
                      background = Qt::red;
                      m_document->setHtml("<img src=\"" + logo + "\"><font style=\"font-size:12px;\"><b>&nbsp;&nbsp;" \
-                                         + tr("Error") + "</b></font><br><font style=\"font-size:12px\">" + htmlMessage+"</font>");
+                                         + tail);
                    }
                    break;
                 default:

@@ -125,6 +125,11 @@ void KToolView::setDescription(const QString &description)
     m_button->setStatusTip(description);
 }
 
+void KToolView::setShortcut(QKeySequence shortcut)
+{
+    m_button->setShortcut(shortcut);
+}
+
 void KToolView::setPerspective(int wsp)
 {
     m_perspective = wsp;

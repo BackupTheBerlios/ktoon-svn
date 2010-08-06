@@ -28,6 +28,7 @@
 
 #include "kaction.h"
 #include "kactionmanager.h"
+#include "kcore/kdebug.h"
 
 KAction::KAction(QObject * parent, const QString &id) : QAction(parent)
 {

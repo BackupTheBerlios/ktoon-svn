@@ -32,6 +32,7 @@
 
 #include <QDockWidget>
 #include <QIcon>
+#include <QKeySequence>
 #include <kgui/kideality.h>
 
 class KViewButton;
@@ -61,6 +62,7 @@ class K_IDEAL_EXPORT KToolView : public QDockWidget
         void enableButton(bool flag);
         QString getObjectID();
         bool isChecked();
+        void setShortcut(QKeySequence shortcut);
 
     public slots:
         void saveSize(bool checked);

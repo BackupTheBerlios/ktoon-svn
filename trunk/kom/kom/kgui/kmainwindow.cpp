@@ -215,9 +215,10 @@ void KMainWindow::addButtonBar(Qt::ToolBarArea area)
  * @param perspective 
  * @return 
  */
-KToolView *KMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective, const QString &code)
+KToolView *KMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective, const QString &code, QKeySequence shortcut)
 {
     KToolView *toolView = new KToolView(widget->windowTitle(), widget->windowIcon(), code);
+    toolView->setShortcut(shortcut);
     toolView->setWidget(widget);
     toolView->setPerspective(perspective);
     toolView->button()->setArea(toToolBarArea(area));
@@ -279,7 +280,7 @@ void KMainWindow::enableToolViews(bool flag)
                     KToolView *v = *it;
 
                     // SQA: Temporary code while Time Line/Library components are fixed
-                    if (v->getObjectID().compare("KToolView-Time Line")==0 || v->getObjectID().compare("KToolView-Library")==0)
+                    if (v->getObjectID().compare("KToolView-Time Line")==0) //  || v->getObjectID().compare("KToolView-Library")==0)
                         v->enableButton(false);
                     else
                         v->enableButton(flag);
@@ -537,8 +538,8 @@ void KMainWindow::setCurrentPerspective(int workspace)
                       if (view->perspective() & workspace) {
 
                           // SQA: Temporary code while Library and Time Line components are fixed
-                          if (view->getObjectID().compare("KToolView-Time Line")==0
-                              || view->getObjectID().compare("KToolView-Library")==0) {
+                          if (view->getObjectID().compare("KToolView-Time Line")==0) {
+                              // || view->getObjectID().compare("KToolView-Library")==0) {
                               bar->enable(view->button());
                               view->enableButton(false);
                           } else {

@@ -43,7 +43,7 @@
 
 class K_GUI_EXPORT KOsd : public QWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     private:
         KOsd(QWidget *parent = 0);
@@ -59,7 +59,7 @@ class K_GUI_EXPORT KOsd : public QWidget
         };
         ~KOsd();
 	
-        void display(const QString & message, Level level = Info, int ms = -1);
+        void display(const QString & title, const QString & message, Level level = Info, int ms = -1);
 
         static KOsd *self();
 

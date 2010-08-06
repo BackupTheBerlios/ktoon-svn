@@ -36,6 +36,7 @@
 #include <QMainWindow>
 #include <QHash>
 #include <QMap>
+#include <QKeySequence>
 
 class KButtonBar;
 class KToolView;
@@ -58,7 +59,7 @@ class K_IDEAL_EXPORT KMainWindow : public QMainWindow
         KMainWindow(QWidget *parent = 0);
         ~KMainWindow();
 
-        KToolView *addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective = DefaultPerspective, const QString &code = QString());
+        KToolView *addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective = DefaultPerspective, const QString &code = QString(), QKeySequence shortcut = QKeySequence(""));
 
         void removeToolView(KToolView *view);
 

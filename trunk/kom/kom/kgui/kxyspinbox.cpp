@@ -26,7 +26,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-
 #include "kxyspinbox.h"
 
 #include <QHBoxLayout>
@@ -45,6 +44,7 @@ KXYSpinBox::KXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(title,
     internal->addWidget(m_textX, 0, 0, Qt::AlignRight);
 
     m_x = new QSpinBox;
+    m_x->setMinimumWidth(60);
     internal->addWidget(m_x, 0, 1);
     m_textX->setBuddy(m_x);
 
@@ -52,6 +52,7 @@ KXYSpinBox::KXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(title,
     internal->addWidget(m_textY, 1, 0, Qt::AlignRight);
 
     m_y = new QSpinBox;
+    m_y->setMinimumWidth(60);
     internal->addWidget(m_y, 1, 1);
 
     m_textY->setBuddy(m_y);

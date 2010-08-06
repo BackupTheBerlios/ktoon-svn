@@ -167,7 +167,7 @@ void KActionManager::exec(const QString &id)
    if (action != 0) {
        action->toggle();
        action->setChecked(true);
-   }
+   } 
 }
 
 QMenuBar *KActionManager::setupMenuBar(QMenuBar *menuBar, const QStringList &containers, bool clear)
