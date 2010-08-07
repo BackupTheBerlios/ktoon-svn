@@ -300,8 +300,6 @@ void KTLibraryWidget::importBitmap()
 
     QString symName = fileInfo.fileName();
 
-    kFatal() << "KTLibraryWidget::importBitmap() - Importing file: " << symName;
-
     if (f.open(QIODevice::ReadOnly)) {
         QByteArray data = f.readAll();
         f.close();

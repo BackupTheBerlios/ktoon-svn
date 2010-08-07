@@ -107,8 +107,8 @@ void KTMainWindow::createGUI()
     //            m_actionManager, "importaudiofile");
 
     // SQA: Temporary code
-    m_actionManager->enable("importsvg", false);
-    m_actionManager->enable("importsvgarray", false);
+    //m_actionManager->enable("importsvg", false);
+    //m_actionManager->enable("importsvgarray", false);
 
     ui4project(m_libraryWidget);
     ui4localRequest(m_libraryWidget);

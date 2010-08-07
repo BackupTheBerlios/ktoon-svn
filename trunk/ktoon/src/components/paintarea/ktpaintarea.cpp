@@ -351,7 +351,6 @@ void KTPaintArea::libraryResponse(KTLibraryResponse *request)
     switch (request->action()) {
 
             case KTProjectRequest::AddSymbolToProject:
-                 kFatal() << "KTPaintArea::libraryResponse - updating canvas!";
                  graphicsScene()->drawCurrentPhotogram();
                  viewport()->update(scene()->sceneRect().toRect());
 

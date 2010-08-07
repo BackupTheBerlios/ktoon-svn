@@ -531,7 +531,6 @@ void KTProjectCommand::libraryCommand()
     switch (response->action()) {
             case KTProjectRequest::Add:
             {
-                 kFatal() << "KTProjectCommand::libraryCommand() - Adding object!";
                  k->executor->createSymbol(response);
             }
             break;
@@ -542,7 +541,6 @@ void KTProjectCommand::libraryCommand()
             break;
             case KTProjectRequest::AddSymbolToProject:
             {
-                 kFatal() << "KTProjectCommand::libraryCommand() - Adding symbol to project!";
                  k->executor->addSymbolToProject(response);
             }
             break;

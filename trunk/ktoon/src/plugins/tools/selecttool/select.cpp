@@ -203,7 +203,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                  if (manager->isModified()) {
                      QDomDocument doc;
                      doc.appendChild(KTSerializer::properties(manager->parentItem(), doc));
-                
+
                      int position  = scene->currentFrame()->indexOf(manager->parentItem());
 
                      if (position != -1) {
@@ -212,6 +212,8 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                                   view->setUpdatesEnabled(false);
 
                          manager->restoreItem();
+
+                         kFatal() << "Select::release -> Setting a transformation in the item";
                     
                          KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                     scene->currentSceneIndex(), 
@@ -221,6 +223,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                          emit requested(&event);
                      } else {
                          kDebug("selection") << "position is " << position; 
+                         kFatal() << "Select::release -> No transformation was made :S - Position: " << position;
                      }
                  }
         }
