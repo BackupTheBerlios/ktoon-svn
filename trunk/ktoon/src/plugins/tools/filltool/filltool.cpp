@@ -181,8 +181,8 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
                 int position  = scene->currentFrame()->indexOf(shape);
                 
                 if (position >= 0) {
-                    if (currentTool() == tr("Fill")) {
-                        shape->setBrush( brushManager->pen().brush());
+                    if (currentTool() == tr("Internal fill")) {
+                        shape->setBrush(brushManager->pen().brush());
                     } else if (currentTool() == tr("Contour fill")) {
                                QPen pen = shape->pen();
                                pen.setBrush(brushManager->pen().brush());
