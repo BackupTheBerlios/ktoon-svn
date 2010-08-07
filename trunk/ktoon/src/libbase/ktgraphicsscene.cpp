@@ -213,7 +213,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
                              limit = layer->frames().count();
 
                          QString frameLater = "";
-                         for (int frameIndex = photogram+1; frameIndex < limit; frameIndex++) {
+                         for (int frameIndex = photogram+1; frameIndex <= limit; frameIndex++) {
                               KTFrame * frame = layer->frame(frameIndex);
                               QString nextFrame = frame->frameName();
                               if (frame && nextFrame.compare(currentFrame) != 0 

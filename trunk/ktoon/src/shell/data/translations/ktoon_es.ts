@@ -113,18 +113,18 @@
 <context>
     <name>CrashWidget</name>
     <message>
-        <location filename="../../crashwidget.cpp" line="122"/>
+        <location filename="../../ktcrashwidget.cpp" line="122"/>
         <source>What&apos;s happening?</source>
         <translation>Qué sucede?</translation>
     </message>
     <message>
-        <location filename="../../crashwidget.cpp" line="144"/>
+        <location filename="../../ktcrashwidget.cpp" line="144"/>
         <source>Executable information</source>
         <translation>Información sobre el ejecutable</translation>
     </message>
     <message>
-        <location filename="../../crashwidget.cpp" line="150"/>
-        <location filename="../../crashwidget.cpp" line="157"/>
+        <location filename="../../ktcrashwidget.cpp" line="150"/>
+        <location filename="../../ktcrashwidget.cpp" line="157"/>
         <source>Backtrace</source>
         <translation>Rastros del Problema</translation>
     </message>
