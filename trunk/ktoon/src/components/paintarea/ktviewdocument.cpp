@@ -247,10 +247,12 @@ void KTViewDocument::setupDrawActions()
                                  k->actionManager, "group");
 
     group->setStatusTip(tr("Group the selected objects into a single one"));
+    group->setDisabled(true);
 
     KAction *ungroup = new KAction(QPixmap(THEME_DIR + "icons/ungroup.png"), tr("&Ungroup"), 
                                     QKeySequence(tr("Ctrl+Shift+G")) , k->paintArea, SLOT(ungroupItems()), 
                                     k->actionManager, "ungroup");
+    ungroup->setDisabled(true);
 
     ungroup->setStatusTip(tr("Ungroups the selected object"));
 }

@@ -168,14 +168,14 @@ void KTCrashWidget::addBacktracePage(const QString &execInfo, const QString &bac
 
 void KTCrashWidget::restart()
 {
-   // Restarting KTooN
-   system("/usr/local/ktoon/bin/ktoon &"); // Vamos aqui!!!
+   QString path = QString::fromLocal8Bit(::getenv("KTOON_BIN")) + "/ktoon &";
+   QByteArray ba = path.toAscii();
+   system(ba.data());
    kill(m_pid, 9);
 }
 
 void KTCrashWidget::exit()
 {
-   // Restarting KTooN
    kill(m_pid, 9);
 }
 
