@@ -282,11 +282,13 @@ void KTScene::fromXml(const QString &xml)
                                  ts << n;
                                }
 
-                              layer->fromXml( newDoc );
+                              layer->fromXml(newDoc);
                           }
                }
            }
+
            n = n.nextSibling();
+
     } // end while
 }
 

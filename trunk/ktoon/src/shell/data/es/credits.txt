@@ -42,9 +42,13 @@ Traductores
 
      David A. Cuadrado
 
-  Portuguese:
+  Portugues:
 
      Alyne Castro
+
+  Ruso:
+
+     Sergey Garkusha
 
 ----------------------------
 Diseno Iconografico

@@ -1,8 +1,8 @@
-# Generated automatically at Thu Aug 05 16:27:41 -0500 2010! PLEASE DO NOT EDIT!
+# Generated automatically at Sun Aug 08 14:22:44 -0500 2010! PLEASE DO NOT EDIT!
 INCLUDEPATH += /usr/include
-LIBS += -laspell -lavcodec -lavformat -lkgui -lkcore -lksound -lz -L/usr/lib64
+LIBS += -laspell -lavcodec -lavformat -lkgui -lkcore -lksound -lz -L/usr/lib
 QT += opengl core gui svg xml network
-DEFINES += HAVE_ASPELL HAVE_FFMPEG VERSION=\\\"0.9a\\\" CODE_NAME=\\\"Phoenix\\\" REVISION=\\\"1564\\\" K_DEBUG
+DEFINES += HAVE_ASPELL HAVE_FFMPEG VERSION=\\\"0.9a\\\" CODE_NAME=\\\"Phoenix\\\" REVISION=\\\"1572\\\" K_DEBUG
 unix {
     OBJECTS_DIR = .obj
     UI_DIR = .ui

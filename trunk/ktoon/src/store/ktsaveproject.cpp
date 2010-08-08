@@ -143,7 +143,7 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
             pfile.close();
         } else {
             #ifdef K_DEBUG
-                   kFatal() << "Can't find .ktp file!";
+                   kFatal() << "KTSaveProject::load() - Error: Can't find .ktp file!";
             #endif
             return false;
         }

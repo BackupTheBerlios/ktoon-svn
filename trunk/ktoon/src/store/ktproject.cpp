@@ -455,7 +455,7 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
         }
 
         return true;
-    }
+    } 
 
     return false;
 }

@@ -150,8 +150,6 @@ QString KTPackageHandler::stripRepositoryFromPath(QString path)
 
 bool KTPackageHandler::importPackage(const QString &packagePath)
 {
-    kFatal() << "KTPackageHandler::importPackage - Importing file: " << packagePath;
-
     QuaZip zip(packagePath);
     
     if (!zip.open(QuaZip::mdUnzip)) {
@@ -169,6 +167,8 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 
     bool next = zip.goToFirstFile();
 
+    int i = 0;
+
     while (next) {
 
            if (!zip.getCurrentFileInfo(&info)) {
@@ -185,8 +185,9 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 
            if (name.endsWith(QDir::separator()))
                name.remove(name.count()-1, 1);
-        
-           k->importedProjectPath = QFileInfo(name).path();
+
+           if (i == 0)
+               k->importedProjectPath = QFileInfo(name).path();
         
            if (file.getZipError() != UNZ_OK) {
                kError() << "Error while open package " << file.getZipError();
@@ -231,6 +232,7 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
            }
             
            next = zip.goToNextFile();
+           i++;
     }
     
     zip.close();

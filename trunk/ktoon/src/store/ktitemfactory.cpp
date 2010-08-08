@@ -457,3 +457,20 @@ QGraphicsItem *KTItemFactory::create(const QString &xml)
 
     return 0;
 }
+
+QString KTItemFactory::itemID(const QString &xml)
+{
+    QDomDocument document;
+
+    if (!document.setContent(xml))
+        return "item";
+
+    QDomElement root = document.documentElement();
+    QString id = root.attribute("id");
+
+    if (id.length() > 0)
+        return id;
+
+    return "item";
+}
+

@@ -45,6 +45,7 @@
 #include "ktgraphicalgorithm.h"
 #include "ktscene.h"
 #include "ktlayer.h"
+#include "ktsvgitem.h"
 
 #include "ktinputdeviceinformation.h"
 #include "ktgraphicsscene.h"
@@ -203,6 +204,16 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                  if (manager->isModified()) {
                      QDomDocument doc;
                      doc.appendChild(KTSerializer::properties(manager->parentItem(), doc));
+
+                     QGraphicsItem *item = manager->parentItem();
+                     KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item);
+
+                     if (svg) {
+                         kFatal() << "Select::release -> Tracing a SVG file!";
+                         kFatal() << "Select::release -> Content: " << svg->content();
+                     } else {
+                         kFatal() << "Select::release -> NO SVG file!";
+                     }
 
                      int position  = scene->currentFrame()->indexOf(manager->parentItem());
 

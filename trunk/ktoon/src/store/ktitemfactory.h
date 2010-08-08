@@ -48,41 +48,42 @@ class KTLibrary;
 */
 class STORE_EXPORT KTItemFactory : public KXmlParserBase
 {
-	public:
-		KTItemFactory();
-		~KTItemFactory();
-		
-		void setLibrary(const KTLibrary *library);
-		
-		/**
-		 * Analiza etiquetas de apertura del documento XML
-		 */
-		bool startTag(const QString& qname, const QXmlAttributes& atts);
-		
-		void text( const QString & ch );
-		
-		/**
-		 * Analiza etiquetas de cierre del documento XML
-		 */
-		bool endTag(const QString& qname);
-		
-	public:
-		QGraphicsItem *create(const QString &xml);
-		bool loadItem(QGraphicsItem *item, const QString &xml);
-		
-	private:
-		void setItemPen(const QPen &pen);
-		void setItemBrush(const QBrush &brush);
-		void setItemGradient(const QGradient& gradient, bool brush );
-		
-		QPen itemPen() const;
-		QBrush itemBrush() const;
-		
-		QGraphicsItem* createItem(const QString &xml);
-		
-	private:
-		struct Private;
-		Private *const k;
+    public:
+    	KTItemFactory();
+    	~KTItemFactory();
+    	
+    	void setLibrary(const KTLibrary *library);
+    	
+    	/**
+    	 * Analiza etiquetas de apertura del documento XML
+    	 */
+    	bool startTag(const QString& qname, const QXmlAttributes& atts);
+    	
+    	void text( const QString & ch );
+    	
+    	/**
+    	 * Analiza etiquetas de cierre del documento XML
+    	 */
+    	bool endTag(const QString& qname);
+    	
+    	QGraphicsItem *create(const QString &xml);
+    	bool loadItem(QGraphicsItem *item, const QString &xml);
+
+        QString itemID(const QString &xml);
+    	
+    private:
+    	void setItemPen(const QPen &pen);
+    	void setItemBrush(const QBrush &brush);
+    	void setItemGradient(const QGradient& gradient, bool brush );
+    	
+    	QPen itemPen() const;
+    	QBrush itemBrush() const;
+    	
+    	QGraphicsItem* createItem(const QString &xml);
+    	
+    private:
+    	struct Private;
+    	Private *const k;
 };
 
 #endif

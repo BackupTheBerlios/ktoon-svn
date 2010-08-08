@@ -305,18 +305,25 @@ bool KTFrame::removeGraphicAt(int position)
 
 QGraphicsItem *KTFrame::createItem(int position, const QString &xml, bool loaded)
 {
+    kFatal() << "KTFrame::createItem - pos: " << position;
+    kFatal() << "KTFrame::createItem - XML: " << xml;
+
     KTItemFactory itemFactory;
     itemFactory.setLibrary(project()->library());
 
     QGraphicsItem *graphicItem = itemFactory.create(xml);
 
     if (graphicItem) {
-        QString id("item");
+        QString id = itemFactory.itemID(xml);
         insertItem(position, id, graphicItem);
-    }
+    } 
 
-    if (loaded)
+    if (loaded) {
+        kFatal() << "KTFrame::createItem - Loader doesn't create item";
         KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, xml, project());
+    } else {
+        kFatal() << "KTFrame::createItem - Loader creates item";
+    }
 
     return graphicItem;
 }

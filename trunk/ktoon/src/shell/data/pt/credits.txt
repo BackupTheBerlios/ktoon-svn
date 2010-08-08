@@ -48,6 +48,10 @@ Translators
 
      Alyne Castro
 
+  Russian:
+
+     Sergey Garkusha
+
 ----------------------------
 Iconographic Design
 
