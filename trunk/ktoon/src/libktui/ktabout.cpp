@@ -82,7 +82,7 @@ KTAbout::KTAbout(QWidget *parent) : KTabDialog(Cancel, parent)
         #endif
     }
 
-    QImage credits = QImage(DATA_DIR + "/images/credits.png");
+    QImage credits = QImage(THEME_DIR + "/images/credits.png");
 
     KImageEffect::fade(credits,0.25, palette().background().color());
 
