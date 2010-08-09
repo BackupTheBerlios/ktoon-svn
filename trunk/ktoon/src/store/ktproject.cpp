@@ -429,9 +429,14 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                 break;
                 case KTLibraryObject::Svg:
                      {
-                       KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
-                       QString id(libraryItem->symbolName());
-                       frame->addItem(id, libraryItem);
+                       //KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
+                       //object->dataPath()  
+                       //QFile file(object->dataPath());
+                       //QString path(file.fileName());
+                       QString path(object->dataPath());
+                       KTSvgItem *svgItem = new KTSvgItem(path);
+                       QString id(object->symbolName());
+                       frame->addItem(id, svgItem);
                      }
                 break;
                 case KTLibraryObject::Item:

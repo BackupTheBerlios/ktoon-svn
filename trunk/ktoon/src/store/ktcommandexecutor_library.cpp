@@ -40,6 +40,8 @@
 
 bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 {
+    kFatal() << "KTCommandExecutor::createSymbol - Following the white rabbit!";
+
     if (m_project->createSymbol(response->symbolType(), response->arg().toString(), response->data())) {
         emit responsed(response);
 
@@ -67,6 +69,7 @@ bool KTCommandExecutor::removeSymbol(KTLibraryResponse *response)
 
 bool KTCommandExecutor::addSymbolToProject(KTLibraryResponse *response)
 {
+    kFatal() << "KTCommandExecutor::addSymbolToProject - Following the white rabbit!";
     if (m_project->addSymbolToProject(response->arg().toString(), response->sceneIndex(), response->layerIndex(), response->frameIndex())) {
         emit responsed(response);
 

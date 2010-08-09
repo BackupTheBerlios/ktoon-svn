@@ -46,12 +46,22 @@ KTSvgItem::~KTSvgItem()
 {
 }
 
+void KTSvgItem::setObjectName(QString &name)
+{
+    id = name;
+}
+
+QString KTSvgItem::objectName() const
+{
+    return id;
+}
+
 void KTSvgItem::setContent(QString &xml)
 {
     data = xml;
 }
 
-QString KTSvgItem::content() 
+QString KTSvgItem::content() const
 {
     return data;
 }

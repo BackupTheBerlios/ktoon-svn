@@ -46,6 +46,7 @@
 #include "ktscene.h"
 #include "ktlayer.h"
 #include "ktsvgitem.h"
+#include "ktgraphicobject.h"
 
 #include "ktinputdeviceinformation.h"
 #include "ktgraphicsscene.h"
@@ -202,6 +203,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
         
         foreach (NodeManager *manager, k->nodeManagers) {
                  if (manager->isModified()) {
+                     int position = -1;
                      QDomDocument doc;
                      doc.appendChild(KTSerializer::properties(manager->parentItem(), doc));
 
@@ -210,12 +212,12 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 
                      if (svg) {
                          kFatal() << "Select::release -> Tracing a SVG file!";
-                         kFatal() << "Select::release -> Content: " << svg->content();
+                         position  = scene->currentFrame()->indexOf(svg);
+                         kFatal() << "Select::release -> position: " << position;
                      } else {
                          kFatal() << "Select::release -> NO SVG file!";
+                         position  = scene->currentFrame()->indexOf(manager->parentItem());
                      }
-
-                     int position  = scene->currentFrame()->indexOf(manager->parentItem());
 
                      if (position != -1) {
                          // Restore matrix
@@ -301,7 +303,7 @@ void Select::itemResponse(const KTItemResponse *event)
 
             if (layer) {
                 frame = layer->frame(event->frameIndex());
-                if (frame && frame->count()>0) {
+                if (frame && frame->graphicItemsCount()>0) {
                     item = frame->item(event->itemIndex());
                 } else {
                     return;

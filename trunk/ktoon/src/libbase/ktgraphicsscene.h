@@ -35,6 +35,7 @@
 #include <QGraphicsScene>
 
 #include "ktglobal.h"
+#include "ktsvgitem.h"
 
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
@@ -62,6 +63,7 @@ class KTOON_EXPORT KTGraphicsScene : public QGraphicsScene
         void drawPhotogram(int photogram);
         void addFrame(KTFrame *frame, double opacity = 1.0);
         void addGraphicObject(KTGraphicObject *object, double opacity = 1.0);
+        void addSvgObject(KTSvgItem *svgItem, double opacity = 1.0);
         
         void clean();
         void removeScene();

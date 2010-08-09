@@ -66,6 +66,9 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
     int framePosition = response->frameIndex();
     int position = response->itemIndex();
     QString xml = response->arg().toString();
+
+    kFatal() << "KTCommandExecutor::createItem() - Creating Item...";
+    kFatal() << "KTCommandExecutor::createItem() - XML: " << xml;
     
     KTScene *scene = m_project->scene(scenePosition);
     

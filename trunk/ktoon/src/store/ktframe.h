@@ -33,22 +33,23 @@
 #define KTFRAME_H
 
 #include <QGraphicsScene>
-#include "ktabstractserializable.h"
-
 #include <QDomDocument>
 #include <QDomElement>
 
+#include "ktabstractserializable.h"
 #include "ktinthash.h"
-
+#include "ktsvgitem.h"
 #include "ktglobal_store.h"
 
 class KTFrame;
 class KTLayer;
 class KTGraphicObject;
+class KTSvgItem;
 class KTProject;
 class KTScene;
 
 typedef KTIntHash<KTGraphicObject *> GraphicObjects;
+typedef KTIntHash<KTSvgItem *> SvgObjects;
 
 /**
  * @brief Esta clase representa un marco o frame de la animacion
@@ -91,7 +92,9 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
        bool isVisible() const;
        
        void addItem(QString &id, QGraphicsItem *item);
+       void addSvgItem(QString &id, KTSvgItem *item);
        void insertItem(int position, QString &id, QGraphicsItem *item);
+       void insertSvgItem(int position, QString &id, KTSvgItem *item);
        
        void replaceItem(int position, QGraphicsItem *item);
        bool moveItem(int currentPosition, int newPosition);
@@ -100,9 +103,12 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
        QGraphicsItem *createItem(int position, const QString &xml, bool loaded = false);
 
        void setGraphics(GraphicObjects objects);       
+       void setSvgObjects(SvgObjects objects);
        GraphicObjects graphics() const;
+       SvgObjects svgItems() const; 
        
        KTGraphicObject *graphic(int position) const;
+       KTSvgItem *svg(int position) const; 
        QGraphicsItem *item(int position) const;
        
        QGraphicsItemGroup *createItemGroupAt(int position, QList<qreal> group);
@@ -113,21 +119,18 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
        KTProject *project() const;
        
        int indexOf(KTGraphicObject *object) const;
-       //int logicalIndexOf(KTGraphicObject *object) const;
        int indexOf(QGraphicsItem *item) const;
-       //int logicalIndexOf(QGraphicsItem *item) const;
+       int indexOf(KTSvgItem *item) const;
        
        int index() const;
-       //int logicalIndex() const;
        
        void setRepeat(int repeat);
        int repeat() const;
        
        void clean();
-       int count();
+       int graphicItemsCount();
+       int svgItemsCount();
 
-       //void setZLevel(int level);
-       //int getZLevel();
        int getTopZLevel();
        
     public:

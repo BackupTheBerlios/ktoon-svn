@@ -61,10 +61,11 @@
 #include "ktlibraryobject.h"
 #include "ktrequestbuilder.h"
 
-#include <kgui/kosd.h>
-
 #include "ktscene.h"
+#include "ktsvgitem.h"
 #include "ktproject.h"
+
+#include <kgui/kosd.h>
 
 /**
  * This class defines the behavior of the main paint area when ilustration module is on
@@ -322,10 +323,13 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
                     viewport()->update();
                     break;
                case KTProjectRequest::Remove:
+                    kFatal() << "KTPaintArea::itemResponse -> Deleting item";
                     if (k->lastItem) {
                         graphicsScene()->drawCurrentPhotogram();
                         viewport()->update(scene()->sceneRect().toRect());
                         k->lastItem = false;
+                    } else {
+                        kFatal() << "KTPaintArea::itemResponse -> No item deleted :(";
                     }
                     break;
                default:
@@ -376,6 +380,8 @@ bool KTPaintArea::canPaint() const
 void KTPaintArea::deleteItems()
 {
     // K_FUNCINFO;
+    kFatal() << "KTPaintArea::deleteItems() - Deleting items!";
+
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
     if (!selected.empty()) {
@@ -387,6 +393,14 @@ void KTPaintArea::deleteItems()
             foreach (QGraphicsItem *item, selected) {
                      if (counter == total-1) 
                          k->lastItem = true;
+
+                     KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item);
+
+                     if (svg) {
+                         kFatal() << "KTPaintArea::deleteItems() -> Tracing a SVG file!";
+                     } else {
+                         kFatal() << "KTPaintArea::deleteItems() -> NO SVG file!";
+                     }
 
                      KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                               currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 

@@ -29,12 +29,11 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "ktframe.h"
-#include "ktlayer.h"
-
+#include <QGraphicsItem>
 #include <kcore/kdebug.h>
 
-#include <QGraphicsItem>
+#include "ktframe.h"
+#include "ktlayer.h"
 
 #include "ktitemfactory.h"
 #include "ktgraphicobject.h"
@@ -55,8 +54,9 @@ struct KTFrame::Private
     bool isLocked;
     bool isVisible;
     GraphicObjects graphics;
+    SvgObjects svg;
     int repeat;
-    //int zLevelBase;
+    int zLevelIndex;
 };
 
 KTFrame::KTFrame(KTLayer *parent) : QObject(parent), k(new Private)
@@ -65,17 +65,20 @@ KTFrame::KTFrame(KTLayer *parent) : QObject(parent), k(new Private)
     k->isLocked = false;
     k->isVisible = true;
     k->repeat = 1;
+    k->zLevelIndex = -1;
 }
 
 KTFrame::~KTFrame()
 {
     k->graphics.clear(true);
+    k->svg.clear(true);
     delete k;
 }
 
 void KTFrame::clean()
 {
     k->graphics.clear(true);
+    k->svg.clear(true);
 }
 
 void KTFrame::setFrameName(const QString &name)
@@ -182,17 +185,42 @@ void KTFrame::addItem(QString &id, QGraphicsItem *item)
     insertItem(k->graphics.count(), id, item);
 }
 
+void KTFrame::addSvgItem(QString &id, KTSvgItem *item)
+{
+    insertSvgItem(k->svg.count(), id, item);
+}
+
 void KTFrame::insertItem(int position, QString &id, QGraphicsItem *item)
 {
     if (k->graphics.contains(position-1)) {
         if (QGraphicsItem *lastItem = k->graphics.value(position-1)->item())
-            item->setZValue(lastItem->zValue()+1);
+            k->zLevelIndex = lastItem->zValue()+1; 
+            item->setZValue(k->zLevelIndex);
+    } else {
+        if (k->zLevelIndex == -1)
+            k->zLevelIndex = item->zValue();
     }
 
     KTGraphicObject *object = new KTGraphicObject(item, this);
     object->setObjectName(id);
     k->graphics.insert(position, object);
 }
+
+void KTFrame::insertSvgItem(int position, QString &id, KTSvgItem *item)
+{
+    if (k->svg.contains(position-1)) {
+        if (KTSvgItem *lastItem = k->svg.value(position-1))
+            k->zLevelIndex = lastItem->zValue()+1;
+            item->setZValue(k->zLevelIndex);
+    } else {
+        if (k->zLevelIndex == -1)
+            k->zLevelIndex = item->zValue();
+    }
+
+    item->setObjectName(id);
+    k->svg.insert(position, item);
+}
+
 
 QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group)
 {
@@ -315,7 +343,10 @@ QGraphicsItem *KTFrame::createItem(int position, const QString &xml, bool loaded
 
     if (graphicItem) {
         QString id = itemFactory.itemID(xml);
-        insertItem(position, id, graphicItem);
+        //if (id.endsWith(".svg", Qt::CaseInsensitive))
+        //    insertSvgItem(position, id, graphicItem); 
+        //else 
+            insertItem(position, id, graphicItem);
     } 
 
     if (loaded) {
@@ -333,15 +364,23 @@ void KTFrame::setGraphics(GraphicObjects objects)
     k->graphics = objects;
 }
 
+void KTFrame::setSvgObjects(SvgObjects items)
+{
+    k->svg = items;
+}
+
 GraphicObjects KTFrame::graphics() const
 {
     return k->graphics;
 }
 
+SvgObjects KTFrame::svgItems() const
+{
+    return k->svg;
+}
+
 KTGraphicObject *KTFrame::graphic(int position) const
 {
-    //if (position < 0 || position >= k->graphics.count()) {
-
     if (position < 0) {
         #ifdef K_DEBUG
                K_FUNCINFO << " FATAL ERROR: index out of bound [KTFrame->graphic()] - index: " << position << " - total items: " << k->graphics.count();
@@ -352,6 +391,20 @@ KTGraphicObject *KTFrame::graphic(int position) const
 
     return k->graphics.value(position);
 }
+
+KTSvgItem *KTFrame::svg(int position) const
+{
+    if (position < 0) {
+        #ifdef K_DEBUG
+               K_FUNCINFO << " FATAL ERROR: index out of bound [KTFrame->svg()] - index: " << position << " - total items: " << k->svg.count();
+        #endif
+
+        return 0;
+    }
+
+    return k->svg.value(position);
+}
+
 
 QGraphicsItem *KTFrame::item(int position) const
 {
@@ -368,12 +421,10 @@ int KTFrame::indexOf(KTGraphicObject *object) const
     return k->graphics.objectIndex(object);
 }
 
-/*
-int KTFrame::logicalIndexOf(KTGraphicObject *object) const
+int KTFrame::indexOf(KTSvgItem *object) const
 {
-    return k->graphics.logicalIndex(object);
+    return k->svg.objectIndex(object);
 }
-*/
 
 int KTFrame::indexOf(QGraphicsItem *item) const
 {
@@ -384,23 +435,6 @@ int KTFrame::indexOf(QGraphicsItem *item) const
 
     return -1;
 }
-
-/*
-int KTFrame::logicalIndexOf(QGraphicsItem *item) const
-{
-    foreach (KTGraphicObject *object, k->graphics.values()) {
-             if (object->item() == item)
-                 return k->graphics.logicalIndex(object);
-    }
-
-    return -1;
-}
-
-int KTFrame::logicalIndex() const
-{
-    return layer()->visualIndexOf(const_cast<KTFrame *>(this));
-}
-*/
 
 void KTFrame::setRepeat(int repeat)
 {
@@ -414,8 +448,6 @@ int KTFrame::repeat() const
 
 int KTFrame::index() const
 {
-    //return layer()->logicalIndexOf(const_cast<KTFrame *>(this));
-
     return layer()->visualIndexOf(const_cast<KTFrame *>(this));
 }
 
@@ -434,22 +466,15 @@ KTProject *KTFrame::project() const
     return layer()->project();
 }
 
-int KTFrame::count()
+int KTFrame::graphicItemsCount()
 {
     return k->graphics.count();
 }
 
-/*
-void KTFrame::setZLevel(int level)
+int KTFrame::svgItemsCount()
 {
-    k->zLevelBase = level;
+    return k->svg.count();
 }
-
-int KTFrame::getZLevel()
-{
-    return k->zLevelBase;
-}
-*/
 
 int KTFrame::getTopZLevel()
 {

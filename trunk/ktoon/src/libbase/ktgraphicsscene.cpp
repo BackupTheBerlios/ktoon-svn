@@ -266,72 +266,72 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
     if (frame) {
         k->objectCounter = 0;
         // TODO: This for must be re-written
-        for (int i=0; i < frame->count(); i++) {
+        for (int i=0; i < frame->graphicItemsCount(); i++) {
              KTGraphicObject *object = frame->graphic(i);
              addGraphicObject(object, opacity);
         }
 
+        for (int i=0; i < frame->svgItemsCount(); i++) {
+             KTSvgItem *object = frame->svg(i);
+             addSvgObject(object, opacity);
+        }
     }
 }
 
 void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 {
-    if (object->objectName().endsWith("svg", Qt::CaseInsensitive)) {
+    QGraphicsItem *item = object->item();
+    k->onionSkin.opacityMap.insert(item, opacity);
 
-        QGraphicsItem *element = object->item();
-        KTGraphicLibraryItem *graphic = qgraphicsitem_cast<KTGraphicLibraryItem *>(element);
+    if (KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item))
+        group->recoverChilds();
 
-        if (graphic) {
-            QFile file(graphic->svgContent());
-            QString maybe(file.fileName());
-            KTSvgItem *svgItem = new KTSvgItem(maybe);
+    if (! qgraphicsitem_cast<KTItemGroup *>(item->parentItem())) {
 
-            if (svgItem) {
+        item->setSelected(false);
+        KTLayer *layer = k->scene->layer(k->framePosition.layer);
 
-                k->onionSkin.opacityMap.insert(svgItem, opacity);
-                svgItem->setSelected(false);
-
-                KTLayer *layer = k->scene->layer(k->framePosition.layer);
-
-                if (layer) {
-                    KTFrame *frame = layer->frame(k->framePosition.frame);
-                    if (frame) {
-                        int factor = k->objectCounter + (k->layerCounter)*1000;
-                        k->objectCounter++;
-                        svgItem->setOpacity(opacity);
-                        svgItem->setZValue(factor);
-                        addItem(svgItem);
-                    } 
-                } 
-            } 
-        } 
-
-    } else { 
-
-      QGraphicsItem *item = object->item();
-      k->onionSkin.opacityMap.insert(item, opacity);
-
-      if (KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item))
-          group->recoverChilds();
-
-      if (! qgraphicsitem_cast<KTItemGroup *>(item->parentItem())) {
-
-          item->setSelected(false);
-          KTLayer *layer = k->scene->layer(k->framePosition.layer);
-
-          if (layer) {
-              KTFrame *frame = layer->frame(k->framePosition.frame);
-              if (frame) {
-                  int factor = k->objectCounter + (k->layerCounter)*1000; 
-                  k->objectCounter++;
-                  item->setOpacity(opacity);
-                  item->setZValue(factor);
-                  addItem(item);
-              }
-          }
-      } 
-    }
+        if (layer) {
+            KTFrame *frame = layer->frame(k->framePosition.frame);
+            if (frame) {
+                int factor = k->objectCounter + (k->layerCounter)*1000; 
+                k->objectCounter++;
+                item->setOpacity(opacity);
+                item->setZValue(factor);
+                addItem(item);
+            }
+        }
+    } 
 }
+
+void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
+{
+    /*
+     QFile file(graphic->svgContent());
+     QString maybe(file.fileName());
+     KTSvgItem *svgItem = new KTSvgItem(maybe);
+     */
+
+    kFatal() << "KTGraphicsScene::addSvgObject - Testing!";
+
+    if (svgItem) {
+        k->onionSkin.opacityMap.insert(svgItem, opacity);
+        svgItem->setSelected(false);
+
+        KTLayer *layer = k->scene->layer(k->framePosition.layer);
+
+        if (layer) {
+            KTFrame *frame = layer->frame(k->framePosition.frame);
+            if (frame) {
+                int factor = k->objectCounter + (k->layerCounter)*1000;
+                k->objectCounter++;
+                svgItem->setOpacity(opacity);
+                svgItem->setZValue(factor);
+                addItem(svgItem);
+            }
+        }
+    }
+} 
 
 void KTGraphicsScene::clean()
 {

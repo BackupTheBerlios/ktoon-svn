@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'texttool.h'
 **
-** Created: Sat Aug 7 16:23:43 2010
+** Created: Mon Aug 9 03:19:10 2010
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.2)
 **
 ** WARNING! All changes made in this file will be lost!
