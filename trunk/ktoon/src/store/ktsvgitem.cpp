@@ -32,6 +32,8 @@
 #include "ktsvgitem.h"
 #include <QSvgRenderer>
 
+#include <kcore/kdebug.h>
+
 KTSvgItem::KTSvgItem(QGraphicsItem * parent)
     : QGraphicsSvgItem(parent)
 {
@@ -79,6 +81,7 @@ void KTSvgItem::fromXml(const QString &xml)
 QDomElement KTSvgItem::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("svg");
+    root.setNodeValue(data); 
     
     return root;
 }

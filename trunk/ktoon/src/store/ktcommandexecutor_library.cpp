@@ -40,7 +40,7 @@
 
 bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 {
-    kFatal() << "KTCommandExecutor::createSymbol - Following the white rabbit!";
+    kFatal() << "KTCommandExecutor::createSymbol (Library) - Following the white rabbit!";
 
     if (m_project->createSymbol(response->symbolType(), response->arg().toString(), response->data())) {
         emit responsed(response);

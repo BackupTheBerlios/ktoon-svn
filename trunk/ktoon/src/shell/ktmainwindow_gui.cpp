@@ -97,10 +97,10 @@ void KTMainWindow::createGUI()
     new KAction(QPixmap(THEME_DIR + "icons/bitmap_array.png"), tr("Bitmap Array"), QKeySequence(tr("Alt+Shift+B")), m_libraryWidget, SLOT(importBitmapArray()),
                 m_actionManager, "importbitmaparray");
 
-    new KAction(QPixmap(THEME_DIR + "icons/bitmap.png"), tr("SVG File"), QKeySequence(tr("Alt+S")), m_libraryWidget, SLOT(importSvg()),
+    new KAction(QPixmap(THEME_DIR + "icons/svg.png"), tr("SVG File"), QKeySequence(tr("Alt+S")), m_libraryWidget, SLOT(importSvg()),
                 m_actionManager, "importsvg");
 
-    new KAction(QPixmap(THEME_DIR + "icons/bitmap_array.png"), tr("SVG Array"), QKeySequence(tr("Alt+Shift+S")), m_libraryWidget, SLOT(importSvgArray()),
+    new KAction(QPixmap(THEME_DIR + "icons/svg_array.png"), tr("SVG Array"), QKeySequence(tr("Alt+Shift+S")), m_libraryWidget, SLOT(importSvgArray()),
                 m_actionManager, "importsvgarray");
 
     //new KAction(QPixmap(), tr("Audio File..."), QKeySequence(), m_libraryWidget, SLOT(importSound()),

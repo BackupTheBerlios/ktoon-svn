@@ -193,13 +193,19 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
         switch (object->type()) {
                 case KTLibraryObject::Svg:
                    {
+                     kFatal() << "KTLibraryWidget::previewItem - SVG Preview: " << object->symbolName();
+                     kFatal() << "KTLibraryWidget::previewItem - SVG path: " << object->dataPath();
+
                      QString svgContent = qvariant_cast<QString>(object->data());
                      if (svgContent.length() > 0) {
+                         kFatal() << "KTLibraryWidget::previewItem - Displaying!";
                          QByteArray stream = svgContent.toLocal8Bit();
                          QGraphicsSvgItem *svg = new QGraphicsSvgItem;
                          svg->renderer()->load(stream);
                          k->display->render(static_cast<QGraphicsItem *>(svg));
-                     } 
+                     } else {
+                         kFatal() << "KTLibraryWidget::previewItem - No data to display! :S";
+                     }
                    }
                    break;
                 case KTLibraryObject::Image:

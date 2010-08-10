@@ -63,6 +63,7 @@ KTLibraryObject::~KTLibraryObject()
  */
 void KTLibraryObject::setData(const QVariant &data)
 {
+    kFatal() << "KTLibraryObject::setData - Setting data!";
     k->data = data;
 }
 
@@ -184,8 +185,12 @@ QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
 
 bool KTLibraryObject::loadData(const QByteArray &data)
 {
-    if (data.isEmpty()) 
+    if (data.isEmpty()) {
+        kFatal() << "KTLibraryObject::loadData - data is NULL";
         return false;
+    } else {
+        kFatal() << "KTLibraryObject::loadData - data is NULL";
+    }
     
     bool ok = true;
 
@@ -211,6 +216,7 @@ bool KTLibraryObject::loadData(const QByteArray &data)
             case KTLibraryObject::Svg:
             {
                  QString item(data);
+                 kFatal() << "KTLibraryObject::loadData - setting data: " << item;
                  setData(QVariant::fromValue(item));
             }
             break;
@@ -314,7 +320,6 @@ void KTLibraryObject::saveData(const QString &dataDir)
                  out << qvariant_cast<QString>(k->data);
 
                  k->dataPath = saved + k->symbolName;
-                 k->data = "";
             }
             break;
             case KTLibraryObject::Image:

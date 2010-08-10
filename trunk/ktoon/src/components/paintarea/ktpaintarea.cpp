@@ -474,6 +474,8 @@ void KTPaintArea::copyItems()
            K_FUNCINFOX("paintarea");
     #endif
 
+    kFatal() << "KTPaintArea::copyItems() - Testing!";
+
     k->copiesXml.clear();
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
@@ -482,9 +484,9 @@ void KTPaintArea::copyItems()
 
         if (currentScene) {
             foreach (QGraphicsItem *item, selected) {
-                     QDomDocument orig;
-                     orig.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(orig));
-                     k->copiesXml << orig.toString();
+                     QDomDocument dom;
+                     dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
+                     k->copiesXml << dom.toString();
 
                      // Paint it to clipbard
                      QPixmap toPixmap(item->boundingRect().size().toSize());

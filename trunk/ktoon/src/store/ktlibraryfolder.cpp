@@ -59,6 +59,11 @@ KTLibraryFolder::~KTLibraryFolder()
 
 KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, bool loaded)
 {
+    kFatal() << "KTLibraryFolder::createSymbol - Adding object -> Name: " << name;
+    kFatal() << "KTLibraryFolder::createSymbol - Data size: " <<  data.size();
+    QString info(data);
+    kFatal() << "KTLibraryFolder::createSymbol - Data: " <<  info;
+
     KTLibraryObject *object = new KTLibraryObject(this);
     object->setSymbolName(name);
     object->setParent(this);
@@ -71,9 +76,15 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
     
     bool ret = addObject(object);
     object->saveData(k->project->dataDir());
+
+    kFatal() << "KTLibraryFolder::createSymbol - addObject: " <<  ret;
     
-    if (loaded && ret)
+    if (loaded && ret) {
+        kFatal() << "KTLibraryFolder::createSymbol - Creating symbol!";
         KTProjectLoader::createSymbol(type, name, data, k->project);
+    } else {
+        kFatal() << "KTLibraryFolder::createSymbol - Symbol not created!";
+    }
     
     return object;
 }

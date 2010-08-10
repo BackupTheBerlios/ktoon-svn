@@ -386,10 +386,18 @@ Scenes KTProject::scenes() const
 
 bool KTProject::createSymbol(int type, const QString &name, const QByteArray &data)
 {
-    if (!k->isOpen) 
+    if (!k->isOpen) { 
+        kFatal() << "KTProject::createSymbol - Project is NOT open!";
         return false;
+    } else { 
+        kFatal() << "KTProject::createSymbol - Project is open!";
+    }
+  
+    bool flag = k->library->createSymbol(KTLibraryObject::Type(type), name, data) != 0;
 
-    return k->library->createSymbol(KTLibraryObject::Type(type), name, data) != 0;
+    kFatal() << "KTProject::createSymbol - Flag: " << flag;
+
+    return flag;
 }
 
 bool KTProject::removeSymbol(const QString &name)
@@ -433,8 +441,13 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                        //object->dataPath()  
                        //QFile file(object->dataPath());
                        //QString path(file.fileName());
+
+                       kFatal() << "KTProject::addSymbolToProject() - Adding svg object!";
+
                        QString path(object->dataPath());
+                       QString svgContent = qvariant_cast<QString>(object->data());
                        KTSvgItem *svgItem = new KTSvgItem(path);
+                       svgItem->setContent(svgContent);
                        QString id(object->symbolName());
                        frame->addItem(id, svgItem);
                      }
