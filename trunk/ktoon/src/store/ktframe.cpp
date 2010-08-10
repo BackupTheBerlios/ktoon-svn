@@ -334,20 +334,30 @@ bool KTFrame::removeGraphicAt(int position)
 QGraphicsItem *KTFrame::createItem(int position, const QString &xml, bool loaded)
 {
     kFatal() << "KTFrame::createItem - pos: " << position;
-    kFatal() << "KTFrame::createItem - XML: " << xml;
 
-    KTItemFactory itemFactory;
-    itemFactory.setLibrary(project()->library());
+    QGraphicsItem *graphicItem;
 
-    QGraphicsItem *graphicItem = itemFactory.create(xml);
-
-    if (graphicItem) {
-        QString id = itemFactory.itemID(xml);
-        //if (id.endsWith(".svg", Qt::CaseInsensitive))
-        //    insertSvgItem(position, id, graphicItem); 
-        //else 
+    if (xml.startsWith("<svg")) {
+        QString id("svg.svg");
+        QDomDocument document;
+        document.setContent(xml);
+        QDomElement root = document.documentElement(); 
+        QString svgData = root.attribute("svgData");
+        kFatal() << "KTFrame::createItem - XML: " << svgData;
+        KTSvgItem *item = new KTSvgItem();
+        item->setContent(svgData);
+        item->rendering();
+        graphicItem = item;
+        insertSvgItem(position, id, item);
+    } else {
+        KTItemFactory itemFactory;
+        itemFactory.setLibrary(project()->library());
+        graphicItem = itemFactory.create(xml);
+        if (graphicItem) {
+            QString id = itemFactory.itemID(xml);
             insertItem(position, id, graphicItem);
-    } 
+        }
+    }
 
     if (loaded) {
         kFatal() << "KTFrame::createItem - Loader doesn't create item";

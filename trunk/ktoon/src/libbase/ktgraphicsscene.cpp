@@ -264,6 +264,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
 {
     if (frame) {
+        kFatal() << "KTGraphicsScene::addFrame() - Just testing!";
         k->objectCounter = 0;
         // TODO: This for must be re-written
         for (int i=0; i < frame->graphicItemsCount(); i++) {
@@ -280,6 +281,8 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
 
 void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 {
+    kFatal() << "KTGraphicsScene::addGraphicObject - Testing!";     
+
     QGraphicsItem *item = object->item();
     k->onionSkin.opacityMap.insert(item, opacity);
 

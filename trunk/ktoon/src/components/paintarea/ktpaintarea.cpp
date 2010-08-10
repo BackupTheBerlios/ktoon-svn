@@ -486,6 +486,7 @@ void KTPaintArea::copyItems()
             foreach (QGraphicsItem *item, selected) {
                      QDomDocument dom;
                      dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
+                     kFatal() << "KTPaintArea::copyItems() - DOM: " << dom.toString();
                      k->copiesXml << dom.toString();
 
                      // Paint it to clipbard

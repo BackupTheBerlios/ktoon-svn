@@ -81,7 +81,7 @@ void KTSvgItem::fromXml(const QString &xml)
 QDomElement KTSvgItem::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("svg");
-    root.setNodeValue(data); 
-    
+    root.setAttribute("svgData", data);
+
     return root;
 }
