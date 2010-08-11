@@ -36,6 +36,7 @@
 #include <QXmlInputSource>
 
 #include "ktprojectresponse.h"
+#include "ktlibraryobject.h"
 
 struct KTRequestParser::Private
 {
@@ -64,6 +65,8 @@ bool KTRequestParser::startTag(const QString& qname, const QXmlAttributes& atts)
         k->sign = atts.value("sign");
     } else if (qname == "item") {
                static_cast<KTItemResponse *>(k->response)->setItemIndex(atts.value("index").toInt());
+    } else if (qname == "objectType") {
+               static_cast<KTItemResponse *>(k->response)->setItemType(KTLibraryObject::Type(atts.value("id").toInt())); 
     } else if (qname == "frame") {
                static_cast<KTFrameResponse *>(k->response)->setFrameIndex(atts.value("index").toInt());
     } else if (qname == "data") {

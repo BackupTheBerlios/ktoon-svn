@@ -55,6 +55,7 @@
 #include "ktgraphicsscene.h"
 #include "ktrequestbuilder.h"
 #include "ktprojectrequest.h"
+#include "ktlibraryobject.h"
 #include "ktscene.h"
 #include "ktlayer.h"
 
@@ -311,6 +312,7 @@ void Tweener::applyTweener()
                                             k->scene->currentLayerIndex(),
                                             k->scene->currentFrameIndex(),
                                             k->scene->currentFrame()->indexOf(item),
+                                            KTLibraryObject::Item,
                                             KTProjectRequest::Tweening, 
                                             k->configurator->steps(k->scene->currentFrameIndex(), route));
                  emit requested(&request);

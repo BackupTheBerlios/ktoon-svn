@@ -41,6 +41,7 @@
 #include "ktscene.h"
 #include "ktlayer.h"
 #include "ktrequestbuilder.h"
+#include "ktlibraryobject.h"
 
 #include <kcore/kdebug.h>
 #include <kcore/kglobal.h>
@@ -200,7 +201,8 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
     QDomDocument doc;
     if (k->begin) {
         doc.appendChild(k->item->toXml(doc));
-        KTProjectRequest request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), k->scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString());
+        KTProjectRequest request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), 
+                                                                       k->scene->currentFrame()->graphics().count(), KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
         
         emit requested(&request);
     } else if (!k->nodegroup->isSelected()) {
@@ -209,7 +211,8 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
                if (position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(k->nodegroup->parentItem())) {
                    doc.appendChild(qgraphicsitem_cast<KTPathItem *>(k->nodegroup->parentItem())->toXml(doc));
             
-                   KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::EditNodes, doc.toString());
+                   KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, 
+                                                                                KTLibraryObject::Item, KTProjectRequest::EditNodes, doc.toString());
                    k->nodegroup->restoreItem();
                    emit requested(&event);
                } else {
@@ -331,7 +334,8 @@ void PolyLine::nodeChanged()
             if (position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(k->nodegroup->parentItem())) {
                 doc.appendChild(qgraphicsitem_cast<KTPathItem *>(k->nodegroup->parentItem())->toXml(doc));
                 
-                KTProjectRequest event = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), position, KTProjectRequest::EditNodes, doc.toString());
+                KTProjectRequest event = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), 
+                                                                             position, KTLibraryObject::Item, KTProjectRequest::EditNodes, doc.toString());
                 foreach (QGraphicsView * view, k->scene->views())
                          view->setUpdatesEnabled(false);
 

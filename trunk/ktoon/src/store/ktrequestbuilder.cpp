@@ -46,7 +46,7 @@ KTRequestBuilder::~KTRequestBuilder()
 {
 }
 
-KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIndex, int frameIndex, int itemIndex, int actionId, const QVariant &arg, const QByteArray &data)
+KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIndex, int frameIndex, int itemIndex, KTLibraryObject::Type type, int actionId, const QVariant &arg, const QByteArray &data)
 {
     QDomDocument doc;
 
@@ -64,6 +64,9 @@ KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIn
     QDomElement item = doc.createElement("item");
     item.setAttribute("index", itemIndex);
 
+    QDomElement objectType = doc.createElement("objectType");
+    objectType.setAttribute("id", type);
+
     QDomElement action = doc.createElement("action");
     action.setAttribute("id", actionId);
     action.setAttribute("arg", arg.toString());
@@ -72,6 +75,7 @@ KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIn
     KTRequestBuilder::appendData(doc, action, data);
     root.appendChild(action);
     frame.appendChild(item);
+    frame.appendChild(objectType);
     layer.appendChild(frame);
     scene.appendChild(layer);
     root.appendChild(scene);
@@ -225,7 +229,7 @@ KTProjectRequest KTRequestBuilder::fromResponse(KTProjectResponse *response)
     switch (response->part()) {
             case KTProjectRequest::Item:
                  {
-                    request = KTRequestBuilder::createItemRequest(static_cast<KTItemResponse*> (response)->sceneIndex(), static_cast<KTItemResponse*> (response)->layerIndex(), static_cast<KTItemResponse*> (response)->frameIndex(), static_cast<KTItemResponse*> (response)->itemIndex(), response->action(), response->arg().toString(), response->data());
+                    request = KTRequestBuilder::createItemRequest(static_cast<KTItemResponse*> (response)->sceneIndex(), static_cast<KTItemResponse*> (response)->layerIndex(), static_cast<KTItemResponse*> (response)->frameIndex(), static_cast<KTItemResponse*> (response)->itemIndex(), KTLibraryObject::Type(static_cast<KTItemResponse*> (response)->itemType()), response->action(), response->arg().toString(), response->data());
                  }
             break;
             case KTProjectRequest::Frame:

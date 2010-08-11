@@ -317,9 +317,12 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 
 void KTPaintArea::itemResponse(KTItemResponse *event)
 {
+    kFatal() << "KTPaintArea::itemResponse -> Tracing!";
+
     if (!graphicsScene()->isDrawing()) {
         switch(event->action()) {
                case KTProjectRequest::Transform:
+                    kFatal() << "KTPaintArea::itemResponse -> Transform event!";
                     viewport()->update();
                     break;
                case KTProjectRequest::Remove:
@@ -333,6 +336,7 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
                     }
                     break;
                default:
+                    kFatal() << "KTPaintArea::itemResponse -> Just repainting :)";
                     graphicsScene()->drawCurrentPhotogram();
                     viewport()->update(scene()->sceneRect().toRect());
                     break;
@@ -394,18 +398,22 @@ void KTPaintArea::deleteItems()
                      if (counter == total-1) 
                          k->lastItem = true;
 
+                     KTLibraryObject::Type type;
+
                      KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item);
 
                      if (svg) {
                          kFatal() << "KTPaintArea::deleteItems() -> Tracing a SVG file!";
+                         type = KTLibraryObject::Svg;
                      } else {
                          kFatal() << "KTPaintArea::deleteItems() -> NO SVG file!";
+                         type = KTLibraryObject::Item;
                      }
 
                      KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                               currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
                                               currentScene->currentFrameIndex(), 
-                                              currentScene->currentFrame()->indexOf(item),
+                                              currentScene->currentFrame()->indexOf(item), type,
                                               KTProjectRequest::Remove);
                      emit requestTriggered(&event);
                      counter++;
@@ -442,7 +450,7 @@ void KTPaintArea::groupItems()
         if (strItems != ")") {
             KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(), 
                                      currentScene->currentLayerIndex(),
-                                     currentScene->currentFrameIndex(), firstItem, 
+                                     currentScene->currentFrameIndex(), firstItem, KTLibraryObject::Item,
                                      KTProjectRequest::Group, strItems );
             emit requestTriggered(&event);
         }
@@ -460,7 +468,7 @@ void KTPaintArea::ungroupItems()
                                               currentScene->currentSceneIndex(), 
                                               currentScene->currentLayerIndex(), 
                                               currentScene->currentFrameIndex(), 
-                                              currentScene->currentFrame()->indexOf(item),
+                                              currentScene->currentFrame()->indexOf(item), KTLibraryObject::Item,
                                               KTProjectRequest::Ungroup);
                      emit requestTriggered(&event);
             }
@@ -486,7 +494,7 @@ void KTPaintArea::copyItems()
             foreach (QGraphicsItem *item, selected) {
                      QDomDocument dom;
                      dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
-                     kFatal() << "KTPaintArea::copyItems() - DOM: " << dom.toString();
+                     //kFatal() << "KTPaintArea::copyItems() - DOM: " << dom.toString();
                      k->copiesXml << dom.toString();
 
                      // Paint it to clipbard
@@ -528,11 +536,13 @@ void KTPaintArea::pasteItems()
 
     KTGraphicsScene* currentScene = graphicsScene();
 
+    kFatal() << "KTPaintArea::pasteItems() - Item index: " << currentScene->currentFrame()->graphics().count();
+
     foreach (QString xml, k->copiesXml) {
              KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
                                       currentScene->currentLayerIndex(), 
                                       currentScene->currentFrameIndex(), 
-                                      currentScene->currentFrame()->graphics().count(), 
+                                      currentScene->currentFrame()->graphics().count(), KTLibraryObject::Item, 
                                       KTProjectRequest::Add, xml);
              emit requestTriggered(&event);
      }
@@ -607,6 +617,8 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
            K_FUNCINFOX("paintarea");
     #endif
 
+    kFatal() << "KTPaintArea::requestMoveSelectedItems - Just tracing...";
+
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
     if (selected.isEmpty()) {
@@ -643,8 +655,8 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
                  }
 
                  KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
-                                          currentScene->currentLayerIndex(), currentScene->currentFrameIndex(),
-                                          value, KTProjectRequest::Move, newPos);
+                                          currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), value, 
+                                          KTLibraryObject::Item,  KTProjectRequest::Move, newPos);
                  emit requestTriggered(&event);
              }
     }

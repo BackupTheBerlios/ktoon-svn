@@ -210,13 +210,17 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                      QGraphicsItem *item = manager->parentItem();
                      KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item);
 
+                     KTLibraryObject::Type type;
+
                      if (svg) {
                          kFatal() << "Select::release -> Tracing a SVG file!";
                          position  = scene->currentFrame()->indexOf(svg);
                          kFatal() << "Select::release -> position: " << position;
+                         type = KTLibraryObject::Svg;
                      } else {
                          kFatal() << "Select::release -> NO SVG file!";
                          position  = scene->currentFrame()->indexOf(manager->parentItem());
+                         type = KTLibraryObject::Item;
                      }
 
                      if (position != -1) {
@@ -226,12 +230,14 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 
                          manager->restoreItem();
 
-                         kFatal() << "Select::release -> Setting a transformation in the item";
+                         kFatal() << "Select::release -> Setting a item transformation";
+                         kFatal() << "Select::release -> Position: " << position;
+                         kFatal() << "Select::release -> Graphic Type: " << type;
                     
                          KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                     scene->currentSceneIndex(), 
                                     scene->currentLayerIndex(), 
-                                    scene->currentFrameIndex(), position,
+                                    scene->currentFrameIndex(), position, type,
                                     KTProjectRequest::Transform, doc.toString());
                          emit requested(&event);
                      } else {
@@ -288,6 +294,8 @@ void Select::itemResponse(const KTItemResponse *event)
 {
     K_FUNCINFOX("tools");
 
+    kFatal() << "Select::itemResponse - Tracing...";
+
     QGraphicsItem *item = 0;
     KTScene *scene = 0;
     KTLayer *layer = 0;
@@ -303,9 +311,18 @@ void Select::itemResponse(const KTItemResponse *event)
 
             if (layer) {
                 frame = layer->frame(event->frameIndex());
-                if (frame && frame->graphicItemsCount()>0) {
-                    item = frame->item(event->itemIndex());
+                if (frame) {
+                    if (event->itemType() == KTLibraryObject::Svg && frame->svgItemsCount()>0) {
+                        item = frame->svg(event->itemIndex());
+                        kFatal() << "Select::itemResponse - SVG item selected";
+                    } else {
+                        if (frame->graphicItemsCount()>0) {
+                            item = frame->item(event->itemIndex());
+                            kFatal() << "Select::itemResponse - Graphic item selected";
+                        }
+                    }
                 } else {
+                    kFatal() << "Select::itemResponse - No frame available";
                     return;
                 }
             }
@@ -332,6 +349,8 @@ void Select::itemResponse(const KTItemResponse *event)
                               break;
                      }
 
+                 } else {
+                     kFatal() << "Select::itemResponse - No item found";
                  }
             }
             break;

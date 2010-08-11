@@ -264,7 +264,7 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
 {
     if (frame) {
-        kFatal() << "KTGraphicsScene::addFrame() - Just testing!";
+        kFatal() << "KTGraphicsScene::addFrame() - Adding graphic objects! - Size: " << frame->graphicItemsCount();
         k->objectCounter = 0;
         // TODO: This for must be re-written
         for (int i=0; i < frame->graphicItemsCount(); i++) {
@@ -272,6 +272,7 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
              addGraphicObject(object, opacity);
         }
 
+        kFatal() << "KTGraphicsScene::addFrame() - Adding svg objects! - Size: " << frame->svgItemsCount();
         for (int i=0; i < frame->svgItemsCount(); i++) {
              KTSvgItem *object = frame->svg(i);
              addSvgObject(object, opacity);

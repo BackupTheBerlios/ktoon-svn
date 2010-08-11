@@ -343,12 +343,19 @@ QGraphicsItem *KTFrame::createItem(int position, const QString &xml, bool loaded
         document.setContent(xml);
         QDomElement root = document.documentElement(); 
         QString svgData = root.attribute("svgData");
-        kFatal() << "KTFrame::createItem - XML: " << svgData;
+        kFatal() << "KTFrame::createItem - Adding SVG file";
+        //kFatal() << "KTFrame::createItem - XML: " << svgData;
         KTSvgItem *item = new KTSvgItem();
         item->setContent(svgData);
         item->rendering();
-        graphicItem = item;
+        //graphicItem = item;
         insertSvgItem(position, id, item);
+
+        if (loaded)
+            KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, xml, project());
+
+        return item;
+
     } else {
         KTItemFactory itemFactory;
         itemFactory.setLibrary(project()->library());

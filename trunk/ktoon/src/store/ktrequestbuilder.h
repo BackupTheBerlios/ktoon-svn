@@ -51,9 +51,15 @@ class STORE_EXPORT KTRequestBuilder
         KTRequestBuilder();
         
     public:
+        enum ItemType 
+        {
+            Graphic = 1000,
+            Svg
+        };
+
         ~KTRequestBuilder();
         
-        static KTProjectRequest createItemRequest(int sceneIndex, int layerIndex, int frameIndex, int itemIndex, int action, const QVariant &arg = QString(), const QByteArray &data = QByteArray());
+        static KTProjectRequest createItemRequest(int sceneIndex, int layerIndex, int frameIndex, int itemIndex, KTLibraryObject::Type type, int action, const QVariant &arg = QString(), const QByteArray &data = QByteArray());
         
         static KTProjectRequest createFrameRequest(int sceneIndex, int layerIndex, int frameIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
         

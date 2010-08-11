@@ -35,6 +35,7 @@
 #include "ktglobal_store.h"
 #include "ktprojectrequest.h"
 #include "ktscene.h"
+#include "ktlibraryobject.h"
 
 /**
  * Response to request (aka KTProjectRequest)
@@ -125,9 +126,12 @@ class KTItemResponse : public KTFrameResponse
         ~KTItemResponse();
         int itemIndex() const;
         void setItemIndex(int index);
+        KTLibraryObject::Type itemType() const;
+        void setItemType(KTLibraryObject::Type type);
 
     private:
         int m_itemIndex;
+        KTLibraryObject::Type m_itemType;
 };
 
 class KTLibraryResponse : public KTFrameResponse

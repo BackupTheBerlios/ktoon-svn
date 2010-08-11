@@ -67,8 +67,8 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
     int position = response->itemIndex();
     QString xml = response->arg().toString();
 
-    kFatal() << "KTCommandExecutor::createItem() - Creating Item...";
-    kFatal() << "KTCommandExecutor::createItem() - XML: " << xml;
+    kFatal() << "KTCommandExecutor::createItem() - Creating Item at position: " << position;
+    //kFatal() << "KTCommandExecutor::createItem() - XML: " << xml;
     
     KTScene *scene = m_project->scene(scenePosition);
     
@@ -82,8 +82,11 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
                 
                 QGraphicsItem *item = frame->createItem(position, xml);
                 if (item) {
-                    emit responsed(response);
+                    //emit responsed(response);
                     response->setItemIndex(frame->indexOf(item));
+                    emit responsed(response);
+                } else {
+                    kFatal() << "KTCommandExecutor::createItem() - Item wasn't created!";
                 }
             } else {
                 #ifdef K_DEBUG
@@ -349,6 +352,7 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
     int position = response->itemIndex();
+    KTLibraryObject::Type type = response->itemType();
     QString xml = response->arg().toString();
     
     KTScene *scene = m_project->scene(scenePosition);
@@ -358,7 +362,12 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
         if (layer) {
             KTFrame *frame = layer->frame(framePosition);
             if (frame) {
-                QGraphicsItem *item = frame->item(position);
+                QGraphicsItem *item;
+                if (type == KTLibraryObject::Svg)
+                    item = frame->svg(position);
+                else
+                    item = frame->item(position);
+
                 if (item) {
                     QDomDocument orig;
                     orig.appendChild(KTSerializer::properties(item, orig));
@@ -372,6 +381,8 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
                     response->setArg(current);
                     
                     return true;
+                } else {
+                    kFatal() << "KTCommandExecutor::transformItem - No item was found! - Type: " << type;
                 }
             }
         }

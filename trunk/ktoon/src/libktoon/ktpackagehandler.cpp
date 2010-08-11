@@ -251,22 +251,10 @@ bool KTPackageHandler::createPath(const QString &filePath)
     QDir path = info.dir();
     QString target = path.path();
     
-    if (!path.exists()) {
+    if (!path.exists()) 
         return path.mkpath(target);
-    } else {
+    else 
         return true;
-        kError() << "KTPackageHandler::createPath - Path: " << filePath << " already exists";
-        bool flag = path.rmpath(target);
-        if (flag) {
-            bool flag2 = path.mkpath(target);
-            if (flag2)
-                return true;
-            else
-                kError() << "KTPackageHandler::createPath - Can't create "; 
-        } else {
-            kError() << "KTPackageHandler::createPath - Can't delete dir: " << target;
-        }
-    }
     
     return false;
 }

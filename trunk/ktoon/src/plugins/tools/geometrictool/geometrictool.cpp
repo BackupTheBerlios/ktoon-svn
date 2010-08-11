@@ -45,6 +45,7 @@
 #include "ktlineitem.h"
 
 #include "ktrequestbuilder.h"
+#include "ktlibraryobject.h"
 
 #include "ktscene.h"
 #include "ktinputdeviceinformation.h"
@@ -192,7 +193,7 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
     QDomDocument doc;
     doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_item)->toXml(doc));
     
-    KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
+    KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTLibraryObject::Item,  KTProjectRequest::Add, doc.toString()); // Adds to end
     
     emit requested(&event);
 }

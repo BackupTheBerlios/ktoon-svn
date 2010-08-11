@@ -46,6 +46,7 @@
 #include "ktgraphicsscene.h"
 #include "ktrequestbuilder.h"
 #include "ktprojectrequest.h"
+#include "ktlibraryobject.h"
 
 #include <kgui/kaction.h>
 #include <kcore/kalgorithm.h>
@@ -137,7 +138,7 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
     QDomDocument doc;
     doc.appendChild(m_item->toXml(doc));
 
-    KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString());
+    KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
 
     emit requested(&request);
 }

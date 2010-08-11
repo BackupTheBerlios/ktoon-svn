@@ -282,6 +282,16 @@ void KTItemResponse::setItemIndex(int index)
     m_itemIndex = index;
 }
 
+KTLibraryObject::Type KTItemResponse::itemType() const
+{
+    return m_itemType;
+}
+
+void KTItemResponse::setItemType(KTLibraryObject::Type type)
+{
+    m_itemType = type;
+}
+
 KTLibraryResponse::KTLibraryResponse(int part, int action) : KTFrameResponse(part, action), m_symbolType(-1)
 {
 }

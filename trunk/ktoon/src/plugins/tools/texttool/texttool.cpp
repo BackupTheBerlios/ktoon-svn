@@ -43,6 +43,7 @@
 #include "ktgraphicsscene.h"
 #include "ktprojectrequest.h"
 #include "ktprojectresponse.h"
+#include "ktlibraryobject.h"
 
 #include "ktrequestbuilder.h"
 
@@ -125,7 +126,7 @@ void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
     QDomDocument doc;
     doc.appendChild(m_item->toXml(doc));
 
-    KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
+    KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTLibraryObject::Item, KTProjectRequest::Add, doc.toString()); // Adds to end
 
     emit requested(&event);
 }

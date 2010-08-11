@@ -49,6 +49,7 @@
 
 #include "ktitemconverter.h"
 #include "ktrequestbuilder.h"
+#include "ktlibraryobject.h"
 
 #include "ktscene.h"
 
@@ -170,7 +171,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
         
             KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), 
                             scene->currentLayerIndex(), scene->currentFrameIndex(), 
-                            scene->currentFrame()->graphics().count(), KTProjectRequest::Add, 
+                            scene->currentFrame()->graphics().count(), KTLibraryObject::Item, KTProjectRequest::Add, 
                             doc.toString()); // Adds to end
             emit requested(&event);
         }
@@ -194,7 +195,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
                     
                     KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                 scene->currentSceneIndex(), scene->currentLayerIndex(),
-                                scene->currentFrameIndex(), position, 
+                                scene->currentFrameIndex(), position, KTLibraryObject::Item, 
                                 KTProjectRequest::Transform, doc.toString());
 
                     emit requested(&event);
