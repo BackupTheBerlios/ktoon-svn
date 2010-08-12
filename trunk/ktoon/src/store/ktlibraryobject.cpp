@@ -189,7 +189,7 @@ bool KTLibraryObject::loadData(const QByteArray &data)
         kFatal() << "KTLibraryObject::loadData - data is NULL";
         return false;
     } else {
-        kFatal() << "KTLibraryObject::loadData - data is NULL";
+        kFatal() << "KTLibraryObject::loadData - data is NOT NULL";
     }
     
     bool ok = true;
@@ -204,6 +204,8 @@ bool KTLibraryObject::loadData(const QByteArray &data)
             break;
             case KTLibraryObject::Image:
             {
+                 kFatal() << "KTLibraryObject::loadData - Adding image";
+
                  QPixmap pixmap;
                  pixmap.loadFromData(data);
             
@@ -334,6 +336,8 @@ void KTLibraryObject::saveData(const QString &dataDir)
                  (qgraphicsitem_cast<KTPixmapItem *> (qvariant_cast<QGraphicsItem *>(k->data)))->pixmap().save(dest + k->symbolName, "PNG");
           
                  k->dataPath = dest + k->symbolName;
+
+                 kFatal() << "KTLibraryObject::saveData - Saving image at: " << k->dataPath;
             }
             break;
             default: 

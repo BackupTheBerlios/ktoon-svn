@@ -61,8 +61,8 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
 {
     kFatal() << "KTLibraryFolder::createSymbol - Adding object -> Name: " << name;
     kFatal() << "KTLibraryFolder::createSymbol - Data size: " <<  data.size();
-    QString info(data);
-    kFatal() << "KTLibraryFolder::createSymbol - Data: " <<  info;
+    // QString info(data);
+    // kFatal() << "KTLibraryFolder::createSymbol - Data: " <<  info;
 
     KTLibraryObject *object = new KTLibraryObject(this);
     object->setSymbolName(name);
@@ -83,7 +83,7 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
         kFatal() << "KTLibraryFolder::createSymbol - Creating symbol!";
         KTProjectLoader::createSymbol(type, name, data, k->project);
     } else {
-        kFatal() << "KTLibraryFolder::createSymbol - Symbol not created!";
+        kFatal() << "KTLibraryFolder::createSymbol - Method KTProjectLoader::createSymbol wasn't loaded";
     }
     
     return object;
@@ -148,7 +148,7 @@ KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
     }
     
     #ifdef K_DEBUG
-        kDebug() << "Cannot find symbol with id: " << id;
+        kDebug() << "KTLibraryFolder::findObject(): Cannot find symbol with id: " << id;
     #endif
     
     return 0;

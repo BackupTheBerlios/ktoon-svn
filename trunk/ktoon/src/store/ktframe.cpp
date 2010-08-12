@@ -29,7 +29,11 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
+#include <QApplication>
 #include <QGraphicsItem>
+#include <QGraphicsView>
+#include <QCursor>
+#include <QSvgRenderer>
 #include <kcore/kdebug.h>
 
 #include "ktframe.h"
@@ -217,7 +221,8 @@ void KTFrame::insertSvgItem(int position, QString &id, KTSvgItem *item)
             k->zLevelIndex = item->zValue();
     }
 
-    item->setObjectName(id);
+    //item->setItemID(id);
+    kFatal() << "KTFrame::insertSvgItem() : Item position: " << position;
     k->svg.insert(position, item);
 }
 
@@ -335,45 +340,58 @@ QGraphicsItem *KTFrame::createItem(int position, const QString &xml, bool loaded
 {
     kFatal() << "KTFrame::createItem - pos: " << position;
 
-    QGraphicsItem *graphicItem;
+    KTItemFactory itemFactory;
+    itemFactory.setLibrary(project()->library());
+    QGraphicsItem *graphicItem = itemFactory.create(xml);
 
-    if (xml.startsWith("<svg")) {
-        QString id("svg.svg");
-        QDomDocument document;
-        document.setContent(xml);
-        QDomElement root = document.documentElement(); 
-        QString svgData = root.attribute("svgData");
-        kFatal() << "KTFrame::createItem - Adding SVG file";
-        //kFatal() << "KTFrame::createItem - XML: " << svgData;
-        KTSvgItem *item = new KTSvgItem();
-        item->setContent(svgData);
-        item->rendering();
-        //graphicItem = item;
-        insertSvgItem(position, id, item);
-
-        if (loaded)
-            KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, xml, project());
-
-        return item;
-
-    } else {
-        KTItemFactory itemFactory;
-        itemFactory.setLibrary(project()->library());
-        graphicItem = itemFactory.create(xml);
-        if (graphicItem) {
-            QString id = itemFactory.itemID(xml);
-            insertItem(position, id, graphicItem);
-        }
+    if (graphicItem) {
+        QString id = itemFactory.itemID(xml);
+        insertItem(position, id, graphicItem);
     }
 
     if (loaded) {
         kFatal() << "KTFrame::createItem - Loader doesn't create item";
-        KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, xml, project());
+        KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, KTLibraryObject::Item, xml, project());
     } else {
         kFatal() << "KTFrame::createItem - Loader creates item";
     }
 
     return graphicItem;
+}
+
+KTSvgItem *KTFrame::createSvgItem(int position, const QString &xml, bool loaded)
+{
+    QString id("top.svg");
+
+    QDomDocument document;
+    if (!document.setContent(xml))
+        return 0;
+
+    QDomElement root = document.documentElement();
+    QString path = root.attribute("itemPath");
+    //QString svgContent = root.attribute("svgData");
+    kFatal() << "KTFrame::createSvgItem - Adding SVG file";
+    //kFatal() << "KTFrame::createSvgItem - SVG path: " <<  path;
+
+    //QGraphicsSvgItem *svg = new QGraphicsSvgItem;
+    //QByteArray stream = svgContent.toLocal8Bit();
+    //svg->renderer()->load(stream);
+
+    KTSvgItem *item = new KTSvgItem(path);
+    //item->setContent(svgContent);
+    //QByteArray stream = svgContent.toLocal8Bit();
+    //item->renderer()->load(stream);
+    //QPointF point = item->mapToParent(QCursor::pos());
+    //kFatal() << "KTFrame::createSvgItem - Point - x: " << point.x() << " - y: "  << point.y();
+
+    insertSvgItem(position, id, item);
+
+    if (loaded)
+        KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, KTLibraryObject::Svg, xml, project());
+    else
+        kFatal() << "KTFrame::createSvgItem - KTProjectLoader::createItem wasn't called";
+
+    return item;
 }
 
 void KTFrame::setGraphics(GraphicObjects objects)

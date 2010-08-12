@@ -65,9 +65,11 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
     int position = response->itemIndex();
+    KTLibraryObject::Type type = response->itemType(); 
     QString xml = response->arg().toString();
 
     kFatal() << "KTCommandExecutor::createItem() - Creating Item at position: " << position;
+    kFatal() << "KTCommandExecutor::createItem() - Creating Item at frame: " << framePosition;
     //kFatal() << "KTCommandExecutor::createItem() - XML: " << xml;
     
     KTScene *scene = m_project->scene(scenePosition);
@@ -79,15 +81,23 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
             if (frame) {
                 if (position == -1)
                     qFatal("DO NOT SEND -1");
-                
-                QGraphicsItem *item = frame->createItem(position, xml);
-                if (item) {
-                    //emit responsed(response);
-                    response->setItemIndex(frame->indexOf(item));
-                    emit responsed(response);
+
+                if (type == KTLibraryObject::Svg) {
+                    KTSvgItem *svg = frame->createSvgItem(position, xml);
+                    if (svg)
+                        response->setItemIndex(frame->indexOf(svg));
+                    else
+                        return false;
                 } else {
-                    kFatal() << "KTCommandExecutor::createItem() - Item wasn't created!";
+                    QGraphicsItem *item = frame->createItem(position, xml);
+                    if (item)
+                        response->setItemIndex(frame->indexOf(item));
+                    else
+                        return false;
                 }
+
+                emit responsed(response);
+
             } else {
                 #ifdef K_DEBUG
                     kError() << tr("Frame doesn't exists!");

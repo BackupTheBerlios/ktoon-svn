@@ -423,7 +423,8 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                 case KTLibraryObject::Image:
                      {
                        KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
-                       libraryItem->moveBy(100, 100);
+                       //libraryItem->moveBy(100, 100);
+                       libraryItem->moveBy(115, 80);
                        QString id(libraryItem->symbolName());
                        frame->addItem(id, libraryItem);
                      }
@@ -446,9 +447,12 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
 
                        QString path(object->dataPath());
                        QString svgContent = qvariant_cast<QString>(object->data());
-                       KTSvgItem *svgItem = new KTSvgItem(path);
-                       svgItem->setContent(svgContent);
                        QString id(object->symbolName());
+
+                       KTSvgItem *svgItem = new KTSvgItem(path);
+                       //svgItem->setItemID(id);
+                       svgItem->setContent(svgContent);
+
                        //frame->addItem(id, svgItem);
                        frame->addSvgItem(id, svgItem);
                      }

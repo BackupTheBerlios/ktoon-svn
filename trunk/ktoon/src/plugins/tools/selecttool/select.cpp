@@ -300,11 +300,16 @@ void Select::itemResponse(const KTItemResponse *event)
     KTScene *scene = 0;
     KTLayer *layer = 0;
     KTFrame *frame = 0;
-    
+
+    kFatal() << "Select::itemResponse - FLAG 0";    
     KTProject *project = k->scene->scene()->project();
+    kFatal() << "Select::itemResponse - FLAG 1";
     
     if (project) {
+
+        kFatal() << "Select::itemResponse - FLAG 2";
         scene = project->scene(event->sceneIndex());
+        kFatal() << "Select::itemResponse - FLAG 3";
 
         if (scene) {
             layer = scene->layer(event->layerIndex());
@@ -361,7 +366,7 @@ void Select::itemResponse(const KTItemResponse *event)
             break;
             default:
             {
-                 kFatal() << "Select::itemResponse - event->action unknown: " << event->action();
+                 kFatal() << "Select::itemResponse - event->action no implemented: " << event->action();
                  syncNodes();
             }
             break;

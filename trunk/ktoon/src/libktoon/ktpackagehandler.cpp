@@ -167,8 +167,6 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 
     bool next = zip.goToFirstFile();
 
-    int i = 0;
-
     while (next) {
 
            if (!zip.getCurrentFileInfo(&info)) {
@@ -186,7 +184,7 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
            if (name.endsWith(QDir::separator()))
                name.remove(name.count()-1, 1);
 
-           if (i == 0)
+           if (name.endsWith(".ktp"))
                k->importedProjectPath = QFileInfo(name).path();
         
            if (file.getZipError() != UNZ_OK) {
@@ -232,7 +230,6 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
            }
             
            next = zip.goToNextFile();
-           i++;
     }
     
     zip.close();

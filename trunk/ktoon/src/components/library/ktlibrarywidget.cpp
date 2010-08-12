@@ -400,8 +400,9 @@ void KTLibraryWidget::importBitmapArray()
             progressDialog.move((int) (desktop.screenGeometry().width() - progressDialog.width())/2 , (int) (desktop.screenGeometry().height() - progressDialog.height())/2);
 
             for (int i = 0; i < size; ++i) {
-                 QString symName = photograms.at(i).absoluteFilePath(); 
-                 QFile f(symName);
+                 QString path = photograms.at(i).absoluteFilePath(); 
+                 QString symName = photograms.at(i).fileName();
+                 QFile f(path);
 
                  if (f.open(QIODevice::ReadOnly)) {
 

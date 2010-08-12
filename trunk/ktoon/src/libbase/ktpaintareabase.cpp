@@ -439,3 +439,9 @@ KTGraphicsScene *KTPaintAreaBase::graphicsScene() const
 {
     return k->scene;
 }
+
+QPointF KTPaintAreaBase::viewPosition(QPoint coord)
+{
+    return mapToScene(coord);
+}
+

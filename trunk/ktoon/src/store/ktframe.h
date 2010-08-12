@@ -101,6 +101,7 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
        
        bool removeGraphicAt(int position);
        QGraphicsItem *createItem(int position, const QString &xml, bool loaded = false);
+       KTSvgItem *createSvgItem(int position, const QString &xml, bool loaded = false);
 
        void setGraphics(GraphicObjects objects);       
        void setSvgObjects(SvgObjects objects);

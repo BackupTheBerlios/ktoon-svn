@@ -39,23 +39,19 @@ KTSvgItem::KTSvgItem(QGraphicsItem * parent)
 {
 }
 
-KTSvgItem::KTSvgItem(QString &path)
-    : QGraphicsSvgItem(path)
+KTSvgItem::KTSvgItem(QString &file)
+    : QGraphicsSvgItem(file)
 {
+    path = file;
 }
 
 KTSvgItem::~KTSvgItem()
 {
 }
 
-void KTSvgItem::setObjectName(QString &name)
+QString KTSvgItem::itemPath() const
 {
-    id = name;
-}
-
-QString KTSvgItem::objectName() const
-{
-    return id;
+    return path;
 }
 
 void KTSvgItem::setContent(QString &xml)
@@ -81,7 +77,8 @@ void KTSvgItem::fromXml(const QString &xml)
 QDomElement KTSvgItem::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("svg");
-    root.setAttribute("svgData", data);
+    //root.setAttribute("svgData", data);
+    root.setAttribute("itemPath", path); 
 
     return root;
 }

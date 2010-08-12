@@ -44,10 +44,9 @@ class STORE_EXPORT KTSvgItem : public QGraphicsSvgItem, public KTAbstractSeriali
 {
     public:
         KTSvgItem(QGraphicsItem * parent = 0);
-        KTSvgItem(QString &path);
+        KTSvgItem(QString &file);
         ~KTSvgItem();
-        void setObjectName(QString &name);
-        QString objectName() const;
+        QString itemPath() const;
         void setContent(QString &xml);
         QString content() const;
         void rendering();
@@ -55,7 +54,7 @@ class STORE_EXPORT KTSvgItem : public QGraphicsSvgItem, public KTAbstractSeriali
         virtual QDomElement toXml(QDomDocument &doc) const;
 
     private:
-        QString id;
+        QString path;
         QString data;
 
 };

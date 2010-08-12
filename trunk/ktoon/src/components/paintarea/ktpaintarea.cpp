@@ -492,6 +492,13 @@ void KTPaintArea::copyItems()
 
         if (currentScene) {
             foreach (QGraphicsItem *item, selected) {
+
+                     KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item);
+                     if (svg) {
+                         QString id = svg->itemPath();
+                         kFatal() << "KTPaintArea::copyItems() - Item ID: " << id;
+                     }
+
                      QDomDocument dom;
                      dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
                      //kFatal() << "KTPaintArea::copyItems() - DOM: " << dom.toString();
@@ -539,10 +546,19 @@ void KTPaintArea::pasteItems()
     kFatal() << "KTPaintArea::pasteItems() - Item index: " << currentScene->currentFrame()->graphics().count();
 
     foreach (QString xml, k->copiesXml) {
+             kFatal() << "KTPaintArea::pasteItems() - DOM: " << xml;
+             KTLibraryObject::Type type = KTLibraryObject::Item;
+             int total = currentScene->currentFrame()->graphicItemsCount();
+             
+             if (xml.startsWith("<svg")) {
+                 type = KTLibraryObject::Svg;
+                 total = currentScene->currentFrame()->svgItemsCount();
+             }
+
              KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
                                       currentScene->currentLayerIndex(), 
                                       currentScene->currentFrameIndex(), 
-                                      currentScene->currentFrame()->graphics().count(), KTLibraryObject::Item, 
+                                      total, type, 
                                       KTProjectRequest::Add, xml);
              emit requestTriggered(&event);
      }

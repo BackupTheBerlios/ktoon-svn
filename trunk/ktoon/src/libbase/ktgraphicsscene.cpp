@@ -274,6 +274,7 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
 
         kFatal() << "KTGraphicsScene::addFrame() - Adding svg objects! - Size: " << frame->svgItemsCount();
         for (int i=0; i < frame->svgItemsCount(); i++) {
+             kFatal() << "KTGraphicsScene::addFrame() - Svg item at: " << i;
              KTSvgItem *object = frame->svg(i);
              addSvgObject(object, opacity);
         }
@@ -310,12 +311,6 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 
 void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
 {
-    /*
-     QFile file(graphic->svgContent());
-     QString maybe(file.fileName());
-     KTSvgItem *svgItem = new KTSvgItem(maybe);
-     */
-
     kFatal() << "KTGraphicsScene::addSvgObject - Testing!";
 
     if (svgItem) {
@@ -334,6 +329,8 @@ void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
                 addItem(svgItem);
             }
         }
+    } else {
+        kFatal() << "KTGraphicsScene::addSvgObject - Item is null, not added!";
     }
 } 
 
@@ -454,7 +451,10 @@ void KTGraphicsScene::setLayerVisible(int layerIndex, bool visible)
 
 KTScene *KTGraphicsScene::scene() const
 {
-    return k->scene;
+    if (k->scene)
+        return k->scene;
+    else
+        return 0;
 }
 
 void KTGraphicsScene::setTool(KTToolPlugin *tool)
