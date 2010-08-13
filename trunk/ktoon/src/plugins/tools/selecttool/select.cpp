@@ -237,7 +237,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                          KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                     scene->currentSceneIndex(), 
                                     scene->currentLayerIndex(), 
-                                    scene->currentFrameIndex(), position, type,
+                                    scene->currentFrameIndex(), position, QPointF(), type,
                                     KTProjectRequest::Transform, doc.toString());
                          emit requested(&event);
                      } else {

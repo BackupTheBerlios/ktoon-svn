@@ -30,6 +30,8 @@
  ***************************************************************************/
 
 #include "ktsvgitem.h"
+#include "ktserializer.h"
+
 #include <QSvgRenderer>
 
 #include <kcore/kdebug.h>
@@ -72,6 +74,7 @@ void KTSvgItem::rendering()
 
 void KTSvgItem::fromXml(const QString &xml)
 {
+    kFatal() << "KTSvgItem::fromXml() - xml: " << xml;
 }
 
 QDomElement KTSvgItem::toXml(QDomDocument &doc) const
@@ -79,6 +82,9 @@ QDomElement KTSvgItem::toXml(QDomDocument &doc) const
     QDomElement root = doc.createElement("svg");
     //root.setAttribute("svgData", data);
     root.setAttribute("itemPath", path); 
+    root.appendChild(KTSerializer::properties(this, doc));
+ 
+    kFatal() << "KTSvgItem::toXml() - Just tracing!";
 
     return root;
 }

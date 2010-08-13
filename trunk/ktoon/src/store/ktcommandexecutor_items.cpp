@@ -66,6 +66,8 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
     int framePosition = response->frameIndex();
     int position = response->itemIndex();
     KTLibraryObject::Type type = response->itemType(); 
+    QPointF point = response->position();
+
     QString xml = response->arg().toString();
 
     kFatal() << "KTCommandExecutor::createItem() - Creating Item at position: " << position;
@@ -83,13 +85,13 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
                     qFatal("DO NOT SEND -1");
 
                 if (type == KTLibraryObject::Svg) {
-                    KTSvgItem *svg = frame->createSvgItem(position, xml);
+                    KTSvgItem *svg = frame->createSvgItem(position, point, xml);
                     if (svg)
                         response->setItemIndex(frame->indexOf(svg));
                     else
                         return false;
                 } else {
-                    QGraphicsItem *item = frame->createItem(position, xml);
+                    QGraphicsItem *item = frame->createItem(position, point, xml);
                     if (item)
                         response->setItemIndex(frame->indexOf(item));
                     else
@@ -358,6 +360,8 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
         K_FUNCINFOX("items");
     #endif
 
+    kFatal() << "KTCommandExecutor::transformItem - Just tracing!";
+
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
@@ -382,13 +386,16 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
                     QDomDocument orig;
                     orig.appendChild(KTSerializer::properties(item, orig));
                     QString current = orig.toString();
+
+                    kFatal() << "KTCommandExecutor::transformItem - current: " << current;
                     
                     QDomDocument doc;
                     doc.setContent(xml);
                     KTSerializer::loadProperties(item, doc.documentElement());
-                    
+                   
+                    response->setArg(current); 
                     emit responsed(response);
-                    response->setArg(current);
+                    // response->setArg(current);
                     
                     return true;
                 } else {

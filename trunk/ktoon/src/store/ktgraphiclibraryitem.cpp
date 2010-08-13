@@ -63,7 +63,7 @@ QDomElement KTGraphicLibraryItem::toXml(QDomDocument &doc) const
 {
     QDomElement library = doc.createElement("symbol");
     library.setAttribute("id", k->symbolName);
-    library.appendChild(KTSerializer::properties( this, doc));
+    library.appendChild(KTSerializer::properties(this, doc));
     
     return library;
 }

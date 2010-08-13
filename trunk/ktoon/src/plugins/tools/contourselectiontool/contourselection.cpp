@@ -137,7 +137,10 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
                  if (item) {
                      if (!qgraphicsitem_cast<KControlNode *>(item)) {
                          if (!qgraphicsitem_cast<KTPathItem*>(item)) {
-                             KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->indexOf(item), KTLibraryObject::Item, KTProjectRequest::Convert, 2);
+                             KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
+                                                      scene->currentLayerIndex(), scene->currentFrameIndex(), 
+                                                      scene->currentFrame()->indexOf(item), QPointF(), KTLibraryObject::Item, 
+                                                      KTProjectRequest::Convert, 2);
                              emit requested(&event);
                          } else {
                              k->nodeGroups << new KNodeGroup(item, scene);
@@ -153,8 +156,9 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
                          QDomDocument doc;
                          doc.appendChild(qgraphicsitem_cast<KTPathItem *>(group->parentItem())->toXml(doc));
                     
-                         KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, 
-                                                                                      KTLibraryObject::Item, KTProjectRequest::EditNodes, doc.toString());
+                         KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), 
+                                                  scene->currentLayerIndex(), scene->currentFrameIndex(), position, 
+                                                  QPointF(), KTLibraryObject::Item, KTProjectRequest::EditNodes, doc.toString());
                     
                          foreach (QGraphicsView * view, scene->views())
                                   view->setUpdatesEnabled(false);

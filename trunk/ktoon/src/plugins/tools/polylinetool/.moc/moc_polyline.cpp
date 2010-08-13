@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'polyline.h'
 **
-** Created: Wed Aug 11 16:08:23 2010
+** Created: Fri Aug 13 01:40:39 2010
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.2)
 **
 ** WARNING! All changes made in this file will be lost!

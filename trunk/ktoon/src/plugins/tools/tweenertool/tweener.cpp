@@ -312,7 +312,7 @@ void Tweener::applyTweener()
                                             k->scene->currentLayerIndex(),
                                             k->scene->currentFrameIndex(),
                                             k->scene->currentFrame()->indexOf(item),
-                                            KTLibraryObject::Item,
+                                            QPointF(), KTLibraryObject::Item,
                                             KTProjectRequest::Tweening, 
                                             k->configurator->steps(k->scene->currentFrameIndex(), route));
                  emit requested(&request);

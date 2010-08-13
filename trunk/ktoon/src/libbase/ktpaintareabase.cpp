@@ -90,6 +90,7 @@ struct KTPaintAreaBase::Private
 {
     QGraphicsRectItem *grid;
     QRectF drawingRect;
+    QPointF position;
 
     bool drawGrid;
     double angle;
@@ -253,7 +254,9 @@ void KTPaintAreaBase::mouseMoveEvent(QMouseEvent * event)
          }
     }
 
-    emit cursorPosition(mapToScene(event->pos()));
+    k->position = mapToScene(event->pos()); 
+
+    emit cursorPosition(k->position);
 }
 
 void KTPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
@@ -440,8 +443,8 @@ KTGraphicsScene *KTPaintAreaBase::graphicsScene() const
     return k->scene;
 }
 
-QPointF KTPaintAreaBase::viewPosition(QPoint coord)
+QPointF KTPaintAreaBase::viewPosition()
 {
-    return mapToScene(coord);
+    return k->position;
 }
 

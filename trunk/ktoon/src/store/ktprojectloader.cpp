@@ -43,7 +43,7 @@ KTProjectLoader::~KTProjectLoader()
 {
 }
 
-void KTProjectLoader::createItem(int scenePosition, int layerPosition, int framePosition, int itemPosition, KTLibraryObject::Type type, const QString &xml, KTProject *project)
+void KTProjectLoader::createItem(int scenePosition, int layerPosition, int framePosition, int itemPosition, QPointF point, KTLibraryObject::Type type, const QString &xml, KTProject *project)
 {
     KTItemResponse response(KTProjectRequest::Item, KTProjectRequest::Add);
 
@@ -52,6 +52,8 @@ void KTProjectLoader::createItem(int scenePosition, int layerPosition, int frame
     response.setFrameIndex(framePosition);
     response.setItemIndex(itemPosition);
     response.setItemType(type);
+    response.setPosX(point.x());
+    response.setPosY(point.y());
     
     response.setArg(xml);
     

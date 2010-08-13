@@ -201,8 +201,9 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
     QDomDocument doc;
     if (k->begin) {
         doc.appendChild(k->item->toXml(doc));
-        KTProjectRequest request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), 
-                                                                       k->scene->currentFrame()->graphics().count(), KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
+        KTProjectRequest request = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), 
+                                                                       k->scene->currentFrameIndex(), k->scene->currentFrame()->graphicItemsCount(), 
+                                                                       QPointF(), KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
         
         emit requested(&request);
     } else if (!k->nodegroup->isSelected()) {
@@ -212,7 +213,7 @@ void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *br
                    doc.appendChild(qgraphicsitem_cast<KTPathItem *>(k->nodegroup->parentItem())->toXml(doc));
             
                    KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, 
-                                                                                KTLibraryObject::Item, KTProjectRequest::EditNodes, doc.toString());
+                                                                                QPointF(), KTLibraryObject::Item, KTProjectRequest::EditNodes, doc.toString());
                    k->nodegroup->restoreItem();
                    emit requested(&event);
                } else {
@@ -335,7 +336,7 @@ void PolyLine::nodeChanged()
                 doc.appendChild(qgraphicsitem_cast<KTPathItem *>(k->nodegroup->parentItem())->toXml(doc));
                 
                 KTProjectRequest event = KTRequestBuilder::createItemRequest(k->scene->currentSceneIndex(), k->scene->currentLayerIndex(), k->scene->currentFrameIndex(), 
-                                                                             position, KTLibraryObject::Item, KTProjectRequest::EditNodes, doc.toString());
+                                                                             position, QPointF(), KTLibraryObject::Item, KTProjectRequest::EditNodes, doc.toString());
                 foreach (QGraphicsView * view, k->scene->views())
                          view->setUpdatesEnabled(false);
 

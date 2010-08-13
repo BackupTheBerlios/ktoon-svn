@@ -413,7 +413,7 @@ void KTPaintArea::deleteItems()
                      KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                               currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
                                               currentScene->currentFrameIndex(), 
-                                              currentScene->currentFrame()->indexOf(item), type,
+                                              currentScene->currentFrame()->indexOf(item), QPointF(), type,
                                               KTProjectRequest::Remove);
                      emit requestTriggered(&event);
                      counter++;
@@ -450,7 +450,7 @@ void KTPaintArea::groupItems()
         if (strItems != ")") {
             KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(), 
                                      currentScene->currentLayerIndex(),
-                                     currentScene->currentFrameIndex(), firstItem, KTLibraryObject::Item,
+                                     currentScene->currentFrameIndex(), firstItem, QPointF(), KTLibraryObject::Item,
                                      KTProjectRequest::Group, strItems );
             emit requestTriggered(&event);
         }
@@ -468,7 +468,7 @@ void KTPaintArea::ungroupItems()
                                               currentScene->currentSceneIndex(), 
                                               currentScene->currentLayerIndex(), 
                                               currentScene->currentFrameIndex(), 
-                                              currentScene->currentFrame()->indexOf(item), KTLibraryObject::Item,
+                                              currentScene->currentFrame()->indexOf(item), QPointF(), KTLibraryObject::Item,
                                               KTProjectRequest::Ungroup);
                      emit requestTriggered(&event);
             }
@@ -549,6 +549,9 @@ void KTPaintArea::pasteItems()
              kFatal() << "KTPaintArea::pasteItems() - DOM: " << xml;
              KTLibraryObject::Type type = KTLibraryObject::Item;
              int total = currentScene->currentFrame()->graphicItemsCount();
+
+             QPointF point = viewPosition();
+             kFatal() << "KTPaintArea::pasteItems() - Point - x: " << point.x() << " - y: "  << point.y(); 
              
              if (xml.startsWith("<svg")) {
                  type = KTLibraryObject::Svg;
@@ -558,7 +561,7 @@ void KTPaintArea::pasteItems()
              KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
                                       currentScene->currentLayerIndex(), 
                                       currentScene->currentFrameIndex(), 
-                                      total, type, 
+                                      total, point, type, 
                                       KTProjectRequest::Add, xml);
              emit requestTriggered(&event);
      }
@@ -671,7 +674,7 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
                  }
 
                  KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(),
-                                          currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), value, 
+                                          currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), value, QPointF(), 
                                           KTLibraryObject::Item,  KTProjectRequest::Move, newPos);
                  emit requestTriggered(&event);
              }

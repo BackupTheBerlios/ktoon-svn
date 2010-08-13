@@ -292,6 +292,21 @@ void KTItemResponse::setItemType(KTLibraryObject::Type type)
     m_itemType = type;
 }
 
+QPointF KTItemResponse::position()
+{
+    return QPointF(m_x, m_y);
+}
+
+void KTItemResponse::setPosX(int coord)
+{
+    m_x = coord;
+}
+
+void KTItemResponse::setPosY(int coord)
+{
+    m_y = coord;
+}
+
 KTLibraryResponse::KTLibraryResponse(int part, int action) : KTFrameResponse(part, action), m_symbolType(-1)
 {
 }

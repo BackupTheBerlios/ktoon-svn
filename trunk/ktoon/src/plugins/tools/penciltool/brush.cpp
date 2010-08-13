@@ -138,7 +138,7 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
     QDomDocument doc;
     doc.appendChild(m_item->toXml(doc));
 
-    KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
+    KTProjectRequest request = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), QPointF(), KTLibraryObject::Item, KTProjectRequest::Add, doc.toString());
 
     emit requested(&request);
 }

@@ -68,7 +68,7 @@ class KTOON_EXPORT KTPaintAreaBase : public QGraphicsView
 
         QRectF drawingRect() const;
         KTGraphicsScene *graphicsScene() const;
-        QPointF viewPosition(QPoint coord);
+        QPointF viewPosition();
 
     private:
         virtual void saveState();

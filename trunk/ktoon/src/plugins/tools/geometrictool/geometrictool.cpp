@@ -193,7 +193,9 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
     QDomDocument doc;
     doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_item)->toXml(doc));
     
-    KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTLibraryObject::Item,  KTProjectRequest::Add, doc.toString()); // Adds to end
+    KTProjectRequest event = KTRequestBuilder::createItemRequest(scene->currentSceneIndex(), scene->currentLayerIndex(), 
+                             scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), QPointF(),
+                             KTLibraryObject::Item, KTProjectRequest::Add, doc.toString()); // Adds to end
     
     emit requested(&event);
 }

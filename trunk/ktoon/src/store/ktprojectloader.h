@@ -47,7 +47,7 @@ class KTProjectLoader
     	KTProjectLoader();
     	~KTProjectLoader();
     	
-    	static void createItem(int scenePosition, int layerPosition, int framePosition, int itemPosition, KTLibraryObject::Type type, const QString &xml, KTProject *project);
+    	static void createItem(int scenePosition, int layerPosition, int framePosition, int itemPosition, QPointF point, KTLibraryObject::Type type, const QString &xml, KTProject *project);
 
     	static void createFrame(int scenePosition, int layerPosition, int framePosition, const QString &name, KTProject *project);
     	static void createLayer(int scenePosition, int layerPosition, const QString &name, KTProject *project);

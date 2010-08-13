@@ -38,6 +38,7 @@
 #include <QBrush>
 #include <QPen>
 #include "ktpathitem.h"
+#include "ktsvgitem.h" 
 
 class QGraphicsItem;
 

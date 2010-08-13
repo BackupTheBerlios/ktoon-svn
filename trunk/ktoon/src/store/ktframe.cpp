@@ -40,6 +40,7 @@
 #include "ktlayer.h"
 
 #include "ktitemfactory.h"
+#include "ktserializer.h"
 #include "ktgraphicobject.h"
 #include "ktgraphiclibraryitem.h"
 #include "ktlibrary.h"
@@ -117,6 +118,8 @@ bool KTFrame::isVisible() const
 
 void KTFrame::fromXml(const QString &xml)
 {
+    kFatal() << "KTFrame::fromXml() - Loading objects from file!";
+
     QDomDocument document;
 	
     if (! document.setContent(xml))
@@ -132,10 +135,11 @@ void KTFrame::fromXml(const QString &xml)
            QDomElement e = n.toElement();
 
            if (!e.isNull()) {
+
                if (e.tagName() == "object") {
                    QDomNode n2 = e.firstChild();
 
-                   KTGraphicObject *last = 0;
+                   KTGraphicObject *last = 0; // SQA: Verify this weird variable
 
                    while (!n2.isNull()) {
                           QDomElement e2 = n2.toElement();
@@ -160,11 +164,35 @@ void KTFrame::fromXml(const QString &xml)
                                 ts << n2;
                               }
 
-                              createItem(k->graphics.count(), newDoc);
-                              last = k->graphics.value(k->graphics.count()-1);
+                              createItem(k->graphics.count(), QPointF(), newDoc);
+                              //last = k->graphics.value(k->graphics.count()-1);
                           }
                           n2 = n2.nextSibling();
                    }
+               } else if (e.tagName() == "svg") {
+
+                          QString path = e.attribute("itemPath");
+                          QDomNode n2 = e.firstChild();
+
+                          while (!n2.isNull()) {
+                                 QDomElement e2 = n2.toElement();
+
+                                 if (e2.tagName() == "properties") {
+                              
+                                     QString newDoc;
+                                     {
+                                       QTextStream ts(&newDoc);
+                                       ts << n2;
+                                     }
+
+                                     KTSvgItem *svg = new KTSvgItem(path);
+                                     KTSerializer::loadProperties(svg, e2);
+                                     QString id("svgItem");
+                                     insertSvgItem(k->svg.count(), id, svg);
+                                 }
+
+                                 n2 = n2.nextSibling(); 
+                          }
                }
            }
 		
@@ -179,6 +207,9 @@ QDomElement KTFrame::toXml(QDomDocument &doc) const
     doc.appendChild(root);
 
     foreach (KTGraphicObject *object, k->graphics.values())
+             root.appendChild(object->toXml(doc));
+
+    foreach (KTSvgItem *object, k->svg.values())
              root.appendChild(object->toXml(doc));
 
     return root;
@@ -336,7 +367,7 @@ bool KTFrame::removeGraphicAt(int position)
     return false;
 }
 
-QGraphicsItem *KTFrame::createItem(int position, const QString &xml, bool loaded)
+QGraphicsItem *KTFrame::createItem(int position, QPointF coords, const QString &xml, bool loaded)
 {
     kFatal() << "KTFrame::createItem - pos: " << position;
 
@@ -351,7 +382,7 @@ QGraphicsItem *KTFrame::createItem(int position, const QString &xml, bool loaded
 
     if (loaded) {
         kFatal() << "KTFrame::createItem - Loader doesn't create item";
-        KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, KTLibraryObject::Item, xml, project());
+        KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, coords, KTLibraryObject::Item, xml, project());
     } else {
         kFatal() << "KTFrame::createItem - Loader creates item";
     }
@@ -359,7 +390,7 @@ QGraphicsItem *KTFrame::createItem(int position, const QString &xml, bool loaded
     return graphicItem;
 }
 
-KTSvgItem *KTFrame::createSvgItem(int position, const QString &xml, bool loaded)
+KTSvgItem *KTFrame::createSvgItem(int position, QPointF coords, const QString &xml, bool loaded)
 {
     QString id("top.svg");
 
@@ -378,6 +409,8 @@ KTSvgItem *KTFrame::createSvgItem(int position, const QString &xml, bool loaded)
     //svg->renderer()->load(stream);
 
     KTSvgItem *item = new KTSvgItem(path);
+    item->moveBy(coords.x(), coords.y()); 
+
     //item->setContent(svgContent);
     //QByteArray stream = svgContent.toLocal8Bit();
     //item->renderer()->load(stream);
@@ -387,7 +420,7 @@ KTSvgItem *KTFrame::createSvgItem(int position, const QString &xml, bool loaded)
     insertSvgItem(position, id, item);
 
     if (loaded)
-        KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, KTLibraryObject::Svg, xml, project());
+        KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, coords, KTLibraryObject::Svg, xml, project());
     else
         kFatal() << "KTFrame::createSvgItem - KTProjectLoader::createItem wasn't called";
 
