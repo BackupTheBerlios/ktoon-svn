@@ -59,11 +59,6 @@ KTLibraryFolder::~KTLibraryFolder()
 
 KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const QString &name, const QByteArray &data, bool loaded)
 {
-    kFatal() << "KTLibraryFolder::createSymbol - Adding object -> Name: " << name;
-    kFatal() << "KTLibraryFolder::createSymbol - Data size: " <<  data.size();
-    // QString info(data);
-    // kFatal() << "KTLibraryFolder::createSymbol - Data: " <<  info;
-
     KTLibraryObject *object = new KTLibraryObject(this);
     object->setSymbolName(name);
     object->setParent(this);
@@ -77,19 +72,13 @@ KTLibraryObject *KTLibraryFolder::createSymbol(KTLibraryObject::Type type, const
     bool ret = addObject(object);
     object->saveData(k->project->dataDir());
 
-    kFatal() << "KTLibraryFolder::createSymbol - addObject: " <<  ret;
-    
-    if (loaded && ret) {
-        kFatal() << "KTLibraryFolder::createSymbol - Creating symbol!";
+    if (loaded && ret)
         KTProjectLoader::createSymbol(type, name, data, k->project);
-    } else {
-        kFatal() << "KTLibraryFolder::createSymbol - Method KTProjectLoader::createSymbol wasn't loaded";
-    }
     
     return object;
 }
 
-bool KTLibraryFolder::addObject(KTLibraryObject *object) //, const QString &id)
+bool KTLibraryFolder::addObject(KTLibraryObject *object)
 {
     if (!k->objects.contains(object->symbolName())) {
         k->objects.insert(object->symbolName(), object);
@@ -179,7 +168,7 @@ LibraryObjects KTLibraryFolder::objects() const
     return k->objects;
 }
 
-void KTLibraryFolder::fromXml(const QString &xml )
+void KTLibraryFolder::fromXml(const QString &xml)
 {
     QDomDocument document;
     

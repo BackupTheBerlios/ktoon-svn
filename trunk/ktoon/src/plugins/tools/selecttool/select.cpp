@@ -86,17 +86,11 @@ void Select::init(KTGraphicsScene *scene)
     k->nodeManagers.clear();
     k->changedManager = 0;
 
-    //kFatal() << "Select::init - Just starting!";
-    
     foreach (QGraphicsView *view, scene->views()) {
              view->setDragMode(QGraphicsView::RubberBandDrag);
              foreach (QGraphicsItem *item, scene->items()) {
-                      if (!qgraphicsitem_cast<Node *>(item)) { 
-                          kFatal() << "Select::init - flag movable enabled";
+                      if (!qgraphicsitem_cast<Node *>(item))
                           item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-                      } else {
-                          kFatal() << "Select::init - object is not selectable";
-                      }
              }
     }
 }
@@ -213,12 +207,9 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                      KTLibraryObject::Type type;
 
                      if (svg) {
-                         kFatal() << "Select::release -> Tracing a SVG file!";
                          position  = scene->currentFrame()->indexOf(svg);
-                         kFatal() << "Select::release -> position: " << position;
                          type = KTLibraryObject::Svg;
                      } else {
-                         kFatal() << "Select::release -> NO SVG file!";
                          position  = scene->currentFrame()->indexOf(manager->parentItem());
                          type = KTLibraryObject::Item;
                      }
@@ -230,10 +221,6 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 
                          manager->restoreItem();
 
-                         kFatal() << "Select::release -> Setting a item transformation";
-                         kFatal() << "Select::release -> Position: " << position;
-                         kFatal() << "Select::release -> Graphic Type: " << type;
-                    
                          KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                     scene->currentSceneIndex(), 
                                     scene->currentLayerIndex(), 
@@ -242,7 +229,6 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
                          emit requested(&event);
                      } else {
                          kDebug("selection") << "position is " << position; 
-                         kFatal() << "Select::release -> No transformation was made :S - Position: " << position;
                      }
                  }
         }
@@ -256,8 +242,6 @@ void Select::setupActions()
 {
     KAction *select = new KAction(QPixmap(THEME_DIR + "icons/selection.png"), tr("Object Selection"), this);
     select->setShortcut(QKeySequence(tr("O")));
-
-    //select->setCursor(QCursor(THEME_DIR + "cursors/contour.png"));
 
     k->actions.insert(tr("Select"), select);
 }
@@ -294,22 +278,16 @@ void Select::itemResponse(const KTItemResponse *event)
 {
     K_FUNCINFOX("tools");
 
-    kFatal() << "Select::itemResponse - Tracing...";
-
     QGraphicsItem *item = 0;
     KTScene *scene = 0;
     KTLayer *layer = 0;
     KTFrame *frame = 0;
 
-    kFatal() << "Select::itemResponse - FLAG 0";    
     KTProject *project = k->scene->scene()->project();
-    kFatal() << "Select::itemResponse - FLAG 1";
     
     if (project) {
 
-        kFatal() << "Select::itemResponse - FLAG 2";
         scene = project->scene(event->sceneIndex());
-        kFatal() << "Select::itemResponse - FLAG 3";
 
         if (scene) {
             layer = scene->layer(event->layerIndex());
@@ -319,15 +297,10 @@ void Select::itemResponse(const KTItemResponse *event)
                 if (frame) {
                     if (event->itemType() == KTLibraryObject::Svg && frame->svgItemsCount()>0) {
                         item = frame->svg(event->itemIndex());
-                        kFatal() << "Select::itemResponse - SVG item selected";
-                    } else {
-                        if (frame->graphicItemsCount()>0) {
-                            item = frame->item(event->itemIndex());
-                            kFatal() << "Select::itemResponse - Graphic item selected";
-                        }
+                    } else if (frame->graphicItemsCount()>0) {
+                               item = frame->item(event->itemIndex());
                     }
                 } else {
-                    kFatal() << "Select::itemResponse - No frame available";
                     return;
                 }
             }

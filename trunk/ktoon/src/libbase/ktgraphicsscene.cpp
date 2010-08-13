@@ -264,7 +264,6 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
 {
     if (frame) {
-        kFatal() << "KTGraphicsScene::addFrame() - Adding graphic objects! - Size: " << frame->graphicItemsCount();
         k->objectCounter = 0;
         // TODO: This for must be re-written
         for (int i=0; i < frame->graphicItemsCount(); i++) {
@@ -272,9 +271,7 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
              addGraphicObject(object, opacity);
         }
 
-        kFatal() << "KTGraphicsScene::addFrame() - Adding svg objects! - Size: " << frame->svgItemsCount();
         for (int i=0; i < frame->svgItemsCount(); i++) {
-             kFatal() << "KTGraphicsScene::addFrame() - Svg item at: " << i;
              KTSvgItem *object = frame->svg(i);
              addSvgObject(object, opacity);
         }
@@ -283,8 +280,6 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
 
 void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 {
-    kFatal() << "KTGraphicsScene::addGraphicObject - Testing!";     
-
     QGraphicsItem *item = object->item();
     k->onionSkin.opacityMap.insert(item, opacity);
 
@@ -311,8 +306,6 @@ void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 
 void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
 {
-    kFatal() << "KTGraphicsScene::addSvgObject - Testing!";
-
     if (svgItem) {
         k->onionSkin.opacityMap.insert(svgItem, opacity);
         svgItem->setSelected(false);
@@ -329,9 +322,7 @@ void KTGraphicsScene::addSvgObject(KTSvgItem *svgItem, double opacity)
                 addItem(svgItem);
             }
         }
-    } else {
-        kFatal() << "KTGraphicsScene::addSvgObject - Item is null, not added!";
-    }
+    } 
 } 
 
 void KTGraphicsScene::clean()

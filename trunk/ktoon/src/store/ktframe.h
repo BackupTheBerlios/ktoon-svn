@@ -92,9 +92,9 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
        bool isVisible() const;
        
        void addItem(QString &id, QGraphicsItem *item);
-       void addSvgItem(QString &id, KTSvgItem *item);
+       void addSvgItem(KTSvgItem *item);
        void insertItem(int position, QString &id, QGraphicsItem *item);
-       void insertSvgItem(int position, QString &id, KTSvgItem *item);
+       void insertSvgItem(int position, KTSvgItem *item);
        
        void replaceItem(int position, QGraphicsItem *item);
        bool moveItem(int currentPosition, int newPosition);

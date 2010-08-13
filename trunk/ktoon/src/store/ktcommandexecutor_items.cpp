@@ -70,10 +70,6 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
 
     QString xml = response->arg().toString();
 
-    kFatal() << "KTCommandExecutor::createItem() - Creating Item at position: " << position;
-    kFatal() << "KTCommandExecutor::createItem() - Creating Item at frame: " << framePosition;
-    //kFatal() << "KTCommandExecutor::createItem() - XML: " << xml;
-    
     KTScene *scene = m_project->scene(scenePosition);
     
     if (scene) {
@@ -360,8 +356,6 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
         K_FUNCINFOX("items");
     #endif
 
-    kFatal() << "KTCommandExecutor::transformItem - Just tracing!";
-
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
@@ -387,8 +381,6 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
                     orig.appendChild(KTSerializer::properties(item, orig));
                     QString current = orig.toString();
 
-                    kFatal() << "KTCommandExecutor::transformItem - current: " << current;
-                    
                     QDomDocument doc;
                     doc.setContent(xml);
                     KTSerializer::loadProperties(item, doc.documentElement());
@@ -398,9 +390,7 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
                     // response->setArg(current);
                     
                     return true;
-                } else {
-                    kFatal() << "KTCommandExecutor::transformItem - No item was found! - Type: " << type;
-                }
+                } 
             }
         }
     }

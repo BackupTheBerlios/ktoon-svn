@@ -317,26 +317,19 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 
 void KTPaintArea::itemResponse(KTItemResponse *event)
 {
-    kFatal() << "KTPaintArea::itemResponse -> Tracing!";
-
     if (!graphicsScene()->isDrawing()) {
         switch(event->action()) {
                case KTProjectRequest::Transform:
-                    kFatal() << "KTPaintArea::itemResponse -> Transform event!";
                     viewport()->update();
                     break;
                case KTProjectRequest::Remove:
-                    kFatal() << "KTPaintArea::itemResponse -> Deleting item";
                     if (k->lastItem) {
                         graphicsScene()->drawCurrentPhotogram();
                         viewport()->update(scene()->sceneRect().toRect());
                         k->lastItem = false;
-                    } else {
-                        kFatal() << "KTPaintArea::itemResponse -> No item deleted :(";
-                    }
+                    } 
                     break;
                default:
-                    kFatal() << "KTPaintArea::itemResponse -> Just repainting :)";
                     graphicsScene()->drawCurrentPhotogram();
                     viewport()->update(scene()->sceneRect().toRect());
                     break;
@@ -384,8 +377,6 @@ bool KTPaintArea::canPaint() const
 void KTPaintArea::deleteItems()
 {
     // K_FUNCINFO;
-    kFatal() << "KTPaintArea::deleteItems() - Deleting items!";
-
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
     if (!selected.empty()) {
@@ -402,13 +393,10 @@ void KTPaintArea::deleteItems()
 
                      KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item);
 
-                     if (svg) {
-                         kFatal() << "KTPaintArea::deleteItems() -> Tracing a SVG file!";
+                     if (svg)
                          type = KTLibraryObject::Svg;
-                     } else {
-                         kFatal() << "KTPaintArea::deleteItems() -> NO SVG file!";
+                     else
                          type = KTLibraryObject::Item;
-                     }
 
                      KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                               currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
@@ -482,8 +470,6 @@ void KTPaintArea::copyItems()
            K_FUNCINFOX("paintarea");
     #endif
 
-    kFatal() << "KTPaintArea::copyItems() - Testing!";
-
     k->copiesXml.clear();
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 
@@ -493,15 +479,8 @@ void KTPaintArea::copyItems()
         if (currentScene) {
             foreach (QGraphicsItem *item, selected) {
 
-                     KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item);
-                     if (svg) {
-                         QString id = svg->itemPath();
-                         kFatal() << "KTPaintArea::copyItems() - Item ID: " << id;
-                     }
-
                      QDomDocument dom;
                      dom.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml(dom));
-                     //kFatal() << "KTPaintArea::copyItems() - DOM: " << dom.toString();
                      k->copiesXml << dom.toString();
 
                      // Paint it to clipbard
@@ -543,15 +522,11 @@ void KTPaintArea::pasteItems()
 
     KTGraphicsScene* currentScene = graphicsScene();
 
-    kFatal() << "KTPaintArea::pasteItems() - Item index: " << currentScene->currentFrame()->graphics().count();
-
     foreach (QString xml, k->copiesXml) {
-             kFatal() << "KTPaintArea::pasteItems() - DOM: " << xml;
              KTLibraryObject::Type type = KTLibraryObject::Item;
              int total = currentScene->currentFrame()->graphicItemsCount();
 
              QPointF point = viewPosition();
-             kFatal() << "KTPaintArea::pasteItems() - Point - x: " << point.x() << " - y: "  << point.y(); 
              
              if (xml.startsWith("<svg")) {
                  type = KTLibraryObject::Svg;
@@ -635,8 +610,6 @@ void KTPaintArea::requestMoveSelectedItems(QAction *action)
     #ifdef K_DEBUG
            K_FUNCINFOX("paintarea");
     #endif
-
-    kFatal() << "KTPaintArea::requestMoveSelectedItems - Just tracing...";
 
     QList<QGraphicsItem *> selected = scene()->selectedItems();
 

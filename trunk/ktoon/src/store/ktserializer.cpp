@@ -47,12 +47,9 @@ KTSerializer::~KTSerializer()
 
 QDomElement KTSerializer::properties(const QGraphicsItem *item, QDomDocument &doc)
 {
-    kFatal() << "KTSerializer::properties - Just tracing!";
-
     QDomElement properties = doc.createElement("properties");
     
     QString strMatrix = "matrix(";
-    //QMatrix m = item->matrix();
     QTransform m = item->transform();
     qreal a = m.m11();
     qreal b = m.m12();
@@ -73,10 +70,6 @@ QDomElement KTSerializer::properties(const QGraphicsItem *item, QDomDocument &do
 
 void KTSerializer::loadProperties(QGraphicsItem *item, const QXmlAttributes &atts)
 {
-    //QMatrix matrix;
-    //KTSvg2Qt::svgmatrix2qtmatrix(atts.value("transform"), matrix);
-    //item->setMatrix(matrix);
-
     QMatrix matrix;
     KTSvg2Qt::svgmatrix2qtmatrix(atts.value("transform"), matrix);
     QTransform transform(matrix);
@@ -87,7 +80,6 @@ void KTSerializer::loadProperties(QGraphicsItem *item, const QXmlAttributes &att
     item->setPos(pos);
         
     item->setEnabled(atts.value("pos") != "0"); // default true
-        
     item->setFlags(QGraphicsItem::GraphicsItemFlags(atts.value("flags").toInt()));
 }
 
@@ -95,20 +87,16 @@ void KTSerializer::loadProperties(QGraphicsItem *item, const QDomElement &e)
 {
     if (e.tagName() == "properties") {
 
-        kFatal() << "KTSerializer::loadProperties - Loading properties!";
         QMatrix matrix;
         KTSvg2Qt::svgmatrix2qtmatrix(e.attribute("transform"), matrix);
         QTransform transform(matrix);
         item->setTransform(transform); 
 
-        //item->setMatrix(matrix);
-        
         QPointF pos;
         KTSvg2Qt::parsePointF(e.attribute("pos"), pos);
         item->setPos(pos);
         
         item->setEnabled(e.attribute("pos") != "0");
-        
         item->setFlags(QGraphicsItem::GraphicsItemFlags(e.attribute("flags").toInt()));
     }
 }

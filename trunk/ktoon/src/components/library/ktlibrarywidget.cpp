@@ -193,19 +193,13 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
         switch (object->type()) {
                 case KTLibraryObject::Svg:
                    {
-                     kFatal() << "KTLibraryWidget::previewItem - SVG Preview: " << object->symbolName();
-                     kFatal() << "KTLibraryWidget::previewItem - SVG path: " << object->dataPath();
-
                      QString svgContent = qvariant_cast<QString>(object->data());
                      if (svgContent.length() > 0) {
-                         kFatal() << "KTLibraryWidget::previewItem - Displaying!";
                          QByteArray stream = svgContent.toLocal8Bit();
                          QGraphicsSvgItem *svg = new QGraphicsSvgItem;
                          svg->renderer()->load(stream);
                          k->display->render(static_cast<QGraphicsItem *>(svg));
-                     } else {
-                         kFatal() << "KTLibraryWidget::previewItem - No data to display! :S";
-                     }
+                     } 
                    }
                    break;
                 case KTLibraryObject::Image:
@@ -366,7 +360,8 @@ void KTLibraryWidget::importBitmapArray()
         QString text = tr("%1 images will be loaded.").arg(size);
         bool resize = false; 
         if (kb > 200) {
-            text = text + "\n" + tr("Files are too big, so they will be resized.") + "\n" + tr("Note: This task can take a while.");
+            text = text + "\n" + tr("Files are too big, so they will be resized.") + "\n" 
+                   + tr("Note: This task can take a while.");
             resize = true;
         }
 
@@ -378,7 +373,8 @@ void KTLibraryWidget::importBitmapArray()
         msgBox.setStandardButtons(QMessageBox::Cancel | QMessageBox::Ok);
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.show();
-        msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2 , (int) (desktop.screenGeometry().height() - msgBox.height())/2);
+        msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2, 
+                    (int) (desktop.screenGeometry().height() - msgBox.height())/2);
 
         int answer = msgBox.exec();
 
@@ -458,7 +454,102 @@ void KTLibraryWidget::importBitmapArray()
 
 void KTLibraryWidget::importSvgArray() 
 {
-    // SQA: To do!
+    kFatal() << "KTLibraryWidget::importSvgArray() - Just tracing!";
+
+    QDesktopWidget desktop;
+    QString dir = getenv("HOME");
+    QString path = QFileDialog::getExistingDirectory(this, tr("Choose the svg directory..."), dir,
+                                                 QFileDialog::ShowDirsOnly
+                                                 | QFileDialog::DontResolveSymlinks);
+    if (path.isEmpty())
+        return;
+
+    QDir source(path); 
+    QFileInfoList photograms = source.entryInfoList(QDir::Files, QDir::Name);
+    int size = photograms.size();
+
+    if (size > 0) {
+
+        QString testFile = photograms.at(0).absoluteFilePath();
+        QFile file(testFile);
+        file.close();
+
+        QString text = tr("%1 SVG files will be loaded.").arg(size);
+
+        QMessageBox msgBox;
+        msgBox.setWindowTitle(tr("Information"));  
+        msgBox.setIcon(QMessageBox::Question);
+        msgBox.setText(text);
+        msgBox.setInformativeText(tr("Do you want to continue?"));
+        msgBox.setStandardButtons(QMessageBox::Cancel | QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.show();
+        msgBox.move((int) (desktop.screenGeometry().width() - msgBox.width())/2, 
+                    (int) (desktop.screenGeometry().height() - msgBox.height())/2);
+
+        int answer = msgBox.exec();
+
+        if (answer == QMessageBox::Ok) {
+
+            QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+            QFont font = this->font();
+            font.setPointSize(8);
+
+            QProgressDialog progressDialog(this, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
+            progressDialog.setFont(font);
+            progressDialog.setLabelText(tr("Loading SVG files..."));
+            progressDialog.setCancelButton(0);
+            progressDialog.setRange(1, size);
+            progressDialog.show();
+            int index = 1;
+
+            progressDialog.move((int) (desktop.screenGeometry().width() - progressDialog.width())/2 , 
+                                (int) (desktop.screenGeometry().height() - progressDialog.height())/2);
+
+            for (int i = 0; i < size; ++i) {
+                 QString path = photograms.at(i).absoluteFilePath(); 
+                 QString symName = photograms.at(i).fileName();
+                 QFile f(path);
+
+                 if (f.open(QIODevice::ReadOnly)) {
+
+                     QByteArray data = f.readAll();
+                     f.close();
+
+                     KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
+                                                                                       KTLibraryObject::Svg, data);
+                     emit requestTriggered(&request);
+
+                     if (i < photograms.size()-1) {
+
+                         KTProjectRequest request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, 
+                                                                                         k->currentFrame.frame + 1, KTProjectRequest::Add, QString());
+                         emit requestTriggered(&request);
+
+                         request = KTRequestBuilder::createFrameRequest(k->currentFrame.scene, k->currentFrame.layer, k->currentFrame.frame + 1, 
+                                                            KTProjectRequest::Select);
+                         emit requestTriggered(&request);
+                     }
+
+                     progressDialog.setLabelText(tr("Loading SVG file #%1").arg(index));
+                     progressDialog.setValue(index);
+                     index++;
+
+                 } else {
+                     kFatal() << "ERROR: Can't open file " << symName;
+                     QMessageBox::critical(this, tr("ERROR!"), tr("ERROR: Can't open file %1. Please, check file permissions and try again.").arg(symName), QMessageBox::Ok);
+                     QApplication::restoreOverrideCursor();
+                     return;
+                 }
+             }
+
+             QApplication::restoreOverrideCursor();
+
+        }
+    } else {
+        KOsd::self()->display(tr("Error"), tr("No image files were found.<br/>Please, try another directory"), KOsd::Error);
+    }
 }
 
 void KTLibraryWidget::importSound()

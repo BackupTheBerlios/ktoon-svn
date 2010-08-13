@@ -63,7 +63,6 @@ KTLibraryObject::~KTLibraryObject()
  */
 void KTLibraryObject::setData(const QVariant &data)
 {
-    kFatal() << "KTLibraryObject::setData - Setting data!";
     k->data = data;
 }
 
@@ -185,12 +184,8 @@ QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
 
 bool KTLibraryObject::loadData(const QByteArray &data)
 {
-    if (data.isEmpty()) {
-        kFatal() << "KTLibraryObject::loadData - data is NULL";
+    if (data.isEmpty())
         return false;
-    } else {
-        kFatal() << "KTLibraryObject::loadData - data is NOT NULL";
-    }
     
     bool ok = true;
 
@@ -204,21 +199,17 @@ bool KTLibraryObject::loadData(const QByteArray &data)
             break;
             case KTLibraryObject::Image:
             {
-                 kFatal() << "KTLibraryObject::loadData - Adding image";
-
                  QPixmap pixmap;
                  pixmap.loadFromData(data);
             
                  KTPixmapItem *item = new KTPixmapItem;
                  item->setPixmap(pixmap);
-            
                  setData(QVariant::fromValue(static_cast<QGraphicsItem *>(item)));
             }
             break;
             case KTLibraryObject::Svg:
             {
                  QString item(data);
-                 kFatal() << "KTLibraryObject::loadData - setting data: " << item;
                  setData(QVariant::fromValue(item));
             }
             break;
@@ -336,8 +327,6 @@ void KTLibraryObject::saveData(const QString &dataDir)
                  (qgraphicsitem_cast<KTPixmapItem *> (qvariant_cast<QGraphicsItem *>(k->data)))->pixmap().save(dest + k->symbolName, "PNG");
           
                  k->dataPath = dest + k->symbolName;
-
-                 kFatal() << "KTLibraryObject::saveData - Saving image at: " << k->dataPath;
             }
             break;
             default: 

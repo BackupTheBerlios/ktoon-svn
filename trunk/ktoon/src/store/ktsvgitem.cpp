@@ -56,16 +56,6 @@ QString KTSvgItem::itemPath() const
     return path;
 }
 
-void KTSvgItem::setContent(QString &xml)
-{
-    data = xml;
-}
-
-QString KTSvgItem::content() const
-{
-    return data;
-}
-
 void KTSvgItem::rendering()
 {
     QByteArray stream = data.toLocal8Bit(); 
@@ -74,17 +64,14 @@ void KTSvgItem::rendering()
 
 void KTSvgItem::fromXml(const QString &xml)
 {
-    kFatal() << "KTSvgItem::fromXml() - xml: " << xml;
+    Q_UNUSED(xml);
 }
 
 QDomElement KTSvgItem::toXml(QDomDocument &doc) const
 {
     QDomElement root = doc.createElement("svg");
-    //root.setAttribute("svgData", data);
     root.setAttribute("itemPath", path); 
     root.appendChild(KTSerializer::properties(this, doc));
  
-    kFatal() << "KTSvgItem::toXml() - Just tracing!";
-
     return root;
 }
