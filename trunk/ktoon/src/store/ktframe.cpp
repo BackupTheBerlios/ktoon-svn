@@ -211,9 +211,9 @@ QDomElement KTFrame::toXml(QDomDocument &doc) const
     return root;
 }
 
-void KTFrame::addItem(QString &id, QGraphicsItem *item)
+void KTFrame::addItem(QGraphicsItem *item)
 {
-    insertItem(k->graphics.count(), id, item);
+    insertItem(k->graphics.count(), item);
 }
 
 void KTFrame::addSvgItem(KTSvgItem *item)
@@ -221,7 +221,7 @@ void KTFrame::addSvgItem(KTSvgItem *item)
     insertSvgItem(k->svg.count(), item);
 }
 
-void KTFrame::insertItem(int position, QString &id, QGraphicsItem *item)
+void KTFrame::insertItem(int position, QGraphicsItem *item)
 {
     if (k->graphics.contains(position-1)) {
         if (QGraphicsItem *lastItem = k->graphics.value(position-1)->item())
@@ -233,7 +233,7 @@ void KTFrame::insertItem(int position, QString &id, QGraphicsItem *item)
     }
 
     KTGraphicObject *object = new KTGraphicObject(item, this);
-    object->setObjectName(id);
+    //object->setObjectName(id);
     k->graphics.insert(position, object);
 }
 
@@ -276,8 +276,7 @@ QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group)
 
     QGraphicsItem *block = qgraphicsitem_cast<QGraphicsItem *>(itemGroup);
 
-    QString id("group_item");
-    insertItem(position, id, block);
+    insertItem(position, block);
 
     return itemGroup;
 }
@@ -291,8 +290,7 @@ QList<QGraphicsItem *> KTFrame::destroyItemGroup(int position)
         items = group->childs();
         foreach (QGraphicsItem *child, group->childs()) {
                  group->removeFromGroup(child);
-                 QString id("item");
-                 addItem(id, child);
+                 addItem(child);
         }
     }
 
@@ -367,10 +365,8 @@ QGraphicsItem *KTFrame::createItem(int position, QPointF coords, const QString &
     itemFactory.setLibrary(project()->library());
     QGraphicsItem *graphicItem = itemFactory.create(xml);
 
-    if (graphicItem) {
-        QString id = itemFactory.itemID(xml);
-        insertItem(position, id, graphicItem);
-    }
+    if (graphicItem)
+        insertItem(position, graphicItem);
 
     if (loaded)
         KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, coords, KTLibraryObject::Item, xml, project());

@@ -85,14 +85,10 @@ void KTGraphicObject::fromXml(const QString &xml)
 
 QDomElement KTGraphicObject::toXml(QDomDocument &doc) const
 {
-    kFatal() << "KTGraphicObject::toXml - Saving object!";
-
     QDomElement object = doc.createElement("object");
  
     if (KTAbstractSerializable *is = dynamic_cast<KTAbstractSerializable *>(k->item))
         object.appendChild(is->toXml(doc));
-    else
-        kFatal() << "KTGraphicObject::toXml - dynamic_cast has failed!";
 
     if (k->tweener)
         object.appendChild(k->tweener->toXml(doc));

@@ -425,25 +425,19 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                        KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
                        //libraryItem->moveBy(100, 100);
                        libraryItem->moveBy(115, 80);
-                       QString id(libraryItem->symbolName());
-                       frame->addItem(id, libraryItem);
+                       frame->addItem(libraryItem);
                      }
                 break;
                 case KTLibraryObject::Text:
                      {
                        KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
-                       QString id(libraryItem->symbolName());
-                       frame->addItem(id, libraryItem);
+                       frame->addItem(libraryItem);
                      }
                 break;
                 case KTLibraryObject::Svg:
                      {
                        QString path(object->dataPath());
-                       //QString svgContent = qvariant_cast<QString>(object->data());
-                       QString id(object->symbolName());
-
                        KTSvgItem *svgItem = new KTSvgItem(path);
-                       //svgItem->setContent(svgContent);
 
                        frame->addSvgItem(svgItem);
                      }
@@ -451,8 +445,7 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
                 case KTLibraryObject::Item:
                      {
                        KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
-                       QString id(libraryItem->symbolName());
-                       frame->addItem(id, libraryItem);
+                       frame->addItem(libraryItem);
                      }
                 break;
                 case KTLibraryObject::Sound:

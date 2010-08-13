@@ -454,8 +454,6 @@ void KTLibraryWidget::importBitmapArray()
 
 void KTLibraryWidget::importSvgArray() 
 {
-    kFatal() << "KTLibraryWidget::importSvgArray() - Just tracing!";
-
     QDesktopWidget desktop;
     QString dir = getenv("HOME");
     QString path = QFileDialog::getExistingDirectory(this, tr("Choose the svg directory..."), dir,
