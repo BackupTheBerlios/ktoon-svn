@@ -123,6 +123,7 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
+    KTLibraryObject::Type type = response->itemType();
 
     KTScene *scene = m_project->scene(scenePosition);
     
@@ -131,14 +132,29 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
         if (layer) {
             KTFrame *frame = layer->frame(framePosition);
             if (frame) {
-                QGraphicsItem *item = frame->item(response->itemIndex());
-                if (KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item)) {
-                    QDomDocument orig;
-                    orig.appendChild(itemSerializable->toXml(orig));
-                    response->setArg(orig.toString());
-                    frame->removeGraphicAt(response->itemIndex());
+
+                if (type == KTLibraryObject::Svg) {
+                    frame->removeSvgAt(response->itemIndex());
                 } else {
-                    return false;
+                    frame->removeGraphicAt(response->itemIndex());
+
+                    // SQA: Check this code and figure out if it's required
+                    /* 
+                    QGraphicsItem *item = frame->item(response->itemIndex());
+                    if (item) {
+                        if (KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item)) {
+                            QDomDocument orig;
+                            orig.appendChild(itemSerializable->toXml(orig));
+                            response->setArg(orig.toString());
+                            kFatal() << "KTCommandExecutor::removeItem - XML: " << orig.toString();
+                            frame->removeGraphicAt(response->itemIndex());
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        kFatal() << "KTCommandExecutor::removeItem - Item NOT found!";
+                    }
+                    */
                 }
                 
                 emit responsed(response);

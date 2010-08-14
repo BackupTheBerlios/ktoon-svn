@@ -144,6 +144,8 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 
 void KTGraphicsScene::drawCurrentPhotogram()
 {
+    kFatal() << "KTGraphicsScene::drawCurrentPhotogram() - Layer: " << k->framePosition.layer;
+
     KTLayer *layer = k->scene->layer(k->framePosition.layer);
     int frames = layer->framesNumber();
 
@@ -265,14 +267,16 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
 {
     if (frame) {
         k->objectCounter = 0;
-        // TODO: This for must be re-written
-        for (int i=0; i < frame->graphicItemsCount(); i++) {
-             KTGraphicObject *object = frame->graphic(i);
+
+        QList<int> indexes = frame->itemIndexes();
+        for (int i = 0; i < indexes.size(); ++i) {
+             KTGraphicObject *object = frame->graphic(indexes.at(i));
              addGraphicObject(object, opacity);
         }
 
-        for (int i=0; i < frame->svgItemsCount(); i++) {
-             KTSvgItem *object = frame->svg(i);
+        indexes = frame->svgIndexes();
+        for (int i = 0; i < indexes.size(); ++i) {
+             KTSvgItem *object = frame->svg(indexes.at(i));
              addSvgObject(object, opacity);
         }
     }
@@ -427,6 +431,8 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
 
     clean();
     k->scene = scene;
+
+    kFatal() << "KTGraphicsScene::setCurrentScene - Just tracing!";
 
     drawCurrentPhotogram();
 }

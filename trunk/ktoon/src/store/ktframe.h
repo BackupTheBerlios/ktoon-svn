@@ -100,6 +100,8 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
        bool moveItem(int currentPosition, int newPosition);
        
        bool removeGraphicAt(int position);
+       bool removeSvgAt(int position);
+
        QGraphicsItem *createItem(int position, QPointF coords, const QString &xml, bool loaded = false);
        KTSvgItem *createSvgItem(int position, QPointF coords, const QString &xml, bool loaded = false);
 
@@ -133,6 +135,8 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
        int svgItemsCount();
 
        int getTopZLevel();
+       QList<int> itemIndexes();
+       QList<int> svgIndexes();
        
     public:
        virtual void fromXml(const QString &xml);

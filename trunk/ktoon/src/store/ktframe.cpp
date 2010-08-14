@@ -337,12 +337,19 @@ bool KTFrame::moveItem(int currentPosition, int newPosition)
 
 bool KTFrame::removeGraphicAt(int position)
 {
-    //if (position < 0 || position >= k->graphics.count())
     if (position < 0)
         return false;
 
+    kFatal() << "KTFrame::removeGraphicAt - Deleting item at: " << position;
+
     KTGraphicObject *object = k->graphics.takeObject(position);
 
+    if (object) {
+        this->scene()->removeTweeningObject(object);
+        return true;
+    }
+
+    /*
     QGraphicsItem *item = object->item();
 
     if (item) {
@@ -352,6 +359,29 @@ bool KTFrame::removeGraphicAt(int position)
             scene->removeItem(item);
 
         this->scene()->removeTweeningObject(object);
+
+        return true;
+    }
+    */
+
+    return false;
+}
+
+bool KTFrame::removeSvgAt(int position)
+{
+    if (position < 0)
+        return false;
+
+    KTSvgItem *item = k->svg.takeObject(position);
+
+    if (item) {
+        QGraphicsScene *scene = item->scene();
+
+        if (scene)
+            scene->removeItem(item);
+ 
+        // SQA: Pending to check
+        //this->scene()->removeTweeningObject(item);
 
         return true;
     }
@@ -515,4 +545,14 @@ int KTFrame::svgItemsCount()
 int KTFrame::getTopZLevel()
 {
     return k->graphics.count();
+}
+
+QList<int> KTFrame::itemIndexes()
+{
+    return k->graphics.indexes();
+}
+
+QList<int> KTFrame::svgIndexes()
+{
+    return k->svg.indexes();
 }

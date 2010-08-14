@@ -75,7 +75,6 @@
 
 struct KTPaintArea::Private
 {
-    //const KTProject *project;
     KTProject *project;
     int currentSceneIndex;
     QStringList copiesXml;
@@ -114,6 +113,7 @@ void KTPaintArea::setCurrentScene(int index)
 
         KTScene *scene = k->project->scene(index);
         if (scene) {
+            kFatal() << "KTPaintArea::setCurrentScene - Tracing!";
             k->currentSceneIndex = index;
             graphicsScene()->setCurrentScene(scene);
         } else {
@@ -246,6 +246,8 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
            K_FUNCINFO;
     #endif
 
+    kFatal() << "KTPaintArea::layerResponse - Following the white rabbit!: " << event->action();
+
     if (graphicsScene()->isDrawing())
         return;
 
@@ -263,6 +265,7 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
         viewport()->update(scene()->sceneRect().toRect());
     } else {
         if (event->action() == KTProjectRequest::Remove) {
+            kFatal() << "KTPaintArea::layerResponse - Remove Item!";
 
             KTGraphicsScene *sscene = graphicsScene();
             if (!sscene->scene())
@@ -392,16 +395,20 @@ void KTPaintArea::deleteItems()
                      KTLibraryObject::Type type;
 
                      KTSvgItem *svg = qgraphicsitem_cast<KTSvgItem *>(item);
+                     int itemIndex;
 
-                     if (svg)
+                     if (svg) {
                          type = KTLibraryObject::Svg;
-                     else
+                         itemIndex = currentScene->currentFrame()->indexOf(svg);
+                     } else {
                          type = KTLibraryObject::Item;
+                         itemIndex = currentScene->currentFrame()->indexOf(item);
+                     }
 
                      KTProjectRequest event = KTRequestBuilder::createItemRequest( 
                                               currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), 
                                               currentScene->currentFrameIndex(), 
-                                              currentScene->currentFrame()->indexOf(item), QPointF(), type,
+                                              itemIndex, QPointF(), type,
                                               KTProjectRequest::Remove);
                      emit requestTriggered(&event);
                      counter++;

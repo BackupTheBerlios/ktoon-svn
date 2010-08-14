@@ -179,6 +179,7 @@ void KTExposureSheet::applyAction(int action)
                break;
             case KTProjectActionBar::RemoveLayer:
                {
+                 kFatal() << "KTExposureSheet::applyAction() - Removing - Layer index: " << k->currentTable->currentLayer();
                  KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), 
                                                                                k->currentTable->currentLayer(), 
                                                                                KTProjectRequest::Remove);
@@ -487,6 +488,7 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                 break;
                 case KTProjectRequest::Remove:
                  {
+                     kFatal() << "KTExposureSheet::layerResponse - removing Layer: " << e->layerIndex();
                      table->removeLayer(e->layerIndex());
                  }
                 break;

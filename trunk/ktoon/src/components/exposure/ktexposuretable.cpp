@@ -219,6 +219,8 @@ void KTExposureTable::emitRequestSelectFrame(int currentSelectedRow, int current
         if ((previousColumn != currentColumn) || (columnCount() == 1)) 
              k->header->updateSelection(currentColumn);
     } else {
+        kFatal() << "KTExposureTable::emitRequestSelectFrame - Just tracing!";
+
         k->removingLayer = false;
         if (previousColumn == 0) {
             selectFrame(1, previousRow);

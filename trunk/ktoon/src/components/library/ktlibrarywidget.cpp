@@ -456,7 +456,7 @@ void KTLibraryWidget::importSvgArray()
 {
     QDesktopWidget desktop;
     QString dir = getenv("HOME");
-    QString path = QFileDialog::getExistingDirectory(this, tr("Choose the svg directory..."), dir,
+    QString path = QFileDialog::getExistingDirectory(this, tr("Choose the SVG files directory..."), dir,
                                                  QFileDialog::ShowDirsOnly
                                                  | QFileDialog::DontResolveSymlinks);
     if (path.isEmpty())
@@ -546,7 +546,7 @@ void KTLibraryWidget::importSvgArray()
 
         }
     } else {
-        KOsd::self()->display(tr("Error"), tr("No image files were found.<br/>Please, try another directory"), KOsd::Error);
+        KOsd::self()->display(tr("Error"), tr("No SVG files were found.<br/>Please, try another directory"), KOsd::Error);
     }
 }
 

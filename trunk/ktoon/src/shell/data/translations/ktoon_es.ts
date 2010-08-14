@@ -761,6 +761,11 @@
         <translation>Importar una imagen...</translation>
     </message>
     <message>
+        <location filename="../../../components/library/ktlibrarywidget.cpp" line="280"/>
+        <source>Import a SVG file...</source>
+        <translation>Importar un archivo SVG...</translation>
+    </message>
+    <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="281"/>
         <source>Images</source>
         <translation>Imagenes</translation>
@@ -777,6 +782,11 @@
         <translation>Escoge el directorio de imágenes...</translation>
     </message>
     <message>
+        <location filename="../../../components/library/ktlibrarywidget.cpp" line="308"/>
+        <source>Choose the SVG files directory...</source>
+        <translation>Escoge el directorio de archivos SVG...</translation>
+    </message>
+    <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="329"/>
         <source>Information</source>
         <translation>Información</translation>
@@ -785,6 +795,11 @@
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="324"/>
         <source>%1 images will be loaded.</source>
         <translation>%1 imágenes serán cargadas.</translation>
+    </message>
+    <message>
+        <location filename="../../../components/library/ktlibrarywidget.cpp" line="324"/>
+        <source>%1 SVG files will be loaded.</source>
+        <translation>%1 archivos SVG serán cargados.</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="326"/>
@@ -807,9 +822,19 @@
         <translation>Cargando imagenes...</translation>
     </message>
     <message>
+        <location filename="../../../components/library/ktlibrarywidget.cpp" line="341"/>
+        <source>Loading SVG files...</source>
+        <translation>Cargando archivos SVG...</translation>
+    </message>
+    <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="381"/>
         <source>Loading image #%1</source>
         <translation>Cargando imagen #%1</translation>
+    </message>
+    <message>
+        <location filename="../../../components/library/ktlibrarywidget.cpp" line="381"/>
+        <source>Loading SVG file #%1</source>
+        <translation>Cargando archivo SVG #%1</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="387"/>
@@ -825,6 +850,11 @@
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="397"/>
         <source>No image files were found.&lt;br/&gt;Please, try another directory</source>
         <translation>Ninguna imagen fue encontrada.&lt;br/&gt;Por favor, intenta con otro directorio</translation>
+    </message>
+    <message>
+        <location filename="../../../components/library/ktlibrarywidget.cpp" line="397"/>
+        <source>No SVG files were found.&lt;br/&gt;Please, try another directory</source>
+        <translation>Ningún archivo SVG fue encontrado.&lt;br/&gt;Por favor, intenta con otro directorio</translation>
     </message>
     <message>
         <location filename="../../../components/library/ktlibrarywidget.cpp" line="403"/>
