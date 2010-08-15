@@ -75,6 +75,9 @@ class QMake
                         @path = path
                         break    
                     end
+                else
+                    valid = false
+                    return valid
                 end
             end
         }
