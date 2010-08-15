@@ -219,14 +219,18 @@ void KTExposureTable::emitRequestSelectFrame(int currentSelectedRow, int current
         if ((previousColumn != currentColumn) || (columnCount() == 1)) 
              k->header->updateSelection(currentColumn);
     } else {
-        kFatal() << "KTExposureTable::emitRequestSelectFrame - Just tracing!";
-
         k->removingLayer = false;
-        if (previousColumn == 0) {
-            selectFrame(1, previousRow);
-        } else {
-            selectFrame(currentColumn, currentSelectedRow);
+        selectFrame(currentColumn, currentSelectedRow);
+        if (columnCount() == 2) {
             k->header->updateSelection(currentColumn);
+        } else {
+            if (previousColumn == 0) {
+                kFatal() << "KTExposureTable::emitRequestSelectFrame - First Column selected";
+                k->header->updateSelection(0);
+            } else {
+                kFatal() << "KTExposureTable::emitRequestSelectFrame - NON First Column selected";
+                k->header->updateSelection(currentColumn);
+            }
         }
     }
 }
@@ -286,6 +290,9 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
 
 void KTExposureTable::selectFrame(int indexLayer, int indexFrame)
 {
+    kFatal() << "KTExposureTable::selectFrame - indexLayer: " << indexLayer;
+    kFatal() << "KTExposureTable::selectFrame - Logical index of indexLayer: " << k->header->logicalIndex(indexLayer);
+
     setCurrentCell(indexFrame, k->header->logicalIndex(indexLayer));
 }
 

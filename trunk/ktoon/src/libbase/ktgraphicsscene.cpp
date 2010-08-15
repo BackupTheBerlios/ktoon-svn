@@ -135,6 +135,8 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
            K_FUNCINFO;
     #endif
 
+    kFatal() << "KTGraphicsScene::setCurrentFrame: Updating layer value: " << layer << " - frame: " << frame;
+
     k->framePosition.layer = layer;
     k->framePosition.frame = frame;
 

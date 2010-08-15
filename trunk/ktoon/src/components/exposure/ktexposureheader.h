@@ -63,12 +63,12 @@ class KTExposureHeader: public QHeaderView
     public:
         KTExposureHeader(QWidget * parent = 0);
         ~KTExposureHeader();
-        void paintSection(QPainter *painter, const QRect & rect, int logicalIndex) const;
-        void insertLayer(int logicalIndex, const QString &text);
-        void setLayerName(int logicalIndex, const QString &text);
-        void setLastFrame(int logicalIndex, int num);
-        int lastFrame(int logicalIndex);
-        void removeLayer(int logicalIndex);
+        void paintSection(QPainter *painter, const QRect & rect, int layerIndex) const;
+        void insertLayer(int layerIndex, const QString &text);
+        void setLayerName(int layerIndex, const QString &text);
+        void setLastFrame(int layerIndex, int num);
+        int lastFrame(int layerIndex);
+        void removeLayer(int layerIndex);
         void moveLayer(int index, int newIndex);
         void setLockLayer(int logicalndex, bool lock);
         bool signalMovedBlocked();

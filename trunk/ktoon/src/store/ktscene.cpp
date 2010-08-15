@@ -217,7 +217,9 @@ bool KTScene::removeLayer(int position)
  */
 KTLayer *KTScene::layer(int position) const
 {
-    if (position < 0 || position >= k->layers.count()) {
+    //if (position < 0 || position >= k->layers.count()) {
+
+    if (position < 0) {
         #ifdef K_DEBUG
                K_FUNCINFO << " FATAL ERROR: LAYERS TOTAL: " << k->layers.count();
                K_FUNCINFO << " FATAL ERROR: index out of bound -> Position: " << position;

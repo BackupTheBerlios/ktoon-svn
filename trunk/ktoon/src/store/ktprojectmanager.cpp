@@ -378,6 +378,8 @@ void KTProjectManager::emitResponse(KTProjectResponse *response)
            K_FUNCINFO << response->action();
     #endif
 
+    kFatal() << "KTProjectManager::emitResponse - Response: " << response;
+
     if (response->action() != KTProjectRequest::Select)
         k->isModified = true;
 

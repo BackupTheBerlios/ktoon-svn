@@ -84,14 +84,14 @@ void KTExposureHeader::emitVisibilityChanged(int section)
    emit visibilityChanged(visualIndex(section), !m_layers[section].isVisible);
 }
 
-void KTExposureHeader::setVisibilityChanged(int logicalndex, bool visibility)
+void KTExposureHeader::setVisibilityChanged(int layerIndex, bool visibility)
 {
     // Q_UNUSED(visibility);
     // FIXME: in ktexpousertable.cpp visibility or !m_layers[logicalndex].isVisible
     // m_layers[logicalndex].isVisible = !m_layers[logicalndex].isVisible;
-    m_layers[logicalndex].isVisible = visibility;
 
-    updateSection(logicalndex);
+    m_layers[layerIndex].isVisible = visibility;
+    updateSection(layerIndex);
 }
 
 void KTExposureHeader::showEditorName(int section)
@@ -119,20 +119,20 @@ void KTExposureHeader::hideEditorName()
     m_sectionEdited = -1;
 }
 
-void KTExposureHeader::insertLayer(int logicalIndex, const QString &text)
+void KTExposureHeader::insertLayer(int layerIndex, const QString &text)
 {
     LayerItem layer;
     layer.title = text;
     layer.lastFrame = 0;
     layer.isVisible = true;
     layer.isLocked = false;
-    m_layers.insert(logicalIndex, layer);
+    m_layers.insert(layerIndex, layer);
 }
 
-void KTExposureHeader::setLayerName(int logicalIndex, const QString &text)
+void KTExposureHeader::setLayerName(int layerIndex, const QString &text)
 {
-    m_layers[logicalIndex].title = text;
-    updateSection(logicalIndex);
+    m_layers[layerIndex].title = text;
+    updateSection(layerIndex);
 }
 
 bool KTExposureHeader::signalMovedBlocked()
@@ -153,19 +153,19 @@ void KTExposureHeader::moveLayer(int position, int newPosition)
     m_blockSectionMoved = false;
 }
 
-int KTExposureHeader::lastFrame(int logicalIndex)
+int KTExposureHeader::lastFrame(int layerIndex)
 {
-    return m_layers[logicalIndex].lastFrame;
+    return m_layers[layerIndex].lastFrame;
 }
 
-void KTExposureHeader::removeLayer(int logicalIndex)
+void KTExposureHeader::removeLayer(int layerIndex)
 {
-    m_layers.remove(logicalIndex);
+    m_layers.remove(layerIndex);
 }
 
-void KTExposureHeader::setLastFrame(int logicalIndex, int num)
+void KTExposureHeader::setLastFrame(int layerIndex, int num)
 {
-    m_layers[logicalIndex].lastFrame = num;
+    m_layers[layerIndex].lastFrame = num;
 }
 
 void KTExposureHeader::mousePressEvent(QMouseEvent * event)
@@ -180,7 +180,7 @@ void KTExposureHeader::mousePressEvent(QMouseEvent * event)
         QHeaderView::mousePressEvent(event);
 }
 
-void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int logicalIndex) const
+void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int layerIndex) const
 {
     if (!rect.isValid()) 
         return;
@@ -201,13 +201,13 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
 
     style()->drawControl(QStyle::CE_HeaderSection, &headerOption, painter);
 
-    QString text = m_layers[logicalIndex].title;
+    QString text = m_layers[layerIndex].title;
     QFont font("Arial", 8, QFont::Normal, false);
     QFontMetrics fm(font);
 
     QStyleOptionButton buttonOption;
 
-    if (m_layers[logicalIndex].isVisible) {
+    if (m_layers[layerIndex].isVisible) {
         buttonOption.palette.setBrush(QPalette::Button, Qt::green);
     } else {
         buttonOption.palette.setBrush(QPalette::Button, Qt::red);
@@ -216,10 +216,10 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
         painter->fillRect(rect.normalized().adjusted(0, 1, 0, -1), color);
     }
 
-    if ((logicalIndex == currentCol) || (m_layers.size() == 1)) {
+    if ((layerIndex == currentCol) || (m_layers.size() == 1)) {
         QColor color(250, 209, 132, 80);
         painter->fillRect(rect.normalized().adjusted(0, 1, 0, -1), color);
-        if (m_layers[logicalIndex].isVisible) {
+        if (m_layers[layerIndex].isVisible) {
             painter->setPen(QPen(QColor(250, 209, 132, 255), 2, Qt::SolidLine));
             painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
         } else {

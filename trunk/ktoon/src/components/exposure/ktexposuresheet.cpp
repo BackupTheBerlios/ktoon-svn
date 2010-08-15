@@ -577,7 +577,8 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 break;
                 case KTProjectRequest::Select:
                  {
-                     //setScene(e->sceneIndex());
+                     kFatal() << "KTExposureSheet::frameResponse - Selecting frame - Layer: " << e->layerIndex() << " - Frame: " <<  e->frameIndex();
+
                      table->blockSignals(true);
                      setScene(e->sceneIndex());
                      table->selectFrame(e->layerIndex(), e->frameIndex());
