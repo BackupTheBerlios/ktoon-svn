@@ -134,7 +134,8 @@ class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
         QList<KTGraphicObject *> tweeningObjects() const;
         int framesTotal();
 
-    public:
+        QList<int> layerIndexes();
+
         virtual void fromXml(const QString &xml);
         virtual QDomElement toXml(QDomDocument &doc) const;
 

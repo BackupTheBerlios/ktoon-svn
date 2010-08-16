@@ -383,3 +383,8 @@ int KTScene::framesTotal()
 
     return total;
 }
+
+QList<int> KTScene::layerIndexes()
+{
+    return this->layers().indexes();
+}

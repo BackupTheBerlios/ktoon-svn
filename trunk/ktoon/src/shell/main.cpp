@@ -135,7 +135,12 @@ int main(int argc, char ** argv)
     if (locale.length() < 2)
         locale = "en";
 
-    kAppProp->setDataDir(SHARE_DIR + "data/" + locale + "/");
+    QDir dir(SHARE_DIR + "data/" + locale + "/");
+    if (! dir.exists())
+        kAppProp->setDataDir(SHARE_DIR + "data/en/");
+    else
+        kAppProp->setDataDir(SHARE_DIR + "data/" + locale + "/");
+
     kAppProp->setThemeDir(SHARE_DIR + "themes/default" + "/");
 
     /*

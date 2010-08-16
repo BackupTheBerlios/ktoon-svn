@@ -183,7 +183,8 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent), k(new
     connect(k->header, SIGNAL(visibilityChanged(int, bool)), this, SIGNAL(requestChangeVisibilityLayer(int, bool)));
     connect(k->header, SIGNAL(changedName(int, const QString &)), this, SIGNAL(requestRenameLayer(int, 
                               const QString & )));
-    connect(k->header, SIGNAL(sectionMoved (int, int, int)), this, SLOT(emitRequestMoveLayer(int, int, int)));
+    connect(k->header, SIGNAL(sectionMoved(int, int, int)), this, SLOT(emitRequestMoveLayer(int, int, int)));
+    connect(k->header, SIGNAL(selectionChanged(int)), this, SLOT(updateLayerSelection(int)));
 
     setHorizontalHeader(k->header);
 
@@ -212,26 +213,21 @@ void KTExposureTable::emitRequestSelectFrame(int currentSelectedRow, int current
     if (currentSelectedRow >= framesTotal())
         return;
 
-    if (!k->removingLayer) {
+    if (!k->removingLayer) { 
         if (previousRow != currentSelectedRow || previousColumn != currentColumn)
             emit requestSelectFrame(currentLayer(), currentRow());
 
-        if ((previousColumn != currentColumn) || (columnCount() == 1)) 
+        if ((previousColumn != currentColumn) || (columnCount() == 1))
              k->header->updateSelection(currentColumn);
-    } else {
+
+    } else { // A layer is being removed
         k->removingLayer = false;
         selectFrame(currentColumn, currentSelectedRow);
-        if (columnCount() == 2) {
+
+        if (previousColumn == 0)
+            k->header->updateSelection(0);
+        else
             k->header->updateSelection(currentColumn);
-        } else {
-            if (previousColumn == 0) {
-                kFatal() << "KTExposureTable::emitRequestSelectFrame - First Column selected";
-                k->header->updateSelection(0);
-            } else {
-                kFatal() << "KTExposureTable::emitRequestSelectFrame - NON First Column selected";
-                k->header->updateSelection(currentColumn);
-            }
-        }
     }
 }
 
@@ -243,6 +239,11 @@ void KTExposureTable::emitRequestMoveLayer(int logicalIndex, int oldVisualIndex,
         k->header->moveLayer(newVisualIndex, oldVisualIndex);
         emit requestMoveLayer(oldVisualIndex, newVisualIndex);
     }
+}
+
+void KTExposureTable::updateLayerSelection(int layerIndex)
+{
+    selectFrame(layerIndex, currentRow());
 }
 
 KTExposureTable::~KTExposureTable()
@@ -259,7 +260,7 @@ QString KTExposureTable::frameName(int indexLayer, int indexFrame)
     return "";
 }
 
-void KTExposureTable::setFrameName(int indexLayer, int indexFrame,const QString & name)
+void KTExposureTable::setFrameName(int indexLayer, int indexFrame, const QString & name)
 {
     QTableWidgetItem *frame = item(indexFrame , indexLayer);
     frame->setFont(QFont("Arial", 7, QFont::Normal, false));
@@ -290,9 +291,6 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
 
 void KTExposureTable::selectFrame(int indexLayer, int indexFrame)
 {
-    kFatal() << "KTExposureTable::selectFrame - indexLayer: " << indexLayer;
-    kFatal() << "KTExposureTable::selectFrame - Logical index of indexLayer: " << k->header->logicalIndex(indexLayer);
-
     setCurrentCell(indexFrame, k->header->logicalIndex(indexLayer));
 }
 
@@ -383,9 +381,12 @@ void KTExposureTable::removeLayer(int indexLayer)
     setUpdatesEnabled(false);
     k->removingLayer = true;
 
-    int logicalIndex = k->header->logicalIndex(indexLayer);
-    k->header->removeLayer(logicalIndex);
-    removeColumn(logicalIndex);
+    //int logicalIndex = k->header->logicalIndex(indexLayer);
+    //k->header->removeLayer(logicalIndex);
+    //removeColumn(logicalIndex);
+
+    k->header->removeLayer(indexLayer);
+    removeColumn(indexLayer);
 
     setUpdatesEnabled(true);
 }

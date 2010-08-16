@@ -61,7 +61,7 @@ class KTHelpWidget : public KTModuleWidgetBase
         void pageLoaded(const QString &content);
 
     private:
-        QDir m_helpPath;
+        QDir *m_helpPath;
         QMap<QTreeWidgetItem *, QString> m_files;
 };
 

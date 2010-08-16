@@ -179,7 +179,6 @@ void KTExposureSheet::applyAction(int action)
                break;
             case KTProjectActionBar::RemoveLayer:
                {
-                 kFatal() << "KTExposureSheet::applyAction() - Removing - Layer index: " << k->currentTable->currentLayer();
                  KTProjectRequest event = KTRequestBuilder::createLayerRequest(k->scenes->currentIndex(), 
                                                                                k->currentTable->currentLayer(), 
                                                                                KTProjectRequest::Remove);
@@ -488,8 +487,15 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                 break;
                 case KTProjectRequest::Remove:
                  {
-                     kFatal() << "KTExposureSheet::layerResponse - removing Layer: " << e->layerIndex();
                      table->removeLayer(e->layerIndex());
+
+                     if (table->layersTotal() == 0) {
+                         KTProjectRequest request = KTRequestBuilder::createLayerRequest(0, 0, KTProjectRequest::Add, QString());
+                         emit requestTriggered(&request);
+
+                         request = KTRequestBuilder::createFrameRequest(0, 0, 0, KTProjectRequest::Add, QString());
+                         emit requestTriggered(&request);
+                     }
                  }
                 break;
                 case KTProjectRequest::Move:
@@ -520,11 +526,15 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
                  }
                 break;
                 default:
-                     kFatal() << "KTExposureSheet::layerResponse - Layer option undefined! -> " << e->action();
+                     #ifdef K_DEBUG
+                            kFatal() << "KTExposureSheet::layerResponse - Layer option undefined! -> " << e->action();
+                     #endif
                 break;
         }
     } else {
-        kFatal() << "KTExposureSheet::layerResponse -> Scene index invalid: " << e->sceneIndex();
+        #ifdef K_DEBUG
+               kFatal() << "KTExposureSheet::layerResponse -> Scene index invalid: " << e->sceneIndex();
+        #endif
     }
 }
 
@@ -544,7 +554,7 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
 
                      if (e->layerIndex() == 0 && e->frameIndex() == 0) {
                          setScene(e->sceneIndex());
-                         table->selectFrame(e->layerIndex(), e->frameIndex());
+                         table->selectFrame(0, 0);
                      }
                  }
                 break;
@@ -577,8 +587,6 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 break;
                 case KTProjectRequest::Select:
                  {
-                     kFatal() << "KTExposureSheet::frameResponse - Selecting frame - Layer: " << e->layerIndex() << " - Frame: " <<  e->frameIndex();
-
                      table->blockSignals(true);
                      setScene(e->sceneIndex());
                      table->selectFrame(e->layerIndex(), e->frameIndex());
@@ -616,6 +624,8 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
                 break;
         }
     } else {
-        kFatal() << "KTExposureSheet::frameResponse -> Scene index invalid: " << e->sceneIndex();
+        #ifdef K_DEBUG
+               kFatal() << "KTExposureSheet::frameResponse -> Scene index invalid: " << e->sceneIndex();
+        #endif
     }
 }

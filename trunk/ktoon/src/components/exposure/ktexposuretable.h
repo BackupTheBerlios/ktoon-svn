@@ -92,6 +92,7 @@ class KTExposureTable : public QTableWidget
         void emitRequestRenameFrame(QTableWidgetItem * item);
         void emitRequestSelectFrame(int currentRow, int currentColumn, int previousRow, int previousColumn);
         void emitRequestMoveLayer(int logicalIndex, int oldVisualIndex, int newVisualIndex);
+        void updateLayerSelection(int layerIndex);
 
     protected:
         bool edit(const QModelIndex & index, EditTrigger trigger, QEvent * event);

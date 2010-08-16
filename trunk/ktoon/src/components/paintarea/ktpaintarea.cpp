@@ -113,7 +113,6 @@ void KTPaintArea::setCurrentScene(int index)
 
         KTScene *scene = k->project->scene(index);
         if (scene) {
-            kFatal() << "KTPaintArea::setCurrentScene - Tracing!";
             k->currentSceneIndex = index;
             graphicsScene()->setCurrentScene(scene);
         } else {
@@ -193,19 +192,18 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
            K_FUNCINFO;
     #endif
 
-    kFatal() << "KTPaintArea::frameResponse - Following the white rabbit!: " << event->action();
-    kFatal() << "KTPaintArea::frameResponse - Layer index: " << event->layerIndex();
-
-    if (graphicsScene()->isDrawing()) {
+    if (graphicsScene()->isDrawing())
         return;
-    } 
 
     switch (event->action()) {
+            case KTProjectRequest::Add:
+                 {
+                    return;
+                 }
+                 break; 
             case KTProjectRequest::Paste:
             case KTProjectRequest::Select: 
                  { 
-                    kFatal() << "KTPaintArea::frameResponse - Selecting a frame in layer: " << event->layerIndex();
-
                     KTGraphicsScene *sscene = graphicsScene();
                     if (!sscene->scene()) 
                         return;
@@ -215,8 +213,6 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 
                     sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
                     sscene->drawPhotogram(event->frameIndex());
-
-                    kFatal() << "KTPaintArea::frameResponse - FLAG X";
                  }
                  break;
 
@@ -253,9 +249,10 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
            K_FUNCINFO;
     #endif
 
-    kFatal() << "KTPaintArea::layerResponse - Layer Index: " << event->layerIndex();
-
     if (graphicsScene()->isDrawing())
+        return;
+
+    if (event->action() == KTProjectRequest::Add)
         return;
 
     KTGraphicsScene *sscene = graphicsScene();
@@ -272,18 +269,27 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
         viewport()->update(scene()->sceneRect().toRect());
     } else {
         if (event->action() == KTProjectRequest::Remove) {
-            kFatal() << "KTPaintArea::layerResponse - Remove Item!";
-
             KTGraphicsScene *sscene = graphicsScene();
             if (!sscene->scene())
                 return;
 
-            /*
-            if (event->layerIndex() == 0) {
-                kFatal() << "KTPaintArea::layerResponse - Cleaning paint area";
-                sscene->clear();
+            KTScene *scene = k->project->scene(k->currentSceneIndex);
+            int frameIndex = graphicsScene()->currentFrameIndex(); 
+
+            if (scene->layersTotal() > 1) {
+                if (event->layerIndex() != 0)
+                    graphicsScene()->setCurrentFrame(event->layerIndex() - 1, frameIndex);
+                else
+                    graphicsScene()->setCurrentFrame(event->layerIndex() + 1, frameIndex);
+
+                graphicsScene()->drawCurrentPhotogram();
+            } else {
+                if (scene->layersTotal() == 1) {
+                    QList<int> indexes = scene->layerIndexes();
+                    graphicsScene()->setCurrentFrame(indexes.at(0), frameIndex);                
+                    graphicsScene()->drawCurrentPhotogram();
+                } 
             }
-            */ 
 
             viewport()->update();
         }
@@ -295,8 +301,6 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
     #ifdef K_DEBUG
            K_FUNCINFO;
     #endif
-
-    kFatal() << "KTPaintArea::sceneResponse - Following the white rabbit!: " << event->action();
 
     if (graphicsScene()->isDrawing()) 
         return;

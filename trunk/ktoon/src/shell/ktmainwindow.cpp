@@ -271,7 +271,19 @@ void KTMainWindow::viewNewDocument()
 
         helpTab = new KTHelpBrowser(this);
         helpTab->setDataDirs(QStringList() << m_helper->helpPath());
-        helpTab->setSource(SHARE_DIR + "data/help/" + QString(QLocale::system().name()).left(2) + "/cover.html");
+
+        QString lang = (QLocale::system().name()).left(2);
+        if (lang.length() < 2)  
+            lang = "en";
+
+        QString helpPath = SHARE_DIR + "data/help/" + QString(lang + "/cover.html");
+
+        QFile file(helpPath);
+        if (!file.exists())
+            helpPath = SHARE_DIR + "data/help/" + QString("en/cover.html");
+
+        helpTab->setSource(helpPath);
+
         addWidget(helpTab);
 
         QString twitterPath = QDir::homePath() + "/." + QCoreApplication::applicationName() + "/twitter.html";

@@ -50,10 +50,15 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
     setWindowTitle(tr("Help"));
     setWindowIcon(QPixmap(THEME_DIR + "icons/help.png"));
 
-    if (QString(QLocale::system().name()).length() > 1)
-        m_helpPath = path + QString(QLocale::system().name()).left(2);
-    else
-        m_helpPath = path + "en";
+    QString lang = QString(QLocale::system().name()).left(2);
+
+    if (lang.length() > 0) {
+        m_helpPath = new QDir(path + lang);
+        if (!m_helpPath->exists())
+            m_helpPath = new QDir(path + "en");
+    } else {
+        m_helpPath = new QDir(path + "en");
+    }
 
     QTreeWidget *contentsListView = new QTreeWidget(this);
     contentsListView->setHeaderLabels(QStringList() << tr(""));
@@ -65,7 +70,8 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
     addChild(contentsListView);
 
     QDomDocument document;
-    QFile file(m_helpPath.path() + "/help.xml");
+    QFile file(m_helpPath->path() + "/help.xml");
+
     QTreeWidgetItem *first = new QTreeWidgetItem;
 
     if (file.open(QIODevice::ReadOnly)) {
@@ -132,7 +138,7 @@ void KTHelpWidget::tryToLoadPage(QTreeWidgetItem *item, QTreeWidgetItem *preview
     if (item) {
         QString fileName = m_files[item];
         if (! fileName.isNull())
-            loadPage(m_helpPath.path()+"/"+ fileName);
+            loadPage(m_helpPath->path()+"/"+ fileName);
     }
 }
 
@@ -143,5 +149,5 @@ void KTHelpWidget::loadPage(const QString &filePath)
 
 QString KTHelpWidget::helpPath () const
 {
-    return m_helpPath.path();
+    return m_helpPath->path();
 }

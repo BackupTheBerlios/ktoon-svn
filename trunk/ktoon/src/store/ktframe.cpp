@@ -340,8 +340,6 @@ bool KTFrame::removeGraphicAt(int position)
     if (position < 0)
         return false;
 
-    kFatal() << "KTFrame::removeGraphicAt - Deleting item at: " << position;
-
     KTGraphicObject *object = k->graphics.takeObject(position);
 
     if (object) {

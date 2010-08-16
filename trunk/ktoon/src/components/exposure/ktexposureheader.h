@@ -96,6 +96,7 @@ class KTExposureHeader: public QHeaderView
     signals:
         void changedName(int indexLayer, const QString & name);
         void visibilityChanged(int indexLayer, bool visibility);
+        void selectionChanged(int indexLayer);
 };
 
 #endif

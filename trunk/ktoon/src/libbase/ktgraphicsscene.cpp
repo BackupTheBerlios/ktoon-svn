@@ -135,8 +135,6 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
            K_FUNCINFO;
     #endif
 
-    kFatal() << "KTGraphicsScene::setCurrentFrame: Updating layer value: " << layer << " - frame: " << frame;
-
     k->framePosition.layer = layer;
     k->framePosition.frame = frame;
 
@@ -146,8 +144,6 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 
 void KTGraphicsScene::drawCurrentPhotogram()
 {
-    kFatal() << "KTGraphicsScene::drawCurrentPhotogram() - Layer: " << k->framePosition.layer;
-
     KTLayer *layer = k->scene->layer(k->framePosition.layer);
     int frames = layer->framesNumber();
 
@@ -286,6 +282,10 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity)
 
 void KTGraphicsScene::addGraphicObject(KTGraphicObject *object, double opacity)
 {
+    #ifdef K_DEBUG
+       K_FUNCINFO;
+    #endif
+
     QGraphicsItem *item = object->item();
     k->onionSkin.opacityMap.insert(item, opacity);
 
@@ -433,8 +433,6 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
 
     clean();
     k->scene = scene;
-
-    kFatal() << "KTGraphicsScene::setCurrentScene - Just tracing!";
 
     drawCurrentPhotogram();
 }
@@ -682,7 +680,7 @@ void KTGraphicsScene::includeObject(QGraphicsItem *object)
     if (layer) {
         KTFrame *frame = layer->frame(k->framePosition.frame);
         if (frame) {
-            int zLevel = frame->getTopZLevel() + (k->framePosition.layer*100);    
+            int zLevel = frame->getTopZLevel() + (k->framePosition.layer*1000);    
             object->setZValue(zLevel);
             addItem(object);
         }

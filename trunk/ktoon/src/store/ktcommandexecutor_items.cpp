@@ -146,7 +146,6 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
                             QDomDocument orig;
                             orig.appendChild(itemSerializable->toXml(orig));
                             response->setArg(orig.toString());
-                            kFatal() << "KTCommandExecutor::removeItem - XML: " << orig.toString();
                             frame->removeGraphicAt(response->itemIndex());
                         } else {
                             return false;

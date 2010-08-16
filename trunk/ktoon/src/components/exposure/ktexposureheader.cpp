@@ -174,10 +174,13 @@ void KTExposureHeader::mousePressEvent(QMouseEvent * event)
     int x = sectionViewportPosition(section) + 3;
 
     QRect rect(x+3, 3, height()-3, height()-3);
-    if (rect.contains(event->pos()))
+    if (rect.contains(event->pos())) {
         emitVisibilityChanged(section);
-    else
+    } else {
+        if (currentCol != section)
+            emit selectionChanged(section);
         QHeaderView::mousePressEvent(event);
+    }
 }
 
 void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int layerIndex) const
@@ -220,10 +223,10 @@ void KTExposureHeader::paintSection(QPainter * painter, const QRect & rect, int 
         QColor color(250, 209, 132, 80);
         painter->fillRect(rect.normalized().adjusted(0, 1, 0, -1), color);
         if (m_layers[layerIndex].isVisible) {
-            painter->setPen(QPen(QColor(250, 209, 132, 255), 2, Qt::SolidLine));
+            painter->setPen(QPen(QColor(250, 209, 132, 255), 2, Qt::SolidLine)); // Header selected
             painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
-        } else {
-            painter->setPen(QPen(QColor(255, 0, 0, 70), 2, Qt::SolidLine));
+        } else { 
+            painter->setPen(QPen(QColor(255, 0, 0, 70), 2, Qt::SolidLine)); // Header locked
             painter->drawRect(rect.normalized().adjusted(0, 1, 0, -1));
         }
     }

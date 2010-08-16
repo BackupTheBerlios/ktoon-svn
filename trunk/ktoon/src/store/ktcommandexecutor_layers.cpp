@@ -55,7 +55,6 @@ bool KTCommandExecutor::createLayer(KTLayerResponse *response)
     KTScene *scene = m_project->scene(scenePosition);
 
     if (scene) {
-        kFatal() << "KTCommandExecutor::createLayer - Adding Layer on Index: " << position;
         KTLayer *layer = scene->createLayer(position);
 
         if (! layer) 
@@ -90,8 +89,6 @@ bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
     KTScene *scene = m_project->scene(scenePos);
 
     if (scene) {
-        kFatal() << "KTCommandExecutor::removeLayer - Removing Layer at Index: " << position;
-
         KTLayer *layer = scene->layer(position);
         if (layer) {
             QDomDocument document;
@@ -100,17 +97,10 @@ bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
             response->setArg(layer->layerName());
 
             if (scene->removeLayer(position)) {
-                kFatal() << "KTCommandExecutor::removeLayer - Deleted sucessfully"; 
-                kFatal() << "KTCommandExecutor::removeLayer - XML: " << document.toString();
                 emit responsed(response);
-
                 return true;
-            } else {
-                kFatal() << "KTCommandExecutor::removeLayer - Deletion failed!"; 
-            }
-        } else {
-            kFatal() << "KTCommandExecutor::removeLayer - No layer at index: " << position;
-        }
+            } 
+        } 
     }
 
     return false;
