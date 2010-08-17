@@ -351,13 +351,10 @@ void KTProjectManager::createCommand(const KTProjectRequest *request, bool addTo
     if (request->isValid()) {
         KTProjectCommand *command = new KTProjectCommand(k->commandExecutor, request);
 
-        if (addToStack) {
-            kFatal() << "KTProjectManager::createCommand - Adding command to the undoStack";
+        if (addToStack)
             k->undoStack->push(command);
-         } else {
-            kFatal() << "KTProjectManager::createCommand - Calling command->redo()";
+         else 
             command->redo();
-         }
     } else {
         #ifdef K_DEBUG
                kWarning() << "invalid request";

@@ -400,6 +400,32 @@ bool KTProject::createSymbol(int type, const QString &name, const QByteArray &da
     return flag;
 }
 
+bool KTProject::removeSymbol(const QString &name, KTLibraryObject::Type symbolType, int sceneIndex, int layerIndex, int frameIndex)
+{
+    KTFrame *frame = 0;
+    KTScene *scene = this->scene(sceneIndex);
+
+    if (scene) {
+        KTLayer *layer = scene->layer(layerIndex);
+        if (layer)
+            frame = layer->frame(frameIndex);
+    }
+
+    if (symbolType == KTLibraryObject::Svg) {
+        QList<int> indexes = frame->svgIndexes();
+        int lastIndex = indexes.at(indexes.size()-1);
+        if (frame->removeSvgAt(lastIndex))
+            return true;
+    } else {
+        QList<int> indexes = frame->itemIndexes();
+        int lastIndex = indexes.at(indexes.size()-1);
+        if (frame->removeGraphicAt(lastIndex))
+            return true;
+    }
+
+    return false;
+}
+
 bool KTProject::removeSymbol(const QString &name)
 {
     return k->library->removeObject(name);

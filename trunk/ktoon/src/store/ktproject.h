@@ -41,8 +41,8 @@
 #include <QSize>
 
 #include "ktinthash.h"
-
 #include "ktglobal_store.h"
+#include "ktlibraryobject.h"
 
 class KTScene;
 class KTLayer;
@@ -95,6 +95,7 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
         bool moveScene(int position, int newPosition);
 
         bool createSymbol(int type, const QString &name, const QByteArray &data);
+        bool removeSymbol(const QString &name, KTLibraryObject::Type symbolType, int sceneIndex, int layerIndex, int frameIndex);
         bool removeSymbol(const QString &name);
 
         bool addSymbolToProject(const QString &name, int scene, int layer, int frame);

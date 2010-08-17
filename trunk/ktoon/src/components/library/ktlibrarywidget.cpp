@@ -305,7 +305,8 @@ void KTLibraryWidget::importBitmap()
         f.close();
 
         KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
-                                                     KTLibraryObject::Image, data);
+                                                                          KTLibraryObject::Image, data, k->currentFrame.scene, 
+                                                                          k->currentFrame.layer, k->currentFrame.frame);
         emit requestTriggered(&request);
     } else {
         KOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(image), KOsd::Error);
@@ -329,7 +330,8 @@ void KTLibraryWidget::importSvg()
         f.close();
 
         KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Add, symName,
-                                                     KTLibraryObject::Svg, data);
+                                                     KTLibraryObject::Svg, data, k->currentFrame.scene, 
+                                                     k->currentFrame.layer, k->currentFrame.frame);
         emit requestTriggered(&request);
     } else {
         KOsd::self()->display(tr("Error"), tr("Cannot open file: %1").arg(svg), KOsd::Error);
@@ -626,11 +628,9 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 
             case KTProjectRequest::Remove: {
                  QString key = response->arg().toString();
-                 kFatal() << "KTLibraryWidget::libraryResponse -> key: " << key;
 
                  QTreeWidgetItemIterator it(k->libraryTree);
                  while ((*it)) {
-                        kFatal() << "KTLibraryWidget::libraryResponse -> iterator: " << (*it)->text(1);
                         if (key == (*it)->text(1)) {
                             delete (*it);
                             break;
@@ -642,15 +642,10 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 
                  QList<QTreeWidgetItem *> selectedGroup = k->libraryTree->selectedItems();
                  if (!selectedGroup.isEmpty()) {
-                     kDebug() << "*** KTLibraryWidget::libraryResponse -> selectedGroup: " << selectedGroup.size();
                      QTreeWidgetItem *pop = selectedGroup[0];
-                     kDebug() << "*** KTLibraryWidget::libraryResponse -> Item Name: " << pop->text(1);
                      if (selectedGroup[0]->text(1).size() > 0) {
-                         kDebug() << "";
-                         kDebug() << "*|*|* Removing object: " << selectedGroup[0]->text(1);
                          k->display->render(qvariant_cast<QGraphicsItem *>(k->library->findObject(
                                             selectedGroup[0]->text(1))->data()));
-                         kDebug() << "";
                      } else {
                          kDebug() << "*** KTLibraryWidget::libraryResponse -> Remove action FAILED!";
                      }

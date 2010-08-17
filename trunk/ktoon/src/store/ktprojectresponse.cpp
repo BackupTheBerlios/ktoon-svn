@@ -307,7 +307,7 @@ void KTItemResponse::setPosY(int coord)
     m_y = coord;
 }
 
-KTLibraryResponse::KTLibraryResponse(int part, int action) : KTFrameResponse(part, action), m_symbolType(-1)
+KTLibraryResponse::KTLibraryResponse(int part, int action) : KTFrameResponse(part, action)
 {
 }
 
@@ -315,12 +315,12 @@ KTLibraryResponse::~KTLibraryResponse()
 {
 }
 
-void KTLibraryResponse::setSymbolType(int symtype)
+void KTLibraryResponse::setSymbolType(KTLibraryObject::Type symtype)
 {
     m_symbolType = symtype;
 }
 
-int KTLibraryResponse::symbolType() const
+KTLibraryObject::Type KTLibraryResponse::symbolType() const
 {
     return m_symbolType;
 }

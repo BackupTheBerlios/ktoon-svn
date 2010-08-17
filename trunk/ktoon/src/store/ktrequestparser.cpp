@@ -80,9 +80,9 @@ bool KTRequestParser::startTag(const QString& qname, const QXmlAttributes& atts)
     } else if (qname == "scene") {
                static_cast<KTSceneResponse *>(k->response)->setSceneIndex(atts.value("index").toInt());
     } else if (qname == "symbol") {
-               static_cast<KTLibraryResponse*>(k->response)->setSymbolType(atts.value("type").toInt());
+               static_cast<KTLibraryResponse*>(k->response)->setSymbolType(KTLibraryObject::Type(atts.value("type").toInt()));
     } else if (qname == "action") {
-               k->response = KTProjectResponseFactory::create( atts.value("part").toInt(), atts.value("id").toInt());
+               k->response = KTProjectResponseFactory::create(atts.value("part").toInt(), atts.value("id").toInt());
                k->response->setArg(atts.value("arg"));
     }
 

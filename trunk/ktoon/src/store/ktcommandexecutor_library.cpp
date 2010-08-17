@@ -40,8 +40,6 @@
 
 bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 {
-    kFatal() << "KTCommandExecutor::createSymbol - Calling to: m_project->createSymbol";
-
     if (m_project->createSymbol(response->symbolType(), response->arg().toString(), response->data())) {
         emit responsed(response);
 
@@ -56,14 +54,16 @@ bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 
 bool KTCommandExecutor::removeSymbol(KTLibraryResponse *response)
 {
-    kFatal() << "KTCommandExecutor::removeSymbol - Calling to: m_project->removeSymbol!";
-
-    if (m_project->removeSymbol(response->arg().toString())) {
-        emit responsed(response);
-        
-        return true;
+    if ((response->sceneIndex() > -1) && (response->layerIndex() > -1) && (response->frameIndex() > -1)) {
+        if (m_project->removeSymbol(response->arg().toString(), response->symbolType(), response->sceneIndex(), response->layerIndex(), response->frameIndex())) {
+            emit responsed(response);
+            return true;
+        } 
     } else {
-       
+        if (m_project->removeSymbol(response->arg().toString())) {
+            emit responsed(response);
+            return true;
+        }
     }
     
     return false;
@@ -71,8 +71,6 @@ bool KTCommandExecutor::removeSymbol(KTLibraryResponse *response)
 
 bool KTCommandExecutor::addSymbolToProject(KTLibraryResponse *response)
 {
-    kFatal() << "KTCommandExecutor::addSymbolToProject - Calling to: m_project->addSymbolToProject";
-
     if (m_project->addSymbolToProject(response->arg().toString(), response->sceneIndex(), response->layerIndex(), response->frameIndex())) {
         emit responsed(response);
 

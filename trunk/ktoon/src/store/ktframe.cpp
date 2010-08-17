@@ -367,8 +367,6 @@ bool KTFrame::removeGraphicAt(int position)
 
 bool KTFrame::removeSvgAt(int position)
 {
-    kFatal() << "KTFrame::removeSvgAt - Index: " <<  position;
-
     if (position < 0)
         return false;
 
@@ -384,9 +382,7 @@ bool KTFrame::removeSvgAt(int position)
         //this->scene()->removeTweeningObject(item);
 
         return true;
-    } else {
-        kFatal() << "KTFrame::removeSvgAt - object not found :S"; 
-    }
+    } 
 
     return false;
 }

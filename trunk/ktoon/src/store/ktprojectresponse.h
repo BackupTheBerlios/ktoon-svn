@@ -144,11 +144,12 @@ class KTLibraryResponse : public KTFrameResponse
     public:
         KTLibraryResponse(int part, int action);
         ~KTLibraryResponse();
-        void setSymbolType(int symtype);
-        int symbolType() const;
+        void setSymbolType(KTLibraryObject::Type symtype);
+        KTLibraryObject::Type symbolType() const;
 
     private:
-        int m_symbolType;
+        //int m_symbolType;
+        KTLibraryObject::Type m_symbolType;
 };
 
 class KTProjectResponseFactory
