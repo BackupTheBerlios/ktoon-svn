@@ -304,7 +304,7 @@ void KTMainWindow::setupMenu()
     QAction *drawingPerspective = new QAction(tr("Drawing"), this);
     drawingPerspective->setIcon(QPixmap(THEME_DIR + "icons/illustration_mode.png")); 
     drawingPerspective->setIconVisibleInMenu(true);
-    drawingPerspective->setShortcut(QKeySequence(Qt::Key_F3));
+    drawingPerspective->setShortcut(QKeySequence("Ctrl+1"));
     drawingPerspective->setData(Drawing);
     group->addAction(drawingPerspective);
 
@@ -312,7 +312,7 @@ void KTMainWindow::setupMenu()
     QAction *animationPerspective = new QAction(tr("Animation"), this);
     animationPerspective->setIcon(QPixmap(THEME_DIR + "icons/animation_mode.png"));
     animationPerspective->setIconVisibleInMenu(true);
-    animationPerspective->setShortcut(QKeySequence(Qt::Key_F4));
+    animationPerspective->setShortcut(QKeySequence("Ctrl+2"));
     animationPerspective->setData(Animation);
     group->addAction(animationPerspective);
 
@@ -320,7 +320,7 @@ void KTMainWindow::setupMenu()
     QAction *helpPerspective = new QAction(tr("Help"), this);
     helpPerspective->setIcon(QPixmap(THEME_DIR + "icons/help_mode.png"));
     helpPerspective->setIconVisibleInMenu(true);
-    helpPerspective->setShortcut(QKeySequence(Qt::Key_F1));
+    helpPerspective->setShortcut(QKeySequence("Ctrl+3"));
     helpPerspective->setData(Help);
     group->addAction(helpPerspective);
 
@@ -328,7 +328,7 @@ void KTMainWindow::setupMenu()
     QAction *newsPerspective = new QAction(tr("News"), this);
     newsPerspective->setIcon(QPixmap(THEME_DIR + "icons/news_mode.png"));
     newsPerspective->setIconVisibleInMenu(true);
-    newsPerspective->setShortcut(QKeySequence(Qt::Key_F2));
+    newsPerspective->setShortcut(QKeySequence("Ctrl+4"));
     newsPerspective->setData(News);
     group->addAction(newsPerspective);
 

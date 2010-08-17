@@ -2276,6 +2276,16 @@
         <translation>Elipse</translation>
     </message>
     <message>
+        <location filename="../../../components/paintarea/ktviewdocument.cpp" line="405"/>
+        <source>Object Selection</source>
+        <translation>Selección de Objetos</translation>
+    </message>
+    <message>
+        <location filename="../../../components/paintarea/ktviewdocument.cpp" line="405"/>
+        <source>Internal fill</source>
+        <translation>Relleno Interno</translation>
+    </message>
+    <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="586"/>
         <source>Paint area actions</source>
         <translation>Paint area actions</translation>

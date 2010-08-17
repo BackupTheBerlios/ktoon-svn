@@ -275,7 +275,7 @@ void KTViewDocument::createTools()
     // Selection menu
     k->selectionMenu = new QMenu(tr("Selection"), k->toolbar);
     k->selectionMenu->setIcon(QPixmap(THEME_DIR + "icons/selection.png"));
-    connect(k->selectionMenu, SIGNAL(triggered (QAction*)), this, SLOT(selectToolFromMenu(QAction*)));
+    connect(k->selectionMenu, SIGNAL(triggered(QAction*)), this, SLOT(selectToolFromMenu(QAction*)));
 
     k->toolbar->addAction(k->selectionMenu->menuAction());
 
@@ -316,16 +316,15 @@ void KTViewDocument::loadPlugins()
                   if (action) {
                       connect(action, SIGNAL(triggered()), this, SLOT(selectTool()));
                       action->setParent(plugin);
+                      QString toolStr = action->text();
 
                       switch (tool->toolType()) {
                               case KTToolInterface::Brush:
                                  {
-                                   // Temporary code - SQA Issue
-                                   QString toolStr = action->text();
-                                   kFatal() <<  "";
 
                                    if (toolStr.compare(tr("Pencil")) == 0)
                                        brushTools.insert(0, action);
+                                       k->brushesMenu->setDefaultAction(action);
 
                                    if (toolStr.compare(tr("Eraser")) == 0) {
                                        action->setDisabled(true);
@@ -357,16 +356,23 @@ void KTViewDocument::loadPlugins()
                               case KTToolInterface::Selection:
                                  {
                                    k->selectionMenu->addAction(action);
+                                   if (toolStr.compare(tr("Object Selection")) == 0)
+                                       k->selectionMenu->setDefaultAction(action);
                                  }
                                  break;
                               case KTToolInterface::Fill:
                                  {
                                    k->fillMenu->addAction(action);
+                                   if (toolStr.compare(tr("Internal fill")) == 0)
+                                      k->fillMenu->setDefaultAction(action);
                                  }
                                  break;
                                case KTToolInterface::View:
                                  {
                                    k->viewToolMenu->addAction(action);
+                                   if (toolStr.compare(tr("Zoom")) == 0)
+                                       k->viewToolMenu->setDefaultAction(action);
+
                                  }
                                  break;
                                default:
@@ -501,9 +507,14 @@ void KTViewDocument::selectToolFromMenu(QAction *action)
     if (menu) {
         KAction *tool = qobject_cast<KAction *>(menu->activeAction());
 
-        if (tool)
+        if (tool) {
             tool->trigger(); // this call selectTool()
-    }
+        } else {
+            tool = qobject_cast<KAction *>(menu->defaultAction());
+            if (tool)
+                tool->trigger();
+        }
+    } 
 }
 
 bool KTViewDocument::handleProjectResponse(KTProjectResponse *event)
@@ -708,3 +719,4 @@ void KTViewDocument::updateTimer()
         k->timer->start(autoSave);
     }
 }
+
