@@ -79,7 +79,7 @@ struct KTPaintArea::Private
     int currentSceneIndex;
     QStringList copiesXml;
     QString currentTool; 
-    bool lastItem;
+    bool deleteMode;
 };
 
 // KTPaintArea::KTPaintArea(const KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), k(new Private)
@@ -90,7 +90,7 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase
 
     k->project = project;
     k->currentSceneIndex = 0;
-    k->lastItem = false;
+    k->deleteMode = false;
 
     setCurrentScene(0);
 
@@ -338,23 +338,39 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 void KTPaintArea::itemResponse(KTItemResponse *event)
 {
     if (!graphicsScene()->isDrawing()) {
+
         switch(event->action()) {
                case KTProjectRequest::Transform:
-                    viewport()->update();
+                    {
+                        viewport()->update();
+                    }
                     break;
+
                case KTProjectRequest::Remove:
-                    if (k->lastItem) {
+                    { 
+                        //KTGraphicsScene* currentScene = graphicsScene();
+                        //int itemsTotal = currentScene->currentFrame()->graphicItemsCount();
+                        if (!k->deleteMode) {
+                            kFatal() << "KTPaintArea::itemResponse - Removing request - Updating :(";
+                            graphicsScene()->drawCurrentPhotogram();
+                            viewport()->update(scene()->sceneRect().toRect());
+                        } else { 
+                            kFatal() << "KTPaintArea::itemResponse - Removing request - No update :(";
+                        }
+                    }
+                    break;
+
+               default:
+                    {
                         graphicsScene()->drawCurrentPhotogram();
                         viewport()->update(scene()->sceneRect().toRect());
-                        k->lastItem = false;
-                    } 
-                    break;
-               default:
-                    graphicsScene()->drawCurrentPhotogram();
-                    viewport()->update(scene()->sceneRect().toRect());
+                    }
                     break;
         }
-    } 
+
+    } else { 
+      kFatal() << "KTPaintArea::itemResponse - isDrawing() == true!";
+    }
 
     graphicsScene()->itemResponse(event);
 }
@@ -369,6 +385,8 @@ void KTPaintArea::libraryResponse(KTLibraryResponse *request)
     if (graphicsScene()->isDrawing())
         return;
 
+    kFatal() << "KTPaintArea::libraryResponse - Flag: " << request->action();
+
     switch (request->action()) {
 
             case KTProjectRequest::AddSymbolToProject:
@@ -378,6 +396,11 @@ void KTPaintArea::libraryResponse(KTLibraryResponse *request)
                  if (k->currentTool.compare(tr("Object Selection")) == 0)
                      emit itemAddedOnSelection(graphicsScene());
 
+                 break;
+            case KTProjectRequest::Remove:
+                 kFatal() << "KTPaintArea::libraryResponse - Removing thing";
+                 graphicsScene()->drawCurrentPhotogram();
+                 viewport()->update(scene()->sceneRect().toRect());
                  break;
     }
 }
@@ -405,9 +428,10 @@ void KTPaintArea::deleteItems()
         if (currentScene) {
             int counter = 0;
             int total = selected.count();
+            k->deleteMode = true;
             foreach (QGraphicsItem *item, selected) {
                      if (counter == total-1) 
-                         k->lastItem = true;
+                         k->deleteMode = false;
 
                      KTLibraryObject::Type type;
 

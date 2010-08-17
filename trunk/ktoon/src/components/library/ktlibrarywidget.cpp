@@ -608,7 +608,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                             break;
                             case KTLibraryObject::Svg:
                                {
-                                 item->setIcon(0, QIcon(THEME_DIR + "icons/bitmap.png"));
+                                 item->setIcon(0, QIcon(THEME_DIR + "icons/svg.png"));
                                  k->libraryTree->setCurrentItem(item);
                                  previewItem(item, 1);
                                  emitSelectedComponent();
@@ -626,11 +626,16 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 
             case KTProjectRequest::Remove: {
                  QString key = response->arg().toString();
+                 kFatal() << "KTLibraryWidget::libraryResponse -> key: " << key;
+
                  QTreeWidgetItemIterator it(k->libraryTree);
                  while ((*it)) {
+                        kFatal() << "KTLibraryWidget::libraryResponse -> iterator: " << (*it)->text(1);
                         if (key == (*it)->text(1)) {
                             delete (*it);
                             break;
+                        } else {
+                            kFatal() << "KTLibraryWidget::libraryResponse -> items NO equals";
                         }
                         ++it;
                  }
@@ -651,7 +656,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
                      }
                  } else {
                      k->display->render(0);
-                     kDebug() << "*** KTLibraryWidget::libraryResponse -> Nothing was really deleted";
+                     kDebug() << "*** KTLibraryWidget::libraryResponse -> No library item was deleted";
                  }
               }
             break;

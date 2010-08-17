@@ -134,12 +134,14 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
             if (frame) {
 
                 if (type == KTLibraryObject::Svg) {
+                    kFatal() << "KTCommandExecutor::removeItem - Deleting SVG object";
                     frame->removeSvgAt(response->itemIndex());
                 } else {
+                    kFatal() << "KTCommandExecutor::removeItem - Deleting Item object";
                     frame->removeGraphicAt(response->itemIndex());
 
                     // SQA: Check this code and figure out if it's required
-                    /* 
+                    /*
                     QGraphicsItem *item = frame->item(response->itemIndex());
                     if (item) {
                         if (KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item)) {
@@ -165,7 +167,6 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
     
     return false;
 }
-
 
 bool KTCommandExecutor::moveItem(KTItemResponse *response)
 {

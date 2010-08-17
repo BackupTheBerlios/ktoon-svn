@@ -34,14 +34,10 @@
 #include <kcore/kdebug.h>
 
 #include "ktcommandexecutor.h"
-
 #include "ktprojectrequest.h"
 #include "ktpaintareaevent.h"
-
-
 #include "ktrequestparser.h"
 #include "ktprojectresponse.h"
-
 #include "ktsvg2qt.h"
 
 struct KTProjectCommand::Private 
@@ -82,27 +78,27 @@ void KTProjectCommand::initText()
     switch (k->response->part()) {
             case KTProjectRequest::Frame:
              {
-                 setText(actionString( k->response->action() ) +" frame");
+                 setText(actionString(k->response->action()) + " frame");
              }
              break;
             case KTProjectRequest::Layer:
              {
-                 setText(actionString( k->response->action() )+" layer");
+                 setText(actionString(k->response->action()) + " layer");
              }
              break;
             case KTProjectRequest::Scene:
              {
-                 setText(actionString( k->response->action() )+" scene");
+                 setText(actionString(k->response->action()) + " scene");
              }
             break;
             case KTProjectRequest::Item:
              {
-                 setText(actionString( k->response->action() )+" item");
+                 setText(actionString(k->response->action()) + " item");
              }
             break;
             case KTProjectRequest::Library:
              {
-                 setText(actionString( k->response->action() )+" symbol");
+                 setText(actionString(k->response->action()) + " symbol");
              }
             break;
             default:
@@ -238,6 +234,8 @@ void KTProjectCommand::redo()
 
 void KTProjectCommand::undo()
 {
+    kFatal() << "KTProjectCommand::undo() - Just tracing!";
+
     k->response->setMode(KTProjectResponse::Undo);
     
     switch (k->response->part()) {
@@ -265,6 +263,7 @@ void KTProjectCommand::undo()
             break;
             case KTProjectRequest::Item:
             {
+                 kFatal() << "KTProjectCommand::undo() - Item request!";
                  itemCommand();
             }
             break;
@@ -451,8 +450,9 @@ void KTProjectCommand::itemCommand()
     #ifdef K_DEBUG
         K_FUNCINFO;
     #endif
-    
+
     KTItemResponse *response = static_cast<KTItemResponse *>(k->response);
+    kFatal() << "KTProjectCommand::itemCommand() - Action: " << response->action();
 
     switch (response->action()) {
             case KTProjectRequest::Add:
@@ -462,6 +462,7 @@ void KTProjectCommand::itemCommand()
             break;
             case KTProjectRequest::Remove:
             {
+                 kFatal() << "KTProjectCommand::itemCommand() - Removing item...";
                  k->executor->removeItem(response);
             }
             break;
