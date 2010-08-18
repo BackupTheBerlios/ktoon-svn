@@ -1622,8 +1622,8 @@
     <name>KTPenWidget</name>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="52"/>
-        <source>Brush Properties</source>
-        <translation>Propiedades de Brocha</translation>
+        <source>Pen Properties</source>
+        <translation>Propiedades de Pluma</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="62"/>

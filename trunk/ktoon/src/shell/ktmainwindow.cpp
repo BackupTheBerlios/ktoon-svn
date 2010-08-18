@@ -35,6 +35,7 @@
 #include "ktabout.h"
 #include "ktpackagehandler.h"
 #include "ktpaletteimporter.h"
+#include "ktpaintareaevent.h"
 #include "ktpaintareacommand.h"
 
 // Including some KOM headers
@@ -1092,8 +1093,16 @@ void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 
     KTPaintAreaCommand *command = drawingTab->createCommand(event);
 
-    if (command) 
+    if (command) { 
         m_projectManager->undoHistory()->push(command);
+
+        if (event->action() == 2) {
+            kFatal() << "KTMainWindow::createCommand - Tracing color change event!";
+            m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
+        } else {
+            kFatal() << "KTMainWindow::createCommand - Tracing NO color event!";
+        }
+    }
 
 }
 

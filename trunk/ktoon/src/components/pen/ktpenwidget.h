@@ -64,6 +64,7 @@ class KTPenWidget : public KTModuleWidgetBase
     public slots:
         void reset();
         void setThickness(int value);
+        void setPenColor(const QColor color);
         
     private slots:
         void setStyle(int s);

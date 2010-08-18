@@ -44,7 +44,7 @@ class STORE_EXPORT KTPaintAreaEvent
           {
              None = 0,
              ChangePen,
-             ChangePenBrush,
+             ChangeColorPen,
              ChangeBrush
           };
 

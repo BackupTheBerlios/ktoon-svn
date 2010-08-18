@@ -46,11 +46,12 @@ struct KTPenWidget::Private
     QComboBox *style;
     QListWidget *texturesList;
     QPen pen;
+    QColor color;
 };
 
 KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Private)
 {
-    setWindowTitle(tr("Brush Properties"));
+    setWindowTitle(tr("Pen Properties"));
 
     KCONFIG->beginGroup("PenParameters");
     int thicknessValue = KCONFIG->value("Thickness", -1).toInt();
@@ -122,15 +123,15 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
     space->setFixedHeight(5);
     addChild(space);
 
-    label = new QLabel(tr("Texture") + ":", this);
+    label = new QLabel(tr("Brushes") + ":", this);
     addChild(label);
 
     k->texturesList = new QListWidget(this);
     k->texturesList->setViewMode(QListView::IconMode);
-    k->texturesList->setWrapping(true);
+    //k->texturesList->setWrapping(true);
     k->texturesList->setFlow(QListView::LeftToRight);
     k->texturesList->setMovement(QListView::Static);
-    k->texturesList->setSpacing(5);
+    //k->texturesList->setSpacing(5);
 
     QListWidgetItem *texture = new QListWidgetItem(k->texturesList);
     texture->setIcon(QIcon(THEME_DIR + "icons/brush_01.png"));
@@ -139,83 +140,84 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     texture = new QListWidgetItem(k->texturesList);
-    texture->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
+    texture->setIcon(QIcon(THEME_DIR + "icons/brush_02.png"));
     texture->setFont(QFont("verdana", 8));
     texture->setToolTip("Dense1Pattern");
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     texture = new QListWidgetItem(k->texturesList);
-    texture->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
+    texture->setIcon(QIcon(THEME_DIR + "icons/brush_03.png"));
     texture->setFont(QFont("verdana", 8));
     texture->setToolTip("Dense2Pattern");
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     texture = new QListWidgetItem(k->texturesList);
-    texture->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
+    texture->setIcon(QIcon(THEME_DIR + "icons/brush_04.png"));
     texture->setFont(QFont("verdana", 8));
     texture->setToolTip("Dense3Pattern");
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     texture = new QListWidgetItem(k->texturesList);
-    texture->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
+    texture->setIcon(QIcon(THEME_DIR + "icons/brush_05.png"));
     texture->setFont(QFont("verdana", 8));
     texture->setToolTip("Dense4Pattern");
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     texture = new QListWidgetItem(k->texturesList);
-    texture->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
+    texture->setIcon(QIcon(THEME_DIR + "icons/brush_06.png"));
     texture->setFont(QFont("verdana", 8));
     texture->setToolTip("Dense5Pattern");
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     texture = new QListWidgetItem(k->texturesList);
-    texture->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
+    texture->setIcon(QIcon(THEME_DIR + "icons/brush_07.png"));
     texture->setFont(QFont("verdana", 8));
     texture->setToolTip("Dense6Pattern");
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     texture = new QListWidgetItem(k->texturesList);
-    texture->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
+    texture->setIcon(QIcon(THEME_DIR + "icons/brush_08.png"));
     texture->setFont(QFont("verdana", 8));
     texture->setToolTip("Dense7Pattern");
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     texture = new QListWidgetItem(k->texturesList);
-    texture->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
+    texture->setIcon(QIcon(THEME_DIR + "icons/brush_09.png"));
     texture->setFont(QFont("verdana", 8));
     texture->setToolTip("HotPattern");
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     texture = new QListWidgetItem(k->texturesList);
-    texture->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
+    texture->setIcon(QIcon(THEME_DIR + "icons/brush_10.png"));
     texture->setFont(QFont("verdana", 8));
     texture->setToolTip("VerPattern");
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     texture = new QListWidgetItem(k->texturesList);
-    texture->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
+    texture->setIcon(QIcon(THEME_DIR + "icons/brush_11.png"));
     texture->setFont(QFont("verdana", 8));
     texture->setToolTip("CrossPattern");
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     texture = new QListWidgetItem(k->texturesList);
-    texture->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
+    texture->setIcon(QIcon(THEME_DIR + "icons/brush_12.png"));
     texture->setFont(QFont("verdana", 8));
     texture->setToolTip("BDiagPattern");
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     texture = new QListWidgetItem(k->texturesList);
-    texture->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
+    texture->setIcon(QIcon(THEME_DIR + "icons/brush_13.png"));
     texture->setFont(QFont("verdana", 8));
     texture->setToolTip("FDiagPattern");
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     texture = new QListWidgetItem(k->texturesList);
-    texture->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
+    texture->setIcon(QIcon(THEME_DIR + "icons/brush_14.png"));
     texture->setFont(QFont("verdana", 8));
     texture->setToolTip("DiagCrossPattern");
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
+    /*
     texture = new QListWidgetItem(k->texturesList);
     texture->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
     texture->setFont(QFont("verdana", 8));
@@ -239,12 +241,12 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
     texture->setFont(QFont("verdana", 8));
     texture->setToolTip("TexturePattern");
     texture->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    */
 
     k->texturesList->setFixedWidth(255);
-    k->texturesList->setFixedHeight(120);
+    k->texturesList->setFixedHeight(63);
 
     addChild(k->texturesList);
-
     connect(k->texturesList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(setBrushStyle(QListWidgetItem *)));
     
     boxLayout()->addStretch(2);
@@ -273,43 +275,61 @@ void KTPenWidget::setThickness(int value)
 void KTPenWidget::setStyle(int s)
 {
     kFatal() << "KTPenWidget::setStyle - emiting emitPenChanged()";
-
     k->pen.setStyle(Qt::PenStyle(k->style->itemData(s).toInt()));
+
     emitPenChanged();
 }
 
 void KTPenWidget::setJoinStyle(int s)
 {
+    kFatal() << "KTPenWidget::setJoinStyle - emiting emitPenChanged()";
     k->pen.setJoinStyle(Qt::PenJoinStyle(k->joinStyle->itemData(s).toInt()));
+
     emitPenChanged();
 }
 
 void KTPenWidget::setCapStyle(int s)
 {
+    kFatal() << "KTPenWidget::setCapStyle - emiting emitPenChanged()";
     k->pen.setCapStyle(Qt::PenCapStyle(k->capStyle->itemData(s).toInt()));
+
     emitPenChanged();
 }
 
 void KTPenWidget::setBrushStyle(QListWidgetItem *item)
 {
+    kFatal() << "KTPenWidget::setBrushStyle - emiting emitPenChanged()";
+
     int index = k->texturesList->row(item);
 
     QBrush brush; 
     brush.setStyle(Qt::BrushStyle(index+1));
+    brush.setColor(k->color);
     k->pen.setBrush(brush);
+
     emitPenChanged();
+}
+
+void KTPenWidget::setPenColor(const QColor color)
+{
+    kFatal() << "KTPenWidget::setPenColor - Updating color!";
+
+    k->color = color;
+    k->pen.setColor(color);
 }
 
 void KTPenWidget::reset()
 {
-    blockSignals(true);
+    //blockSignals(true);
+    //blockSignals(false);
+
     k->capStyle->setCurrentIndex(2);
     k->joinStyle->setCurrentIndex(2);
-    //setThickness(3);
-    blockSignals(false);
     k->style->setCurrentIndex(1);
+    QModelIndex modelIndex = k->texturesList->rootIndex(); // u have to find the model index of the first item here
+    k->texturesList->setCurrentIndex(modelIndex);
     
-    k->pen.setColor(QColor(0, 0, 0)); // invalid color
+    k->pen.setColor(QColor(0, 0, 0));
 }
 
 QPen KTPenWidget::pen() const

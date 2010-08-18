@@ -67,9 +67,9 @@ void KTPaintAreaCommand::undo()
            case KTPaintAreaEvent::ChangePen:
                 k->paintArea->brushManager()->setPen(qvariant_cast<QPen>(k->oldData));
                 break;
-           case KTPaintAreaEvent::ChangePenBrush:
-                kFatal() << "KTPaintAreaCommand::undo() - tracing setPenBrush";
-                k->paintArea->brushManager()->setPenBrush(qvariant_cast<QBrush>(k->oldData));
+           case KTPaintAreaEvent::ChangeColorPen:
+                kFatal() << "KTPaintAreaCommand::undo() - tracing setPenColor";
+                k->paintArea->brushManager()->setPenColor(qvariant_cast<QColor>(k->oldData));
                 break;
            case KTPaintAreaEvent::ChangeBrush:
                 k->paintArea->brushManager()->setBrush(qvariant_cast<QBrush>(k->oldData));
@@ -96,18 +96,18 @@ void KTPaintAreaCommand::redo()
                  }
                  break;
 
-            case KTPaintAreaEvent::ChangePenBrush:
+            case KTPaintAreaEvent::ChangeColorPen:
                  {
-                   kFatal() << "KTPaintAreaCommand::redo() - tracing setPenBrush";
-                   k->oldData = k->paintArea->brushManager()->pen().brush();
-                   k->paintArea->brushManager()->setPenBrush(qvariant_cast<QBrush>(k->event->data()));
+                   kFatal() << "KTPaintAreaCommand::redo() - tracing setPenColor";
+                   k->oldData = k->paintArea->brushManager()->pen().color();
+                   k->paintArea->brushManager()->setPenColor(qvariant_cast<QColor>(k->event->data()));
                  }
                  break;
 
             case KTPaintAreaEvent::ChangeBrush:
                  {
                    k->oldData = k->paintArea->brushManager()->brush();
-                   k->paintArea->brushManager()->setBrush( qvariant_cast<QBrush>(k->event->data()));
+                   k->paintArea->brushManager()->setBrush(qvariant_cast<QBrush>(k->event->data()));
                  }
                  break;
 

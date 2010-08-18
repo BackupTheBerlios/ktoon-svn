@@ -52,6 +52,8 @@ KTBrushManager::KTBrushManager(QObject * parent) : QObject(parent), k(new Privat
 
 KTBrushManager::KTBrushManager(const QPen &pen, const QBrush &brush, QObject * parent) : QObject(parent), k(new Private)
 {
+    kFatal() << "KTBrushManager::KTBrushManager - Just starting object!";
+
     k->pen = pen;
     k->brush = brush;
 }
@@ -68,12 +70,11 @@ void KTBrushManager::setPen(const QPen &pen)
     emit penChanged(pen);
 }
 
-void KTBrushManager::setPenBrush(const QBrush &brush)
+void KTBrushManager::setPenColor(const QColor &color)
 {
-    kFatal() << "KTBrushManager::setPenBrush - Brush updated!";
-    //QColor brushColor = brush.color(); 
-    //k->pen.setColor(brushColor);
-    k->pen.setBrush(brush);
+    kFatal() << "KTBrushManager::setPenBrush - Pen color updated!";
+    k->pen.setColor(color);
+
     emit penChanged(k->pen);
 }
 
