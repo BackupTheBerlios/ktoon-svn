@@ -1,4 +1,4 @@
-# Generated automatically at Tue Aug 17 15:33:08 -0500 2010! PLEASE DO NOT EDIT!
+# Generated automatically at Wed Aug 18 02:01:42 -0500 2010! PLEASE DO NOT EDIT!
 INCLUDEPATH += /usr/include
 LIBS += -laspell -lavcodec -lavformat -lkgui -lkcore -lksound -lz -L/usr/lib64
 QT += opengl core gui svg xml network

@@ -81,7 +81,7 @@ KTViewColorCells::~KTViewColorCells()
          KTCellsColor *palette = qobject_cast<KTCellsColor *>(k->containerPalette->widget(i));
          if (palette) {
              if(!palette->isReadOnly())
-                palette->save( CONFIG_DIR+"/palettes/"+ palette->name() + ".ktpl");
+                palette->save(CONFIG_DIR+"/palettes/"+ palette->name() + ".ktpl");
          }
     }
 
@@ -127,7 +127,7 @@ void KTViewColorCells::setupForm()
     k->customGradientPalette->setType(KTCellsColor::Gradient);
     addPalette(k->customGradientPalette);
 
-    connect(k->chooserPalette, SIGNAL(activated ( int  )), k->containerPalette, SLOT(setCurrentIndex ( int )));
+    connect(k->chooserPalette, SIGNAL(activated(int )), k->containerPalette, SLOT(setCurrentIndex(int )));
 
     KCONFIG->beginGroup("ColorPalette");
     int lastIndex = KCONFIG->value("LastPalette").toInt();
@@ -221,8 +221,10 @@ void KTViewColorCells::changeColor(QTableWidgetItem* item)
            K_FUNCINFO;
     #endif
 
-    if (item)
+    if (item) {
+        kFatal() << "KTViewColorCells::changeColor - Just tracing!";
         emit selectColor(item->background());
+    }
 }
 
 void KTViewColorCells::fillDefaultColors()
@@ -232,28 +234,28 @@ void KTViewColorCells::fillDefaultColors()
     j = 0;
     //First column, first 6 rows, a gray scale
     for (i = 0; i <= 5; i++) {
-         k->defaultPalette->addItem(QColor( i * 51, i * 51, i * 51 ));
+         k->defaultPalette->addItem(QColor(i * 51, i * 51, i * 51));
     }
 
     //First column, last 6 rows, basic colors
-    k->defaultPalette->addItem(QColor( 255, 0, 0 ));
-    k->defaultPalette->addItem(QColor( 0, 255, 0 ));
-    k->defaultPalette->addItem(QColor( 0, 0, 255 ));
-    k->defaultPalette->addItem(QColor( 255, 255, 0 ));
-    k->defaultPalette->addItem(QColor( 0, 255, 255 ));
-    k->defaultPalette->addItem(QColor( 255, 0, 255 ));
+    k->defaultPalette->addItem(QColor(255, 0, 0));
+    k->defaultPalette->addItem(QColor(0, 255, 0));
+    k->defaultPalette->addItem(QColor(0, 0, 255));
+    k->defaultPalette->addItem(QColor(255, 255, 0));
+    k->defaultPalette->addItem(QColor(0, 255, 255));
+    k->defaultPalette->addItem(QColor(255, 0, 255));
 
     //Segment from column 1 to 6 and row 0 to 5
     for (i = 0; i <= 5; i++) {
          for (j = 1; j <= 6; j++) {
-              k->defaultPalette->addItem(QColor( 0, ( j - 1 ) * 51, i * 51 ));
+              k->defaultPalette->addItem(QColor(0, ( j - 1 ) * 51, i * 51));
          }
     }
 
     //Segment from column 1 to 6 and row 6 to 11
     for (i = 6; i <= 11; i++) {
          for (j = 1; j <= 6; j++)
-              k->defaultPalette->addItem(QColor( 153, ( j - 1 ) * 51, ( i - 6 ) * 51 ));
+              k->defaultPalette->addItem(QColor(153, (j - 1) * 51, (i - 6) * 51));
     }
 
     //Segment from column 7 to 12 and row 0 to 5

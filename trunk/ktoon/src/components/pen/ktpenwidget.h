@@ -33,11 +33,13 @@
 #define KTPENWIDGET_H
 
 #include <QPen>
+#include <QListWidgetItem>
 
 #include <ktmodulewidgetbase.h>
 
 #include <kgui/keditspinbox.h>
 #include <QComboBox>
+#include <QLabel>
 
 class KTPaintAreaEvent;
 
@@ -67,6 +69,7 @@ class KTPenWidget : public KTModuleWidgetBase
         void setStyle(int s);
         void setJoinStyle(int s);
         void setCapStyle(int s);
+        void setBrushStyle(QListWidgetItem *item);
         
     signals:
         void penChanged(const QPen &pen);

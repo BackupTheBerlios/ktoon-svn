@@ -163,7 +163,7 @@ void KTColorPalette::setupChooserTypeColor()
 void KTColorPalette::setupGradienManager()
 {
     k->gradientManager = new KTGradientCreator(this);
-    connect(k->gradientManager, SIGNAL(gradientChanged( const QBrush& )), this, SLOT(setColor(const QBrush &) ));
+    connect(k->gradientManager, SIGNAL(gradientChanged(const QBrush& )), this, SLOT(setColor(const QBrush &)));
     k->centralWidget->addPage(k->gradientManager,tr("Gradients"));
 }
 
@@ -172,7 +172,7 @@ void KTColorPalette::setupDisplayColor()
     //palettes
     k->containerPalette = new KTViewColorCells(k->splitter);
 
-    connect (k->containerPalette, SIGNAL(selectColor( const QBrush& )), this, SLOT(setColor( const QBrush& )));
+    connect (k->containerPalette, SIGNAL(selectColor(const QBrush&)), this, SLOT(setColor(const QBrush&)));
 
     k->splitter->addWidget(k->containerPalette);
 
@@ -225,11 +225,11 @@ void KTColorPalette::setColor(const QBrush& brush)
 
         if (k->displayColorValue && k->outlineAndFillColors && k->colorPicker && k->nameColor && k->luminancePicker) {
 
-            k->colorPicker->setCol(color.hue(), color.saturation ());
+            k->colorPicker->setCol(color.hue(), color.saturation());
             if (k->type == Solid)
                 k->outlineAndFillColors->setCurrentColor(color);
 
-            k->nameColor->setText(color.name ());
+            k->nameColor->setText(color.name());
             k->luminancePicker->setCol(color.hue(), color.saturation(), color.value());
             k->containerPalette->setColor(brush);
             k->displayColorValue->setColor(color);
@@ -246,11 +246,13 @@ void KTColorPalette::setColor(const QBrush& brush)
     }
 
     if (k->outlineAndFillColors->background().color() != Qt::transparent) {
+        kFatal() << "KTColorPalette::setColor - Background!";
         KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, k->outlineAndFillColors->background());
         emit paintAreaEventTriggered(&event);
     }
 
     if (k->outlineAndFillColors->foreground().color() != Qt::transparent) {
+        kFatal() << "KTColorPalette::setColor - Foreground!";
         KTPaintAreaEvent event2(KTPaintAreaEvent::ChangePenBrush, k->outlineAndFillColors->foreground());
         emit paintAreaEventTriggered(&event2);
     }

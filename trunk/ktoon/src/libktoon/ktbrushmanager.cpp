@@ -30,6 +30,8 @@
  ***************************************************************************/
 
 #include "ktbrushmanager.h"
+#include <kcore/kdebug.h>
+
 
 /**
  * This class handles the set of brushes for painting.
@@ -61,12 +63,16 @@ KTBrushManager::~KTBrushManager()
 
 void KTBrushManager::setPen(const QPen &pen)
 {
+    kFatal() << "KTBrushManager::setPen - Pen updated!";
     k->pen = pen;
     emit penChanged(pen);
 }
 
 void KTBrushManager::setPenBrush(const QBrush &brush)
 {
+    kFatal() << "KTBrushManager::setPenBrush - Brush updated!";
+    //QColor brushColor = brush.color(); 
+    //k->pen.setColor(brushColor);
     k->pen.setBrush(brush);
     emit penChanged(k->pen);
 }
@@ -78,6 +84,7 @@ QPen KTBrushManager::pen() const
 
 void KTBrushManager::setBrush(const QBrush &brush)
 {
+    kFatal() << "KTBrushManager::setBrush - Brush updated!";
     k->brush = brush;
     emit brushChanged(brush);
 }

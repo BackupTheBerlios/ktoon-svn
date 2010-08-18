@@ -39,6 +39,7 @@
 #include <QObject>
 
 #include <kgui/kseparator.h>
+#include <kcore/kdebug.h>
 
 #include "ktviewdocument.h"
 #include "ktglobal.h"
@@ -129,6 +130,7 @@ void KTPaintAreaStatus::selectRenderer(int id)
 
 void KTPaintAreaStatus::setBrush(const QBrush &brush)
 {
+    kFatal() << "KTPaintAreaStatus::setBrush - Just tracing!";
     k->brushStatus->setBackground(brush);
 }
 

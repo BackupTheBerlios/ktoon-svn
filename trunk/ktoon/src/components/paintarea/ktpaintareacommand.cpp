@@ -32,8 +32,9 @@
 #include "ktpaintareacommand.h"
 #include "ktpaintarea.h"
 #include "ktpaintareaevent.h"
-
 #include "ktbrushmanager.h"
+
+#include <kcore/kdebug.h> 
 
 #include <QVariant>
 
@@ -64,13 +65,14 @@ void KTPaintAreaCommand::undo()
 {
     switch(k->event->action()) {
            case KTPaintAreaEvent::ChangePen:
-                k->paintArea->brushManager()->setPen( qvariant_cast<QPen>(k->oldData));
+                k->paintArea->brushManager()->setPen(qvariant_cast<QPen>(k->oldData));
                 break;
            case KTPaintAreaEvent::ChangePenBrush:
-                k->paintArea->brushManager()->setPenBrush( qvariant_cast<QBrush>(k->oldData));
+                kFatal() << "KTPaintAreaCommand::undo() - tracing setPenBrush";
+                k->paintArea->brushManager()->setPenBrush(qvariant_cast<QBrush>(k->oldData));
                 break;
            case KTPaintAreaEvent::ChangeBrush:
-                k->paintArea->brushManager()->setBrush( qvariant_cast<QBrush>(k->oldData));
+                k->paintArea->brushManager()->setBrush(qvariant_cast<QBrush>(k->oldData));
                 break;
            default: 
                 break;
@@ -86,18 +88,19 @@ void KTPaintAreaCommand::redo()
                    QPen pen = qvariant_cast<QPen>(k->event->data());
                    if (!pen.color().isValid()) {
                        QPen old = k->paintArea->brushManager()->pen();
-                       pen.setColor( old.color() );
-                       pen.setBrush( old.brush() );
+                       pen.setColor(old.color());
+                       pen.setBrush(old.brush());
                    }
 
-                   k->paintArea->brushManager()->setPen( pen );
+                   k->paintArea->brushManager()->setPen(pen);
                  }
                  break;
 
             case KTPaintAreaEvent::ChangePenBrush:
                  {
+                   kFatal() << "KTPaintAreaCommand::redo() - tracing setPenBrush";
                    k->oldData = k->paintArea->brushManager()->pen().brush();
-                   k->paintArea->brushManager()->setPenBrush( qvariant_cast<QBrush>(k->event->data()));
+                   k->paintArea->brushManager()->setPenBrush(qvariant_cast<QBrush>(k->event->data()));
                  }
                  break;
 
