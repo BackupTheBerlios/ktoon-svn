@@ -2431,7 +2431,7 @@
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="571"/>
         <source>Preview Frames</source>
-        <translation>Предпросмотр кадров</translation>
+        <translation>Предыдущие кадры</translation>
     </message>
     <message>
         <location filename="../../../components/paintarea/ktviewdocument.cpp" line="583"/>
@@ -2855,7 +2855,7 @@
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="111"/>
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="186"/>
         <source>Zoom</source>
-        <translation>Масштаб</translation>
+        <translation>Лупа</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="66"/>
@@ -2865,7 +2865,7 @@
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="109"/>
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="256"/>
         <source>Hand</source>
-        <translation>Вручную</translation>
+        <translation>Рука</translation>
     </message>
     <message>
         <location filename="../../../plugins/tools/viewtool/viewtool.cpp" line="72"/>
