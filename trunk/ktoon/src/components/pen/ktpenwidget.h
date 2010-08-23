@@ -57,13 +57,14 @@ class KTPenWidget : public KTModuleWidgetBase
         
     private:
         void emitPenChanged();
+        void emitBrushChanged();
         
     private:
         struct Private;
         Private *const k;
         
     public slots:
-        void reset();
+        void init();
         void setThickness(int value);
         void setPenColor(const QColor color);
         
@@ -75,6 +76,7 @@ class KTPenWidget : public KTModuleWidgetBase
         
     signals:
         void penChanged(const QPen &pen);
+        void brushChanged(const QBrush &brush);
         void paintAreaEventTriggered(const KTPaintAreaEvent *e);
 
 };

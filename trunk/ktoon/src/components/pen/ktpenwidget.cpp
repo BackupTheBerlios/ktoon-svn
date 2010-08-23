@@ -47,6 +47,7 @@ struct KTPenWidget::Private
     QComboBox *style;
     QListWidget *texturesList;
     QPen pen;
+    QBrush brush;
     QColor color;
     KTPenThicknessWidget *thickPreview;
 };
@@ -269,6 +270,7 @@ void KTPenWidget::setThickness(int value)
 {
     if (value > 0) {
         k->pen.setWidth(value);
+        k->pen.setColor(k->color);
 
         KCONFIG->beginGroup("PenParameters");
         KCONFIG->setValue("Thickness", value);
@@ -281,6 +283,8 @@ void KTPenWidget::setStyle(int s)
 {
     kFatal() << "KTPenWidget::setStyle - emiting emitPenChanged()";
     k->pen.setStyle(Qt::PenStyle(k->style->itemData(s).toInt()));
+    k->pen.setColor(k->color);
+    k->pen.setBrush(k->brush);
 
     emitPenChanged();
 }
@@ -289,6 +293,8 @@ void KTPenWidget::setJoinStyle(int s)
 {
     kFatal() << "KTPenWidget::setJoinStyle - emiting emitPenChanged()";
     k->pen.setJoinStyle(Qt::PenJoinStyle(k->joinStyle->itemData(s).toInt()));
+    k->pen.setColor(k->color);
+    k->pen.setBrush(k->brush);
 
     emitPenChanged();
 }
@@ -297,6 +303,8 @@ void KTPenWidget::setCapStyle(int s)
 {
     kFatal() << "KTPenWidget::setCapStyle - emiting emitPenChanged()";
     k->pen.setCapStyle(Qt::PenCapStyle(k->capStyle->itemData(s).toInt()));
+    k->pen.setColor(k->color);
+    k->pen.setBrush(k->brush);
 
     emitPenChanged();
 }
@@ -307,10 +315,10 @@ void KTPenWidget::setBrushStyle(QListWidgetItem *item)
 
     int index = k->texturesList->row(item);
 
-    QBrush brush; 
-    brush.setStyle(Qt::BrushStyle(index+1));
-    brush.setColor(k->color);
-    k->pen.setBrush(brush);
+    //QBrush brush; 
+    k->brush.setStyle(Qt::BrushStyle(index+1));
+    k->brush.setColor(k->color);
+    k->pen.setBrush(k->brush);
 
     emitPenChanged();
 }
@@ -318,23 +326,21 @@ void KTPenWidget::setBrushStyle(QListWidgetItem *item)
 void KTPenWidget::setPenColor(const QColor color)
 {
     kFatal() << "KTPenWidget::setPenColor - Updating color!";
-
     k->color = color;
-    k->pen.setColor(color);
+    k->thickPreview->setColor(color);
 }
 
-void KTPenWidget::reset()
+void KTPenWidget::init()
 {
-    //blockSignals(true);
-    //blockSignals(false);
+    setPenColor(QColor(0, 0, 0));
 
     k->capStyle->setCurrentIndex(2);
     k->joinStyle->setCurrentIndex(2);
     k->style->setCurrentIndex(0);
-    QModelIndex modelIndex = k->texturesList->rootIndex();
-    k->texturesList->setCurrentIndex(modelIndex);
-    
-    k->pen.setColor(QColor(0, 0, 0));
+
+    QListWidgetItem *first = k->texturesList->item(0);
+    k->texturesList->setCurrentItem(first);
+    setBrushStyle(first);
 }
 
 QPen KTPenWidget::pen() const
@@ -350,3 +356,10 @@ void KTPenWidget::emitPenChanged()
     emit paintAreaEventTriggered(&event);
 }
 
+void KTPenWidget::emitBrushChanged()
+{
+    emit brushChanged(k->pen.brush());
+    
+    KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, k->pen.brush());
+    emit paintAreaEventTriggered(&event);
+}
