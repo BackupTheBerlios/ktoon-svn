@@ -8,5 +8,5 @@ include(../components_config.pri)
 CONFIG += static
 
 TEMPLATE = lib 
-HEADERS += ktpenwidget.h 
-SOURCES += ktpenwidget.cpp 
+HEADERS += ktpenwidget.h ktpenthicknesswidget.h
+SOURCES += ktpenwidget.cpp ktpenthicknesswidget.cpp

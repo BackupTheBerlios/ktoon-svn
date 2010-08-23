@@ -37,6 +37,7 @@
 #include <QListWidget>
 
 #include "ktpaintareaevent.h"
+#include "ktpenthicknesswidget.h"
 
 struct KTPenWidget::Private
 {
@@ -47,6 +48,7 @@ struct KTPenWidget::Private
     QListWidget *texturesList;
     QPen pen;
     QColor color;
+    KTPenThicknessWidget *thickPreview;
 };
 
 KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Private)
@@ -56,18 +58,21 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
     KCONFIG->beginGroup("PenParameters");
     int thicknessValue = KCONFIG->value("Thickness", -1).toInt();
 
-    // kFatal() << "KTPenWidget::KTPenWidget: " << thicknessValue;
-
     if (thicknessValue <= 0)
         thicknessValue = 3;
 
+    k->thickPreview = new KTPenThicknessWidget(this);
+    k->thickPreview->render(thicknessValue);
+
     k->thickness = new KEditSpinBox(thicknessValue, 1, 100, 1, tr("Thickness"));
     k->thickness->setValue(thicknessValue);
-    //setThickness(thicknessValue);
- 
+
     connect(k->thickness, SIGNAL(valueChanged(int)), this, SLOT(setThickness(int)));
-    
+    connect(k->thickness, SIGNAL(valueChanged(int)), k->thickPreview, SLOT(render(int)));
+
+    addChild(k->thickPreview);
     addChild(k->thickness);
+
     QWidget *space = new QWidget(this);
     space->setFixedHeight(5);
     addChild(space);
@@ -77,7 +82,7 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
     
     k->style = new QComboBox();
     
-    k->style->addItem(tr("No pen"), Qt::NoPen);
+    //k->style->addItem(tr("No pen"), Qt::NoPen);
     k->style->addItem(tr("Solid"), Qt::SolidLine);
     k->style->addItem(tr("Dash"), Qt::DashLine);
     k->style->addItem(tr("Dot"), Qt::DotLine);
@@ -252,7 +257,7 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
     boxLayout()->addStretch(2);
     
     setWindowIcon(QIcon(THEME_DIR + "icons/brush.png"));
-    reset();
+    //reset();
 }
 
 KTPenWidget::~KTPenWidget()
@@ -325,8 +330,8 @@ void KTPenWidget::reset()
 
     k->capStyle->setCurrentIndex(2);
     k->joinStyle->setCurrentIndex(2);
-    k->style->setCurrentIndex(1);
-    QModelIndex modelIndex = k->texturesList->rootIndex(); // u have to find the model index of the first item here
+    k->style->setCurrentIndex(0);
+    QModelIndex modelIndex = k->texturesList->rootIndex();
     k->texturesList->setCurrentIndex(modelIndex);
     
     k->pen.setColor(QColor(0, 0, 0));

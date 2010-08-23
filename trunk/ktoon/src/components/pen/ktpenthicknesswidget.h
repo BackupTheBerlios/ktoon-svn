@@ -29,54 +29,40 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTPENWIDGET_H
-#define KTPENWIDGET_H
+#ifndef KTPENTHICKNESSWIDGET_H
+#define KTPENTHICKNESSWIDGET_H
 
+#include <QWidget>
+#include <QPainter>
+#include <QPaintEvent>
 #include <QPen>
-#include <QListWidgetItem>
-
-#include <ktmodulewidgetbase.h>
-
-#include <kgui/keditspinbox.h>
-#include <QComboBox>
-#include <QLabel>
-
-class KTPaintAreaEvent;
+#include <QSize>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
-*/
+ * This class shows a preview of the pen thickness 
+ * @author Gustavo Gonzalez <xtingray@ktoon.net>
+ **/
 
-class KTPenWidget : public KTModuleWidgetBase
+class KTPenThicknessWidget : public QWidget
 {
     Q_OBJECT
+
     public:
-        KTPenWidget(QWidget *parent = 0);
-        ~KTPenWidget();
-        QPen pen() const;
+        KTPenThicknessWidget(QWidget *parent = 0);
+        ~KTPenThicknessWidget();
+
+        QSize minimumSizeHint() const;
+        QSize sizeHint() const;
+
+    public slots:
+        void render(int thickness);
         
-    private:
-        void emitPenChanged();
-        
+    protected:
+        void paintEvent(QPaintEvent *e);
+   
     private:
         struct Private;
         Private *const k;
-        
-    public slots:
-        void reset();
-        void setThickness(int value);
-        void setPenColor(const QColor color);
-        
-    private slots:
-        void setStyle(int s);
-        void setJoinStyle(int s);
-        void setCapStyle(int s);
-        void setBrushStyle(QListWidgetItem *item);
-        
-    signals:
-        void penChanged(const QPen &pen);
-        void paintAreaEventTriggered(const KTPaintAreaEvent *e);
-
 };
 
 #endif

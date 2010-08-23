@@ -29,54 +29,51 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTPENWIDGET_H
-#define KTPENWIDGET_H
+#include "ktpenthicknesswidget.h"
+#include <kcore/kdebug.h>
 
-#include <QPen>
-#include <QListWidgetItem>
-
-#include <ktmodulewidgetbase.h>
-
-#include <kgui/keditspinbox.h>
-#include <QComboBox>
-#include <QLabel>
-
-class KTPaintAreaEvent;
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class KTPenWidget : public KTModuleWidgetBase
+struct KTPenThicknessWidget::Private
 {
-    Q_OBJECT
-    public:
-        KTPenWidget(QWidget *parent = 0);
-        ~KTPenWidget();
-        QPen pen() const;
-        
-    private:
-        void emitPenChanged();
-        
-    private:
-        struct Private;
-        Private *const k;
-        
-    public slots:
-        void reset();
-        void setThickness(int value);
-        void setPenColor(const QColor color);
-        
-    private slots:
-        void setStyle(int s);
-        void setJoinStyle(int s);
-        void setCapStyle(int s);
-        void setBrushStyle(QListWidgetItem *item);
-        
-    signals:
-        void penChanged(const QPen &pen);
-        void paintAreaEventTriggered(const KTPaintAreaEvent *e);
-
+    int thickness;
 };
 
-#endif
+KTPenThicknessWidget::KTPenThicknessWidget(QWidget *parent) : QWidget(parent), k(new Private)
+{
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+}
+
+KTPenThicknessWidget::~KTPenThicknessWidget()
+{
+}
+
+void KTPenThicknessWidget::render(int thickness)
+{
+    k->thickness = thickness;
+    update();
+}
+
+QSize KTPenThicknessWidget::minimumSizeHint() const
+{
+    return QSize(100, 106);
+}
+
+QSize KTPenThicknessWidget::sizeHint() const
+{
+    return QSize(100, 106);
+}
+
+void KTPenThicknessWidget::paintEvent(QPaintEvent *)
+{
+     QPainter painter(this);
+     painter.setRenderHint(QPainter::Antialiasing, true);
+     painter.fillRect(0, 0, width(), height(), QColor(255, 255, 255));
+     painter.translate(width() / 2, height() / 2);
+
+     QColor color(199, 72, 10);
+     QBrush brush(color, Qt::SolidPattern);
+     QPen pen(Qt::NoPen);
+
+     painter.setPen(pen);
+     painter.setBrush(brush);
+     painter.drawEllipse(-(k->thickness/2), -(k->thickness/2), k->thickness, k->thickness);
+}

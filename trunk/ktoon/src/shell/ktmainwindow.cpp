@@ -304,6 +304,7 @@ void KTMainWindow::viewNewDocument()
         KCONFIG->beginGroup("PenParameters");
         int thicknessValue = KCONFIG->value("Thickness", -1).toInt();
         m_penWidget->setThickness(thicknessValue);
+        m_penWidget->reset();
     }
 }
 
