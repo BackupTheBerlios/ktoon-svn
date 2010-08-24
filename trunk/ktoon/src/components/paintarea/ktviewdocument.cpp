@@ -162,8 +162,9 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
     KTPaintAreaStatus *status = new KTPaintAreaStatus(this);
     setStatusBar(status);
 
-    connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), status, 
-            SLOT(setBrush(const QBrush &)));
+    // SQA: Verify if this code is doing something
+    //connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), status, 
+    //        SLOT(setBrush(const QBrush &)));
 
     connect(k->paintArea->brushManager(), SIGNAL(penChanged(const QPen&)), status, 
             SLOT(setPen(const QPen &)));
@@ -691,6 +692,7 @@ KTBrushManager *KTViewDocument::brushManager() const
 
 KTPaintAreaCommand *KTViewDocument::createCommand(const KTPaintAreaEvent *event)
 {
+    kFatal() << "KTViewDocument::createCommand - Just tracing!";
     KTPaintAreaCommand *command = new KTPaintAreaCommand(k->paintArea, event);
 
     return command;
