@@ -136,7 +136,6 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
     boxLayout()->addStretch(2);
     
     setWindowIcon(QIcon(THEME_DIR + "icons/brush.png"));
-    //reset();
 }
 
 KTPenWidget::~KTPenWidget()
