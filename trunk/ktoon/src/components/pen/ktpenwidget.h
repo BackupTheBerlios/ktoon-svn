@@ -58,6 +58,8 @@ class KTPenWidget : public KTModuleWidgetBase
     private:
         void emitPenChanged();
         void emitBrushChanged();
+        void updatePenParams();
+        void addBrushesList();
         
     private:
         struct Private;

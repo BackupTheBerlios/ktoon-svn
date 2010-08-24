@@ -35,6 +35,7 @@
 struct KTPenThicknessWidget::Private
 {
     int thickness;
+    int brush;
     QColor color;
 };
 
@@ -56,6 +57,12 @@ void KTPenThicknessWidget::render(int thickness)
 void KTPenThicknessWidget::setColor(const QColor color)
 {
     k->color = color;
+}
+
+void KTPenThicknessWidget::setBrush(int index)
+{
+    k->brush = index;
+    update();
 }
 
 QSize KTPenThicknessWidget::minimumSizeHint() const
@@ -81,7 +88,8 @@ void KTPenThicknessWidget::paintEvent(QPaintEvent *)
 
      painter.translate(width() / 2, height() / 2);
 
-     QBrush brush(k->color, Qt::SolidPattern);
+     //QBrush brush(k->color, Qt::SolidPattern);
+     QBrush brush(Qt::BrushStyle(k->brush));
      QPen pen(Qt::NoPen);
 
      painter.setPen(pen);

@@ -1631,9 +1631,9 @@
         <translation>Grosor</translation>
     </message>
     <message>
-        <location filename="../../../components/pen/ktpenwidget.cpp" line="72"/>
-        <source>No pen</source>
-        <translation>Sin lapiz</translation>
+        <location filename="../../../components/pen/ktpenwidget.cpp" line="62"/>
+        <source>Dashes</source>
+        <translation>Patrón</translation>
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="73"/>
@@ -1661,6 +1661,11 @@
         <translation>Guión punto punto</translation>
     </message>
     <message>
+        <location filename="../../../components/pen/ktpenwidget.cpp" line="77"/>
+        <source>Cap</source>
+        <translation>Borde</translation>
+    </message>
+    <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="85"/>
         <source>Flat</source>
         <translation>Aplanado</translation>
@@ -1678,6 +1683,11 @@
     </message>
     <message>
         <location filename="../../../components/pen/ktpenwidget.cpp" line="94"/>
+        <source>Join</source>
+        <translation>Codo</translation>
+    </message>
+    <message>
+        <location filename="../../../components/pen/ktpenwidget.cpp" line="94"/>
         <source>Miter</source>
         <translation>Punta</translation>
     </message>
@@ -1685,6 +1695,11 @@
         <location filename="../../../components/pen/ktpenwidget.cpp" line="95"/>
         <source>Bevel</source>
         <translation>Angulo recto</translation>
+    </message>
+    <message>
+        <location filename="../../../components/pen/ktpenwidget.cpp" line="95"/>
+        <source>Brush</source>
+        <translation>Brocha</translation>
     </message>
 </context>
 <context>
