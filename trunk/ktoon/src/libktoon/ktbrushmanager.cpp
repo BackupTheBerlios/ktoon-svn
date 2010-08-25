@@ -68,13 +68,16 @@ void KTBrushManager::setPen(const QPen &pen)
 {
     kFatal() << "KTBrushManager::setPen - Pen updated!";
     k->pen = pen;
-    emit penChanged(pen);
+    emit penChanged(k->pen);
 }
 
 void KTBrushManager::setPenColor(const QColor &color)
 {
     kFatal() << "KTBrushManager::setPenColor - Pen color updated!";
-    k->pen.setColor(color);
+    QBrush brush = k->pen.brush();
+    brush.setColor(color);
+    k->pen.setBrush(brush);
+
     emit penChanged(k->pen);
 }
 

@@ -56,7 +56,9 @@ void KTPenThicknessWidget::render(int thickness)
 
 void KTPenThicknessWidget::setColor(const QColor color)
 {
+    kFatal() << "KTPenThicknessWidget::setColor() - Color: " << color.name();
     k->color = color;
+    //update();
 }
 
 void KTPenThicknessWidget::setBrush(int index)
@@ -77,6 +79,7 @@ QSize KTPenThicknessWidget::sizeHint() const
 
 void KTPenThicknessWidget::paintEvent(QPaintEvent *)
 {
+     kFatal() << "KTPenThicknessWidget::paintEvent - Just tracing...";
      QPainter painter(this);
      painter.setRenderHint(QPainter::Antialiasing, true);
      painter.fillRect(0, 0, width(), height(), QColor(255, 255, 255));
@@ -90,6 +93,7 @@ void KTPenThicknessWidget::paintEvent(QPaintEvent *)
 
      //QBrush brush(k->color, Qt::SolidPattern);
      QBrush brush(Qt::BrushStyle(k->brush));
+     brush.setColor(k->color);
      QPen pen(Qt::NoPen);
 
      painter.setPen(pen);

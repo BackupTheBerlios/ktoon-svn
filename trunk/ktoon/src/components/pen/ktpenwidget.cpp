@@ -192,7 +192,8 @@ void KTPenWidget::setBrushStyle(QListWidgetItem *item)
     k->thickPreview->setBrush(index+1);
 
     k->brush.setStyle(Qt::BrushStyle(index+1));
-    //k->brush.setColor(k->color);
+    k->brush.setColor(k->color);
+
     updatePenParams(); 
 
     emitPenChanged();
