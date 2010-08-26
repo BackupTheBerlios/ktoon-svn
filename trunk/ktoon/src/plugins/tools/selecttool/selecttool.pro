@@ -14,9 +14,11 @@ include(../../../../ktconfig.pri)
 TEMPLATE = lib 
 HEADERS += select.h \
            node.h \
-           nodemanager.h 
+           nodemanager.h \ 
+           infopanel.h
 SOURCES += select.cpp \
            node.cpp \
-           nodemanager.cpp 
+           nodemanager.cpp \ 
+           infopanel.cpp
 
 include(../tools_config.pri)

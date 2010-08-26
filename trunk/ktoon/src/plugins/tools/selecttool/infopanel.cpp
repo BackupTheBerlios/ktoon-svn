@@ -29,65 +29,38 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef SELECT_H
-#define SELECT_H
-
-#include <QObject>
-#include <kttoolplugin.h>
-
-#include "ktpathitem.h"
-#include "ktproject.h"
-#include "ktgraphicsscene.h"
 #include "infopanel.h"
+#include <QBoxLayout>
 
-class KTItemResponse;
+#include <kcore/kglobal.h>
+#include <kcore/kdebug.h>
 
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
-
-class NodeManager;
-class Select : public KTToolPlugin
+InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 {
-    Q_OBJECT;
+    KINIT;
+    QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    QLabel *label = new QLabel(tr("Tips"));
+    label->setAlignment(Qt::AlignHCenter); 
+    layout->addWidget(label);
+
+    mainLayout->addLayout(layout);
     
-    public:
-        Select();
-        virtual ~Select();
-        
-        virtual void init(KTGraphicsScene *scene);
-        virtual QStringList keys() const;
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void keyPressEvent(QKeyEvent *event);
-        
-        virtual QMap<QString, KAction *>actions() const;
-        
-        int toolType() const;
-        
-        virtual QWidget *configurator();
-        
-        virtual void aboutToChangeTool();
-        void aboutToChangeScene(KTGraphicsScene *scene);
-        
-        virtual void itemResponse(const KTItemResponse *event);
-        virtual void saveConfig();
+    QLabel *other = new QLabel(tr("Other"));
+    other->setAlignment(Qt::AlignHCenter);
+    mainLayout->addWidget(other);
+   
+    mainLayout->addStretch(2);
+}
 
-    //signals:
-    //    void itemAddedOnSelection();
+InfoPanel::~InfoPanel()
+{
+    KEND;
+}
 
-    private:
-        void setupActions();
-        
-    private:
-        struct Private;
-        Private *const k;
-        InfoPanel *m_configurator;
-        
-    private slots:
-        void syncNodes();
-        void updateItems(KTGraphicsScene *);
-};
+void InfoPanel::resizeEvent(QResizeEvent *)
+{
+    //resize(minimumSizeHint());
+}
 
-#endif

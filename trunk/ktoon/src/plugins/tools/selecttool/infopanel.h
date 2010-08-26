@@ -29,65 +29,24 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef SELECT_H
-#define SELECT_H
+#ifndef INFOPANEL_H
+#define INFOPANEL_H
 
-#include <QObject>
-#include <kttoolplugin.h>
-
-#include "ktpathitem.h"
-#include "ktproject.h"
-#include "ktgraphicsscene.h"
-#include "infopanel.h"
-
-class KTItemResponse;
+#include <QLabel>
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Gustav Gonzalez 
 */
 
-class NodeManager;
-class Select : public KTToolPlugin
+class InfoPanel : public QWidget
 {
     Q_OBJECT;
-    
     public:
-        Select();
-        virtual ~Select();
-        
-        virtual void init(KTGraphicsScene *scene);
-        virtual QStringList keys() const;
-        virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
-        virtual void keyPressEvent(QKeyEvent *event);
-        
-        virtual QMap<QString, KAction *>actions() const;
-        
-        int toolType() const;
-        
-        virtual QWidget *configurator();
-        
-        virtual void aboutToChangeTool();
-        void aboutToChangeScene(KTGraphicsScene *scene);
-        
-        virtual void itemResponse(const KTItemResponse *event);
-        virtual void saveConfig();
+        InfoPanel(QWidget *parent = 0);
+        ~InfoPanel();
 
-    //signals:
-    //    void itemAddedOnSelection();
-
-    private:
-        void setupActions();
-        
-    private:
-        struct Private;
-        Private *const k;
-        InfoPanel *m_configurator;
-        
-    private slots:
-        void syncNodes();
-        void updateItems(KTGraphicsScene *);
+    protected:
+        void resizeEvent(QResizeEvent *);
 };
 
 #endif

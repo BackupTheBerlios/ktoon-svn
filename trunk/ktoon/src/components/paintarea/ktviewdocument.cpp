@@ -456,13 +456,17 @@ void KTViewDocument::selectTool()
                      break;
 
                 case KTToolInterface::Selection:
+                     kFatal() << "KTViewDocument::selectTool - Tool: " << toolStr; 
                      k->selectionMenu->setDefaultAction(action);
                      k->selectionMenu->setActiveAction(action);
                      if (!action->icon().isNull())
                          k->selectionMenu->menuAction()->setIcon(action->icon());
-                     if (toolStr.compare("Object Selection")==0) {
+                     if (toolStr.compare(tr("Object Selection"))==0) {
+                         minWidth = 130;
                          connect(k->paintArea, SIGNAL(itemAddedOnSelection(KTGraphicsScene *)), 
                                  tool, SLOT(updateItems(KTGraphicsScene *)));
+                     } else {
+                         kFatal() << "KTViewDocument::selectTool - Tracing problem: No object catched!";
                      }
                      break;
 
@@ -479,6 +483,7 @@ void KTViewDocument::selectTool()
         QWidget *toolConfigurator = tool->configurator();
 
         if (toolConfigurator) {
+            kFatal() << "KTViewDocument::selectTool - Trying to load infoPanel!";
             k->configurationArea = new KTConfigurationArea(this);
             k->configurationArea->setConfigurator(toolConfigurator, minWidth);
             addDockWidget(Qt::RightDockWidgetArea, k->configurationArea);

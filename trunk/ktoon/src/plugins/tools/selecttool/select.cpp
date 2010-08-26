@@ -67,7 +67,7 @@ struct Select::Private
     NodeManager* changedManager;
 };
 
-Select::Select(): k(new Private)
+Select::Select(): k(new Private),  m_configurator(0)
 {
     k->changedManager = 0;
     setupActions();
@@ -258,7 +258,10 @@ int Select::toolType() const
 
 QWidget *Select::configurator() 
 {
-    return 0;
+    if (! m_configurator)
+        m_configurator = new InfoPanel;
+
+    return m_configurator;
 }
 
 void Select::aboutToChangeScene(KTGraphicsScene *scene)
