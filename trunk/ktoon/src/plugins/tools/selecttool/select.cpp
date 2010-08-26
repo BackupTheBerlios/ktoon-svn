@@ -369,13 +369,13 @@ void Select::keyPressEvent(QKeyEvent *event)
         || (event->key() == Qt::Key_Up) || (event->key() == Qt::Key_Right) 
         || (event->key() == Qt::Key_Down))) {
 
-        int delta = 1;
+        int delta = 5;
 
         if (event->modifiers()==Qt::ShiftModifier)
-            delta = 5;
+            delta = 1;
 
         if (event->modifiers()==Qt::ControlModifier)
-            delta = 20;
+            delta = 10;
 
         QList<QGraphicsItem *> selectedObjects = k->scene->selectedItems();
 
