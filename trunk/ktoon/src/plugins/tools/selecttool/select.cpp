@@ -369,20 +369,28 @@ void Select::keyPressEvent(QKeyEvent *event)
         || (event->key() == Qt::Key_Up) || (event->key() == Qt::Key_Right) 
         || (event->key() == Qt::Key_Down))) {
 
+        int delta = 1;
+
+        if (event->modifiers()==Qt::ShiftModifier)
+            delta = 5;
+
+        if (event->modifiers()==Qt::ControlModifier)
+            delta = 20;
+
         QList<QGraphicsItem *> selectedObjects = k->scene->selectedItems();
 
         foreach (QGraphicsItem *item, selectedObjects) {
                  if (event->key() == Qt::Key_Left)
-                     item->moveBy(-1, 0);
+                     item->moveBy(-delta, 0);
 
                  if (event->key() == Qt::Key_Up)
-                     item->moveBy(0, -1);
+                     item->moveBy(0, -delta);
 
                  if (event->key() == Qt::Key_Right)
-                     item->moveBy(1, 0);
+                     item->moveBy(delta, 0);
 
                  if (event->key() == Qt::Key_Down)
-                     item->moveBy(0, 1);
+                     item->moveBy(0, delta);
 
                  QTimer::singleShot(0, this, SLOT(syncNodes()));
        }

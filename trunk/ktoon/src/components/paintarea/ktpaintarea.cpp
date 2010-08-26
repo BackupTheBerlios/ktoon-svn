@@ -362,6 +362,7 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 
                default:
                     {
+                        kFatal() << "KTPaintArea::itemResponse() - updating canvas!";
                         graphicsScene()->drawCurrentPhotogram();
                         viewport()->update(scene()->sceneRect().toRect());
                     }
@@ -369,7 +370,7 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
         }
 
     } else { 
-      kFatal() << "KTPaintArea::itemResponse - isDrawing() == true!";
+      kFatal() << "KTPaintArea::itemResponse - isDrawing() == true! - No action taken";
     }
 
     graphicsScene()->itemResponse(event);

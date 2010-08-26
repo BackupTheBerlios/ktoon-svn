@@ -47,6 +47,7 @@
 #include "ktrequestbuilder.h"
 #include "ktprojectrequest.h"
 #include "ktlibraryobject.h"
+#include "ktellipseitem.h"
 
 #include <kgui/kaction.h>
 #include <kcore/kalgorithm.h>
@@ -123,7 +124,8 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 
     if (m_firstPoint == input->pos() && m_path.elementCount() == 1) {
         smoothness = 0;
-        m_path.addEllipse(input->pos().x(), input->pos().y(), brushManager->pen().width(), brushManager->pen().width());
+        qreal radius = ((qreal) brushManager->pen().width()) / ((qreal) 2);
+        m_path.addEllipse(input->pos().x(), input->pos().y(), radius, radius);
     }
 
     m_firstPoint = QPoint(0,0);

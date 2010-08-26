@@ -43,110 +43,95 @@
 
 KTEllipseItem::KTEllipseItem(QGraphicsItem * parent, QGraphicsScene * scene): QGraphicsEllipseItem(parent, scene), m_dragOver(false)
 {
-	setAcceptDrops(true);
+    setAcceptDrops(true);
 }
 
-KTEllipseItem::KTEllipseItem ( const QRectF & rect, QGraphicsItem * parent, QGraphicsScene * scene ): QGraphicsEllipseItem(rect, parent, scene), m_dragOver(false)
+KTEllipseItem::KTEllipseItem(const QRectF & rect, QGraphicsItem * parent, QGraphicsScene * scene): QGraphicsEllipseItem(rect, parent, scene), m_dragOver(false)
 {
-	setAcceptDrops(true);
+    setAcceptDrops(true);
 }
-
 
 KTEllipseItem::~KTEllipseItem()
 {
-	
+    
 }
 
 void KTEllipseItem::fromXml(const QString &xml)
 {
 }
 
-
 QDomElement KTEllipseItem::toXml(QDomDocument &doc) const
 {
-	QDomElement root = doc.createElement("ellipse");
-	
-	root.setAttribute("cx", rect().center().x());
-	root.setAttribute("cy", rect().center().y());
-	root.setAttribute("rx", rect().width()/2);
-	root.setAttribute("ry", rect().height()/2);
-	
-	root.appendChild( KTSerializer::properties( this, doc));
-	
-	QBrush brush = this->brush();
-	root.appendChild(KTSerializer::brush(&brush, doc));
-	
-	QPen pen = this->pen();
-	root.appendChild(KTSerializer::pen(&pen, doc));
-	
-	return root;
+    QDomElement root = doc.createElement("ellipse");
+    
+    root.setAttribute("cx", rect().center().x());
+    root.setAttribute("cy", rect().center().y());
+    root.setAttribute("rx", rect().width()/2);
+    root.setAttribute("ry", rect().height()/2);
+    
+    root.appendChild(KTSerializer::properties(this, doc));
+    
+    QBrush brush = this->brush();
+    root.appendChild(KTSerializer::brush(&brush, doc));
+    
+    QPen pen = this->pen();
+    root.appendChild(KTSerializer::pen(&pen, doc));
+    
+    return root;
 }
 
-bool KTEllipseItem::contains ( const QPointF & point ) const
+bool KTEllipseItem::contains(const QPointF & point) const
 {
-#if 0
-	int thickness = pen().width();
-	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
-	
-	QPolygonF pol = shape().toFillPolygon ();
-	foreach(QPointF point, pol)
-	{
-		if(rectS.contains( point))
-		{
-			return true;
-		}
-	}
-	QPolygonF::iterator it1 = pol.begin() ;
-	QPolygonF::iterator it2 = pol.begin()+1;
-	
-	while(it2 != pol.end())
-	{
-		if(KTGraphicalAlgorithm::intersectLine( (*it1), (*it2), rectS  ))
-		{
-			return true;
-		}
-		++it1;
-		++it2;
-	}
-	return false;
-#else
-	return QGraphicsEllipseItem::contains(point);
-#endif
+    // SQA: Check if this code is really doing something
+    /*
+    int thickness = pen().width();
+    QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
+    
+    QPolygonF pol = shape().toFillPolygon ();
+    foreach (QPointF point, pol) {
+             if (rectS.contains( point))
+                 return true;
+    }
+    QPolygonF::iterator it1 = pol.begin() ;
+    QPolygonF::iterator it2 = pol.begin()+1;
+    
+    while (it2 != pol.end()) {
+           if (KTGraphicalAlgorithm::intersectLine( (*it1), (*it2), rectS  ))
+               return true;
+           ++it1;
+           ++it2;
+    }
+    return false;
+    */
+
+    return QGraphicsEllipseItem::contains(point);
 }
 
 void KTEllipseItem::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
-	if (event->mimeData()->hasColor() )
-	{
-		event->setAccepted(true);
-		m_dragOver = true;
-		update();
-	} 
-	else
-	{
-		event->setAccepted(false);
-	}
+    if (event->mimeData()->hasColor()) {
+        event->setAccepted(true);
+        m_dragOver = true;
+        update();
+    } else {
+        event->setAccepted(false);
+    }
 }
-
 
 void KTEllipseItem::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
-	Q_UNUSED(event);
-	m_dragOver = false;
-	update();
+    Q_UNUSED(event);
+    m_dragOver = false;
+    update();
 }
-
 
 void KTEllipseItem::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-	m_dragOver = false;
-	if (event->mimeData()->hasColor())
-	{
-		setBrush(QBrush(qVariantValue<QColor>(event->mimeData()->colorData())));
-	}
-	else if (event->mimeData()->hasImage())
-	{
-		setBrush(QBrush(qVariantValue<QPixmap>(event->mimeData()->imageData())));
-	}
-	update();
+    m_dragOver = false;
+    if (event->mimeData()->hasColor()) {
+        setBrush(QBrush(qVariantValue<QColor>(event->mimeData()->colorData())));
+    } else if (event->mimeData()->hasImage()) {
+        setBrush(QBrush(qVariantValue<QPixmap>(event->mimeData()->imageData())));
+    }
+    update();
 }

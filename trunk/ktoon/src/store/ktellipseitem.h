@@ -37,26 +37,26 @@
 #include "ktglobal_store.h"
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado
 */
 
 class STORE_EXPORT KTEllipseItem: public KTAbstractSerializable, public QGraphicsEllipseItem
 {
-	public:
-		KTEllipseItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		KTEllipseItem(const QRectF & rect, QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		~KTEllipseItem();
-		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc) const;
-		bool contains( const QPointF & point ) const;
-		
-	protected:
-		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dropEvent ( QGraphicsSceneDragDropEvent *event );
-		
-	private:
-		bool m_dragOver;
+    public:
+        KTEllipseItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+        KTEllipseItem(const QRectF & rect, QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+        ~KTEllipseItem();
+        virtual void fromXml(const QString &xml);
+        virtual QDomElement toXml(QDomDocument &doc) const;
+        bool contains(const QPointF & point) const;
+          
+    protected:
+        virtual void dragEnterEvent(QGraphicsSceneDragDropEvent * event);
+        virtual void dragLeaveEvent(QGraphicsSceneDragDropEvent * event);
+        virtual void dropEvent(QGraphicsSceneDragDropEvent *event);
+          
+    private:
+        bool m_dragOver;
 };
 
 #endif

@@ -161,7 +161,7 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
         QBrush brush = static_cast<QAbstractGraphicsShapeItem *>(m_item)->brush();
         QMatrix m;
         
-        m.scale( m_rect.width() / 100, m_rect.height() / 100);
+        m.scale(m_rect.width() / 100, m_rect.height() / 100);
         brush.setMatrix(m);
         static_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brush);
         
@@ -169,13 +169,13 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
         brush = pen.brush();
         m.reset();
         
-        m.scale( m_rect.width() / 100, m_rect.height() / 100);
+        m.scale(m_rect.width() / 100, m_rect.height() / 100);
         brush.setMatrix(m);
-        pen.setBrush(brush );
+        pen.setBrush(brush);
         
         static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
         
-    } else if( currentTool() == tr("Line")) {
+    } else if (currentTool() == tr("Line")) {
 
         QPointF pos = m_item->mapFromScene(input->pos());
         QLineF line(static_cast<KTLineItem *>(m_item)->line().x1(), static_cast<KTLineItem *>(m_item)->line().y1(), pos.x(), pos.y());
