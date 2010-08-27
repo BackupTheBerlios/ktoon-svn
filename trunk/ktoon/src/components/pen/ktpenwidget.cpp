@@ -82,8 +82,9 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
     addChild(label);
     
     k->style = new QComboBox();
+    k->style->setIconSize(QSize(120, 15));
     
-    k->style->addItem(tr("Solid"), Qt::SolidLine);
+    k->style->addItem(QIcon(THEME_DIR + "icons/line_style01.png"), tr("Solid"), Qt::SolidLine);
     k->style->addItem(tr("Dash"), Qt::DashLine);
     k->style->addItem(tr("Dot"), Qt::DotLine);
     k->style->addItem(tr("Dash dot"), Qt::DashDotLine);

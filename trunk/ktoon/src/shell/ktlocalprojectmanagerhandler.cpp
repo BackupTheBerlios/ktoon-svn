@@ -124,7 +124,8 @@ void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *
     #endif
 
     if (request->isValid()) {
-        emit sendCommand(request, isUndoCommand(request->xml()));
+        emit sendCommand(request, true);
+        //emit sendCommand(request, isUndoCommand(request->xml()));
     } else {
         #ifdef K_DEBUG
                kfDebug << "INVALID REQUEST! ID: " << request->id();
