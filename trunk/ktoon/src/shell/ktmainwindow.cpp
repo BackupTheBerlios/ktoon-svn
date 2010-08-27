@@ -303,7 +303,6 @@ void KTMainWindow::viewNewDocument()
 
         KCONFIG->beginGroup("PenParameters");
         int thicknessValue = KCONFIG->value("Thickness", -1).toInt();
-        kFatal() << "KTMainWindow() - Initializating pen params...";
         m_penWidget->init();
         m_penWidget->setThickness(thicknessValue);
     }
@@ -1098,12 +1097,8 @@ void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
     if (command) { 
         m_projectManager->undoHistory()->push(command);
 
-        if (event->action() == 2) {
-            kFatal() << "KTMainWindow::createCommand - Tracing color change event!";
+        if (event->action() == 2)
             m_penWidget->setPenColor(qvariant_cast<QColor>(event->data()));
-        } else {
-            kFatal() << "KTMainWindow::createCommand - Tracing NO color event!";
-        }
     }
 
 }

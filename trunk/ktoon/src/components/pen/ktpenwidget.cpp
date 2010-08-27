@@ -158,7 +158,6 @@ void KTPenWidget::setThickness(int value)
 
 void KTPenWidget::setStyle(int s)
 {
-    kFatal() << "KTPenWidget::setStyle - emiting emitPenChanged()";
     k->pen.setStyle(Qt::PenStyle(k->style->itemData(s).toInt()));
     updatePenParams();
 
@@ -167,7 +166,6 @@ void KTPenWidget::setStyle(int s)
 
 void KTPenWidget::setJoinStyle(int s)
 {
-    kFatal() << "KTPenWidget::setJoinStyle - emiting emitPenChanged()";
     k->pen.setJoinStyle(Qt::PenJoinStyle(k->joinStyle->itemData(s).toInt()));
     updatePenParams();
 
@@ -176,7 +174,6 @@ void KTPenWidget::setJoinStyle(int s)
 
 void KTPenWidget::setCapStyle(int s)
 {
-    kFatal() << "KTPenWidget::setCapStyle - emiting emitPenChanged()";
     k->pen.setCapStyle(Qt::PenCapStyle(k->capStyle->itemData(s).toInt()));
     updatePenParams();
 
@@ -185,14 +182,11 @@ void KTPenWidget::setCapStyle(int s)
 
 void KTPenWidget::setBrushStyle(QListWidgetItem *item)
 {
-    kFatal() << "KTPenWidget::setBrushStyle - emiting emitPenChanged()";
-
     int index = k->brushesList->row(item);
 
     k->thickPreview->setBrush(index+1);
 
     k->brush.setStyle(Qt::BrushStyle(index+1));
-    k->brush.setColor(k->color);
 
     updatePenParams(); 
 
@@ -201,8 +195,9 @@ void KTPenWidget::setBrushStyle(QListWidgetItem *item)
 
 void KTPenWidget::setPenColor(const QColor color)
 {
-    kFatal() << "KTPenWidget::setPenColor - Updating color!";
     k->color = color;
+    k->brush.setColor(k->color);
+    k->pen.setColor(k->color);
     k->thickPreview->setColor(color);
 }
 
@@ -242,7 +237,7 @@ void KTPenWidget::emitBrushChanged()
 
 void KTPenWidget::updatePenParams()
 {
-    k->pen.setColor(k->color);
+    //k->pen.setColor(k->color);
     k->pen.setBrush(k->brush);
 }
 

@@ -44,9 +44,6 @@ class InfoPanel : public QWidget
     public:
         InfoPanel(QWidget *parent = 0);
         ~InfoPanel();
-
-    protected:
-        void resizeEvent(QResizeEvent *);
 };
 
 #endif

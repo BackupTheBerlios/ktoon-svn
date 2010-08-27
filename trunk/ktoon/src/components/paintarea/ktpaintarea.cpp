@@ -348,21 +348,15 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 
                case KTProjectRequest::Remove:
                     { 
-                        //KTGraphicsScene* currentScene = graphicsScene();
-                        //int itemsTotal = currentScene->currentFrame()->graphicItemsCount();
                         if (!k->deleteMode) {
-                            kFatal() << "KTPaintArea::itemResponse - Removing request - Updating :(";
                             graphicsScene()->drawCurrentPhotogram();
                             viewport()->update(scene()->sceneRect().toRect());
-                        } else { 
-                            kFatal() << "KTPaintArea::itemResponse - Removing request - No update :(";
-                        }
+                        } 
                     }
                     break;
 
                default:
                     {
-                        kFatal() << "KTPaintArea::itemResponse() - updating canvas!";
                         graphicsScene()->drawCurrentPhotogram();
                         viewport()->update(scene()->sceneRect().toRect());
                     }
@@ -386,8 +380,6 @@ void KTPaintArea::libraryResponse(KTLibraryResponse *request)
     if (graphicsScene()->isDrawing())
         return;
 
-    kFatal() << "KTPaintArea::libraryResponse - Flag: " << request->action();
-
     switch (request->action()) {
 
             case KTProjectRequest::AddSymbolToProject:
@@ -399,7 +391,6 @@ void KTPaintArea::libraryResponse(KTLibraryResponse *request)
 
                  break;
             case KTProjectRequest::Remove:
-                 kFatal() << "KTPaintArea::libraryResponse - Removing thing";
                  graphicsScene()->drawCurrentPhotogram();
                  viewport()->update(scene()->sceneRect().toRect());
                  break;

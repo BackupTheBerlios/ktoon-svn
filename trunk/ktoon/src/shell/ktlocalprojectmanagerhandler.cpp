@@ -34,6 +34,9 @@
 #include "ktprojectcommand.h"
 #include "ktsaveproject.h"
 
+#include <QDomDocument>
+#include <QDomElement>
+
 #include <kcore/kdebug.h>
 
 /**
@@ -50,6 +53,70 @@ KTLocalProjectManagerHandler::~KTLocalProjectManagerHandler()
 {
 }
 
+bool KTLocalProjectManagerHandler::isUndoCommand(const QString &xml)
+{
+    bool isAdd = false;
+    bool firstScene = false;
+    bool firstLayer = false;
+
+    QDomDocument doc;
+    doc.setContent(xml);
+    QDomElement root = doc.documentElement();
+
+    QDomNode n = root.firstChild();
+
+    while (!n.isNull()) {
+           QDomElement e = n.toElement();
+
+           if (!e.isNull()) {
+               if (e.tagName() == "action") {
+                   if (e.attribute("id").toInt() == 1)
+                       isAdd = true;
+                   else 
+                       return true;
+               } else if (e.tagName() == "scene") {
+                          if (e.attribute("index").toInt() == 0)
+                              firstScene = true;
+                          QDomNode n2 = e.firstChild();
+                          if (n2.isNull() && isAdd && firstScene)
+                              return false;
+                          while (!n2.isNull()) {
+                                 QDomElement e2 = n2.toElement();
+                                 if (!e2.isNull()) {
+                                     if (e2.tagName() == "layer") {
+                                         if (e2.attribute("index").toInt() == 0)
+                                             firstLayer = true;
+                                         QDomNode n3 = e2.firstChild();
+                                         if (n3.isNull() && isAdd && firstScene && firstLayer)
+                                             return false;
+                                          while (!n3.isNull()) {
+                                                 QDomElement e3 = n3.toElement();
+                                                if (!e3.isNull()) {
+                                                    if (e3.tagName() == "frame") {
+                                                        QDomNode n4 = e3.firstChild();
+                                                        if (!n4.isNull()) {
+                                                            return true; 
+                                                        } else if ((e3.attribute("index").toInt() == 0) && isAdd && firstScene && firstLayer) {
+                                                                  return false; 
+                                                        }
+                                                    }
+                                                } 
+                                                n3 = n3.nextSibling();
+                                          } 
+                                     } // end if e2 layer
+                                 } else if (isAdd && firstScene) {
+                                            return false;
+                                 }
+                                 n2 = n2.nextSibling();
+                          } // end while n2
+               } // end if scene
+           }
+           n = n.nextSibling();
+    }
+
+    return true;
+}
+
 void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *request)
 {
     #ifdef K_DEBUG
@@ -57,7 +124,7 @@ void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *
     #endif
 
     if (request->isValid()) {
-        emit sendCommand( request, true );
+        emit sendCommand(request, isUndoCommand(request->xml()));
     } else {
         #ifdef K_DEBUG
                kfDebug << "INVALID REQUEST! ID: " << request->id();
@@ -71,7 +138,7 @@ bool KTLocalProjectManagerHandler::saveProject(const QString &fileName, const KT
     QString fn = fileName;
 
     if (!fileName.endsWith(".ktn"))
-        fn+=".ktn";
+        fn += ".ktn";
 
     KTSaveProject *saver = new KTSaveProject;
     result = saver->save(fn, project);

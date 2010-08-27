@@ -456,7 +456,6 @@ void KTViewDocument::selectTool()
                      break;
 
                 case KTToolInterface::Selection:
-                     kFatal() << "KTViewDocument::selectTool - Tool: " << toolStr; 
                      k->selectionMenu->setDefaultAction(action);
                      k->selectionMenu->setActiveAction(action);
                      if (!action->icon().isNull())
@@ -465,9 +464,7 @@ void KTViewDocument::selectTool()
                          minWidth = 130;
                          connect(k->paintArea, SIGNAL(itemAddedOnSelection(KTGraphicsScene *)), 
                                  tool, SLOT(updateItems(KTGraphicsScene *)));
-                     } else {
-                         kFatal() << "KTViewDocument::selectTool - Tracing problem: No object catched!";
-                     }
+                     } 
                      break;
 
                 case KTToolInterface::View:
@@ -483,7 +480,6 @@ void KTViewDocument::selectTool()
         QWidget *toolConfigurator = tool->configurator();
 
         if (toolConfigurator) {
-            kFatal() << "KTViewDocument::selectTool - Trying to load infoPanel!";
             k->configurationArea = new KTConfigurationArea(this);
             k->configurationArea->setConfigurator(toolConfigurator, minWidth);
             addDockWidget(Qt::RightDockWidgetArea, k->configurationArea);
@@ -697,7 +693,6 @@ KTBrushManager *KTViewDocument::brushManager() const
 
 KTPaintAreaCommand *KTViewDocument::createCommand(const KTPaintAreaEvent *event)
 {
-    kFatal() << "KTViewDocument::createCommand - Just tracing!";
     KTPaintAreaCommand *command = new KTPaintAreaCommand(k->paintArea, event);
 
     return command;

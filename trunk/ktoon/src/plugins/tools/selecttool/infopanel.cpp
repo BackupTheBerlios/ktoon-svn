@@ -31,6 +31,7 @@
 
 #include "infopanel.h"
 #include <QBoxLayout>
+#include <QTextEdit>
 
 #include <kcore/kglobal.h>
 #include <kcore/kdebug.h>
@@ -46,10 +47,14 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
     layout->addWidget(label);
 
     mainLayout->addLayout(layout);
-    
-    QLabel *other = new QLabel(tr("Other"));
-    other->setAlignment(Qt::AlignHCenter);
-    mainLayout->addWidget(other);
+
+    QTextEdit *textArea = new QTextEdit; 
+    textArea->setFixedHeight(250);
+    textArea->setHtml("<p><b>" + tr("Rotation mode") + ":</b> " + tr("Double click on any node") + "</p>"); 
+    textArea->append("<p><b>" + tr("Arrows") + ":</b> " +  tr("Movement on selection") + "</p>");
+    textArea->append("<p><b>" + tr("Shift + Arrows") + ":</b> " +  tr("Slow movement on selection") + "</p>");
+    textArea->append("<p><b>" + tr("Ctrl + Arrows") + ":</b> " +  tr("Fast movement on selection") + "</p>");
+    mainLayout->addWidget(textArea);
    
     mainLayout->addStretch(2);
 }
@@ -57,10 +62,5 @@ InfoPanel::InfoPanel(QWidget *parent) :QWidget(parent)
 InfoPanel::~InfoPanel()
 {
     KEND;
-}
-
-void InfoPanel::resizeEvent(QResizeEvent *)
-{
-    //resize(minimumSizeHint());
 }
 

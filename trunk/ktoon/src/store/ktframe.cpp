@@ -233,7 +233,6 @@ void KTFrame::insertItem(int position, QGraphicsItem *item)
     }
 
     KTGraphicObject *object = new KTGraphicObject(item, this);
-    kFatal() << "KTFrame::insertItem() - inserting object at position: " << position;
     k->graphics.insert(position, object);
 }
 
@@ -395,13 +394,9 @@ QGraphicsItem *KTFrame::createItem(int position, QPointF coords, const QString &
 
     if (graphicItem)
         insertItem(position, graphicItem);
-    else 
-        kFatal() << "KTFrame::createItem - No graphic item :S";
 
     if (loaded)
         KTProjectLoader::createItem(scene()->objectIndex(), layer()->objectIndex(), index(), position, coords, KTLibraryObject::Item, xml, project());
-    else
-        kFatal() << "KTFrame::createItem - No loaded";
 
     return graphicItem;
 }

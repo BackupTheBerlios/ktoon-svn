@@ -61,8 +61,6 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
         K_FUNCINFOX("items");
     #endif
 
-    kFatal() << "KTCommandExecutor::createItem - Adding item!";
-
     int scenePosition = response->sceneIndex();
     int layerPosition = response->layerIndex();
     int framePosition = response->frameIndex();
@@ -89,8 +87,6 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
                     else
                         return false;
                 } else {
-                    kFatal() << "KTCommandExecutor::createItem - Adding item! - Position: " << position;
-                    kFatal() << "KTCommandExecutor::createItem - XML: " << xml;
                     QGraphicsItem *item = frame->createItem(position, point, xml);
                     if (item)
                         response->setItemIndex(frame->indexOf(item));
@@ -138,10 +134,8 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
             if (frame) {
 
                 if (type == KTLibraryObject::Svg) {
-                    kFatal() << "KTCommandExecutor::removeItem - Deleting SVG object";
                     frame->removeSvgAt(response->itemIndex());
                 } else {
-                    kFatal() << "KTCommandExecutor::removeItem - Deleting Item object";
                     frame->removeGraphicAt(response->itemIndex());
 
                     // SQA: Check this code and figure out if it's required

@@ -452,7 +452,6 @@ void KTProjectCommand::itemCommand()
     #endif
 
     KTItemResponse *response = static_cast<KTItemResponse *>(k->response);
-    kFatal() << "KTProjectCommand::itemCommand() - Action: " << response->action();
 
     switch (response->action()) {
             case KTProjectRequest::Add:
@@ -462,7 +461,6 @@ void KTProjectCommand::itemCommand()
             break;
             case KTProjectRequest::Remove:
             {
-                 kFatal() << "KTProjectCommand::itemCommand() - Removing item...";
                  k->executor->removeItem(response);
             }
             break;

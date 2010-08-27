@@ -221,10 +221,8 @@ void KTViewColorCells::changeColor(QTableWidgetItem* item)
            K_FUNCINFO;
     #endif
 
-    if (item) {
-        kFatal() << "KTViewColorCells::changeColor - Just tracing!";
+    if (item)
         emit selectColor(item->background());
-    }
 }
 
 void KTViewColorCells::fillDefaultColors()

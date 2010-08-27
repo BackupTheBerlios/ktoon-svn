@@ -61,12 +61,10 @@ KTBrushStatus::~KTBrushStatus()
 
 void KTBrushStatus::setForeground(const QPen &pen)
 {
-    kFatal() << "KTBrushStatus::setForeground - setting brush from pen";
     m_pen->setBrush(pen.brush());
 }
 
 void KTBrushStatus::setBackground(const QBrush &brush)
 {
-    kFatal() << "KTBrushStatus::setBackground - setting brush from brush"; 
     m_brush->setBrush(brush);
 }

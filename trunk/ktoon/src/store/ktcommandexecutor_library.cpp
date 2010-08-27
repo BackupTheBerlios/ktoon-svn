@@ -44,9 +44,7 @@ bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
         emit responsed(response);
 
         return true;
-    } else {
-        kFatal() << "KTCommandExecutor::createSymbol() - FAILED!"; 
-    }
+    } 
     
     return false;
 }
@@ -75,9 +73,7 @@ bool KTCommandExecutor::addSymbolToProject(KTLibraryResponse *response)
         emit responsed(response);
 
         return true;
-    } else {
-        kFatal() << "KTCommandExecutor::addSymbolToProject - FAILED!";
-    }
+    } 
     
     return false;
 }

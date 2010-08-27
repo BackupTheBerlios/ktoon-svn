@@ -130,13 +130,11 @@ void KTPaintAreaStatus::selectRenderer(int id)
 
 void KTPaintAreaStatus::setBrush(const QBrush &brush)
 {
-    kFatal() << "KTPaintAreaStatus::setBrush - Just tracing!";
     k->brushStatus->setBackground(brush);
 }
 
 void KTPaintAreaStatus::setPen(const QPen &pen)
 {
-    kFatal() << "KTPaintAreaStatus::setPen - Just tracing!";
     k->brushStatus->setForeground(pen);
 }
 

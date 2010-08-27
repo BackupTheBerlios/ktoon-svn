@@ -2542,6 +2542,49 @@
     </message>
 </context>
 <context>
+    <name>InfoPanel</name>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Rotation mode</source>
+        <translation>Modo de Rotación</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Double click on any node</source>
+        <translation>Doble clic sobre cualquier nodo</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Arrows</source>
+        <translation>Flechas</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Movement on selection</source>
+        <translation>Movimiento de la selección</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Shift + Arrows</source>
+        <translation>Shift + Flechas</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Slow movement on selection</source>
+        <translation>Movimiento lento de la selección</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Ctrl + Arrows</source>
+        <translation>Ctrl + Flechas</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/select/infopanel.cpp" line="1"/>
+        <source>Fast movement on selection</source>
+        <translation>Movimiento rápido de la selección</translation>
+    </message>
+</context>
+<context>
     <name>SelectPlugin</name>
     <message>
         <location filename="../../../components/export/ktexportwidget.cpp" line="94"/>

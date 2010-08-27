@@ -90,7 +90,6 @@ void KTConfigurationArea::setConfigurator(QWidget *w, int minWidth)
     if (!w || old == w) 
         return;
 
-    kFatal() << "KTConfigurationArea::setConfigurator - Crash! - minWidth: " << minWidth;
     setWidget(w);
 
     if (minWidth > 0) {

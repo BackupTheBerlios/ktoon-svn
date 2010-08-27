@@ -386,16 +386,10 @@ Scenes KTProject::scenes() const
 
 bool KTProject::createSymbol(int type, const QString &name, const QByteArray &data)
 {
-    if (!k->isOpen) { 
-        kFatal() << "KTProject::createSymbol - Project is NOT open!";
+    if (!k->isOpen)
         return false;
-    } else { 
-        kFatal() << "KTProject::createSymbol - Project is open!";
-    }
   
     bool flag = k->library->createSymbol(KTLibraryObject::Type(type), name, data) != 0;
-
-    kFatal() << "KTProject::createSymbol - Flag: " << flag;
 
     return flag;
 }

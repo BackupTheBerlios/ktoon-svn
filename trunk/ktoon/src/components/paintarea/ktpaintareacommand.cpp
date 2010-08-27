@@ -65,19 +65,15 @@ void KTPaintAreaCommand::undo()
 {
     switch(k->event->action()) {
            case KTPaintAreaEvent::ChangePen:
-                kFatal() << "KTPaintAreaCommand::undo() - tracing setPen in brushmanager!";
                 k->paintArea->brushManager()->setPen(qvariant_cast<QPen>(k->oldData));
                 break;
            case KTPaintAreaEvent::ChangeColorPen:
-                kFatal() << "KTPaintAreaCommand::undo() - tracing setPenColor in brushmanager!";
                 k->paintArea->brushManager()->setPenColor(qvariant_cast<QColor>(k->oldData));
                 break;
            case KTPaintAreaEvent::ChangeBrush:
-                kFatal() << "KTPaintAreaCommand::undo() - tracing setBrush in brushmanager!";
                 k->paintArea->brushManager()->setBrush(qvariant_cast<QBrush>(k->oldData));
                 break;
            default: 
-                kFatal() << "KTPaintAreaCommand::undo() - Doing nothing! Action no defined: " << k->event->action();
                 break;
     }
 }
@@ -93,19 +89,13 @@ void KTPaintAreaCommand::redo()
                        QPen old = k->paintArea->brushManager()->pen();
                        pen.setColor(old.color());
                        pen.setBrush(old.brush());
-                       kFatal() << "KTPaintAreaCommand::redo() - Pen is INvalid!";
-                   } else {
-                       kFatal() << "KTPaintAreaCommand::redo() - Pen is valid!";  
-                   }
-
-                   kFatal() << "KTPaintAreaCommand::redo() - tracing setPen in brushmanager";
+                   } 
                    k->paintArea->brushManager()->setPen(pen);
                  }
                  break;
 
             case KTPaintAreaEvent::ChangeColorPen:
                  {
-                   kFatal() << "KTPaintAreaCommand::redo() - tracing setPenColor in brushmanager";
                    k->oldData = k->paintArea->brushManager()->pen().color();
                    k->paintArea->brushManager()->setPenColor(qvariant_cast<QColor>(k->event->data()));
                  }
@@ -113,14 +103,12 @@ void KTPaintAreaCommand::redo()
 
             case KTPaintAreaEvent::ChangeBrush:
                  {
-                   kFatal() << "KTPaintAreaCommand::redo() - tracing setBrush in brushmanager"; 
                    k->oldData = k->paintArea->brushManager()->brush();
                    k->paintArea->brushManager()->setBrush(qvariant_cast<QBrush>(k->event->data()));
                  }
                  break;
 
             default: 
-                 kFatal() << "KTPaintAreaCommand::redo() - Doing nothing - No action: " << k->event->action(); 
                  break;
     }
 }

@@ -48,6 +48,9 @@ class KTLocalProjectManagerHandler : public KTAbstractProjectHandler
         virtual bool saveProject(const QString &fileName, const KTProject *project);
         virtual bool loadProject(const QString &fileName, KTProject *project);
         virtual void setProject(KTProject *project);
+
+    private:
+        bool isUndoCommand(const QString &xml);
 };
 
 #endif
