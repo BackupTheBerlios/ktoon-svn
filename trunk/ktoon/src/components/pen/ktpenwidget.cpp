@@ -82,13 +82,13 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
     addChild(label);
     
     k->style = new QComboBox();
-    k->style->setIconSize(QSize(120, 15));
+    k->style->setIconSize(QSize(140, 13));
     
     k->style->addItem(QIcon(THEME_DIR + "icons/line_style01.png"), tr("Solid"), Qt::SolidLine);
-    k->style->addItem(tr("Dash"), Qt::DashLine);
-    k->style->addItem(tr("Dot"), Qt::DotLine);
-    k->style->addItem(tr("Dash dot"), Qt::DashDotLine);
-    k->style->addItem(tr("Dash dot dot"), Qt::DashDotDotLine);
+    k->style->addItem(QIcon(THEME_DIR + "icons/line_style02.png"), tr("Dash"), Qt::DashLine);
+    k->style->addItem(QIcon(THEME_DIR + "icons/line_style03.png"), tr("Dot"), Qt::DotLine);
+    k->style->addItem(QIcon(THEME_DIR + "icons/line_style04.png"), tr("Dash dot"), Qt::DashDotLine);
+    k->style->addItem(QIcon(THEME_DIR + "icons/line_style05.png"), tr("Dash dot dot"), Qt::DashDotDotLine);
     
     addChild(k->style);
     connect(k->style, SIGNAL(currentIndexChanged(int)), this, SLOT(setStyle(int)));
@@ -101,10 +101,11 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent), k(new Pr
     addChild(label);
     
     k->capStyle = new QComboBox();
+    k->capStyle->setIconSize(QSize(140, 13));
     
-    k->capStyle->addItem(tr("Flat"), Qt::FlatCap);
-    k->capStyle->addItem(tr("Square"), Qt::SquareCap);
-    k->capStyle->addItem(tr("Round"), Qt::RoundCap);
+    k->capStyle->addItem(QIcon(THEME_DIR + "icons/border01.png"), tr("Flat"), Qt::FlatCap);
+    k->capStyle->addItem(QIcon(THEME_DIR + "icons/border02.png"), tr("Square"), Qt::SquareCap);
+    k->capStyle->addItem(QIcon(THEME_DIR + "icons/border03.png"), tr("Round"), Qt::RoundCap);
     
     addChild(k->capStyle);
     connect(k->capStyle, SIGNAL(currentIndexChanged(int)), this, SLOT(setCapStyle(int)));

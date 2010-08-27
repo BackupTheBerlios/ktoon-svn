@@ -53,6 +53,9 @@ KTLocalProjectManagerHandler::~KTLocalProjectManagerHandler()
 {
 }
 
+// SQA: Verify the way to enhance the undo/redo system
+//      These method is too heavy to do the job :/ 
+
 bool KTLocalProjectManagerHandler::isUndoCommand(const QString &xml)
 {
     bool isAdd = false;
