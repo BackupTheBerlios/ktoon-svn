@@ -361,8 +361,16 @@
     <name>KTBrushStatus</name>
     <message>
         <location filename="../../../components/paintarea/ktbrushstatus.cpp" line="53"/>
-        <source>Current Color</source>
-        <translation>Color Actual</translation>
+        <source>Current Brush</source>
+        <translation>Brocha</translation>
+    </message>
+</context>
+<context>
+    <name>KTToolStatus</name>
+    <message>
+        <location filename="../../../components/paintarea/ktbrushstatus.cpp" line="53"/>
+        <source>Current Tool</source>
+        <translation>Herramienta</translation>
     </message>
 </context>
 <context>
@@ -2782,7 +2790,7 @@
     <message>
         <location filename="../../../plugins/tools/viewtool/zoomconfigurator.cpp" line="68"/>
         <source>Scale Factor</source>
-        <translation>Factor de escala</translation>
+        <translation>Factor de Escala</translation>
     </message>
 </context>
 <context>

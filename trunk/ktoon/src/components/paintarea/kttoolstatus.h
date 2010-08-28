@@ -29,28 +29,28 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTBRUSHSTATUS_H
-#define KTBRUSHSTATUS_H
+#ifndef KTTOOLSTATUS_H
+#define KTTOOLSTATUS_H
 
 #include "ktcolorwidget.h"
 
-#include <QPen>
-#include <QBrush>
+#include <QLabel>
 
 class KTColorWidget;
 
-class KTBrushStatus : public QWidget
+class KTToolStatus : public QWidget
 {
     Q_OBJECT
 
     public:
-        KTBrushStatus();
-        ~KTBrushStatus();
+        KTToolStatus();
+        ~KTToolStatus();
 
-        void setForeground(const QPen &pen);
+        void updateTooltip(const QString &currentTool);
+        void updatePixmap(const QPixmap &pixmap);
 
     private:
-        KTColorWidget *brush;
+        QLabel *tool;
 };
 
 #endif

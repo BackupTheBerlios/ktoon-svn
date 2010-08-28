@@ -98,12 +98,14 @@ ZoomConfigurator::~ZoomConfigurator()
     KEND;
 }
 
+/*
 void ZoomConfigurator::resizeEvent(QResizeEvent *)
 {
     resize(minimumSizeHint()); 
     //kFatal() << "ZoomConfigurator::resizeEvent - Resizing!!!";
     //resize(130, maximumHeight());
 }
+*/
 
 /*
 void ZoomConfigurator::setZoomIn()

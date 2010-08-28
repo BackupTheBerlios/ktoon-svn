@@ -289,26 +289,36 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 
     bool hasAntialiasing = painter->renderHints() & QPainter::Antialiasing;
 
-    painter->setRenderHint(QPainter::Antialiasing, false);
+    //painter->setRenderHint(QPainter::Antialiasing, false);
+
+    painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setPen(QPen(QColor(0,0,0,180), 2));
     painter->fillRect(k->drawingRect, Qt::white);
     painter->drawRect(k->drawingRect);
 
-    emit changedZero(painter->matrix().map(QPointF(0,0)));
+    //emit changedZero(painter->matrix().map(QPointF(0,0)));
+    emit changedZero(painter->worldTransform().map(QPointF(0,0)));
 
     // if enabled draw grid
     if (k->drawGrid) {
+        // SQA: This code is not useful anymore, but is interesting
+        /*
         int sx = (int)painter->matrix().m11();
         int sy = (int)painter->matrix().m22();
         painter->resetMatrix();
         painter->scale(sx, sy);
-        painter->setPen(QPen(QColor(0,0,180, 50), 1));
+        */
 
-        for (int i = 3; i < qMax(width(), height()); i+= 10) {
-             painter->drawLine(i, 0, i, height());
-             painter->drawLine(0, i, width(), i);
-        }
-    }
+        // SQA: This procedure is very heavy. Must be optimized
+        //      Some kind of previously loaded buffer is required
+        painter->setPen(QPen(QColor(0,0,180, 50), 1));
+        int maxX = k->drawingRect.width() + 100;
+        int maxY = k->drawingRect.height() + 100; 
+        for (int i = -100; i <= maxX; i += 10)
+             painter->drawLine(i, -100, i, maxY);
+        for (int i = -100; i <= maxY; i += 10)
+             painter->drawLine(-100, i, maxX, i);
+    } 
 
     painter->setRenderHint(QPainter::Antialiasing, hasAntialiasing);
     painter->restore();

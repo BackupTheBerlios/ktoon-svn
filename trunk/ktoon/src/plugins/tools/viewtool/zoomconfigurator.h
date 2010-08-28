@@ -52,8 +52,8 @@ class ZoomConfigurator : public QWidget
         //bool zoomIn();
         double getFactor() const;
 
-    protected:
-        void resizeEvent(QResizeEvent *);
+    //protected:
+        //void resizeEvent(QResizeEvent *);
 
     /* private slots:
         void setZoomIn();

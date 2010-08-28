@@ -88,6 +88,7 @@ struct KTViewDocument::Private
     KActionManager *actionManager;
     KTConfigurationArea *configurationArea;
     KTToolPlugin *currentTool;
+    KTPaintAreaStatus *status;
 
     QTimer *timer;
 };
@@ -159,14 +160,14 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent) : QMainWindo
     createToolBar();
     createTools();
     
-    KTPaintAreaStatus *status = new KTPaintAreaStatus(this);
-    setStatusBar(status);
+    k->status = new KTPaintAreaStatus(this);
+    setStatusBar(k->status);
 
     // SQA: Verify if this code is doing something
-    //connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), status, 
+    //connect(k->paintArea->brushManager(), SIGNAL(brushChanged(const QBrush&)), k->status, 
     //        SLOT(setBrush(const QBrush &)));
 
-    connect(k->paintArea->brushManager(), SIGNAL(penChanged(const QPen&)), status, 
+    connect(k->paintArea->brushManager(), SIGNAL(penChanged(const QPen&)), k->status, 
             SLOT(setPen(const QPen &)));
 
     QTimer::singleShot(1000, this, SLOT(loadPlugins()));
@@ -429,6 +430,10 @@ void KTViewDocument::selectTool()
         k->currentTool = tool; 
         QString toolStr = tr("%1").arg(action->text());
         k->paintArea->setCurrentTool(toolStr);
+
+        if (!action->icon().isNull())
+            k->status->updateTool(toolStr, action->icon().pixmap(15, 15));
+
         int minWidth = 0;
 
         switch (tool->toolType()) {

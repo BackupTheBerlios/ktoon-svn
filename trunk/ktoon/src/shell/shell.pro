@@ -18,7 +18,8 @@ icons.path = /pixmaps/
 ktdata.files += data/* 
 ktdata.path = /data 
 TRANSLATIONS += data/translations/ktoon_es.ts \
-                data/translations/ktoon_ca.ts
+                data/translations/ktoon_ca.ts \
+                data/translations/ktoon_ru.ts
 HEADERS += ktmainwindow.h \
            ktstatusbar.h \
            ktnewproject.h \

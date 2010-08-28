@@ -12,7 +12,8 @@ HEADERS += ktpaintarea.h \
            ktpaintareacommand.h \
            ktlibrarydialog.h \
            ktcolorwidget.h \
-           ktbrushstatus.h
+           ktbrushstatus.h \
+           kttoolstatus.h
 SOURCES += ktpaintarea.cpp \
            ktconfigurationarea.cpp \
            ktviewdocument.cpp \
@@ -22,7 +23,8 @@ SOURCES += ktpaintarea.cpp \
            ktpaintareacommand.cpp \
            ktlibrarydialog.cpp \
            ktcolorwidget.cpp \
-           ktbrushstatus.cpp
+           ktbrushstatus.cpp \
+           kttoolstatus.cpp
 
 include(../components_config.pri)
 CONFIG += static

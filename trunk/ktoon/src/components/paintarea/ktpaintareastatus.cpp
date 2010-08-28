@@ -46,6 +46,7 @@
 #include "ktbrushmanager.h"
 #include "ktcolorwidget.h"
 #include "ktbrushstatus.h"
+#include "kttoolstatus.h"
 
 ////////////////
 
@@ -56,6 +57,7 @@ struct KTPaintAreaStatus::Private
     QCheckBox *antialiasHint;
     //QComboBox *renderer;
     KTBrushStatus *brushStatus;
+    KTToolStatus *toolStatus;
     QComboBox *rotation;
 };
 
@@ -102,8 +104,10 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
     //connect(k->antialiasHint, SIGNAL(toggled(bool)), this, SLOT(selectAntialiasingHint(bool)));
     //connect(k->antialiasHint, SIGNAL(clicked()), this, SLOT(selectAntialiasingHint(bool)));
 
-    k->brushStatus->setBackground(k->viewDocument->brushManager()->brush());
     k->brushStatus->setForeground(k->viewDocument->brushManager()->pen());
+
+    k->toolStatus = new KTToolStatus;
+    addPermanentWidget(k->toolStatus);
 }
 
 KTPaintAreaStatus::~KTPaintAreaStatus()
@@ -118,6 +122,8 @@ void KTPaintAreaStatus::selectAntialiasingHint()
 
 void KTPaintAreaStatus::selectRenderer(int id)
 {
+  Q_UNUSED(id);
+
   /*
     KToon::RenderType type = KToon::RenderType(k->renderer->itemData(id ).toInt());
 
@@ -126,11 +132,6 @@ void KTPaintAreaStatus::selectRenderer(int id)
     else
         k->viewDocument->setOpenGL(false);
    */
-}
-
-void KTPaintAreaStatus::setBrush(const QBrush &brush)
-{
-    k->brushStatus->setBackground(brush);
 }
 
 void KTPaintAreaStatus::setPen(const QPen &pen)
@@ -146,5 +147,11 @@ void KTPaintAreaStatus::applyRotationFromItem(const QString & text)
         angle += 360;
 
     k->viewDocument->setRotationAngle(angle);
+}
+
+void KTPaintAreaStatus::updateTool(const QString &label, const QPixmap &pixmap)
+{
+    k->toolStatus->updateTooltip(label);
+    k->toolStatus->updatePixmap(pixmap);
 }
 

@@ -29,28 +29,41 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef KTBRUSHSTATUS_H
-#define KTBRUSHSTATUS_H
+#include "kttoolstatus.h"
 
-#include "ktcolorwidget.h"
+#include <QLabel>
+#include <QHBoxLayout>
 
-#include <QPen>
-#include <QBrush>
+#include <kcore/kdebug.h>
+#include <kcore/kconfig.h>
 
-class KTColorWidget;
-
-class KTBrushStatus : public QWidget
+KTToolStatus::KTToolStatus()
 {
-    Q_OBJECT
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->setMargin(2);
+    layout->setSpacing(2);
 
-    public:
-        KTBrushStatus();
-        ~KTBrushStatus();
+    tool = new QLabel("");
+    QPixmap pix(THEME_DIR + "icons/pencil.png");
+    tool->setToolTip(tr("Current Tool"));
+    tool->setPixmap(pix);
+    tool->setMaximumSize(20, 20);
 
-        void setForeground(const QPen &pen);
+    layout->addWidget(new QLabel(tr("Current Tool")));
+    layout->addSpacing(3);
+    layout->addWidget(tool);
+}
 
-    private:
-        KTColorWidget *brush;
-};
+KTToolStatus::~KTToolStatus()
+{
+}
 
-#endif
+void KTToolStatus::updateTooltip(const QString &currentTool)
+{
+    tool->setToolTip(currentTool);
+}
+
+void KTToolStatus::updatePixmap(const QPixmap &pixmap)
+{
+    tool->setPixmap(pixmap);
+}

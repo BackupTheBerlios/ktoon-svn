@@ -45,14 +45,11 @@ KTBrushStatus::KTBrushStatus()
     layout->setMargin(2);
     layout->setSpacing(2);
 
-    m_pen = new KTColorWidget;
-    m_brush = new KTColorWidget;
+    brush = new KTColorWidget;
 
-    layout->addWidget(new KSeparator(Qt::Vertical));
-    layout->addWidget(new QLabel(tr("Current Color")));
+    layout->addWidget(new QLabel(tr("Current Brush")));
     layout->addSpacing(3);
-    layout->addWidget(m_pen);
-    layout->addSpacing(5);
+    layout->addWidget(brush);
 }
 
 KTBrushStatus::~KTBrushStatus()
@@ -61,10 +58,5 @@ KTBrushStatus::~KTBrushStatus()
 
 void KTBrushStatus::setForeground(const QPen &pen)
 {
-    m_pen->setBrush(pen.brush());
-}
-
-void KTBrushStatus::setBackground(const QBrush &brush)
-{
-    m_brush->setBrush(brush);
+    brush->setBrush(pen.brush());
 }
