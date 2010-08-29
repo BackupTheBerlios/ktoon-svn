@@ -344,8 +344,13 @@ void KTExposureTable::insertFrame(int indexLayer, int indexFrame, const QString 
     for (int i = k->header->lastFrame(logicalIndex)-1; i > indexFrame; i--)
          exchangeFrame(indexLayer, i , indexLayer, i-1, external);
 
-    if (k->header->lastFrame(logicalIndex) == rowCount())
-        setRowCount(k->header->lastFrame(logicalIndex) + 50);
+    if (k->header->lastFrame(logicalIndex) == rowCount()) {
+        kFatal() << "KTExposureTable::insertFrame - Here is the deal!"; 
+        setRowCount(k->header->lastFrame(logicalIndex) + 100);
+        int last = k->header->lastFrame(logicalIndex);
+        for (int i=last; i < last + 100; i++)
+             setRowHeight(i, 20);
+    }
 }
 
 void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)

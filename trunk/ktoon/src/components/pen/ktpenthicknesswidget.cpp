@@ -88,12 +88,18 @@ void KTPenThicknessWidget::paintEvent(QPaintEvent *)
 
      painter.translate(width() / 2, height() / 2);
 
-     //QBrush brush(k->color, Qt::SolidPattern);
-     QBrush brush(Qt::BrushStyle(k->brush));
-     brush.setColor(k->color);
-     QPen pen(Qt::NoPen);
-
-     painter.setPen(pen);
-     painter.setBrush(brush);
-     painter.drawEllipse(-(k->thickness/2), -(k->thickness/2), k->thickness, k->thickness);
+     QBrush brush;
+     Qt::BrushStyle style = Qt::BrushStyle(k->brush);
+     
+     if (style != Qt::TexturePattern) {  
+         brush = QBrush(Qt::BrushStyle(k->brush));
+         brush.setColor(k->color);
+         QPen pen(Qt::NoPen);
+         painter.setPen(pen);
+         painter.setBrush(brush);
+         painter.drawEllipse(-(k->thickness/2), -(k->thickness/2), k->thickness, k->thickness);
+     } else {
+         QPixmap pixmap(THEME_DIR + "icons/brush_15.png");
+         painter.drawPixmap(-(pixmap.width()/2), -(pixmap.height()/2), pixmap);  
+     }
 }

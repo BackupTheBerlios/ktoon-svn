@@ -185,10 +185,14 @@ void KTPenWidget::setCapStyle(int s)
 void KTPenWidget::setBrushStyle(QListWidgetItem *item)
 {
     int index = k->brushesList->row(item);
-
-    k->thickPreview->setBrush(index+1);
-
-    k->brush.setStyle(Qt::BrushStyle(index+1));
+ 
+    if (item->toolTip().compare("TexturePattern") == 0) {
+        k->brush = QBrush(QPixmap(THEME_DIR + "icons/brush_15.png"));
+        k->thickPreview->setBrush(24);
+    } else {
+        k->thickPreview->setBrush(index+1);
+        k->brush.setStyle(Qt::BrushStyle(index+1));
+    }
 
     updatePenParams(); 
 
@@ -336,6 +340,12 @@ void KTPenWidget::addBrushesList()
 
     /*
     brushItem = new QListWidgetItem(k->brushesList);
+    brushItem->setIcon(QIcon(THEME_DIR + "icons/brush_15.png"));
+    brushItem->setFont(QFont("verdana", 8));
+    brushItem->setToolTip("TexturePattern");
+    brushItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+
+    brushItem = new QListWidgetItem(k->brushesList);
     brushItem->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
     brushItem->setFont(QFont("verdana", 8));
     brushItem->setToolTip("LinearGradientPattern");
@@ -351,12 +361,6 @@ void KTPenWidget::addBrushesList()
     brushItem->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
     brushItem->setFont(QFont("verdana", 8));
     brushItem->setToolTip("RadialGradientPattern");
-    brushItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-
-    brushItem = new QListWidgetItem(k->brushesList);
-    brushItem->setIcon(QIcon(THEME_DIR + "icons/brush.png"));
-    brushItem->setFont(QFont("verdana", 8));
-    brushItem->setToolTip("TexturePattern");
     brushItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     */
 
