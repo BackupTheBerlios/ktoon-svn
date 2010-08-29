@@ -47,6 +47,7 @@
 #include <QBuffer>
 #include <QGraphicsSvgItem>
 #include <QSvgRenderer>
+#include <QComboBox>
 
 #include <ktrequestbuilder.h>
 
@@ -83,6 +84,7 @@ struct KTLibraryWidget::Private
     KTGCTable *libraryTree;
     int childCount;
     QDir libraryDir;
+    QComboBox *itemType;
 
     int currentPlayerId;
 
@@ -117,14 +119,26 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
     buttonLayout->setMargin(0);
     buttonLayout->setSpacing(0);
 
+    k->itemType = new QComboBox();
+    k->itemType->setIconSize(QSize(15, 15));
+    k->itemType->setMaximumWidth(120);
+    
+    k->itemType->addItem(QIcon(THEME_DIR + "icons/bitmap.png"), tr("Image"));
+    k->itemType->addItem(QIcon(THEME_DIR + "icons/bitmap_array.png"), tr("Image Array"));
+    k->itemType->addItem(QIcon(THEME_DIR + "icons/svg.png"), tr("Svg File"));
+    k->itemType->addItem(QIcon(THEME_DIR + "icons/svg_array.png"), tr("Svg Array"));
+
+    buttonLayout->addWidget(k->itemType);
+
     KImageButton *addGC = new KImageButton(QPixmap(THEME_DIR + "icons/plus_sign.png"), 22, buttons);
     connect(addGC, SIGNAL(clicked()), this, SIGNAL(requestCurrentGraphic()));
-    // SQA code  
-    addGC->setEnabled(false);
+    // SQA code
+    // addGC->setEnabled(false);
 
     buttonLayout->addWidget(addGC);
     addGC->setToolTip(tr("Add the current graphic to library"));
 
+    /*
     KImageButton *delGC = new KImageButton(QPixmap(THEME_DIR + "icons/minus_sign.png"), 22, buttons);
     connect(delGC, SIGNAL(clicked()), this, SLOT(removeCurrentGraphic()));
     // SQA code
@@ -132,6 +146,7 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 
     delGC->setToolTip(tr("Remove the selected symbol from library"));
     buttonLayout->addWidget(delGC);
+    */
 
     KImageButton *gctoDrawingArea = new KImageButton(QPixmap(THEME_DIR + "icons/library_to_ws.png"), 22, buttons);
     connect(gctoDrawingArea, SIGNAL(clicked()), this, SLOT(emitSelectedComponent()));
@@ -139,7 +154,7 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
     buttonLayout->addWidget(gctoDrawingArea);
 
     KImageButton *addFolderGC = new KImageButton(QPixmap(THEME_DIR + "icons/create_folder.png"), 22, buttons);
-    addFolderGC->setEnabled(false);
+    //addFolderGC->setEnabled(false);
     connect(addFolderGC, SIGNAL(clicked()), k->libraryTree, SLOT(createFolder()));
     addFolderGC->setToolTip(tr("Adds a folder to the symbol list"));
     buttonLayout->addWidget(addFolderGC);
@@ -642,7 +657,7 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 
                  QList<QTreeWidgetItem *> selectedGroup = k->libraryTree->selectedItems();
                  if (!selectedGroup.isEmpty()) {
-                     QTreeWidgetItem *pop = selectedGroup[0];
+                     //QTreeWidgetItem *pop = selectedGroup[0];
                      if (selectedGroup[0]->text(1).size() > 0) {
                          k->display->render(qvariant_cast<QGraphicsItem *>(k->library->findObject(
                                             selectedGroup[0]->text(1))->data()));
