@@ -60,6 +60,10 @@ Linux distro
    % make    [Press enter]
    % sudo make install    [Press enter]
 
+Note: Only for advanced users, the configure script provides many options 
+useful to set specific installation paths. Try "./configure --help" to get 
+more information about it.
+
 3. Animation time!
 
 - Execute:
