@@ -11,6 +11,7 @@
 **
 ** NO WARRANTY is given for this code.
 ** Use it at your own risk.
+ *   Copyright (C) 2010 Labtoon SAS - http://www.labtoon.org               *
 ** It should produce correct SHA1 digests, but no security-related test has been made.
 **
 ** Copyright (C) 2005 Angius Fabrizio. All rights reserved.
